@@ -55,14 +55,14 @@ const translations = {
     en: 'Euros per month. If you leave this field empty, the holiday pay will not be included in the calculation.',
   },
   heading_pay_subsidy_information: {
-    fi: 'Muut työsuhteeseen haettavat tai myönnetyt tuet',
-    sv: 'Andra stöd för anställningen som ansöks om eller beviljats',
-    en: 'Other subsidies applied for or granted for the employment',
+    fi: 'Työsuhteeseen myönnetyt muut tuet',
+    sv: 'Andra förmåner som beviljas för anställning',
+    en: 'Other benefits granted for employment',
   },
   text_pay_subsidy_information: {
-    fi: 'Helsinki-lisän lisäksi työsuhteeseen voidaan myöntää muita tukia kattamaan palkkaamisesta aiheutuvia kustannuksia.',
-    sv: 'Förutom Helsingforstillägget kan andra stöd beviljas för att täcka kostnaderna för anställningen.',
-    en: 'In addition to the Helsinki benefit, other subsidies may be granted to cover the costs of employment.',
+    fi: 'Helsinki-lisää ei myönnetä samaan työsuhteeseen palkkatuen tai 55 vuotta täyttäneiden työllistämistuen kanssa.',
+    sv: 'Helsingforstillägget beviljas inte för samma anställningsförhållande som lönesubvention eller sysselsättningsstöd för personer som fyllt 55 år.',
+    en: 'Helsinki benefit cannot be granted for the same employment relationship as a pay subsidy or an employment subsidy for people aged 55 or over.',
   },
   label_pay_subsidy_granted: {
     fi: 'Työsuhteeseen myönnetyt tai haetut muut tuet, kuten palkkatuki',
@@ -70,9 +70,9 @@ const translations = {
     en: 'Other subsidies applied for or granted for the employment',
   },
   label_pay_subsidy_false: {
-    fi: 'Työsuhteeseen ei ole myönnetty tai haettu muuta tukea',
-    sv: 'Inget annat stöd har beviljats eller ansökts om',
-    en: 'No other subsidy has been granted or applied',
+    fi: 'Työsuhteeseen ei ole myönnetty tai haettu muuta tukea *',
+    sv: 'Inget annat stöd har beviljats eller ansökts om *',
+    en: 'No other subsidy has been granted or applied *',
   },
   label_pay_subsidy_true: {
     fi: 'Palkkatuki tai 55 vuotta täyttäneiden työllistämistuki',
@@ -115,9 +115,9 @@ const translations = {
     en: 'euros per month',
   },
   total_explanation: {
-    fi: 'Arvio tuen määrästä on suuntaa antava eikä se takaa lopullista tuen määrää. Helsinki-lisää myönnetään työsuhteen ajaksi, kuitenkin enintään 12 kuukaudeksi. Tuen myöntäminen edellyttää, että työllistettävälle on myönnetty Helsinki-lisä-kortti, palkkatukea tai 55 vuotta täyttäneiden työllistämistukea.',
-    sv: 'Uppskattningen av stödets belopp är vägledande och garanterar inte det slutliga beloppet. Helsingforstilläggetet beviljas för anställningstiden, dock högst 12 månader. För att stödet ska beviljas krävs att den anställde har beviljats ett Helsingforstilläggskort, lönebidrag eller anställningsstöd för personer över 55 år.',
-    en: 'The estimate of the financial support amount is indicative and does not guarantee the final amount of the support. The Helsinki benefit is granted for the duration of the employment, maximum of 12 months. Granting the support requires that the employee has been issued the Helsinki benefit card, pay subsidy, or employment subsidy for ages 55 and above.',
+    fi: 'Arvio tuen määrästä on suuntaa antava eikä se takaa lopullista tuen määrää. Helsinki-lisää myönnetään työsuhteen ajaksi, kuitenkin enintään 12 kuukaudeksi. Oppisopimuksissa Helsinki-lisää voidaan myöntää koko oppisopimuksen ajaksi.',
+    sv: 'Uppskattningen av stödets belopp är vägledande och garanterar inte det slutliga beloppet. Helsingforstilläggetet beviljas för anställningstiden, dock högst 12 månader. För lärlingsavtal kan Helsingforstillägget beviljas för hela lärlingstiden.',
+    en: 'The estimate of the financial support amount is indicative and does not guarantee the final amount of the support. The Helsinki benefit is granted for the duration of the employment, maximum of 12 months. For apprenticeships, the Helsinki benefit can be granted for the entire duration of the apprenticeship.',
   },
   breakdown_title: {
     fi: 'Arvio muodostuu seuraavista tiedoista:',
@@ -158,11 +158,6 @@ const translations = {
     fi: 'Oppisopimuksissa Helsinki-lisää voidaan myöntää koko oppisopimuksen ajaksi.',
     sv: 'För lärlingsavtal kan Helsingforstillägget beviljas för hela lärlingstiden.',
     en: 'For apprenticeships, the Helsinki benefit can be granted for the entire duration of the apprenticeship.',
-  },
-  additional_details_text_2: {
-    fi: 'Laskuri ei tue tapausta, jossa palkkatuen määrä on 100 prosenttia työntekijän palkkakustannuksista 65 prosentin työajalla.',
-    sv: 'Beräknaren stöder inte fall där lönesubventionen är 100 procent av anställningskostnaderna vid 65 procents arbetstid.',
-    en: "The calculator does not support cases where the pay subsidy amount is 100 percent of the employee's salary costs with 65 percent working time.",
   },
   error_calculation_title: {
     fi: 'Laskenta epäonnistui.',
