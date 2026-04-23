@@ -561,6 +561,14 @@ function helfi_platform_config_update_11001(): void {
 }
 
 /**
+ * UHF-13110: Install Drupal AI and Azure provider configuration.
+ */
+function helfi_platform_config_update_11003(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_platform_config');
+}
+
+/**
  * UHF-13019: Save all indexes to remove old Main image fields.
  */
 function helfi_platform_config_update_11002(): void {

@@ -1,0 +1,14 @@
+prompt_logging: false
+prompt_logging_tags: ''
+default_providers:
+  chat:
+    provider_id: azure
+    model_id: ''
+  embeddings:
+    provider_id: azure
+    model_id: ''
+default_vdb_provider: ''
+request_timeout: 60
+models: {  }
+allowed_hosts: []
+allowed_hosts_rewrite_links: false
