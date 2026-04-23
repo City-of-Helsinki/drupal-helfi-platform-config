@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  logger.channel.helfi_ai_summary:
+    parent: logger.channel_base
+    arguments: ['helfi_ai_summary']
+
+  Drupal\helfi_ai_summary\Service\AiChatProviderBridge:
+    arguments:
+      $manager: '@ai.provider'
+
+  Drupal\helfi_ai_summary\Service\AiSummaryGenerator:
+    arguments:
+      $aiProvider: '@Drupal\helfi_ai_summary\Service\AiChatProviderBridge'
+      $logger: '@logger.channel.helfi_ai_summary'
