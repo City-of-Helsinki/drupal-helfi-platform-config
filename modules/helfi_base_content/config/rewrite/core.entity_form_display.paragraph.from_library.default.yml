@@ -7,6 +7,7 @@ dependencies:
     - paragraphs.paragraphs_type.from_library
   module:
     - select2
+    - paragraphs_library
 id: paragraph.from_library.default
 targetEntityType: paragraph
 bundle: from_library
