@@ -1,0 +1,10 @@
+name: 'Helfi AI Summary'
+type: module
+core_version_requirement: ^11
+description: 'AI-generated content summary field for node edit forms.'
+dependencies:
+  - drupal:node
+  - drupal:field
+  - drupal:text
+  - drupal:language
+  - helfi_platform_config:helfi_platform_config

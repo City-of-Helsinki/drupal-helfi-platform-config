@@ -1,0 +1,78 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Drupal\helfi_ai_summary\Service;
+
+use Drupal\ai\AiProviderPluginManager;
+use Drupal\ai\OperationType\Chat\ChatInput;
+use Drupal\ai\OperationType\Chat\ChatMessage;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
+use Psr\Log\LoggerInterface;
+
+/**
+ * Generates AI-powered content summaries using the configured chat provider.
+ */
+final class AiSummaryGenerator {
+
+  public function __construct(
+    private readonly AiProviderPluginManager $aiProvider,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly TextConverterManager $textConverterManager,
+    private readonly LoggerInterface $logger,
+  ) {}
+
+  /**
+   * Generates a summary for the given entity translation.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity. Should be already saved so TextConverter can render it.
+   * @param string $langcode
+   *   Language code of the translation to summarise.
+   *
+   * @return string|null
+   *   The generated summary text, or NULL on failure.
+   */
+  public function generate(ContentEntityInterface $entity, string $langcode): ?string {
+    if ($entity->hasTranslation($langcode)) {
+      $entity = $entity->getTranslation($langcode);
+    }
+
+    $content = $this->textConverterManager->convert($entity);
+    if (!$content) {
+      $this->logger->warning('helfi_ai_summary: no text content for entity @type/@id.', [
+        '@type' => $entity->getEntityTypeId(),
+        '@id' => $entity->id(),
+      ]);
+      return NULL;
+    }
+
+    $prompt = $this->entityTypeManager
+      ->getStorage('ai_prompt')
+      ->load('helfi_content_summary__helfi_content_summary_default');
+
+    if (!$prompt) {
+      $this->logger->error('helfi_ai_summary: prompt helfi_content_summary__helfi_content_summary_default not found.');
+      return NULL;
+    }
+
+    $text = str_replace(
+      ['{content}', '{language}'],
+      [$content, $entity->language()->getName()],
+      $prompt->getPrompt(),
+    );
+
+    try {
+      ['provider_id' => $provider, 'model_id' => $model] = $this->aiProvider->getSetProvider('chat');
+      $input = new ChatInput([new ChatMessage('user', $text)]);
+      return $provider->chat($input, $model)->getNormalized()->getText();
+    }
+    catch (\Throwable $e) {
+      $this->logger->error('helfi_ai_summary: generation failed: @message', ['@message' => $e->getMessage()]);
+      return NULL;
+    }
+  }
+
+}

@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Contains helfi_ai_summary module hooks.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function helfi_ai_summary_entity_base_field_info(EntityTypeInterface $entity_type): array {
+  if ($entity_type->id() !== 'node') {
+    return [];
+  }
+
+  $fields['field_ai_summary'] = BaseFieldDefinition::create('string_long')
+    ->setLabel(t('AI Summary'))
+    ->setDescription(t('AI-generated content summary. One bullet point per line, no list markers.'))
+    ->setRevisionable(TRUE)
+    ->setTranslatable(TRUE)
+    ->setDisplayConfigurable('form', TRUE)
+    ->setDisplayConfigurable('view', TRUE);
+
+  return $fields;
+}
