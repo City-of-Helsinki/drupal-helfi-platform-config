@@ -7,17 +7,23 @@ namespace Drupal\Tests\helfi_platform_config\ExistingSite;
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
+use Drush\TestTraits\DrushTestTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Test;
 use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Scans bundled configuration.
- *
- * @group helfi_platform_config
  */
+#[Group('helfi_platform_config')]
+#[RunTestsInSeparateProcesses]
 class ConfigurationTest extends ExistingSiteBase {
+
+  use DrushTestTrait;
 
   /**
    * The extension list.
@@ -40,7 +46,7 @@ class ConfigurationTest extends ExistingSiteBase {
     parent::setUp();
 
     $this->extensionList = $this->container->get('extension.list.module');
-    $this->typedConfigManager = $this->container->get('config.typed');
+    $this->typedConfigManager = $this->container->get(TypedConfigManagerInterface::class);
   }
 
   /**
@@ -65,7 +71,7 @@ class ConfigurationTest extends ExistingSiteBase {
   /**
    * Gets the submodules.
    *
-   * @return array
+   * @return array<mixed>
    *   The submodules list.
    */
   public static function getSubModules() : array {
@@ -126,7 +132,7 @@ class ConfigurationTest extends ExistingSiteBase {
         if (!isset($definition['mapping']['uuid'])) {
           continue;
         }
-        $yaml = Yaml::decode(file_get_contents($file->getPathname()));
+        $yaml = Yaml::decode((string) file_get_contents($file->getPathname()));
         $this->assertArrayHasKey('uuid', $yaml, "[{$file->getPathname()}] is missing UUID");
       }
     }
@@ -162,9 +168,19 @@ class ConfigurationTest extends ExistingSiteBase {
       if (!str_contains($file, '/config/')) {
         continue;
       }
-      $content = Yaml::decode(file_get_contents($file));
+      $content = Yaml::decode((string) file_get_contents($file));
       $this->assertArrayNotHasKey('_core', $content, "[{$file}] has _core key");
     }
+  }
+
+  /**
+   * Make sure we flush caches once we're done installing modules.
+   */
+  #[Test]
+  #[Depends('testModuleInstallation')]
+  public function testPostInstallCacheFlush(): void {
+    $this->expectNotToPerformAssertions();
+    $this->drush('cr');
   }
 
 }
