@@ -9,4 +9,5 @@ services:
 
   Drupal\helfi_ai_summary\Service\AiSummaryGenerator:
     arguments:
+      $aiProvider: '@ai.provider'
       $logger: '@logger.channel.helfi_ai_summary'
