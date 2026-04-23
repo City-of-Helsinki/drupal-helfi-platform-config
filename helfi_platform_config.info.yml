@@ -7,6 +7,7 @@ dependencies:
   - drupal:language
   - drupal:views
   - drupal:node
+  - drupal:taxonomy
   - helfi_platform_config:helfi_platform_config
   - helfi_api_base:helfi_api_base
   - config_rewrite:config_rewrite
