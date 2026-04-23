@@ -5721,21 +5721,6 @@ parameters:
 			path: tests/src/ExistingSite/ConfigurationTest.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_platform_config\\\\ExistingSite\\\\ConfigurationTest\\:\\:getSubModules\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/ExistingSite/ConfigurationTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$raw of static method Drupal\\\\Component\\\\Serialization\\\\Yaml\\:\\:decode\\(\\) expects string, string\\|false given\\.$#"
-			count: 2
-			path: tests/src/ExistingSite/ConfigurationTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_platform_config\\\\ExistingSite\\\\RedirectFormTest\\:\\:testRedirectForm\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: tests/src/ExistingSite/RedirectFormTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$account of method weitzman\\\\DrupalTestTraits\\\\ExistingSiteBase\\:\\:drupalLogin\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"
 			count: 1
 			path: tests/src/ExistingSite/RedirectFormTest.php
