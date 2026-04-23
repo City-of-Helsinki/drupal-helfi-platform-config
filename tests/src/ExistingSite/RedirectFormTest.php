@@ -8,18 +8,22 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\Tests\helfi_api_base\Functional\ExistingSiteTestBase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests `redirect.add` form.
  *
  * @group helfi_platform_config
  */
+#[Group('helfi_platform_config')]
+#[RunTestsInSeparateProcesses]
 class RedirectFormTest extends ExistingSiteTestBase {
 
   /**
    * Tests that saving redirect from entity form sets the custom field to TRUE.
    */
-  public function testRedirectForm() {
+  public function testRedirectForm(): void {
     $user = $this->createUser([
       'administer redirects',
     ]);

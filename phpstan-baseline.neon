@@ -76,6 +76,11 @@ parameters:
 			path: helfi_platform_config.module
 
 		-
+			message: "#^Function helfi_platform_config_preprocess_form_element__helfi_location_autocomplete\\(\\) has parameter \\$variables with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: helfi_platform_config.module
+
+		-
 			message: "#^Function helfi_platform_config_preprocess_html\\(\\) has parameter \\$variables with no type specified\\.$#"
 			count: 1
 			path: helfi_platform_config.module
@@ -5719,21 +5724,6 @@ parameters:
 			message: "#^Cannot access offset 'mapping' on Drupal\\\\Core\\\\TypedData\\\\DataDefinitionInterface\\.$#"
 			count: 1
 			path: tests/src/ExistingSite/ConfigurationTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_platform_config\\\\ExistingSite\\\\ConfigurationTest\\:\\:getSubModules\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/ExistingSite/ConfigurationTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$raw of static method Drupal\\\\Component\\\\Serialization\\\\Yaml\\:\\:decode\\(\\) expects string, string\\|false given\\.$#"
-			count: 2
-			path: tests/src/ExistingSite/ConfigurationTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_platform_config\\\\ExistingSite\\\\RedirectFormTest\\:\\:testRedirectForm\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: tests/src/ExistingSite/RedirectFormTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$account of method weitzman\\\\DrupalTestTraits\\\\ExistingSiteBase\\:\\:drupalLogin\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"

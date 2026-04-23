@@ -72,11 +72,13 @@
     },
     "conflict": {
         "drush/drush": "<12",
+        "drupal/core": "<11.3.8",
         "drupal/external_entities": "<3.0.0-beta7"
     },
     "extra": {
         "patches": {
             "drupal/core": {
+                "[#UHF-13177, #3569803] htmx:beforeSwap fails with TypeError requestAssetsLoaded.get(...) is undefined": "./public/modules/contrib/helfi_platform_config/patches/3569803.patch",
                 "[#UHF-12709] Patch 'Deleted and replaced ...' error messages": "./public/modules/contrib/helfi_platform_config/patches/UHF-12709-skip_deleted_and_replaced_log.patch",
                 "[#UHF-181] Hide untranslated menu links (https://www.drupal.org/project/drupal/issues/3091246)": "./public/modules/contrib/helfi_platform_config/patches/3091246.patch",
                 "[#UHF-3812] Ajax exposed filters not working for multiple instances of the same Views block placed on one page (https://www.drupal.org/project/drupal/issues/3163299)": "./public/modules/contrib/helfi_platform_config/patches/3163299-104-D10.patch",
@@ -86,8 +88,7 @@
                 "[#UHF-9690] Allow updating lists when switching from allowed values to allowed values function (https://www.drupal.org/i/2873353)": "./public/modules/contrib/helfi_platform_config/patches/2873353-20.patch",
                 "[#UHF-9952, #UHF-9980] Duplicate <br /> tags (https://www.drupal.org/i/3083786)": "./public/modules/contrib/helfi_platform_config/patches/3083786.patch",
                 "[#UHF-11025] Status message templates missing theme when bigpipe is enabled (https://www.drupal.org/i/3396318)": "./public/modules/contrib/helfi_platform_config/patches/3396318.patch",
-                "[#UHF-11784] Sort the source and target arrays in the configuration storage comparer to avoid false positives": "./public/modules/contrib/helfi_platform_config/patches/drupal-core-sort-storage-comparer-source-and-target-arrays.patch",
-                "[#UHF-13130] ConfigInstaller isSyncing does not persist to hook_modules_installed() when multiple modules are installed (https://www.drupal.org/i/3584812)": "./public/modules/contrib/helfi_platform_config/patches/3584812-7.patch"
+                "[#UHF-11784] Sort the source and target arrays in the configuration storage comparer to avoid false positives": "./public/modules/contrib/helfi_platform_config/patches/drupal-core-sort-storage-comparer-source-and-target-arrays.patch"
             },
             "drupal/diff": {
                 "Revision overview form problem (https://www.drupal.org/i/3390329)": "./public/modules/contrib/helfi_platform_config/patches/diff_8.x_1.3_revision_overview_form.patch"
