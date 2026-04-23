@@ -38,7 +38,7 @@ cookie_banner_admin_ui:
     - hdbt_cookie_banner/json_editor
 
 hdbt_cookie_banner:
-  version: 1.0.2
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   header: true
   js:
     # The weight needs to be as low as drupal.init.js, which is -17.
