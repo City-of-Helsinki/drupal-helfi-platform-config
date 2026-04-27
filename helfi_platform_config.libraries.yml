@@ -29,7 +29,7 @@ tom_select:
     name: Apache license 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
   js:
-    assets/js/tomSelectComplete.min.js: { weight: -1, minified: true }
+    dist/js/tom-select.js: { weight: -1 }
   css:
     theme:
       assets/css/tom_select.css: {}
@@ -73,3 +73,4 @@ sentry_ignore:
     dist/js/sentryIgnore.min.js: { minified: true }
   dependencies:
     - core/drupalSettings
+
