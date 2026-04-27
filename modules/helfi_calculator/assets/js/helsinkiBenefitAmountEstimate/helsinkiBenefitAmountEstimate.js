@@ -145,9 +145,7 @@ class HelsinkiBenefitAmountEstimate {
         title: this.t('total_title'),
         total_prefix: this.t('total_prefix'),
         // Total value is always at least zero but no more than HELSINKI_BENEFIT_MAX_AMOUNT
-        total_value: formatCurrency(
-          Math.max(0, Math.min(helsinkiBenefitResult, config.HELSINKI_BENEFIT_MAX_AMOUNT)),
-        ),
+        total_value: formatCurrency(Math.max(0, Math.min(helsinkiBenefitResult, config.HELSINKI_BENEFIT_MAX_AMOUNT))),
         total_suffix: this.t('total_suffix'),
         total_explanation: this.t('total_explanation'),
         hr: true,
