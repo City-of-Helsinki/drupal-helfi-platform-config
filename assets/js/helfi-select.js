@@ -48,6 +48,7 @@
     const baseConfig = {
       allowEmptyOption: hasEmptyOption,
       controlInput: null,
+      openOnFocus: false,
       placeholder: element.getAttribute('placeholder') || undefined,
       render: {
         option: (item, escapeFn) => renderOption(item, escapeFn),
@@ -69,7 +70,43 @@
 
     const autocompleteConfig = autocompletePath ? buildAutocompleteConfig(autocompletePath) : {};
 
-    return new TomSelect(element, { ...baseConfig, plugins, ...autocompleteConfig });
+    const ts = new TomSelect(element, { ...baseConfig, plugins, ...autocompleteConfig });
+
+    let wasOpenOnMouseDown = false;
+
+    ts.control.addEventListener('mousedown', () => {
+      wasOpenOnMouseDown = ts.isOpen;
+    });
+
+    ts.control.addEventListener('click', (e) => {
+      if (e.detail > 0 && !wasOpenOnMouseDown && !e.target.closest('.item')) {
+        ts.open();
+      }
+    });
+
+    let wasOpenOnKeydown = false;
+
+    // Capture phase: runs before tom-select's bubble handler so we can snapshot isOpen.
+    ts.control.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'Enter') {
+        wasOpenOnKeydown = ts.isOpen;
+      }
+    }, true);
+
+    ts.control.addEventListener('keydown', (e) => {
+      if (e.key !== ' ' && e.key !== 'Enter') return;
+      if (!wasOpenOnKeydown) {
+        e.preventDefault();
+        ts.open();
+      } else if (!autocompletePath && ts.activeOption && ts.isOpen) {
+        // Space: tom-select has no handler so dropdown is still open — click the option.
+        e.preventDefault();
+        ts.activeOption.click();
+      }
+      // Enter: tom-select already handled select+close, wasOpenOnKeydown=true but isOpen=false — do nothing.
+    });
+
+    return ts;
   }
 
   Drupal.behaviors.helfiSelect = {
