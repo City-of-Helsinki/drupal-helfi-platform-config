@@ -38,10 +38,10 @@ class RemoteVideoHooks {
   public function preprocessMediaOembedIframe(array &$variables): void {
     $iframe = $variables['media']->__toString();
 
-    // Add scrolling="no" attribute to the inner iframe.
+    // Add scrolling="no" and style attributes to the inner iframe.
     $iframe = str_replace(
       '></iframe>',
-      ' scrolling="no"></iframe>',
+      ' scrolling="no" style="border:none;"></iframe>',
       $iframe,
     );
 
