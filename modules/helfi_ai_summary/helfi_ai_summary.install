@@ -9,6 +9,10 @@ declare(strict_types=1);
 
 /**
  * Implements hook_install().
+ *
+ * Adding a base field via hook_entity_base_field_info() on an existing
+ * entity type does not create the storage column automatically, so install
+ * it explicitly here.
  */
 function helfi_ai_summary_install(bool $is_syncing): void {
   if ($is_syncing) {

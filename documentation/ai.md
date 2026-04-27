@@ -39,7 +39,7 @@ In production these are provisioned via Azure Keyvault through the CI pipeline.
 
 ## Local development
 
-Use `local.settings.php`: Override `ai.settings` and the Key entity directly:
+Container env vars are not consistently available across instances, so override the relevant config in `public/sites/default/local.settings.php` (gitignored):
 
 ```php
 $azure_api_key    = 'YOUR_API_KEY';
@@ -88,21 +88,35 @@ $answer = $response->getText();
 
 ## Prompt Library
 
-Shared prompts are distributed as `ai.ai_prompt.*` config entities in `config/install/`.
+Shared prompts are distributed as `ai.ai_prompt_type.*` and `ai.ai_prompt.*` config entities in a module's `config/install/` directory. Use the `helfi_` prefix on prompt type IDs to avoid collisions with instance-specific prompts.
+
+The Drupal AI module stores each prompt under the ID `{type}__{prompt_id}` and substitutes variables with single-brace placeholders, e.g. `{content}`.
 
 ### Adding a prompt
 
 ```yaml
-# config/install/ai.ai_prompt.helfi_content_summary.yml
+# config/install/ai.ai_prompt_type.helfi_content_summary.yml
 id: helfi_content_summary
-label: 'Content summary'
-type: helfi_generic
-prompt: 'Summarize the following content in 2-3 sentences in a neutral, informative tone: {{ content }}'
+label: 'HELfi content summary'
+variables:
+  -
+    name: content
+    help_text: 'The page content as plain text'
+    required: true
+tokens: {  }
+```
+
+```yaml
+# config/install/ai.ai_prompt.helfi_content_summary__helfi_content_summary_default.yml
+id: helfi_content_summary__helfi_content_summary_default
+label: 'HELfi content summary (default)'
+type: helfi_content_summary
+prompt: |
+  Summarize the following content in 2-3 sentences in a neutral, informative tone:
+  {content}
 ```
 
 ### Calling a prompt from code
-
-Load the prompt entity, substitute any variables, then pass it to the provider:
 
 ```php
 use Drupal\ai\OperationType\Chat\ChatInput;
@@ -110,9 +124,9 @@ use Drupal\ai\OperationType\Chat\ChatMessage;
 
 $prompt = \Drupal::entityTypeManager()
   ->getStorage('ai_prompt')
-  ->load('helfi_content_summary');
+  ->load('helfi_content_summary__helfi_content_summary_default');
 
-$text = str_replace('{{ content }}', $my_content, $prompt->getPrompt());
+$text = str_replace('{content}', $my_content, $prompt->getPrompt());
 
 $ai = \Drupal::service('ai.provider');
 ['provider_id' => $provider, 'model_id' => $model] = $ai->getSetProvider('chat');

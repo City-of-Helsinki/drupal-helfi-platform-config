@@ -25,15 +25,16 @@ final class AiSummaryGenerator {
   ) {}
 
   /**
-   * Generates a summary for the given entity translation.
+   * Generates an HTML bullet-list summary for the given entity translation.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity. Should be already saved so TextConverter can render it.
+   *   The entity. Must already be saved so the text converter can render
+   *   the rendered output.
    * @param string $langcode
    *   Language code of the translation to summarise.
    *
    * @return string|null
-   *   The generated summary text, or NULL on failure.
+   *   The summary as a `<ul><li>` HTML string, or NULL on failure.
    */
   public function generate(ContentEntityInterface $entity, string $langcode): ?string {
     if ($entity->hasTranslation($langcode)) {
@@ -77,7 +78,7 @@ final class AiSummaryGenerator {
   }
 
   /**
-   * Convert the plain-text bullet response into a `<ul><li>` list.
+   * Converts the plain-text bullet response into a `<ul><li>` list.
    */
   private static function toHtmlBulletList(string $plain): string {
     $lines = array_filter(
