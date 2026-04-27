@@ -35,9 +35,6 @@
 .ts-control .remove {
   cursor: pointer;
   float: right;
-  color: #222330;
-  font-weight: bold;
-  padding: 7px 10px 7px 7px;
 }
 
 /* Items placeholder styles */
@@ -65,10 +62,6 @@
 .ts-dropdown [data-selectable] {
   cursor: pointer;
   overflow: hidden;
-}
-.ts-dropdown [data-selectable] .highlight {
-  background: rgba(125, 168, 208, 0.2);
-  border-radius: 1px;
 }
 
 .ts-dropdown .option, .ts-dropdown [data-disabled], .ts-dropdown [data-disabled] [data-selectable].option {
