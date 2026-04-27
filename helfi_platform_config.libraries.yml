@@ -34,6 +34,15 @@ tom_select:
     theme:
       assets/css/tom_select.css: {}
 
+helfi_select:
+  version: 1.0.0
+  js:
+    assets/js/helfi-select.js: { }
+  dependencies:
+    - core/drupal
+    - core/once
+    - helfi_platform_config/tom_select
+
 a11y_autocomplete:
   version: 1.0.0
   js:
