@@ -28,7 +28,7 @@ const styles = [
 // Static files.
 const staticFiles = [
   ['node_modules/@drupal/autocomplete/dist/a11y.autocomplete.min.js', `${outDir}/js/a11y-autocomplete.min.js`],
-  ['node_modules/tom-select/dist/js/tom-select.popular.js', `${outDir}/js/tom-select.js`],
+  ['node_modules/tom-select/dist/js/tom-select.complete.js', `${outDir}/js/tom-select.js`],
 ];
 
 // Builder configurations.

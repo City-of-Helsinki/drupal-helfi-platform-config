@@ -31,17 +31,15 @@ class SelectTest extends KernelTestBase {
       'field' => [
         '#type' => 'helfi_select',
         '#empty_option' => '- All -',
-        '#options' => [
-          '2025' => '2025',
-          '2024' => '2024',
-        ],
+        '#autocomplete_route_name' => 'system.404',
       ],
     ]);
 
     $markup = $this->render($form);
 
     // Tests that the element renders correctly.
-    $this->assertStringContainsString('helfi-select"', $markup);
+    $this->assertStringContainsString('helfi-select', $markup);
+    $this->assertStringContainsString('data-autocomplete-path="/system/404"', $markup);
   }
 
   /**
