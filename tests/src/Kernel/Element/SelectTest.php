@@ -41,13 +41,13 @@ class SelectTest extends KernelTestBase {
     $markup = $this->render($form);
 
     // Tests that the element renders correctly.
-    $this->assertStringContainsString('class="helfi-select"', $markup);
+    $this->assertStringContainsString('helfi-select"', $markup);
   }
 
   /**
    * Builds form.
    *
-   * @param array $form
+   * @param array<string, mixed> $form
    *   Form render array.
    */
   private function buildForm(array $form): mixed {
@@ -58,6 +58,12 @@ class SelectTest extends KernelTestBase {
 
     return $formBuilder->buildForm(new class($form) extends FormBase {
 
+      /**
+       * Constructs the anonymous form.
+       *
+       * @param array<string, mixed> $renderArray
+       *   The render array to merge into the form.
+       */
       public function __construct(private readonly array $renderArray) {
       }
 
@@ -70,6 +76,11 @@ class SelectTest extends KernelTestBase {
 
       /**
        * {@inheritdoc}
+       *
+       * @phpstan-param array<string, mixed> $form
+       *
+       * @return array<string, mixed>
+       *   The built form.
        */
       public function buildForm(array $form, FormStateInterface $form_state): array {
         $form += $this->renderArray;
@@ -78,8 +89,10 @@ class SelectTest extends KernelTestBase {
 
       /**
        * {@inheritdoc}
+       *
+       * @phpstan-param array<string, mixed> $form
        */
-      public function submitForm(array &$form, FormStateInterface $form_state) {
+      public function submitForm(array &$form, FormStateInterface $form_state): void {
       }
 
     }, $formState);

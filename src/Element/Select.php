@@ -33,6 +33,12 @@ class Select extends CoreSelect {
 
   /**
    * {@inheritdoc}
+   *
+   * @param array<string, mixed> $element
+   *   The render element.
+   *
+   * @return array<string, mixed>
+   *   The processed render element.
    */
   #[\Override]
   public static function preRenderSelect($element): array {
