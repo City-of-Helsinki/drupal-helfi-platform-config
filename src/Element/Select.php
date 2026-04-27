@@ -20,12 +20,22 @@ use Drupal\Core\Url;
  *
  * @see https://hds.hel.fi/components/select/
  *
- *  Properties:
- *  - #autocomplete_options_callback: (optional) A callback to return all valid
- *    currently selected options. @see static::getValidSelectedOptions().
- *  - #autocomplete_route_callback: (optional) A callback that sets the
- *    #autocomplete_route_name and autocomplete_route_parameters keys on the
- *    render element. @see static::setAutocompleteRouteParameters().
+ * Properties:
+ * - #autocomplete_route_name: (optional) The name of a Drupal route that
+ *   returns autocomplete suggestions. When set, the rendered element exposes
+ *   a `data-autocomplete-path` attribute and the JS behavior switches to
+ *   remote loading mode (TomSelect `dropdown_input` plugin + `load` callback
+ *   that fetches `?q=<query>` from the route). The route may return either
+ *   a plain array of `{value, label}` items (Drupal's
+ *   EntityAutocomplete-style response) or a `{results: [{id, text}, ...]}`
+ *   object.
+ * - #autocomplete_route_parameters: (optional) An array of route parameters
+ *   passed to Url::fromRoute() when generating the autocomplete URL.
+ * - #autocomplete_query_parameters: (optional) An array of query string
+ *   parameters appended to the generated autocomplete URL.
+ *
+ * @see static::processSelectAutocomplete()
+ * @see assets/js/helfi-select.js
  *
  * Usage example:
  * @code
@@ -68,10 +78,10 @@ class Select extends CoreSelect {
    * {@inheritdoc}
    *
    * @param array<string, mixed> $element
-   *    The render element.
+   *   The render element.
    *
    * @return array<string, mixed>
-   *    The processed render element.
+   *   The processed render element.
    */
   #[\Override]
   public static function preRenderSelect($element): array {
