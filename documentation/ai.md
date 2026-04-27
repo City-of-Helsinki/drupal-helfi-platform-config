@@ -32,14 +32,40 @@ Three environment variables are required:
 | Variable | Description |
 |---|---|
 | `AZURE_OPENAI_API_KEY` | Azure OpenAI API key |
-| `AZURE_OPENAI_ENDPOINT` | Full Azure endpoint URL including deployment and API version |
+| `AZURE_OPENAI_ENDPOINT` | Full Azure Chat Completions URL including deployment name and `api-version` query parameter |
 | `AZURE_OPENAI_DEPLOYMENT_NAME` | Deployment name used as the model ID |
 
-In production these are provisioned via Azure Keyvault through the CI pipeline. For local development add them to `.env.local` (gitignored) and run `make up`.
+In production these are provisioned via Azure Keyvault through the CI pipeline.
+
+## Local development
+
+Use `local.settings.php`: Override `ai.settings` and the Key entity directly:
+
+```php
+$azure_api_key    = 'YOUR_API_KEY';
+$azure_endpoint   = 'YOUR_AZURE_ENDPOINT';
+$azure_deployment = 'YOUR_DEPLOYMENT_NAME';
+
+$config['ai.settings']['default_providers']['chat']['provider_id'] = 'azure';
+$config['ai.settings']['default_providers']['chat']['model_id'] = $azure_deployment;
+$config['ai.settings']['default_providers']['embeddings']['provider_id'] = 'azure';
+$config['ai.settings']['default_providers']['embeddings']['model_id'] = $azure_deployment;
+$config['ai.settings']['models']['azure']['chat'][$azure_deployment] = [
+  'endpoint' => $azure_endpoint,
+  'api_key' => 'helfi_azure_openai',
+  'connect_header' => 'api-key',
+];
+$config['key.key.helfi_azure_openai']['key_provider'] = 'config';
+$config['key.key.helfi_azure_openai']['key_provider_settings']['key_value'] = $azure_api_key;
+```
+
+Run `drush cr` after editing `local.settings.php`. The endpoint must be the full Chat Completions URL from Azure AI Studio (the one ending in `/chat/completions?api-version=...`), not the Responses API URL.
 
 ## API key management
 
-The API key is stored in a `key.key` config entity (`helfi_azure_openai`) shipped by `helfi_platform_config`. It uses the Key module's `env` provider, which reads `AZURE_OPENAI_API_KEY` directly from the environment at runtime. The actual key value never enters Drupal configuration or the database.
+In production the API key is stored in a `key.key` config entity (`helfi_azure_openai`) shipped by `helfi_platform_config`. It uses the Key module's `env` provider, which reads `AZURE_OPENAI_API_KEY` directly from the environment at runtime. The actual key value never enters Drupal configuration or the database.
+
+For local dev the override above swaps the provider to `config` so the value comes from `local.settings.php` instead.
 
 ## Using the AI API in custom modules
 
@@ -62,7 +88,7 @@ $answer = $response->getText();
 
 ## Prompt Library
 
-Shared prompts are distributed as `ai.ai_prompt.*` config entities in `config/install/`. Use the `helfi_` prefix on all prompt IDs to avoid collisions with instance-specific prompts.
+Shared prompts are distributed as `ai.ai_prompt.*` config entities in `config/install/`.
 
 ### Adding a prompt
 

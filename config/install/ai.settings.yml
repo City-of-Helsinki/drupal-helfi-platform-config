@@ -8,7 +8,7 @@ default_providers:
     provider_id: azure
     model_id: ''
 default_vdb_provider: ''
-request_timeout: 60
+request_timeout: 120
 models: {  }
 allowed_hosts: []
 allowed_hosts_rewrite_links: false

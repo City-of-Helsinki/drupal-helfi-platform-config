@@ -67,12 +67,31 @@ final class AiSummaryGenerator {
     try {
       ['provider_id' => $provider, 'model_id' => $model] = $this->aiProvider->getSetProvider('chat');
       $input = new ChatInput([new ChatMessage('user', $text)]);
-      return $provider->chat($input, $model)->getNormalized()->getText();
+      $plain = $provider->chat($input, $model)->getNormalized()->getText();
+      return self::toHtmlBulletList($plain);
     }
     catch (\Throwable $e) {
       $this->logger->error('helfi_ai_summary: generation failed: @message', ['@message' => $e->getMessage()]);
       return NULL;
     }
+  }
+
+  /**
+   * Convert the plain-text bullet response into a `<ul><li>` list.
+   */
+  private static function toHtmlBulletList(string $plain): string {
+    $lines = array_filter(
+      array_map('trim', explode("\n", $plain)),
+      fn(string $line) => $line !== '',
+    );
+    if (empty($lines)) {
+      return '';
+    }
+    $items = array_map(
+      fn(string $line) => '<li>' . htmlspecialchars($line, ENT_QUOTES | ENT_HTML5, 'UTF-8') . '</li>',
+      $lines,
+    );
+    return '<ul>' . implode('', $items) . '</ul>';
   }
 
 }

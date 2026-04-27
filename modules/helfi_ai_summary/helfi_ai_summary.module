@@ -18,9 +18,9 @@ function helfi_ai_summary_entity_base_field_info(EntityTypeInterface $entity_typ
     return [];
   }
 
-  $fields['field_ai_summary'] = BaseFieldDefinition::create('string_long')
-    ->setLabel(t('AI Summary'))
-    ->setDescription(t('AI-generated content summary. One bullet point per line, no list markers.'))
+  $fields['field_ai_summary'] = BaseFieldDefinition::create('text_long')
+    ->setLabel(t('AI summary', options: ['context' => 'helfi_ai_summary']))
+    ->setDescription(t('AI-generated content summary as a bullet list. Edit before accepting.', options: ['context' => 'helfi_ai_summary']))
     ->setRevisionable(TRUE)
     ->setTranslatable(TRUE)
     ->setDisplayConfigurable('form', TRUE)
