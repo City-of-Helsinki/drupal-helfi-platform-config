@@ -54,11 +54,7 @@ class Select extends CoreSelect {
   /**
    * {@inheritdoc}
    *
-   * @param array<string, mixed> $element
-   *   The render element.
-   *
-   * @return array<string, mixed>
-   *   The processed render element.
+   * @phpstan-return array<string, mixed>
    */
   public function getInfo(): array {
     $info = parent::getInfo();
@@ -70,6 +66,12 @@ class Select extends CoreSelect {
 
   /**
    * {@inheritdoc}
+   *
+   * @param array<string, mixed> $element
+   *    The render element.
+   *
+   * @return array<string, mixed>
+   *    The processed render element.
    */
   #[\Override]
   public static function preRenderSelect($element): array {
@@ -91,6 +93,10 @@ class Select extends CoreSelect {
    * This sets up autocomplete functionality for elements with an
    * #autocomplete_route_name property, using the #autocomplete_route_parameters
    * and #autocomplete_query_parameters properties if present.
+   *
+   * @phpstan-param array<string, mixed> $element
+   * @phpstan-param array<string, mixed> $complete_form
+   * @phpstan-return array<string, mixed>
    */
   public static function processSelectAutocomplete(&$element, FormStateInterface $form_state, &$complete_form): array {
     $url = NULL;
