@@ -99,16 +99,9 @@ final class AiSummaryWidget extends WidgetBase {
     $state = self::initState($form_state, $field_name, $delta, $saved_value);
     $mode = $state['mode'];
 
-    $element['#prefix'] = '<div id="' . $wrapper_id . '">';
+    $label = '<label class="form-item__label">' . $this->t('AI summary', options: ['context' => 'helfi_ai_summary']) . '</label>';
+    $element['#prefix'] = '<div id="' . $wrapper_id . '">' . $label;
     $element['#suffix'] = '</div>';
-
-    $element['field_title'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'label',
-      '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai_summary']),
-      '#attributes' => ['class' => ['form-item__label']],
-      '#weight' => -50,
-    ];
 
     if (!empty($state['error'])) {
       $element['error'] = [
