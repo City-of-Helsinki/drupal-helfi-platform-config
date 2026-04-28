@@ -17,7 +17,8 @@
     "@biomejs/biome": "^2.2.4",
     "@drupal/autocomplete": "^0.0.2",
     "@hdbt/theme-builder": "file:../../../themes/contrib/hdbt/theme-builder",
-    "npm-run-all2": "^8.0.4"
+    "npm-run-all2": "^8.0.4",
+    "tom-select": "^2.6.0"
   },
   "browserslist": [
     "last 3 major versions",
