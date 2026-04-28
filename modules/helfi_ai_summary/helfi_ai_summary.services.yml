@@ -7,7 +7,11 @@ services:
     parent: logger.channel_base
     arguments: ['helfi_ai_summary']
 
+  Drupal\helfi_ai_summary\Service\AiChatProviderBridge:
+    arguments:
+      $manager: '@ai.provider'
+
   Drupal\helfi_ai_summary\Service\AiSummaryGenerator:
     arguments:
-      $aiProvider: '@ai.provider'
+      $aiProvider: '@Drupal\helfi_ai_summary\Service\AiChatProviderBridge'
       $logger: '@logger.channel.helfi_ai_summary'
