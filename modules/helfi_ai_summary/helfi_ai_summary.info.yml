@@ -3,6 +3,8 @@ type: module
 core_version_requirement: ^11
 description: "AI-generated content summary field for node edit forms."
 dependencies:
+  - drupal:ai
+  - drupal:key
   - drupal:node
   - drupal:field
   - drupal:text
