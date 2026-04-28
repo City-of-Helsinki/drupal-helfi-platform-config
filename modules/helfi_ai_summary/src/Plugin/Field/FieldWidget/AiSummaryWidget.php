@@ -102,6 +102,14 @@ final class AiSummaryWidget extends WidgetBase {
     $element['#prefix'] = '<div id="' . $wrapper_id . '">';
     $element['#suffix'] = '</div>';
 
+    $element['field_title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'label',
+      '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai_summary']),
+      '#attributes' => ['class' => ['form-item__label']],
+      '#weight' => -50,
+    ];
+
     if (!empty($state['error'])) {
       $element['error'] = [
         '#type' => 'html_tag',
