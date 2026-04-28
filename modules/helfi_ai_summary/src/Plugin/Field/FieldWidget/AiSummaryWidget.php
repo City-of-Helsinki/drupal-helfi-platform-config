@@ -8,6 +8,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Entity\ContentEntityFormInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -50,9 +51,16 @@ final class AiSummaryWidget extends WidgetBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Reads accepted summary from form state and sets it on the field.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
+   *   The field values.
+   * @param array<string, mixed> $form
+   *   The form structure.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
    */
-  public function extractFormValues(FieldItemListInterface $items, array $form, FormStateInterface $form_state) {
+  public function extractFormValues(FieldItemListInterface $items, array $form, FormStateInterface $form_state): void {
     parent::extractFormValues($items, $form, $form_state);
     $field_name = $this->fieldDefinition->getName();
     $state = self::readState($form_state, $field_name, 0);
@@ -67,7 +75,21 @@ final class AiSummaryWidget extends WidgetBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Builds the widget form element for a single field delta.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
+   *   The field values.
+   * @param int $delta
+   *   The current delta.
+   * @param array<string, mixed> $element
+   *   The base element.
+   * @param array<string, mixed> $form
+   *   The parent form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   *
+   * @return array<string, mixed>
+   *   The rendered form element.
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
     $field_name = $items->getFieldDefinition()->getName();
@@ -130,6 +152,18 @@ final class AiSummaryWidget extends WidgetBase {
 
   /**
    * Builds the action buttons rendered for the given mode.
+   *
+   * @param string $mode
+   *   Current widget mode: initial, draft, or accepted.
+   * @param string $field_name
+   *   Machine name of the field.
+   * @param int $delta
+   *   Field delta.
+   * @param string $wrapper_id
+   *   HTML id of the AJAX wrapper element.
+   *
+   * @return array<string, mixed>
+   *   Render array of button elements.
    */
   private function buildButtons(string $mode, string $field_name, int $delta, string $wrapper_id): array {
     $ctx = ['context' => 'helfi_ai_summary'];
@@ -151,6 +185,22 @@ final class AiSummaryWidget extends WidgetBase {
 
   /**
    * Builds a single AJAX button render array.
+   *
+   * @param string $action
+   *   Button action: generate, accept, or reject.
+   * @param \Drupal\Core\StringTranslation\TranslatableMarkup $label
+   *   Button label.
+   * @param string $field_name
+   *   Machine name of the field.
+   * @param int $delta
+   *   Field delta.
+   * @param string $wrapper_id
+   *   HTML id of the AJAX wrapper element.
+   * @param bool $with_progress
+   *   Whether to show an AJAX throbber while waiting.
+   *
+   * @return array<string, mixed>
+   *   Render array for the button.
    */
   private function button(string $action, TranslatableMarkup $label, string $field_name, int $delta, string $wrapper_id, bool $with_progress = FALSE): array {
     $button = [
@@ -179,6 +229,11 @@ final class AiSummaryWidget extends WidgetBase {
    *
    * Updates the widget state and the raw user input before the form is
    * rebuilt. The AJAX callback then returns the rebuilt element.
+   *
+   * @param array<string, mixed> $form
+   *   The form structure.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
    */
   public static function buttonSubmit(array &$form, FormStateInterface $form_state): void {
     $trigger = $form_state->getTriggeringElement();
@@ -193,6 +248,9 @@ final class AiSummaryWidget extends WidgetBase {
       return;
     }
     $entity = $form_object->getEntity();
+    if (!$entity instanceof ContentEntityInterface) {
+      return;
+    }
 
     switch ($action) {
       case 'generate':
@@ -239,6 +297,14 @@ final class AiSummaryWidget extends WidgetBase {
 
   /**
    * AJAX callback. Returns the rebuilt widget element for the wrapper.
+   *
+   * @param array<string, mixed> $form
+   *   The form structure.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   Response replacing the widget wrapper with the rebuilt element.
    */
   public static function ajaxCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
     $trigger = $form_state->getTriggeringElement();
@@ -262,6 +328,16 @@ final class AiSummaryWidget extends WidgetBase {
 
   /**
    * Returns the stored widget state, or NULL if not initialised.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   * @param string $field_name
+   *   Machine name of the field.
+   * @param int $delta
+   *   Field delta.
+   *
+   * @return array<string, mixed>|null
+   *   State array, or NULL if not yet initialised.
    */
   private static function readState(FormStateInterface $form_state, string $field_name, int $delta): ?array {
     return $form_state->get(self::stateKey($field_name, $delta));
@@ -269,6 +345,18 @@ final class AiSummaryWidget extends WidgetBase {
 
   /**
    * Initialises widget state on first render and returns the current state.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   * @param string $field_name
+   *   Machine name of the field.
+   * @param int $delta
+   *   Field delta.
+   * @param string $saved_value
+   *   The currently stored field value, used to set the initial mode.
+   *
+   * @return array<string, mixed>
+   *   The current state array.
    */
   private static function initState(FormStateInterface $form_state, string $field_name, int $delta, string $saved_value): array {
     $key = self::stateKey($field_name, $delta);
@@ -287,6 +375,15 @@ final class AiSummaryWidget extends WidgetBase {
 
   /**
    * Merges the given changes into the widget state.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   * @param string $field_name
+   *   Machine name of the field.
+   * @param int $delta
+   *   Field delta.
+   * @param array<string, mixed> $changes
+   *   Keys to merge into the existing state.
    */
   private static function updateState(FormStateInterface $form_state, string $field_name, int $delta, array $changes): void {
     $key = self::stateKey($field_name, $delta);

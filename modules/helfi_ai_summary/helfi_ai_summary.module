@@ -12,6 +12,8 @@ use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Implements hook_entity_base_field_info().
+ *
+ * @return array<string, \Drupal\Core\Field\BaseFieldDefinition>
  */
 function helfi_ai_summary_entity_base_field_info(EntityTypeInterface $entity_type): array {
   if ($entity_type->id() !== 'node') {

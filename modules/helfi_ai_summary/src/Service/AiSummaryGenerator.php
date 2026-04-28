@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_ai_summary\Service;
 
 use Drupal\ai\AiProviderPluginManager;
+use Drupal\ai\Entity\AiPromptInterface;
 use Drupal\ai\OperationType\Chat\ChatInput;
 use Drupal\ai\OperationType\Chat\ChatMessage;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -50,11 +51,12 @@ final class AiSummaryGenerator {
       return NULL;
     }
 
+    /** @var \Drupal\ai\Entity\AiPromptInterface|null $prompt */
     $prompt = $this->entityTypeManager
       ->getStorage('ai_prompt')
       ->load('helfi_content_summary__helfi_content_summary_default');
 
-    if (!$prompt) {
+    if (!$prompt instanceof AiPromptInterface) {
       $this->logger->error('helfi_ai_summary: prompt helfi_content_summary__helfi_content_summary_default not found.');
       return NULL;
     }
