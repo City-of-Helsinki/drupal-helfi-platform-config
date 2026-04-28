@@ -61,7 +61,8 @@ final class AiSummaryWidget extends WidgetBase {
    *   The current form state.
    */
   public function extractFormValues(FieldItemListInterface $items, array $form, FormStateInterface $form_state): void {
-    parent::extractFormValues($items, $form, $form_state);
+    // Skip the parent which reads from raw input; we read from form state
+    // because the accepted value is authoritative there.
     $field_name = $this->fieldDefinition->getName();
     $state = self::readState($form_state, $field_name, 0);
     if ($state !== NULL) {
@@ -99,12 +100,27 @@ final class AiSummaryWidget extends WidgetBase {
     $state = self::initState($form_state, $field_name, $delta, $saved_value);
     $mode = $state['mode'];
 
-    $label = '<label class="form-item__label">' . $this->t('AI summary', options: ['context' => 'helfi_ai_summary']) . '</label>';
-    $element['#prefix'] = '<div id="' . $wrapper_id . '">' . $label;
-    $element['#suffix'] = '</div>';
+    // Label rendered as a sibling above the AJAX container so AJAX
+    // replacements targeting $wrapper_id never remove or duplicate it.
+    $element['field_label'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'label',
+      '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai_summary']),
+      '#attributes' => ['class' => ['form-item__label']],
+      '#weight' => -50,
+    ];
+
+    // All dynamic content lives inside this container. It is the sole AJAX
+    // replacement target, so the label above is never affected.
+    $element['ajax_wrapper'] = [
+      '#type' => 'container',
+      '#attributes' => ['id' => $wrapper_id],
+      '#weight' => 0,
+    ];
+    $wrapper = &$element['ajax_wrapper'];
 
     if (!empty($state['error'])) {
-      $element['error'] = [
+      $wrapper['error'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => $state['error'],
@@ -115,7 +131,7 @@ final class AiSummaryWidget extends WidgetBase {
     }
 
     if ($mode !== 'initial') {
-      $element['value'] = [
+      $wrapper['value'] = [
         '#type' => 'text_format',
         '#title' => $this->t('AI summary', options: ['context' => 'helfi_ai_summary']),
         '#title_display' => 'invisible',
@@ -126,9 +142,9 @@ final class AiSummaryWidget extends WidgetBase {
       ];
     }
 
-    $element += $this->buildButtons($mode, $field_name, $delta, $wrapper_id);
+    $wrapper += $this->buildButtons($mode, $field_name, $delta, $wrapper_id);
 
-    $element['mode_description'] = [
+    $wrapper['mode_description'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#value' => $this->modeDescription($mode),
@@ -272,10 +288,10 @@ final class AiSummaryWidget extends WidgetBase {
         break;
 
       case 'accept':
-        // text_format element submits as field[delta][value][value] and
-        // field[delta][value][format]; only the HTML value is needed.
+        // text_format submits as
+        // field[delta][ajax_wrapper][value][value] and [value][format].
         $input = $form_state->getUserInput();
-        $edited = NestedArray::getValue($input, [$field_name, $delta, 'value', 'value']) ?? '';
+        $edited = NestedArray::getValue($input, [$field_name, $delta, 'ajax_wrapper', 'value', 'value']) ?? '';
         self::updateState($form_state, $field_name, $delta, [
           'mode' => 'accepted',
           'value' => (string) $edited,
@@ -309,14 +325,13 @@ final class AiSummaryWidget extends WidgetBase {
    */
   public static function ajaxCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
     $trigger = $form_state->getTriggeringElement();
+    // Buttons are children of ajax_wrapper; slice to -1 to get ajax_wrapper.
     $parents = array_slice($trigger['#array_parents'], 0, -1);
-    $element = NestedArray::getValue($form, $parents);
-
-    preg_match('/id="([^"]+)"/', $element['#prefix'] ?? '', $matches);
-    $wrapper_id = $matches[1] ?? '';
+    $wrapper = NestedArray::getValue($form, $parents);
+    $wrapper_id = $wrapper['#attributes']['id'] ?? '';
 
     return (new AjaxResponse())->addCommand(
-      new ReplaceCommand('#' . $wrapper_id, $element),
+      new ReplaceCommand('#' . $wrapper_id, $wrapper),
     );
   }
 
@@ -401,8 +416,8 @@ final class AiSummaryWidget extends WidgetBase {
    */
   private static function writeUserInputValue(FormStateInterface $form_state, string $field_name, int $delta, string $value): void {
     $input = $form_state->getUserInput();
-    NestedArray::setValue($input, [$field_name, $delta, 'value', 'value'], $value);
-    NestedArray::setValue($input, [$field_name, $delta, 'value', 'format'], self::TEXT_FORMAT);
+    NestedArray::setValue($input, [$field_name, $delta, 'ajax_wrapper', 'value', 'value'], $value);
+    NestedArray::setValue($input, [$field_name, $delta, 'ajax_wrapper', 'value', 'format'], self::TEXT_FORMAT);
     $form_state->setUserInput($input);
   }
 
