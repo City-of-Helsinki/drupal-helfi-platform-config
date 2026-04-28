@@ -100,24 +100,23 @@ final class AiSummaryWidget extends WidgetBase {
     $state = self::initState($form_state, $field_name, $delta, $saved_value);
     $mode = $state['mode'];
 
-    // Label rendered as a sibling above the AJAX container so AJAX
-    // replacements targeting $wrapper_id never remove or duplicate it.
-    $element['field_label'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'label',
-      '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai_summary']),
-      '#attributes' => ['class' => ['form-item__label']],
-      '#weight' => -50,
-    ];
-
     // All dynamic content lives inside this container. It is the sole AJAX
-    // replacement target, so the label above is never affected.
+    // replacement target.
     $element['ajax_wrapper'] = [
       '#type' => 'container',
       '#attributes' => ['id' => $wrapper_id],
       '#weight' => 0,
     ];
     $wrapper = &$element['ajax_wrapper'];
+
+    // Label is rendered inside the AJAX wrapper so it survives replacements.
+    $wrapper['field_label'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'label',
+      '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai_summary']),
+      '#attributes' => ['class' => ['form-item__label']],
+      '#weight' => -200,
+    ];
 
     if (!empty($state['error'])) {
       $wrapper['error'] = [
