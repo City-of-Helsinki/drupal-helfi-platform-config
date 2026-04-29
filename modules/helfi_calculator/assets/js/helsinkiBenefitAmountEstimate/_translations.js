@@ -130,9 +130,9 @@ const translations = {
     en: 'Additional costs: ${value} euros per month. The calculation result uses an average estimate of additional costs.',
   },
   subtotal_details_4: {
-    fi: 'Työsuhteeseen on myönnetty palkkatuki, joka kattaa ${value} % palkkakustannuksista.',
-    sv: 'Lönesubventionen som beviljats för anställningen täcker ${value} % av lönekostnaderna.',
-    en: 'The pay subsidy granted for the employment covers ${value} % of the salary costs.',
+    fi: 'Työsuhteeseen on myönnetty palkkatuki, joka kattaa ${value} % palkkakustannuksista.',
+    sv: 'Lönesubventionen som beviljats för anställningen täcker ${value} % av lönekostnaderna.',
+    en: 'The pay subsidy granted for the employment covers ${value} % of the salary costs.',
   },
   additional_details_title: {
     fi: 'Lisähuomiot',
