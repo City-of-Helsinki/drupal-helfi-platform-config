@@ -34,6 +34,17 @@ final readonly class HtmxController implements ContainerInjectionInterface {
   ) {
   }
 
+  /**
+   * Gets the entity for given type and id.
+   *
+   * @param string $entityType
+   *   The entity type.
+   * @param string $entityId
+   *   The entity id.
+   *
+   * @return \Drupal\Core\Entity\ContentEntityInterface|null
+   *   The content entity or null.
+   */
   private function getEntity(string $entityType, string $entityId): ?ContentEntityInterface {
     try {
       $langcode = $this->languageManager

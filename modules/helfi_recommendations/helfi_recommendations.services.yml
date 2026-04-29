@@ -18,6 +18,3 @@ services:
   Drupal\helfi_recommendations\Client\ApiClient : ~
 
   Drupal\helfi_recommendations\EventSubscriber\SearchApiSubscriber: ~
-
-  Drupal\helfi_recommendations\RecommendationsLazyBuilderInterface: '@Drupal\helfi_recommendations\RecommendationsLazyBuilder'
-  Drupal\helfi_recommendations\RecommendationsLazyBuilder: ~
