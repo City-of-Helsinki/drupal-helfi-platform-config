@@ -134,28 +134,20 @@ final readonly class HtmxController implements ContainerInjectionInterface {
       return $build;
     }
 
-    // @todo Preprocess recommendations prior to rendering.
-    // We can't use the regular entity rendering process because
-    // (all of) the recommendations are not nodes in this Drupal
-    // instance. External entities would've been a viable solution
-    // here, but there's already a huge refactoring need for current
-    // usage to get the codebase D11 compatible. Let's revisit this
-    // once we've updated to D11.
-    $build['#rows'] = $recommendations;
-    foreach ($build['#rows'] as &$recommendation) {
+    foreach ($recommendations as $recommendation) {
       // Show recommendation score to users who have the permission.
       if ($canSeeScore && !empty($recommendation['score'])) {
         $recommendation['helptext'] = new TranslatableMarkup('Search result score: @score', [
           '@score' => $recommendation['score'],
         ]);
       }
-
       if (!empty($recommendation['uuid'])) {
         $build['#cache']['tags'][] = $this->recommendationManager
           ->getCacheTagForUuid($recommendation['uuid']);
       }
-    }
+      $build['#rows'][] = $recommendation;
 
+    }
     return $build;
   }
 
