@@ -10,10 +10,12 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Htmx\Htmx;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_recommendations\RecommendationsLazyBuilder;
 use Drupal\helfi_recommendations\RecommendationManagerInterface;
@@ -65,26 +67,24 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     if (!$entity instanceof ContentEntityInterface) {
       return [];
     }
+    $htmx = new Htmx();
+    $htmx->get(new Url('helfi_recommendations.htmx', [
+      'type' => $entity->getEntityTypeId(),
+      'id' => $entity->id(),
+    ]))
+      ->trigger('load');
 
     $build = [];
-
     $build['recommendations'] = [
-      '#cache' => [
-        'contexts' => $this->getCacheContexts(),
-        'tags' => $this->getCacheTags(),
-      ],
-      '#lazy_builder' => [
-        RecommendationsLazyBuilder::class . ':build',
-        [
-          'userId' => $this->currentUser->id(),
-          'entityType' => $entity->getEntityTypeId(),
-          'entityId' => $entity->id(),
-          'langcode' => $entity->language()->getId(),
-        ],
-      ],
-      '#create_placeholder' => TRUE,
-      '#lazy_builder_preview' => ['#markup' => ''],
+      '#theme' => 'helfi_htmx_preview',
+      '#num_items' => 3,
+      '#message' => new TranslatableMarkup('Loading recommendations', options: [
+        'context' => 'Recommendations loading message',
+      ]),
+      '#wrapper' => 'ul',
+      '#attributes' => ['class' => ['recommendations--list__recommendations']],
     ];
+    $htmx->applyTo($build['recommendations']);
 
     return $build;
   }
@@ -92,31 +92,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts(): array {
-    return Cache::mergeContexts(
-      parent::getCacheContexts(),
-      ['languages:language_content', 'user.roles', 'url.path'],
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheTags(): array {
-    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-    ['entity' => $entity] = $this->entityVersionMatcher->getType();
-
-    if (!$entity instanceof ContentEntityInterface) {
-      return parent::getCacheTags();
-    }
-
-    return Cache::mergeTags(parent::getCacheTags(), $entity->getCacheTags());
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function blockAccess(AccountInterface $account) {
+  protected function blockAccess(AccountInterface $account): AccessResult {
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     ['entity' => $entity] = $this->entityVersionMatcher->getType();
 
@@ -124,7 +100,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       return AccessResult::forbidden();
     }
 
-    if ($entity instanceof ContentEntityInterface && $this->recommendationManager->showRecommendations($entity)) {
+    if ($this->recommendationManager->showRecommendations($entity)) {
       return AccessResult::allowed();
     }
 

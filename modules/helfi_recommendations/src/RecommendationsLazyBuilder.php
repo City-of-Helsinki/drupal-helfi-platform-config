@@ -104,32 +104,4 @@ final class RecommendationsLazyBuilder implements RecommendationsLazyBuilderInte
     return $response;
   }
 
-  /**
-   * Get the recommendations for current content entity.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   Content entity to find recommendations for.
-   *
-   * @return array
-   *   Array of recommendations
-   */
-  private function getRecommendations(ContentEntityInterface $entity): array {
-    $recommendations = [];
-
-    try {
-      $recommendations = $this->recommendationManager
-        ->getRecommendations(
-          $entity,
-          3,
-          $entity->language()->getId(),
-        );
-    }
-    catch (\Exception $exception) {
-      Error::logException($this->logger, $exception);
-      return [];
-    }
-
-    return $recommendations;
-  }
-
 }

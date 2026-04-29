@@ -1,0 +1,8 @@
+helfi_recommendations.htmx:
+  path: '/helfi_recommendations/{type}/{id}/htmx'
+  defaults:
+    _controller: '\Drupal\helfi_recommendations\Controller\HtmxController::content'
+  requirements:
+    _custom_access: '\Drupal\helfi_recommendations\Controller\HtmxController::access'
+  options:
+    _htmx_route: 'TRUE'
