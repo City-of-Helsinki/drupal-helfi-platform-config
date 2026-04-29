@@ -40,9 +40,9 @@ const translations = {
     en: 'Future gross salary of the employee',
   },
   helper_text_monthly_pay: {
-    fi: 'Euroa kuukaudessa. Arvioi bruttopalkan suuruus työsuhteeseen, johon Helsinki-lisää haetaan.',
-    sv: 'Euro per månad. Uppskatta bruttolönen för den anställning som Helsingforstillägget ansöks om.',
-    en: 'Euros per month. Estimate the gross salary for the employment for which the Helsinki benefit is being applied.',
+    fi: 'Euroa kuukaudessa. Arvioi bruttopalkan suuruus työsuhteeseen, johon Helsinki-lisää haetaan.',
+    sv: 'Euro per månad. Uppskatta bruttolönen för den anställning som Helsingforstillägget ansöks om.',
+    en: 'Euros per month. Estimate the gross salary for the employment for which the Helsinki benefit is being applied.',
   },
   label_vacation_money: {
     fi: 'Lomaraha',
@@ -50,9 +50,9 @@ const translations = {
     en: 'Holiday pay',
   },
   helper_text_vacation_money: {
-    fi: 'Euroa kuukaudessa. Jos jätät kentän tyhjäksi, niin lomaraha jätetään huomioimatta laskelmassa.',
-    sv: 'Euro per månad. Om du lämnar fältet tomt kommer semesterpenningen inte att beaktas i beräkningen.',
-    en: 'Euros per month. If you leave this field empty, the holiday pay will not be included in the calculation.',
+    fi: 'Euroa kuukaudessa. Jos jätät kentän tyhjäksi, niin lomaraha jätetään huomioimatta laskelmassa.',
+    sv: 'Euro per månad. Om du lämnar fältet tomt kommer semesterpenningen inte att beaktas i beräkningen.',
+    en: 'Euros per month. If you leave this field empty, the holiday pay will not be included in the calculation.',
   },
   heading_pay_subsidy_information: {
     fi: 'Työsuhteeseen myönnetyt muut tuet',
@@ -74,25 +74,10 @@ const translations = {
     sv: 'Inget annat stöd har beviljats eller ansökts om *',
     en: 'No other subsidy has been granted or applied *',
   },
-  label_pay_subsidy_true: {
-    fi: 'Palkkatuki tai 55 vuotta täyttäneiden työllistämistuki',
-    sv: 'Lönesubvention eller anställningsstöd för personer över 55 år',
-    en: 'Pay subsidy or employment subsidy for ages 55 and above',
-  },
   label_pay_subsidy_percentage: {
     fi: 'Palkkatuen prosentti tai myöntämisperuste',
     sv: 'Lönesubvention procent eller beviljningsgrund',
     en: 'Wage subsidy percentage or basis for granting',
-  },
-  label_pay_subsidy_percentage_1: {
-    fi: 'Tuki kattaa ${value} % palkkauskustannuksista (tuen perusteena ammatillisen osaamisen parantaminen)',
-    sv: '${value} % av anställningskostnaderna (stödet baseras på förbättring av yrkeskompetensen)',
-    en: '${value} % of employment costs (subsidy based on improving professional skills)',
-  },
-  label_pay_subsidy_percentage_2: {
-    fi: 'Tuki kattaa ${value} % palkkauskustannuksista (tuen perusteena alentunut työkyky tai 55 vuotta täyttäneiden työllistämistuki)',
-    sv: '${value} % av anställningskostnaderna (stödet baseras på nedsatt arbetsförmåga eller anställningsstöd för personer över 55 år)',
-    en: '${value} % of employment costs (subsidy based on disability or illness that reduces work capacity or employment subsidy for ages 55 and above)',
   },
   helper_text_pay_subsidy_percentage: {
     fi: 'Valitse sopivin vaihtoehto joko tuen prosentin tai tukea haettavan perusteen mukaan.',
@@ -115,9 +100,9 @@ const translations = {
     en: 'euros per month',
   },
   total_explanation: {
-    fi: 'Arvio tuen määrästä on suuntaa antava eikä se takaa lopullista tuen määrää. Helsinki-lisää myönnetään työsuhteen ajaksi, kuitenkin enintään 12 kuukaudeksi. Oppisopimuksissa Helsinki-lisää voidaan myöntää koko oppisopimuksen ajaksi.',
-    sv: 'Uppskattningen av stödets belopp är vägledande och garanterar inte det slutliga beloppet. Helsingforstilläggetet beviljas för anställningstiden, dock högst 12 månader. För lärlingsavtal kan Helsingforstillägget beviljas för hela lärlingstiden.',
-    en: 'The estimate of the financial support amount is indicative and does not guarantee the final amount of the support. The Helsinki benefit is granted for the duration of the employment, maximum of 12 months. For apprenticeships, the Helsinki benefit can be granted for the entire duration of the apprenticeship.',
+    fi: 'Arvio tuen määrästä on suuntaa antava eikä se takaa lopullista tuen määrää. Helsinki-lisää myönnetään työsuhteen ajaksi, kuitenkin enintään 12 kuukaudeksi. Oppisopimuksissa Helsinki-lisää voidaan myöntää koko oppisopimuksen ajaksi.',
+    sv: 'Uppskattningen av stödets belopp är vägledande och garanterar inte det slutliga beloppet. Helsingforstilläggetet beviljas för anställningstiden, dock högst 12 månader. För lärlingsavtal kan Helsingforstillägget beviljas för hela lärlingstiden.',
+    en: 'The estimate of the financial support amount is indicative and does not guarantee the final amount of the support. The Helsinki benefit is granted for the duration of the employment, maximum of 12 months. For apprenticeships, the Helsinki benefit can be granted for the entire duration of the apprenticeship.',
   },
   breakdown_title: {
     fi: 'Arvio muodostuu seuraavista tiedoista:',
@@ -130,24 +115,24 @@ const translations = {
     en: 'Employment relationship',
   },
   subtotal_details_1: {
-    fi: 'Työllistettävän bruttopalkka: ${value} euroa kuukaudessa.',
-    sv: 'Bruttolön: ${value} euro per månad.',
-    en: 'Gross salary: ${value} euros per month.',
+    fi: 'Työllistettävän bruttopalkka: ${value} euroa kuukaudessa.',
+    sv: 'Bruttolön: ${value} euro per månad.',
+    en: 'Gross salary: ${value} euros per month.',
   },
   subtotal_details_2: {
-    fi: 'Lomaraha: ${value} euroa kuukaudessa.',
-    sv: 'Semesterpenning: ${value} euro per månad.',
-    en: 'Holiday pay: ${value} euros per month.',
+    fi: 'Lomaraha: ${value} euroa kuukaudessa.',
+    sv: 'Semesterpenning: ${value} euro per månad.',
+    en: 'Holiday pay: ${value} euros per month.',
   },
   subtotal_details_3: {
-    fi: 'Sivukulut: ${value} euroa bruttopalkasta. Arviossa on käytetty keskimääräistä arviota sivukuluista.',
-    sv: 'Bikostnader: ${value} euro av bruttolönen. En genomsnittlig uppskattning av bikostnaderna har använts i beräkningen.',
-    en: 'Additional costs: ${value} euros per month. The calculation result uses an average estimate of additional costs.',
+    fi: 'Sivukulut: ${value} euroa bruttopalkasta. Arviossa on käytetty keskimääräistä arviota sivukuluista.',
+    sv: 'Bikostnader: ${value} euro av bruttolönen. En genomsnittlig uppskattning av bikostnaderna har använts i beräkningen.',
+    en: 'Additional costs: ${value} euros per month. The calculation result uses an average estimate of additional costs.',
   },
   subtotal_details_4: {
-    fi: 'Työsuhteeseen on myönnetty palkkatuki, joka kattaa ${value} % palkkakustannuksista.',
-    sv: 'Lönesubventionen som beviljats för anställningen täcker ${value} % av lönekostnaderna.',
-    en: 'The pay subsidy granted for the employment covers ${value} % of the salary costs.',
+    fi: 'Työsuhteeseen on myönnetty palkkatuki, joka kattaa ${value} % palkkakustannuksista.',
+    sv: 'Lönesubventionen som beviljats för anställningen täcker ${value} % av lönekostnaderna.',
+    en: 'The pay subsidy granted for the employment covers ${value} % of the salary costs.',
   },
   additional_details_title: {
     fi: 'Lisähuomiot',
