@@ -236,4 +236,43 @@ class AiSummaryGeneratorTest extends UnitTestCase {
     $this->assertStringContainsString('Swedish summary', $result);
   }
 
+  /**
+   * @covers ::generate
+   */
+  public function testGenerateReturnsEmptyStringWhenAiReturnsBlankLines(): void {
+    $textConverter = $this->prophesize(TextConverterManager::class);
+    $textConverter->convert($this->entity)->willReturn('Page content here.');
+
+    $prompt = $this->prophesize(AiPromptInterface::class);
+    $prompt->getPrompt()->willReturn('Summarize {content} in {language}.');
+
+    $storage = $this->prophesize(EntityStorageInterface::class);
+    $storage->load('helfi_content_summary__helfi_content_summary_default')->willReturn($prompt->reveal());
+
+    $entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
+    $entityTypeManager->getStorage('ai_prompt')->willReturn($storage->reveal());
+
+    $chatMessage = new ChatMessage('assistant', "\n\n\n");
+    $chatOutput = new ChatOutput($chatMessage, '', []);
+
+    $chatProvider = $this->prophesize(ChatInterface::class);
+    $chatProvider->chat(Argument::type(ChatInput::class), Argument::type('string'))->willReturn($chatOutput);
+
+    $aiProvider = $this->prophesize(AiChatProviderInterface::class);
+    $aiProvider->getSetProvider('chat')->willReturn([
+      'provider_id' => $chatProvider->reveal(),
+      'model_id' => 'gpt-4o',
+    ]);
+
+    $generator = new AiSummaryGenerator(
+      $aiProvider->reveal(),
+      $entityTypeManager->reveal(),
+      $textConverter->reveal(),
+      $this->logger,
+    );
+
+    $result = $generator->generate($this->entity, 'fi');
+    $this->assertSame('', $result);
+  }
+
 }

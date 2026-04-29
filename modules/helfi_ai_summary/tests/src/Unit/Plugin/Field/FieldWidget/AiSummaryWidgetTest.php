@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ai_summary\Unit\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Entity\ContentEntityFormInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\helfi_ai_summary\Plugin\Field\FieldWidget\AiSummaryWidget;
 use Drupal\helfi_ai_summary\Service\AiSummaryGenerator;
 use Drupal\Tests\UnitTestCase;
@@ -338,6 +341,76 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
     $this->assertArrayHasKey('error', $result['ajax_wrapper']);
     $this->assertSame('Something went wrong.', $result['ajax_wrapper']['error']['#value']);
+  }
+
+  /**
+   * @covers ::buttonSubmit
+   */
+  public function testButtonSubmitIgnoresInvalidTriggerName(): void {
+    $formState = new FormState();
+    $formState->setTriggeringElement(['#name' => 'some_unrelated_button']);
+
+    $form = [];
+    AiSummaryWidget::buttonSubmit($form, $formState);
+
+    // No state was written; rebuild was not set.
+    $this->assertFalse($formState->isRebuilding());
+  }
+
+  /**
+   * @covers ::buttonSubmit
+   */
+  public function testButtonSubmitIgnoresNonEntityFormObject(): void {
+    $formObject = $this->prophesize(FormInterface::class);
+
+    $formState = new FormState();
+    $formState->setTriggeringElement(['#name' => 'ai_summary_accept_field_ai_summary_0']);
+    $formState->setFormObject($formObject->reveal());
+
+    $form = [];
+    AiSummaryWidget::buttonSubmit($form, $formState);
+
+    $this->assertFalse($formState->isRebuilding());
+  }
+
+  /**
+   * @covers ::ajaxCallback
+   */
+  public function testAjaxCallbackReturnsReplaceResponse(): void {
+    $renderer = $this->createMock(RendererInterface::class);
+    $renderer->method('renderRoot')->willReturn('<div>rendered</div>');
+
+    $container = $this->createMock(ContainerInterface::class);
+    $container->method('get')->willReturnCallback(
+      function (string $id) use ($renderer): object {
+        if ($id === 'renderer') {
+          return $renderer;
+        }
+        throw new \RuntimeException('Unexpected service: ' . $id);
+      }
+    );
+    \Drupal::setContainer($container);
+
+    $wrapperId = 'ai-summary-field-ai-summary-0';
+    $form = [
+      'field_ai_summary' => [
+        0 => [
+          'ajax_wrapper' => [
+            '#type' => 'container',
+            '#attributes' => ['id' => $wrapperId],
+            '#attached' => [],
+          ],
+        ],
+      ],
+    ];
+
+    $formState = new FormState();
+    $formState->setTriggeringElement([
+      '#array_parents' => ['field_ai_summary', 0, 'ajax_wrapper', 'generate'],
+    ]);
+
+    $response = AiSummaryWidget::ajaxCallback($form, $formState);
+    $this->assertInstanceOf(AjaxResponse::class, $response);
   }
 
 }
