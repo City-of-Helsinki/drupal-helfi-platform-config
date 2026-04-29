@@ -53,7 +53,11 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     ]))
       ->trigger('load');
 
-    $build = [];
+    $build = [
+      '#cache' => [
+        'contexts' => ['url.path'],
+      ],
+    ];
     $build['recommendations'] = [
       '#theme' => 'helfi_htmx_preview',
       '#num_items' => 3,
