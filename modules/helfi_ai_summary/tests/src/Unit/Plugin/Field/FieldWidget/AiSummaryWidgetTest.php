@@ -389,6 +389,181 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
+   * @covers ::formElement
+   */
+  public function testFormElementAcceptedModeFromStateShowsRegenerateButton(): void {
+    $widget = $this->createWidget();
+    $widget->setStringTranslation($this->getStringTranslationStub());
+
+    $form = [];
+    $formState = new FormState();
+    $formState->set('ai_summary_state_field_ai_summary_0', [
+      'mode' => 'accepted',
+      'value' => '<ul><li>Accepted summary</li></ul>',
+      'original' => '<ul><li>Accepted summary</li></ul>',
+      'error' => '',
+    ]);
+
+    $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
+
+    $wrapper = $result['ajax_wrapper'];
+    $this->assertArrayHasKey('regenerate', $wrapper);
+    $this->assertArrayHasKey('value', $wrapper);
+    $this->assertArrayNotHasKey('generate', $wrapper);
+    $this->assertArrayNotHasKey('accept', $wrapper);
+  }
+
+  /**
+   * @covers ::formElement
+   */
+  public function testFormElementWrapperIdIncludesDelta(): void {
+    $widget = $this->createWidget();
+    $widget->setStringTranslation($this->getStringTranslationStub());
+
+    $form = [];
+    $formState = new FormState();
+    $result = $widget->formElement($this->makeItems('', 'field_ai_summary'), 0, [], $form, $formState);
+
+    $this->assertSame('ai-summary-field-ai-summary-0', $result['ajax_wrapper']['#attributes']['id']);
+  }
+
+  /**
+   * @covers ::formElement
+   */
+  public function testFormElementFieldLabelAlwaysPresent(): void {
+    $widget = $this->createWidget();
+    $widget->setStringTranslation($this->getStringTranslationStub());
+
+    $form = [];
+    $formState = new FormState();
+    $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
+
+    $this->assertArrayHasKey('field_label', $result['ajax_wrapper']);
+    $this->assertSame('label', $result['ajax_wrapper']['field_label']['#tag']);
+    $this->assertSame(-200, $result['ajax_wrapper']['field_label']['#weight']);
+  }
+
+  /**
+   * @covers ::formElement
+   */
+  public function testFormElementModeDescriptionPresent(): void {
+    $widget = $this->createWidget();
+    $widget->setStringTranslation($this->getStringTranslationStub());
+
+    $form = [];
+    $formState = new FormState();
+    $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
+
+    $this->assertArrayHasKey('mode_description', $result['ajax_wrapper']);
+    $this->assertSame('div', $result['ajax_wrapper']['mode_description']['#tag']);
+    $this->assertSame(100, $result['ajax_wrapper']['mode_description']['#weight']);
+  }
+
+  /**
+   * @covers ::buttonSubmit
+   */
+  public function testButtonSubmitGenerateWritesValueToUserInput(): void {
+    $mockGenerator = $this->prophesize(AiSummaryGenerator::class);
+    $mockGenerator->generate(Argument::any(), 'fi')->willReturn('<ul><li>Generated</li></ul>');
+
+    $container = $this->createMock(ContainerInterface::class);
+    $container->method('get')->willReturnCallback(
+      function (string $id) use ($mockGenerator): object {
+        if ($id === AiSummaryGenerator::class) {
+          return $mockGenerator->reveal();
+        }
+        throw new \RuntimeException('Unexpected service: ' . $id);
+      }
+    );
+    \Drupal::setContainer($container);
+
+    $formState = $this->makeFormState('generate', 'field_ai_summary', 0);
+    $formState->setUserInput([]);
+    $formState->set('ai_summary_state_field_ai_summary_0', [
+      'mode' => 'initial',
+      'value' => '',
+      'original' => '',
+      'error' => '',
+    ]);
+
+    $form = [];
+    AiSummaryWidget::buttonSubmit($form, $formState);
+
+    $input = $formState->getUserInput();
+    $this->assertSame(
+      '<ul><li>Generated</li></ul>',
+      $input['field_ai_summary'][0]['ajax_wrapper']['value']['value'],
+    );
+    $this->assertSame('minimal', $input['field_ai_summary'][0]['ajax_wrapper']['value']['format']);
+  }
+
+  /**
+   * @covers ::buttonSubmit
+   */
+  public function testButtonSubmitRejectWritesValueToUserInput(): void {
+    $formState = $this->makeFormState('reject', 'field_ai_summary', 0);
+    $formState->setUserInput([]);
+    $formState->set('ai_summary_state_field_ai_summary_0', [
+      'mode' => 'draft',
+      'value' => 'Draft text',
+      'original' => 'Original',
+      'error' => '',
+    ]);
+
+    $form = [];
+    AiSummaryWidget::buttonSubmit($form, $formState);
+
+    $input = $formState->getUserInput();
+    $this->assertSame('Original', $input['field_ai_summary'][0]['ajax_wrapper']['value']['value']);
+    $this->assertSame('minimal', $input['field_ai_summary'][0]['ajax_wrapper']['value']['format']);
+  }
+
+  /**
+   * @covers ::buttonSubmit
+   */
+  public function testButtonSubmitAcceptReadsEditedValueFromUserInput(): void {
+    $formState = $this->makeFormState('accept', 'field_ai_summary', 0);
+    $formState->set('ai_summary_state_field_ai_summary_0', [
+      'mode' => 'draft',
+      'value' => 'Old draft',
+      'original' => '',
+      'error' => '',
+    ]);
+    $formState->setUserInput([
+      'field_ai_summary' => [
+        0 => ['ajax_wrapper' => ['value' => ['value' => 'Edited by user']]],
+      ],
+    ]);
+
+    $form = [];
+    AiSummaryWidget::buttonSubmit($form, $formState);
+
+    $state = $formState->get('ai_summary_state_field_ai_summary_0');
+    $this->assertSame('accepted', $state['mode']);
+    $this->assertSame('Edited by user', $state['value']);
+    $this->assertTrue($formState->isRebuilding());
+  }
+
+  /**
+   * @covers ::buttonSubmit
+   */
+  public function testButtonSubmitSetsRebuildOnSuccess(): void {
+    $formState = $this->makeFormState('reject', 'field_ai_summary', 0);
+    $formState->setUserInput([]);
+    $formState->set('ai_summary_state_field_ai_summary_0', [
+      'mode' => 'draft',
+      'value' => 'Draft',
+      'original' => '',
+      'error' => '',
+    ]);
+
+    $form = [];
+    AiSummaryWidget::buttonSubmit($form, $formState);
+
+    $this->assertTrue($formState->isRebuilding());
+  }
+
+  /**
    * @covers ::ajaxCallback
    */
   public function testAjaxCallbackReturnsReplaceResponse(): void {
