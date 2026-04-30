@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_recommendations\Controller;
 
-use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
-use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -28,43 +26,9 @@ final readonly class HtmxController implements ContainerInjectionInterface {
 
   public function __construct(
     private RecommendationManagerInterface $recommendationManager,
-    private EntityTypeManagerInterface $entityTypeManager,
     private AccountProxyInterface $currentUser,
     private LanguageManagerInterface $languageManager,
   ) {
-  }
-
-  /**
-   * Gets the entity for given type and id.
-   *
-   * @param string $entityType
-   *   The entity type.
-   * @param string $entityId
-   *   The entity id.
-   *
-   * @return \Drupal\Core\Entity\ContentEntityInterface|null
-   *   The content entity or null.
-   */
-  private function getEntity(string $entityType, string $entityId): ?ContentEntityInterface {
-    try {
-      $langcode = $this->languageManager
-        ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-        ->getId();
-
-      $entity = $this->entityTypeManager->getStorage($entityType)->load($entityId);
-
-      if (!$entity instanceof ContentEntityInterface) {
-        return NULL;
-      }
-
-      if ($entity->language()->getId() === $langcode) {
-        return $entity;
-      }
-      return $entity->hasTranslation($langcode) ? $entity->getTranslation($langcode) : NULL;
-    }
-    catch (PluginNotFoundException | InvalidPluginDefinitionException) {
-    }
-    return NULL;
   }
 
   /**
@@ -77,6 +41,15 @@ final readonly class HtmxController implements ContainerInjectionInterface {
    *   Array of recommendations
    */
   private function getRecommendations(ContentEntityInterface $entity): array {
+    $langcode = $this->languageManager
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getId();
+
+    if (!$entity->hasTranslation($langcode)) {
+      return [];
+    }
+    $entity = $entity->getTranslation($langcode);
+
     $recommendations = [];
 
     try {
@@ -95,18 +68,15 @@ final readonly class HtmxController implements ContainerInjectionInterface {
   /**
    * A HTMX callback for Recommendations list.
    *
-   * @param string $type
-   *   The entity type.
-   * @param string $id
-   *   The entity id.
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity.
    *
    * @return array<mixed>
    *   A render array of results.
    */
-  public function content(string $type, string $id): array {
-    if (!$entity = $this->getEntity($type, $id)) {
-      return [];
-    }
+  public function content(string $entity_type_id, ContentEntityInterface $entity): array {
     $canSeeScore = $this->currentUser->hasPermission('view recommendation score');
 
     $build = [
@@ -119,7 +89,7 @@ final readonly class HtmxController implements ContainerInjectionInterface {
         ],
         'tags' => Cache::mergeTags($entity->getCacheTags(), [$this->recommendationManager->getCacheTagForAll()]),
       ],
-      '#entity_type' => $entity->bundle(),
+      '#entity_type' => $entity_type_id,
     ];
 
     $recommendations = $this->getRecommendations($entity);
@@ -154,20 +124,22 @@ final readonly class HtmxController implements ContainerInjectionInterface {
   /**
    * Checks if user has access to view the given entity.
    *
-   * @param string $type
-   *   The entity type.
-   * @param string $id
-   *   The entity id.
+   * @param string $entity_type_id
+   *   The entity type id.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(string $type, string $id): AccessResultInterface {
-    if (!$entity = $this->getEntity($type, $id)) {
+  public function access(string $entity_type_id, EntityInterface $entity): AccessResultInterface {
+    if (!$entity instanceof ContentEntityInterface) {
       return AccessResult::forbidden();
     }
+    $entityAccess = $entity->access('view', return_as_object: TRUE);
 
-    return $entity->access('view', return_as_object: TRUE);
+    return AccessResult::allowedIf($this->recommendationManager->showRecommendations($entity))
+      ->andIf($entityAccess);
   }
 
 }

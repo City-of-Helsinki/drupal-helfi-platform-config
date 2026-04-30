@@ -48,14 +48,14 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
     }
     $htmx = new Htmx();
     $htmx->get(new Url('helfi_recommendations.htmx', [
-      'type' => $entity->getEntityTypeId(),
-      'id' => $entity->id(),
+      'entity_type_id' => $entity->getEntityTypeId(),
+      'entity' => $entity->id(),
     ]))
       ->trigger('load');
 
     $build = [
       '#cache' => [
-        'contexts' => ['url.path'],
+        'contexts' => ['url.path', 'languages:language_content'],
       ],
     ];
     $build['recommendations'] = [

@@ -4076,11 +4076,6 @@ parameters:
 			path: modules/helfi_recommendations/src/RecommendationManager.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getAllowedContentTypesAndBundles\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getAllowedInstances\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManager.php
@@ -4184,11 +4179,6 @@ parameters:
 			message: "#^Using nullsafe method call on non\\-nullable type Elastic\\\\Elasticsearch\\\\Response\\\\Elasticsearch\\|Http\\\\Promise\\\\Promise\\. Use \\-\\> instead\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:getAllowedContentTypesAndBundles\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManagerInterface.php
 
 		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:getAllowedInstances\\(\\) return type has no value type specified in iterable type array\\.$#"

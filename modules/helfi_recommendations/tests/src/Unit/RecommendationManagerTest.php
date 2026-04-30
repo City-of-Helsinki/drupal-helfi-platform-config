@@ -105,7 +105,6 @@ class RecommendationManagerTest extends UnitTestCase {
       $this->elasticClient,
       $this->cacheTagInvalidator->reveal(),
       $this->state->reveal(),
-      $this->getStringTranslationStub(),
     );
   }
 

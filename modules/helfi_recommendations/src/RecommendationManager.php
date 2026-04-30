@@ -9,8 +9,7 @@ use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\State\StateInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\StringTranslation\TranslationInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
@@ -27,8 +26,6 @@ use Elastic\Elasticsearch\Client;
  */
 class RecommendationManager implements RecommendationManagerInterface {
 
-  use StringTranslationTrait;
-
   public const INDEX_NAME = 'suggestions';
   public const EXTERNAL_CACHE_TAG_PREFIX = 'suggested_topics_uuid:';
 
@@ -37,7 +34,7 @@ class RecommendationManager implements RecommendationManagerInterface {
    *
    * @var array
    */
-  private $recommendations;
+  private array $recommendations;
 
   /**
    * The constructor.
@@ -54,8 +51,6 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   The cache tag invalidator.
    * @param \Drupal\Core\State\StateInterface $state
    *   The State API.
-   * @param \Drupal\Core\StringTranslation\TranslationInterface $stringTranslation
-   *   The string translation.
    */
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
@@ -66,9 +61,7 @@ class RecommendationManager implements RecommendationManagerInterface {
     private readonly Client $elasticClient,
     private readonly CacheTagInvalidatorInterface $cacheTagInvalidator,
     private readonly StateInterface $state,
-    TranslationInterface $stringTranslation,
   ) {
-    $this->stringTranslation = $stringTranslation;
   }
 
   /**
@@ -200,10 +193,10 @@ class RecommendationManager implements RecommendationManagerInterface {
    */
   public function getAllowedContentTypesAndBundles(): array {
     return [
-      'node|news_article' => $this->t('News article', options: ['context' => 'helfi_recommendations']),
-      'node|news_item' => $this->t('News item', options: ['context' => 'helfi_recommendations']),
-      'node|page' => $this->t('Standard page', options: ['context' => 'helfi_recommendations']),
-      'tpr_service|tpr_service' => $this->t('Service', options: ['context' => 'helfi_recommendations']),
+      'node|news_article' => new TranslatableMarkup('News article', options: ['context' => 'helfi_recommendations']),
+      'node|news_item' => new TranslatableMarkup('News item', options: ['context' => 'helfi_recommendations']),
+      'node|page' => new TranslatableMarkup('Standard page', options: ['context' => 'helfi_recommendations']),
+      'tpr_service|tpr_service' => new TranslatableMarkup('Service', options: ['context' => 'helfi_recommendations']),
     ];
   }
 
