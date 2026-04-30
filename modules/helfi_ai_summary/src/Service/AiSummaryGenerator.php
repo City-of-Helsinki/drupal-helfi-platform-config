@@ -69,7 +69,9 @@ class AiSummaryGenerator {
     try {
       ['provider_id' => $provider, 'model_id' => $model] = $this->aiProvider->getSetProvider('chat');
       $input = new ChatInput([new ChatMessage('user', $text)]);
-      $plain = $provider->chat($input, $model)->getNormalized()->getText();
+      $normalized = $provider->chat($input, $model)->getNormalized();
+      assert($normalized instanceof ChatMessage);
+      $plain = $normalized->getText();
       return self::toHtmlBulletList($plain);
     }
     catch (\Throwable $e) {

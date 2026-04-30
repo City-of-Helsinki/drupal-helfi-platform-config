@@ -41,25 +41,11 @@ class AiSummaryGeneratorTest extends UnitTestCase {
   private EntityTypeManagerInterface $entityTypeManager;
 
   /**
-   * The text converter manager mock.
-   *
-   * @var \Drupal\helfi_platform_config\TextConverter\TextConverterManager
-   */
-  private TextConverterManager $textConverterManager;
-
-  /**
    * The logger mock.
    *
    * @var \Psr\Log\LoggerInterface
    */
   private LoggerInterface $logger;
-
-  /**
-   * The generator under test.
-   *
-   * @var \Drupal\helfi_ai_summary\Service\AiSummaryGenerator
-   */
-  private AiSummaryGenerator $generator;
 
   /**
    * The entity mock.
@@ -76,15 +62,7 @@ class AiSummaryGeneratorTest extends UnitTestCase {
 
     $this->aiProvider = $this->prophesize(AiChatProviderInterface::class)->reveal();
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class)->reveal();
-    $this->textConverterManager = $this->prophesize(TextConverterManager::class)->reveal();
     $this->logger = $this->prophesize(LoggerInterface::class)->reveal();
-
-    $this->generator = new AiSummaryGenerator(
-      $this->aiProvider,
-      $this->entityTypeManager,
-      $this->textConverterManager,
-      $this->logger,
-    );
 
     $language = $this->prophesize(LanguageInterface::class);
     $language->getId()->willReturn('fi');

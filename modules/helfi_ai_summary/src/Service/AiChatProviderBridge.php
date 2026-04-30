@@ -17,9 +17,13 @@ final class AiChatProviderBridge implements AiChatProviderInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array{provider_id: \Drupal\ai\OperationType\Chat\ChatInterface, model_id: string}
    */
   public function getSetProvider(string $operation_type, ?string $preferred_model = NULL): array {
-    return $this->manager->getSetProvider($operation_type, $preferred_model);
+    /** @var array{provider_id: \Drupal\ai\OperationType\Chat\ChatInterface, model_id: string} $result */
+    $result = $this->manager->getSetProvider($operation_type, $preferred_model);
+    return $result;
   }
 
 }

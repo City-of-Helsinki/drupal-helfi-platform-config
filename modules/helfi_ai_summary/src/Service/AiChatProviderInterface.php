@@ -17,7 +17,7 @@ interface AiChatProviderInterface {
    * @param string|null $preferred_model
    *   Optional preferred model ID.
    *
-   * @return array{provider_id: object, model_id: string}
+   * @return array{provider_id: \Drupal\ai\OperationType\Chat\ChatInterface, model_id: string}
    *   Associative array with 'provider_id' and 'model_id'.
    */
   public function getSetProvider(string $operation_type, ?string $preferred_model = NULL): array;
