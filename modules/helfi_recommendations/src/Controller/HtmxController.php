@@ -89,7 +89,7 @@ final readonly class HtmxController implements ContainerInjectionInterface {
         ],
         'tags' => Cache::mergeTags($entity->getCacheTags(), [$this->recommendationManager->getCacheTagForAll()]),
       ],
-      '#entity_type' => $entity_type_id,
+      '#entity_type' => $entity->bundle(),
     ];
 
     $recommendations = $this->getRecommendations($entity);

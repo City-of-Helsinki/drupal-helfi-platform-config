@@ -59,13 +59,9 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       ],
     ];
     $build['recommendations'] = [
-      '#theme' => 'helfi_htmx_preview',
-      '#num_items' => 3,
-      '#message' => new TranslatableMarkup('Loading recommendations', options: [
-        'context' => 'Recommendations loading message',
-      ]),
-      '#wrapper' => 'ul',
-      '#attributes' => ['class' => ['recommendations--list__recommendations']],
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => '',
     ];
     $htmx->applyTo($build['recommendations']);
 
