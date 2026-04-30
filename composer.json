@@ -78,6 +78,7 @@
     "extra": {
         "patches": {
             "drupal/core": {
+                "[#3265213] Enabling and prioritising interface text language detection of account administration pages causes RouteMatch to be Null in some cases": "./public/modules/contrib/helfi_platform_config/patches/3265213-5.patch",
                 "[#UHF-13177, #3569803] htmx:beforeSwap fails with TypeError requestAssetsLoaded.get(...) is undefined": "./public/modules/contrib/helfi_platform_config/patches/3569803.patch",
                 "[#UHF-12709] Patch 'Deleted and replaced ...' error messages": "./public/modules/contrib/helfi_platform_config/patches/UHF-12709-skip_deleted_and_replaced_log.patch",
                 "[#UHF-181] Hide untranslated menu links (https://www.drupal.org/project/drupal/issues/3091246)": "./public/modules/contrib/helfi_platform_config/patches/3091246.patch",
