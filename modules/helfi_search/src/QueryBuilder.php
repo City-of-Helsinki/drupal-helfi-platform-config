@@ -46,10 +46,9 @@ final class QueryBuilder {
         'query' => [
           'bool' => [
             'must' => [
-              'match' => [
+              'match_phrase' => [
                 $field => [
                   'query' => $query,
-                  'fuzziness' => 'AUTO',
                 ],
               ],
             ],
