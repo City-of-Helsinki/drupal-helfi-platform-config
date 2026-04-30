@@ -2536,11 +2536,6 @@ parameters:
 			path: modules/helfi_paragraphs_curated_event_list/helfi_paragraphs_curated_event_list.module
 
 		-
-			message: "#^Method Drupal\\\\helfi_paragraphs_curated_event_list\\\\Controller\\\\HtmxController\\:\\:content\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_curated_event_list/src/Controller/HtmxController.php
-
-		-
 			message: "#^Cannot access offset 'data' on array\\|bool\\|float\\|int\\|object\\|string\\.$#"
 			count: 1
 			path: modules/helfi_paragraphs_curated_event_list/src/Plugin/ExternalEntities/StorageClient/Events.php
@@ -3906,16 +3901,6 @@ parameters:
 			path: modules/helfi_recommendations/src/Plugin/Block/RecommendationsBlock.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\Plugin\\\\Block\\\\RecommendationsBlock\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/Plugin/Block/RecommendationsBlock.php
-
-		-
-			message: "#^Property Drupal\\\\helfi_recommendations\\\\Plugin\\\\Block\\\\RecommendationsBlock\\:\\:\\$entityTypeManager is never read, only written\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/Plugin/Block/RecommendationsBlock.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\Plugin\\\\DebugDataItem\\\\ApiAvailability\\:\\:__construct\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/Plugin/DebugDataItem/ApiAvailability.php
@@ -4091,11 +4076,6 @@ parameters:
 			path: modules/helfi_recommendations/src/RecommendationManager.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getAllowedContentTypesAndBundles\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getAllowedInstances\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManager.php
@@ -4201,11 +4181,6 @@ parameters:
 			path: modules/helfi_recommendations/src/RecommendationManager.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:getAllowedContentTypesAndBundles\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManagerInterface.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:getAllowedInstances\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManagerInterface.php
@@ -4224,21 +4199,6 @@ parameters:
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:invalidateExternalCacheTags\\(\\) has parameter \\$uuids with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManagerInterface.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationsLazyBuilder\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationsLazyBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationsLazyBuilder\\:\\:getRecommendations\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationsLazyBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationsLazyBuilderInterface\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationsLazyBuilderInterface.php
 
 		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\ReferenceUpdater\\:\\:entitiesWithNonexistentFields\\(\\) has parameter \\$fields with no value type specified in iterable type array\\.$#"
@@ -4544,51 +4504,6 @@ parameters:
 			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationManagerTest\\:\\:\\$topicsManager with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
 			count: 1
 			path: modules/helfi_recommendations/tests/src/Unit/RecommendationManagerTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$anonymousUser with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$authenticatedUser with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$entity with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$entityTypeManager with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$language with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$logger with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$nodeEntityStorage with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$recommendationManager with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$userEntityStorage with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
 
 		-
 			message: "#^Function helfi_search_install\\(\\) has parameter \\$is_syncing with no type specified\\.$#"

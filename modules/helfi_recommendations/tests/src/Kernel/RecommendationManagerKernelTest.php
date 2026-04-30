@@ -318,7 +318,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
       $client,
       $this->container->get(CacheTagInvalidator::class),
       $this->container->get('state'),
-      $this->container->get('string_translation'),
     );
   }
 

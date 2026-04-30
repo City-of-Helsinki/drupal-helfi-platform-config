@@ -1,0 +1,13 @@
+diff --git a/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php b/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php
+index f9640b3967..26e9f45fc9 100644
+--- a/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php
++++ b/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php
+@@ -90,7 +90,7 @@ public function __construct(AdminContext $admin_context, UrlMatcherInterface $ro
+   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+     return new static(
+       $container->get('router.admin_context'),
+-      $container->get('router'),
++      $container->get('router.no_access_checks'),
+       $container->get('path_processor_manager'),
+       $container->get('current_route_match')
+     );

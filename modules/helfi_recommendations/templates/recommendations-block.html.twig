@@ -1,3 +1,5 @@
+<h2>{{  'Recommended for you'|t({}, {'context': 'Recommendations block title'}) }}</h2>
+<div> {{ 'Recommendations are generated automatically based on content.'|t({}, {'context': 'Recommendations block description'}) }}</div>
 {% if rows is empty %}
   <div class="empty-text">
     {{ no_results_message }}

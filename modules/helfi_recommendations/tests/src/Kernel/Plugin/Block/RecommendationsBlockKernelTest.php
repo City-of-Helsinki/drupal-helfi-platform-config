@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_recommendations\Kernel\Plugin\Block;
 
 use Drupal\helfi_platform_config\EntityVersionMatcher;
-use Drupal\helfi_recommendations\RecommendationsLazyBuilder;
 use Drupal\helfi_recommendations\Plugin\Block\RecommendationsBlock;
 use Drupal\helfi_recommendations\RecommendationManagerInterface;
 use Drupal\node\Entity\Node;
@@ -64,13 +63,10 @@ class RecommendationsBlockKernelTest extends AnnifKernelTestBase {
     $block = RecommendationsBlock::create($this->container, [], 'helfi_recommendations', ['provider' => 'helfi_recommendations']);
     $result = $block->build();
     $this->assertEmpty($result);
-
-    $cache_tags = $block->getCacheTags();
-    $this->assertEmpty($cache_tags);
   }
 
   /**
-   * Test that build returns a lazy builder.
+   * Test that build returns a htmx render array.
    */
   public function testBuild(): void {
     $node = Node::create([
@@ -85,41 +81,7 @@ class RecommendationsBlockKernelTest extends AnnifKernelTestBase {
     $block = RecommendationsBlock::create($this->container, [], 'helfi_recommendations', ['provider' => 'helfi_recommendations']);
     $result = $block->build();
     $this->assertArrayHasKey('recommendations', $result);
-    $this->assertArrayHasKey('#cache', $result['recommendations']);
-    $this->assertArrayHasKey('#lazy_builder', $result['recommendations']);
-    $this->assertArrayHasKey('#create_placeholder', $result['recommendations']);
-    $this->assertArrayHasKey('#lazy_builder_preview', $result['recommendations']);
-    $this->assertEquals([
-      RecommendationsLazyBuilder::class . ':build',
-      [
-        'entityType' => 'node',
-        'entityId' => $node->id(),
-        'langcode' => $node->language()->getId(),
-        'userId' => 0,
-      ],
-    ], $result['recommendations']['#lazy_builder']);
-  }
-
-  /**
-   * Test cache contexts.
-   */
-  public function testCacheContexts(): void {
-    $block = RecommendationsBlock::create($this->container, [], 'helfi_recommendations', ['provider' => 'helfi_recommendations']);
-    $cache_contexts = $block->getCacheContexts();
-    $this->assertEquals([
-      'languages:language_content',
-      'user.roles',
-      'url.path',
-    ], $cache_contexts);
-  }
-
-  /**
-   * Test cache tags.
-   */
-  public function testCacheTags(): void {
-    $block = RecommendationsBlock::create($this->container, [], 'helfi_recommendations', ['provider' => 'helfi_recommendations']);
-    $cache_tags = $block->getCacheTags();
-    $this->assertEquals([], $cache_tags);
+    $this->assertEquals('/helfi_recommendations/node/1/htmx', $result['recommendations']['#attributes']['data-hx-get']);
   }
 
   /**
