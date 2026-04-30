@@ -262,6 +262,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
    * Builds a FieldItemListInterface prophecy with a single item value.
    *
    * @return \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface>
+   *   The field item list prophecy double.
    */
   private function makeItems(string $savedValue, string $fieldName = 'field_ai_summary'): FieldItemListInterface {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);

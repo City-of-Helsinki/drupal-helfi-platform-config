@@ -19,6 +19,7 @@ final class AiChatProviderBridge implements AiChatProviderInterface {
    * {@inheritdoc}
    *
    * @return array{provider_id: \Drupal\ai\OperationType\Chat\ChatInterface, model_id: string}
+   *   The provider and model ID.
    */
   public function getSetProvider(string $operation_type, ?string $preferred_model = NULL): array {
     /** @var array{provider_id: \Drupal\ai\OperationType\Chat\ChatInterface, model_id: string} $result */
