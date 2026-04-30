@@ -1,0 +1,19 @@
+uuid: 37db4fec-51a5-4e2e-84bb-8964524ca1e6
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - helfi_ai_summary
+id: helfi_content_summary
+label: 'HELfi content summary'
+variables:
+  -
+    name: content
+    help_text: 'The page content as plain text'
+    required: true
+  -
+    name: language
+    help_text: 'The target language name (e.g. Finnish, Swedish)'
+    required: true
+tokens: {  }

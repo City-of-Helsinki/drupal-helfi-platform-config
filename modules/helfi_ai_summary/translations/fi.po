@@ -1,0 +1,52 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: helfi_ai_summary\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "helfi_ai_summary"
+msgid "AI summary"
+msgstr "Tekoälytiivistelmä"
+
+msgctxt "helfi_ai_summary"
+msgid "AI-generated content summary as a bullet list. Edit before accepting."
+msgstr "Tekoälyn luoma tiivistelmä bullet-listana. Voit muokata ennen hyväksymistä."
+
+msgctxt "helfi_ai_summary"
+msgid "Generate AI summary"
+msgstr "Luo tekoälytiivistelmä"
+
+msgctxt "helfi_ai_summary"
+msgid "Regenerate AI summary"
+msgstr "Luo tekoälytiivistelmä uudelleen"
+
+msgctxt "helfi_ai_summary"
+msgid "Accept"
+msgstr "Hyväksy"
+
+msgctxt "helfi_ai_summary"
+msgid "Reject"
+msgstr "Hylkää"
+
+msgctxt "helfi_ai_summary"
+msgid "AI is creating a summary…"
+msgstr "Tekoäly luo tiivistelmää…"
+
+msgctxt "helfi_ai_summary"
+msgid "AI generates a 4–6 bullet point summary of the page. You can edit the summary before accepting."
+msgstr "Tekoäly luo sivusta 4–6 bullet-pisteen tiivistelmän. Voit muokata tiivistelmää ennen hyväksymistä."
+
+msgctxt "helfi_ai_summary"
+msgid "You can edit the text before accepting."
+msgstr "Voit muokata tekstiä ennen hyväksymistä."
+
+msgctxt "helfi_ai_summary"
+msgid "The summary is saved with the page. You can create a new suggestion at any time."
+msgstr "Tiivistelmä tallennetaan sivun mukana. Voit luoda uuden ehdotuksen milloin tahansa."
+
+msgctxt "helfi_ai_summary"
+msgid "Could not generate summary. Ensure the content is saved and the AI provider is configured."
+msgstr "Tiivistelmän luominen epäonnistui. Varmista, että sisältö on tallennettu ja tekoälypalvelu on määritelty."

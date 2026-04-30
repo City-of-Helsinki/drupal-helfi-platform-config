@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Installation hooks for helfi_ai_summary.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_install().
+ *
+ * Adding a base field via hook_entity_base_field_info() on an existing
+ * entity type does not create the storage column automatically, so install
+ * it explicitly here.
+ */
+function helfi_ai_summary_install(bool $is_syncing): void {
+  if ($is_syncing) {
+    return;
+  }
+  $manager = \Drupal::entityDefinitionUpdateManager();
+  $definition = \Drupal::service('entity_field.manager')
+    ->getFieldStorageDefinitions('node')['field_ai_summary'] ?? NULL;
+  if ($definition && !$manager->getFieldStorageDefinition('field_ai_summary', 'node')) {
+    $manager->installFieldStorageDefinition('field_ai_summary', 'node', 'helfi_ai_summary', $definition);
+  }
+}
