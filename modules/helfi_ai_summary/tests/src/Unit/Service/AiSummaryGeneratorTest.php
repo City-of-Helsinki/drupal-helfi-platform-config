@@ -26,13 +26,51 @@ use Psr\Log\LoggerInterface;
  */
 class AiSummaryGeneratorTest extends UnitTestCase {
 
+  /**
+   * The AI chat provider mock.
+   *
+   * @var \Drupal\helfi_ai_summary\Service\AiChatProviderInterface
+   */
   private AiChatProviderInterface $aiProvider;
+
+  /**
+   * The entity type manager mock.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
   private EntityTypeManagerInterface $entityTypeManager;
+
+  /**
+   * The text converter manager mock.
+   *
+   * @var \Drupal\helfi_platform_config\TextConverter\TextConverterManager
+   */
   private TextConverterManager $textConverterManager;
+
+  /**
+   * The logger mock.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
   private LoggerInterface $logger;
+
+  /**
+   * The generator under test.
+   *
+   * @var \Drupal\helfi_ai_summary\Service\AiSummaryGenerator
+   */
   private AiSummaryGenerator $generator;
+
+  /**
+   * The entity mock.
+   *
+   * @var \Drupal\Core\Entity\ContentEntityInterface
+   */
   private ContentEntityInterface $entity;
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp(): void {
     parent::setUp();
 

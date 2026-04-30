@@ -25,6 +25,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AiSummaryWidgetTest extends UnitTestCase {
 
+  /**
+   * {@inheritdoc}
+   */
   protected function tearDown(): void {
     parent::tearDown();
     // Reset the container so it doesn't leak into other tests.
@@ -32,12 +35,18 @@ class AiSummaryWidgetTest extends UnitTestCase {
     \Drupal::setContainer($container);
   }
 
+  /**
+   * Creates a widget instance for the given field name.
+   */
   private function createWidget(string $fieldName = 'field_ai_summary'): AiSummaryWidget {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
     $fieldDef->getName()->willReturn($fieldName);
     return new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], []);
   }
 
+  /**
+   * Builds a FormState wired with a triggering button and entity form object.
+   */
   private function makeFormState(string $action, string $fieldName, int $delta): FormState {
     $language = $this->prophesize(LanguageInterface::class);
     $language->getId()->willReturn('fi');
@@ -249,6 +258,9 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $this->assertNotEmpty($state['error']);
   }
 
+  /**
+   * Builds a FieldItemListInterface prophecy with a single item value.
+   */
   private function makeItems(string $savedValue, string $fieldName = 'field_ai_summary'): object {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
     $fieldDef->getName()->willReturn($fieldName);
