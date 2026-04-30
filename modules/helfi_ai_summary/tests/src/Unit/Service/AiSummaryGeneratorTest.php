@@ -78,6 +78,7 @@ class AiSummaryGeneratorTest extends UnitTestCase {
 
   /**
    * @covers ::generate
+   * @covers ::__construct
    */
   public function testGenerateReturnsNullWhenContentIsEmpty(): void {
     $textConverter = $this->prophesize(TextConverterManager::class);
@@ -98,6 +99,7 @@ class AiSummaryGeneratorTest extends UnitTestCase {
 
   /**
    * @covers ::generate
+   * @covers ::__construct
    */
   public function testGenerateReturnsNullWhenPromptNotFound(): void {
     $textConverter = $this->prophesize(TextConverterManager::class);
@@ -124,6 +126,7 @@ class AiSummaryGeneratorTest extends UnitTestCase {
 
   /**
    * @covers ::generate
+   * @covers ::__construct
    */
   public function testGenerateReturnsNullWhenAiThrows(): void {
     $textConverter = $this->prophesize(TextConverterManager::class);
@@ -156,6 +159,8 @@ class AiSummaryGeneratorTest extends UnitTestCase {
 
   /**
    * @covers ::generate
+   * @covers ::toHtmlBulletList
+   * @covers ::__construct
    */
   public function testGenerateReturnsBulletList(): void {
     $textConverter = $this->prophesize(TextConverterManager::class);
@@ -200,6 +205,8 @@ class AiSummaryGeneratorTest extends UnitTestCase {
 
   /**
    * @covers ::generate
+   * @covers ::toHtmlBulletList
+   * @covers ::__construct
    */
   public function testGenerateUsesEntityTranslation(): void {
     $translationLanguage = $this->prophesize(LanguageInterface::class);
@@ -254,6 +261,8 @@ class AiSummaryGeneratorTest extends UnitTestCase {
 
   /**
    * @covers ::generate
+   * @covers ::toHtmlBulletList
+   * @covers ::__construct
    */
   public function testGenerateReturnsEmptyStringWhenAiReturnsBlankLines(): void {
     $textConverter = $this->prophesize(TextConverterManager::class);

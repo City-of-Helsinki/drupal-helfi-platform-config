@@ -85,6 +85,8 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::extractFormValues
+   * @covers ::readState
+   * @covers ::stateKey
    */
   public function testExtractFormValuesUsesStateWhenPresent(): void {
     $widget = $this->createWidget();
@@ -105,6 +107,8 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::extractFormValues
+   * @covers ::readState
+   * @covers ::stateKey
    */
   public function testExtractFormValuesSkipsWhenNoState(): void {
     $widget = $this->createWidget();
@@ -119,6 +123,8 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::buttonSubmit
+   * @covers ::updateState
+   * @covers ::stateKey
    */
   public function testButtonSubmitAccept(): void {
     $formState = $this->makeFormState('accept', 'field_ai_summary', 0);
@@ -144,6 +150,10 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::buttonSubmit
+   * @covers ::updateState
+   * @covers ::writeUserInputValue
+   * @covers ::readState
+   * @covers ::stateKey
    */
   public function testButtonSubmitRejectWithOriginal(): void {
     $formState = $this->makeFormState('reject', 'field_ai_summary', 0);
@@ -165,6 +175,10 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::buttonSubmit
+   * @covers ::updateState
+   * @covers ::writeUserInputValue
+   * @covers ::readState
+   * @covers ::stateKey
    */
   public function testButtonSubmitRejectWithoutOriginal(): void {
     $formState = $this->makeFormState('reject', 'field_ai_summary', 0);
@@ -186,6 +200,9 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::buttonSubmit
+   * @covers ::updateState
+   * @covers ::writeUserInputValue
+   * @covers ::stateKey
    */
   public function testButtonSubmitGenerateSuccess(): void {
     $mockGenerator = $this->prophesize(AiSummaryGenerator::class);
@@ -221,6 +238,8 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::buttonSubmit
+   * @covers ::updateState
+   * @covers ::stateKey
    */
   public function testButtonSubmitGenerateNullSetsError(): void {
     $mockGenerator = $this->prophesize(AiSummaryGenerator::class);
@@ -280,6 +299,11 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::formElement
+   * @covers ::buildButtons
+   * @covers ::button
+   * @covers ::modeDescription
+   * @covers ::initState
+   * @covers ::stateKey
    */
   public function testFormElementInitialModeBuildsGenerateButton(): void {
     $widget = $this->createWidget();
@@ -297,6 +321,11 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::formElement
+   * @covers ::buildButtons
+   * @covers ::button
+   * @covers ::modeDescription
+   * @covers ::initState
+   * @covers ::stateKey
    */
   public function testFormElementAcceptedModeBuildsTextFormatAndRegenerateButton(): void {
     $widget = $this->createWidget();
@@ -314,6 +343,12 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::formElement
+   * @covers ::buildButtons
+   * @covers ::button
+   * @covers ::modeDescription
+   * @covers ::initState
+   * @covers ::readState
+   * @covers ::stateKey
    */
   public function testFormElementDraftModeBuildsAcceptAndRejectButtons(): void {
     $widget = $this->createWidget();
@@ -338,6 +373,9 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::formElement
+   * @covers ::updateState
+   * @covers ::initState
+   * @covers ::stateKey
    */
   public function testFormElementShowsErrorWhenSet(): void {
     $widget = $this->createWidget();
@@ -390,6 +428,12 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::formElement
+   * @covers ::buildButtons
+   * @covers ::button
+   * @covers ::modeDescription
+   * @covers ::initState
+   * @covers ::readState
+   * @covers ::stateKey
    */
   public function testFormElementAcceptedModeFromStateShowsRegenerateButton(): void {
     $widget = $this->createWidget();
@@ -415,6 +459,11 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::formElement
+   * @covers ::buildButtons
+   * @covers ::button
+   * @covers ::modeDescription
+   * @covers ::initState
+   * @covers ::stateKey
    */
   public function testFormElementWrapperIdIncludesDelta(): void {
     $widget = $this->createWidget();
@@ -429,6 +478,11 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::formElement
+   * @covers ::buildButtons
+   * @covers ::button
+   * @covers ::modeDescription
+   * @covers ::initState
+   * @covers ::stateKey
    */
   public function testFormElementFieldLabelAlwaysPresent(): void {
     $widget = $this->createWidget();
@@ -445,6 +499,11 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::formElement
+   * @covers ::buildButtons
+   * @covers ::button
+   * @covers ::modeDescription
+   * @covers ::initState
+   * @covers ::stateKey
    */
   public function testFormElementModeDescriptionPresent(): void {
     $widget = $this->createWidget();
@@ -461,6 +520,9 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::buttonSubmit
+   * @covers ::updateState
+   * @covers ::writeUserInputValue
+   * @covers ::stateKey
    */
   public function testButtonSubmitGenerateWritesValueToUserInput(): void {
     $mockGenerator = $this->prophesize(AiSummaryGenerator::class);
@@ -499,6 +561,10 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::buttonSubmit
+   * @covers ::updateState
+   * @covers ::writeUserInputValue
+   * @covers ::readState
+   * @covers ::stateKey
    */
   public function testButtonSubmitRejectWritesValueToUserInput(): void {
     $formState = $this->makeFormState('reject', 'field_ai_summary', 0);
@@ -520,6 +586,8 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::buttonSubmit
+   * @covers ::updateState
+   * @covers ::stateKey
    */
   public function testButtonSubmitAcceptReadsEditedValueFromUserInput(): void {
     $formState = $this->makeFormState('accept', 'field_ai_summary', 0);
@@ -546,6 +614,10 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
   /**
    * @covers ::buttonSubmit
+   * @covers ::updateState
+   * @covers ::writeUserInputValue
+   * @covers ::readState
+   * @covers ::stateKey
    */
   public function testButtonSubmitSetsRebuildOnSuccess(): void {
     $formState = $this->makeFormState('reject', 'field_ai_summary', 0);
