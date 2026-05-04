@@ -4491,11 +4491,6 @@ parameters:
 			path: modules/helfi_search/helfi_search.install
 
 		-
-			message: "#^Function helfi_search_schema\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/helfi_search.install
-
-		-
 			message: "#^Function helfi_search_update_8001\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: modules/helfi_search/helfi_search.install
@@ -4551,21 +4546,6 @@ parameters:
 			path: modules/helfi_search/src/OpenAI/EmbeddingsApi.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\Chunk\\:\\:__construct\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/Chunk.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\Chunk\\:\\:__construct\\(\\) has parameter \\$metadata with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/Chunk.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\Chunk\\:\\:setMetadata\\(\\) has parameter \\$metadata with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/Chunk.php
-
-		-
 			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
 			count: 1
 			path: modules/helfi_search/src/Pipeline/ContentChunker.php
@@ -4574,6 +4554,26 @@ parameters:
 			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\HtmlCleaner\\:\\:removeNodeList\\(\\) has parameter \\$nodes with generic class DOMNodeList but does not specify its types\\: TNode$#"
 			count: 1
 			path: modules/helfi_search/src/Pipeline/HtmlCleaner.php
+
+		-
+			message: "#^Call to method convert\\(\\) on an unknown class League\\\\CommonMark\\\\ConverterInterface\\.$#"
+			count: 1
+			path: modules/helfi_search/src/Pipeline/MetadataComposer.php
+
+		-
+			message: "#^Instantiated class League\\\\CommonMark\\\\CommonMarkConverter not found\\.$#"
+			count: 1
+			path: modules/helfi_search/src/Pipeline/MetadataComposer.php
+
+		-
+			message: "#^Property Drupal\\\\helfi_search\\\\Pipeline\\\\MetadataComposer\\:\\:\\$converter \\(League\\\\CommonMark\\\\ConverterInterface\\) does not accept League\\\\CommonMark\\\\CommonMarkConverter\\.$#"
+			count: 1
+			path: modules/helfi_search/src/Pipeline/MetadataComposer.php
+
+		-
+			message: "#^Property Drupal\\\\helfi_search\\\\Pipeline\\\\MetadataComposer\\:\\:\\$converter has unknown class League\\\\CommonMark\\\\ConverterInterface as its type\\.$#"
+			count: 1
+			path: modules/helfi_search/src/Pipeline/MetadataComposer.php
 
 		-
 			message: "#^Method Drupal\\\\helfi_search\\\\Plugin\\\\search_api\\\\processor\\\\VectorEmbeddingsProcessor\\:\\:addFieldValues\\(\\) has parameter \\$item with no value type specified in iterable type Drupal\\\\search_api\\\\Item\\\\ItemInterface\\.$#"
@@ -4586,74 +4586,14 @@ parameters:
 			path: modules/helfi_search/src/Plugin/search_api/processor/VectorEmbeddingsProcessor.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:buildKnnQuery\\(\\) has parameter \\$bundles with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:buildKnnQuery\\(\\) has parameter \\$embeddings with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:buildKnnQuery\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:buildPromotionQuery\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:parseKnnHits\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:parseKnnHits\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:parsePromotionHits\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:parsePromotionHits\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
 			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
 			count: 3
 			path: modules/helfi_search/tests/src/Kernel/Controller/SearchControllerTest.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Pipeline\\\\TextPipelineTest\\:\\:getSut\\(\\) has parameter \\$responses with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Pipeline/TextPipelineTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Plugin\\\\search_api\\\\VectorEmbeddingsProcessorTest\\:\\:createNodeItems\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Plugin/search_api/VectorEmbeddingsProcessorTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Plugin\\\\search_api\\\\VectorEmbeddingsProcessorTest\\:\\:createNodeItems\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Plugin/search_api/VectorEmbeddingsProcessorTest.php
-
-		-
 			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
 			count: 1
 			path: modules/helfi_search/tests/src/Unit/OpenAI/EmbeddingsApiTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Unit\\\\QueryBuilderTest\\:\\:languageFieldProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Unit/QueryBuilderTest.php
 
 		-
 			message: "#^Function helfi_test_content_install\\(\\) has parameter \\$is_syncing with no type specified\\.$#"
