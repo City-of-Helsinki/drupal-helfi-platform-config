@@ -147,6 +147,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
           $field->addValue([
             'vector' => $vector,
             'content' => $chunks[$index]->snippet ?? '',
+            'fragment' => $chunks[$index]->fragment,
           ]);
         }
       }

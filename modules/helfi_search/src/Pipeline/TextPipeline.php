@@ -53,7 +53,7 @@ class TextPipeline {
     $markdown = $this->markdownConverter->convert($cleanHtml);
     $normalized = $this->textNormalizer->normalize($markdown);
     $chunks = $this->contentChunker->chunk($normalized);
-    return $this->metadataComposer->compose($entity, $chunks);
+    return $this->metadataComposer->compose($entity, $chunks, $doc);
   }
 
 }

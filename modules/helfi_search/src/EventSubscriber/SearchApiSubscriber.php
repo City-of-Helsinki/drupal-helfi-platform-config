@@ -61,6 +61,10 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
             'type' => 'text',
             'index' => FALSE,
           ],
+          'fragment' => [
+            'type' => 'keyword',
+            'index' => FALSE,
+          ],
         ],
       ]);
     }

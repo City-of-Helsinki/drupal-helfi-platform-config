@@ -108,7 +108,10 @@ final class QueryBuilder {
 
     $innerHits = [
       '_source' => FALSE,
-      'fields' => [$fieldPrefix . '.content'],
+      'fields' => [
+        $fieldPrefix . '.content',
+        $fieldPrefix . '.fragment',
+      ],
       'size' => 1,
     ];
 
@@ -250,6 +253,7 @@ final class QueryBuilder {
       // per-clause name we set when there are multiple KNN clauses. A hit
       // belongs to exactly one clause, so its inner_hits has a single entry.
       $innerGroup = array_first($hit['inner_hits'] ?? []) ?? [];
+      $innerFields = $innerGroup['hits']['hits'][0]['fields'][$fieldPrefix][0] ?? [];
       $results[] = [
         'id' => $hit['_id'] ?? NULL,
         'score' => $hit['_score'] ?? 0,
@@ -260,7 +264,8 @@ final class QueryBuilder {
         'title' => array_first($hit['_source']['label'] ?? []),
         'language' => array_first($hit['_source']['search_api_language'] ?? []),
         'published_at' => array_first($hit['_source']['published_at'] ?? []),
-        'content' => $innerGroup['hits']['hits'][0]['fields'][$fieldPrefix][0]['content'][0] ?? '',
+        'content' => $innerFields['content'][0] ?? '',
+        'fragment' => $innerFields['fragment'][0] ?? NULL,
       ];
     }
     return $results;

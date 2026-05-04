@@ -25,6 +25,7 @@ final class Chunk {
     public array $context = [],
     public array $metadata = [],
     public ?string $snippet = NULL,
+    public ?string $fragment = NULL,
   ) {
   }
 

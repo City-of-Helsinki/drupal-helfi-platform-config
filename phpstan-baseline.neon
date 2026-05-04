@@ -4656,11 +4656,6 @@ parameters:
 			path: modules/helfi_search/tests/src/Kernel/Controller/SearchControllerTest.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Pipeline\\\\TextPipelineTest\\:\\:getSut\\(\\) has parameter \\$responses with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Pipeline/TextPipelineTest.php
-
-		-
 			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
 			count: 1
 			path: modules/helfi_search/tests/src/Unit/OpenAI/EmbeddingsApiTest.php

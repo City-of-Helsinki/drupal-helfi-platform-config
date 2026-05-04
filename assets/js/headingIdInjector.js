@@ -4,6 +4,8 @@
  * This javascript injects unique ID-attributes to the assigned headings
  * built from the heading-elements text. This library should be active on
  * all except admin routes.
+ *
+ * See HeadingFragmentExtractor.php before modifying this file.
  */
 
 ((Drupal, once, drupalSettings) => {

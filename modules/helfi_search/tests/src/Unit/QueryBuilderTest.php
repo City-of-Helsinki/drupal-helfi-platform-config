@@ -137,7 +137,7 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals(50, $query['body']['knn']['k']);
     $this->assertEquals('fi', $query['body']['knn']['filter']['term']['search_api_language']);
     $this->assertEquals(
-      [self::TEST_MODEL_FIELD . '.content'],
+      [self::TEST_MODEL_FIELD . '.content', self::TEST_MODEL_FIELD . '.fragment'],
       $query['body']['knn']['inner_hits']['fields'],
     );
     $this->assertEquals(
@@ -201,6 +201,8 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals('2026-05-04T12:00:00+00:00', $results[0]['published_at']);
     // Missing inner_hits content gracefully degrades to empty string.
     $this->assertEquals('', $results[0]['content']);
+    // Missing fragment gracefully degrades to NULL.
+    $this->assertNull($results[0]['fragment']);
   }
 
   /**
@@ -227,7 +229,10 @@ class QueryBuilderTest extends UnitTestCase {
                     [
                       'fields' => [
                         self::TEST_MODEL_FIELD => [
-                          ['content' => ['Some content']],
+                          [
+                            'content' => ['Some content'],
+                            'fragment' => ['some-section'],
+                          ],
                         ],
                       ],
                     ],
@@ -246,6 +251,7 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals('doc1', $results[0]['id']);
     $this->assertEquals('entity:node', $results[0]['datasource']);
     $this->assertEquals('Some content', $results[0]['content']);
+    $this->assertEquals('some-section', $results[0]['fragment']);
   }
 
   /**
@@ -397,8 +403,9 @@ class QueryBuilderTest extends UnitTestCase {
 
     [$news, $content] = $query['body']['knn'];
 
-    $this->assertEquals([self::TEST_MODEL_FIELD . '.content'], $news['inner_hits']['fields']);
-    $this->assertEquals([self::TEST_MODEL_FIELD . '.content'], $content['inner_hits']['fields']);
+    $expectedFields = [self::TEST_MODEL_FIELD . '.content', self::TEST_MODEL_FIELD . '.fragment'];
+    $this->assertEquals($expectedFields, $news['inner_hits']['fields']);
+    $this->assertEquals($expectedFields, $content['inner_hits']['fields']);
     $this->assertEquals('deboosted', $news['inner_hits']['name']);
     $this->assertEquals('content', $content['inner_hits']['name']);
   }

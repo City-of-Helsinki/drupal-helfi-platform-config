@@ -106,7 +106,7 @@ class TextPipelineTest extends KernelTestBase {
   /**
    * Build the TextPipeline with a mocked HTTP client.
    *
-   * @param array $responses
+   * @param \GuzzleHttp\Exception\GuzzleException[]|\Psr\Http\Message\ResponseInterface[] $responses
    *   Guzzle responses (or exceptions) to queue in the mock HTTP client.
    */
   private function getSut(array $responses): TextPipeline {
