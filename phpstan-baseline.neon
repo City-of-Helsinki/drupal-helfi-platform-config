@@ -4631,21 +4631,6 @@ parameters:
 			path: modules/helfi_search/src/OpenAI/EmbeddingsApi.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\Chunk\\:\\:__construct\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/Chunk.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\Chunk\\:\\:__construct\\(\\) has parameter \\$metadata with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/Chunk.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\Chunk\\:\\:setMetadata\\(\\) has parameter \\$metadata with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/Chunk.php
-
-		-
 			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
 			count: 1
 			path: modules/helfi_search/src/Pipeline/ContentChunker.php
@@ -4674,16 +4659,6 @@ parameters:
 			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Pipeline\\\\TextPipelineTest\\:\\:getSut\\(\\) has parameter \\$responses with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_search/tests/src/Kernel/Pipeline/TextPipelineTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Plugin\\\\search_api\\\\VectorEmbeddingsProcessorTest\\:\\:createNodeItems\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Plugin/search_api/VectorEmbeddingsProcessorTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Plugin\\\\search_api\\\\VectorEmbeddingsProcessorTest\\:\\:createNodeItems\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Plugin/search_api/VectorEmbeddingsProcessorTest.php
 
 		-
 			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"

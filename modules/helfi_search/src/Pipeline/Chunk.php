@@ -13,16 +13,25 @@ namespace Drupal\helfi_search\Pipeline;
  */
 final class Chunk {
 
+  /**
+   * Constructs a new chunk.
+   *
+   * @phpstan-param array<string, mixed> $context
+   * @phpstan-param array<string, string> $metadata
+   */
   public function __construct(
     public readonly string $text,
     public readonly ?self $parent = NULL,
     public array $context = [],
     public array $metadata = [],
+    public ?string $snippet = NULL,
   ) {
   }
 
   /**
    * Setter for metdata.
+   *
+   * @phpstan-param array<string, string> $metadata
    */
   public function setMetadata(array $metadata): self {
     $this->metadata = $metadata;

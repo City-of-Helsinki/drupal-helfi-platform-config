@@ -81,8 +81,10 @@ final class TextPipelineCommands extends Command {
       }
 
       foreach ($chunks as $chunk) {
-        $output->writeln($chunk);
-        $output->writeln("=========================================");
+        $output->writeln((string) $chunk);
+        $output->writeln('--- snippet ---');
+        $output->writeln($chunk->snippet ?? '');
+        $output->writeln('=========================================');
       }
 
       return self::SUCCESS;

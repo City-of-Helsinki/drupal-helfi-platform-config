@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_search\Kernel\Pipeline;
 
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_search\Pipeline\Chunk;
 use Drupal\helfi_search\Pipeline\ContentChunker;
 use Drupal\helfi_search\Pipeline\HtmlCleaner;
 use Drupal\helfi_search\Pipeline\HtmlExtractor;
@@ -78,7 +79,10 @@ class TextPipelineTest extends KernelTestBase {
     $result = $pipeline->process($node);
 
     $this->assertCount(1, $result);
-    $this->assertStringContainsString('Helsinki', $result[0]);
+    $this->assertInstanceOf(Chunk::class, $result[0]);
+    $this->assertStringContainsString('Helsinki', (string) $result[0]);
+    $this->assertNotEmpty($result[0]->snippet);
+    $this->assertStringContainsString('Helsinki', $result[0]->snippet);
   }
 
   /**

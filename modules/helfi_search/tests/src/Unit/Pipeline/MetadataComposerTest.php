@@ -40,7 +40,8 @@ class MetadataComposerTest extends UnitTestCase {
 
     $result = $this->getSut()->compose($this->createEntity(), [$h3]);
 
-    $this->assertSame("Services > Foobar\n---\nFAQ body text.", $result[0]);
+    $this->assertInstanceOf(Chunk::class, $result[0]);
+    $this->assertSame("Services > Foobar\n---\nFAQ body text.", (string) $result[0]);
   }
 
   /**
@@ -53,8 +54,100 @@ class MetadataComposerTest extends UnitTestCase {
     $result = $this->getSut()->compose($this->createEntity(), [$chunk1, $chunk2]);
 
     $this->assertCount(2, $result);
-    $this->assertSame('First chunk.', $result[0]);
-    $this->assertSame('Second chunk.', $result[1]);
+    $this->assertSame('First chunk.', (string) $result[0]);
+    $this->assertSame('Second chunk.', (string) $result[1]);
+  }
+
+  /**
+   * Tests that markdown lists render and inline emphasis is stripped to text.
+   *
+   * The whitelist intentionally excludes strong/em/code so the result card
+   * has consistent typography; their content survives as plain text.
+   */
+  public function testSnippetRendersListsAndStripsInlineEmphasis(): void {
+    $chunk = new Chunk("This is **bold** and *italic*.\n\n- one\n- two");
+
+    $this->getSut()->compose($this->createEntity(), [$chunk]);
+
+    $this->assertStringNotContainsString('<strong>', $chunk->snippet);
+    $this->assertStringNotContainsString('<em>', $chunk->snippet);
+    $this->assertStringContainsString('bold', $chunk->snippet);
+    $this->assertStringContainsString('italic', $chunk->snippet);
+    $this->assertStringContainsString('<ul>', $chunk->snippet);
+    $this->assertStringContainsString('<li>one</li>', $chunk->snippet);
+    $this->assertStringContainsString('<li>two</li>', $chunk->snippet);
+  }
+
+  /**
+   * Tests that raw HTML embedded in the markdown input is stripped.
+   */
+  public function testSnippetStripsRawHtmlInMarkdownInput(): void {
+    $chunk = new Chunk('Click <a href="https://evil.example">here</a> or <script>alert(1)</script>.');
+
+    $this->getSut()->compose($this->createEntity(), [$chunk]);
+
+    $this->assertStringNotContainsString('<script', $chunk->snippet);
+    $this->assertStringNotContainsString('<a ', $chunk->snippet);
+    $this->assertStringNotContainsString('href=', $chunk->snippet);
+  }
+
+  /**
+   * Tests that links produced by markdown syntax are stripped, keeping text.
+   */
+  public function testSnippetStripsLinksProducedByMarkdown(): void {
+    $chunk = new Chunk('Some [link text](https://example.com) inline.');
+
+    $this->getSut()->compose($this->createEntity(), [$chunk]);
+
+    $this->assertStringNotContainsString('<a ', $chunk->snippet);
+    $this->assertStringNotContainsString('href', $chunk->snippet);
+    $this->assertStringContainsString('link text', $chunk->snippet);
+  }
+
+  /**
+   * Tests that all markdown headings are removed from the snippet.
+   */
+  public function testSnippetStripsAllHeadings(): void {
+    $chunk = new Chunk("## Section heading\n\nIntro paragraph.\n\n### Deeper\n\nTail.");
+
+    $this->getSut()->compose($this->createEntity(), [$chunk]);
+
+    $this->assertStringContainsString('Intro paragraph', $chunk->snippet);
+    $this->assertStringContainsString('Tail', $chunk->snippet);
+    $this->assertStringNotContainsString('Section heading', $chunk->snippet);
+    $this->assertStringNotContainsString('Deeper', $chunk->snippet);
+    $this->assertStringNotContainsString('<h', $chunk->snippet);
+  }
+
+  /**
+   * Tests that empty chunk text produces an empty snippet.
+   */
+  public function testSnippetEmptyForEmptyChunk(): void {
+    $chunk = new Chunk('');
+    $whitespace = new Chunk("   \n\n  ");
+
+    $this->getSut()->compose($this->createEntity(), [$chunk, $whitespace]);
+
+    $this->assertSame('', $chunk->snippet);
+    $this->assertSame('', $whitespace->snippet);
+  }
+
+  /**
+   * Tests that compose() populates snippet on every chunk.
+   */
+  public function testSnippetPopulatedOnEveryChunk(): void {
+    $chunks = [
+      new Chunk('First.'),
+      new Chunk('Second.'),
+      new Chunk('Third.'),
+    ];
+
+    $this->getSut()->compose($this->createEntity(), $chunks);
+
+    foreach ($chunks as $chunk) {
+      $this->assertNotNull($chunk->snippet);
+      $this->assertStringStartsWith('<p>', $chunk->snippet);
+    }
   }
 
 }

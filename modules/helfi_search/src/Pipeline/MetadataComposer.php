@@ -4,40 +4,53 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Pipeline;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\EntityInterface;
+use League\CommonMark\CommonMarkConverter;
+use League\CommonMark\ConverterInterface;
 
 /**
- * Composes entity metadata and chunk text into an embedding-ready string.
- *
- * Produces labeled output in the form:
- *
- * @code
- *   {ancestor headings}
- *   ---
- *   {chunk_text}
- * @endcode
+ * Adds metadata to each chunk.
  */
-readonly class MetadataComposer {
+class MetadataComposer {
+
+  private const array SNIPPET_ALLOWED_TAGS = [
+    'p',
+    'br',
+    'ul',
+    'ol',
+    'li',
+  ];
 
   /**
-   * Add entity metadata to each chunk.
-   *
-   * Populates the metadata array on each Chunk so that casting the chunk
-   * to string produces the final embedding-ready text.
+   * Markdown-to-HTML converter for snippet rendering.
+   */
+  private readonly ConverterInterface $converter;
+
+  public function __construct() {
+    $this->converter = new CommonMarkConverter([
+      'html_input' => 'strip',
+      'allow_unsafe_links' => FALSE,
+    ]);
+  }
+
+  /**
+   * Populate metadata and snippet on each chunk.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity providing metadata.
    * @param Chunk[] $chunks
-   *   Chunks to enrich with metadata.
+   *   Chunks to enrich.
    *
-   * @return string[]
-   *   The same chunks with metadata populated.
+   * @return Chunk[]
+   *   The same chunks with metadata and snippet populated.
    */
   public function compose(EntityInterface $entity, array $chunks): array {
-    return array_map(
-      fn (Chunk $chunk) => (string) $chunk->setMetadata($this->buildMetadata($chunk, $entity)),
-      $chunks
-    );
+    foreach ($chunks as $chunk) {
+      $chunk->setMetadata($this->buildMetadata($chunk, $entity));
+      $chunk->snippet = $this->renderSnippet($chunk->text);
+    }
+    return $chunks;
   }
 
   /**
@@ -74,6 +87,18 @@ readonly class MetadataComposer {
       $current = $current->parent;
     }
     return $titles;
+  }
+
+  /**
+   * Render a single chunk's markdown body as sanitized HTML.
+   */
+  private function renderSnippet(string $markdown): string {
+    // Strip all markdown headings. The result card already has a title.
+    $trimmed = trim((string) preg_replace('/^#{1,6}\s+[^\n]*\R*/um', '', $markdown));
+
+    $html = (string) $this->converter->convert($trimmed);
+
+    return trim(Xss::filter($html, self::SNIPPET_ALLOWED_TAGS));
   }
 
 }
