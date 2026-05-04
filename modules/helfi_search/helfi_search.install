@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\helfi_search\OpenAI\EmbeddingsApi;
+use Drupal\helfi_search\QueryBuilder;
 use Drupal\search_api\Entity\Index;
 
 /**
@@ -292,4 +293,17 @@ function helfi_search_update_11006(): void {
     ]);
   $index->addField($field);
   $index->save();
+}
+
+/**
+ * Drop the small embeddings model in favour of the large one.
+ */
+function helfi_search_update_11007(): void {
+  $removed = 'text-embedding-3-small';
+
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+
+  $models = $config->get('openai_models') ?? [];
+  $models = array_values(array_filter($models, fn ($m) => $m !== $removed));
+  $config->set('openai_models', $models);
 }
