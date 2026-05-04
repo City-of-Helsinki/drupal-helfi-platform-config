@@ -24,7 +24,7 @@ class HtmlCleaner {
   private const array REMOVE_CLASSES = [
     'is-hidden', 'visually-hidden', 'skip-link', 'table-of-contents',
     'component--recommendations', 'component--map',
-    'announcement', "content-tags",
+    'announcement', "content-tags", 'content-date',
   ];
 
   /**
