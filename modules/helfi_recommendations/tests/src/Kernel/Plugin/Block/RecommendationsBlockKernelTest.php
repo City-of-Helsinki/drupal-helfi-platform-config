@@ -76,6 +76,7 @@ class RecommendationsBlockKernelTest extends AnnifKernelTestBase {
     $node->save();
 
     $this->entityVersionMatcher->getType()->willReturn(['entity' => $node]);
+    $this->recommendationManager->getAllowedContentTypesAndBundles()->willReturn(['node|type' => '']);
     $this->recommendationManager->getRecommendations($node, Argument::any(), Argument::any(), Argument::any())->willReturn([]);
 
     $block = RecommendationsBlock::create($this->container, [], 'helfi_recommendations', ['provider' => 'helfi_recommendations']);
