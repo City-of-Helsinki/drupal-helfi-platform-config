@@ -64,7 +64,6 @@ final class QueryBuilder {
           'title',
           'processed',
           'link',
-          'search_api_language',
         ],
       ],
     ];
@@ -104,7 +103,7 @@ final class QueryBuilder {
       ],
     ];
 
-    $source = ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'search_api_language', 'search_api_datasource', 'published_at'];
+    $source = ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at'];
 
     $innerHits = [
       '_source' => FALSE,
@@ -259,10 +258,8 @@ final class QueryBuilder {
         'score' => $hit['_score'] ?? 0,
         'entity_type' => array_first($hit['_source']['entity_type'] ?? []),
         'bundle' => array_first($hit['_source']['entity_bundle'] ?? []),
-        'datasource' => array_first($hit['_source']['search_api_datasource'] ?? []),
         'url' => array_first($hit['_source']['url'] ?? []),
         'title' => array_first($hit['_source']['label'] ?? []),
-        'language' => array_first($hit['_source']['search_api_language'] ?? []),
         'published_at' => array_first($hit['_source']['published_at'] ?? []),
         'content' => $innerFields['content'][0] ?? '',
         'fragment' => $innerFields['fragment'][0] ?? NULL,
@@ -287,7 +284,6 @@ final class QueryBuilder {
         'title' => array_first($hit['_source']['title'] ?? []),
         'description' => array_first($hit['_source']['processed'] ?? []),
         'url' => array_first($hit['_source']['link'] ?? []),
-        'language' => array_first($hit['_source']['search_api_language'] ?? []),
         'score' => $hit['_score'] ?? 0,
       ];
     }

@@ -69,7 +69,7 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals('test', $query['body']['query']['bool']['must']['match_phrase'][$expectedField]['query']);
     $this->assertEquals($language, $query['body']['query']['bool']['filter']['term']['search_api_language']);
     $this->assertEquals(QueryBuilder::PROMOTIONS_LIMIT, $query['body']['size']);
-    $this->assertEquals(['title', 'processed', 'link', 'search_api_language'], $query['body']['_source']);
+    $this->assertEquals(['title', 'processed', 'link'], $query['body']['_source']);
   }
 
   /**
@@ -108,11 +108,9 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals('Test Promotion', $results[0]['title']);
     $this->assertEquals('A description', $results[0]['description']);
     $this->assertEquals('https://example.com/page', $results[0]['url']);
-    $this->assertEquals('fi', $results[0]['language']);
     $this->assertEquals(0.9, $results[0]['score']);
 
     $this->assertEquals('Another Promotion', $results[1]['title']);
-    $this->assertEquals('sv', $results[1]['language']);
   }
 
   /**
@@ -141,7 +139,7 @@ class QueryBuilderTest extends UnitTestCase {
       $query['body']['knn']['inner_hits']['fields'],
     );
     $this->assertEquals(
-      ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'search_api_language', 'search_api_datasource', 'published_at'],
+      ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at'],
       $query['body']['_source'],
     );
     $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $query['body']['size']);
@@ -180,7 +178,6 @@ class QueryBuilderTest extends UnitTestCase {
               'entity_bundle' => ['news_article'],
               'url' => ['/fi/test'],
               'label' => ['Test Page'],
-              'search_api_language' => ['fi'],
               'published_at' => ['2026-05-04T12:00:00+00:00'],
             ],
           ],
@@ -197,7 +194,6 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals('news_article', $results[0]['bundle']);
     $this->assertEquals('/fi/test', $results[0]['url']);
     $this->assertEquals('Test Page', $results[0]['title']);
-    $this->assertEquals('fi', $results[0]['language']);
     $this->assertEquals('2026-05-04T12:00:00+00:00', $results[0]['published_at']);
     // Missing inner_hits content gracefully degrades to empty string.
     $this->assertEquals('', $results[0]['content']);
@@ -219,8 +215,6 @@ class QueryBuilderTest extends UnitTestCase {
               'entity_type' => ['node'],
               'url' => ['/fi/page'],
               'label' => ['Page'],
-              'search_api_language' => ['fi'],
-              'search_api_datasource' => ['entity:node'],
             ],
             'inner_hits' => [
               self::TEST_MODEL_FIELD => [
@@ -249,7 +243,6 @@ class QueryBuilderTest extends UnitTestCase {
 
     $this->assertCount(1, $results);
     $this->assertEquals('doc1', $results[0]['id']);
-    $this->assertEquals('entity:node', $results[0]['datasource']);
     $this->assertEquals('Some content', $results[0]['content']);
     $this->assertEquals('some-section', $results[0]['fragment']);
   }

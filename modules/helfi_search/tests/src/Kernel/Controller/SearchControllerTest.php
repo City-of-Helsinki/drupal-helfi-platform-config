@@ -171,13 +171,11 @@ class SearchControllerTest extends KernelTestBase {
     $this->assertEquals('Promoted Result', $data['promoted'][0]['title']);
     $this->assertEquals('A promoted description', $data['promoted'][0]['description']);
     $this->assertEquals('/fi/promoted', $data['promoted'][0]['url']);
-    $this->assertEquals('fi', $data['promoted'][0]['language']);
     $this->assertCount(1, $data['results']);
     $this->assertEquals(0.95, $data['results'][0]['score']);
     $this->assertEquals('node', $data['results'][0]['entity_type']);
     $this->assertEquals('/fi/test-page', $data['results'][0]['url']);
     $this->assertEquals('Test Page', $data['results'][0]['title']);
-    $this->assertEquals('fi', $data['results'][0]['language']);
 
     // Test promotion error is handled gracefully.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'test query']);
