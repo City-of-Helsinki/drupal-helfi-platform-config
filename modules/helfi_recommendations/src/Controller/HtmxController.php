@@ -40,15 +40,6 @@ final readonly class HtmxController implements ContainerInjectionInterface {
    *   Array of recommendations
    */
   private function getRecommendations(ContentEntityInterface $entity): array {
-    $langcode = $this->languageManager
-      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
-      ->getId();
-
-    if (!$entity->hasTranslation($langcode)) {
-      return [];
-    }
-    $entity = $entity->getTranslation($langcode);
-
     $recommendations = [];
 
     try {
@@ -77,6 +68,14 @@ final readonly class HtmxController implements ContainerInjectionInterface {
     $entityTypeId = $request->attributes->get('entity_type_id');
     $entity = $request->attributes->get($entityTypeId);
 
+    $langcode = $this->languageManager
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getId();
+
+    if ($entity->hasTranslation($langcode)) {
+      $entity = $entity->getTranslation($langcode);
+    }
+
     if ((!$entity instanceof ContentEntityInterface) || !$this->recommendationManager->showRecommendations($entity)) {
       throw new AccessDeniedHttpException();
     }
@@ -102,7 +101,7 @@ final readonly class HtmxController implements ContainerInjectionInterface {
       '#cache' => [
         'contexts' => [
           'languages:language_content',
-          'user.roles',
+          'user.permissions',
           'url.path',
         ],
         'tags' => Cache::mergeTags($entity->getCacheTags(), [$this->recommendationManager->getCacheTagForAll()]),

@@ -10,11 +10,14 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\NodeType;
 use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
 
 /**
  * Base class for kernel tests.
  */
 abstract class AnnifKernelTestBase extends EntityKernelTestBase {
+
+  use LanguageManagerTrait;
 
   /**
    * {@inheritdoc}
@@ -23,6 +26,7 @@ abstract class AnnifKernelTestBase extends EntityKernelTestBase {
     'taxonomy',
     'language',
     'helfi_api_base',
+    'helfi_language_negotiator_test',
     'helfi_recommendations',
     'helfi_platform_config',
     'config_rewrite',
@@ -33,7 +37,7 @@ abstract class AnnifKernelTestBase extends EntityKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
 
     $entities = [
@@ -46,9 +50,8 @@ abstract class AnnifKernelTestBase extends EntityKernelTestBase {
       $this->installEntitySchema($entity);
     }
 
-    foreach (['fi', 'sv', 'xzz'] as $langcode) {
-      ConfigurableLanguage::createFromLangcode($langcode)->save();
-    }
+    $this->setupLanguages();
+    ConfigurableLanguage::createFromLangcode('xzz')->save();
 
     $this->installConfig(['system', 'helfi_recommendations']);
     $this->installSchema('node', ['node_access']);

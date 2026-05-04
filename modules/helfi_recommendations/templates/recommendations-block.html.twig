@@ -9,5 +9,6 @@
     {{ row.published_at|date('Y-m-d') }}
     {{ row.image }}
     {{ link(row.title, row.url) }}
+    {{ row.helptext }}
   {% endfor %}
 {% endif %}

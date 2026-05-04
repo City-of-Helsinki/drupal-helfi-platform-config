@@ -56,7 +56,7 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->setActiveProject(Project::ETUSIVU, $this->environment);
 

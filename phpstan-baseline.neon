@@ -3021,16 +3021,6 @@ parameters:
 			path: modules/helfi_paragraphs_news_list/tests/src/Kernel/ExternalEntityStorage/StorageClientTestBase.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_paragraphs_news_list\\\\Kernel\\\\KernelTestBase\\:\\:createElasticsearchResponse\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_news_list/tests/src/Kernel/KernelTestBase.php
-
-		-
-			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_news_list/tests/src/Kernel/KernelTestBase.php
-
-		-
 			message: "#^Method Drupal\\\\Tests\\\\helfi_paragraphs_news_list\\\\Kernel\\\\Plugin\\\\DebugData\\\\NewsApiAvailabilityTest\\:\\:getSut\\(\\) should return Drupal\\\\helfi_paragraphs_news_list\\\\Plugin\\\\DebugDataItem\\\\NewsApiAvailability but returns object\\.$#"
 			count: 1
 			path: modules/helfi_paragraphs_news_list/tests/src/Kernel/Plugin/DebugDataItem/NewsApiAvailabilityTest.php
@@ -4356,17 +4346,7 @@ parameters:
 			path: modules/helfi_recommendations/tests/src/Kernel/QueueWorkerTest.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_recommendations\\\\Kernel\\\\RecommendationManagerKernelTest\\:\\:createElasticsearchResponse\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Kernel/RecommendationManagerKernelTest.php
-
-		-
 			message: "#^Method Drupal\\\\Tests\\\\helfi_recommendations\\\\Kernel\\\\RecommendationManagerKernelTest\\:\\:getSut\\(\\) has parameter \\$responses with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Kernel/RecommendationManagerKernelTest.php
-
-		-
-			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/tests/src/Kernel/RecommendationManagerKernelTest.php
 
@@ -4646,18 +4626,8 @@ parameters:
 			path: modules/helfi_search/src/QueryBuilder.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Controller\\\\SearchControllerTest\\:\\:createElasticsearchResponse\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Controller/SearchControllerTest.php
-
-		-
 			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
 			count: 3
-			path: modules/helfi_search/tests/src/Kernel/Controller/SearchControllerTest.php
-
-		-
-			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
-			count: 1
 			path: modules/helfi_search/tests/src/Kernel/Controller/SearchControllerTest.php
 
 		-
