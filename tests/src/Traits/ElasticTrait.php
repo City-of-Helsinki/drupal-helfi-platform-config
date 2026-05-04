@@ -15,7 +15,7 @@ trait ElasticTrait {
   /**
    * Mocks elasticsearch response.
    *
-   * @param array $response
+   * @param array<mixed> $response
    *   The response.
    */
   protected function createElasticsearchResponse(array $response): Response {
@@ -25,7 +25,7 @@ trait ElasticTrait {
         Elasticsearch::HEADER_CHECK => Elasticsearch::PRODUCT_NAME,
         'Content-Type' => 'application/json',
       ],
-      json_encode($response),
+      json_encode($response, JSON_THROW_ON_ERROR),
     );
   }
 

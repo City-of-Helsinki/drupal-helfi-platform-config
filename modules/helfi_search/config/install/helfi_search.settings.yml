@@ -1,0 +1,15 @@
+openai_models:
+  - text-embedding-3-large
+openai_model_pricing:
+  text-embedding-3-large: 0.13
+deboost_bundles:
+  - news_article
+  - news_item
+deboost_factor: 0.9
+min_score: 0.32
+external_links:
+  jobs: 'https://www.hel.fi/en/open-jobs'
+  events: 'https://tapahtumat.hel.fi/en'
+  decisions: 'https://paatokset.hel.fi/en'
+  contact: 'https://www.hel.fi/en/decision-making/contact-the-city-of-helsinki'
+ai_register_url: 'https://www.hel.fi/en'

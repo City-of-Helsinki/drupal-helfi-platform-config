@@ -1,0 +1,26 @@
+msgid ""
+msgstr ""
+
+msgid "Hel.fi site search settings"
+msgstr "Hel.fi sivustohaun asetukset"
+
+msgid "External links"
+msgstr "Linkit muihin hakuihin"
+
+msgid "Links for other searches"
+msgstr "Linkit muihin hakuihin"
+
+msgid "Open jobs URL"
+msgstr "Avoimet työpaikat -URL"
+
+msgid "Events URL"
+msgstr "Tapahtumat-URL"
+
+msgid "Decisions URL"
+msgstr "Päätökset-URL"
+
+msgid "Contact URL"
+msgstr "Ota yhteyttä -URL"
+
+msgid "AI register URL"
+msgstr "Tekoälyrekisterin URL"
