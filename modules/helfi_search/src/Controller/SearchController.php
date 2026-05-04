@@ -143,13 +143,23 @@ final class SearchController extends ControllerBase {
         }
       }
 
-      return new JsonResponse([
+      $response = new JsonResponse([
         'promoted' => $promoted,
         'results' => $searchResults,
         'page' => $page,
         'size' => $size,
         'total_hits' => $totalHits,
       ]);
+
+      // The search form submits the same query on page reload, while
+      // the response for a query is unlikely to change. Prevent hitting
+      // the API if the user refreshes the page. However, the cardinality
+      // is so high that there is no point in caching these responses to
+      // a public cache.
+      $response->setPrivate();
+      $response->setMaxAge(600);
+
+      return $response;
     }
     catch (EmbeddingsModelException | ElasticsearchException | TransportException) {
       return new JsonResponse(
