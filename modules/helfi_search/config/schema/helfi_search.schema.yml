@@ -20,3 +20,14 @@ helfi_search.settings:
       label: 'Model pricing per million tokens (USD)'
       sequence:
         type: float
+    deboost_bundles:
+      type: sequence
+      label: 'Bundles whose scores are de-boosted'
+      sequence:
+        type: string
+    deboost_factor:
+      type: float
+      label: 'Multiplier applied to de-boosted bundle scores (0.0–1.0)'
+    min_score:
+      type: float
+      label: 'KNN minimum similarity floor (0.0–1.0)'

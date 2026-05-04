@@ -8,11 +8,12 @@
 declare(strict_types=1);
 
 use Drupal\helfi_search\OpenAI\EmbeddingsApi;
-use Drupal\helfi_search\QueryBuilder;
 use Drupal\search_api\Entity\Index;
 
 /**
  * Implements hook_schema().
+ *
+ * @phpstan-return array<string, mixed>
  */
 function helfi_search_schema(): array {
   $schema = [];
@@ -306,4 +307,23 @@ function helfi_search_update_11007(): void {
   $models = $config->get('openai_models') ?? [];
   $models = array_values(array_filter($models, fn ($m) => $m !== $removed));
   $config->set('openai_models', $models);
+}
+
+/**
+ * Set defaults for the semantic-search options.
+ */
+function helfi_search_update_11008(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+
+  if ($config->get('deboost_bundles') === NULL) {
+    $config->set('deboost_bundles', ['news_article', 'news_item']);
+  }
+  if ($config->get('deboost_factor') === NULL) {
+    $config->set('deboost_factor', 0.9);
+  }
+  if ($config->get('min_score') === NULL) {
+    $config->set('min_score', 0.68);
+  }
+
+  $config->save();
 }
