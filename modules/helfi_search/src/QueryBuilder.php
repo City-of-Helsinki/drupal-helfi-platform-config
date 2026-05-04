@@ -131,9 +131,7 @@ final class QueryBuilder {
       // Two parallel KNN clauses with disjoint bundle filters and different
       // boosts. Documents in $deboostedSubset get their score multiplied by
       // $deboostFactor, so they only out-rank non-deboosted documents when
-      // their raw similarity is sufficiently higher. When $bundles is set
-      // we whitelist its normal subset; otherwise we exclude $deboostBundles,
-      // leaving the rest of the index searchable.
+      // their raw similarity is sufficiently higher.
       $contentBool = $normalSubset !== NULL
         ? ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $normalSubset]]]]
         : ['must' => [$languageFilter], 'must_not' => [['terms' => ['entity_bundle' => $deboostBundles]]]];
@@ -248,9 +246,9 @@ final class QueryBuilder {
     $results = [];
 
     foreach ($response['hits']['hits'] ?? [] as $hit) {
-      // Inner_hits is keyed by either the nested field path (default) or the
-      // per-clause name we set when there are multiple KNN clauses. A hit
-      // belongs to exactly one clause, so its inner_hits has a single entry.
+      // Each hit comes from exactly one KNN clause, so inner_hits always has
+      // a single entry. The key is either the nested field path or the name
+      // we assigned in buildKnnQuery(), but we don't need to know which.
       $innerGroup = array_first($hit['inner_hits'] ?? []) ?? [];
       $innerFields = $innerGroup['hits']['hits'][0]['fields'][$fieldPrefix][0] ?? [];
       $results[] = [
