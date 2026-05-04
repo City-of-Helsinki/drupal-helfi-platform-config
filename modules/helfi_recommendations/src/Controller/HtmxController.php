@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_recommendations\Controller;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_recommendations\RecommendationManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Controller for Recommendations HTMX response.
@@ -66,17 +65,36 @@ final readonly class HtmxController implements ContainerInjectionInterface {
   }
 
   /**
+   * Gets the entity from request.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request.
+   *
+   * @return \Drupal\Core\Entity\ContentEntityInterface
+   *   The content entity.
+   */
+  private function getEntityFromRequest(Request $request): ContentEntityInterface {
+    $entityTypeId = $request->attributes->get('entity_type_id');
+    $entity = $request->attributes->get($entityTypeId);
+
+    if ((!$entity instanceof ContentEntityInterface) || !$this->recommendationManager->showRecommendations($entity)) {
+      throw new AccessDeniedHttpException();
+    }
+
+    return $entity;
+  }
+
+  /**
    * A HTMX callback for Recommendations list.
    *
-   * @param string $entity_type_id
-   *   The entity type id.
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity.
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request.
    *
    * @return array<mixed>
    *   A render array of results.
    */
-  public function content(string $entity_type_id, ContentEntityInterface $entity): array {
+  public function content(Request $request): array {
+    $entity = $this->getEntityFromRequest($request);
     $canSeeScore = $this->currentUser->hasPermission('view recommendation score');
 
     $build = [
@@ -119,27 +137,6 @@ final readonly class HtmxController implements ContainerInjectionInterface {
 
     }
     return $build;
-  }
-
-  /**
-   * Checks if user has access to view the given entity.
-   *
-   * @param string $entity_type_id
-   *   The entity type id.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity.
-   *
-   * @return \Drupal\Core\Access\AccessResultInterface
-   *   The access result.
-   */
-  public function access(string $entity_type_id, EntityInterface $entity): AccessResultInterface {
-    if (!$entity instanceof ContentEntityInterface) {
-      return AccessResult::forbidden();
-    }
-    $entityAccess = $entity->access('view', return_as_object: TRUE);
-
-    return AccessResult::allowedIf($this->recommendationManager->showRecommendations($entity))
-      ->andIf($entityAccess);
   }
 
 }

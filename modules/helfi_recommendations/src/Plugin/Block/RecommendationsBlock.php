@@ -47,8 +47,7 @@ final class RecommendationsBlock extends BlockBase implements ContainerFactoryPl
       return [];
     }
     $htmx = new Htmx();
-    $htmx->get(new Url('helfi_recommendations.htmx', [
-      'entity_type_id' => $entity->getEntityTypeId(),
+    $htmx->get(new Url("helfi_recommendations.{$entity->getEntityTypeId()}.htmx", [
       'entity' => $entity->id(),
     ]))
       ->trigger('load');
