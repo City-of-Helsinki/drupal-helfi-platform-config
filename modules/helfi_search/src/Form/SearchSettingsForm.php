@@ -102,7 +102,7 @@ final class SearchSettingsForm extends ConfigFormBase {
     $form['ranking']['min_score'] = [
       '#type' => 'number',
       '#title' => $this->t('Minimum similarity'),
-      '#description' => $this->t('Raw cosine-similarity floor between query and document embeddings (0.0–1.0). Hits below this threshold are dropped. Higher values return fewer but more relevant results. Calculate similarity value from desired minimum score value with similarity = min_score * 2 - 1, so 0.85 here corresponds to a document _score of about 0.7.'),
+      '#description' => $this->t('Raw cosine-similarity floor between query and document embeddings (0.0–1.0). Hits below this threshold are dropped. Higher values return fewer but more relevant results. Calculate similarity value from desired minimum score value with: similarity = desired_min_score * 2 - 1.'),
       '#min' => 0,
       '#max' => 1,
       '#step' => 0.01,
