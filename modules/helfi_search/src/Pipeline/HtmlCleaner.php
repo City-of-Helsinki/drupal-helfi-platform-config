@@ -20,10 +20,12 @@ class HtmlCleaner {
 
   /**
    * Exact CSS classes to remove.
+   *
+   * @todo This could be a config so that it can be tweaked without deployment.
    */
   private const array REMOVE_CLASSES = [
     'is-hidden', 'visually-hidden', 'skip-link', 'table-of-contents',
-    'component--recommendations', 'component--map',
+    'component--recommendations', 'component--map', 'component--hearings',
     'announcement', "content-tags", 'content-date', 'content-links',
   ];
 
