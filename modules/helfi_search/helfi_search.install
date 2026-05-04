@@ -322,7 +322,7 @@ function helfi_search_update_11008(): void {
     $config->set('deboost_factor', 0.9);
   }
   if ($config->get('min_score') === NULL) {
-    $config->set('min_score', 0.68);
+    $config->set('min_score', 0.36);
   }
 
   $config->save();
