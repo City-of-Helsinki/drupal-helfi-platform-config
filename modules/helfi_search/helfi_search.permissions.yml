@@ -1,0 +1,4 @@
+administer helfi_search:
+  title: 'Administer search settings'
+  description: 'Tune search settings.'
+  restrict access: TRUE

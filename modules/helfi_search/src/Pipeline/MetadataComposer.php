@@ -4,40 +4,115 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Pipeline;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\EntityInterface;
+use League\CommonMark\CommonMarkConverter;
+use League\CommonMark\ConverterInterface;
 
 /**
- * Composes entity metadata and chunk text into an embedding-ready string.
- *
- * Produces labeled output in the form:
- *
- * @code
- *   {ancestor headings}
- *   ---
- *   {chunk_text}
- * @endcode
+ * Adds metadata to each chunk.
  */
-readonly class MetadataComposer {
+class MetadataComposer {
+
+  private const array SNIPPET_ALLOWED_TAGS = [
+    'p',
+    'br',
+    'ul',
+    'ol',
+    'li',
+  ];
 
   /**
-   * Add entity metadata to each chunk.
-   *
-   * Populates the metadata array on each Chunk so that casting the chunk
-   * to string produces the final embedding-ready text.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity providing metadata.
-   * @param Chunk[] $chunks
-   *   Chunks to enrich with metadata.
-   *
-   * @return string[]
-   *   The same chunks with metadata populated.
+   * Markdown-to-HTML converter for snippet rendering.
    */
-  public function compose(EntityInterface $entity, array $chunks): array {
-    return array_map(
-      fn (Chunk $chunk) => (string) $chunk->setMetadata($this->buildMetadata($chunk, $entity)),
-      $chunks
-    );
+  private readonly ConverterInterface $converter;
+
+  public function __construct() {
+    $this->converter = new CommonMarkConverter([
+      'html_input' => 'strip',
+      'allow_unsafe_links' => FALSE,
+    ]);
+  }
+
+  /**
+   * Populate metadata and snippet on each chunk.
+   *
+   * @phpstan-param Chunk[] $chunks
+   *
+   * @return Chunk[]
+   *   The same chunks with metadata and snippet populated.
+   */
+  public function compose(EntityInterface $entity, array $chunks, \DOMDocument $doc): array {
+    $perSectionFragment = $this->buildSectionFragmentMap($chunks, $doc, $entity);
+
+    foreach ($chunks as $i => $chunk) {
+      $chunk->setMetadata($this->buildMetadata($chunk));
+      $chunk->snippet = $this->renderSnippet($chunk->text);
+      $chunk->fragment = $perSectionFragment[$i] ?? NULL;
+    }
+    return $chunks;
+  }
+
+  /**
+   * Map chunk indexes to fragments for chunks.
+   *
+   * @phpstan-param \Drupal\helfi_search\Pipeline\Chunk[] $chunks
+   * @phpstan-return array<int, string>
+   */
+  private function buildSectionFragmentMap(array $chunks, \DOMDocument $doc, EntityInterface $entity): array {
+    // Normalize before keying.
+    $headingKey = static function (int $level, string $text): string {
+      $text = preg_replace('/[*_`]/u', '', $text) ?? $text;
+      $text = preg_replace('/\s+/u', ' ', $text) ?? $text;
+      return "$level:" . mb_strtolower(trim($text));
+    };
+
+    $list = HeadingFragmentExtractor::extract($doc, $entity->language()->getId());
+    if ($list === []) {
+      return [];
+    }
+
+    // Queue fragments per (level, normalized text). The extractor walks the
+    // DOM, the chunker walks cleaned Markdown. they can disagree on
+    // which headings exist (HtmlCleaner can drop wrappers), so match by
+    // heading text and level.
+    $queue = [];
+    foreach ($list as $entry) {
+      $queue[$headingKey($entry['level'], $entry['text'])][] = $entry['fragment'];
+    }
+
+    // Walk the chunks in order. A long heading section produces multiple
+    // sub-chunks that share the same (title, level, parent). those should
+    // all inherit one fragment, so we dequeue only when that triple changes.
+    $perChunkIndex = [];
+    $sectionFragment = NULL;
+    $previousSection = NULL;
+
+    foreach ($chunks as $i => $chunk) {
+      $title = $chunk->context['title'] ?? NULL;
+      $level = $chunk->context['level'] ?? NULL;
+      $section = $title === NULL ? NULL : [$title, $level, $chunk->parent];
+
+      if ($section !== $previousSection) {
+        $sectionFragment = NULL;
+        if ($title && in_array($level, [2, 3], TRUE)) {
+          $key = $headingKey($level, $title);
+          if (!empty($queue[$key])) {
+            $fragment = array_shift($queue[$key]);
+            if ($fragment !== NULL && $fragment !== '') {
+              $sectionFragment = $fragment;
+            }
+          }
+        }
+        $previousSection = $section;
+      }
+
+      if ($sectionFragment !== NULL) {
+        $perChunkIndex[$i] = $sectionFragment;
+      }
+    }
+
+    return $perChunkIndex;
   }
 
   /**
@@ -46,7 +121,7 @@ readonly class MetadataComposer {
    * @return string[]
    *   Labeled metadata lines.
    */
-  private function buildMetadata(Chunk $chunk, EntityInterface $entity): array {
+  private function buildMetadata(Chunk $chunk): array {
     $parts = [];
 
     $headings = $this->getAncestorHeadings($chunk);
@@ -74,6 +149,18 @@ readonly class MetadataComposer {
       $current = $current->parent;
     }
     return $titles;
+  }
+
+  /**
+   * Render a single chunk's markdown body as sanitized HTML.
+   */
+  private function renderSnippet(string $markdown): string {
+    // Strip all markdown headings. The result card already has a title.
+    $trimmed = trim((string) preg_replace('/^#{1,6}\s+[^\n]*\R*/um', '', $markdown));
+
+    $html = (string) $this->converter->convert($trimmed);
+
+    return trim(Xss::filter($html, self::SNIPPET_ALLOWED_TAGS));
   }
 
 }

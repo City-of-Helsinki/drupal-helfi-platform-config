@@ -21,7 +21,7 @@ use Drupal\Core\Entity\EntityInterface;
  * - MarkdownConverter: How HTML structure maps to Markdown.
  * - TextNormalizer: What normalization is applied to the text.
  * - ContentChunker: How long content is split into chunks.
- * - MetadataComposer: Which entity metadata is prepended to each chunk.
+ * - MetadataComposer: Which metadata is added to each chunk.
  */
 class TextPipeline {
 
@@ -41,7 +41,7 @@ class TextPipeline {
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to process.
    *
-   * @return string[]
+   * @return Chunk[]
    *   Chunks, ready for embedding.
    *
    * @throws \Drupal\helfi_search\Pipeline\PipelineException
@@ -53,7 +53,7 @@ class TextPipeline {
     $markdown = $this->markdownConverter->convert($cleanHtml);
     $normalized = $this->textNormalizer->normalize($markdown);
     $chunks = $this->contentChunker->chunk($normalized);
-    return $this->metadataComposer->compose($entity, $chunks);
+    return $this->metadataComposer->compose($entity, $chunks, $doc);
   }
 
 }

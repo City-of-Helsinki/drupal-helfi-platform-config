@@ -126,9 +126,11 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
       return;
     }
 
+    $embeddingTexts = array_map('strval', $chunks);
+
     foreach ($models as $model) {
       try {
-        $vectors = $this->embeddingsModel->batchGetEmbedding($chunks, $model);
+        $vectors = $this->embeddingsModel->batchGetEmbedding($embeddingTexts, $model);
       }
       catch (EmbeddingsModelException) {
         continue;
@@ -144,7 +146,8 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
         foreach ($fields as $field) {
           $field->addValue([
             'vector' => $vector,
-            'content' => $chunks[$index],
+            'content' => $chunks[$index]->snippet ?? '',
+            'fragment' => $chunks[$index]->fragment,
           ]);
         }
       }

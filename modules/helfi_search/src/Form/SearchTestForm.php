@@ -85,16 +85,6 @@ class SearchTestForm extends FormBase {
       '#maxlength' => 500,
     ];
 
-    $form['min_score'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Minimum Score'),
-      '#description' => $this->t('Results below this score are excluded.'),
-      '#default_value' => QueryBuilder::KNN_MIN_SCORE,
-      '#min' => 0,
-      '#max' => 1,
-      '#step' => 0.01,
-    ];
-
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Search'),
@@ -219,7 +209,6 @@ class SearchTestForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $query = $form_state->getValue('search_query');
     $model = $form_state->getValue('model');
-    $minScore = (float) $form_state->getValue('min_score');
 
     $triggering = $form_state->getTriggeringElement();
     if (isset($triggering['#page_delta'])) {
@@ -254,7 +243,7 @@ class SearchTestForm extends FormBase {
 
       // Build both queries for msearch.
       $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, includeInnerHits: TRUE, minScore: $minScore, from: $from);
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, from: $from);
 
       $msearchResponse = $this->elasticClient->msearch([
         'body' => [
@@ -287,7 +276,7 @@ class SearchTestForm extends FormBase {
 
       // Parse semantic results, deduplicating by URL.
       if (!isset($responses[1]['error'])) {
-        foreach ($this->queryBuilder->parseKnnHits($responses[1] ?? [], $model, includeContent: TRUE) as $hit) {
+        foreach ($this->queryBuilder->parseKnnHits($responses[1] ?? [], $model) as $hit) {
           if (isset($promotedUrls[$hit['url']])) {
             continue;
           }

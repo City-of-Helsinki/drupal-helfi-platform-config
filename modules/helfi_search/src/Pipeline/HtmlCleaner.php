@@ -20,11 +20,13 @@ class HtmlCleaner {
 
   /**
    * Exact CSS classes to remove.
+   *
+   * @todo This could be a config so that it can be tweaked without deployment.
    */
   private const array REMOVE_CLASSES = [
     'is-hidden', 'visually-hidden', 'skip-link', 'table-of-contents',
-    'component--recommendations', 'component--map',
-    'announcement', "content-tags",
+    'component--recommendations', 'component--map', 'component--hearings',
+    'announcement', "content-tags", 'content-date', 'content-links',
   ];
 
   /**
@@ -37,6 +39,9 @@ class HtmlCleaner {
   /**
    * Clean a parsed HTML document by removing non-content elements.
    *
+   * Operates on a deep copy so callers retain access to the unmodified
+   * DOM.
+   *
    * @param \DOMDocument $doc
    *   Parsed HTML document to clean.
    *
@@ -44,19 +49,24 @@ class HtmlCleaner {
    *   Cleaned HTML string.
    */
   public function clean(\DOMDocument $doc): string {
+    $copy = new \DOMDocument();
+    foreach ($doc->childNodes as $child) {
+      $copy->appendChild($copy->importNode($child, TRUE));
+    }
+
     // Remove non-content tags and boilerplate class patterns.
-    $this->removeNonContentElements($doc);
+    $this->removeNonContentElements($copy);
 
     // Replace links with their text content (URLs are noise for embeddings).
-    $this->unwrapLinks($doc);
+    $this->unwrapLinks($copy);
 
     // Replace images with their alt text.
-    $this->replaceImagesWithAlt($doc);
+    $this->replaceImagesWithAlt($copy);
 
     // Remove empty div and span wrappers left after cleaning.
-    $this->removeEmptyWrappers($doc);
+    $this->removeEmptyWrappers($copy);
 
-    return $doc->saveHTML() ?: '';
+    return $copy->saveHTML() ?: '';
   }
 
   /**

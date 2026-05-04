@@ -12,6 +12,8 @@ use Drupal\search_api\Entity\Index;
 
 /**
  * Implements hook_schema().
+ *
+ * @phpstan-return array<string, mixed>
  */
 function helfi_search_schema(): array {
   $schema = [];
@@ -289,6 +291,67 @@ function helfi_search_update_11006(): void {
       'label' => 'Entity bundle',
       'property_path' => 'helfi_entity_bundle',
       'type' => 'string',
+    ]);
+  $index->addField($field);
+  $index->save();
+}
+
+/**
+ * Drop the small embeddings model in favour of the large one.
+ */
+function helfi_search_update_11007(): void {
+  $removed = 'text-embedding-3-small';
+
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+
+  $models = $config->get('openai_models') ?? [];
+  $models = array_values(array_filter($models, fn ($m) => $m !== $removed));
+  $config->set('openai_models', $models);
+}
+
+/**
+ * Set defaults for the semantic-search options.
+ */
+function helfi_search_update_11008(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+
+  if ($config->get('deboost_bundles') === NULL) {
+    $config->set('deboost_bundles', ['news_article', 'news_item']);
+  }
+  if ($config->get('deboost_factor') === NULL) {
+    $config->set('deboost_factor', 0.9);
+  }
+  if ($config->get('min_score') === NULL) {
+    $config->set('min_score', 0.36);
+  }
+
+  $config->save();
+}
+
+/**
+ * Add publication_date field to the embeddings index.
+ */
+function helfi_search_update_11009(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('publication_date')) {
+    return;
+  }
+
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  if ($index->getField('published_at')) {
+    return;
+  }
+
+  $field = \Drupal::service('search_api.fields_helper')
+    ->createField($index, 'published_at', [
+      'label' => 'Published',
+      'datasource_id' => 'entity:node',
+      'property_path' => 'published_at',
+      'type' => 'date',
     ]);
   $index->addField($field);
   $index->save();
