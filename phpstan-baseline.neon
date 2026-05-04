@@ -4556,26 +4556,6 @@ parameters:
 			path: modules/helfi_search/src/Pipeline/HtmlCleaner.php
 
 		-
-			message: "#^Call to method convert\\(\\) on an unknown class League\\\\CommonMark\\\\ConverterInterface\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/MetadataComposer.php
-
-		-
-			message: "#^Instantiated class League\\\\CommonMark\\\\CommonMarkConverter not found\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/MetadataComposer.php
-
-		-
-			message: "#^Property Drupal\\\\helfi_search\\\\Pipeline\\\\MetadataComposer\\:\\:\\$converter \\(League\\\\CommonMark\\\\ConverterInterface\\) does not accept League\\\\CommonMark\\\\CommonMarkConverter\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/MetadataComposer.php
-
-		-
-			message: "#^Property Drupal\\\\helfi_search\\\\Pipeline\\\\MetadataComposer\\:\\:\\$converter has unknown class League\\\\CommonMark\\\\ConverterInterface as its type\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/MetadataComposer.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_search\\\\Plugin\\\\search_api\\\\processor\\\\VectorEmbeddingsProcessor\\:\\:addFieldValues\\(\\) has parameter \\$item with no value type specified in iterable type Drupal\\\\search_api\\\\Item\\\\ItemInterface\\.$#"
 			count: 1
 			path: modules/helfi_search/src/Plugin/search_api/processor/VectorEmbeddingsProcessor.php
