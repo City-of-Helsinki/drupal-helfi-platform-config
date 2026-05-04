@@ -1,0 +1,5 @@
+helfi_search.settings_form:
+  title: 'Hel.fi site search settings'
+  base_route_name: helfi_search.settings_form
+  names:
+    - helfi_search.settings

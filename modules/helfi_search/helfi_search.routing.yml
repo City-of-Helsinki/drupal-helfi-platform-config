@@ -18,8 +18,9 @@ helfi_search.settings_form:
   path: '/admin/tools/helfi-search-settings'
   defaults:
     _form: '\Drupal\helfi_search\Form\SearchSettingsForm'
-    _title: 'Semantic search settings'
+    _title: 'Hel.fi site search settings'
   requirements:
     _permission: 'administer helfi_search'
+    _custom_access: 'Drupal\helfi_search\Form\SearchSettingsForm::access'
   options:
     _admin_route: TRUE

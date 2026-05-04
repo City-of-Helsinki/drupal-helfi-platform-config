@@ -6,8 +6,8 @@ helfi_search.test_form:
   weight: 3
 
 helfi_search.settings_form:
-  title: 'Search settings'
-  description: 'Tune deboost factor and minimum similarity.'
+  title: 'Hel.fi site search settings'
+  description: 'Tune ranking parameters and configure external search links.'
   parent: hdbt_admin_tools.site_information
   route_name: helfi_search.settings_form
   weight: 4

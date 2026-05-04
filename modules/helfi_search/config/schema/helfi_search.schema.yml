@@ -31,3 +31,27 @@ helfi_search.settings:
     min_score:
       type: float
       label: 'KNN minimum similarity floor (0.0–1.0)'
+    external_links:
+      type: mapping
+      label: 'Links for other searches'
+      mapping:
+        jobs:
+          type: label
+          label: 'Open jobs URL'
+          translatable: true
+        events:
+          type: label
+          label: 'Events URL'
+          translatable: true
+        decisions:
+          type: label
+          label: 'Decisions URL'
+          translatable: true
+        contact:
+          type: label
+          label: 'Contact URL'
+          translatable: true
+    ai_register_url:
+      type: label
+      label: 'AI register URL'
+      translatable: true
