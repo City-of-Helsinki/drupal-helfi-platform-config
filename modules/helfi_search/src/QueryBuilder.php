@@ -104,7 +104,7 @@ final class QueryBuilder {
       ],
     ];
 
-    $source = ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'search_api_language', 'search_api_datasource'];
+    $source = ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'search_api_language', 'search_api_datasource', 'published_at'];
 
     $innerHits = [
       '_source' => FALSE,
@@ -259,6 +259,7 @@ final class QueryBuilder {
         'url' => array_first($hit['_source']['url'] ?? []),
         'title' => array_first($hit['_source']['label'] ?? []),
         'language' => array_first($hit['_source']['search_api_language'] ?? []),
+        'published_at' => array_first($hit['_source']['published_at'] ?? []),
         'content' => $innerGroup['hits']['hits'][0]['fields'][$fieldPrefix][0]['content'][0] ?? '',
       ];
     }

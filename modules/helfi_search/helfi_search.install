@@ -327,3 +327,32 @@ function helfi_search_update_11008(): void {
 
   $config->save();
 }
+
+/**
+ * Add publication_date field to the embeddings index.
+ */
+function helfi_search_update_11009(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('publication_date')) {
+    return;
+  }
+
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  if ($index->getField('published_at')) {
+    return;
+  }
+
+  $field = \Drupal::service('search_api.fields_helper')
+    ->createField($index, 'published_at', [
+      'label' => 'Published',
+      'datasource_id' => 'entity:node',
+      'property_path' => 'published_at',
+      'type' => 'date',
+    ]);
+  $index->addField($field);
+  $index->save();
+}
