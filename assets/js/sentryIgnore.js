@@ -2,15 +2,11 @@
  * @file
  * Filter out Sentry errors before they are sent.
  */
-((drupalSettings) => {
+((drupalSettings, Sentry) => {
   // If Raven/Sentry is not enabled, do nothing.
   if (drupalSettings.raven === undefined) {
     return;
   }
-
-  // Preserve any existing beforeSend options.
-  const options = drupalSettings.raven.options || {};
-  const previousBeforeSend = options.beforeSend;
 
   /**
    * Safari is more aggressive than other browsers when it comes to network
@@ -113,6 +109,11 @@
       }
 
       const frames = exception?.stacktrace?.frames || [];
+
+      // Some browsers suppress stack traces for SecurityErrors.
+      if (frames.length === 0) {
+        return true;
+      }
       return frames.some((frame) => {
         const filename = frame?.filename || '';
         return filename.includes('hds-cookie-consent.min.js') || filename.includes('/hdbt_cookie_banner/');
@@ -195,14 +196,18 @@
   };
 
   /**
-   * Custom beforeSend callback.
+   * Processes a Sentry event.
    *
-   * @param event
-   * @param hint
-   * @returns {*|null}
+   * Drops "noise errors" and attaches cookie consent
+   * breadcrumb to events that are sent.
+   *
+   * @param {Object} event
+   *   The Sentry event.
+   *
+   * @return {Object|null}
+   *   The event to send, or null to drop it.
    */
-  drupalSettings.raven.options.beforeSend = (event, hint) => {
-    // Do not send errors that match the configured errorMatchers to Sentry.
+  const processEvent = (event) => {
     if (isListedError(event) || isCookieConsentInsecureOperation(event)) {
       return null;
     }
@@ -217,10 +222,27 @@
       },
     ];
 
-    if (typeof previousBeforeSend === 'function') {
-      return previousBeforeSend(event, hint);
-    }
-
     return event;
   };
-})(drupalSettings);
+
+  // Prefer addEventProcessor when window.Sentry is already available.
+  if (typeof Sentry?.addEventProcessor === 'function') {
+    Sentry.addEventProcessor(processEvent);
+  }
+  // Fall back to beforeSend on drupalSettings when window.Sentry is not yet
+  // available.
+  else {
+    const options = drupalSettings.raven.options || {};
+    const previousBeforeSend = options.beforeSend;
+    drupalSettings.raven.options = options;
+
+    drupalSettings.raven.options.beforeSend = (event, hint) => {
+      const result = processEvent(event);
+      if (result === null) return null;
+      if (typeof previousBeforeSend === 'function') {
+        return previousBeforeSend(result, hint);
+      }
+      return result;
+    };
+  }
+})(drupalSettings, window.Sentry);
