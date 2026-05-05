@@ -90,6 +90,9 @@ interface RecommendationManagerInterface {
 
   /**
    * Get allowed content types and bundles.
+   *
+   * @return array<string,\Drupal\Core\StringTranslation\TranslatableMarkup>
+   *   An array of 'entity_type|bundle' => Label pairs.
    */
   public function getAllowedContentTypesAndBundles(): array;
 

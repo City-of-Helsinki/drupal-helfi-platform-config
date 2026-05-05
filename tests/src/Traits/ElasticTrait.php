@@ -25,7 +25,7 @@ trait ElasticTrait {
         Elasticsearch::HEADER_CHECK => Elasticsearch::PRODUCT_NAME,
         'Content-Type' => 'application/json',
       ],
-      json_encode($response, JSON_THROW_ON_ERROR),
+      (string) json_encode($response),
     );
   }
 

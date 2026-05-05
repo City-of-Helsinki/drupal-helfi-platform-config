@@ -1,0 +1,2 @@
+route_callbacks:
+  - '\Drupal\helfi_recommendations\RouteProvider::routes'
