@@ -1,0 +1,11 @@
+name: 'Disable the Redirect listing view'
+description: 'Disables the views.view.redirect view shipped by the redirect module.'
+type: 'Site override'
+install:
+  - redirect
+config:
+  strict: false
+  actions:
+    views.view.redirect:
+      simpleConfigUpdate:
+        status: false
