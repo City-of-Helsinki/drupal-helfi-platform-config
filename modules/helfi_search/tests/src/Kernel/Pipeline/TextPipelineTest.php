@@ -15,6 +15,7 @@ use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\helfi_search\Traits\IgnoredClassesConfigFactoryTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Response;
@@ -34,6 +35,7 @@ class TextPipelineTest extends KernelTestBase {
   use ProphecyTrait;
   use NodeCreationTrait;
   use ApiTestTrait;
+  use IgnoredClassesConfigFactoryTrait;
 
   /**
    * {@inheritdoc}
@@ -118,7 +120,7 @@ class TextPipelineTest extends KernelTestBase {
 
     return new TextPipeline(
       $htmlExtractor,
-      new HtmlCleaner(),
+      new HtmlCleaner($this->stubIgnoredClassesConfigFactory([])),
       new ContentChunker(),
       new MetadataComposer(),
     );

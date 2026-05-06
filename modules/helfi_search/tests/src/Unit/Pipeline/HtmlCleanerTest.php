@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_search\Unit\Pipeline;
 
 use Drupal\helfi_search\Pipeline\HtmlCleaner;
+use Drupal\Tests\helfi_search\Traits\IgnoredClassesConfigFactoryTrait;
 use Drupal\Tests\UnitTestCase;
 use Masterminds\HTML5;
 use PHPUnit\Framework\Attributes\Group;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests for the HtmlCleaner pipeline service.
@@ -15,11 +17,17 @@ use PHPUnit\Framework\Attributes\Group;
 #[Group('helfi_search')]
 class HtmlCleanerTest extends UnitTestCase {
 
+  use ProphecyTrait;
+  use IgnoredClassesConfigFactoryTrait;
+
   /**
    * Gets service under test.
+   *
+   * @param string[] $ignoredClasses
+   *   Classes the cleaner should treat as ignored. Defaults to the install set.
    */
-  private function getSut(): HtmlCleaner {
-    return new HtmlCleaner();
+  private function getSut(array $ignoredClasses = []): HtmlCleaner {
+    return new HtmlCleaner($this->stubIgnoredClassesConfigFactory($ignoredClasses));
   }
 
   /**
@@ -59,7 +67,7 @@ class HtmlCleanerTest extends UnitTestCase {
    */
   public function testRemovesHiddenClassElements(): void {
     $html = '<div><p class="visually-hidden">Hidden</p><p>Visible</p></div>';
-    $result = $this->getSut()->clean($this->parseHtml($html));
+    $result = $this->getSut(['visually-hidden'])->clean($this->parseHtml($html));
 
     $this->assertStringNotContainsString('Hidden', $result);
     $this->assertStringContainsString('Visible', $result);

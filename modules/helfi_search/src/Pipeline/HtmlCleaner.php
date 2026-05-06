@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Pipeline;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+
 /**
  * Cleans HTML by removing non-content elements before Markdown conversion.
  */
@@ -19,23 +21,16 @@ class HtmlCleaner {
   ];
 
   /**
-   * Exact CSS classes to remove.
-   *
-   * @todo This could be a config so that it can be tweaked without deployment.
-   */
-  private const array REMOVE_CLASSES = [
-    'is-hidden', 'visually-hidden', 'skip-link', 'table-of-contents',
-    'component--recommendations', 'component--map', 'component--hearings',
-    'announcement', "content-tags", 'content-date', 'content-links',
-    'block--askem',
-  ];
-
-  /**
    * Element IDs to remove.
    */
   private const array REMOVE_IDS = [
     'helfi-survey__container',
   ];
+
+  public function __construct(
+    private readonly ConfigFactoryInterface $configFactory,
+  ) {
+  }
 
   /**
    * Clean a parsed HTML document by removing non-content elements.
@@ -130,7 +125,8 @@ class HtmlCleaner {
     // Uses the whitespace-boundary trick: pad @class with spaces so that
     // contains() matches whole words only (e.g. " visually-hidden ").
     $xpath = new \DOMXPath($doc);
-    foreach (self::REMOVE_CLASSES as $class) {
+    $ignoredClasses = $this->configFactory->get('helfi_search.settings')->get('ignored_classes') ?? [];
+    foreach ($ignoredClasses as $class) {
       $elements = $xpath->query(
         '//*[contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")]'
       );
