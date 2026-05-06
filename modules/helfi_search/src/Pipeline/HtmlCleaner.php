@@ -17,7 +17,7 @@ class HtmlCleaner {
   private const array REMOVE_TAGS = [
     'head', 'script', 'style', 'nav', 'footer', 'header',
     'aside', 'form', 'button', 'input', 'select', 'textarea',
-    'iframe', 'embed', 'object', 'noscript',
+    'iframe', 'embed', 'object', 'noscript', 'time',
   ];
 
   /**
