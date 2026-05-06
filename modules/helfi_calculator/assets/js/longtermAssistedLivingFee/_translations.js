@@ -266,8 +266,8 @@ const translations = {
   },
   receipt_estimate_of_payment: {
     fi: 'Arvio koostuu seuraavista tiedoista',
-    sv: 'Uppskattad klientavgift för långvarig sluten vård',
-    en: 'Estimated long-term institutional care fee',
+    sv: 'Uppskattad klientavgift för långvarigt serviceboende med heldygnsomsorg',
+    en: 'Estimated fee for long-term 24-hour assisted living',
   },
   receipt_estimated_payment_prefix: {
     fi: 'Arvoitu asiakasmaksu on yhteensä',
@@ -280,9 +280,9 @@ const translations = {
     en: 'euros per month',
   },
   receipt_estimated_payment_explanation: {
-    fi: 'Tämä arvio on suuntaa antava. Asiakasmaksujen tarkka määrä lasketaan laitoshoidon asiakasmaksupäätökseen. Tämä arvio ei ole viranomaisen tekemä virallinen asiakasmaksupäätös.',
-    sv: 'Denna uppskattning är riktgivande. Den exakta klientavgiften räknas ut då man fattar beslut om sluten vård. Denna uppskattning är inte myndighetens officiella klientavgiftsbeslut.',
-    en: 'This estimate is indicative. The exact fee will be determined in the official decision on the long-term institutional care fee. This estimate is not an official authority decision.',
+    fi: 'Tämä arvio on suuntaa antava. Asiakasmaksujen tarkka määrä lasketaan ympärivuorokautisen palveluasumisen asiakasmaksupäätökseen. Tämä arvio ei ole viranomaisen tekemä virallinen asiakasmaksupäätös.',
+    sv: 'Denna uppskattning är riktgivande. Den exakta klientavgiften räknas ut då man fattar beslut om långvarigt serviceboende med heldygnsomsorg. Denna uppskattning är inte myndighetens officiella klientavgiftsbeslut.',
+    en: 'This estimate is indicative. The exact fee will be determined in the official decision on the client fee for long-term 24-hour assisted living. This estimate is not an official authority decision.',
   },
   receipt_estimate_of_payment_breakdown_title: {
     fi: 'Arvio koostuu seuraavista tiedoista:',
