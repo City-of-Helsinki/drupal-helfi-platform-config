@@ -9,9 +9,7 @@ use Drupal\helfi_search\Pipeline\Chunk;
 use Drupal\helfi_search\Pipeline\ContentChunker;
 use Drupal\helfi_search\Pipeline\HtmlCleaner;
 use Drupal\helfi_search\Pipeline\HtmlExtractor;
-use Drupal\helfi_search\Pipeline\MarkdownConverter;
 use Drupal\helfi_search\Pipeline\MetadataComposer;
-use Drupal\helfi_search\Pipeline\TextNormalizer;
 use Drupal\helfi_search\Pipeline\PipelineException;
 use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\KernelTests\KernelTestBase;
@@ -121,8 +119,6 @@ class TextPipelineTest extends KernelTestBase {
     return new TextPipeline(
       $htmlExtractor,
       new HtmlCleaner(),
-      new MarkdownConverter(),
-      new TextNormalizer(),
       new ContentChunker(),
       new MetadataComposer(),
     );

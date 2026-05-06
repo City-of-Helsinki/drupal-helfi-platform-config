@@ -84,7 +84,7 @@ final class TextPipelineCommands extends Command {
       foreach ($chunks as $chunk) {
         $output->writeln('Title: ' . ($chunk->context['title'] ?? ''));
         $output->writeln('Fragment: ' . ($chunk->fragment ?? ''));
-        $output->writeln('Snippet: ' . (Unicode::truncate($chunk->snippet, 100, add_ellipsis: TRUE) ?? ''));
+        $output->writeln('Snippet: ' . ($chunk->snippet ?? ''));
         $output->writeln((string) $chunk);
         $output->writeln('=========================================');
       }

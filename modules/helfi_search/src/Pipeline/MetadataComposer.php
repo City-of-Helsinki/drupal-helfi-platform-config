@@ -4,35 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Pipeline;
 
-use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\EntityInterface;
-use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\ConverterInterface;
 
 /**
  * Adds metadata to each chunk.
  */
 class MetadataComposer {
-
-  private const array SNIPPET_ALLOWED_TAGS = [
-    'p',
-    'br',
-    'ul',
-    'ol',
-    'li',
-  ];
-
-  /**
-   * Markdown-to-HTML converter for snippet rendering.
-   */
-  private readonly ConverterInterface $converter;
-
-  public function __construct() {
-    $this->converter = new CommonMarkConverter([
-      'html_input' => 'strip',
-      'allow_unsafe_links' => FALSE,
-    ]);
-  }
 
   /**
    * Populate metadata and snippet on each chunk.
@@ -47,7 +24,7 @@ class MetadataComposer {
 
     foreach ($chunks as $i => $chunk) {
       $chunk->setMetadata($this->buildMetadata($chunk));
-      $chunk->snippet = $this->renderSnippet($chunk->text);
+      $chunk->snippet = SnippetRenderer::render($chunk->text);
       $chunk->fragment = $perSectionFragment[$i] ?? NULL;
     }
     return $chunks;
@@ -149,18 +126,6 @@ class MetadataComposer {
       $current = $current->parent;
     }
     return $titles;
-  }
-
-  /**
-   * Render a single chunk's markdown body as sanitized HTML.
-   */
-  private function renderSnippet(string $markdown): string {
-    // Strip all markdown headings. The result card already has a title.
-    $trimmed = trim((string) preg_replace('/^#{1,6}\s+[^\n]*\R*/um', '', $markdown));
-
-    $html = (string) $this->converter->convert($trimmed);
-
-    return trim(Xss::filter($html, self::SNIPPET_ALLOWED_TAGS));
   }
 
 }

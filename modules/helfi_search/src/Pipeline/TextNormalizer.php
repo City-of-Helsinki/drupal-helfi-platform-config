@@ -7,7 +7,7 @@ namespace Drupal\helfi_search\Pipeline;
 /**
  * Applies minimal text normalization.
  */
-class TextNormalizer {
+final class TextNormalizer {
 
   /**
    * Normalize text.
@@ -18,7 +18,7 @@ class TextNormalizer {
    * @return string
    *   Normalized text.
    */
-  public function normalize(string $text): string {
+  public static function normalize(string $text): string {
     if (empty($text)) {
       return $text;
     }

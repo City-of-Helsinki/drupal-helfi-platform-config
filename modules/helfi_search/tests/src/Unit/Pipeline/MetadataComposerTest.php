@@ -90,95 +90,20 @@ class MetadataComposerTest extends UnitTestCase {
   }
 
   /**
-   * Tests that markdown lists render and inline emphasis is stripped to text.
-   *
-   * The whitelist intentionally excludes strong/em/code so the result card
-   * has consistent typography; their content survives as plain text.
+   * MetadataComposer routes chunk text through SnippetRenderer.
    */
-  public function testSnippetRendersListsAndStripsInlineEmphasis(): void {
-    $chunk = new Chunk("This is **bold** and *italic*.\n\n- one\n- two");
-
-    $this->getSut()->compose($this->createEntity(), [$chunk], $this->createDocument());
-
-    $this->assertStringNotContainsString('<strong>', $chunk->snippet);
-    $this->assertStringNotContainsString('<em>', $chunk->snippet);
-    $this->assertStringContainsString('bold', $chunk->snippet);
-    $this->assertStringContainsString('italic', $chunk->snippet);
-    $this->assertStringContainsString('<ul>', $chunk->snippet);
-    $this->assertStringContainsString('<li>one</li>', $chunk->snippet);
-    $this->assertStringContainsString('<li>two</li>', $chunk->snippet);
-  }
-
-  /**
-   * Tests that raw HTML embedded in the markdown input is stripped.
-   */
-  public function testSnippetStripsRawHtmlInMarkdownInput(): void {
-    $chunk = new Chunk('Click <a href="https://evil.example">here</a> or <script>alert(1)</script>.');
-
-    $this->getSut()->compose($this->createEntity(), [$chunk], $this->createDocument());
-
-    $this->assertStringNotContainsString('<script', $chunk->snippet);
-    $this->assertStringNotContainsString('<a ', $chunk->snippet);
-    $this->assertStringNotContainsString('href=', $chunk->snippet);
-  }
-
-  /**
-   * Tests that links produced by markdown syntax are stripped, keeping text.
-   */
-  public function testSnippetStripsLinksProducedByMarkdown(): void {
-    $chunk = new Chunk('Some [link text](https://example.com) inline.');
-
-    $this->getSut()->compose($this->createEntity(), [$chunk], $this->createDocument());
-
-    $this->assertStringNotContainsString('<a ', $chunk->snippet);
-    $this->assertStringNotContainsString('href', $chunk->snippet);
-    $this->assertStringContainsString('link text', $chunk->snippet);
-  }
-
-  /**
-   * Tests that all markdown headings are removed from the snippet.
-   */
-  public function testSnippetStripsAllHeadings(): void {
-    $chunk = new Chunk("## Section heading\n\nIntro paragraph.\n\n### Deeper\n\nTail.");
-
-    $this->getSut()->compose($this->createEntity(), [$chunk], $this->createDocument());
-
-    $this->assertStringContainsString('Intro paragraph', $chunk->snippet);
-    $this->assertStringContainsString('Tail', $chunk->snippet);
-    $this->assertStringNotContainsString('Section heading', $chunk->snippet);
-    $this->assertStringNotContainsString('Deeper', $chunk->snippet);
-    $this->assertStringNotContainsString('<h', $chunk->snippet);
-  }
-
-  /**
-   * Tests that empty chunk text produces an empty snippet.
-   */
-  public function testSnippetEmptyForEmptyChunk(): void {
-    $chunk = new Chunk('');
-    $whitespace = new Chunk("   \n\n  ");
-
-    $this->getSut()->compose($this->createEntity(), [$chunk, $whitespace], $this->createDocument());
-
-    $this->assertSame('', $chunk->snippet);
-    $this->assertSame('', $whitespace->snippet);
-  }
-
-  /**
-   * Tests that compose() populates snippet on every chunk.
-   */
-  public function testSnippetPopulatedOnEveryChunk(): void {
+  public function testComposePopulatesSnippetViaRenderer(): void {
     $chunks = [
-      new Chunk('First.'),
-      new Chunk('Second.'),
-      new Chunk('Third.'),
+      new Chunk('Plain text body.'),
+      new Chunk('**Bold** body with *emphasis*.'),
+      new Chunk(''),
     ];
 
     $this->getSut()->compose($this->createEntity(), $chunks, $this->createDocument());
 
-    foreach ($chunks as $chunk) {
-      $this->assertNotNull($chunk->snippet);
-      $this->assertStringStartsWith('<p>', $chunk->snippet);
-    }
+    $this->assertSame('Plain text body.', $chunks[0]->snippet);
+    $this->assertSame('Bold body with emphasis.', $chunks[1]->snippet);
+    $this->assertSame('', $chunks[2]->snippet);
   }
 
   /**

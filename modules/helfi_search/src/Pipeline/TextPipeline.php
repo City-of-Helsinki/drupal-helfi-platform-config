@@ -28,8 +28,6 @@ class TextPipeline {
   public function __construct(
     private readonly HtmlExtractor $htmlExtractor,
     private readonly HtmlCleaner $htmlCleaner,
-    private readonly MarkdownConverter $markdownConverter,
-    private readonly TextNormalizer $textNormalizer,
     private readonly ContentChunker $contentChunker,
     private readonly MetadataComposer $metadataComposer,
   ) {
@@ -50,8 +48,8 @@ class TextPipeline {
   public function process(EntityInterface $entity): array {
     $doc = $this->htmlExtractor->extract($entity);
     $cleanHtml = $this->htmlCleaner->clean($doc);
-    $markdown = $this->markdownConverter->convert($cleanHtml);
-    $normalized = $this->textNormalizer->normalize($markdown);
+    $markdown = MarkdownConverter::convert($cleanHtml);
+    $normalized = TextNormalizer::normalize($markdown);
     $chunks = $this->contentChunker->chunk($normalized);
     return $this->metadataComposer->compose($entity, $chunks, $doc);
   }

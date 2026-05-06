@@ -20,7 +20,7 @@ class TextNormalizerTest extends UnitTestCase {
    */
   #[DataProvider('normalizeProvider')]
   public function testNormalize(string $input, string $expected): void {
-    $this->assertSame($expected, (new TextNormalizer())->normalize($input));
+    $this->assertSame($expected, TextNormalizer::normalize($input));
   }
 
   /**
