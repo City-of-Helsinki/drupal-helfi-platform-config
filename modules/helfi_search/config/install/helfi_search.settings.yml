@@ -1,3 +1,4 @@
+langcode: en
 openai_models:
   - text-embedding-3-large
 openai_model_pricing:
