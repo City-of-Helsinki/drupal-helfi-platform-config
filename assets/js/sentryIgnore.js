@@ -2,15 +2,11 @@
  * @file
  * Filter out Sentry errors before they are sent.
  */
-((drupalSettings) => {
+((drupalSettings, Sentry) => {
   // If Raven/Sentry is not enabled, do nothing.
   if (drupalSettings.raven === undefined) {
     return;
   }
-
-  // Preserve any existing beforeSend options.
-  const options = drupalSettings.raven.options || {};
-  const previousBeforeSend = options.beforeSend;
 
   /**
    * Safari is more aggressive than other browsers when it comes to network
@@ -58,11 +54,26 @@
   /**
    * In some browsers the Web Storage API may be unavailable or disabled.
    * When a script attempts to access localStorage or indexedDB in such
-   * contexts, the browser may throw:
-   *   "ReferenceError: Can't find variable:"
+   * contexts, the browser may throw: "ReferenceError: Can't find variable:".
    */
   const localStorageUnavailable = { type: 'ReferenceError', value: "Can't find variable: localStorage" };
   const indexedDBUnavailable = { type: 'ReferenceError', value: "Can't find variable: indexedDB" };
+
+  /**
+   * Browsers throw this when IndexedDB access is blocked by the user's privacy
+   * settings, for example incognito mode or blocked storage permissions.
+   */
+  const indexedDBPermissionDenied = {
+    type: 'UnknownError',
+    value: 'The user denied permission to access the database',
+  };
+
+  /**
+   * AbortError is thrown when a fetch request is cancelled via AbortController.
+   * This is an intentional application behaviour, for example cancelling
+   * a search request when a new one is requested.
+   */
+  const fetchAborted = { type: 'AbortError', value: 'Fetch is aborted' };
 
   /**
    * HeadlessChrome triggers an error with dialog focus-trap.
@@ -80,6 +91,8 @@
     missingMobileBridge,
     localStorageUnavailable,
     indexedDBUnavailable,
+    indexedDBPermissionDenied,
+    fetchAborted,
     focusTrap,
     // Add more combinations here if needed:
     // { type: 'TypeError', value: 'Failed to fetch' },
@@ -108,15 +121,28 @@
         return false;
       }
 
-      if (typeof exception?.value !== 'string' || !exception.value.includes('The operation is insecure')) {
-        return false;
-      }
-
       const frames = exception?.stacktrace?.frames || [];
-      return frames.some((frame) => {
+      const fromCookieConsent = frames.some((frame) => {
         const filename = frame?.filename || '';
         return filename.includes('hds-cookie-consent.min.js') || filename.includes('/hdbt_cookie_banner/');
       });
+
+      // If the stack trace confirms the cookie consent banner as the source,
+      // drop it despite the message. The hds_cookie_consent accesses
+      // storage APIs like IndexedDB and CacheStorage, and all SecurityErrors
+      // from these storages are expected to be browser-restriction noise.
+      if (fromCookieConsent) {
+        return true;
+      }
+
+      // If there are no frames, or frames don't include the cookie banner,
+      // fall back to matching known storage-restriction messages.
+      // Some browsers suppress stack traces for SecurityErrors entirely.
+      return (
+        typeof exception?.value === 'string' &&
+        (exception.value.includes('The operation is insecure') ||
+          exception.value.includes('An attempt was made to break through the security policy'))
+      );
     });
   };
 
@@ -195,14 +221,18 @@
   };
 
   /**
-   * Custom beforeSend callback.
+   * Processes a Sentry event.
    *
-   * @param event
-   * @param hint
-   * @returns {*|null}
+   * Drops "noise errors" and attaches cookie consent
+   * breadcrumb to events that are sent.
+   *
+   * @param {Object} event
+   *   The Sentry event.
+   *
+   * @return {Object|null}
+   *   The event to send, or null to drop it.
    */
-  drupalSettings.raven.options.beforeSend = (event, hint) => {
-    // Do not send errors that match the configured errorMatchers to Sentry.
+  const processEvent = (event) => {
     if (isListedError(event) || isCookieConsentInsecureOperation(event)) {
       return null;
     }
@@ -217,10 +247,27 @@
       },
     ];
 
-    if (typeof previousBeforeSend === 'function') {
-      return previousBeforeSend(event, hint);
-    }
-
     return event;
   };
-})(drupalSettings);
+
+  // Prefer addEventProcessor when window.Sentry is already available.
+  if (typeof Sentry?.addEventProcessor === 'function') {
+    Sentry.addEventProcessor(processEvent);
+  }
+  // Fall back to beforeSend on drupalSettings when window.Sentry is not yet
+  // available.
+  else {
+    const options = drupalSettings.raven.options || {};
+    const previousBeforeSend = options.beforeSend;
+    drupalSettings.raven.options = options;
+
+    drupalSettings.raven.options.beforeSend = (event, hint) => {
+      const result = processEvent(event);
+      if (result === null) return null;
+      if (typeof previousBeforeSend === 'function') {
+        return previousBeforeSend(result, hint);
+      }
+      return result;
+    };
+  }
+})(drupalSettings, window.Sentry);

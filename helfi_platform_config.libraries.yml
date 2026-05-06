@@ -77,9 +77,8 @@ heading_anchor_buttons:
     - core/once
 
 sentry_ignore:
-  version: 1.0.1
+  version: 1.0.2
   js:
     dist/js/sentryIgnore.min.js: { minified: true }
   dependencies:
     - core/drupalSettings
-
