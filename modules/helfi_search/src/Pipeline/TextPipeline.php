@@ -47,11 +47,12 @@ class TextPipeline {
    */
   public function process(EntityInterface $entity): array {
     $doc = $this->htmlExtractor->extract($entity);
+    $headingFragments = HeadingFragmentExtractor::extract($doc, $entity->language()->getId());
     $cleanHtml = $this->htmlCleaner->clean($doc);
     $markdown = MarkdownConverter::convert($cleanHtml);
     $normalized = TextNormalizer::normalize($markdown);
     $chunks = $this->contentChunker->chunk($normalized);
-    return $this->metadataComposer->compose($entity, $chunks, $doc);
+    return $this->metadataComposer->compose($chunks, $headingFragments);
   }
 
 }

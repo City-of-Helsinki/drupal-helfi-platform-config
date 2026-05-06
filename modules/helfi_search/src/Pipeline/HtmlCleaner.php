@@ -35,9 +35,6 @@ class HtmlCleaner {
   /**
    * Clean a parsed HTML document by removing non-content elements.
    *
-   * Operates on a deep copy so callers retain access to the unmodified
-   * DOM.
-   *
    * @param \DOMDocument $doc
    *   Parsed HTML document to clean.
    *
@@ -45,24 +42,19 @@ class HtmlCleaner {
    *   Cleaned HTML string.
    */
   public function clean(\DOMDocument $doc): string {
-    $copy = new \DOMDocument();
-    foreach ($doc->childNodes as $child) {
-      $copy->appendChild($copy->importNode($child, TRUE));
-    }
-
     // Remove non-content tags and boilerplate class patterns.
-    $this->removeNonContentElements($copy);
+    $this->removeNonContentElements($doc);
 
     // Replace links with their text content (URLs are noise for embeddings).
-    $this->unwrapLinks($copy);
+    $this->unwrapLinks($doc);
 
     // Replace images with their alt text.
-    $this->replaceImagesWithAlt($copy);
+    $this->replaceImagesWithAlt($doc);
 
     // Remove empty div and span wrappers left after cleaning.
-    $this->removeEmptyWrappers($copy);
+    $this->removeEmptyWrappers($doc);
 
-    return $copy->saveHTML() ?: '';
+    return $doc->saveHTML() ?: '';
   }
 
   /**
