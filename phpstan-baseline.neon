@@ -4486,31 +4486,6 @@ parameters:
 			path: modules/helfi_recommendations/tests/src/Unit/RecommendationManagerTest.php
 
 		-
-			message: "#^Function helfi_search_install\\(\\) has parameter \\$is_syncing with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_search/helfi_search.install
-
-		-
-			message: "#^Function helfi_search_update_8001\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: modules/helfi_search/helfi_search.install
-
-		-
-			message: "#^Function helfi_search_update_8002\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: modules/helfi_search/helfi_search.install
-
-		-
-			message: "#^Call to an undefined method Elastic\\\\Elasticsearch\\\\Response\\\\Elasticsearch\\|Http\\\\Promise\\\\Promise\\:\\:asArray\\(\\)\\.$#"
-			count: 2
-			path: modules/helfi_search/src/Controller/SearchController.php
-
-		-
-			message: "#^Using nullsafe method call on non\\-nullable type Elastic\\\\Elasticsearch\\\\Response\\\\Elasticsearch\\|Http\\\\Promise\\\\Promise\\. Use \\-\\> instead\\.$#"
-			count: 2
-			path: modules/helfi_search/src/Controller/SearchController.php
-
-		-
 			message: "#^Call to an undefined method Elastic\\\\Elasticsearch\\\\Response\\\\Elasticsearch\\|Http\\\\Promise\\\\Promise\\:\\:asArray\\(\\)\\.$#"
 			count: 1
 			path: modules/helfi_search/src/Form/SearchTestForm.php
@@ -4534,46 +4509,6 @@ parameters:
 			message: "#^Using nullsafe method call on non\\-nullable type Elastic\\\\Elasticsearch\\\\Response\\\\Elasticsearch\\|Http\\\\Promise\\\\Promise\\. Use \\-\\> instead\\.$#"
 			count: 1
 			path: modules/helfi_search/src/Form/SearchTestForm.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\OpenAI\\\\EmbeddingsApi\\:\\:batchGetEmbedding\\(\\) should return array\\<array\\<float\\>\\> but returns array\\<array\\<float\\>\\|float\\>\\.$#"
-			count: 1
-			path: modules/helfi_search/src/OpenAI/EmbeddingsApi.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\OpenAI\\\\EmbeddingsApi\\:\\:makeRequest\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/OpenAI/EmbeddingsApi.php
-
-		-
-			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/ContentChunker.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\HtmlCleaner\\:\\:removeNodeList\\(\\) has parameter \\$nodes with generic class DOMNodeList but does not specify its types\\: TNode$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/HtmlCleaner.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Plugin\\\\search_api\\\\processor\\\\VectorEmbeddingsProcessor\\:\\:addFieldValues\\(\\) has parameter \\$item with no value type specified in iterable type Drupal\\\\search_api\\\\Item\\\\ItemInterface\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Plugin/search_api/processor/VectorEmbeddingsProcessor.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Plugin\\\\search_api\\\\processor\\\\VectorEmbeddingsProcessor\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Plugin/search_api/processor/VectorEmbeddingsProcessor.php
-
-		-
-			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
-			count: 3
-			path: modules/helfi_search/tests/src/Kernel/Controller/SearchControllerTest.php
-
-		-
-			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Unit/OpenAI/EmbeddingsApiTest.php
 
 		-
 			message: "#^Function helfi_test_content_install\\(\\) has parameter \\$is_syncing with no type specified\\.$#"

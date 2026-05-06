@@ -14,7 +14,7 @@ final readonly class Response {
    *
    * @param string $model
    *   Model name.
-   * @param float[]|array<float[]> $embedding
+   * @param array<int, float[]> $embedding
    *   Embedding vectors.
    * @param int $total_tokens
    *   Total tokens used.

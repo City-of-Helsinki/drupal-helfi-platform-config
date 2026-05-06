@@ -157,7 +157,7 @@ class SearchControllerTest extends KernelTestBase {
     $response = $this->processRequest($request);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = json_decode($response->getContent(), TRUE);
+    $data = json_decode((string) $response->getContent(), TRUE);
     $this->assertEmpty($data['results']);
     $this->assertEmpty($data['promoted']);
 
@@ -166,7 +166,7 @@ class SearchControllerTest extends KernelTestBase {
     $response = $this->processRequest($request);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = json_decode($response->getContent(), TRUE);
+    $data = json_decode((string) $response->getContent(), TRUE);
     $this->assertCount(1, $data['promoted']);
     $this->assertEquals('Promoted Result', $data['promoted'][0]['title']);
     $this->assertEquals('A promoted description', $data['promoted'][0]['description']);
@@ -182,7 +182,7 @@ class SearchControllerTest extends KernelTestBase {
     $response = $this->processRequest($request);
 
     $this->assertEquals(200, $response->getStatusCode());
-    $data = json_decode($response->getContent(), TRUE);
+    $data = json_decode((string) $response->getContent(), TRUE);
     $this->assertEmpty($data['promoted']);
     $this->assertCount(1, $data['results']);
     $this->assertEquals('/fi/fallback', $data['results'][0]['url']);

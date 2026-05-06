@@ -73,6 +73,9 @@ class HtmlCleaner {
    * Remove all nodes in a DOMNodeList.
    *
    * Converts to array first since the live list changes during removal.
+   *
+   * @param \DOMNodeList<\DOMNode> $nodes
+   *   List of nodes to remove.
    */
   private function removeNodeList(\DOMNodeList $nodes): void {
     foreach (iterator_to_array($nodes) as $node) {

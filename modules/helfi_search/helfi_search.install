@@ -44,7 +44,7 @@ function helfi_search_schema(): array {
 /**
  * Implements hook_install().
  */
-function helfi_search_install($is_syncing) : void {
+function helfi_search_install(bool $is_syncing): void {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
   if ($is_syncing) {
@@ -64,7 +64,7 @@ function helfi_search_install($is_syncing) : void {
 /**
  * Update the embeddings index datasources and enable multisite option.
  */
-function helfi_search_update_8001() {
+function helfi_search_update_8001(): void {
   $config = \Drupal::configFactory()->getEditable('search_api.index.embeddings');
 
   // Do not run the update if the config didn't exist yet.
@@ -94,7 +94,7 @@ function helfi_search_update_8001() {
 /**
  * Update embeddings index fields.
  */
-function helfi_search_update_8002() {
+function helfi_search_update_8002(): void {
   $config = \Drupal::configFactory()->getEditable('search_api.index.embeddings');
 
   // Do not run the update if the config didn't exist yet.

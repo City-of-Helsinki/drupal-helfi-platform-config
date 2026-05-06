@@ -12,6 +12,7 @@ use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\QueryBuilder;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
+use Elastic\Elasticsearch\Response\Elasticsearch;
 use Elastic\Transport\Exception\TransportException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -111,10 +112,12 @@ final class SearchController extends ControllerBase {
       $totalHits = 0;
 
       if ($bundles) {
-        $knnResponse = $this->elasticClient->search([
+        $searchResult = $this->elasticClient->search([
           'index' => $knnQuery['index'],
           'body' => $knnQuery['body'],
-        ])?->asArray() ?? [];
+        ]);
+        assert($searchResult instanceof Elasticsearch);
+        $knnResponse = $searchResult->asArray();
 
         $searchResults = $this->queryBuilder->parseKnnHits($knnResponse, $model);
         $totalHits = $knnResponse['hits']['total']['value'] ?? 0;
@@ -122,14 +125,16 @@ final class SearchController extends ControllerBase {
       else {
         $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
 
-        $msearchResponse = $this->elasticClient->msearch([
+        $msearchResult = $this->elasticClient->msearch([
           'body' => [
             ['index' => $promotionQuery['index']],
             $promotionQuery['body'],
             ['index' => $knnQuery['index']],
             $knnQuery['body'],
           ],
-        ])?->asArray() ?? [];
+        ]);
+        assert($msearchResult instanceof Elasticsearch);
+        $msearchResponse = $msearchResult->asArray();
 
         $responses = $msearchResponse['responses'] ?? [];
 
