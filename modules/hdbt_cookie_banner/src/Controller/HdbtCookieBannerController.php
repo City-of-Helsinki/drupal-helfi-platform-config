@@ -30,7 +30,7 @@ class HdbtCookieBannerController extends ControllerBase {
   public function siteSettings(): CacheableJsonResponse {
     $config = $this->config->get(HdbtCookieBannerForm::SETTINGS);
 
-    $response = new CacheableJsonResponse(Json::decode($config->get('site_settings')));
+    $response = new CacheableJsonResponse(Json::decode($config->get('site_settings') ?? 'null'));
     $response->addCacheableDependency($config);
     $response->setMaxAge(600);
     $response->setPublic();
