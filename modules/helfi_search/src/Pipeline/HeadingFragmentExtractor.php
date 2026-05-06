@@ -14,7 +14,7 @@ class HeadingFragmentExtractor {
   /**
    * Walk the DOM and produce heading fragments.
    *
-   * @return array<int, array{level: int, text: string, fragment: ?string}>
+   * @return HeadingFragment[]
    *   One entry per h2–h6.
    */
   public static function extract(\DOMDocument $doc, string $langcode): array {
@@ -53,21 +53,17 @@ class HeadingFragmentExtractor {
       $text = trim((string) $h->textContent);
 
       if (self::isExcluded($h)) {
-        $out[] = ['level' => $level, 'text' => $text, 'fragment' => NULL];
+        $out[] = new HeadingFragment($level, $text, NULL);
         continue;
       }
 
       $existing = $h->getAttribute('id');
       if ($existing !== '') {
-        $out[] = ['level' => $level, 'text' => $text, 'fragment' => $existing];
+        $out[] = new HeadingFragment($level, $text, $existing);
         continue;
       }
 
-      $out[] = [
-        'level' => $level,
-        'text' => $text,
-        'fragment' => $slugger->slug($text),
-      ];
+      $out[] = new HeadingFragment($level, $text, $slugger->slug($text));
     }
 
     return $out;

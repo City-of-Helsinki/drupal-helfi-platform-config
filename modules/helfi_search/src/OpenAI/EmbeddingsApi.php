@@ -47,6 +47,8 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
   /**
    * Make request to OpenAI API.
    *
+   * @phpstan-param string|array<string> $input
+   *
    * @throws \Drupal\helfi_search\EmbeddingsModelException
    */
   private function makeRequest(string|array $input, string $model): Response {

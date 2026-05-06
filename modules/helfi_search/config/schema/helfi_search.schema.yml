@@ -31,6 +31,11 @@ helfi_search.settings:
     min_score:
       type: float
       label: 'KNN minimum similarity floor (0.0–1.0)'
+    ignored_classes:
+      type: sequence
+      label: 'CSS classes whose elements are stripped from indexed HTML'
+      sequence:
+        type: string
     external_links:
       type: mapping
       label: 'Links for other searches'

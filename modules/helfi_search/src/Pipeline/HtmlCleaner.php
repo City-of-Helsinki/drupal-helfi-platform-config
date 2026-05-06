@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Pipeline;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+
 /**
  * Cleans HTML by removing non-content elements before Markdown conversion.
  */
@@ -15,18 +17,7 @@ class HtmlCleaner {
   private const array REMOVE_TAGS = [
     'head', 'script', 'style', 'nav', 'footer', 'header',
     'aside', 'form', 'button', 'input', 'select', 'textarea',
-    'iframe', 'embed', 'object', 'noscript',
-  ];
-
-  /**
-   * Exact CSS classes to remove.
-   *
-   * @todo This could be a config so that it can be tweaked without deployment.
-   */
-  private const array REMOVE_CLASSES = [
-    'is-hidden', 'visually-hidden', 'skip-link', 'table-of-contents',
-    'component--recommendations', 'component--map', 'component--hearings',
-    'announcement', "content-tags", 'content-date', 'content-links',
+    'iframe', 'embed', 'object', 'noscript', 'time',
   ];
 
   /**
@@ -36,11 +27,13 @@ class HtmlCleaner {
     'helfi-survey__container',
   ];
 
+  public function __construct(
+    private readonly ConfigFactoryInterface $configFactory,
+  ) {
+  }
+
   /**
    * Clean a parsed HTML document by removing non-content elements.
-   *
-   * Operates on a deep copy so callers retain access to the unmodified
-   * DOM.
    *
    * @param \DOMDocument $doc
    *   Parsed HTML document to clean.
@@ -49,30 +42,28 @@ class HtmlCleaner {
    *   Cleaned HTML string.
    */
   public function clean(\DOMDocument $doc): string {
-    $copy = new \DOMDocument();
-    foreach ($doc->childNodes as $child) {
-      $copy->appendChild($copy->importNode($child, TRUE));
-    }
-
     // Remove non-content tags and boilerplate class patterns.
-    $this->removeNonContentElements($copy);
+    $this->removeNonContentElements($doc);
 
     // Replace links with their text content (URLs are noise for embeddings).
-    $this->unwrapLinks($copy);
+    $this->unwrapLinks($doc);
 
     // Replace images with their alt text.
-    $this->replaceImagesWithAlt($copy);
+    $this->replaceImagesWithAlt($doc);
 
     // Remove empty div and span wrappers left after cleaning.
-    $this->removeEmptyWrappers($copy);
+    $this->removeEmptyWrappers($doc);
 
-    return $copy->saveHTML() ?: '';
+    return $doc->saveHTML() ?: '';
   }
 
   /**
    * Remove all nodes in a DOMNodeList.
    *
    * Converts to array first since the live list changes during removal.
+   *
+   * @param \DOMNodeList<\DOMNode> $nodes
+   *   List of nodes to remove.
    */
   private function removeNodeList(\DOMNodeList $nodes): void {
     foreach (iterator_to_array($nodes) as $node) {
@@ -123,10 +114,20 @@ class HtmlCleaner {
       }
     }
 
+    $xpath = new \DOMXPath($doc);
+
+    // Anything explicitly hidden from assistive tech is by definition not
+    // body content. This catches placeholder "ghost" cards rendered before
+    // a JS/HTMX widget swaps in real content, plus decorative icons
+    // independent of which CSS class the widget happens to use.
+    if ($hidden = $xpath->query('//*[@aria-hidden="true"]')) {
+      $this->removeNodeList($hidden);
+    }
+
     // Uses the whitespace-boundary trick: pad @class with spaces so that
     // contains() matches whole words only (e.g. " visually-hidden ").
-    $xpath = new \DOMXPath($doc);
-    foreach (self::REMOVE_CLASSES as $class) {
+    $ignoredClasses = $this->configFactory->get('helfi_search.settings')->get('ignored_classes') ?? [];
+    foreach ($ignoredClasses as $class) {
       $elements = $xpath->query(
         '//*[contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")]'
       );
@@ -176,13 +177,21 @@ class HtmlCleaner {
   }
 
   /**
-   * Iteratively remove empty div and span wrappers.
+   * Iteratively remove wrappers and list containers with no real content.
+   *
+   * Treats whitespace-only text as empty so that prior cleanup passes
+   * (link unwrapping, image stripping, hidden-element removal) can leave
+   * an outer wrapper as a candidate for removal.
    */
   private function removeEmptyWrappers(\DOMDocument $doc): void {
+    $tagFilter = "(local-name()='div' or local-name()='span' or local-name()='li' or local-name()='ul' or local-name()='ol')";
     do {
       $changed = FALSE;
       $xpath = new \DOMXPath($doc);
-      $emptyNodes = $xpath->query('//div[not(node())] | //span[not(node())]');
+      // $tagFilter: must be one of the five wrapper tags.
+      // not(*): has no child elements.
+      // not(normalize-space()): has no text after collapsing whitespace.
+      $emptyNodes = $xpath->query("//*[$tagFilter and not(*) and not(normalize-space())]");
 
       if (!$emptyNodes || $emptyNodes->length === 0) {
         break;

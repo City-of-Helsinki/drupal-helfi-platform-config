@@ -6,7 +6,6 @@ namespace Drupal\helfi_search\Drush\Commands;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Utility\Error;
@@ -84,7 +83,7 @@ final class TextPipelineCommands extends Command {
       foreach ($chunks as $chunk) {
         $output->writeln('Title: ' . ($chunk->context['title'] ?? ''));
         $output->writeln('Fragment: ' . ($chunk->fragment ?? ''));
-        $output->writeln('Snippet: ' . (Unicode::truncate($chunk->snippet, 100, add_ellipsis: TRUE) ?? ''));
+        $output->writeln('Snippet: ' . ($chunk->snippet ?? ''));
         $output->writeln((string) $chunk);
         $output->writeln('=========================================');
       }

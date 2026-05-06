@@ -246,10 +246,13 @@ final class QueryBuilder {
     $results = [];
 
     foreach ($response['hits']['hits'] ?? [] as $hit) {
-      // Each hit comes from exactly one KNN clause, so inner_hits always has
-      // a single entry. The key is either the nested field path or the name
-      // we assigned in buildKnnQuery(), but we don't need to know which.
-      $innerGroup = array_first($hit['inner_hits'] ?? []) ?? [];
+      // With multiple KNN clauses (deboost mode), each hit echoes every named
+      // inner_hits clause, including empty ones for clauses that didn't
+      // match. Pick the first group that actually has hits.
+      $innerGroup = array_find(
+        $hit['inner_hits'] ?? [],
+        static fn (array $group): bool => !empty($group['hits']['hits']),
+      ) ?? [];
       $innerFields = $innerGroup['hits']['hits'][0]['fields'][$fieldPrefix][0] ?? [];
       $results[] = [
         'id' => $hit['_id'] ?? NULL,

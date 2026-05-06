@@ -41,11 +41,11 @@ class HeadingFragmentExtractorTest extends UnitTestCase {
     $result = HeadingFragmentExtractor::extract($doc, 'en');
 
     $this->assertCount(5, $result);
-    $this->assertSame('visible', $result[0]['fragment']);
-    $this->assertSame('foobar', $result[1]['fragment']);
-    $this->assertNull($result[2]['fragment']);
-    $this->assertSame('intro-1', $result[3]['fragment']);
-    $this->assertSame('custom-anchor', $result[4]['fragment']);
+    $this->assertSame('visible', $result[0]->fragment);
+    $this->assertSame('foobar', $result[1]->fragment);
+    $this->assertNull($result[2]->fragment);
+    $this->assertSame('intro-1', $result[3]->fragment);
+    $this->assertSame('custom-anchor', $result[4]->fragment);
   }
 
   /**
@@ -62,7 +62,8 @@ class HeadingFragmentExtractorTest extends UnitTestCase {
 
     $result = HeadingFragmentExtractor::extract($doc, 'en');
 
-    $this->assertSame(['section', 'section-2', 'section-3'], array_column($result, 'fragment'));
+    $fragments = array_map(static fn ($entry) => $entry->fragment, $result);
+    $this->assertSame(['section', 'section-2', 'section-3'], $fragments);
   }
 
   /**

@@ -7,6 +7,19 @@ deboost_bundles:
   - news_item
 deboost_factor: 0.9
 min_score: 0.32
+ignored_classes:
+  - is-hidden
+  - visually-hidden
+  - skip-link
+  - table-of-contents
+  - component--recommendations
+  - component--map
+  - component--hearings
+  - announcement
+  - content-tags
+  - content-date
+  - content-links
+  - block--askem
 external_links:
   jobs: 'https://www.hel.fi/en/open-jobs'
   events: 'https://tapahtumat.hel.fi/en'

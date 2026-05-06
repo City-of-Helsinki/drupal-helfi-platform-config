@@ -43,7 +43,7 @@ class EmbeddingsApiTest extends TestCase {
    * Creates a mock HTTP response with embedding data.
    */
   private function createEmbeddingResponse(): Response {
-    return new Response(200, [], json_encode([
+    return new Response(200, [], (string) json_encode([
       'model' => 'text-embedding-3-small',
       'data' => [
         ['embedding' => [0.1, 0.2, 0.3]],

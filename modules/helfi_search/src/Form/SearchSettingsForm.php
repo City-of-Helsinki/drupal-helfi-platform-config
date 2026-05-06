@@ -10,6 +10,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\TypedConfigManagerInterface;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Form\ConfigTarget;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
@@ -134,6 +135,33 @@ final class SearchSettingsForm extends ConfigFormBase {
       '#type' => 'url',
       '#title' => $this->t('AI register URL'),
       '#config_target' => 'helfi_search.settings:ai_register_url',
+    ];
+
+    $form['pipeline'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Indexing pipeline'),
+      '#open' => FALSE,
+    ];
+
+    $form['pipeline']['ignored_classes'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Ignored CSS classes'),
+      '#description' => $this->t('Elements whose <code>class</code> attribute contains any of these classes are stripped from indexed HTML. One class per line. Exact match (no partials, no leading dot).<br><strong>Note:</strong> this value is not in <code>config_ignore</code>. To keep the shared Elasticsearch index consistent, the same list should be applied on every site.'),
+      '#rows' => 12,
+      '#config_target' => new ConfigTarget(
+        'helfi_search.settings',
+        'ignored_classes',
+        static function (?array $value): string {
+          return implode("\n", $value ?? []);
+        },
+        static function (string $value): array {
+          $lines = preg_split('/\R/', $value, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+          return array_values(array_filter(
+            array_map('trim', $lines),
+            static fn (string $line): bool => $line !== '',
+          ));
+        },
+      ),
     ];
 
     return $form;

@@ -143,7 +143,7 @@ class ContentChunker {
    *
    * @param string $text
    *   Text to split.
-   * @param string[] $separators
+   * @param non-empty-string[] $separators
    *   Separators tried in order of preference.
    *
    * @return string[]

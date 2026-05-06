@@ -59,6 +59,8 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $configuration
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
@@ -105,6 +107,8 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
   /**
    * {@inheritDoc}
+   *
+   * @phpstan-param \Drupal\search_api\Item\ItemInterface<mixed> $item
    */
   public function addFieldValues(ItemInterface $item): void {
     $models = $this->getModels();
