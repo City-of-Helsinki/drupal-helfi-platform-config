@@ -255,10 +255,10 @@ class QueryBuilderTest extends UnitTestCase {
   }
 
   /**
-   * Tests parseKnnHits reads content under a named inner_hits key.
+   * Tests parseKnnHits skips empty inner_hits clauses.
    *
-   * Multi-KNN searches name each inner_hits clause ('deboosted' / 'content')
-   * instead of using the default nested-field-path key.
+   * With deboost enabled, ES echoes every named inner_hits key on each hit,
+   * including empty ones for clauses the document didn't match.
    */
   public function testParseKnnHitsWithNamedInnerHits(): void {
     $response = [
@@ -270,12 +270,18 @@ class QueryBuilderTest extends UnitTestCase {
             '_source' => ['url' => ['/fi/x'], 'label' => ['X']],
             'inner_hits' => [
               'deboosted' => [
+                'hits' => ['total' => ['value' => 0], 'hits' => []],
+              ],
+              'content' => [
                 'hits' => [
                   'hits' => [
                     [
                       'fields' => [
                         self::TEST_MODEL_FIELD => [
-                          ['content' => ['Named hit content']],
+                          [
+                            'content' => ['Named hit content'],
+                            'fragment' => ['fragment'],
+                          ],
                         ],
                       ],
                     ],
@@ -291,6 +297,7 @@ class QueryBuilderTest extends UnitTestCase {
     $results = (new QueryBuilder())->parseKnnHits($response, self::TEST_MODEL);
 
     $this->assertEquals('Named hit content', $results[0]['content']);
+    $this->assertEquals('fragment', $results[0]['fragment']);
   }
 
   /**
