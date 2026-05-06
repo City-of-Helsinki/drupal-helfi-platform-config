@@ -27,6 +27,7 @@ class HtmlCleaner {
     'is-hidden', 'visually-hidden', 'skip-link', 'table-of-contents',
     'component--recommendations', 'component--map', 'component--hearings',
     'announcement', "content-tags", 'content-date', 'content-links',
+    'block--askem',
   ];
 
   /**
