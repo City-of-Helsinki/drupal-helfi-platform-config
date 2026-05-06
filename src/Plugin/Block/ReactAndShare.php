@@ -8,6 +8,7 @@ use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\language\ConfigurableLanguageManagerInterface;
@@ -23,39 +24,51 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Language manager.
-   *
-   * @var \Drupal\language\ConfigurableLanguageManagerInterface
+   * @param array<string, mixed> $configuration
    */
-  private ConfigurableLanguageManagerInterface $languageManager;
-
-  /**
-   * State.
-   *
-   * @var \Drupal\Core\State\StateInterface
-   */
-  private StateInterface $state;
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(
-    ContainerInterface $container,
+  public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ): self {
-    $instance = new self($configuration, $plugin_id, $plugin_definition);
-    assert($container->get('language_manager') instanceof ConfigurableLanguageManagerInterface);
-    $instance->languageManager = $container->get('language_manager');
-    $instance->state = $container->get('state');
-    return $instance;
+    private readonly ConfigurableLanguageManagerInterface $languageManager,
+    private readonly StateInterface $state,
+    private readonly RouteMatchInterface $routeMatch,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
   /**
    * {@inheritdoc}
+   *
+   * @param array<string, mixed> $configuration
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    $languageManager = $container->get('language_manager');
+    assert($languageManager instanceof ConfigurableLanguageManagerInterface);
+    $state = $container->get('state');
+    assert($state instanceof StateInterface);
+    $routeMatch = $container->get('current_route_match');
+    assert($routeMatch instanceof RouteMatchInterface);
+    return new self(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $languageManager,
+      $state,
+      $routeMatch,
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @return array<string, mixed>
    */
   public function build(): array {
+    if ($this->routeMatch->getRouteName() === 'entity.user.canonical') {
+      return [];
+    }
+
     $langcode = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
