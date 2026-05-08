@@ -62,6 +62,9 @@ class ReactAndShareTest extends UnitTestCase {
 
   /**
    * {@inheritdoc}
+   *
+   * @covers ::__construct
+   * @covers ::create
    */
   protected function setUp(): void {
     parent::setUp();
