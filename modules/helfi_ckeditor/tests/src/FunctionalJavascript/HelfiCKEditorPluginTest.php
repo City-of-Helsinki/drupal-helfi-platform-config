@@ -395,10 +395,9 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
     $this->assertTrue($language_selector->isVisible(), 'Language selector is not visible.');
     $language_selector->click();
 
-    // Choose language for the English text.
-    $language_selections = $assert_session->waitForElementVisible('css', '.helfi-language-selector .ts-dropdown');
-    $language = $language_selections->find('css', 'span[data-value="' . $langcode . '"]');
-    $this->assertTrue($language->isVisible(), strtoupper($langcode) . ' language selection is not visible.');
+    // Wait for the language option to be visible and click it.
+    $language = $assert_session->waitForElementVisible('css', '.helfi-language-selector .ts-dropdown span[data-value="' . $langcode . '"]');
+    $this->assertNotNull($language, strtoupper($langcode) . ' language selection is not visible.');
     $language->click();
   }
 
