@@ -15,6 +15,7 @@ use Drupal\helfi_platform_config\Plugin\Block\ReactAndShare;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @coversDefaultClass \Drupal\helfi_platform_config\Plugin\Block\ReactAndShare
@@ -62,9 +63,6 @@ class ReactAndShareTest extends UnitTestCase {
 
   /**
    * {@inheritdoc}
-   *
-   * @covers ::__construct
-   * @covers ::create
    */
   protected function setUp(): void {
     parent::setUp();
@@ -84,6 +82,24 @@ class ReactAndShareTest extends UnitTestCase {
     );
 
     $this->reactAndShareBlock->setStringTranslation($this->stringTranslation);
+  }
+
+  /**
+   * Tests that create() correctly instantiates the block from the container.
+   *
+   * @covers ::create
+   * @covers ::__construct
+   */
+  public function testCreate(): void {
+    $container = $this->createMock(ContainerInterface::class);
+    $container->method('get')->willReturnMap([
+      ['language_manager', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $this->languageManager],
+      ['state', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $this->state],
+      ['current_route_match', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $this->routeMatch],
+    ]);
+
+    $block = ReactAndShare::create($container, [], 'react_and_share', ['provider' => 'helfi_platform_config']);
+    $this->assertInstanceOf(ReactAndShare::class, $block);
   }
 
   /**
