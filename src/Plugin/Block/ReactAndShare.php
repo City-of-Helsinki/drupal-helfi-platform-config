@@ -23,9 +23,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 )]
 final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInterface {
 
-  /**
-   * @param array<string, mixed> $configuration
-   */
   public function __construct(
     array $configuration,
     $plugin_id,
@@ -39,8 +36,6 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
 
   /**
    * {@inheritdoc}
-   *
-   * @param array<string, mixed> $configuration
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     $languageManager = $container->get('language_manager');
@@ -61,8 +56,6 @@ final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInt
 
   /**
    * {@inheritdoc}
-   *
-   * @return array<string, mixed>
    */
   public function build(): array {
     if ($this->routeMatch->getRouteName() === 'entity.user.canonical') {
