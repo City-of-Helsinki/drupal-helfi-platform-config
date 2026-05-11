@@ -12,12 +12,14 @@ use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\language\Entity\ConfigurableLanguage;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests the unit contact card paragraph bundle class.
- *
- * @group helfi_tpr_config
  */
+#[Group('helfi_tpr_config')]
+#[RunTestsInSeparateProcesses]
 class UnitContactCardTest extends KernelTestBase {
 
   /**

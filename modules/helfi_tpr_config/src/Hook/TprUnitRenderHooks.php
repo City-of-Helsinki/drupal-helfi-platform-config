@@ -18,6 +18,8 @@ class TprUnitRenderHooks {
    *
    * Hides the result count and bumps the card heading to <h3> when the
    * service_units view has a single result.
+   *
+   * @phpstan-param array<string, mixed> $variables
    */
   #[Hook('preprocess_views_view__service_units')]
   public function preprocessServiceUnitsView(array &$variables): void {
@@ -29,6 +31,8 @@ class TprUnitRenderHooks {
       return;
     }
     $variables['show_count_container'] = FALSE;
+    // card_heading_level is not a real entity field.
+    // @phpstan-ignore-next-line property.notFound
     $entity->card_heading_level = 'h3';
   }
 
@@ -38,6 +42,8 @@ class TprUnitRenderHooks {
    * Preprocess code may set card_heading_level on the entity to change
    * the rendered heading tag. Append card_heading_level to the cache
    * keys so each variant gets its own cache entry.
+   *
+   * @phpstan-param array<string, mixed> $build
    *
    * @see self::preprocessServiceUnitsView
    */
