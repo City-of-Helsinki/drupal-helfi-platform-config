@@ -17,3 +17,9 @@ msgstr "tai"
 msgctxt "Remote video"
 msgid "edit the video embed."
 msgstr "muokkaa videoupotusta."
+
+msgid "This is only visible in the content creator view. The title is created automatically, but you can edit it if you wish."
+msgstr "Tämä näkyy vain sisällöntuottajan näkymässä. Otsikko luodaan automaattisesti, mutta voit halutessasi muokata sitä."
+
+msgid "You can embed videos from Helsinki Channel, Terveyskylä or YouTube. <a href=\"@instruction_url\" target=\"_blank\">See the Hel.fi content creator’s guide for instructions on finding the URLs (in Finnish, opens in a new window)</a>"
+msgstr "Voit upottaa videoita Helsinki-kanavalta, Terveyskylästä tai Youtubesta. <a href=\"@instruction_url\" target=\"_blank\">Katso Sisällöntuottajan oppaasta ohjeet URL-osoitteiden hakemiseen (avautuu uuteen ikkunaan)</a>"

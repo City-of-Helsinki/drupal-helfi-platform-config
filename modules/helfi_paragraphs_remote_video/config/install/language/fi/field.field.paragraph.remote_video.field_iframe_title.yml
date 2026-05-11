@@ -1,2 +1,2 @@
-label: 'Kuvaus avustavalle teknologialle'
-description: 'Kirjoita 1-2 lauseen kuvaus avustavan teknologian käyttäjille. Älä käytä etuliitettä "Video: ". Se lisätään automaattisesti.'
+label: 'Otsikko avustavalle teknologialle'
+description: 'Kirjoita otsikko avustavan teknologian käyttäjälle. Jos videolla on jo otsikko, käytä samaa otsikkoa. Otsikko luetaan ruudunlukijalle ennen videota. Tämä teksti ei näy sivulla. Otsikkoon lisätään automaattisesti etuliite “Video: ”.'
