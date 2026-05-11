@@ -5161,11 +5161,6 @@ parameters:
 			path: src/Plugin/Block/ProfileBlock.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_platform_config\\\\Plugin\\\\Block\\\\ReactAndShare\\:\\:__construct\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Plugin/Block/ReactAndShare.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_platform_config\\\\Plugin\\\\Block\\\\ReactAndShare\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Plugin/Block/ReactAndShare.php

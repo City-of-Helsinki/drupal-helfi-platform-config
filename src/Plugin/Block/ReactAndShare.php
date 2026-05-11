@@ -23,6 +23,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 )]
 final class ReactAndShare extends BlockBase implements ContainerFactoryPluginInterface {
 
+  /**
+   * The constructor.
+   *
+   * @phpstan-param array<mixed> $configuration
+   */
   public function __construct(
     array $configuration,
     $plugin_id,
