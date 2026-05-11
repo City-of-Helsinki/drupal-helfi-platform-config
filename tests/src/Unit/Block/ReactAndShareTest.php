@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Unit\Block;
 
 use Drupal\Core\Config\Config;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -14,6 +15,7 @@ use Drupal\helfi_platform_config\Plugin\Block\ReactAndShare;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @coversDefaultClass \Drupal\helfi_platform_config\Plugin\Block\ReactAndShare
@@ -39,6 +41,13 @@ class ReactAndShareTest extends UnitTestCase {
   private StateInterface|MockObject $state;
 
   /**
+   * The mocked route match.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface|MockObject
+   */
+  private RouteMatchInterface|MockObject $routeMatch;
+
+  /**
    * The block instance being tested.
    *
    * @var \Drupal\helfi_platform_config\Plugin\Block\ReactAndShare
@@ -60,23 +69,50 @@ class ReactAndShareTest extends UnitTestCase {
 
     $this->languageManager = $this->createMock(ConfigurableLanguageManagerInterface::class);
     $this->state = $this->createMock(StateInterface::class);
-    $this->stringTranslation = $this->createMock('Drupal\Core\StringTranslation\TranslationInterface');
+    $this->routeMatch = $this->createMock(RouteMatchInterface::class);
+    $this->stringTranslation = $this->createMock(TranslationInterface::class);
 
     $this->reactAndShareBlock = new ReactAndShare(
       [],
       'react_and_share',
-      ['provider' => 'helfi_platform_config']
+      ['provider' => 'helfi_platform_config'],
+      $this->languageManager,
+      $this->state,
+      $this->routeMatch,
     );
 
-    // Inject the mock language manager and state using reflection.
-    $reflection = new \ReflectionClass($this->reactAndShareBlock);
-    $property = $reflection->getProperty('languageManager');
-    $property->setValue($this->reactAndShareBlock, $this->languageManager);
-    $stateProperty = $reflection->getProperty('state');
-    $stateProperty->setValue($this->reactAndShareBlock, $this->state);
+    $this->reactAndShareBlock->setStringTranslation($this->stringTranslation);
+  }
 
-    // Ensure translation works within the block.
-    $this->reactAndShareBlock->setStringTranslation($this->createMock(TranslationInterface::class));
+  /**
+   * Tests that create() correctly instantiates the block from the container.
+   *
+   * @covers ::create
+   * @covers ::__construct
+   */
+  public function testCreate(): void {
+    $container = $this->createMock(ContainerInterface::class);
+    $container->method('get')->willReturnMap([
+      ['language_manager', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $this->languageManager],
+      ['state', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $this->state],
+      ['current_route_match', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $this->routeMatch],
+    ]);
+
+    $block = ReactAndShare::create($container, [], 'react_and_share', ['provider' => 'helfi_platform_config']);
+    $this->assertInstanceOf(ReactAndShare::class, $block);
+  }
+
+  /**
+   * Tests that the block is hidden on the user canonical route.
+   *
+   * @covers ::build
+   */
+  public function testBuildReturnsEmptyArrayOnUserCanonicalRoute(): void {
+    $this->routeMatch->expects($this->once())
+      ->method('getRouteName')
+      ->willReturn('entity.user.canonical');
+
+    $this->assertSame([], $this->reactAndShareBlock->build());
   }
 
   /**
