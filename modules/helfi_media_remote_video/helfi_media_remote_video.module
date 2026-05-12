@@ -305,6 +305,7 @@ function helfi_media_remote_video_entity_bundle_field_info(EntityTypeInterface $
   ) {
     $field = BaseFieldOverride::createFromBaseFieldDefinition($base_field_definitions['name'], $bundle);
     $field->setLabel(t('Administrative title'));
+    // @phpstan-ignore-next-line Drupal accepts TranslatableMarkup.
     $field->setDescription(t('This is only visible in the content creator view. The title is created automatically, but you can edit it if you wish.'));
     $fields['name'] = $field;
   }
