@@ -10,7 +10,7 @@ field_name: field_remote_video_videographer
 entity_type: media
 bundle: remote_video
 label: Videographer
-description: 'Write the name of the videographer here.'
+description: 'Write the name of the videographer of the video.'
 required: false
 translatable: false
 default_value: {  }

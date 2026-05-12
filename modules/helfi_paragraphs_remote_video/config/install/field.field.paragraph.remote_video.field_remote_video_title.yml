@@ -10,7 +10,7 @@ field_name: field_remote_video_title
 entity_type: paragraph
 bundle: remote_video
 label: Title
-description: ''
+description: 'Adds an H2 heading. It’s recommended that the video has a title here or in the lower title field.'
 required: false
 translatable: false
 default_value: {  }

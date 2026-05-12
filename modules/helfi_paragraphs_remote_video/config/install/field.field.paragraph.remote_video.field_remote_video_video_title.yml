@@ -10,8 +10,8 @@ field_name: field_remote_video_video_title
 entity_type: paragraph
 bundle: remote_video
 label: 'Title of the video'
-description: ''
-required: true
+description: 'Adds an H3 heading. Use when the video is part of a section that already has an H2 heading. If the video is separate from the rest of the content, place its title in the upper title field (adds an H2 heading).'
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

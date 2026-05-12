@@ -69,16 +69,14 @@ function helfi_media_remote_video_form_alter(&$form, &$form_state, $form_id): vo
     $form['#after_build'][] = '_helfi_media_remote_video_remote_video_validate';
     $form['container']['submit']['#validate'][] = '_helfi_media_remote_video_remote_video_provider_validation';
 
-    // Switch provider names to more understandable format as the true provider
-    // for Helsinki-kanava is Icareus Suite.
-    $providers = ['@providers' => 'YouTube, Helsinki-kanava, Terveyskylä'];
+    $instruction_url = ['@instruction_url' => "https://www.hel.fi/fi/paatoksenteko-ja-hallinto/helfin-sisallontuottajan-opas/sivujen-rakentaminen-drupalissa/komponentit/videoupotus#videon-url-osoitteen-haku"];
 
     if (isset($form['field_media_oembed_video']['widget'][0]['value']['#description'])) {
-      $form['field_media_oembed_video']['widget'][0]['value']['#description'] = t('Allowed providers: @providers.', $providers);
+      $form['field_media_oembed_video']['widget'][0]['value']['#description'] = t('You can embed videos from Helsinki Channel, Terveyskylä or YouTube. <a href="@instruction_url" target="_blank">See the Hel.fi content creator’s guide for instructions on finding the URLs (in Finnish, opens in a new window)</a>', $instruction_url);
     }
 
     if (isset($form['container']['url']['#description'])) {
-      $form['container']['url']['#description'] = t('Allowed providers: @providers.', $providers);
+      $form['container']['url']['#description'] = t('You can embed videos from Helsinki Channel, Terveyskylä or YouTube. <a href="@instruction_url" target="_blank">See the Hel.fi content creator’s guide for instructions on finding the URLs (in Finnish, opens in a new window)</a>', $instruction_url);
     }
   }
 }
@@ -307,6 +305,8 @@ function helfi_media_remote_video_entity_bundle_field_info(EntityTypeInterface $
   ) {
     $field = BaseFieldOverride::createFromBaseFieldDefinition($base_field_definitions['name'], $bundle);
     $field->setLabel(t('Administrative title'));
+    // @phpstan-ignore-next-line Drupal accepts TranslatableMarkup.
+    $field->setDescription(t('This is only visible in the content creator view. The title is created automatically, but you can edit it if you wish.'));
     $fields['name'] = $field;
   }
 

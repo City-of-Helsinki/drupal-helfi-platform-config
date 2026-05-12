@@ -10,7 +10,7 @@ field_name: field_iframe_title
 entity_type: paragraph
 bundle: remote_video
 label: 'Assistive technology title'
-description: 'Users of assistive technology need a descriptive title to know what is in the embedded video. Do not use the prefix "Video: ". It will be added automatically.'
+description: 'Write a title for users of assistive technology. If the video already has a title, use the same one. The title is read by screen readers before the video. This text is not visible on the page. The prefix “Video: ” is added automatically.'
 required: true
 translatable: true
 default_value: {  }
