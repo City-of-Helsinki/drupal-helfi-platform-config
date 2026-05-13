@@ -99,7 +99,7 @@ class SearchControllerTest extends KernelTestBase {
                     '_score' => 1.2,
                     '_source' => [
                       'title' => ['Promoted Result'],
-                      'processed' => ['A promoted description'],
+                      'description' => ['A promoted description'],
                       'link' => ['/fi/promoted'],
                       'search_api_language' => ['fi'],
                     ],

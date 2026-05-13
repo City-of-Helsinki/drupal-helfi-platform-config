@@ -62,7 +62,7 @@ final class QueryBuilder {
         'size' => self::PROMOTIONS_LIMIT,
         '_source' => [
           'title',
-          'processed',
+          'description',
           'link',
         ],
       ],
@@ -283,7 +283,7 @@ final class QueryBuilder {
     foreach ($response['hits']['hits'] ?? [] as $hit) {
       $promotions[] = [
         'title' => array_first($hit['_source']['title'] ?? []),
-        'description' => array_first($hit['_source']['processed'] ?? []),
+        'description' => array_first($hit['_source']['description'] ?? []),
         'url' => array_first($hit['_source']['link'] ?? []),
         'score' => $hit['_score'] ?? 0,
       ];

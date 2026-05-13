@@ -69,7 +69,7 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals('test', $query['body']['query']['bool']['must']['match_phrase'][$expectedField]['query']);
     $this->assertEquals($language, $query['body']['query']['bool']['filter']['term']['search_api_language']);
     $this->assertEquals(QueryBuilder::PROMOTIONS_LIMIT, $query['body']['size']);
-    $this->assertEquals(['title', 'processed', 'link'], $query['body']['_source']);
+    $this->assertEquals(['title', 'description', 'link'], $query['body']['_source']);
   }
 
   /**
@@ -83,7 +83,7 @@ class QueryBuilderTest extends UnitTestCase {
             '_score' => 0.9,
             '_source' => [
               'title' => ['Test Promotion'],
-              'processed' => ['A description'],
+              'description' => ['A description'],
               'link' => ['https://example.com/page'],
               'search_api_language' => ['fi'],
             ],
@@ -92,7 +92,7 @@ class QueryBuilderTest extends UnitTestCase {
             '_score' => 0.7,
             '_source' => [
               'title' => ['Another Promotion'],
-              'processed' => ['Another description'],
+              'description' => ['Another description'],
               'link' => ['/sv/another'],
               'search_api_language' => ['sv'],
             ],
