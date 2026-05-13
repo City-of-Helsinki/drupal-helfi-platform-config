@@ -4,10 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.curated_event_list.field_all_events_link
+    - field.field.paragraph.curated_event_list.field_description
     - field.field.paragraph.curated_event_list.field_events
+    - field.field.paragraph.curated_event_list.field_title
     - paragraphs.paragraphs_type.curated_event_list
   module:
     - link
+    - text
 id: paragraph.curated_event_list.default
 targetEntityType: paragraph
 bundle: curated_event_list
@@ -23,6 +26,13 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
+    weight: 3
+    region: content
+  field_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
     weight: 1
     region: content
   field_events:
@@ -31,6 +41,14 @@ content:
     settings:
       view_mode: default
       link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
     weight: 0
     region: content

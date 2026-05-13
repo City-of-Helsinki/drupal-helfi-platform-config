@@ -1,0 +1,21 @@
+uuid: 222e2d51-ca62-4cc0-ada7-2e5a08db1655
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_title
+    - paragraphs.paragraphs_type.curated_event_list
+id: paragraph.curated_event_list.field_title
+field_name: field_title
+entity_type: paragraph
+bundle: curated_event_list
+label: Title
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 'Recommended events'
+default_value_callback: ''
+settings: {  }
+field_type: string

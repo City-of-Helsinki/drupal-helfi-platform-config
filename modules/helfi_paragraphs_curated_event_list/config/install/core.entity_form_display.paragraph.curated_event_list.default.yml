@@ -4,10 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.curated_event_list.field_all_events_link
+    - field.field.paragraph.curated_event_list.field_description
     - field.field.paragraph.curated_event_list.field_events
+    - field.field.paragraph.curated_event_list.field_title
     - paragraphs.paragraphs_type.curated_event_list
   module:
     - link
+    - text
 id: paragraph.curated_event_list.default
 targetEntityType: paragraph
 bundle: curated_event_list
@@ -15,19 +18,35 @@ mode: default
 content:
   field_all_events_link:
     type: link_default
-    weight: 1
+    weight: 2
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
+  field_description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_events:
     type: entity_reference_autocomplete
-    weight: 0
+    weight: 1
     region: content
     settings:
       match_operator: CONTAINS
       match_limit: 5
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
