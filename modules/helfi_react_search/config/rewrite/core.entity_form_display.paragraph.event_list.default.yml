@@ -1,0 +1,11 @@
+dependencies:
+  config:
+    - field.field.paragraph.event_list.field_search_term
+content:
+  field_search_term:
+    type: boolean_checkbox
+    weight: 8
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
