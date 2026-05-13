@@ -1,12 +1,12 @@
-uuid: 222e2d51-ca62-4cc0-ada7-2e5a08db1655
+uuid: 869d2b32-02a8-4a5f-a3e1-8a0a9711f8e3
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_title
+    - field.storage.paragraph.field_curated_events_title
     - paragraphs.paragraphs_type.curated_event_list
-id: paragraph.curated_event_list.field_title
-field_name: field_title
+id: paragraph.curated_event_list.field_curated_events_title
+field_name: field_curated_events_title
 entity_type: paragraph
 bundle: curated_event_list
 label: Title
