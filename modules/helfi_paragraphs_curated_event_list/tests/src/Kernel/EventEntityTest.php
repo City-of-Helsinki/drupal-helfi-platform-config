@@ -45,6 +45,7 @@ class EventEntityTest extends KernelTestBase {
     'datetime',
     'imagecache_external',
     'external_entities',
+    'text',
     'helfi_paragraphs_curated_event_list',
   ];
 
