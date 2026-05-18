@@ -3,11 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - image.style.1_180w_180h_LQ
+    - image.style.1_180w_180h_lq
     - image.style.1_277w_277h
     - image.style.1_406w_406h
-    - image.style.1_554w_554h_LQ
-    - image.style.1_812w_812h_LQ
+    - image.style.1_554w_554h_lq
+    - image.style.1_812w_812h_lq
     - image.style.1_90w_90h
   module:
     - helfi_image_styles
@@ -21,7 +21,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_812w_812h_LQ
+    image_mapping: 1_812w_812h_lq
     breakpoint_id: helfi_image_styles.l
     multiplier: 2x
   -
@@ -31,7 +31,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_554w_554h_LQ
+    image_mapping: 1_554w_554h_lq
     breakpoint_id: helfi_image_styles.m
     multiplier: 2x
   -
@@ -41,7 +41,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_812w_812h_LQ
+    image_mapping: 1_812w_812h_lq
     breakpoint_id: helfi_image_styles.s
     multiplier: 2x
   -
@@ -51,7 +51,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_180w_180h_LQ
+    image_mapping: 1_180w_180h_lq
     breakpoint_id: helfi_image_styles.xs
     multiplier: 2x
 breakpoint_group: helfi_image_styles

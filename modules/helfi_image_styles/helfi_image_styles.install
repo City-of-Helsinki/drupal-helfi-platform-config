@@ -174,4 +174,15 @@ function helfi_image_styles_update_11000(): void {
   $config_factory->getEditable('image.style.3.3_991w_300h')->delete();
   $config_factory->getEditable('image.style.3.6_1920w_540h')->delete();
   $config_factory->getEditable('image.style.3.6_3840w_1080h_LQ')->delete();
+  $config_factory->getEditable('image.style.orig_1086w_free_LQ')->delete();
+  $config_factory->getEditable('image.style.orig_1470w_free_LQ')->delete();
+  $config_factory->getEditable('image.style.orig_1854w_free_LQ')->delete();
+  $config_factory->getEditable('image.style.orig_2366w_free_LQ')->delete();
+  $config_factory->getEditable('image.style.orig_2528w_free_LQ')->delete();
+  $config_factory->getEditable('image.style.1_1086w_1086h_LQ')->delete();
+  $config_factory->getEditable('image.style.1_180w_180h_LQ')->delete();
+  $config_factory->getEditable('image.style.1_500w_500h_LQ')->delete();
+  $config_factory->getEditable('image.style.1_554w_554h_LQ')->delete();
+  $config_factory->getEditable('image.style.1_812w_812h_LQ')->delete();
+  $config_factory->getEditable('image.style.1_828w_828h_LQ')->delete();
 }

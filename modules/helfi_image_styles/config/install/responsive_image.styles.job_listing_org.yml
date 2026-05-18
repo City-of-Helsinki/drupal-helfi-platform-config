@@ -3,12 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - image.style.1_5_1120w_746h_LQ
-    - image.style.1_5_1470w_980h_LQ
-    - image.style.1_5_1854w_1236h_LQ
+    - image.style.1_5_1120w_746h_lq
+    - image.style.1_5_1470w_980h_lq
+    - image.style.1_5_1854w_1236h_lq
     - image.style.1_5_341w_227h
     - image.style.1_5_560w_373h
-    - image.style.1_5_682w_454h_LQ
+    - image.style.1_5_682w_454h_lq
     - image.style.1_5_735w_490h
     - image.style.1_5_927w_618h
   module:
@@ -23,7 +23,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_5_682w_454h_LQ
+    image_mapping: 1_5_682w_454h_lq
     breakpoint_id: helfi_image_styles.l
     multiplier: 2x
   -
@@ -33,7 +33,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_5_1854w_1236h_LQ
+    image_mapping: 1_5_1854w_1236h_lq
     breakpoint_id: helfi_image_styles.m
     multiplier: 2x
   -
@@ -43,7 +43,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_5_1470w_980h_LQ
+    image_mapping: 1_5_1470w_980h_lq
     breakpoint_id: helfi_image_styles.s
     multiplier: 2x
   -
@@ -53,7 +53,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_5_1120w_746h_LQ
+    image_mapping: 1_5_1120w_746h_lq
     breakpoint_id: helfi_image_styles.xs
     multiplier: 2x
 breakpoint_group: helfi_image_styles

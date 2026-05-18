@@ -7,10 +7,10 @@ dependencies:
     - image.style.1_5_294w_196h
     - image.style.1_5_378w_252h
     - image.style.1_5_405w_270h
-    - image.style.1_5_434w_290h_LQ
-    - image.style.1_5_588w_392h_LQ
-    - image.style.1_5_756w_504h_LQ
-    - image.style.1_5_810w_540h_LQ
+    - image.style.1_5_434w_290h_lq
+    - image.style.1_5_588w_392h_lq
+    - image.style.1_5_756w_504h_lq
+    - image.style.1_5_810w_540h_lq
   module:
     - helfi_image_styles
 id: card_teaser
@@ -23,7 +23,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_5_810w_540h_LQ
+    image_mapping: 1_5_810w_540h_lq
     breakpoint_id: helfi_image_styles.xl
     multiplier: 2x
   -
@@ -33,7 +33,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_5_756w_504h_LQ
+    image_mapping: 1_5_756w_504h_lq
     breakpoint_id: helfi_image_styles.l
     multiplier: 2x
   -
@@ -43,7 +43,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_5_588w_392h_LQ
+    image_mapping: 1_5_588w_392h_lq
     breakpoint_id: helfi_image_styles.s
     multiplier: 2x
   -
@@ -53,7 +53,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_5_434w_290h_LQ
+    image_mapping: 1_5_434w_290h_lq
     breakpoint_id: helfi_image_styles.xs
     multiplier: 2x
 breakpoint_group: helfi_image_styles
