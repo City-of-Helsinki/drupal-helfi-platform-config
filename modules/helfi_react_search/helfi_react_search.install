@@ -27,4 +27,45 @@ function helfi_react_search_update_9017() : void {
 function helfi_react_search_update_9018(): void {
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_react_search');
+
+  // config_rewrite does not touch language config overrides, so update the
+  // existing Finnish overrides for the changed field descriptions and the new
+  // field_group label/description directly.
+  $language_manager = \Drupal::languageManager();
+  if (
+    !$language_manager instanceof \Drupal\language\ConfigurableLanguageManagerInterface ||
+    !$language_manager->getLanguage('fi')
+  ) {
+    return;
+  }
+
+  $fi_field_descriptions = [
+    'field.field.paragraph.event_list.field_event_location' => 'Jos Tapahtumapaikka on valittuna, et voi käyttää Etätapahtumat-suodatinta.',
+    'field.field.paragraph.event_list.field_event_time' => '',
+    'field.field.paragraph.event_list.field_language' => '',
+    'field.field.paragraph.event_list.field_remote_events' => 'Jos Tapahtumapaikka on valittuna, et voi käyttää Etätapahtumat-suodatinta.',
+    'field.field.paragraph.event_list.field_free_events' => '',
+    'field.field.paragraph.event_list.field_search_term' => '',
+  ];
+
+  foreach ($fi_field_descriptions as $config_name => $description) {
+    $override = $language_manager->getLanguageConfigOverride('fi', $config_name);
+    if ($override->isNew()) {
+      continue;
+    }
+    $override->set('description', $description)->save();
+  }
+
+  // Provide the Finnish label/description for the new search filters group.
+  $form_display_override = $language_manager->getLanguageConfigOverride(
+    'fi',
+    'core.entity_form_display.paragraph.event_list.default',
+  );
+  $form_display_override
+    ->set('third_party_settings.field_group.group_search_filters.label', 'Haun suodattimet')
+    ->set(
+      'third_party_settings.field_group.group_search_filters.format_settings.description',
+      'Valitse, mitkä suodattimet näytetään käyttäjille sivulla.',
+    )
+    ->save();
 }

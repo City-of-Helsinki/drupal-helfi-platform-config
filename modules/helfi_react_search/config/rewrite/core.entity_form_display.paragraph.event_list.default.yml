@@ -1,6 +1,30 @@
 dependencies:
   config:
     - field.field.paragraph.event_list.field_search_term
+  module:
+    - field_group
+third_party_settings:
+  field_group:
+    group_search_filters:
+      children:
+        - field_event_location
+        - field_event_time
+        - field_language
+        - field_remote_events
+        - field_free_events
+        - field_search_term
+      label: 'Search filters'
+      region: content
+      parent_name: ''
+      weight: 8
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: 'Select which filters are shown to users.'
+        required_fields: false
 content:
   field_search_term:
     type: boolean_checkbox

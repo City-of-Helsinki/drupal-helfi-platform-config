@@ -10,7 +10,7 @@ field_name: field_search_term
 entity_type: paragraph
 bundle: event_list
 label: 'Search term'
-description: 'Show "Search term" text input above the filters. The value is sent to the Linked Events API as full_text.'
+description: ''
 required: false
 translatable: false
 default_value:
