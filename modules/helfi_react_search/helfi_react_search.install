@@ -5,6 +5,8 @@
  * Contains installation tasks for helfi_react_search module.
  */
 
+use Drupal\language\ConfigurableLanguageManagerInterface;
+
 declare(strict_types=1);
 
 /**
@@ -33,7 +35,7 @@ function helfi_react_search_update_9018(): void {
   // field_group label/description directly.
   $language_manager = \Drupal::languageManager();
   if (
-    !$language_manager instanceof \Drupal\language\ConfigurableLanguageManagerInterface ||
+    !$language_manager instanceof ConfigurableLanguageManagerInterface ||
     !$language_manager->getLanguage('fi')
   ) {
     return;
