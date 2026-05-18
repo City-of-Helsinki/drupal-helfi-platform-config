@@ -7,9 +7,11 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_react_search\Enum\CourseCategory;
 use Drupal\helfi_react_search\Enum\EventCategory;
+use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Event list type allowed values.
@@ -60,4 +62,36 @@ function helfi_react_search_event_list_allowed_hobby_categories(): array {
   }
 
   return $values;
+}
+
+/**
+ * Implements hook_field_widget_complete_form_alter().
+ */
+function helfi_react_search_field_widget_complete_form_alter(
+  array &$field_widget_complete_form,
+  FormStateInterface $form_state,
+  array $context,
+): void {
+  $items = $context['items'];
+  $entity = $items->getEntity();
+
+  if (
+    !$entity instanceof ParagraphInterface ||
+    $entity->bundle() !== 'event_list' ||
+    $items->getFieldDefinition()->getName() !== 'field_search_term'
+  ) {
+    return;
+  }
+
+  // The paragraph's `field_event_list_free_text` is sent to the Linked Events
+  // API as `full_text`; so is the user-facing search bar. Letting both be set
+  // would mean the user's input overrides the editor's pre-filter. Disable the
+  // toggle whenever the pre-filter is already in use.
+  $checkbox = &$field_widget_complete_form['widget']['value'];
+  $checkbox['#states']['disabled'][':input[name$="[field_event_list_free_text][0][value]"]'] = ['filled' => TRUE];
+  $checkbox['#description'] = new TranslatableMarkup(
+    'Cannot be combined with a pre-filter set in "Free text".',
+    [],
+    ['context' => 'Event list paragraph: search term disabled hint'],
+  );
 }
