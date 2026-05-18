@@ -66,6 +66,13 @@ function helfi_react_search_event_list_allowed_hobby_categories(): array {
 
 /**
  * Implements hook_field_widget_complete_form_alter().
+ *
+ * @param array<string, mixed> $field_widget_complete_form
+ *   The widget's complete form render array.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ * @param array<string, mixed> $context
+ *   Widget context, including the items list under the 'items' key.
  */
 function helfi_react_search_field_widget_complete_form_alter(
   array &$field_widget_complete_form,
