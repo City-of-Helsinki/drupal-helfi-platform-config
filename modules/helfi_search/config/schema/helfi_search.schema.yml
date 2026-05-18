@@ -56,6 +56,10 @@ helfi_search.settings:
           type: label
           label: 'Contact URL'
           translatable: true
+        helsinki_near_you:
+          type: label
+          label: 'Helsinki near you URL'
+          translatable: true
     ai_register_url:
       type: label
       label: 'AI register URL'

@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\helfi_search\OpenAI\EmbeddingsApi;
+use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\search_api\Entity\Index;
 
 /**
@@ -383,4 +384,35 @@ function helfi_search_update_11010(): void {
   ]);
 
   $config->save();
+}
+
+/**
+ * Add the "Helsinki near you" external search link with per-language URLs.
+ */
+function helfi_search_update_11011(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+  $external_links = $config->get('external_links') ?? [];
+
+  if (!isset($external_links['helsinki_near_you'])) {
+    $external_links['helsinki_near_you'] = 'https://www.hel.fi/en/helsinki-near-you';
+    $config->set('external_links', $external_links);
+    $config->save();
+  }
+
+  $overrides = [
+    'fi' => 'https://www.hel.fi/fi/helsinki-lahellasi',
+    'sv' => 'https://www.hel.fi/sv/helsingfors-nara-dig',
+  ];
+
+  $languageManager = \Drupal::languageManager();
+  foreach ($overrides as $langcode => $url) {
+    assert($languageManager instanceof ConfigurableLanguageManagerInterface);
+    $override = $languageManager->getLanguageConfigOverride($langcode, 'helfi_search.settings');
+    $links = $override->get('external_links') ?? [];
+    if (isset($links['helsinki_near_you'])) {
+      continue;
+    }
+    $links['helsinki_near_you'] = $url;
+    $override->set('external_links', $links)->save();
+  }
 }

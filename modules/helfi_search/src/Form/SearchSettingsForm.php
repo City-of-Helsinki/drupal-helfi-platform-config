@@ -121,6 +121,7 @@ final class SearchSettingsForm extends ConfigFormBase {
       'events' => $this->t('Events URL'),
       'decisions' => $this->t('Decisions URL'),
       'contact' => $this->t('Contact URL'),
+      'helsinki_near_you' => $this->t('Helsinki near you URL'),
     ];
 
     foreach ($external_link_labels as $key => $label) {
