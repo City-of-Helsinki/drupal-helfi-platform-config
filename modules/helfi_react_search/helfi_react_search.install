@@ -5,9 +5,9 @@
  * Contains installation tasks for helfi_react_search module.
  */
 
-use Drupal\language\ConfigurableLanguageManagerInterface;
-
 declare(strict_types=1);
+
+use Drupal\language\ConfigurableLanguageManagerInterface;
 
 /**
  * UHF-9754: Unset '_info_file_ctime' for helfi_react_search module.
