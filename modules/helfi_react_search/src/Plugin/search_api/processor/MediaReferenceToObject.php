@@ -181,7 +181,7 @@ class MediaReferenceToObject extends ProcessorPluginBase implements PluginFormIn
    * Return enabled fields.
    */
   protected function getEnabledFields() {
-    return array_filter($this->configuration['fields']);
+    return array_filter($this->configuration['fields'] ?? []);
   }
 
 }
