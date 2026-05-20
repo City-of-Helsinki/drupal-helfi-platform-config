@@ -81,6 +81,9 @@ function helfi_csp_update_10001() : void {
   elseif ($etusivuCspLogEndpoint) {
     $config->set('enforce.reporting.plugin', 'uri');
 
+    // Clear cleanup option to comply with uri reporting plugin schema.
+    $config->clear('enforce.reporting.options.cleanup');
+
     // Set reporting uri to etusivu csp_log endpoint.
     $config->set('enforce.reporting.options.uri', $etusivuCspLogEndpoint);
     $config->save();
