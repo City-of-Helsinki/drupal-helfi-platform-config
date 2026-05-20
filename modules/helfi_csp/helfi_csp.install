@@ -82,7 +82,7 @@ function helfi_csp_update_10001() : void {
     $config->set('enforce.reporting.plugin', 'uri');
 
     // Set reporting uri to etusivu csp_log endpoint.
-    $config->set('enforce.reporting.options.uri.uri', $etusivuCspLogEndpoint);
+    $config->set('enforce.reporting.options.uri', $etusivuCspLogEndpoint);
     $config->save();
   }
 }
