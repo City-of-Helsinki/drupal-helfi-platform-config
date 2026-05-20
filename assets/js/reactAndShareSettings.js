@@ -80,4 +80,7 @@
   } else {
     Drupal.cookieConsent.loadFunction(loadReactAndShare);
   }
+
+  // Re-run the loadReactAndShare when cookie consent changes.
+  window.addEventListener('hds-cookie-consent-changed', loadReactAndShare);
 })(jQuery, Drupal, drupalSettings);
