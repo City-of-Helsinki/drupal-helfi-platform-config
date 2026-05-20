@@ -87,15 +87,17 @@ class CspLogServiceTest extends UnitTestCase {
 
       /**
        * Stub for Insert::fields().
+       *
+       * @phpstan-param array<mixed> $f
        */
-      public function fields(array $f) {
+      public function fields(array $f): self {
         return $this;
       }
 
       /**
        * Stub for Insert::execute().
        */
-      public function execute() {
+      public function execute(): void {
       }
 
     };
@@ -141,33 +143,38 @@ class CspLogServiceTest extends UnitTestCase {
   /**
    * Data provider for filtered reports that must not be logged.
    *
-   * @return array[]
+   * @return array<string, array{string, string, string|null}>
    *   Each element: document-uri, blocked-uri, request host (or null).
    */
   public static function providerFilteredDoesNotLog(): array {
     return [
       'blocked-uri matches browser scheme' => [
-        'https://example.com/page',
+        'https://hel.fi/page',
         'chrome-extension://some-extension/script.js',
-        'example.com',
+        'hel.fi',
       ],
       'blocked-uri contains blocked domain' => [
-        'https://example.com/page',
+        'https://hel.fi/page',
         'https://translate.googleapis.com/translate_static/js/element/main.js',
-        'example.com',
+        'hel.fi',
       ],
       'document-uri is off-site' => [
-        'https://other-site.com/page',
+        'https://evil.com/page',
         'https://evil.com/script.js',
-        'example.com',
+        'hel.fi',
       ],
       'no current request' => [
-        'https://any.com/page',
+        'https://hel.fi/page',
         'https://example.com/script.js',
         NULL,
       ],
       'document-uri has no host' => [
         'about:blank',
+        'https://example.com/script.js',
+        'hel.fi',
+      ],
+      'document-uri root domain is not in allowlist' => [
+        'https://example.com/page',
         'https://example.com/script.js',
         'example.com',
       ],
@@ -212,20 +219,20 @@ class CspLogServiceTest extends UnitTestCase {
       ->willReturn(FALSE);
 
     $sut = $this->createSut(
-      $this->createRequestStack('example.com'),
+      $this->createRequestStack('hel.fi'),
       $lock,
       $state,
       $connection,
     );
 
-    $report = self::report('https://example.com/page', 'https://example.com/script.js');
+    $report = self::report('https://foo.hel.fi/page', 'https://foo.hel.fi/script.js');
     $sut->insertLog($report, 'report-only');
   }
 
   /**
    * Data provider for rate limit (enabled): lock result and expect insert flag.
    *
-   * @return array[]
+   * @return array<string, array{bool, bool}>
    *   Each element: lock acquired (bool), expect insert (bool).
    */
   public static function providerRateLimitWhenEnabled(): array {
@@ -256,15 +263,15 @@ class CspLogServiceTest extends UnitTestCase {
       ->willReturn(TRUE);
 
     $sut = $this->createSut(
-      $this->createRequestStack('example.com'),
+      $this->createRequestStack('hel.fi'),
       $lock,
       $state,
       $connection,
     );
 
     $report = self::report(
-      'https://example.com/page',
-      'https://example.com/script.js',
+      'https://hel.fi/page',
+      'https://hel.fi/script.js',
     );
     $sut->insertLog($report, 'report-only');
   }

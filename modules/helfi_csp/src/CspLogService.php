@@ -20,6 +20,17 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class CspLogService extends BaseCspLogService {
 
   /**
+   * Domain allowlist.
+   *
+   * Only document-uri root domains in this allowlist are allowed to be logged.
+   */
+  protected const DOMAIN_ALLOWLIST = [
+    'hel.fi',
+    'hel.ninja',
+    'docker.so',
+  ];
+
+  /**
    * Strings that cause a blocked-uri to be filtered (not logged).
    *
    * Matched by substring against the full blocked-uri. Includes browser
@@ -174,14 +185,22 @@ final class CspLogService extends BaseCspLogService {
     $currentHost = strtolower($request->getHost());
     $parsed = parse_url($documentUri);
     $documentHost = isset($parsed['host']) ? strtolower($parsed['host']) : '';
+
     if ($documentHost === '') {
       return FALSE;
     }
-    // Allow same host, and strip optional leading 'www.' for comparison.
-    $normalize = function ($host) {
-      return preg_replace('#^www\.#i', '', $host);
-    };
-    return $normalize($documentHost) === $normalize($currentHost);
+
+    // Allow if document host root domain:
+    // 1. is in the allowlist
+    // 2. matches the current host root domain.
+    $currentHostRootDomain = array_reduce(self::DOMAIN_ALLOWLIST, function (string|null $carry, string $item) use ($currentHost) {
+      return str_ends_with($currentHost, $item) ? $item : $carry;
+    });
+    $documentHostRootDomain = array_reduce(self::DOMAIN_ALLOWLIST, function (string|null $carry, string $item) use ($documentHost) {
+      return str_ends_with($documentHost, $item) ? $item : $carry;
+    });
+
+    return $documentHostRootDomain && $documentHostRootDomain === $currentHostRootDomain;
   }
 
 }

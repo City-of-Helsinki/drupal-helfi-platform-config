@@ -18,7 +18,7 @@ final class HelfiCspServiceProvider extends ServiceProviderBase {
   public function register(ContainerBuilder $container) : void {
     $modules = $container->getParameter('container.modules');
 
-    if (!isset($modules['csp_log'])) {
+    if (!is_array($modules) || !isset($modules['csp_log'])) {
       return;
     }
 
