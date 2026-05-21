@@ -1,0 +1,6 @@
+third_party_settings:
+  field_group:
+    group_search_filters:
+      label: 'Haun suodattimet'
+      format_settings:
+        description: 'Valitse, mitkä suodattimet näytetään käyttäjille sivulla.'

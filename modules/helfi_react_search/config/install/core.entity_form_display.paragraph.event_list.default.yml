@@ -18,12 +18,36 @@ dependencies:
     - field.field.paragraph.event_list.field_free_events
     - field.field.paragraph.event_list.field_language
     - field.field.paragraph.event_list.field_remote_events
+    - field.field.paragraph.event_list.field_search_term
     - paragraphs.paragraphs_type.event_list
   module:
+    - field_group
     - helfi_react_search
     - link
     - select2
     - text
+third_party_settings:
+  field_group:
+    group_search_filters:
+      children:
+        - field_event_location
+        - field_event_time
+        - field_language
+        - field_remote_events
+        - field_free_events
+        - field_search_term
+      label: 'Search filters'
+      region: content
+      parent_name: ''
+      weight: 8
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: 'Select which filters are shown to users.'
+        required_fields: false
 id: paragraph.event_list.default
 targetEntityType: paragraph
 bundle: event_list
@@ -137,6 +161,13 @@ content:
     settings:
       endpoint: keyword
       query: data_source=yso&has_upcoming_events=True
+    third_party_settings: {  }
+  field_search_term:
+    type: boolean_checkbox
+    weight: 8
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
 hidden:
   created: true

@@ -10,7 +10,7 @@ field_name: field_event_time
 entity_type: paragraph
 bundle: event_list
 label: 'Event time'
-description: 'Show "event time" filter.'
+description: ''
 required: false
 translatable: false
 default_value:
