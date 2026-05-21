@@ -1,0 +1,10 @@
+helfi_csp.settings:
+  type: config_object
+  label: 'HELFI CSP settings'
+  mapping:
+    time_window:
+      type: integer
+      label: 'Time window for aggregated logs (seconds)'
+    treshold:
+      type: integer
+      label: 'Minimum number of log reports within the time window to include in the aggregation'

@@ -7,6 +7,7 @@ namespace Drupal\helfi_csp;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\State\StateInterface;
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\csp_log\CspLogService as BaseCspLogService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
@@ -102,6 +103,7 @@ final class CspLogService extends BaseCspLogService {
     private readonly StateInterface $state,
     #[Autowire('@database')] Connection $database,
     #[Autowire('@logger.channel.csp_log')] LoggerInterface $logger,
+    private readonly TimeInterface $time,
   ) {
     parent::__construct($database, $logger);
   }
@@ -124,6 +126,77 @@ final class CspLogService extends BaseCspLogService {
       return;
     }
     parent::insertLog($data, $type);
+  }
+
+  /**
+   * Fetch aggregated logs to identify real problems.
+   *
+   * @param int $seconds
+   *   The number of seconds to aggregate logs for. Defaults to 3600 seconds
+   *   (1 hour).
+   * @param int $treshold
+   *   The minimum number of log reports within the time window to include in
+   *   the aggregation. Defaults to a calculated value based on given time
+   *   window and a rate of 100 reports per hour. If given $seconds is 3600,
+   *   the default treshold will be 100.
+   *
+   * @return array<object>
+   *   An array of aggregated logs by document-uri, blocked-uri, and
+   *   effective-directive.
+   */
+  public function fetchAggregatedLogsByTimeWindow(int $seconds = 3600, ?int $treshold = NULL): array {
+    if ($treshold === NULL) {
+      $treshold = ceil(($seconds / 3600) * 100);
+    }
+
+    $start = $this->time->getRequestTime() - $seconds;
+    $query = $this->database->select(self::DATABASE_TABLE, 't');
+    $query->addField('t', 'document_uri');
+    $query->addField('t', 'blocked_uri');
+    $query->addField('t', 'effective_directive');
+    $query->addExpression('COUNT(t.id)', 'amount');
+    $query->condition('t.timestamp', $start, '>=');
+    $query->groupBy('t.document_uri');
+    $query->groupBy('t.blocked_uri');
+    $query->groupBy('t.effective_directive');
+    $query->having('amount >= :treshold', [':treshold' => $treshold]);
+
+    return $query->execute()->fetchAll();
+  }
+
+  /**
+   * Fetch log sample.
+   *
+   * @param string $documentUri
+   *   The document-uri to fetch sample for.
+   * @param string $blockedUri
+   *   The blocked-uri to fetch sample for.
+   * @param string $effectiveDirective
+   *   The effective-directive to fetch sample for.
+   *
+   * @return string|null
+   *   The latest log report matching the arguments, or NULL if no log is found.
+   */
+  public function fetchLogSample(string $documentUri, string $blockedUri, string $effectiveDirective): string|null {
+    $sample = NULL;
+
+    $query = $this->database->select(self::DATABASE_TABLE, 't');
+    $query->addField('t', 'report');
+    $query->condition('t.document_uri', $documentUri);
+    $query->condition('t.blocked_uri', $blockedUri);
+    $query->condition('t.effective_directive', $effectiveDirective);
+    $query->orderBy('t.id', 'DESC');
+
+    $result = $query->execute()->fetchObject();
+    if (isset($result->report)) {
+      $sample = json_decode($result->report, TRUE);
+
+      // Remove the original csp policy from the sample to avoid flooding the
+      // logs.
+      unset($sample['original-policy']);
+    }
+
+    return json_encode($sample);
   }
 
   /**

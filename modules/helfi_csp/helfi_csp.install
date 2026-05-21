@@ -89,3 +89,13 @@ function helfi_csp_update_10001() : void {
     $config->save();
   }
 }
+
+/**
+ * Install helfi_csp.settings config.
+ */
+function helfi_csp_update_10004() : void {
+  $config = \Drupal::configFactory()->getEditable('helfi_csp.settings');
+  $config->set('time_window', 3600);
+  $config->set('treshold', 100);
+  $config->save();
+}
