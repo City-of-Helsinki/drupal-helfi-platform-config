@@ -11,24 +11,6 @@
       window.askem.settings.categories = [drupalSettings.siteName];
     }
 
-    const errorTracker = {};
-    const errorFrequency = 10;
-
-    // Report errors to Sentry but throttle them so that only every tenth
-    // is sent to avoid spamming logs.
-    // biome-ignore lint/correctness/noUnusedVariables: @todo UHF-12501
-    function reportToSentryThrottled(errorKey, error) {
-      if (!errorTracker[errorKey]) {
-        errorTracker[errorKey] = { count: 0 };
-      }
-
-      errorTracker[errorKey].count++;
-
-      if (errorTracker[errorKey].count === 1 || errorTracker[errorKey].count % errorFrequency === 0) {
-        Sentry.captureException(error);
-      }
-    }
-
     function handleScriptError(event) {
       const script = event.target;
       const src = script.src || 'inline-script';
@@ -36,26 +18,6 @@
 
       // reportToSentryThrottled(src, err);
       console.warn('error reporting works');
-    }
-
-    // Prevent Sentry noise from Askem's internal failed fetches in Safari.
-    // Askem can emit unhandled promise rejections like
-    // "TypeError: Load failed (feedback.askem.com)" when its API calls fail.
-    if (drupalSettings.askemMonitoringEnabled && !window.__askemUnhandledRejectionHandlerInstalled) {
-      window.__askemUnhandledRejectionHandlerInstalled = true;
-
-      window.addEventListener('unhandledrejection', (event) => {
-        const reason = event.reason;
-        const reasonText = (typeof reason === 'string' ? reason : reason?.message) ?? '';
-
-        const isAskemLoadFailed =
-          reasonText.includes('Load failed') &&
-          (reasonText.includes('feedback.askem.com') || reasonText.includes('askem.com'));
-
-        if (isAskemLoadFailed) {
-          event.preventDefault();
-        }
-      });
     }
 
     const scriptElement = document.createElement('script');
