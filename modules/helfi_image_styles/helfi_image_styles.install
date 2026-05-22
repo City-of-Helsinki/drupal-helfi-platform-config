@@ -186,3 +186,11 @@ function helfi_image_styles_update_11000(): void {
   $config_factory->getEditable('image.style.1_812w_812h_LQ')->delete();
   $config_factory->getEditable('image.style.1_828w_828h_LQ')->delete();
 }
+
+/**
+ * UHF-12693: Remove responsive image style that is no longer used.
+ */
+function helfi_image_styles_update_11001(): void {
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('responsive_image.styles.contact_card')->delete();
+}
