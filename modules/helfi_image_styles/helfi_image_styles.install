@@ -103,3 +103,86 @@ function helfi_image_styles_update_9008(): void {
     ->set('imagemagick_version', 'v7')
     ->save();
 }
+
+/**
+ * UHF-12693: Remove image styles that have a new machine name incoming.
+ */
+function helfi_image_styles_update_11000(): void {
+  $config_factory = Drupal::configFactory();
+  $config_factory->getEditable('image.style.0.7_1086w_1630h_LQ')->delete();
+  $config_factory->getEditable('image.style.0.7_352w_572h')->delete();
+  $config_factory->getEditable('image.style.0.7_414w_621h')->delete();
+  $config_factory->getEditable('image.style.0.7_543w_815h')->delete();
+  $config_factory->getEditable('image.style.0.7_704w_1144h_LQ')->delete();
+  $config_factory->getEditable('image.style.0.7_828w_1242h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_1011w_674h')->delete();
+  $config_factory->getEditable('image.style.1.5_1022w_682h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_1120w_746h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_1183w_789h')->delete();
+  $config_factory->getEditable('image.style.1.5_1200w_800h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_1264w_843h')->delete();
+  $config_factory->getEditable('image.style.1.5_1470w_980h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_1726w_1152h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_176w_118h')->delete();
+  $config_factory->getEditable('image.style.1.5_1854w_1236h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_2022w_1348h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_217w_145h')->delete();
+  $config_factory->getEditable('image.style.1.5_220w_147h')->delete();
+  $config_factory->getEditable('image.style.1.5_2366w_1578h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_2528w_1686h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_264w_176h')->delete();
+  $config_factory->getEditable('image.style.1.5_294w_196h')->delete();
+  $config_factory->getEditable('image.style.1.5_304w_203h')->delete();
+  $config_factory->getEditable('image.style.1.5_341w_227h')->delete();
+  $config_factory->getEditable('image.style.1.5_352w_236h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_378w_252h')->delete();
+  $config_factory->getEditable('image.style.1.5_405w_270h')->delete();
+  $config_factory->getEditable('image.style.1.5_434w_290h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_440w_294h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_452w_301h')->delete();
+  $config_factory->getEditable('image.style.1.5_511w_341h')->delete();
+  $config_factory->getEditable('image.style.1.5_528w_352h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_560w_373h')->delete();
+  $config_factory->getEditable('image.style.1.5_588w_392h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_600w_400h')->delete();
+  $config_factory->getEditable('image.style.1.5_608w_406w_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_682w_454h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_735w_490h')->delete();
+  $config_factory->getEditable('image.style.1.5_756w_504h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_810w_540h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_863w_576h')->delete();
+  $config_factory->getEditable('image.style.1.5_904w_602h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.5_927w_618h')->delete();
+  $config_factory->getEditable('image.style.1.9_1150w_600h_LQ')->delete();
+  $config_factory->getEditable('image.style.1.9_1200w_630h')->delete();
+  $config_factory->getEditable('image.style.1.9_575w_300h')->delete();
+  $config_factory->getEditable('image.style.2.3_1150w_500h_LQ')->delete();
+  $config_factory->getEditable('image.style.2.3_1247w_540h')->delete();
+  $config_factory->getEditable('image.style.2.3_1534w_668h_LQ')->delete();
+  $config_factory->getEditable('image.style.2.3_1982w_862h_LQ')->delete();
+  $config_factory->getEditable('image.style.2.3_2494w_1080h_LQ')->delete();
+  $config_factory->getEditable('image.style.2.3_575w_250h')->delete();
+  $config_factory->getEditable('image.style.2.3_767w_334h')->delete();
+  $config_factory->getEditable('image.style.2.3_991w_431h')->delete();
+  $config_factory->getEditable('image.style.2.4_1920w_800h')->delete();
+  $config_factory->getEditable('image.style.2.4_3840w_1600h_LQ')->delete();
+  $config_factory->getEditable('image.style.2.6_1534w_600h_LQ')->delete();
+  $config_factory->getEditable('image.style.2.6_767w_300h')->delete();
+  $config_factory->getEditable('image.style.3.1_1247w_400h')->delete();
+  $config_factory->getEditable('image.style.3.1_2494w_800h_LQ')->delete();
+  $config_factory->getEditable('image.style.3.3_1982w_600h_LQ')->delete();
+  $config_factory->getEditable('image.style.3.3_991w_300h')->delete();
+  $config_factory->getEditable('image.style.3.6_1920w_540h')->delete();
+  $config_factory->getEditable('image.style.3.6_3840w_1080h_LQ')->delete();
+  $config_factory->getEditable('image.style.orig_1086w_free_LQ')->delete();
+  $config_factory->getEditable('image.style.orig_1470w_free_LQ')->delete();
+  $config_factory->getEditable('image.style.orig_1854w_free_LQ')->delete();
+  $config_factory->getEditable('image.style.orig_2366w_free_LQ')->delete();
+  $config_factory->getEditable('image.style.orig_2528w_free_LQ')->delete();
+  $config_factory->getEditable('image.style.1_1086w_1086h_LQ')->delete();
+  $config_factory->getEditable('image.style.1_180w_180h_LQ')->delete();
+  $config_factory->getEditable('image.style.1_500w_500h_LQ')->delete();
+  $config_factory->getEditable('image.style.1_554w_554h_LQ')->delete();
+  $config_factory->getEditable('image.style.1_812w_812h_LQ')->delete();
+  $config_factory->getEditable('image.style.1_828w_828h_LQ')->delete();
+}
