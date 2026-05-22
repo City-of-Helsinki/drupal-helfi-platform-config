@@ -279,6 +279,9 @@ class EventList extends Paragraph implements ParagraphInterface {
     $filters = [];
 
     foreach (Filters::cases() as $filter) {
+      if (!$this->hasField($filter->value)) {
+        continue;
+      }
       if (!$this->get($filter->value)->isEmpty()) {
         $filters[$filter->value] = (boolean) $this->get($filter->value)->value;
       }

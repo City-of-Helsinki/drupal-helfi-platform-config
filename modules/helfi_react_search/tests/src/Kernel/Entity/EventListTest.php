@@ -28,6 +28,7 @@ class EventListTest extends KernelTestBase {
     'user',
     'paragraphs',
     'field',
+    'field_group',
     'options',
     'link',
     'file',
