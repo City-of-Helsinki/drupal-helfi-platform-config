@@ -140,7 +140,7 @@ final class CspLogService extends BaseCspLogService {
    *   window and a rate of 100 reports per hour. If given $seconds is 3600,
    *   the default treshold will be 100.
    *
-   * @return array<object>
+   * @return array<array<string, mixed>>>
    *   An array of aggregated logs by document-uri, blocked-uri, and
    *   effective-directive.
    */
@@ -161,7 +161,7 @@ final class CspLogService extends BaseCspLogService {
     $query->groupBy('t.effective_directive');
     $query->having('amount >= :treshold', [':treshold' => $treshold]);
 
-    return $query->execute()->fetchAll();
+    return $query->execute()->fetchAll(\PDO::FETCH_ASSOC);
   }
 
   /**
@@ -187,16 +187,18 @@ final class CspLogService extends BaseCspLogService {
     $query->condition('t.effective_directive', $effectiveDirective);
     $query->orderBy('t.id', 'DESC');
 
-    $result = $query->execute()->fetchObject();
-    if (isset($result->report)) {
-      $sample = json_decode($result->report, TRUE);
+    $result = $query->execute()->fetchAssoc();
+    if (isset($result['report'])) {
+      $sample = json_decode($result['report'], TRUE);
 
       // Remove the original csp policy from the sample to avoid flooding the
       // logs.
       unset($sample['original-policy']);
+
+      $sample = json_encode($sample);
     }
 
-    return json_encode($sample);
+    return $sample ?: NULL;
   }
 
   /**

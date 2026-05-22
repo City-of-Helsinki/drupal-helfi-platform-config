@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_csp\Unit;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\State\StateInterface;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Unit tests for CspLogService (filtering, locking, rate limiting).
+ * Unit tests for CspLogService filtering, locking, and rate limiting.
  */
 #[Group('helfi_csp')]
 #[CoversClass(CspLogService::class)]
@@ -110,6 +111,21 @@ class CspLogServiceTest extends UnitTestCase {
   }
 
   /**
+   * Creates a time mock returning a fixed request time.
+   *
+   * @param int $requestTime
+   *   Request timestamp.
+   *
+   * @return \Drupal\Component\Datetime\TimeInterface
+   *   Time mock.
+   */
+  private function createTimeMock(int $requestTime = 2_000_000): TimeInterface {
+    $time = $this->createMock(TimeInterface::class);
+    $time->method('getRequestTime')->willReturn($requestTime);
+    return $time;
+  }
+
+  /**
    * Creates the service under test with the given mocks.
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
@@ -120,6 +136,8 @@ class CspLogServiceTest extends UnitTestCase {
    *   State.
    * @param \Drupal\Core\Database\Connection $connection
    *   Database connection.
+   * @param \Drupal\Component\Datetime\TimeInterface|null $time
+   *   Time service; defaults to a fixed request time.
    *
    * @return \Drupal\helfi_csp\CspLogService
    *   Service under test.
@@ -129,6 +147,7 @@ class CspLogServiceTest extends UnitTestCase {
     LockBackendInterface $lock,
     StateInterface $state,
     Connection $connection,
+    ?TimeInterface $time = NULL,
   ): CspLogService {
     $logger = $this->createMock(LoggerInterface::class);
     return new CspLogService(
@@ -137,6 +156,7 @@ class CspLogServiceTest extends UnitTestCase {
       $state,
       $connection,
       $logger,
+      $time ?? $this->createTimeMock(),
     );
   }
 
@@ -177,6 +197,11 @@ class CspLogServiceTest extends UnitTestCase {
         'https://example.com/page',
         'https://example.com/script.js',
         'example.com',
+      ],
+      'document-uri root domain differs from request' => [
+        'https://sub.hel.ninja/page',
+        'https://sub.hel.ninja/script.js',
+        'hel.fi',
       ],
     ];
   }

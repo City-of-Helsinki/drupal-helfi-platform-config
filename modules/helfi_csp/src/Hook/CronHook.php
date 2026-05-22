@@ -16,6 +16,13 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 #[Hook('cron')]
 class CronHook {
 
+  /**
+   * The CSP log service.
+   *
+   * Service is injected conditionally only if the csp_log module is enabled.
+   *
+   * @see Drupal\helfi_csp\HelfiCspServiceProvider::alter().
+   */
   private ?CspLogService $cspLogService = NULL;
 
   public function __construct(
@@ -55,13 +62,13 @@ class CronHook {
     foreach ($logs as $log) {
       // Send a notification to Sentry.
       $this->logger->error('CSP violation in {document_uri}', [
-        'document_uri' => $log->document_uri,
-        '@blocked_uri' => $log->blocked_uri,
-        '@effective_directive' => $log->effective_directive,
-        '@amount' => $log->amount,
-        '@time_window' => $timeWindow,
-        '@treshold' => $treshold,
-        '@sample' => $this->cspLogService->fetchLogSample($log->document_uri, $log->blocked_uri, $log->effective_directive),
+        'document_uri' => $log['document_uri'],
+        'blocked_uri' => $log['blocked_uri'],
+        'effective_directive' => $log['effective_directive'],
+        'amount' => $log['amount'],
+        'time_window' => $timeWindow,
+        'treshold' => $treshold,
+        'sample' => $this->cspLogService->fetchLogSample($log['document_uri'], $log['blocked_uri'], $log['effective_directive']),
       ]);
     }
   }
