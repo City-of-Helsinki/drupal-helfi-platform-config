@@ -6,6 +6,8 @@ namespace Drupal\helfi_csp;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
+use Drupal\helfi_csp\Hook\CronHook;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * A service provider.
@@ -26,6 +28,24 @@ final class HelfiCspServiceProvider extends ServiceProviderBase {
     $container->register(CspLogService::class, CspLogService::class)
       ->setAutowired(TRUE)
       ->setAutoconfigured(TRUE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function alter(ContainerBuilder $container): void {
+    $modules = $container->getParameter('container.modules');
+
+    if (!is_array($modules) || !isset($modules['csp_log'])) {
+      return;
+    }
+
+    if (!$container->hasDefinition(CronHook::class)) {
+      return;
+    }
+
+    $container->getDefinition(CronHook::class)
+      ->addMethodCall('setCspLogService', [new Reference('csp_log')]);
   }
 
 }

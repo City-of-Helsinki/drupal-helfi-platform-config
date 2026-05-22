@@ -6,7 +6,6 @@ namespace Drupal\helfi_csp\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\csp_log\CspLogServiceInterface;
 use Drupal\helfi_csp\CspLogService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -17,19 +16,28 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 #[Hook('cron')]
 class CronHook {
 
+  private ?CspLogService $cspLogService = NULL;
+
   public function __construct(
-    #[Autowire('@csp_log')]
-    private readonly CspLogServiceInterface $cspLogService,
     #[Autowire('@logger.channel.helfi_csp')]
     private readonly LoggerInterface $logger,
     private readonly ConfigFactoryInterface $configFactory,
   ) {}
 
   /**
+   * Sets the CSP log service when the csp_log module is available.
+   */
+  public function setCspLogService(CspLogService $cspLogService): void {
+    $this->cspLogService = $cspLogService;
+  }
+
+  /**
    * Implements hook_cron().
    */
   public function __invoke(): void {
-    assert($this->cspLogService instanceof CspLogService);
+    if ($this->cspLogService === NULL) {
+      return;
+    }
 
     // Only proceed if CSP logging is enabled.
     $cspConfig = $this->configFactory->get('csp.settings');
