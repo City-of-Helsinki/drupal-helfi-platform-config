@@ -429,5 +429,6 @@ function helfi_search_update_11012(): void {
   }
 
   $ignored_classes[] = 'remote-video';
+  $ignored_classes[] = 'views--unit-search';
   $config->set('ignored_classes', $ignored_classes)->save();
 }
