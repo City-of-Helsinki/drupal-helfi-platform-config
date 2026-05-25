@@ -98,6 +98,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     $this->processor = $this->container
       ->get('search_api.plugin_helper')
       ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
+    $this->index->addProcessor($this->processor);
 
     $items = $this->createNodeItems([
       ['title' => 'Test', 'type' => 'test_node_bundle_1'],
