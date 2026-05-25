@@ -16,13 +16,12 @@ final class Chunk {
   /**
    * Constructs a new chunk.
    *
-   * @phpstan-param array<string, mixed> $context
    * @phpstan-param array<string, string> $metadata
    */
   public function __construct(
     public readonly string $text,
     public readonly ?self $parent = NULL,
-    public array $context = [],
+    public readonly ?Heading $heading = NULL,
     public array $metadata = [],
     public ?string $snippet = NULL,
     public ?string $fragment = NULL,

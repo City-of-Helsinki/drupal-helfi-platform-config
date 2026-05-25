@@ -34,7 +34,7 @@ class MetadataComposer {
    *
    * The extractor walks the DOM and the chunker walks cleaned Markdown.
    * They can disagree on which headings exist (HtmlCleaner drops wrappers,
-   * Markdown may add Markdown syntax), so HeadingFragment::matches() compares
+   * Markdown may add Markdown syntax), so Heading::matches() compares
    * normalized text. Each fragment is consumed once found so duplicate headings
    * resolve in document order.
    *
@@ -48,17 +48,16 @@ class MetadataComposer {
     $previousSection = NULL;
 
     foreach ($chunks as $i => $chunk) {
-      $title = $chunk->context['title'] ?? NULL;
-      $level = $chunk->context['level'] ?? NULL;
-      $section = $title === NULL ? NULL : [$title, $level, $chunk->parent];
+      $heading = $chunk->heading;
+      $section = $heading === NULL ? NULL : [$heading->title, $heading->level, $chunk->parent];
 
       // A long heading section produces multiple sub-chunks that share the same
       // (title, level, parent). Sub-chunks should all get the same fragment, so
       // we only consume an entry when that triple changes.
       if ($section !== $previousSection) {
         $sectionFragment = NULL;
-        if ($title && in_array($level, [2, 3], TRUE)) {
-          $matchIndex = array_find_key($headingFragments, static fn (HeadingFragment $entry) => $entry->matches($level, $title));
+        if ($heading !== NULL && in_array($heading->level, [2, 3], TRUE)) {
+          $matchIndex = array_find_key($headingFragments, static fn (HeadingFragment $entry) => $entry->heading->matches($heading));
 
           if ($matchIndex !== NULL) {
             $entry = $headingFragments[$matchIndex];
@@ -88,14 +87,18 @@ class MetadataComposer {
   private function buildMetadata(Chunk $chunk): array {
     $parts = [];
 
-    // We want to add some context from parent page to each chunk.
+    // We want to add some context from the parent page to each chunk.
+    // If chunks are very short, they might match queries that are
+    // otherwise unrelated to the page with very high confidence.
     $context = [];
     for ($current = $chunk->parent; $current !== NULL; $current = $current->parent) {
-      $title = $current->context['title'] ?? NULL;
 
-      if ($title !== NULL) {
+      if ($current->snippet) {
         $context[] = $current->snippet;
-        $context[] = str_repeat('#', $current->context['level'] ?? 1) . " $title";
+      }
+
+      if ($current->heading !== NULL) {
+        $context[] = str_repeat('#', $current->heading->level) . ' ' . $current->heading->title;
       }
     }
 

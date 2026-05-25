@@ -64,14 +64,13 @@ class ContentChunker {
 
       $body = trim($body);
 
+      $heading = $title !== NULL ? new Heading($title, $level) : NULL;
+
       // If the section has no body (heading immediately followed by another
       // heading), track it in the stack as a parent but don't emit a chunk.
       if ($title && empty($body)) {
         $text = sprintf("%s %s", str_repeat('#', $level), $title);
-        $stack[$level] = new Chunk($text, $parent, [
-          'title' => $title,
-          'level' => $level,
-        ]);
+        $stack[$level] = new Chunk($text, $parent, $heading);
         continue;
       }
 
@@ -79,10 +78,7 @@ class ContentChunker {
         // Add current title to each chunk.
         $text = $title ? sprintf("%s %s\n%s", str_repeat('#', $level), $title, $subText) : $subText;
 
-        $stack[$level] = $chunks[] = new Chunk(trim($text), $parent, [
-          'title' => $title,
-          'level' => $level,
-        ]);
+        $stack[$level] = $chunks[] = new Chunk(trim($text), $parent, $heading);
       }
     }
 

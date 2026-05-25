@@ -85,7 +85,7 @@ final class TextPipelineCommands extends Command {
           $output->writeln("=========================================");
         }
 
-        $output->writeln('Title: ' . ($chunk->context['title'] ?? ''));
+        $output->writeln('Title: ' . ($chunk->heading?->title ?? ''));
         $output->writeln('Fragment: ' . ($chunk->fragment ?? ''));
         $output->writeln('Snippet: ' . ($chunk->snippet ?? ''));
         $output->writeln('===');
