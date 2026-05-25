@@ -21,7 +21,7 @@ use Drupal\Core\Entity\EntityInterface;
  * - MarkdownConverter: How HTML structure maps to Markdown.
  * - TextNormalizer: What normalization is applied to the text.
  * - ContentChunker: How long content is split into chunks.
- * - ChunkAnnotator: How chunks are merged and annotated with snippet/fragment.
+ * - ChunkAnnotator: How chunks are annotated.
  */
 class TextPipeline {
 

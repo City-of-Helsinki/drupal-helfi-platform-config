@@ -30,6 +30,11 @@ class ContentChunker {
   private const int SHORT_CONTENT_THRESHOLD = 1600;
 
   /**
+   * Body length below which a chunk is considered too short to stand alone.
+   */
+  private const int SHORT_CHUNK_LENGTH = 200;
+
+  /**
    * Chunk markdown content into embedding-ready pieces.
    *
    * @param string $markdown
@@ -78,7 +83,48 @@ class ContentChunker {
       }
     }
 
-    return $chunks ?: [new Chunk($markdown)];
+    return self::mergeShortChunks($chunks ?: [new Chunk($markdown)]);
+  }
+
+  /**
+   * Combine runs of very short consecutive chunks into larger ones.
+   *
+   * Very short bodies match queries with too little signal. We fold short
+   * consecutive chunks into the first, inlining each subsequent chunk's
+   * heading as Markdown in the body so the embedding still sees the section
+   * labels. Merging stops once the accumulator reaches the regular
+   * short-content threshold.
+   *
+   * @phpstan-param Chunk[] $chunks
+   * @phpstan-return Chunk[]
+   */
+  public static function mergeShortChunks(array $chunks): array {
+    $result = [];
+    $accumulator = NULL;
+
+    foreach ($chunks as $chunk) {
+      if ($accumulator === NULL) {
+        $accumulator = $chunk;
+        continue;
+      }
+
+      if (
+        mb_strlen($accumulator->text) < self::SHORT_CONTENT_THRESHOLD &&
+        mb_strlen($chunk->text) < self::SHORT_CHUNK_LENGTH
+      ) {
+        $accumulator = $accumulator->merge($chunk);
+      }
+      else {
+        $result[] = $accumulator;
+        $accumulator = $chunk;
+      }
+    }
+
+    if ($accumulator !== NULL) {
+      $result[] = $accumulator;
+    }
+
+    return $result;
   }
 
   /**

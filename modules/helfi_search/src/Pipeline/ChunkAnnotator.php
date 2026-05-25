@@ -5,31 +5,20 @@ declare(strict_types=1);
 namespace Drupal\helfi_search\Pipeline;
 
 /**
- * Annotates chunks with snippet and fragment, and merges very short chunks.
+ * Annotates chunks with snippet and fragment.
  */
 class ChunkAnnotator {
 
   /**
-   * Body length below which a chunk is considered too short to stand alone.
-   */
-  private const int SHORT_CHUNK_LENGTH = 200;
-
-  /**
-   * Upper bound on how many source chunks fold into one merged chunk.
-   */
-  private const int MAX_MERGE_GROUP = 4;
-
-  /**
-   * Merge very short chunks and populate snippet + fragment on each.
+   * Populate metadata on each chunk.
    *
    * @phpstan-param Chunk[] $chunks
    * @phpstan-param HeadingFragment[] $headingFragments
    *
    * @return Chunk[]
-   *   The chunks (some merged) with snippet and fragment populated.
+   *   The chunks with snippet and fragment populated.
    */
   public function annotate(array $chunks, array $headingFragments): array {
-    $chunks = $this->mergeShortChunks($chunks);
     $perSectionFragment = $this->buildSectionFragmentMap($chunks, $headingFragments);
 
     foreach ($chunks as $i => $chunk) {
@@ -37,52 +26,6 @@ class ChunkAnnotator {
       $chunk->fragment = $perSectionFragment[$i] ?? NULL;
     }
     return $chunks;
-  }
-
-  /**
-   * Combine runs of very short consecutive chunks into larger ones.
-   *
-   * Very short bodies match queries with too little signal. We fold up to
-   * MAX_MERGE_GROUP consecutive short chunks into the first, inlining each
-   * subsequent chunk's heading as Markdown in the body so the embedding still
-   * sees the section labels.
-   *
-   * @phpstan-param Chunk[] $chunks
-   * @phpstan-return Chunk[]
-   */
-  private function mergeShortChunks(array $chunks): array {
-    $result = [];
-    $accumulator = NULL;
-    $groupSize = 0;
-
-    foreach ($chunks as $chunk) {
-      if ($accumulator === NULL) {
-        $accumulator = $chunk;
-        $groupSize = 1;
-        continue;
-      }
-
-
-      if (
-        mb_strlen($accumulator->text) < self::SHORT_CHUNK_LENGTH &&
-        mb_strlen($chunk->text) < self::SHORT_CHUNK_LENGTH &&
-        $groupSize < self::MAX_MERGE_GROUP
-      ) {
-        $accumulator = $accumulator->merge($chunk);
-        $groupSize++;
-      }
-      else {
-        $result[] = $accumulator;
-        $accumulator = $chunk;
-        $groupSize = 1;
-      }
-    }
-
-    if ($accumulator !== NULL) {
-      $result[] = $accumulator;
-    }
-
-    return $result;
   }
 
   /**
