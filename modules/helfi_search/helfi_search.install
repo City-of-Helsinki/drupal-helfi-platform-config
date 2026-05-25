@@ -416,3 +416,18 @@ function helfi_search_update_11011(): void {
     $override->set('external_links', $links)->save();
   }
 }
+
+/**
+ * Add remote-video to ignored_classes config.
+ */
+function helfi_search_update_11012(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+  $ignored_classes = $config->get('ignored_classes') ?? [];
+
+  if (in_array('remote-video', $ignored_classes, TRUE)) {
+    return;
+  }
+
+  $ignored_classes[] = 'remote-video';
+  $config->set('ignored_classes', $ignored_classes)->save();
+}
