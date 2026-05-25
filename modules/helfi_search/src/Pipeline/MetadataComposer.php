@@ -22,9 +22,9 @@ class MetadataComposer {
     $perSectionFragment = $this->buildSectionFragmentMap($chunks, $headingFragments);
 
     foreach ($chunks as $i => $chunk) {
-      $chunk->setMetadata($this->buildMetadata($chunk));
       $chunk->snippet = SnippetRenderer::render($chunk->text);
       $chunk->fragment = $perSectionFragment[$i] ?? NULL;
+      $chunk->setMetadata($this->buildMetadata($chunk));
     }
     return $chunks;
   }
@@ -88,31 +88,22 @@ class MetadataComposer {
   private function buildMetadata(Chunk $chunk): array {
     $parts = [];
 
-    $headings = $this->getAncestorHeadings($chunk);
-    if ($headings) {
-      $parts[] = implode(' > ', $headings);
+    // We want to add some context from parent page to each chunk.
+    $context = [];
+    for ($current = $chunk->parent; $current !== NULL; $current = $current->parent) {
+      $title = $current->context['title'] ?? NULL;
+
+      if ($title !== NULL) {
+        $context[] = $current->snippet;
+        $context[] = str_repeat('#', $current->context['level'] ?? 1) . " $title";
+      }
+    }
+
+    if ($context) {
+      $parts[] = implode("\n", array_reverse($context));
     }
 
     return $parts;
-  }
-
-  /**
-   * Collect heading titles from chunk's parent chain.
-   *
-   * @return string[]
-   *   Ancestor titles from outermost to innermost, including the chunk's own.
-   */
-  private function getAncestorHeadings(Chunk $chunk): array {
-    $titles = [];
-    $current = $chunk->parent;
-    while ($current !== NULL) {
-      $title = $current->context['title'] ?? NULL;
-      if ($title !== NULL) {
-        array_unshift($titles, $title);
-      }
-      $current = $current->parent;
-    }
-    return $titles;
   }
 
 }

@@ -48,7 +48,6 @@ final class Chunk {
     }
 
     $parts = $this->metadata;
-    $parts[] = '---';
     $parts[] = $this->text;
 
     return implode("\n", $parts);
