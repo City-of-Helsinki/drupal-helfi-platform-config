@@ -1,5 +1,5 @@
 label: 'Maksuttomat tapahtumat'
-description: 'Näytä "näytä vain maksuttomat tapahtumat" -suodatin.'
+description: ''
 settings:
   on_label: Kyllä
   off_label: Ei

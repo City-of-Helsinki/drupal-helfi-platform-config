@@ -87,11 +87,15 @@
     let wasOpenOnKeydown = false;
 
     // Capture phase: runs before tom-select's bubble handler so we can snapshot isOpen.
-    ts.control.addEventListener('keydown', (e) => {
-      if (e.key === ' ' || e.key === 'Enter') {
-        wasOpenOnKeydown = ts.isOpen;
-      }
-    }, true);
+    ts.control.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          wasOpenOnKeydown = ts.isOpen;
+        }
+      },
+      true,
+    );
 
     ts.control.addEventListener('keydown', (e) => {
       if (e.key !== ' ' && e.key !== 'Enter') return;

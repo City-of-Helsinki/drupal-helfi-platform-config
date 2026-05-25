@@ -9,8 +9,8 @@ use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
 use Drupal\external_entities\ExternalEntityStorage;
 use Elastic\Elasticsearch\ClientBuilder;
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * A base class for storage client tests.
@@ -37,8 +37,8 @@ abstract class StorageClientTestBase extends KernelTestBase {
    */
   protected function assertHttpHistoryContainer(array $expected, array $container): void {
     $this->assertCount(1, $container);
-    $this->assertInstanceOf(Request::class, $container[0]['request']);
-    /** @var \GuzzleHttp\Psr7\Request $request */
+    $this->assertInstanceOf(RequestInterface::class, $container[0]['request']);
+    /** @var \Psr\Http\Message\RequestInterface $request */
     $request = $container[0]['request'];
 
     $body = json_decode($request->getBody()->getContents(), TRUE);

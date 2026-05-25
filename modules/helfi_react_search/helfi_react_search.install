@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\language\ConfigurableLanguageManagerInterface;
+
 /**
  * UHF-9754: Unset '_info_file_ctime' for helfi_react_search module.
  */
@@ -19,4 +21,134 @@ function helfi_react_search_update_9017() : void {
     unset($module_info['info']['_info_file_ctime']);
     \Drupal::keyValue('locale.project')->set('helfi_react_search', $module_info);
   }
+}
+
+/**
+ * UHF-13092: Install field_search_term boolean filter for event_list paragraph.
+ */
+function helfi_react_search_update_9018(): void {
+  // Make sure field_group is enabled before we touch configs that depend on it.
+  $module_installer = \Drupal::service('module_installer');
+  if (!\Drupal::moduleHandler()->moduleExists('field_group')) {
+    $module_installer->install(['field_group']);
+  }
+
+  // Install new configs (field_search_term storage + field config). The helper
+  // skips existing configs, so this is safe on already-installed sites.
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+
+  $config_factory = \Drupal::configFactory();
+
+  // The installer skips already-installed configs, so manually fold the new
+  // field_group block and the field_search_term widget entry into the form
+  // display on sites that already had helfi_react_search.
+  $form_display = $config_factory->getEditable('core.entity_form_display.paragraph.event_list.default');
+  if (!$form_display->isNew()) {
+    $module_deps = $form_display->get('dependencies.module') ?? [];
+    if (!in_array('field_group', $module_deps, TRUE)) {
+      $module_deps[] = 'field_group';
+      sort($module_deps);
+      $form_display->set('dependencies.module', $module_deps);
+    }
+
+    $config_deps = $form_display->get('dependencies.config') ?? [];
+    $search_term_dep = 'field.field.paragraph.event_list.field_search_term';
+    if (!in_array($search_term_dep, $config_deps, TRUE)) {
+      $config_deps[] = $search_term_dep;
+      sort($config_deps);
+      $form_display->set('dependencies.config', $config_deps);
+    }
+
+    $form_display->set('third_party_settings.field_group.group_search_filters', [
+      'children' => [
+        'field_event_location',
+        'field_event_time',
+        'field_language',
+        'field_remote_events',
+        'field_free_events',
+        'field_search_term',
+      ],
+      'label' => 'Search filters',
+      'region' => 'content',
+      'parent_name' => '',
+      'weight' => 8,
+      'format_type' => 'details',
+      'format_settings' => [
+        'classes' => '',
+        'show_empty_fields' => FALSE,
+        'id' => '',
+        'open' => TRUE,
+        'description' => 'Select which filters are shown to users.',
+        'required_fields' => FALSE,
+      ],
+    ]);
+
+    if (!$form_display->get('content.field_search_term')) {
+      $form_display->set('content.field_search_term', [
+        'type' => 'boolean_checkbox',
+        'weight' => 8,
+        'region' => 'content',
+        'settings' => ['display_label' => TRUE],
+        'third_party_settings' => [],
+      ]);
+    }
+
+    $form_display->save();
+  }
+
+  // Trim/clear per-field descriptions on the existing field configs.
+  $field_descriptions = [
+    'field.field.paragraph.event_list.field_event_location' => 'If Event location is selected, you cannot use the Remote Events filter.',
+    'field.field.paragraph.event_list.field_event_time' => '',
+    'field.field.paragraph.event_list.field_language' => '',
+    'field.field.paragraph.event_list.field_remote_events' => 'If Event location is selected, you cannot use the Remote Events filter.',
+    'field.field.paragraph.event_list.field_free_events' => '',
+    'field.field.paragraph.event_list.field_search_term' => '',
+  ];
+  foreach ($field_descriptions as $config_name => $description) {
+    $config = $config_factory->getEditable($config_name);
+    if ($config->isNew()) {
+      continue;
+    }
+    $config->set('description', $description)->save();
+  }
+
+  // Update the Finnish config overrides — these are not touched by
+  // installDefaultConfig once the language override already exists.
+  $language_manager = \Drupal::languageManager();
+  if (
+    !$language_manager instanceof ConfigurableLanguageManagerInterface ||
+    !$language_manager->getLanguage('fi')
+  ) {
+    return;
+  }
+
+  $fi_field_descriptions = [
+    'field.field.paragraph.event_list.field_event_location' => 'Jos Tapahtumapaikka on valittuna, et voi käyttää Etätapahtumat-suodatinta.',
+    'field.field.paragraph.event_list.field_event_time' => '',
+    'field.field.paragraph.event_list.field_language' => '',
+    'field.field.paragraph.event_list.field_remote_events' => 'Jos Tapahtumapaikka on valittuna, et voi käyttää Etätapahtumat-suodatinta.',
+    'field.field.paragraph.event_list.field_free_events' => '',
+    'field.field.paragraph.event_list.field_search_term' => '',
+  ];
+  foreach ($fi_field_descriptions as $config_name => $description) {
+    $override = $language_manager->getLanguageConfigOverride('fi', $config_name);
+    if ($override->isNew()) {
+      continue;
+    }
+    $override->set('description', $description)->save();
+  }
+
+  $form_display_override = $language_manager->getLanguageConfigOverride(
+    'fi',
+    'core.entity_form_display.paragraph.event_list.default',
+  );
+  $form_display_override
+    ->set('third_party_settings.field_group.group_search_filters.label', 'Haun suodattimet')
+    ->set(
+      'third_party_settings.field_group.group_search_filters.format_settings.description',
+      'Valitse, mitkä suodattimet näytetään käyttäjille sivulla.',
+    )
+    ->save();
 }

@@ -1,11 +1,3 @@
-helfi_search.test_form:
-  path: '/search/new/test'
-  defaults:
-    _form: '\Drupal\helfi_search\Form\SearchTestForm'
-    _title: 'Search Embeddings Test'
-  requirements:
-    _permission: 'access content'
-
 helfi_search.semantic_search:
   path: '/api/v1/search'
   defaults:

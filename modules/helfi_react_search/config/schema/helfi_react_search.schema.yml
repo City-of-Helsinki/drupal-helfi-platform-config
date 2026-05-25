@@ -24,3 +24,15 @@ field.widget.settings.linked_events_select2:
     query:
       type: string
       label: 'Additional query parameters'
+
+plugin.plugin_configuration.search_api_processor.media_reference_to_object:
+  type: search_api.default_processor_configuration
+  label: 'Media reference to object processor configuration'
+  mapping:
+    fields:
+      type: sequence
+      label: 'Media reference fields to convert to objects'
+      orderby: key
+      sequence:
+        type: boolean
+        label: 'Enabled'
