@@ -6,10 +6,8 @@ namespace Drupal\helfi_search\Plugin\search_api\processor;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_search\EmbeddingsModelException;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\OpenAI\EmbeddingsApi;
-use Drupal\helfi_search\Pipeline\PipelineException;
 use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
@@ -119,12 +117,9 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
     $entity = $item->getOriginalObject()->getValue();
 
-    try {
-      $chunks = $this->textPipeline->process($entity);
-    }
-    catch (PipelineException) {
-      return;
-    }
+    // Throw if processing fails. This will interrupt search api. This
+    // will interrupt search api indexing until the issue is resolved.
+    $chunks = $this->textPipeline->process($entity);
 
     if (empty($chunks)) {
       return;
@@ -133,12 +128,9 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
     $embeddingTexts = array_map('strval', $chunks);
 
     foreach ($models as $model) {
-      try {
-        $vectors = $this->embeddingsModel->batchGetEmbedding($embeddingTexts, $model);
-      }
-      catch (EmbeddingsModelException) {
-        continue;
-      }
+      // Throw if processing fails. This will interrupt search api. This
+      // will interrupt search api indexing until the issue is resolved.
+      $vectors = $this->embeddingsModel->batchGetEmbedding($embeddingTexts, $model);
 
       $suffix = EmbeddingsApi::sanitizeModelName($model);
       $fieldName = 'embeddings_' . $suffix;

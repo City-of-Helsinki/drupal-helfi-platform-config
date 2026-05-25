@@ -62,9 +62,9 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   }
 
   /**
-   * Tests that extraction failure skips the item without removing it.
+   * Tests that extraction failure halts processing.
    */
-  public function testExtractionFailureSkipsItem(): void {
+  public function testExtractionFailureThrows(): void {
     $textPipeline = $this->prophesize(TextPipeline::class);
     $textPipeline
       ->process(Argument::any())
@@ -79,12 +79,10 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
       ['title' => 'Test', 'type' => 'test_node_bundle_1'],
     ]);
 
+    $this->expectException(PipelineException::class);
+
     $item = array_first($items);
     $this->processor->addFieldValues($item);
-
-    // Item still exists, just has no embedding field values.
-    $field = $item->getField('embeddings_text_embedding_3_small');
-    $this->assertEmpty($field?->getValues() ?? []);
   }
 
   /**
