@@ -62,11 +62,13 @@ class ChunkAnnotator {
         continue;
       }
 
-      $bothShort = mb_strlen($accumulator->text) < self::SHORT_CHUNK_LENGTH
-        && mb_strlen($chunk->text) < self::SHORT_CHUNK_LENGTH;
 
-      if ($bothShort && $groupSize < self::MAX_MERGE_GROUP) {
-        $accumulator = $this->mergePair($accumulator, $chunk);
+      if (
+        mb_strlen($accumulator->text) < self::SHORT_CHUNK_LENGTH &&
+        mb_strlen($chunk->text) < self::SHORT_CHUNK_LENGTH &&
+        $groupSize < self::MAX_MERGE_GROUP
+      ) {
+        $accumulator = $accumulator->merge($chunk);
         $groupSize++;
       }
       else {
@@ -81,27 +83,6 @@ class ChunkAnnotator {
     }
 
     return $result;
-  }
-
-  /**
-   * Fold $b into $a, inlining $b's heading as Markdown when it differs.
-   */
-  private function mergePair(Chunk $a, Chunk $b): Chunk {
-    $text = $a->text . "\n\n";
-
-    // Skip the inlined heading when both chunks belong to the same section
-    // (sub-chunks of one oversized section share a heading reference), to
-    // avoid repeating the title in the merged body.
-    $sameSection = $b->heading !== NULL
-      && $a->heading !== NULL
-      && $b->heading->matches($a->heading);
-
-    if ($b->heading !== NULL && !$sameSection) {
-      $text .= str_repeat('#', $b->heading->level) . ' ' . $b->heading->title . "\n";
-    }
-    $text .= $b->text;
-
-    return new Chunk($text, $a->parent, $a->heading);
   }
 
   /**

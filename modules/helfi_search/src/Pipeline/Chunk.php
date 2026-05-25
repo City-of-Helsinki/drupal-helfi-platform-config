@@ -37,6 +37,36 @@ final class Chunk {
   }
 
   /**
+   * Fold another chunk into this one, returning the merged chunk.
+   *
+   * The merged chunk keeps this chunk's structural identity (parent, heading,
+   * metadata, fragment). $other's content is appended after a blank line.
+   */
+  public function merge(self $other): self {
+    $text = $this->text . "\n\n";
+
+    // Skip the inlined heading when both chunks belong to the same section
+    // (sub-chunks of one oversized section share a heading), to avoid
+    // repeating the title in the merged body.
+    $sameSection = $other->heading !== NULL
+      && $this->heading !== NULL
+      && $other->heading->matches($this->heading);
+
+    if ($other->heading !== NULL && !$sameSection) {
+      $text .= str_repeat('#', $other->heading->level) . ' ' . $other->heading->title . "\n";
+    }
+    $text .= $other->text;
+
+    return new self(
+      text: $text,
+      parent: $this->parent,
+      heading: $this->heading,
+      metadata: $this->metadata,
+      fragment: $this->fragment,
+    );
+  }
+
+  /**
    * Render the chunk as embedding-ready text.
    */
   public function __toString(): string {
