@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Plugin\search_api\processor;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_search\EmbeddingsModelInterface;
@@ -142,7 +143,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
         foreach ($fields as $field) {
           $field->addValue([
             'vector' => $vector,
-            'content' => $chunks[$index]->snippet ?? '',
+            'content' => Unicode::truncate($chunks[$index]->snippet ?? '', 200, TRUE, TRUE),
             'fragment' => $chunks[$index]->fragment,
           ]);
         }

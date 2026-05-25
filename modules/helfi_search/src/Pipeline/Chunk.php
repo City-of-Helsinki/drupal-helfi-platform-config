@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Pipeline;
 
+use Drupal\Component\Utility\Unicode;
+
 /**
  * A single chunk of text produced by the content chunker.
  *
@@ -51,7 +53,7 @@ final class Chunk {
     for ($current = $this->parent; $current !== NULL; $current = $current->parent) {
 
       if ($current->snippet) {
-        $context[] = $current->snippet;
+        $context[] = Unicode::truncate($current->snippet, 300, TRUE);
       }
 
       if ($current->heading !== NULL) {
