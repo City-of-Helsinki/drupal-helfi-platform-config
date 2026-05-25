@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_users module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Remove member_for field from user display.
+ */
+function helfi_users_update_10001(): void {
+  \Drupal::service('entity_display.repository')
+    ->getViewDisplay('user', 'user', 'default')
+    ->removeComponent('member_for')
+    ->save();
+}

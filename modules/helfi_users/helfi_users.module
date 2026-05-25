@@ -142,3 +142,40 @@ function _helfi_users_reassign_nodes(AccountInterface $source, AccountInterface 
     \Drupal::entityTypeManager()->getStorage('node')->resetCache($affected_node_ids);
   }
 }
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function helfi_users_views_data_alter(array &$data): void {
+  $data['node_field_data']['helfi_node_authorship'] = [
+    'title' => t('Node authorship (current user)'),
+    'filter' => [
+      'title' => t('Node authorship (current user)'),
+      'help' => t('Filter nodes by whether the current user authored or last edited them.'),
+      'id' => 'helfi_node_authorship',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function helfi_users_entity_extra_field_info() {
+  $extra = [];
+  $extra['user']['user']['display']['user_content'] = [
+    'label' => t('User content'),
+    'description' => t('Lists all content authored by this user.'),
+    'weight' => 10,
+    'visible' => TRUE,
+  ];
+  return $extra;
+}
+
+/**
+ * Implements hook_user_view().
+ */
+function helfi_users_user_view(array &$build, UserInterface $account, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+  if ($display->getComponent('user_content')) {
+    $build['user_content'] = views_embed_view('dashboard_your_content', 'your_content_block', $account->id());
+  }
+}
