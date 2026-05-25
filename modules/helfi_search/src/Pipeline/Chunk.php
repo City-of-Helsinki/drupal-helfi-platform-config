@@ -8,10 +8,6 @@ use Drupal\Component\Utility\Unicode;
 
 /**
  * A single chunk of text produced by the content chunker.
- *
- * The metadata array is populated by MetadataComposer after chunking.
- * Casting to string produces the final embedding-ready text with metadata
- * labels prepended, separated from the body by "---".
  */
 final class Chunk {
 

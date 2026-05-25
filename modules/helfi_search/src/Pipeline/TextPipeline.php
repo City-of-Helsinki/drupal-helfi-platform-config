@@ -21,7 +21,7 @@ use Drupal\Core\Entity\EntityInterface;
  * - MarkdownConverter: How HTML structure maps to Markdown.
  * - TextNormalizer: What normalization is applied to the text.
  * - ContentChunker: How long content is split into chunks.
- * - MetadataComposer: Which metadata is added to each chunk.
+ * - ChunkAnnotator: How chunks are merged and annotated with snippet/fragment.
  */
 class TextPipeline {
 
@@ -29,7 +29,7 @@ class TextPipeline {
     private readonly HtmlExtractor $htmlExtractor,
     private readonly HtmlCleaner $htmlCleaner,
     private readonly ContentChunker $contentChunker,
-    private readonly MetadataComposer $metadataComposer,
+    private readonly ChunkAnnotator $chunkAnnotator,
   ) {
   }
 
@@ -52,7 +52,7 @@ class TextPipeline {
     $markdown = MarkdownConverter::convert($cleanHtml);
     $normalized = TextNormalizer::normalize($markdown);
     $chunks = $this->contentChunker->chunk($normalized);
-    return $this->metadataComposer->compose($chunks, $headingFragments);
+    return $this->chunkAnnotator->annotate($chunks, $headingFragments);
   }
 
 }
