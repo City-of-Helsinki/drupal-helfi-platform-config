@@ -42,11 +42,33 @@ final class Chunk {
    * Render the chunk as embedding-ready text.
    */
   public function __toString(): string {
-    if (empty($this->metadata)) {
-      return $this->text;
+    $parts = [];
+
+    // We want to add some context from the parent page to each chunk.
+    // If chunks are very short, they might match queries that are
+    // otherwise unrelated to the page with very high confidence.
+    $context = [];
+    for ($current = $this->parent; $current !== NULL; $current = $current->parent) {
+
+      if ($current->snippet) {
+        $context[] = $current->snippet;
+      }
+
+      if ($current->heading !== NULL) {
+        $context[] = str_repeat('#', $current->heading->level) . ' ' . $current->heading->title;
+      }
     }
 
-    $parts = $this->metadata;
+    if ($context) {
+      $parts[] = implode("\n", array_reverse($context));
+    }
+
+    $parts = array_merge($parts, $this->metadata);
+
+    if (!empty($this->heading)) {
+      $parts[] = str_repeat('#', $this->heading->level) . ' ' . $this->heading->title;
+    }
+
     $parts[] = $this->text;
 
     return implode("\n", $parts);

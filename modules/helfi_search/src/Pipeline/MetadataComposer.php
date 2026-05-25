@@ -24,7 +24,6 @@ class MetadataComposer {
     foreach ($chunks as $i => $chunk) {
       $chunk->snippet = SnippetRenderer::render($chunk->text);
       $chunk->fragment = $perSectionFragment[$i] ?? NULL;
-      $chunk->setMetadata($this->buildMetadata($chunk));
     }
     return $chunks;
   }
@@ -76,37 +75,6 @@ class MetadataComposer {
     }
 
     return $perChunkIndex;
-  }
-
-  /**
-   * Build metadata labels for an entity.
-   *
-   * @return string[]
-   *   Labeled metadata lines.
-   */
-  private function buildMetadata(Chunk $chunk): array {
-    $parts = [];
-
-    // We want to add some context from the parent page to each chunk.
-    // If chunks are very short, they might match queries that are
-    // otherwise unrelated to the page with very high confidence.
-    $context = [];
-    for ($current = $chunk->parent; $current !== NULL; $current = $current->parent) {
-
-      if ($current->snippet) {
-        $context[] = $current->snippet;
-      }
-
-      if ($current->heading !== NULL) {
-        $context[] = str_repeat('#', $current->heading->level) . ' ' . $current->heading->title;
-      }
-    }
-
-    if ($context) {
-      $parts[] = implode("\n", array_reverse($context));
-    }
-
-    return $parts;
   }
 
 }

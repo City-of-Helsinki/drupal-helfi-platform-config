@@ -29,7 +29,7 @@ class MetadataComposerTest extends UnitTestCase {
     $result = $this->getSut()->compose([$h3], $this->extractFragments());
 
     $this->assertInstanceOf(Chunk::class, $result[0]);
-    $this->assertSame("# Services\n## Foobar\nFAQ body text.", (string) $result[0]);
+    $this->assertSame("# Services\n## Foobar\n### FAQ\nFAQ body text.", (string) $result[0]);
   }
 
   /**
@@ -43,7 +43,7 @@ class MetadataComposerTest extends UnitTestCase {
 
     $this->assertSame('how-to-apply', $chunk->fragment);
     // Fragment lives only on the DTO; embedding text remains breadcrumb-only.
-    $this->assertSame('Body text.', (string) $chunk);
+    $this->assertSame("## How to Apply\nBody text.", (string) $chunk);
   }
 
   /**
@@ -86,7 +86,7 @@ class MetadataComposerTest extends UnitTestCase {
 
     $this->assertCount(2, $result);
     $this->assertSame('First chunk.', (string) $result[0]);
-    $this->assertSame('Second chunk.', (string) $result[1]);
+    $this->assertSame("## Section\nSecond chunk.", (string) $result[1]);
   }
 
   /**

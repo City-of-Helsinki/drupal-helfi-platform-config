@@ -69,16 +69,12 @@ class ContentChunker {
       // If the section has no body (heading immediately followed by another
       // heading), track it in the stack as a parent but don't emit a chunk.
       if ($title && empty($body)) {
-        $text = sprintf("%s %s", str_repeat('#', $level), $title);
-        $stack[$level] = new Chunk($text, $parent, $heading);
+        $stack[$level] = new Chunk('', $parent, $heading);
         continue;
       }
 
       foreach ($this->recursiveSplit($body) as $subText) {
-        // Add current title to each chunk.
-        $text = $title ? sprintf("%s %s\n%s", str_repeat('#', $level), $title, $subText) : $subText;
-
-        $stack[$level] = $chunks[] = new Chunk(trim($text), $parent, $heading);
+        $stack[$level] = $chunks[] = new Chunk(trim($subText), $parent, $heading);
       }
     }
 
