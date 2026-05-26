@@ -27,16 +27,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     'helfi:clear-site-data disable',
   ],
 )]
-final class ClearSiteDataCommand {
+final readonly class ClearSiteDataCommand {
 
   use AutowireTrait;
 
-  const NAME = 'helfi:clear-site-data';
-  const OPERATIONS = ['status', 'enable', 'disable'];
+  const string NAME = 'helfi:clear-site-data';
+  const array OPERATIONS = ['status', 'enable', 'disable'];
 
-  /**
-   * Constructs a ClearSiteDataCommand object.
-   */
   public function __construct(
     private ClearSiteData $clearSiteData,
   ) {
@@ -102,7 +99,7 @@ final class ClearSiteDataCommand {
         return Command::FAILURE;
       }
 
-      $ttl = $input->getOption('ttl');
+      $ttl = intval($input->getOption('ttl'));
       if ($ttl < ClearSiteData::MIN_EXPIRE_TIME || $ttl > ClearSiteData::MAX_EXPIRE_TIME) {
         $io->error(sprintf(
           'Invalid TTL: %s. Must be between %s and %s hours.',

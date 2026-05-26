@@ -80,12 +80,16 @@ final class TextPipelineCommands extends Command {
         return self::FAILURE;
       }
 
-      foreach ($chunks as $chunk) {
-        $output->writeln('Title: ' . ($chunk->context['title'] ?? ''));
+      foreach ($chunks as $i => $chunk) {
+        if ($i > 0) {
+          $output->writeln("=========================================");
+        }
+
+        $output->writeln('Title: ' . ($chunk->heading?->title ?? ''));
         $output->writeln('Fragment: ' . ($chunk->fragment ?? ''));
         $output->writeln('Snippet: ' . ($chunk->snippet ?? ''));
+        $output->writeln('===');
         $output->writeln((string) $chunk);
-        $output->writeln('=========================================');
       }
 
       return self::SUCCESS;

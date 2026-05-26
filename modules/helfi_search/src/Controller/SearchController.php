@@ -105,7 +105,10 @@ final class SearchController extends ControllerBase {
       $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
       $from = ($page - 1) * $size;
 
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, bundles: $bundles, size: $size, from: $from);
+      // Debug-only: ask ES to return every matching chunk.
+      $innerHitsSize = $request->query->getBoolean('debug') ? QueryBuilder::KNN_MAX_SIZE : 1;
+
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, bundles: $bundles, size: $size, from: $from, innerHitsSize: $innerHitsSize);
 
       $promoted = [];
       $searchResults = [];
