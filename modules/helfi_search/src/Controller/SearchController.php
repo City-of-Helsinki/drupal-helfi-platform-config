@@ -7,6 +7,8 @@ namespace Drupal\helfi_search\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Flood\FloodInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_search\EmbeddingsModelException;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\QueryBuilder;
@@ -39,9 +41,25 @@ final class SearchController extends ControllerBase {
     private readonly EmbeddingsModelInterface $embeddingsModel,
     private readonly FloodInterface $flood,
     private readonly QueryBuilder $queryBuilder,
+    private readonly EnvironmentResolverInterface $environmentResolver,
     #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
     private readonly Client $elasticClient,
   ) {
+  }
+
+  /**
+   * Whether debug data (e.g. per-bundle aggs) can be returned in responses.
+   *
+   * Debug data is exposed only outside production. If the environment cannot
+   * be resolved we default to FALSE so production-like setups stay quiet.
+   */
+  private function isDebugAllowed(): bool {
+    try {
+      return $this->environmentResolver->getActiveEnvironmentName() !== EnvironmentEnum::Prod->value;
+    }
+    catch (\InvalidArgumentException) {
+      return FALSE;
+    }
   }
 
   /**
@@ -123,11 +141,23 @@ final class SearchController extends ControllerBase {
       $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
       $from = ($page - 1) * $size;
 
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, bundles: $bundles, size: $size, from: $from, excludeBundles: $excludeBundles);
+      $includeAggregations = $request->query->getBoolean('debug') && $this->isDebugAllowed();
+
+      $knnQuery = $this->queryBuilder->buildKnnQuery(
+        $embeddings,
+        $currentLanguage,
+        $model,
+        bundles: $bundles,
+        size: $size,
+        from: $from,
+        excludeBundles: $excludeBundles,
+        includeAggregations: $includeAggregations,
+      );
 
       $promoted = [];
       $searchResults = [];
       $totalHits = 0;
+      $bundleAggregations = NULL;
 
       if ($bundles || $excludeBundles) {
         $searchResult = $this->elasticClient->search([
@@ -139,6 +169,9 @@ final class SearchController extends ControllerBase {
 
         $searchResults = $this->queryBuilder->parseKnnHits($knnResponse, $model);
         $totalHits = $knnResponse['hits']['total']['value'] ?? 0;
+        if ($includeAggregations) {
+          $bundleAggregations = $this->queryBuilder->parseBundleAggregations($knnResponse);
+        }
       }
       else {
         $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
@@ -163,16 +196,24 @@ final class SearchController extends ControllerBase {
         if (!isset($responses[1]['error'])) {
           $searchResults = $this->queryBuilder->parseKnnHits($responses[1] ?? [], $model);
           $totalHits = $responses[1]['hits']['total']['value'] ?? 0;
+          if ($includeAggregations) {
+            $bundleAggregations = $this->queryBuilder->parseBundleAggregations($responses[1] ?? []);
+          }
         }
       }
 
-      $response = new JsonResponse([
+      $payload = [
         'promoted' => $promoted,
         'results' => $searchResults,
         'page' => $page,
         'size' => $size,
         'total_hits' => $totalHits,
-      ]);
+      ];
+      if ($bundleAggregations !== NULL) {
+        $payload['debug'] = ['bundles' => $bundleAggregations];
+      }
+
+      $response = new JsonResponse($payload);
 
       // The search form submits the same query on page reload, while
       // the response for a query is unlikely to change. Prevent hitting

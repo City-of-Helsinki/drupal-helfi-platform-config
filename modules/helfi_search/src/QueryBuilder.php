@@ -86,11 +86,14 @@ final class QueryBuilder {
    *   Offset for pagination.
    * @param string[]|null $excludeBundles
    *   Bundles that must not appear in results.
+   * @param bool $includeAggregations
+   *   When TRUE, attach a per-bundle terms aggregation to the body. Intended
+   *   for debug responses; the caller is responsible for gating this.
    *
    * @return array<mixed>
    *   An array with 'index' and 'body' keys for Elasticsearch.
    */
-  public function buildKnnQuery(array $embeddings, string $language, string $model, ?array $bundles = NULL, int $size = self::KNN_DEFAULT_SIZE, int $from = 0, ?array $excludeBundles = NULL): array {
+  public function buildKnnQuery(array $embeddings, string $language, string $model, ?array $bundles = NULL, int $size = self::KNN_DEFAULT_SIZE, int $from = 0, ?array $excludeBundles = NULL, bool $includeAggregations = FALSE): array {
     $minScore = (float) ($this->getSetting('min_score') ?? 0.0);
     $language = match($language) {
       "fi", "sv", "en" => $language,
@@ -185,14 +188,30 @@ final class QueryBuilder {
       $knn = $this->buildKnnEntry($fieldPrefix, $embeddings, $filter, $minScore, $innerHits, NULL);
     }
 
+    $body = [
+      'knn' => $knn,
+      'size' => $size,
+      'from' => $from,
+      '_source' => $source,
+    ];
+
+    if ($includeAggregations) {
+      // Aggregations operate on the documents matched by the KNN clauses
+      // (capped at `k` per clause), so the counts reflect what KNN actually
+      // surfaced, not the entire index.
+      $body['aggs'] = [
+        'bundles' => [
+          'terms' => [
+            'field' => 'entity_bundle',
+            'size' => 50,
+          ],
+        ],
+      ];
+    }
+
     return [
       'index' => self::EMBEDDINGS_INDEX,
-      'body' => [
-        'knn' => $knn,
-        'size' => $size,
-        'from' => $from,
-        '_source' => $source,
-      ],
+      'body' => $body,
     ];
   }
 
@@ -287,6 +306,27 @@ final class QueryBuilder {
       ];
     }
     return $results;
+  }
+
+  /**
+   * Parse bundle aggregation buckets from an Elasticsearch response.
+   *
+   * @param array<mixed> $response
+   *   The Elasticsearch response array.
+   *
+   * @return array<string, int>
+   *   Map of entity bundle => doc count, in bucket order returned by ES.
+   */
+  public function parseBundleAggregations(array $response): array {
+    $buckets = $response['aggregations']['bundles']['buckets'] ?? [];
+    $result = [];
+    foreach ($buckets as $bucket) {
+      $key = $bucket['key'] ?? NULL;
+      if (is_string($key) && $key !== '') {
+        $result[$key] = (int) ($bucket['doc_count'] ?? 0);
+      }
+    }
+    return $result;
   }
 
   /**
