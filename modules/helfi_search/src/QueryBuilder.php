@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_search\OpenAI\EmbeddingsApi;
 
 /**
@@ -14,9 +15,13 @@ final class QueryBuilder {
   const string EMBEDDINGS_INDEX = 'embeddings';
   const string PROMOTIONS_INDEX = 'search_promotions';
   const int PROMOTIONS_LIMIT = 3;
-  const float KNN_MIN_SCORE = 0.68;
   const int KNN_DEFAULT_SIZE = 10;
   const int KNN_MAX_SIZE = 50;
+
+  public function __construct(
+    private readonly ?ConfigFactoryInterface $configFactory = NULL,
+  ) {
+  }
 
   /**
    * Build a promotion search query for use in search() or msearch().
@@ -26,7 +31,7 @@ final class QueryBuilder {
    * @param string $language
    *   The language code.
    *
-   * @return array
+   * @return array<mixed>
    *   An array with 'index' and 'body' keys for Elasticsearch.
    */
   public function buildPromotionQuery(string $query, string $language): array {
@@ -41,10 +46,9 @@ final class QueryBuilder {
         'query' => [
           'bool' => [
             'must' => [
-              'match' => [
+              'match_phrase' => [
                 $field => [
                   'query' => $query,
-                  'fuzziness' => 'AUTO',
                 ],
               ],
             ],
@@ -60,7 +64,6 @@ final class QueryBuilder {
           'title',
           'description',
           'link',
-          'search_api_language',
         ],
       ],
     ];
@@ -69,27 +72,28 @@ final class QueryBuilder {
   /**
    * Build a KNN search query for use in search() or msearch().
    *
-   * @param array $embeddings
+   * @param float[] $embeddings
    *   The embedding vector.
    * @param string $language
    *   The language code.
    * @param string $model
    *   The embedding model name.
-   * @param bool $includeInnerHits
-   *   Whether to include inner_hits for content extraction.
-   * @param array|null $bundles
+   * @param string[]|null $bundles
    *   Filter only given bundles.
-   * @param float $minScore
-   *   Minimum score threshold.
    * @param int $size
    *   Number of results per page.
    * @param int $from
    *   Offset for pagination.
+   * @param int $innerHitsSize
+   *   How many matching chunks to return per parent doc. Defaults to 1
+   *   (only the top chunk is surfaced). Set higher to surface per-chunk
+   *   scores for debugging.
    *
-   * @return array
+   * @return array<mixed>
    *   An array with 'index' and 'body' keys for Elasticsearch.
    */
-  public function buildKnnQuery(array $embeddings, string $language, string $model, bool $includeInnerHits = FALSE, ?array $bundles = NULL, float $minScore = self::KNN_MIN_SCORE, int $size = self::KNN_DEFAULT_SIZE, int $from = 0): array {
+  public function buildKnnQuery(array $embeddings, string $language, string $model, ?array $bundles = NULL, int $size = self::KNN_DEFAULT_SIZE, int $from = 0, int $innerHitsSize = 1): array {
+    $minScore = (float) ($this->getSetting('min_score') ?? 0.0);
     $language = match($language) {
       "fi", "sv", "en" => $language,
       default => "en",
@@ -103,50 +107,72 @@ final class QueryBuilder {
       ],
     ];
 
-    if ($bundles) {
-      $filter = [
-        'bool' => [
-          'must' => [
-            $languageFilter,
-            [
-              'terms' => [
-                'entity_bundle' => $bundles,
-              ],
-            ],
-          ],
-        ],
+    $source = ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at'];
+
+    $innerHits = [
+      '_source' => FALSE,
+      'fields' => [
+        $fieldPrefix . '.content',
+        $fieldPrefix . '.fragment',
+      ],
+      'size' => $innerHitsSize,
+    ];
+
+    $deboostBundles = $this->getSetting('deboost_bundles') ?? [];
+    // Partition into deboosted vs. normal bundles. NULL on the non-deboosted
+    // side means "everything not in $deboostBundles". used when no $bundles
+    // filter is set.
+    $deboostedSubset = $bundles
+      ? array_values(array_intersect($bundles, $deboostBundles))
+      : $deboostBundles;
+    $normalSubset = $bundles
+      ? array_values(array_diff($bundles, $deboostBundles))
+      : NULL;
+
+    $applyDeboost = !empty($deboostedSubset) && ($normalSubset === NULL || !empty($normalSubset));
+
+    if ($applyDeboost) {
+      // Two parallel KNN clauses with disjoint bundle filters and different
+      // boosts. Documents in $deboostedSubset get their score multiplied by
+      // $deboostFactor, so they only out-rank non-deboosted documents when
+      // their raw similarity is sufficiently higher.
+      $contentBool = $normalSubset !== NULL
+        ? ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $normalSubset]]]]
+        : ['must' => [$languageFilter], 'must_not' => [['terms' => ['entity_bundle' => $deboostBundles]]]];
+
+      // Each KNN clause needs a unique inner_hits name. Otherwise both
+      // clauses keep the default key (the nested field path) and ES rejects
+      // the search.
+      $knn = [
+        $this->buildKnnEntry(
+          $fieldPrefix,
+          $embeddings,
+          ['bool' => ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $deboostedSubset]]]]],
+          $minScore,
+          ['name' => 'deboosted'] + $innerHits,
+          (float) ($this->getSetting('deboost_factor') ?? 1.0),
+        ),
+        $this->buildKnnEntry(
+          $fieldPrefix,
+          $embeddings,
+          ['bool' => $contentBool],
+          $minScore,
+          ['name' => 'content'] + $innerHits,
+          1.0,
+        ),
       ];
     }
     else {
-      $filter = $languageFilter;
-    }
-
-    $knn = [
-      'field' => $fieldPrefix . '.vector',
-      'query_vector' => $embeddings,
-      'k' => 50,
-      'num_candidates' => 500,
-      'filter' => $filter,
-    ];
-
-    if ($includeInnerHits) {
-      $knn['inner_hits'] = [
-        '_source' => FALSE,
-        'fields' => [$fieldPrefix . '.content'],
-        'size' => 1,
-      ];
-    }
-
-    $source = ['entity_type', 'entity_bundle', 'url', 'label', 'search_api_language'];
-    if ($includeInnerHits) {
-      $source = ['id', ...$source, 'search_api_datasource'];
+      $filter = $bundles
+        ? ['bool' => ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $bundles]]]]]
+        : $languageFilter;
+      $knn = $this->buildKnnEntry($fieldPrefix, $embeddings, $filter, $minScore, $innerHits, NULL);
     }
 
     return [
       'index' => self::EMBEDDINGS_INDEX,
       'body' => [
         'knn' => $knn,
-        'min_score' => $minScore,
         'size' => $size,
         'from' => $from,
         '_source' => $source,
@@ -155,38 +181,107 @@ final class QueryBuilder {
   }
 
   /**
+   * Read a single value from helfi_search.settings.
+   *
+   * @return mixed
+   *   The configured value, or NULL when the config factory is absent or the
+   *   key is unset.
+   */
+  private function getSetting(string $key): mixed {
+    return $this->configFactory?->get('helfi_search.settings')->get($key);
+  }
+
+  /**
+   * Build a single KNN clause body.
+   *
+   * @param string $fieldPrefix
+   *   Embeddings field prefix (e.g. 'embeddings_text_embedding_3_large').
+   * @param float[] $embeddings
+   *   The query vector.
+   * @param array<string, mixed> $filter
+   *   Elasticsearch filter clause to apply to this KNN search.
+   * @param float|null $similarity
+   *   Optional raw-similarity floor applied before boost.
+   * @param array<string, mixed> $innerHits
+   *   Inner_hits sub-clause for content extraction.
+   * @param float|null $boost
+   *   Optional score multiplier for this KNN clause.
+   *
+   * @return array<string, mixed>
+   *   The KNN clause body.
+   */
+  private function buildKnnEntry(string $fieldPrefix, array $embeddings, array $filter, ?float $similarity, array $innerHits, ?float $boost): array {
+    $entry = [
+      'field' => $fieldPrefix . '.vector',
+      'query_vector' => $embeddings,
+      'k' => 50,
+      'num_candidates' => 500,
+      'filter' => $filter,
+      'inner_hits' => $innerHits,
+    ];
+    // https://www.elastic.co/docs/solutions/search/vector/knn#knn-similarity-search.
+    // The _score of each document will be derived from the similarity,
+    // in a way that ensures that a larger score corresponds to a higher
+    // ranking. We use cosine similarity metric.
+    if ($similarity !== NULL) {
+      // min_score = (2 * _score) - 1.
+      $entry['similarity'] = $similarity;
+    }
+    // https://www.elastic.co/docs/solutions/search/vector/knn#_search_multiple_knn_fields.
+    if ($boost !== NULL) {
+      $entry['boost'] = $boost;
+    }
+    return $entry;
+  }
+
+  /**
    * Parse KNN hits from an Elasticsearch response.
    *
-   * @param array $response
+   * @param array<mixed> $response
    *   The Elasticsearch response array.
    * @param string $model
    *   The embedding model name.
-   * @param bool $includeContent
-   *   Whether to extract content from inner_hits.
    *
-   * @return array
+   * @return array<mixed>
    *   Parsed search results.
    */
-  public function parseKnnHits(array $response, string $model, bool $includeContent = FALSE): array {
+  public function parseKnnHits(array $response, string $model): array {
     $fieldPrefix = 'embeddings_' . EmbeddingsApi::sanitizeModelName($model);
     $results = [];
 
     foreach ($response['hits']['hits'] ?? [] as $hit) {
+      // With multiple KNN clauses (deboost mode), each hit echoes every named
+      // inner_hits clause, including empty ones for clauses that didn't
+      // match. Pick the first group that actually has hits.
+      $innerGroup = array_find(
+        $hit['inner_hits'] ?? [],
+        static fn (array $group): bool => !empty($group['hits']['hits']),
+      ) ?? [];
+      $innerHits = $innerGroup['hits']['hits'] ?? [];
+      $innerFields = $innerHits[0]['fields'][$fieldPrefix][0] ?? [];
       $result = [
+        'id' => $hit['_id'] ?? NULL,
         'score' => $hit['_score'] ?? 0,
         'entity_type' => array_first($hit['_source']['entity_type'] ?? []),
         'bundle' => array_first($hit['_source']['entity_bundle'] ?? []),
         'url' => array_first($hit['_source']['url'] ?? []),
         'title' => array_first($hit['_source']['label'] ?? []),
-        'language' => array_first($hit['_source']['search_api_language'] ?? []),
+        'published_at' => array_first($hit['_source']['published_at'] ?? []),
+        'content' => $innerFields['content'][0] ?? '',
+        'fragment' => $innerFields['fragment'][0] ?? NULL,
       ];
-
-      if ($includeContent) {
-        $result['id'] = $hit['_id'];
-        $result['datasource'] = array_first($hit['_source']['search_api_datasource'] ?? []);
-        $result['content'] = $hit['inner_hits'][$fieldPrefix]['hits']['hits'][0]['fields'][$fieldPrefix][0]['content'][0] ?? '';
+      // Debug: when more than one inner hit was requested, surface every
+      // matching chunk with its individual similarity score.
+      if (count($innerHits) > 1) {
+        $result['chunks'] = array_map(
+          static fn (array $h) => [
+            'score' => $h['_score'] ?? 0,
+            'content' => $h['fields'][$fieldPrefix][0]['content'][0] ?? '',
+            'fragment' => $h['fields'][$fieldPrefix][0]['fragment'][0] ?? NULL,
+          ],
+          $innerHits,
+        );
       }
-
       $results[] = $result;
     }
     return $results;
@@ -195,10 +290,10 @@ final class QueryBuilder {
   /**
    * Parse promotion hits from an Elasticsearch response.
    *
-   * @param array $response
+   * @param array<mixed> $response
    *   The Elasticsearch response array.
    *
-   * @return array
+   * @return array<mixed>
    *   Parsed promotion results.
    */
   public function parsePromotionHits(array $response): array {
@@ -208,7 +303,6 @@ final class QueryBuilder {
         'title' => array_first($hit['_source']['title'] ?? []),
         'description' => array_first($hit['_source']['description'] ?? []),
         'url' => array_first($hit['_source']['link'] ?? []),
-        'language' => array_first($hit['_source']['search_api_language'] ?? []),
         'score' => $hit['_score'] ?? 0,
       ];
     }

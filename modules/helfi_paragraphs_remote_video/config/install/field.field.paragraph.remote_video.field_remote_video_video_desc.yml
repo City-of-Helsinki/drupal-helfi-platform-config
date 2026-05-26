@@ -12,8 +12,8 @@ field_name: field_remote_video_video_desc
 entity_type: paragraph
 bundle: remote_video
 label: 'Description of the video'
-description: ''
-required: true
+description: 'Write a short description of the video. This appears below the video, like a caption. The videographer’s name is pulled from the video data, so it is not added here.'
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

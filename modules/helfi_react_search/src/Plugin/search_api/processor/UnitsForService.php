@@ -36,7 +36,7 @@ class UnitsForService extends ProcessorPluginBase {
   use SupportsServiceIndexTrait;
 
   const IMAGE_STYLES = [
-    '1.5_1022w_682h_LQ',
+    '1_5_1022w_682h_lq',
   ];
 
   /**

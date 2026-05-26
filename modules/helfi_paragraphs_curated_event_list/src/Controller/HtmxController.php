@@ -7,8 +7,10 @@ namespace Drupal\helfi_paragraphs_curated_event_list\Controller;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
@@ -34,7 +36,7 @@ final readonly class HtmxController implements ContainerInjectionInterface {
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    *   The paragraph.
    *
-   * @return array
+   * @return array<mixed>
    *   A render array of results.
    */
   public function content(ParagraphInterface $paragraph): array {
@@ -47,11 +49,14 @@ final readonly class HtmxController implements ContainerInjectionInterface {
     $this->renderer->addCacheableDependency($build, $paragraph);
     $this->renderer->addCacheableDependency($build, $paragraph->getParentEntity());
 
-    /** @var \Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent[] $entities */
-    $entities = $paragraph->get('field_events')->referencedEntities();
+    $events = $paragraph->get('field_events');
+    assert($events instanceof EntityReferenceFieldItemListInterface);
 
     $numItems = 0;
-    foreach ($entities as $entity) {
+
+    foreach ($events->referencedEntities() as $entity) {
+      assert($entity instanceof LinkedEventsEvent);
+
       $entity->addCacheableDependency($paragraph);
 
       // Show maximum of three items.

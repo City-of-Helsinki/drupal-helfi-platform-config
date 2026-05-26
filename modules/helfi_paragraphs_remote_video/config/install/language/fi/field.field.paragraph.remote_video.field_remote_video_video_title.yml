@@ -1,1 +1,2 @@
 label: 'Videon otsikko'
+description: 'Lisää H3-otsikon. Käytä silloin, kun video liittyy kokonaisuuteen, jolla on H2-otsikko. Mikäli video on muusta sisällöstä irrallinen, laita otsikko ylempään otsikko-kenttään (lisää H2-otsikon).'

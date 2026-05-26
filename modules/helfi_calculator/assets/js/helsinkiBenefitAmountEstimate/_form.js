@@ -1,4 +1,4 @@
-function getFormData(id, t, config) {
+function getFormData(id, t) {
   return {
     form_id: id,
     has_required_fields: true,
@@ -90,59 +90,11 @@ function getFormData(id, t, config) {
         },
       },
       {
-        paragraph: {
-          text: t('text_pay_subsidy_information'),
-        },
-      },
-      {
-        radio: {
+        checkbox: {
           id: 'pay_subsidy_granted',
-          label: t('label_pay_subsidy_granted'),
+          label: t('label_pay_subsidy_false'),
+          helper_text: t('text_pay_subsidy_information'),
           required: true,
-          radio_items: [
-            {
-              name: 'pay_subsidy_granted',
-              item_id: 'pay_subsidy_granted_false',
-              label: t('label_pay_subsidy_false'),
-              value: 'pay_subsidy_granted_false',
-            },
-            {
-              name: 'pay_subsidy_granted',
-              item_id: 'pay_subsidy_granted_true',
-              label: t('label_pay_subsidy_true'),
-              value: 'pay_subsidy_granted_true',
-            },
-          ],
-        },
-      },
-      {
-        group: {
-          id: 'pay_subsidy_granted_group',
-          hide_group: true,
-          items: [
-            {
-              radio: {
-                id: 'pay_subsidy_percentage',
-                label: t('label_pay_subsidy_percentage'),
-                required: true,
-                helper_text: t('helper_text_pay_subsidy_percentage'),
-                radio_items: [
-                  {
-                    name: 'pay_subsidy_percentage',
-                    item_id: 'pay_subsidy_percentage_1',
-                    label: t('label_pay_subsidy_percentage_1', { value: config.PAY_SUBSIDY_PERCENTAGES[1] * 100 }),
-                    value: 1,
-                  },
-                  {
-                    name: 'pay_subsidy_percentage',
-                    item_id: 'pay_subsidy_percentage_2',
-                    label: t('label_pay_subsidy_percentage_2', { value: config.PAY_SUBSIDY_PERCENTAGES[2] * 100 }),
-                    value: 2,
-                  },
-                ],
-              },
-            },
-          ],
         },
       },
     ],

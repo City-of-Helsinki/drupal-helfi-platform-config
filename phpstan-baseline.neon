@@ -2536,11 +2536,6 @@ parameters:
 			path: modules/helfi_paragraphs_curated_event_list/helfi_paragraphs_curated_event_list.module
 
 		-
-			message: "#^Method Drupal\\\\helfi_paragraphs_curated_event_list\\\\Controller\\\\HtmxController\\:\\:content\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_curated_event_list/src/Controller/HtmxController.php
-
-		-
 			message: "#^Cannot access offset 'data' on array\\|bool\\|float\\|int\\|object\\|string\\.$#"
 			count: 1
 			path: modules/helfi_paragraphs_curated_event_list/src/Plugin/ExternalEntities/StorageClient/Events.php
@@ -3024,16 +3019,6 @@ parameters:
 			message: "#^Method Drupal\\\\Tests\\\\helfi_paragraphs_news_list\\\\Kernel\\\\ExternalEntityStorage\\\\StorageClientTestBase\\:\\:getSut\\(\\) has parameter \\$container with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_paragraphs_news_list/tests/src/Kernel/ExternalEntityStorage/StorageClientTestBase.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_paragraphs_news_list\\\\Kernel\\\\KernelTestBase\\:\\:createElasticsearchResponse\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_news_list/tests/src/Kernel/KernelTestBase.php
-
-		-
-			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_news_list/tests/src/Kernel/KernelTestBase.php
 
 		-
 			message: "#^Method Drupal\\\\Tests\\\\helfi_paragraphs_news_list\\\\Kernel\\\\Plugin\\\\DebugData\\\\NewsApiAvailabilityTest\\:\\:getSut\\(\\) should return Drupal\\\\helfi_paragraphs_news_list\\\\Plugin\\\\DebugDataItem\\\\NewsApiAvailability but returns object\\.$#"
@@ -3906,16 +3891,6 @@ parameters:
 			path: modules/helfi_recommendations/src/Plugin/Block/RecommendationsBlock.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\Plugin\\\\Block\\\\RecommendationsBlock\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/Plugin/Block/RecommendationsBlock.php
-
-		-
-			message: "#^Property Drupal\\\\helfi_recommendations\\\\Plugin\\\\Block\\\\RecommendationsBlock\\:\\:\\$entityTypeManager is never read, only written\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/Plugin/Block/RecommendationsBlock.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\Plugin\\\\DebugDataItem\\\\ApiAvailability\\:\\:__construct\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/Plugin/DebugDataItem/ApiAvailability.php
@@ -4091,11 +4066,6 @@ parameters:
 			path: modules/helfi_recommendations/src/RecommendationManager.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getAllowedContentTypesAndBundles\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getAllowedInstances\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManager.php
@@ -4201,11 +4171,6 @@ parameters:
 			path: modules/helfi_recommendations/src/RecommendationManager.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:getAllowedContentTypesAndBundles\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManagerInterface.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:getAllowedInstances\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManagerInterface.php
@@ -4224,21 +4189,6 @@ parameters:
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:invalidateExternalCacheTags\\(\\) has parameter \\$uuids with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManagerInterface.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationsLazyBuilder\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationsLazyBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationsLazyBuilder\\:\\:getRecommendations\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationsLazyBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationsLazyBuilderInterface\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationsLazyBuilderInterface.php
 
 		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\ReferenceUpdater\\:\\:entitiesWithNonexistentFields\\(\\) has parameter \\$fields with no value type specified in iterable type array\\.$#"
@@ -4396,17 +4346,7 @@ parameters:
 			path: modules/helfi_recommendations/tests/src/Kernel/QueueWorkerTest.php
 
 		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_recommendations\\\\Kernel\\\\RecommendationManagerKernelTest\\:\\:createElasticsearchResponse\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Kernel/RecommendationManagerKernelTest.php
-
-		-
 			message: "#^Method Drupal\\\\Tests\\\\helfi_recommendations\\\\Kernel\\\\RecommendationManagerKernelTest\\:\\:getSut\\(\\) has parameter \\$responses with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Kernel/RecommendationManagerKernelTest.php
-
-		-
-			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/tests/src/Kernel/RecommendationManagerKernelTest.php
 
@@ -4544,231 +4484,6 @@ parameters:
 			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationManagerTest\\:\\:\\$topicsManager with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
 			count: 1
 			path: modules/helfi_recommendations/tests/src/Unit/RecommendationManagerTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$anonymousUser with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$authenticatedUser with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$entity with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$entityTypeManager with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$language with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$logger with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$nodeEntityStorage with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$recommendationManager with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Property Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\RecommendationsLazyBuilderTest\\:\\:\\$userEntityStorage with generic class Prophecy\\\\Prophecy\\\\ObjectProphecy does not specify its types\\: T$#"
-			count: 1
-			path: modules/helfi_recommendations/tests/src/Unit/RecommendationsLazyBuilderTest.php
-
-		-
-			message: "#^Function helfi_search_install\\(\\) has parameter \\$is_syncing with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_search/helfi_search.install
-
-		-
-			message: "#^Function helfi_search_schema\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/helfi_search.install
-
-		-
-			message: "#^Function helfi_search_update_8001\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: modules/helfi_search/helfi_search.install
-
-		-
-			message: "#^Function helfi_search_update_8002\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: modules/helfi_search/helfi_search.install
-
-		-
-			message: "#^Call to an undefined method Elastic\\\\Elasticsearch\\\\Response\\\\Elasticsearch\\|Http\\\\Promise\\\\Promise\\:\\:asArray\\(\\)\\.$#"
-			count: 2
-			path: modules/helfi_search/src/Controller/SearchController.php
-
-		-
-			message: "#^Using nullsafe method call on non\\-nullable type Elastic\\\\Elasticsearch\\\\Response\\\\Elasticsearch\\|Http\\\\Promise\\\\Promise\\. Use \\-\\> instead\\.$#"
-			count: 2
-			path: modules/helfi_search/src/Controller/SearchController.php
-
-		-
-			message: "#^Call to an undefined method Elastic\\\\Elasticsearch\\\\Response\\\\Elasticsearch\\|Http\\\\Promise\\\\Promise\\:\\:asArray\\(\\)\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Form/SearchTestForm.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Form\\\\SearchTestForm\\:\\:buildForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Form/SearchTestForm.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Form\\\\SearchTestForm\\:\\:buildForm\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Form/SearchTestForm.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Form\\\\SearchTestForm\\:\\:submitForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Form/SearchTestForm.php
-
-		-
-			message: "#^Using nullsafe method call on non\\-nullable type Elastic\\\\Elasticsearch\\\\Response\\\\Elasticsearch\\|Http\\\\Promise\\\\Promise\\. Use \\-\\> instead\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Form/SearchTestForm.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\OpenAI\\\\EmbeddingsApi\\:\\:batchGetEmbedding\\(\\) should return array\\<array\\<float\\>\\> but returns array\\<array\\<float\\>\\|float\\>\\.$#"
-			count: 1
-			path: modules/helfi_search/src/OpenAI/EmbeddingsApi.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\OpenAI\\\\EmbeddingsApi\\:\\:makeRequest\\(\\) has parameter \\$input with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/OpenAI/EmbeddingsApi.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\Chunk\\:\\:__construct\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/Chunk.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\Chunk\\:\\:__construct\\(\\) has parameter \\$metadata with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/Chunk.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\Chunk\\:\\:setMetadata\\(\\) has parameter \\$metadata with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/Chunk.php
-
-		-
-			message: "#^Parameter \\#1 \\$separator of function explode expects non\\-empty\\-string, string given\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/ContentChunker.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Pipeline\\\\HtmlCleaner\\:\\:removeNodeList\\(\\) has parameter \\$nodes with generic class DOMNodeList but does not specify its types\\: TNode$#"
-			count: 1
-			path: modules/helfi_search/src/Pipeline/HtmlCleaner.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Plugin\\\\search_api\\\\processor\\\\VectorEmbeddingsProcessor\\:\\:addFieldValues\\(\\) has parameter \\$item with no value type specified in iterable type Drupal\\\\search_api\\\\Item\\\\ItemInterface\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Plugin/search_api/processor/VectorEmbeddingsProcessor.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\Plugin\\\\search_api\\\\processor\\\\VectorEmbeddingsProcessor\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/Plugin/search_api/processor/VectorEmbeddingsProcessor.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:buildKnnQuery\\(\\) has parameter \\$bundles with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:buildKnnQuery\\(\\) has parameter \\$embeddings with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:buildKnnQuery\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:buildPromotionQuery\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:parseKnnHits\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:parseKnnHits\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:parsePromotionHits\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_search\\\\QueryBuilder\\:\\:parsePromotionHits\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/src/QueryBuilder.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Controller\\\\SearchControllerTest\\:\\:createElasticsearchResponse\\(\\) has parameter \\$response with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Controller/SearchControllerTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
-			count: 3
-			path: modules/helfi_search/tests/src/Kernel/Controller/SearchControllerTest.php
-
-		-
-			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Controller/SearchControllerTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Pipeline\\\\TextPipelineTest\\:\\:getSut\\(\\) has parameter \\$responses with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Pipeline/TextPipelineTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Plugin\\\\search_api\\\\VectorEmbeddingsProcessorTest\\:\\:createNodeItems\\(\\) has parameter \\$values with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Plugin/search_api/VectorEmbeddingsProcessorTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Kernel\\\\Plugin\\\\search_api\\\\VectorEmbeddingsProcessorTest\\:\\:createNodeItems\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Plugin/search_api/VectorEmbeddingsProcessorTest.php
-
-		-
-			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Unit/OpenAI/EmbeddingsApiTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_search\\\\Unit\\\\QueryBuilderTest\\:\\:languageFieldProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_search/tests/src/Unit/QueryBuilderTest.php
 
 		-
 			message: "#^Function helfi_test_content_install\\(\\) has parameter \\$is_syncing with no type specified\\.$#"
@@ -5724,21 +5439,6 @@ parameters:
 			message: "#^Cannot access offset 'mapping' on Drupal\\\\Core\\\\TypedData\\\\DataDefinitionInterface\\.$#"
 			count: 1
 			path: tests/src/ExistingSite/ConfigurationTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_platform_config\\\\ExistingSite\\\\ConfigurationTest\\:\\:getSubModules\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: tests/src/ExistingSite/ConfigurationTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$raw of static method Drupal\\\\Component\\\\Serialization\\\\Yaml\\:\\:decode\\(\\) expects string, string\\|false given\\.$#"
-			count: 2
-			path: tests/src/ExistingSite/ConfigurationTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_platform_config\\\\ExistingSite\\\\RedirectFormTest\\:\\:testRedirectForm\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: tests/src/ExistingSite/RedirectFormTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$account of method weitzman\\\\DrupalTestTraits\\\\ExistingSiteBase\\:\\:drupalLogin\\(\\) expects Drupal\\\\Core\\\\Session\\\\AccountInterface, Drupal\\\\user\\\\Entity\\\\User\\|false given\\.$#"

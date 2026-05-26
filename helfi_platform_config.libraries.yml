@@ -1,5 +1,5 @@
 react_and_share:
-  version: 1.0.1
+  version: 1.0.2
   js:
     dist/js/reactAndShareSettings.min.js: { minified: true }
   dependencies:
@@ -29,10 +29,19 @@ tom_select:
     name: Apache license 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
   js:
-    assets/js/tomSelectComplete.min.js: { weight: -1, minified: true }
+    dist/js/tom-select.js: { weight: -1 }
   css:
     theme:
       assets/css/tom_select.css: {}
+
+helfi_select:
+  version: 1.0.0
+  js:
+    assets/js/helfi-select.js: { }
+  dependencies:
+    - core/drupal
+    - core/once
+    - helfi_platform_config/tom_select
 
 a11y_autocomplete:
   version: 1.0.0
@@ -68,7 +77,7 @@ heading_anchor_buttons:
     - core/once
 
 sentry_ignore:
-  version: 1.0.1
+  version: 1.0.2
   js:
     dist/js/sentryIgnore.min.js: { minified: true }
   dependencies:

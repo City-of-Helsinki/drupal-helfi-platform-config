@@ -25,6 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Events extends StorageClientBase {
   protected const string API_URL = 'https://api.hel.fi/linkedevents/v1';
   protected const string EVENTS_BASE_URL = 'https://tapahtumat.hel.fi';
+  protected const string HOBBIES_BASE_URL = 'https://harrastukset.hel.fi';
 
   /**
    * The current language service.
@@ -98,6 +99,7 @@ class Events extends StorageClientBase {
         // language code when querying the API.
         'ids' => implode(',', array_map(fn(string $id) => explode(',', $id)[0], $parameters['ids'])),
         'language' => $langcode,
+        'event_type' => 'General,Course',
       ];
 
       return $uri('event', $query);
@@ -107,6 +109,7 @@ class Events extends StorageClientBase {
       $query = [
         'ids' => implode(',', $parameters[0]['value']),
         'language' => $langcode,
+        'event_type' => 'General,Course',
       ];
       return $uri('event', $query);
     }
@@ -115,6 +118,7 @@ class Events extends StorageClientBase {
       $query = [
         'ids' => $parameters[0]['value'],
         'language' => $langcode,
+        'event_type' => 'General,Course',
       ];
       return $uri('event', $query);
     }
@@ -157,11 +161,6 @@ class Events extends StorageClientBase {
 
     $prepared = [];
 
-    $paths = [
-      'sv' => 'kurser',
-      'en' => 'events',
-      'fi' => 'tapahtumat',
-    ];
     foreach ($json['data'] as $event) {
       if (!isset($event['name'][$langcode])) {
         continue;
@@ -169,12 +168,8 @@ class Events extends StorageClientBase {
       $originalId = $event['id'];
       $start = new \DateTime($event['start_time']);
 
-      $event['external_link'] = vsprintf('%s/%s/%s/%s', [
-        self::EVENTS_BASE_URL,
-        $langcode,
-        $paths[$langcode],
-        $originalId,
-      ]);
+      $event['external_link'] = $this->buildExternalLink($event, $langcode);
+
       // Make sure event id is unique per language.
       $event['id'] = sprintf('%s,%s', $originalId, $langcode);
       $event['title'] = $event['name'][$langcode] . ' (' . $start->format('d.m.Y H:i') . ')';
@@ -213,6 +208,51 @@ class Events extends StorageClientBase {
     array $context = [],
   ): array {
     return [];
+  }
+
+  /**
+   * Build external link for event.
+   *
+   * @param array<mixed> $event
+   *   The event.
+   * @param string $langcode
+   *   The language code.
+   *
+   * @return string
+   *   The external link.
+   */
+  private function buildExternalLink(array $event, string $langcode): string {
+    $lang = match ($langcode) {
+      'fi' => 'fi',
+      'sv' => 'sv',
+      default => 'en',
+    };
+
+    $type = match ($event['type_id'] ?? NULL) {
+      'Course' => 'course',
+      default => 'event',
+    };
+
+    $base_url = match ($type) {
+      'course' => self::HOBBIES_BASE_URL,
+      default => self::EVENTS_BASE_URL,
+    };
+
+    $path = match ($type . ':' . $lang) {
+      'event:fi' => 'tapahtumat',
+      'event:sv' => 'kurser',
+      'event:en' => 'events',
+      'course:fi' => 'kurssit',
+      'course:sv' => 'kurser',
+      'course:en' => 'courses',
+    };
+
+    return vsprintf('%s/%s/%s/%s', [
+      $base_url,
+      $lang,
+      $path,
+      $event['id'],
+    ]);
   }
 
 }

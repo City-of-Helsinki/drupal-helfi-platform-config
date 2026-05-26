@@ -8,10 +8,13 @@
 declare(strict_types=1);
 
 use Drupal\helfi_search\OpenAI\EmbeddingsApi;
+use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\search_api\Entity\Index;
 
 /**
  * Implements hook_schema().
+ *
+ * @phpstan-return array<string, mixed>
  */
 function helfi_search_schema(): array {
   $schema = [];
@@ -42,7 +45,7 @@ function helfi_search_schema(): array {
 /**
  * Implements hook_install().
  */
-function helfi_search_install($is_syncing) : void {
+function helfi_search_install(bool $is_syncing): void {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
   if ($is_syncing) {
@@ -62,7 +65,7 @@ function helfi_search_install($is_syncing) : void {
 /**
  * Update the embeddings index datasources and enable multisite option.
  */
-function helfi_search_update_8001() {
+function helfi_search_update_8001(): void {
   $config = \Drupal::configFactory()->getEditable('search_api.index.embeddings');
 
   // Do not run the update if the config didn't exist yet.
@@ -92,7 +95,7 @@ function helfi_search_update_8001() {
 /**
  * Update embeddings index fields.
  */
-function helfi_search_update_8002() {
+function helfi_search_update_8002(): void {
   $config = \Drupal::configFactory()->getEditable('search_api.index.embeddings');
 
   // Do not run the update if the config didn't exist yet.
@@ -292,4 +295,140 @@ function helfi_search_update_11006(): void {
     ]);
   $index->addField($field);
   $index->save();
+}
+
+/**
+ * Drop the small embeddings model in favour of the large one.
+ */
+function helfi_search_update_11007(): void {
+  $removed = 'text-embedding-3-small';
+
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+
+  $models = $config->get('openai_models') ?? [];
+  $models = array_values(array_filter($models, fn ($m) => $m !== $removed));
+  $config->set('openai_models', $models);
+}
+
+/**
+ * Set defaults for the semantic-search options.
+ */
+function helfi_search_update_11008(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+
+  if ($config->get('deboost_bundles') === NULL) {
+    $config->set('deboost_bundles', ['news_article', 'news_item']);
+  }
+  if ($config->get('deboost_factor') === NULL) {
+    $config->set('deboost_factor', 0.9);
+  }
+  if ($config->get('min_score') === NULL) {
+    $config->set('min_score', 0.36);
+  }
+
+  $config->save();
+}
+
+/**
+ * Add publication_date field to the embeddings index.
+ */
+function helfi_search_update_11009(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('publication_date')) {
+    return;
+  }
+
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  if ($index->getField('published_at')) {
+    return;
+  }
+
+  $field = \Drupal::service('search_api.fields_helper')
+    ->createField($index, 'published_at', [
+      'label' => 'Published',
+      'datasource_id' => 'entity:node',
+      'property_path' => 'published_at',
+      'type' => 'date',
+    ]);
+  $index->addField($field);
+  $index->save();
+}
+
+/**
+ * Seed ignored_classes config with the previous hard-coded list.
+ */
+function helfi_search_update_11010(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+
+  if ($config->get('ignored_classes') !== NULL) {
+    return;
+  }
+
+  $config->set('ignored_classes', [
+    'is-hidden',
+    'visually-hidden',
+    'skip-link',
+    'table-of-contents',
+    'component--recommendations',
+    'component--map',
+    'component--hearings',
+    'announcement',
+    'content-tags',
+    'content-date',
+    'content-links',
+    'block--askem',
+  ]);
+
+  $config->save();
+}
+
+/**
+ * Add the "Helsinki near you" external search link with per-language URLs.
+ */
+function helfi_search_update_11011(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+  $external_links = $config->get('external_links') ?? [];
+
+  if (!isset($external_links['helsinki_near_you'])) {
+    $external_links['helsinki_near_you'] = 'https://www.hel.fi/en/helsinki-near-you';
+    $config->set('external_links', $external_links);
+    $config->save();
+  }
+
+  $overrides = [
+    'fi' => 'https://www.hel.fi/fi/helsinki-lahellasi',
+    'sv' => 'https://www.hel.fi/sv/helsingfors-nara-dig',
+  ];
+
+  $languageManager = \Drupal::languageManager();
+  foreach ($overrides as $langcode => $url) {
+    assert($languageManager instanceof ConfigurableLanguageManagerInterface);
+    $override = $languageManager->getLanguageConfigOverride($langcode, 'helfi_search.settings');
+    $links = $override->get('external_links') ?? [];
+    if (isset($links['helsinki_near_you'])) {
+      continue;
+    }
+    $links['helsinki_near_you'] = $url;
+    $override->set('external_links', $links)->save();
+  }
+}
+
+/**
+ * Add remote-video to ignored_classes config.
+ */
+function helfi_search_update_11012(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+  $ignored_classes = $config->get('ignored_classes') ?? [];
+
+  if (in_array('remote-video', $ignored_classes, TRUE)) {
+    return;
+  }
+
+  $ignored_classes[] = 'remote-video';
+  $ignored_classes[] = 'views--unit-search';
+  $config->set('ignored_classes', $ignored_classes)->save();
 }

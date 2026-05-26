@@ -1,0 +1,23 @@
+uuid: 80f30cfb-7925-4bd0-81e4-fc79cafa770d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_search_term
+    - paragraphs.paragraphs_type.event_list
+id: paragraph.event_list.field_search_term
+field_name: field_search_term
+entity_type: paragraph
+bundle: event_list
+label: 'Search term'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

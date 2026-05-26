@@ -13,4 +13,5 @@ enum Filters: string {
   case FreeEvents = 'field_free_events';
   case RemoteEvents = 'field_remote_events';
   case Language = 'field_language';
+  case SearchTerm = 'field_search_term';
 }

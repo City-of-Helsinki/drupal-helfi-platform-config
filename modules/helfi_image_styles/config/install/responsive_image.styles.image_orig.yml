@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - image.style.orig_1086w_free_LQ
+    - image.style.orig_1086w_free_lq
     - image.style.orig_1183w_free
     - image.style.orig_1264w_free
-    - image.style.orig_1470w_free_LQ
-    - image.style.orig_1854w_free_LQ
-    - image.style.orig_2366w_free_LQ
-    - image.style.orig_2528w_free_LQ
+    - image.style.orig_1470w_free_lq
+    - image.style.orig_1854w_free_lq
+    - image.style.orig_2366w_free_lq
+    - image.style.orig_2528w_free_lq
     - image.style.orig_543w_free
     - image.style.orig_735w_free
     - image.style.orig_927w_free
@@ -25,7 +25,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: orig_2528w_free_LQ
+    image_mapping: orig_2528w_free_lq
     breakpoint_id: helfi_image_styles.xl
     multiplier: 2x
   -
@@ -35,7 +35,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: orig_2366w_free_LQ
+    image_mapping: orig_2366w_free_lq
     breakpoint_id: helfi_image_styles.l
     multiplier: 2x
   -
@@ -45,7 +45,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: orig_1854w_free_LQ
+    image_mapping: orig_1854w_free_lq
     breakpoint_id: helfi_image_styles.m
     multiplier: 2x
   -
@@ -55,7 +55,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: orig_1470w_free_LQ
+    image_mapping: orig_1470w_free_lq
     breakpoint_id: helfi_image_styles.s
     multiplier: 2x
   -
@@ -65,7 +65,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: orig_1086w_free_LQ
+    image_mapping: orig_1086w_free_lq
     breakpoint_id: helfi_image_styles.xs
     multiplier: 2x
 breakpoint_group: helfi_image_styles

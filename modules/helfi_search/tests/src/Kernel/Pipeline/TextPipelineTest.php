@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_search\Kernel\Pipeline;
 
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_search\Pipeline\Chunk;
 use Drupal\helfi_search\Pipeline\ContentChunker;
 use Drupal\helfi_search\Pipeline\HtmlCleaner;
 use Drupal\helfi_search\Pipeline\HtmlExtractor;
-use Drupal\helfi_search\Pipeline\MarkdownConverter;
-use Drupal\helfi_search\Pipeline\MetadataComposer;
-use Drupal\helfi_search\Pipeline\TextNormalizer;
+use Drupal\helfi_search\Pipeline\ChunkAnnotator;
 use Drupal\helfi_search\Pipeline\PipelineException;
 use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\helfi_search\Traits\IgnoredClassesConfigFactoryTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Response;
@@ -35,6 +35,7 @@ class TextPipelineTest extends KernelTestBase {
   use ProphecyTrait;
   use NodeCreationTrait;
   use ApiTestTrait;
+  use IgnoredClassesConfigFactoryTrait;
 
   /**
    * {@inheritdoc}
@@ -78,7 +79,10 @@ class TextPipelineTest extends KernelTestBase {
     $result = $pipeline->process($node);
 
     $this->assertCount(1, $result);
-    $this->assertStringContainsString('Helsinki', $result[0]);
+    $this->assertInstanceOf(Chunk::class, $result[0]);
+    $this->assertStringContainsString('Helsinki', (string) $result[0]);
+    $this->assertNotEmpty($result[0]->snippet);
+    $this->assertStringContainsString('Helsinki', $result[0]->snippet);
   }
 
   /**
@@ -102,7 +106,7 @@ class TextPipelineTest extends KernelTestBase {
   /**
    * Build the TextPipeline with a mocked HTTP client.
    *
-   * @param array $responses
+   * @param \GuzzleHttp\Exception\GuzzleException[]|\Psr\Http\Message\ResponseInterface[] $responses
    *   Guzzle responses (or exceptions) to queue in the mock HTTP client.
    */
   private function getSut(array $responses): TextPipeline {
@@ -116,11 +120,9 @@ class TextPipelineTest extends KernelTestBase {
 
     return new TextPipeline(
       $htmlExtractor,
-      new HtmlCleaner(),
-      new MarkdownConverter(),
-      new TextNormalizer(),
+      new HtmlCleaner($this->stubIgnoredClassesConfigFactory([])),
       new ContentChunker(),
-      new MetadataComposer(),
+      new ChunkAnnotator(),
     );
   }
 

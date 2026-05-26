@@ -7,9 +7,9 @@ namespace Drupal\helfi_search\Pipeline;
 /**
  * Splits normalized Markdown content into semantically coherent chunks.
  *
- * Short content (< 400 estimated tokens) is returned as-is. Longer content is
- * first split on Markdown headings, then oversized sections are recursively
- * split on paragraph boundaries, sentence boundaries, and finally word
+ * Short content is returned as-is. Longer content is first split on
+ * Markdown headings, then oversized sections are recursively split
+ * on paragraph boundaries, sentence boundaries, and finally word
  * boundaries.
  */
 class ContentChunker {
@@ -25,9 +25,14 @@ class ContentChunker {
   private const int DEFAULT_OVERLAP = 256;
 
   /**
-   * Estimated token count below which content is not chunked.
+   * Character count below which content is not chunked.
    */
-  private const int SHORT_CONTENT_TOKEN_THRESHOLD = 400;
+  private const int SHORT_CONTENT_THRESHOLD = 1600;
+
+  /**
+   * Body length below which a chunk is considered too short to stand alone.
+   */
+  private const int SHORT_CHUNK_LENGTH = 200;
 
   /**
    * Chunk markdown content into embedding-ready pieces.
@@ -44,7 +49,7 @@ class ContentChunker {
     }
 
     // Short content: skip chunking entirely.
-    if (strlen($markdown) / 4 < self::SHORT_CONTENT_TOKEN_THRESHOLD) {
+    if (mb_strlen($markdown) < self::SHORT_CONTENT_THRESHOLD) {
       return [new Chunk($markdown)];
     }
 
@@ -64,29 +69,62 @@ class ContentChunker {
 
       $body = trim($body);
 
+      $heading = $title !== NULL ? new Heading($title, $level) : NULL;
+
       // If the section has no body (heading immediately followed by another
       // heading), track it in the stack as a parent but don't emit a chunk.
       if ($title && empty($body)) {
-        $text = sprintf("%s %s", str_repeat('#', $level), $title);
-        $stack[$level] = new Chunk($text, $parent, [
-          'title' => $title,
-          'level' => $level,
-        ]);
+        $stack[$level] = new Chunk('', $parent, $heading);
         continue;
       }
 
       foreach ($this->recursiveSplit($body) as $subText) {
-        // Add current title to each chunk.
-        $text = $title ? sprintf("%s %s\n%s", str_repeat('#', $level), $title, $subText) : $subText;
-
-        $stack[$level] = $chunks[] = new Chunk(trim($text), $parent, [
-          'title' => $title,
-          'level' => $level,
-        ]);
+        $stack[$level] = $chunks[] = new Chunk(trim($subText), $parent, $heading);
       }
     }
 
-    return $chunks ?: [new Chunk($markdown)];
+    return self::mergeShortChunks($chunks ?: [new Chunk($markdown)]);
+  }
+
+  /**
+   * Combine runs of very short consecutive chunks into larger ones.
+   *
+   * Very short bodies match queries with too little signal. We fold short
+   * consecutive chunks into the first, inlining each subsequent chunk's
+   * heading as Markdown in the body so the embedding still sees the section
+   * labels. Merging stops once the accumulator reaches the regular
+   * short-content threshold.
+   *
+   * @phpstan-param Chunk[] $chunks
+   * @phpstan-return Chunk[]
+   */
+  public static function mergeShortChunks(array $chunks): array {
+    $result = [];
+    $accumulator = NULL;
+
+    foreach ($chunks as $chunk) {
+      if ($accumulator === NULL) {
+        $accumulator = $chunk;
+        continue;
+      }
+
+      if (
+        mb_strlen($accumulator->text) < self::SHORT_CONTENT_THRESHOLD &&
+        mb_strlen($chunk->text) < self::SHORT_CHUNK_LENGTH
+      ) {
+        $accumulator = $accumulator->merge($chunk);
+      }
+      else {
+        $result[] = $accumulator;
+        $accumulator = $chunk;
+      }
+    }
+
+    if ($accumulator !== NULL) {
+      $result[] = $accumulator;
+    }
+
+    return $result;
   }
 
   /**
@@ -125,7 +163,7 @@ class ContentChunker {
       $title = $parts[$i + 1] ?? '';
       $body = $parts[$i + 2] ?? '';
 
-      $level = strlen($hashes);
+      $level = mb_strlen($hashes);
 
       $sections[] = [$title, $level, $body];
 
@@ -143,7 +181,7 @@ class ContentChunker {
    *
    * @param string $text
    *   Text to split.
-   * @param string[] $separators
+   * @param non-empty-string[] $separators
    *   Separators tried in order of preference.
    *
    * @return string[]
@@ -153,7 +191,7 @@ class ContentChunker {
     string $text,
     array $separators = ["\n\n", ". ", " "],
   ): array {
-    if (strlen($text) <= self::DEFAULT_CHUNK_SIZE) {
+    if (mb_strlen($text) <= self::DEFAULT_CHUNK_SIZE) {
       return [$text];
     }
 
@@ -161,9 +199,9 @@ class ContentChunker {
       // No separators left: hard-split at DEFAULT_CHUNK_SIZE with overlap.
       $chunks = [];
       $offset = 0;
-      $length = strlen($text);
+      $length = mb_strlen($text);
       while ($offset < $length) {
-        $chunks[] = substr($text, $offset, self::DEFAULT_CHUNK_SIZE);
+        $chunks[] = mb_substr($text, $offset, self::DEFAULT_CHUNK_SIZE);
         $offset += max(1, self::DEFAULT_CHUNK_SIZE - self::DEFAULT_OVERLAP);
       }
       return $chunks;
@@ -173,7 +211,7 @@ class ContentChunker {
     $parts = explode($separator, $text);
 
     if (count($parts) <= 1) {
-      // Separator not found — try the next one.
+      // Separator not found, try the next one.
       return $this->recursiveSplit($text, $separators);
     }
 
@@ -182,7 +220,7 @@ class ContentChunker {
     $currentLen = 0;
 
     foreach ($parts as $part) {
-      $addLen = ($currentLen > 0 ? strlen($separator) : 0) + strlen($part);
+      $addLen = ($currentLen > 0 ? mb_strlen($separator) : 0) + mb_strlen($part);
 
       if ($currentLen + $addLen <= self::DEFAULT_CHUNK_SIZE) {
         $currentParts[] = $part;
@@ -193,8 +231,8 @@ class ContentChunker {
           $chunks[] = implode($separator, $currentParts);
         }
 
-        if (strlen($part) > self::DEFAULT_CHUNK_SIZE) {
-          // Part itself is too large — recurse with finer separators.
+        if (mb_strlen($part) > self::DEFAULT_CHUNK_SIZE) {
+          // Part itself is too large, recurse with finer separators.
           foreach ($this->recursiveSplit($part, $separators) as $sub) {
             $chunks[] = $sub;
           }
@@ -205,11 +243,11 @@ class ContentChunker {
           // Overlap: carry the last part from previous chunk for continuity.
           $lastPart = array_last($currentParts);
           $currentParts = [$lastPart, $part];
-          $currentLen = strlen($lastPart) + strlen($separator) + strlen($part);
+          $currentLen = mb_strlen($lastPart) + mb_strlen($separator) + mb_strlen($part);
         }
         else {
           $currentParts = [$part];
-          $currentLen = strlen($part);
+          $currentLen = mb_strlen($part);
         }
       }
     }

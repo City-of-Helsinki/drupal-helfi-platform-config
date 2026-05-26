@@ -76,3 +76,7 @@ msgstr "Liikunta ja ulkoilu"
 msgctxt "helfi_react_search"
 msgid "Games"
 msgstr "Pelit"
+
+msgctxt "Event list paragraph: search term disabled hint"
+msgid "Cannot be combined with a pre-filter set in \"Free text\"."
+msgstr "Ei voi käyttää yhdessä \"Vapaa teksti\" -kentässä asetetun esisuodattimen kanssa."

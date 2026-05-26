@@ -85,7 +85,7 @@ long_term_institutional_care_fee:
     - helfi_calculator/helfi_calculator.base
 
 long_term_assisted_living_fee:
-  version: 1.0.1
+  version: 1.0.2
   js:
     dist/js/longtermAssistedLivingFee.min.js: {}
   dependencies:

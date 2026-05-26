@@ -12,6 +12,7 @@ use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\QueryBuilder;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
+use Elastic\Elasticsearch\Response\Elasticsearch;
 use Elastic\Transport\Exception\TransportException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -104,17 +105,22 @@ final class SearchController extends ControllerBase {
       $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
       $from = ($page - 1) * $size;
 
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, bundles: $bundles, size: $size, from: $from);
+      // Debug-only: ask ES to return every matching chunk.
+      $innerHitsSize = $request->query->getBoolean('debug') ? QueryBuilder::KNN_MAX_SIZE : 1;
+
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, bundles: $bundles, size: $size, from: $from, innerHitsSize: $innerHitsSize);
 
       $promoted = [];
       $searchResults = [];
       $totalHits = 0;
 
       if ($bundles) {
-        $knnResponse = $this->elasticClient->search([
+        $searchResult = $this->elasticClient->search([
           'index' => $knnQuery['index'],
           'body' => $knnQuery['body'],
-        ])?->asArray() ?? [];
+        ]);
+        assert($searchResult instanceof Elasticsearch);
+        $knnResponse = $searchResult->asArray();
 
         $searchResults = $this->queryBuilder->parseKnnHits($knnResponse, $model);
         $totalHits = $knnResponse['hits']['total']['value'] ?? 0;
@@ -122,14 +128,16 @@ final class SearchController extends ControllerBase {
       else {
         $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
 
-        $msearchResponse = $this->elasticClient->msearch([
+        $msearchResult = $this->elasticClient->msearch([
           'body' => [
             ['index' => $promotionQuery['index']],
             $promotionQuery['body'],
             ['index' => $knnQuery['index']],
             $knnQuery['body'],
           ],
-        ])?->asArray() ?? [];
+        ]);
+        assert($msearchResult instanceof Elasticsearch);
+        $msearchResponse = $msearchResult->asArray();
 
         $responses = $msearchResponse['responses'] ?? [];
 
@@ -143,13 +151,23 @@ final class SearchController extends ControllerBase {
         }
       }
 
-      return new JsonResponse([
+      $response = new JsonResponse([
         'promoted' => $promoted,
         'results' => $searchResults,
         'page' => $page,
         'size' => $size,
         'total_hits' => $totalHits,
       ]);
+
+      // The search form submits the same query on page reload, while
+      // the response for a query is unlikely to change. Prevent hitting
+      // the API if the user refreshes the page. However, the cardinality
+      // is so high that there is no point in caching these responses to
+      // a public cache.
+      $response->setPrivate();
+      $response->setMaxAge(600);
+
+      return $response;
     }
     catch (EmbeddingsModelException | ElasticsearchException | TransportException) {
       return new JsonResponse(

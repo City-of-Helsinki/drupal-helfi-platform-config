@@ -21,17 +21,15 @@ use Drupal\Core\Entity\EntityInterface;
  * - MarkdownConverter: How HTML structure maps to Markdown.
  * - TextNormalizer: What normalization is applied to the text.
  * - ContentChunker: How long content is split into chunks.
- * - MetadataComposer: Which entity metadata is prepended to each chunk.
+ * - ChunkAnnotator: How chunks are annotated.
  */
 class TextPipeline {
 
   public function __construct(
     private readonly HtmlExtractor $htmlExtractor,
     private readonly HtmlCleaner $htmlCleaner,
-    private readonly MarkdownConverter $markdownConverter,
-    private readonly TextNormalizer $textNormalizer,
     private readonly ContentChunker $contentChunker,
-    private readonly MetadataComposer $metadataComposer,
+    private readonly ChunkAnnotator $chunkAnnotator,
   ) {
   }
 
@@ -41,7 +39,7 @@ class TextPipeline {
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to process.
    *
-   * @return string[]
+   * @return Chunk[]
    *   Chunks, ready for embedding.
    *
    * @throws \Drupal\helfi_search\Pipeline\PipelineException
@@ -49,11 +47,12 @@ class TextPipeline {
    */
   public function process(EntityInterface $entity): array {
     $doc = $this->htmlExtractor->extract($entity);
+    $headingFragments = HeadingFragmentExtractor::extract($doc, $entity->language()->getId());
     $cleanHtml = $this->htmlCleaner->clean($doc);
-    $markdown = $this->markdownConverter->convert($cleanHtml);
-    $normalized = $this->textNormalizer->normalize($markdown);
+    $markdown = MarkdownConverter::convert($cleanHtml);
+    $normalized = TextNormalizer::normalize($markdown);
     $chunks = $this->contentChunker->chunk($normalized);
-    return $this->metadataComposer->compose($entity, $chunks);
+    return $this->chunkAnnotator->annotate($chunks, $headingFragments);
   }
 
 }

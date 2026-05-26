@@ -8,11 +8,8 @@ use League\HTMLToMarkdown\HtmlConverter;
 
 /**
  * Converts cleaned HTML to Markdown while preserving semantic structure.
- *
- * Heading hierarchy (h1→#, h2→##, h3→###), lists, and emphasis are preserved.
- * Links and images should be handled before this stage.
  */
-class MarkdownConverter {
+final class MarkdownConverter {
 
   /**
    * Convert HTML to Markdown.
@@ -23,7 +20,7 @@ class MarkdownConverter {
    * @return string
    *   Markdown text.
    */
-  public function convert(string $html): string {
+  public static function convert(string $html): string {
     if (empty($html)) {
       return '';
     }

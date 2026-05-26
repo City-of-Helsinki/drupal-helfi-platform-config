@@ -8,29 +8,18 @@ class HelsinkiBenefitAmountEstimate {
 
     const checkConfiguration = () => {
       const NEEDED_CONFIG_KEYS = [
-        'HELSINKI_BENEFIT_MAX_AMOUNT_WITH_PAY_SUBSIDY',
-        'HELSINKI_BENEFIT_MAX_AMOUNT_WITHOUT_PAY_SUBSIDY',
-        'PAY_SUBSIDY_PERCENTAGES',
-        'PAY_SUBSIDY_AMOUNT_MAX_LIMIT',
+        'HELSINKI_BENEFIT_MAX_AMOUNT',
         'STATE_AID_PERCENTAGES',
         'SALARY_OTHER_EXPENSES_PERCENTAGE',
       ];
       if (!NEEDED_CONFIG_KEYS.every((setting) => Object.keys(config).includes(setting))) {
         console.error('Missing Drupal settings. Calculator won´t work!');
       }
-
-      if (config.PAY_SUBSIDY_PERCENTAGES[0] !== 0) {
-        console.error('First index of setting PAY_SUBSIDY_PERCENTAGES must be 0!');
-      }
-
-      if (config.PAY_SUBSIDY_AMOUNT_MAX_LIMIT[0] !== 999999) {
-        console.error('First index of setting PAY_SUBSIDY_AMOUNT_MAX_LIMIT must be 999999!');
-      }
     };
 
     checkConfiguration();
 
-    const getFormData = () => form.getFormData(this.id, this.t, config);
+    const getFormData = () => form.getFormData(this.id, this.t);
 
     const isEmployeeAssociation = () => this.calculator.getFieldValue('company_type') === 'association';
 
@@ -58,43 +47,10 @@ class HelsinkiBenefitAmountEstimate {
         getOtherExpenses(),
       );
 
-    const isPaySubsidyGranted = () =>
-      this.calculator.getFieldValue('pay_subsidy_granted') === 'pay_subsidy_granted_true';
-
-    const getPaySubsidyPercentageOption = () => this.calculator.getFieldValue('pay_subsidy_percentage') || 0;
-
-    const getPaySubsidyPercentage = () => {
-      const valuePaySubsidyPercentage = getPaySubsidyPercentageOption();
-      return isPaySubsidyGranted()
-        ? config.PAY_SUBSIDY_PERCENTAGES[valuePaySubsidyPercentage]
-        : config.PAY_SUBSIDY_PERCENTAGES[0];
-    };
-
-    const getPaySubsidyAmount = () => {
-      const getLimitedPaySubsidyAmount = (paySubsidyPercentage, paySubsidyAmount) => {
-        const index = getPaySubsidyPercentageOption();
-        if (paySubsidyPercentage === config.PAY_SUBSIDY_PERCENTAGES[index])
-          return Math.min(paySubsidyAmount, config.PAY_SUBSIDY_AMOUNT_MAX_LIMIT[index]);
-        return paySubsidyAmount;
-      };
-      const paySubsidyAmount = isPaySubsidyGranted() ? getPaySubsidyPercentage() * getMonthlyPay() : 0;
-      return isPaySubsidyGranted() ? getLimitedPaySubsidyAmount(getPaySubsidyPercentage(), paySubsidyAmount) : 0;
-    };
-
     const getStateAidPercentage = () => {
-      const paySubsidyPercentage = getPaySubsidyPercentage();
       // Associations with business activities are treated like businesses
       if (isEmployeeBusiness() || hasBusinessActivities()) {
-        // No pay subsidy, get lower state aid percentage
-        if (!isPaySubsidyGranted()) {
-          return config.STATE_AID_PERCENTAGES[1];
-        }
-        if (paySubsidyPercentage === config.PAY_SUBSIDY_PERCENTAGES[1]) {
-          return config.STATE_AID_PERCENTAGES[1];
-        }
-        if (paySubsidyPercentage === config.PAY_SUBSIDY_PERCENTAGES[2]) {
-          return config.STATE_AID_PERCENTAGES[2];
-        }
+        return config.STATE_AID_PERCENTAGES[1];
       }
       // Associations always get the highest state aid percentage
       return config.STATE_AID_PERCENTAGES[0];
@@ -102,23 +58,7 @@ class HelsinkiBenefitAmountEstimate {
 
     const getStateAidAmount = () => getStateAidPercentage() * getSalaryWithExpenses();
 
-    const getHelsinkiBenefitAmount = () => getStateAidAmount() - getPaySubsidyAmount();
-
-    const togglePaySubsidyPercentageGroup = (showPercentageGroup = false) => {
-      if (showPercentageGroup) {
-        this.calculator.showGroup('pay_subsidy_granted_group');
-        // Pre-select the first radio button for percentage option if pay subsidy is selected
-        if (
-          !this.calculator.getElement('pay_subsidy_percentage').querySelectorAll('input[type="radio"]:checked').length
-        ) {
-          this.calculator.getElement('pay_subsidy_percentage_1').checked = true;
-        }
-      } else {
-        this.calculator.hideGroup('pay_subsidy_granted_group');
-        this.calculator.getElement('pay_subsidy_percentage_1').checked = false;
-        this.calculator.getElement('pay_subsidy_percentage_2').checked = false;
-      }
-    };
+    const getHelsinkiBenefitAmount = () => getStateAidAmount();
 
     const formatCurrency = (number) => this.calculator.formatFinnishEuroCents(number);
 
@@ -132,9 +72,6 @@ class HelsinkiBenefitAmountEstimate {
           vacationMoney: getVacationMoney(),
           otherExpenses: getOtherExpenses(),
           allExpenses: getSalaryWithExpenses(),
-          isPaySubsidyGranted: isPaySubsidyGranted(),
-          paySubsidyAmount: getPaySubsidyAmount(),
-          paySubsidyPercentage: getPaySubsidyPercentage(),
           stateAidPercentage: getStateAidPercentage(),
           stateAidAmount: getStateAidAmount(),
           helsinkiBenefitAmount: getHelsinkiBenefitAmount(),
@@ -158,8 +95,6 @@ class HelsinkiBenefitAmountEstimate {
         setVacationMoneyMax();
       }
 
-      togglePaySubsidyPercentageGroup(isPaySubsidyGranted());
-
       debugUpdate();
     };
 
@@ -169,11 +104,8 @@ class HelsinkiBenefitAmountEstimate {
       errorMessages.push(...this.calculator.validateBasics('company_type'));
       errorMessages.push(...this.calculator.validateBasics('monthly_pay'));
       errorMessages.push(...this.calculator.validateBasics('vacation_money'));
-      errorMessages.push(...this.calculator.validateBasics('pay_subsidy_granted'));
-
-      // Pay subsidy percentage is only required when pay subsidy is granted
-      if (isPaySubsidyGranted()) {
-        errorMessages.push(...this.calculator.validateBasics('pay_subsidy_percentage'));
+      if (!this.calculator.getFieldValue('pay_subsidy_granted')) {
+        errorMessages.push(...this.calculator.getError('pay_subsidy_granted', 'select_radio'));
       }
 
       if (errorMessages.length) {
@@ -208,26 +140,12 @@ class HelsinkiBenefitAmountEstimate {
         ],
       };
 
-      if (isPaySubsidyGranted()) {
-        subtotals.details.push(this.t('subtotal_details_4', { value: getPaySubsidyPercentage() * 100 }));
-      }
-
       const receiptData = {
         id: this.id,
         title: this.t('total_title'),
         total_prefix: this.t('total_prefix'),
-        // Total value is always at least zero but no more than HELSINKI_BENEFIT_MAX_AMOUNT_W...
-        total_value: formatCurrency(
-          Math.max(
-            0,
-            Math.min(
-              helsinkiBenefitResult,
-              isPaySubsidyGranted()
-                ? config.HELSINKI_BENEFIT_MAX_AMOUNT_WITH_PAY_SUBSIDY
-                : config.HELSINKI_BENEFIT_MAX_AMOUNT_WITHOUT_PAY_SUBSIDY,
-            ),
-          ),
-        ),
+        // Total value is always at least zero but no more than HELSINKI_BENEFIT_MAX_AMOUNT
+        total_value: formatCurrency(Math.max(0, Math.min(helsinkiBenefitResult, config.HELSINKI_BENEFIT_MAX_AMOUNT))),
         total_suffix: this.t('total_suffix'),
         total_explanation: this.t('total_explanation'),
         hr: true,
@@ -235,14 +153,6 @@ class HelsinkiBenefitAmountEstimate {
           {
             title: this.t('breakdown_title'),
             subtotals,
-          },
-          {
-            title: null,
-            subtotals: {
-              title: this.t('additional_details_title'),
-              has_details: true,
-              details: [this.t('additional_details_text_1'), this.t('additional_details_text_2')],
-            },
           },
         ],
       };
