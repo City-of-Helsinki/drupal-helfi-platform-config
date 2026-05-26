@@ -59,7 +59,8 @@ function _helfi_csp_set_reporting_uri() : void {
     // Clear cleanup option to comply with uri reporting plugin schema.
     $config->clear('enforce.reporting.options.cleanup');
 
-    // Set reporting uri to etusivu csp_log endpoint.
+    // Set reporting uri to etusivu csp_log endpoint. This value is overridden
+    // in settings.php if the environment variable CSP_REPORTING_URI is set.
     $config->set('enforce.reporting.options.uri', $etusivuCspLogEndpoint);
     $config->save();
   }
