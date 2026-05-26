@@ -84,11 +84,13 @@ final class QueryBuilder {
    *   Number of results per page.
    * @param int $from
    *   Offset for pagination.
+   * @param string[]|null $excludeBundles
+   *   Bundles that must not appear in results.
    *
    * @return array<mixed>
    *   An array with 'index' and 'body' keys for Elasticsearch.
    */
-  public function buildKnnQuery(array $embeddings, string $language, string $model, ?array $bundles = NULL, int $size = self::KNN_DEFAULT_SIZE, int $from = 0): array {
+  public function buildKnnQuery(array $embeddings, string $language, string $model, ?array $bundles = NULL, int $size = self::KNN_DEFAULT_SIZE, int $from = 0, ?array $excludeBundles = NULL): array {
     $minScore = (float) ($this->getSetting('min_score') ?? 0.0);
     $language = match($language) {
       "fi", "sv", "en" => $language,
@@ -115,6 +117,11 @@ final class QueryBuilder {
     ];
 
     $deboostBundles = $this->getSetting('deboost_bundles') ?? [];
+    // Excluded bundles are off-limits — drop them from the deboost universe
+    // so they can never appear, even via the deboosted clause.
+    if ($excludeBundles) {
+      $deboostBundles = array_values(array_diff($deboostBundles, $excludeBundles));
+    }
     // Partition into deboosted vs. normal bundles. NULL on the non-deboosted
     // side means "everything not in $deboostBundles". used when no $bundles
     // filter is set.
@@ -132,9 +139,12 @@ final class QueryBuilder {
       // boosts. Documents in $deboostedSubset get their score multiplied by
       // $deboostFactor, so they only out-rank non-deboosted documents when
       // their raw similarity is sufficiently higher.
+      $contentMustNot = $excludeBundles
+        ? array_values(array_unique(array_merge($deboostBundles, $excludeBundles)))
+        : $deboostBundles;
       $contentBool = $normalSubset !== NULL
         ? ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $normalSubset]]]]
-        : ['must' => [$languageFilter], 'must_not' => [['terms' => ['entity_bundle' => $deboostBundles]]]];
+        : ['must' => [$languageFilter], 'must_not' => [['terms' => ['entity_bundle' => $contentMustNot]]]];
 
       // Each KNN clause needs a unique inner_hits name. Otherwise both
       // clauses keep the default key (the nested field path) and ES rejects
@@ -159,9 +169,19 @@ final class QueryBuilder {
       ];
     }
     else {
-      $filter = $bundles
-        ? ['bool' => ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $bundles]]]]]
-        : $languageFilter;
+      if ($bundles || $excludeBundles) {
+        $bool = ['must' => [$languageFilter]];
+        if ($bundles) {
+          $bool['must'][] = ['terms' => ['entity_bundle' => $bundles]];
+        }
+        if ($excludeBundles) {
+          $bool['must_not'] = [['terms' => ['entity_bundle' => $excludeBundles]]];
+        }
+        $filter = ['bool' => $bool];
+      }
+      else {
+        $filter = $languageFilter;
+      }
       $knn = $this->buildKnnEntry($fieldPrefix, $embeddings, $filter, $minScore, $innerHits, NULL);
     }
 

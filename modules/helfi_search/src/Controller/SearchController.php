@@ -32,6 +32,9 @@ final class SearchController extends ControllerBase {
   const int MIN_QUERY_LENGTH = 3;
   const int MAX_QUERY_LENGTH = 500;
 
+  // News bundles excluded when the React form submits the 'others' sentinel.
+  const array NEWS_BUNDLES = ['news_item', 'news_article'];
+
   public function __construct(
     private readonly EmbeddingsModelInterface $embeddingsModel,
     private readonly FloodInterface $flood,
@@ -97,21 +100,36 @@ final class SearchController extends ControllerBase {
 
       $currentLanguage = $this->languageManager()->getCurrentLanguage()->getId();
 
-      $bundles = array_filter(
+      $bundles = array_values(array_filter(
         array_map('trim', explode(',', $request->query->getString('bundle'))),
-      ) ?: NULL;
+      ));
+
+      // The 'others' sentinel from the React form means "everything except
+      // news bundles". When combined with a news bundle the include and
+      // exclude cancel out, so drop all bundle filtering.
+      $excludeBundles = NULL;
+      if (in_array('others', $bundles, TRUE)) {
+        $bundles = array_values(array_filter($bundles, static fn (string $b): bool => $b !== 'others'));
+        if (array_intersect($bundles, self::NEWS_BUNDLES)) {
+          $bundles = [];
+        }
+        else {
+          $excludeBundles = self::NEWS_BUNDLES;
+        }
+      }
+      $bundles = $bundles ?: NULL;
 
       $page = max(1, $request->query->getInt('page', 1));
       $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
       $from = ($page - 1) * $size;
 
-      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, bundles: $bundles, size: $size, from: $from);
+      $knnQuery = $this->queryBuilder->buildKnnQuery($embeddings, $currentLanguage, $model, bundles: $bundles, size: $size, from: $from, excludeBundles: $excludeBundles);
 
       $promoted = [];
       $searchResults = [];
       $totalHits = 0;
 
-      if ($bundles) {
+      if ($bundles || $excludeBundles) {
         $searchResult = $this->elasticClient->search([
           'index' => $knnQuery['index'],
           'body' => $knnQuery['body'],
