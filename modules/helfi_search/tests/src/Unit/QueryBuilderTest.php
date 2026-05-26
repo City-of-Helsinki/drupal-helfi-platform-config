@@ -423,4 +423,84 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals(0.0, $query['body']['knn']['similarity']);
   }
 
+  /**
+   * Tests excludeBundles emits a must_not clause alongside the language term.
+   */
+  public function testBuildKnnQueryWithExcludeBundles(): void {
+    $query = $this->createBuilder()
+      ->buildKnnQuery([0.1], 'fi', self::TEST_MODEL, excludeBundles: ['news_item', 'news_article']);
+
+    $filter = $query['body']['knn']['filter'];
+    $this->assertEquals('fi', $filter['bool']['must'][0]['term']['search_api_language']);
+    $this->assertEquals(['news_item', 'news_article'], $filter['bool']['must_not'][0]['terms']['entity_bundle']);
+  }
+
+  /**
+   * Tests excludeBundles also forbids deboost entry from surfacing them.
+   *
+   * Excluded bundles must never appear in results, even via the deboost
+   * clause. The deboost universe should shrink to drop them.
+   */
+  public function testBuildKnnQueryExcludeBundlesAlsoExcludedFromDeboost(): void {
+    $query = $this->createBuilder(['news_article', 'news_item'], 0.5)
+      ->buildKnnQuery([0.1], 'fi', self::TEST_MODEL, excludeBundles: ['news_item']);
+
+    [$news, $content] = $query['body']['knn'];
+
+    // Deboost clause keeps only the non-excluded deboost bundles.
+    $this->assertEquals(['news_article'], $news['filter']['bool']['must'][1]['terms']['entity_bundle']);
+    // Content clause must_not lists the original deboost set + the excludes.
+    $this->assertEquals(
+      ['news_article', 'news_item'],
+      $content['filter']['bool']['must_not'][0]['terms']['entity_bundle'],
+    );
+  }
+
+  /**
+   * Tests debug-only options: innerHitsSize and includeAggregations.
+   */
+  public function testBuildKnnQueryDebugOptions(): void {
+    $builder = $this->createBuilder();
+
+    // Defaults: inner_hits.size === 1, no aggs block.
+    $default = $builder->buildKnnQuery([0.1], 'fi', self::TEST_MODEL);
+    $this->assertEquals(1, $default['body']['knn']['inner_hits']['size']);
+    $this->assertArrayNotHasKey('aggs', $default['body']);
+
+    // With both opts: inner_hits.size propagates, aggs block bucketed on bundle.
+    $debug = $builder->buildKnnQuery(
+      [0.1],
+      'fi',
+      self::TEST_MODEL,
+      innerHitsSize: 25,
+      includeAggregations: TRUE,
+    );
+    $this->assertEquals(25, $debug['body']['knn']['inner_hits']['size']);
+    $this->assertEquals('entity_bundle', $debug['body']['aggs']['bundles']['terms']['field']);
+  }
+
+  /**
+   * Tests parseBundleAggregations extracts bucket counts.
+   */
+  public function testParseBundleAggregations(): void {
+    $builder = new QueryBuilder();
+
+    $this->assertSame([], $builder->parseBundleAggregations([]));
+    $this->assertSame(
+      ['news_item' => 7, 'page' => 3],
+      $builder->parseBundleAggregations([
+        'aggregations' => [
+          'bundles' => [
+            'buckets' => [
+              ['key' => 'news_item', 'doc_count' => 7],
+              ['key' => 'page', 'doc_count' => 3],
+              // Empty / non-string keys are dropped.
+              ['key' => '', 'doc_count' => 1],
+            ],
+          ],
+        ],
+      ]),
+    );
+  }
+
 }
