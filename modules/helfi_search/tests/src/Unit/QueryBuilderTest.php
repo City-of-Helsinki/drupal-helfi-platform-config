@@ -467,7 +467,7 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals(1, $default['body']['knn']['inner_hits']['size']);
     $this->assertArrayNotHasKey('aggs', $default['body']);
 
-    // With both opts: inner_hits.size propagates, aggs block bucketed on bundle.
+    // With both: inner_hits.size propagates, aggs block bucketed on bundle.
     $debug = $builder->buildKnnQuery(
       [0.1],
       'fi',
