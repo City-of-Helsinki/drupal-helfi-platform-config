@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Pipeline;
 
-use Drupal\Component\Utility\Unicode;
-
 /**
  * Reduces a chunk's markdown body to a plain-text snippet.
  *
@@ -16,11 +14,6 @@ use Drupal\Component\Utility\Unicode;
 final class SnippetRenderer {
 
   /**
-   * Maximum snippet length in characters before truncation.
-   */
-  private const int MAX_LENGTH = 200;
-
-  /**
    * Render chunk text as a truncated plain-text snippet.
    */
   public static function render(string $markdown): string {
@@ -28,7 +21,7 @@ final class SnippetRenderer {
     $text = html_entity_decode(strip_tags($text), ENT_HTML5, 'UTF-8');
     $text = trim((string) preg_replace('/\s+/u', ' ', $text));
 
-    return Unicode::truncate($text, self::MAX_LENGTH, TRUE, TRUE);
+    return $text;
   }
 
   /**

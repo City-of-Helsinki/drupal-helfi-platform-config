@@ -141,7 +141,11 @@ final class SearchController extends ControllerBase {
       $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
       $from = ($page - 1) * $size;
 
-      $includeAggregations = $request->query->getBoolean('debug') && $this->isDebugAllowed();
+      $debug = $request->query->getBoolean('debug') && $this->isDebugAllowed();
+
+      // Debug-only: ask ES to return every matching chunk so per-chunk scores
+      // can be inspected.
+      $innerHitsSize = $debug ? QueryBuilder::KNN_MAX_SIZE : 1;
 
       $knnQuery = $this->queryBuilder->buildKnnQuery(
         $embeddings,
@@ -151,7 +155,8 @@ final class SearchController extends ControllerBase {
         size: $size,
         from: $from,
         excludeBundles: $excludeBundles,
-        includeAggregations: $includeAggregations,
+        innerHitsSize: $innerHitsSize,
+        includeAggregations: $debug,
       );
 
       $promoted = [];
@@ -169,7 +174,7 @@ final class SearchController extends ControllerBase {
 
         $searchResults = $this->queryBuilder->parseKnnHits($knnResponse, $model);
         $totalHits = $knnResponse['hits']['total']['value'] ?? 0;
-        if ($includeAggregations) {
+        if ($debug) {
           $bundleAggregations = $this->queryBuilder->parseBundleAggregations($knnResponse);
         }
       }
@@ -196,7 +201,7 @@ final class SearchController extends ControllerBase {
         if (!isset($responses[1]['error'])) {
           $searchResults = $this->queryBuilder->parseKnnHits($responses[1] ?? [], $model);
           $totalHits = $responses[1]['hits']['total']['value'] ?? 0;
-          if ($includeAggregations) {
+          if ($debug) {
             $bundleAggregations = $this->queryBuilder->parseBundleAggregations($responses[1] ?? []);
           }
         }

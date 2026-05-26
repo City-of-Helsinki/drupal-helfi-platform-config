@@ -9,7 +9,7 @@ use Drupal\helfi_search\Pipeline\Chunk;
 use Drupal\helfi_search\Pipeline\ContentChunker;
 use Drupal\helfi_search\Pipeline\HtmlCleaner;
 use Drupal\helfi_search\Pipeline\HtmlExtractor;
-use Drupal\helfi_search\Pipeline\MetadataComposer;
+use Drupal\helfi_search\Pipeline\ChunkAnnotator;
 use Drupal\helfi_search\Pipeline\PipelineException;
 use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\KernelTests\KernelTestBase;
@@ -122,7 +122,7 @@ class TextPipelineTest extends KernelTestBase {
       $htmlExtractor,
       new HtmlCleaner($this->stubIgnoredClassesConfigFactory([])),
       new ContentChunker(),
-      new MetadataComposer(),
+      new ChunkAnnotator(),
     );
   }
 

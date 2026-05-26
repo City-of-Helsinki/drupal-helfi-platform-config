@@ -13,8 +13,8 @@ flowchart TD
     HtmlCleaner -- "Strips non-content elements from the HTML" --> MarkdownConverter
     MarkdownConverter -- "Converts clean HTML to Markdown" --> TextNormalizer
     TextNormalizer -- "Whitespace normalization" --> ContentChunker
-    ContentChunker -- "Splits long content into overlapping chunks" --> MetadataComposer
-    MetadataComposer -- "Adds metadata to each chunk" --> EmbeddingsModelInterface
+    ContentChunker -- "Splits long content into overlapping chunks" --> ChunkAnnotator
+    ChunkAnnotator -- "Merges short chunks and annotates with snippet/fragment" --> EmbeddingsModelInterface
     EmbeddingsModelInterface -- "Converts chunks to vectors" --> Vectors
 ```
 
