@@ -15,7 +15,7 @@ services:
   Drupal\helfi_search\Pipeline\HtmlExtractor: ~
   Drupal\helfi_search\Pipeline\HtmlCleaner: ~
   Drupal\helfi_search\Pipeline\ContentChunker: ~
-  Drupal\helfi_search\Pipeline\MetadataComposer: ~
+  Drupal\helfi_search\Pipeline\ChunkAnnotator: ~
   Drupal\helfi_search\Pipeline\TextPipeline: ~
 
   Drupal\helfi_search\QueryBuilder: ~

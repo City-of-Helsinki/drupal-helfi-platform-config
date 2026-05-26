@@ -52,18 +52,20 @@ class HeadingFragmentExtractor {
       $level = (int) substr($h->tagName, 1);
       $text = trim((string) $h->textContent);
 
+      $heading = new Heading($text, $level);
+
       if (self::isExcluded($h)) {
-        $out[] = new HeadingFragment($level, $text, NULL);
+        $out[] = new HeadingFragment($heading, NULL);
         continue;
       }
 
       $existing = $h->getAttribute('id');
       if ($existing !== '') {
-        $out[] = new HeadingFragment($level, $text, $existing);
+        $out[] = new HeadingFragment($heading, $existing);
         continue;
       }
 
-      $out[] = new HeadingFragment($level, $text, $slugger->slug($text));
+      $out[] = new HeadingFragment($heading, $slugger->slug($text));
     }
 
     return $out;

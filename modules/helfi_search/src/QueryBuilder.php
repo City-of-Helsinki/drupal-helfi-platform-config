@@ -84,11 +84,15 @@ final class QueryBuilder {
    *   Number of results per page.
    * @param int $from
    *   Offset for pagination.
+   * @param int $innerHitsSize
+   *   How many matching chunks to return per parent doc. Defaults to 1
+   *   (only the top chunk is surfaced). Set higher to surface per-chunk
+   *   scores for debugging.
    *
    * @return array<mixed>
    *   An array with 'index' and 'body' keys for Elasticsearch.
    */
-  public function buildKnnQuery(array $embeddings, string $language, string $model, ?array $bundles = NULL, int $size = self::KNN_DEFAULT_SIZE, int $from = 0): array {
+  public function buildKnnQuery(array $embeddings, string $language, string $model, ?array $bundles = NULL, int $size = self::KNN_DEFAULT_SIZE, int $from = 0, int $innerHitsSize = 1): array {
     $minScore = (float) ($this->getSetting('min_score') ?? 0.0);
     $language = match($language) {
       "fi", "sv", "en" => $language,
@@ -111,7 +115,7 @@ final class QueryBuilder {
         $fieldPrefix . '.content',
         $fieldPrefix . '.fragment',
       ],
-      'size' => 1,
+      'size' => $innerHitsSize,
     ];
 
     $deboostBundles = $this->getSetting('deboost_bundles') ?? [];
@@ -253,8 +257,9 @@ final class QueryBuilder {
         $hit['inner_hits'] ?? [],
         static fn (array $group): bool => !empty($group['hits']['hits']),
       ) ?? [];
-      $innerFields = $innerGroup['hits']['hits'][0]['fields'][$fieldPrefix][0] ?? [];
-      $results[] = [
+      $innerHits = $innerGroup['hits']['hits'] ?? [];
+      $innerFields = $innerHits[0]['fields'][$fieldPrefix][0] ?? [];
+      $result = [
         'id' => $hit['_id'] ?? NULL,
         'score' => $hit['_score'] ?? 0,
         'entity_type' => array_first($hit['_source']['entity_type'] ?? []),
@@ -265,6 +270,19 @@ final class QueryBuilder {
         'content' => $innerFields['content'][0] ?? '',
         'fragment' => $innerFields['fragment'][0] ?? NULL,
       ];
+      // Debug: when more than one inner hit was requested, surface every
+      // matching chunk with its individual similarity score.
+      if (count($innerHits) > 1) {
+        $result['chunks'] = array_map(
+          static fn (array $h) => [
+            'score' => $h['_score'] ?? 0,
+            'content' => $h['fields'][$fieldPrefix][0]['content'][0] ?? '',
+            'fragment' => $h['fields'][$fieldPrefix][0]['fragment'][0] ?? NULL,
+          ],
+          $innerHits,
+        );
+      }
+      $results[] = $result;
     }
     return $results;
   }
