@@ -63,12 +63,12 @@ class CronHook {
       // Send a notification to Sentry.
       $this->logger->error('CSP violation in {document_uri}', [
         'document_uri' => $log['document_uri'],
-        'blocked_uri' => $log['blocked_uri'],
-        'effective_directive' => $log['effective_directive'],
-        'amount' => $log['amount'],
-        'time_window' => $timeWindow,
-        'treshold' => $treshold,
-        'sample' => $this->cspLogService->fetchLogSample($log['document_uri'], $log['blocked_uri'], $log['effective_directive']),
+        '@blocked_uri' => $log['blocked_uri'],
+        '@effective_directive' => $log['effective_directive'],
+        '@amount' => $log['amount'],
+        '@time_window' => $timeWindow,
+        '@treshold' => $treshold,
+        '@sample' => $this->cspLogService->fetchLogSample($log['document_uri'], $log['blocked_uri'], $log['effective_directive']),
       ]);
     }
   }
