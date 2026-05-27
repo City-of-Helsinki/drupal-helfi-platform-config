@@ -40,10 +40,6 @@ final class HelfiCspServiceProvider extends ServiceProviderBase {
       return;
     }
 
-    if (!$container->hasDefinition(CronHook::class)) {
-      return;
-    }
-
     $container->getDefinition(CronHook::class)
       ->addMethodCall('setCspLogService', [new Reference('csp_log')]);
   }
