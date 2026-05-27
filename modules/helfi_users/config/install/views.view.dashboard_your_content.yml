@@ -7,6 +7,8 @@ dependencies:
     - node
     - user
     - views_bulk_operations
+_core:
+  default_config_hash: 34YYo-ZztItQsi3gAc9znORmso7sDaAIRJMKSoC6Ugs
 id: dashboard_your_content
 label: 'Dashboard - Your content'
 module: views
@@ -844,7 +846,7 @@ display:
           exposed: true
           expose:
             operator_id: ''
-            label: Published
+            label: 'Published status'
             description: ''
             use_operator: false
             operator: status_op
@@ -856,18 +858,26 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-          is_grouped: false
+          is_grouped: true
           group_info:
-            label: ''
+            label: 'Published status'
             description: ''
-            identifier: ''
+            identifier: status
             optional: true
             widget: select
             multiple: false
             remember: false
             default_group: All
             default_group_multiple: {  }
-            group_items: {  }
+            group_items:
+              1:
+                title: Published
+                operator: '='
+                value: '1'
+              2:
+                title: Unpublished
+                operator: '='
+                value: '0'
         langcode:
           id: langcode
           table: node_field_data
