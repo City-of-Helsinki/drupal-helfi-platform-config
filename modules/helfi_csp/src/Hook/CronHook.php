@@ -53,8 +53,8 @@ class CronHook {
     }
 
     $config = $this->configFactory->get('helfi_csp.settings');
-    $timeWindow = $config->get('time_window');
-    $treshold = $config->get('treshold');
+    $timeWindow = $config->get('time_window') ?: 3600;
+    $treshold = $config->get('treshold') ?: NULL;
 
     // Fetch aggregated logs matching the time window and treshold.
     $logs = $this->cspLogService->fetchAggregatedLogsByTimeWindow($timeWindow, $treshold);
