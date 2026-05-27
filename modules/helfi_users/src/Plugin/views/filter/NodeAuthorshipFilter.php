@@ -26,7 +26,7 @@ class NodeAuthorshipFilter extends FilterPluginBase {
   protected function valueForm(&$form, FormStateInterface $form_state): void {
     $form['value'] = [
       '#type' => 'select',
-      '#title' => $this->t('Show content'),
+      '#title' => $this->t('Show content', [], ['context' => 'Node authorship filter']),
       '#options' => $this->valueOptions(),
       '#default_value' => $this->value ?: 'either',
     ];
@@ -34,9 +34,9 @@ class NodeAuthorshipFilter extends FilterPluginBase {
 
   protected function valueOptions(): array {
     return [
-      'either' => $this->t('Authored or last edited'),
-      'authored' => $this->t('Authored'),
-      'edited' => $this->t('Last edited'),
+      'either' => $this->t('Authored or last edited', [], ['context' => 'Node authorship filter']),
+      'authored' => $this->t('Authored', [], ['context' => 'Node authorship filter']),
+      'edited' => $this->t('Last edited', [], ['context' => 'Node authorship filter']),
     ];
   }
 

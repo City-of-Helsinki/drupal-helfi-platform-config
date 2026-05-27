@@ -1,0 +1,64 @@
+label: 'Dashboard - Omat sisällöt'
+description: 'Kaikki käyttäjän luoma/viimeisenä päivittämä sisältö.'
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      title: 'Omat sisällöt'
+      fields:
+        content_translation_outdated:
+          label: 'Käännös vanhentunut'
+        title:
+          label: Otsikko
+        type:
+          label: Sisältötyyppi
+        uid:
+          label: Kirjoittaja
+        revision_uid:
+          label: 'Viimesin päivittäjä'
+        langcode:
+          label: Kieli
+        status:
+          label: Tila
+          settings:
+            format_custom_false: Julkaisematon
+            format_custom_true: Julkaistu
+        changed:
+          label: Päivitetty
+        operations:
+          label: Toimenpiteet
+      pager:
+        options:
+          tags:
+            next: Seuraava
+            previous: Edellinen
+            first: Ensimmäinen
+            last: Viimeinen
+          expose:
+            items_per_page_label: 'Kohdetta per sivu'
+            items_per_page_options_all_label: '- Kaikki -'
+      exposed_form:
+        options:
+          submit_button: Suodata
+          reset_button_label: Palauta
+          exposed_sorts_label: Järjestä
+          sort_asc_label: Nouseva
+          sort_desc_label: Laskeva
+      filters:
+        title:
+          expose:
+            label: Otsikko
+        type:
+          expose:
+            label: Sisältötyyppi
+        status:
+          expose:
+            label: Julkaisutila
+        langcode:
+          expose:
+            label: Kieli
+        helfi_node_authorship:
+          expose:
+            label: 'Kirjoittaja & päivittäjä'
+  your_content_block:
+    display_title: Lohko
