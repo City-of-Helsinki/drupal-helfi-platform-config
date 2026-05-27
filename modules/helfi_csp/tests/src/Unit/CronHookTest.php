@@ -232,12 +232,12 @@ class CronHookTest extends UnitTestCase {
         'CSP violation in {document_uri}',
         [
           'document_uri' => 'https://hel.fi/page',
-          'blocked_uri' => 'https://evil.com/script.js',
-          'effective_directive' => 'script-src',
-          'amount' => 12,
-          'time_window' => 3600,
-          'treshold' => 5,
-          'sample' => $sampleReport,
+          '@blocked_uri' => 'https://evil.com/script.js',
+          '@effective_directive' => 'script-src',
+          '@amount' => 12,
+          '@time_window' => 3600,
+          '@treshold' => 5,
+          '@sample' => $sampleReport,
         ],
       );
 
