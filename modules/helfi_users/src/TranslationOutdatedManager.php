@@ -11,10 +11,18 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\node\NodeInterface;
 
 /**
- * Manages the content_translation_outdated flag based on changed timestamps.
+ * Manages the content_translation_outdated flag for translated nodes.
+ *
+ * When the original language of a node is saved, its translations are flagged
+ * as outdated if they have not been saved within OUTDATED_THRESHOLD_SECONDS.
+ * The flag is cleared when a translation is saved with a changed timestamp
+ * newer than the original.
+ *
+ * Flags are written directly to the database to avoid a full entity save cycle.
  */
 class TranslationOutdatedManager {
 
+  /** Grace period before translations are considered outdated after an original-language save. */
   const OUTDATED_THRESHOLD_SECONDS = 10;
 
   public function __construct(

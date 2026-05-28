@@ -43,10 +43,10 @@ class TranslationHooks {
   }
 
   /**
-   * Implements hook_entity_update().
+   * Implements hook_entity_presave().
    */
-  #[Hook('entity_update')]
-  public function entityUpdate(EntityInterface $entity): void {
+  #[Hook('entity_presave')]
+  public function entityPresave(EntityInterface $entity): void {
     if (!$entity instanceof NodeInterface) {
       return;
     }
@@ -58,21 +58,9 @@ class TranslationHooks {
       return;
     }
 
-    static $processing = FALSE;
-    if ($processing) {
-      return;
-    }
-
-    $processing = TRUE;
-    try {
-      $translation = $entity->getTranslation($savedLangcode);
-      if ($translation->get('content_translation_outdated')->value) {
-        $translation->set('content_translation_outdated', 0);
-        $entity->save();
-      }
-    }
-    finally {
-      $processing = FALSE;
+    $translation = $entity->getTranslation($savedLangcode);
+    if ($translation->get('content_translation_outdated')->value) {
+      $translation->set('content_translation_outdated', 0);
     }
   }
 
