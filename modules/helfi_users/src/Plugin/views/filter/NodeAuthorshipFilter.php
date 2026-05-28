@@ -14,7 +14,7 @@ use Drupal\views\Plugin\views\filter\FilterPluginBase;
 #[ViewsFilter('helfi_node_authorship')]
 class NodeAuthorshipFilter extends FilterPluginBase {
 
-  public $no_operator = TRUE;
+  public $no_operator = TRUE; // NOSONAR
 
   protected function defineOptions(): array {
     $options = parent::defineOptions();
