@@ -9,7 +9,6 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Queue\QueueFactory;
-use Drupal\helfi_users\TranslationOutdatedManager;
 use Drupal\node\NodeInterface;
 
 /**
@@ -20,7 +19,6 @@ class TranslationHooks {
   use AutowireTrait;
 
   public function __construct(
-    private readonly TranslationOutdatedManager $translationOutdatedManager,
     private readonly Connection $database,
     private readonly QueueFactory $queueFactory,
   ) {}
