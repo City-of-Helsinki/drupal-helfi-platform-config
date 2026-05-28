@@ -14,8 +14,17 @@ use Drupal\views\Plugin\views\filter\FilterPluginBase;
 #[ViewsFilter('helfi_node_authorship')]
 class NodeAuthorshipFilter extends FilterPluginBase {
 
-  public $no_operator = TRUE; // NOSONAR
+  /**
+   * Disables the operator field; property name is required by FilterPluginBase.
+   *
+   * @var bool
+   */
+  // phpcs:ignore Drupal.NamingConventions.ValidVariableName.LowerCamelName
+  public $no_operator = TRUE;
 
+  /**
+   * {@inheritdoc}
+   */
   protected function defineOptions(): array {
     $options = parent::defineOptions();
     $options['value']['default'] = 'either';
@@ -23,6 +32,9 @@ class NodeAuthorshipFilter extends FilterPluginBase {
     return $options;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   protected function valueForm(&$form, FormStateInterface $form_state): void {
     $form['value'] = [
       '#type' => 'select',
@@ -32,6 +44,12 @@ class NodeAuthorshipFilter extends FilterPluginBase {
     ];
   }
 
+  /**
+   * Returns the available filter value options.
+   *
+   * @return array<string, \Drupal\Core\StringTranslation\TranslatableMarkup>
+   *   Keyed by value, labelled options.
+   */
   protected function valueOptions(): array {
     return [
       'either' => $this->t('Authored or last edited', [], ['context' => 'Node authorship filter']),
@@ -40,14 +58,23 @@ class NodeAuthorshipFilter extends FilterPluginBase {
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function adminSummary(): string {
     return (string) ($this->valueOptions()[$this->value] ?? '');
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function canExpose(): bool {
     return TRUE;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function query(): void {
     $uid = \Drupal::currentUser()->id();
     $value = is_array($this->value) ? reset($this->value) : $this->value;
