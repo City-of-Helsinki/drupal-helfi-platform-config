@@ -147,7 +147,7 @@ function _helfi_users_reassign_nodes(AccountInterface $source, AccountInterface 
 /**
  * Implements hook_views_data_alter().
  *
- * @param array<string, mixed> $data
+ * @phpstan-param array<string, mixed> $data
  */
 function helfi_users_views_data_alter(array &$data): void {
   $data['node_field_data']['helfi_node_authorship'] = [
@@ -163,7 +163,7 @@ function helfi_users_views_data_alter(array &$data): void {
 /**
  * Implements hook_entity_extra_field_info().
  *
- * @return array<string, mixed>
+ * @phpstan-return array<string, mixed>
  */
 function helfi_users_entity_extra_field_info(): array {
   $extra = [];
@@ -179,8 +179,7 @@ function helfi_users_entity_extra_field_info(): array {
 /**
  * Implements hook_user_view().
  *
- * @param array<string, mixed> $build
- * @param string $_view_mode
+ * @phpstan-param array<string, mixed> $build
  */
 function helfi_users_user_view(array &$build, UserInterface $account, EntityViewDisplayInterface $display, string $_view_mode): void {
   if ($display->getComponent('user_content')) {
