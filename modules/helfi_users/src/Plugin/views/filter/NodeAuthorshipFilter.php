@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_users\Plugin\views\filter;
 
+use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\views\Attribute\ViewsFilter;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Filter nodes by authorship relation to the current user.
@@ -23,7 +26,39 @@ class NodeAuthorshipFilter extends FilterPluginBase {
   public $no_operator = TRUE;
 
   /**
+   * The views query object typed as SQL for method availability.
+   *
+   * @var \Drupal\views\Plugin\views\query\Sql
+   */
+  public $query;
+
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    private readonly AccountInterface $currentUser,
+    private readonly PluginManagerInterface $joinPluginManager,
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  }
+
+  /**
    * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('current_user'),
+      $container->get('plugin.manager.views.join'),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @return array<string, mixed>
    */
   protected function defineOptions(): array {
     $options = parent::defineOptions();
@@ -34,8 +69,10 @@ class NodeAuthorshipFilter extends FilterPluginBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @param array<string, mixed> $form
    */
-  protected function valueForm(&$form, FormStateInterface $form_state): void {
+  protected function valueForm(array &$form, FormStateInterface $form_state): void {
     $form['value'] = [
       '#type' => 'select',
       '#title' => $this->t('Show content', [], ['context' => 'Node authorship filter']),
@@ -76,7 +113,7 @@ class NodeAuthorshipFilter extends FilterPluginBase {
    * {@inheritdoc}
    */
   public function query(): void {
-    $uid = \Drupal::currentUser()->id();
+    $uid = $this->currentUser->id();
     $value = is_array($this->value) ? reset($this->value) : $this->value;
     if (!in_array($value, ['authored', 'edited', 'either'])) {
       $value = 'either';
@@ -94,8 +131,7 @@ class NodeAuthorshipFilter extends FilterPluginBase {
       'left_field' => 'vid',
       'type' => 'LEFT',
     ];
-    $join = \Drupal::service('plugin.manager.views.join')
-      ->createInstance('standard', $definition);
+    $join = $this->joinPluginManager->createInstance('standard', $definition);
     $this->query->addRelationship('node_revision', $join, 'node_field_data');
 
     if ($value === 'edited') {

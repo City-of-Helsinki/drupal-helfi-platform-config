@@ -146,6 +146,8 @@ function _helfi_users_reassign_nodes(AccountInterface $source, AccountInterface 
 
 /**
  * Implements hook_views_data_alter().
+ *
+ * @param array<string, mixed> $data
  */
 function helfi_users_views_data_alter(array &$data): void {
   $data['node_field_data']['helfi_node_authorship'] = [
@@ -160,8 +162,10 @@ function helfi_users_views_data_alter(array &$data): void {
 
 /**
  * Implements hook_entity_extra_field_info().
+ *
+ * @return array<string, mixed>
  */
-function helfi_users_entity_extra_field_info() {
+function helfi_users_entity_extra_field_info(): array {
   $extra = [];
   $extra['user']['user']['display']['user_content'] = [
     'label' => t('User content'),
@@ -174,8 +178,11 @@ function helfi_users_entity_extra_field_info() {
 
 /**
  * Implements hook_user_view().
+ *
+ * @param array<string, mixed> $build
+ * @param string $_view_mode
  */
-function helfi_users_user_view(array &$build, UserInterface $account, EntityViewDisplayInterface $display, $view_mode) {
+function helfi_users_user_view(array &$build, UserInterface $account, EntityViewDisplayInterface $display, string $_view_mode): void {
   if ($display->getComponent('user_content')) {
     $build['user_content'] = views_embed_view('dashboard_your_content', 'your_content_block', $account->id());
   }
