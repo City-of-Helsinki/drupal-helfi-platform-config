@@ -11,13 +11,13 @@ use Drupal\helfi_users\TranslationOutdatedManager;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * @QueueWorker(
- *   id = "translation_outdated_check",
- *   title = @Translation("Translation outdated check"),
- *   cron = {"time" = 30}
- * )
- */
+#[QueueWorker(
+  id: 'translation_outdated_check',
+  title: new TranslatableMarkup('Translation outdated check'),
+  cron: [
+    'time' => 30
+  ]
+)]
 class TranslationOutdatedWorker extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   private EntityTypeManagerInterface $entityTypeManager;

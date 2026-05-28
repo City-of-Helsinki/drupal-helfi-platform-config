@@ -1,12 +1,8 @@
 services:
-  helfi_users.route_subscriber:
-    class: Drupal\helfi_users\Routing\RouteSubscriber
-    tags:
-      - { name: event_subscriber }
-  helfi_users.translation_outdated_manager:
-    class: Drupal\helfi_users\TranslationOutdatedManager
-    arguments:
-      - '@datetime.time'
-      - '@database'
-      - '@entity_type.manager'
-  Drupal\helfi_users\TranslationOutdatedManager: '@helfi_users.translation_outdated_manager'
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Drupal\helfi_users\Routing\RouteSubscriber: ~
+
+  Drupal\helfi_users\TranslationOutdatedManager: ~

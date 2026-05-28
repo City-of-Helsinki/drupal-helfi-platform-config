@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Drupal\helfi_users\Plugin\views\filter;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\Attribute\ViewsFilter;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
 
 /**
  * Filter nodes by authorship relation to the current user.
- *
- * @ViewsFilter("helfi_node_authorship")
  */
+#[ViewsFilter('helfi_node_authorship')]
 class NodeAuthorshipFilter extends FilterPluginBase {
 
   public $no_operator = TRUE;
