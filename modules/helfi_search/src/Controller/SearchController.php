@@ -182,8 +182,14 @@ final class SearchController extends ControllerBase {
    *
    * @param array<string, mixed> $knnQuery
    *   The pre-built KNN query (index + body).
+   * @param string $model
+   *   The embedding model name.
+   * @param bool $debug
+   *   Whether to include per-bundle aggregations in the result.
    *
    * @return array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
+   *   The promoted hits, KNN results, total hit count, and optional debug
+   *   payload keyed under 'debug' when $debug is TRUE.
    */
   private function executeFilteredSearch(array $knnQuery, string $model, bool $debug): array {
     $searchResult = $this->elasticClient->search([
@@ -209,8 +215,18 @@ final class SearchController extends ControllerBase {
    *
    * @param array<string, mixed> $knnQuery
    *   The pre-built KNN query (index + body).
+   * @param string $query
+   *   The user-supplied search query string.
+   * @param string $language
+   *   The active language code.
+   * @param string $model
+   *   The embedding model name.
+   * @param bool $debug
+   *   Whether to include per-bundle aggregations in the result.
    *
    * @return array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
+   *   The promoted hits, KNN results, total hit count, and optional debug
+   *   payload keyed under 'debug' when $debug is TRUE.
    */
   private function executeBlendedSearch(array $knnQuery, string $query, string $language, string $model, bool $debug): array {
     $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $language);
@@ -247,6 +263,10 @@ final class SearchController extends ControllerBase {
    *
    * @param array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>} $result
    *   The search result payload from one of the execute*() helpers.
+   * @param int $page
+   *   The 1-based page number echoed back to the client.
+   * @param int $size
+   *   The page size echoed back to the client.
    */
   private function createResponse(array $result, int $page, int $size): JsonResponse {
     $payload = [
