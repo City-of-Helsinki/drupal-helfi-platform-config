@@ -30,7 +30,7 @@ display:
           label: Tila
           settings:
             format_custom_false: Julkaisematon
-            format_custom_true: Julkaisutila
+            format_custom_true: Julkaistu
           separator: ', '
         changed:
           label: Päivitetty
