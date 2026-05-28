@@ -117,35 +117,11 @@ final class SearchController extends ControllerBase {
       $this->flood->register(self::FLOOD_EVENT, self::FLOOD_WINDOW);
 
       $currentLanguage = $this->languageManager()->getCurrentLanguage()->getId();
-
-      $bundles = array_values(array_filter(
-        array_map('trim', explode(',', $request->query->getString('bundle'))),
-      ));
-
-      // The 'others' sentinel from the React form means "everything except
-      // news bundles". When combined with a news bundle the include and
-      // exclude cancel out, so drop all bundle filtering.
-      $excludeBundles = NULL;
-      if (in_array('others', $bundles, TRUE)) {
-        $bundles = array_values(array_filter($bundles, static fn (string $b): bool => $b !== 'others'));
-        if (array_intersect($bundles, self::NEWS_BUNDLES)) {
-          $bundles = [];
-        }
-        else {
-          $excludeBundles = self::NEWS_BUNDLES;
-        }
-      }
-      $bundles = $bundles ?: NULL;
+      [$bundles, $excludeBundles] = $this->resolveBundleFilters($request);
 
       $page = max(1, $request->query->getInt('page', 1));
       $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
-      $from = ($page - 1) * $size;
-
       $debug = $request->query->getBoolean('debug') && $this->isDebugAllowed();
-
-      // Debug-only: ask ES to return every matching chunk so per-chunk scores
-      // can be inspected.
-      $innerHitsSize = $debug ? QueryBuilder::KNN_MAX_SIZE : 1;
 
       $knnQuery = $this->queryBuilder->buildKnnQuery(
         $embeddings,
@@ -153,82 +129,19 @@ final class SearchController extends ControllerBase {
         $model,
         bundles: $bundles,
         size: $size,
-        from: $from,
+        from: ($page - 1) * $size,
         excludeBundles: $excludeBundles,
-        innerHitsSize: $innerHitsSize,
+        // Debug-only: ask ES to return every matching chunk so per-chunk
+        // scores can be inspected.
+        innerHitsSize: $debug ? QueryBuilder::KNN_MAX_SIZE : 1,
         includeAggregations: $debug,
       );
 
-      $promoted = [];
-      $searchResults = [];
-      $totalHits = 0;
-      $bundleAggregations = NULL;
+      $result = ($bundles || $excludeBundles)
+        ? $this->executeFilteredSearch($knnQuery, $model, $debug)
+        : $this->executeBlendedSearch($knnQuery, $query, $currentLanguage, $model, $debug);
 
-      if ($bundles || $excludeBundles) {
-        $searchResult = $this->elasticClient->search([
-          'index' => $knnQuery['index'],
-          'body' => $knnQuery['body'],
-        ]);
-        assert($searchResult instanceof Elasticsearch);
-        $knnResponse = $searchResult->asArray();
-
-        $searchResults = $this->queryBuilder->parseKnnHits($knnResponse, $model);
-        $totalHits = $knnResponse['hits']['total']['value'] ?? 0;
-        if ($debug) {
-          $bundleAggregations = $this->queryBuilder->parseBundleAggregations($knnResponse);
-        }
-      }
-      else {
-        $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $currentLanguage);
-
-        $msearchResult = $this->elasticClient->msearch([
-          'body' => [
-            ['index' => $promotionQuery['index']],
-            $promotionQuery['body'],
-            ['index' => $knnQuery['index']],
-            $knnQuery['body'],
-          ],
-        ]);
-        assert($msearchResult instanceof Elasticsearch);
-        $msearchResponse = $msearchResult->asArray();
-
-        $responses = $msearchResponse['responses'] ?? [];
-
-        if (!isset($responses[0]['error'])) {
-          $promoted = $this->queryBuilder->parsePromotionHits($responses[0] ?? []);
-        }
-
-        if (!isset($responses[1]['error'])) {
-          $searchResults = $this->queryBuilder->parseKnnHits($responses[1] ?? [], $model);
-          $totalHits = $responses[1]['hits']['total']['value'] ?? 0;
-          if ($debug) {
-            $bundleAggregations = $this->queryBuilder->parseBundleAggregations($responses[1] ?? []);
-          }
-        }
-      }
-
-      $payload = [
-        'promoted' => $promoted,
-        'results' => $searchResults,
-        'page' => $page,
-        'size' => $size,
-        'total_hits' => $totalHits,
-      ];
-      if ($bundleAggregations !== NULL) {
-        $payload['debug'] = ['bundles' => $bundleAggregations];
-      }
-
-      $response = new JsonResponse($payload);
-
-      // The search form submits the same query on page reload, while
-      // the response for a query is unlikely to change. Prevent hitting
-      // the API if the user refreshes the page. However, the cardinality
-      // is so high that there is no point in caching these responses to
-      // a public cache.
-      $response->setPrivate();
-      $response->setMaxAge(600);
-
-      return $response;
+      return $this->createResponse($result, $page, $size);
     }
     catch (EmbeddingsModelException | ElasticsearchException | TransportException) {
       return new JsonResponse(
@@ -236,6 +149,125 @@ final class SearchController extends ControllerBase {
         503,
       );
     }
+  }
+
+  /**
+   * Resolve the bundle inclusion/exclusion filters from the request.
+   *
+   * The 'others' sentinel from the React form means "everything except news
+   * bundles". When combined with an explicit news bundle the include and
+   * exclude cancel out, so all bundle filtering is dropped.
+   *
+   * @return array{0: list<string>|null, 1: list<string>|null}
+   *   [$bundles, $excludeBundles] — each side NULL when not constrained.
+   */
+  private function resolveBundleFilters(Request $request): array {
+    $bundles = array_values(array_filter(
+      array_map('trim', explode(',', $request->query->getString('bundle'))),
+    ));
+
+    if (!in_array('others', $bundles, TRUE)) {
+      return [$bundles ?: NULL, NULL];
+    }
+
+    $bundles = array_values(array_filter($bundles, static fn (string $b): bool => $b !== 'others'));
+    if (array_intersect($bundles, self::NEWS_BUNDLES)) {
+      return [NULL, NULL];
+    }
+    return [$bundles ?: NULL, self::NEWS_BUNDLES];
+  }
+
+  /**
+   * Run the single-search() path used when a bundle filter is in effect.
+   *
+   * @param array<string, mixed> $knnQuery
+   *   The pre-built KNN query (index + body).
+   *
+   * @return array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
+   */
+  private function executeFilteredSearch(array $knnQuery, string $model, bool $debug): array {
+    $searchResult = $this->elasticClient->search([
+      'index' => $knnQuery['index'],
+      'body' => $knnQuery['body'],
+    ]);
+    assert($searchResult instanceof Elasticsearch);
+    $knnResponse = $searchResult->asArray();
+
+    $result = [
+      'promoted' => [],
+      'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
+      'total_hits' => $knnResponse['hits']['total']['value'] ?? 0,
+    ];
+    if ($debug) {
+      $result['debug'] = ['bundles' => $this->queryBuilder->parseBundleAggregations($knnResponse)];
+    }
+    return $result;
+  }
+
+  /**
+   * Run the msearch() path that blends promotions with KNN results.
+   *
+   * @param array<string, mixed> $knnQuery
+   *   The pre-built KNN query (index + body).
+   *
+   * @return array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
+   */
+  private function executeBlendedSearch(array $knnQuery, string $query, string $language, string $model, bool $debug): array {
+    $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $language);
+
+    $msearchResult = $this->elasticClient->msearch([
+      'body' => [
+        ['index' => $promotionQuery['index']],
+        $promotionQuery['body'],
+        ['index' => $knnQuery['index']],
+        $knnQuery['body'],
+      ],
+    ]);
+    assert($msearchResult instanceof Elasticsearch);
+    $responses = $msearchResult->asArray()['responses'] ?? [];
+
+    $promoted = isset($responses[0]['error'])
+      ? []
+      : $this->queryBuilder->parsePromotionHits($responses[0] ?? []);
+
+    $knnResponse = isset($responses[1]['error']) ? [] : ($responses[1] ?? []);
+    $result = [
+      'promoted' => $promoted,
+      'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
+      'total_hits' => $knnResponse['hits']['total']['value'] ?? 0,
+    ];
+    if ($debug && !isset($responses[1]['error'])) {
+      $result['debug'] = ['bundles' => $this->queryBuilder->parseBundleAggregations($knnResponse)];
+    }
+    return $result;
+  }
+
+  /**
+   * Assemble the JSON response with cache headers.
+   *
+   * @param array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>} $result
+   *   The search result payload from one of the execute*() helpers.
+   */
+  private function createResponse(array $result, int $page, int $size): JsonResponse {
+    $payload = [
+      'promoted' => $result['promoted'],
+      'results' => $result['results'],
+      'page' => $page,
+      'size' => $size,
+      'total_hits' => $result['total_hits'],
+    ];
+    if (isset($result['debug'])) {
+      $payload['debug'] = $result['debug'];
+    }
+
+    $response = new JsonResponse($payload);
+    // The search form submits the same query on page reload, while the
+    // response for a query is unlikely to change. Prevent hitting the API if
+    // the user refreshes the page. The cardinality is too high to make a
+    // public cache worthwhile.
+    $response->setPrivate();
+    $response->setMaxAge(600);
+    return $response;
   }
 
 }

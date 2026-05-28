@@ -97,7 +97,17 @@ final class QueryBuilder {
    * @return array<mixed>
    *   An array with 'index' and 'body' keys for Elasticsearch.
    */
-  public function buildKnnQuery(array $embeddings, string $language, string $model, ?array $bundles = NULL, int $size = self::KNN_DEFAULT_SIZE, int $from = 0, ?array $excludeBundles = NULL, int $innerHitsSize = 1, bool $includeAggregations = FALSE): array {
+  public function buildKnnQuery(
+    array $embeddings,
+    string $language,
+    string $model,
+    ?array $bundles = NULL,
+    int $size = self::KNN_DEFAULT_SIZE,
+    int $from = 0,
+    ?array $excludeBundles = NULL,
+    int $innerHitsSize = 1,
+    bool $includeAggregations = FALSE,
+  ): array {
     $minScore = (float) ($this->getSetting('min_score') ?? 0.0);
     $language = match($language) {
       "fi", "sv", "en" => $language,
@@ -123,22 +133,7 @@ final class QueryBuilder {
       'size' => $innerHitsSize,
     ];
 
-    $deboostBundles = $this->getSetting('deboost_bundles') ?? [];
-    // Excluded bundles are off-limits — drop them from the deboost universe
-    // so they can never appear, even via the deboosted clause.
-    if ($excludeBundles) {
-      $deboostBundles = array_values(array_diff($deboostBundles, $excludeBundles));
-    }
-    // Partition into deboosted vs. normal bundles. NULL on the non-deboosted
-    // side means "everything not in $deboostBundles". used when no $bundles
-    // filter is set.
-    $deboostedSubset = $bundles
-      ? array_values(array_intersect($bundles, $deboostBundles))
-      : $deboostBundles;
-    $normalSubset = $bundles
-      ? array_values(array_diff($bundles, $deboostBundles))
-      : NULL;
-
+    [$deboostBundles, $deboostedSubset, $normalSubset] = $this->partitionForDeboost($bundles, $excludeBundles);
     $applyDeboost = !empty($deboostedSubset) && ($normalSubset === NULL || !empty($normalSubset));
 
     if ($applyDeboost) {
@@ -176,19 +171,7 @@ final class QueryBuilder {
       ];
     }
     else {
-      if ($bundles || $excludeBundles) {
-        $bool = ['must' => [$languageFilter]];
-        if ($bundles) {
-          $bool['must'][] = ['terms' => ['entity_bundle' => $bundles]];
-        }
-        if ($excludeBundles) {
-          $bool['must_not'] = [['terms' => ['entity_bundle' => $excludeBundles]]];
-        }
-        $filter = ['bool' => $bool];
-      }
-      else {
-        $filter = $languageFilter;
-      }
+      $filter = $this->buildBundleFilter($languageFilter, $bundles, $excludeBundles);
       $knn = $this->buildKnnEntry($fieldPrefix, $embeddings, $filter, $minScore, $innerHits, NULL);
     }
 
@@ -217,6 +200,63 @@ final class QueryBuilder {
       'index' => self::EMBEDDINGS_INDEX,
       'body' => $body,
     ];
+  }
+
+  /**
+   * Partition the bundle filter into deboosted vs. normal subsets.
+   *
+   * NULL on the non-deboosted side means "everything not in $deboostBundles",
+   * used when no $bundles filter is set. Excluded bundles are removed from
+   * the deboost universe so they can never appear, even via the deboost
+   * clause.
+   *
+   * @param string[]|null $bundles
+   *   Caller-selected bundle filter, or NULL.
+   * @param string[]|null $excludeBundles
+   *   Bundles that must not appear in results, or NULL.
+   *
+   * @return array{0: string[], 1: string[], 2: string[]|null}
+   *   [$deboostBundles, $deboostedSubset, $normalSubset].
+   */
+  private function partitionForDeboost(?array $bundles, ?array $excludeBundles): array {
+    $deboostBundles = $this->getSetting('deboost_bundles') ?? [];
+    if ($excludeBundles) {
+      $deboostBundles = array_values(array_diff($deboostBundles, $excludeBundles));
+    }
+    $deboostedSubset = $bundles
+      ? array_values(array_intersect($bundles, $deboostBundles))
+      : $deboostBundles;
+    $normalSubset = $bundles
+      ? array_values(array_diff($bundles, $deboostBundles))
+      : NULL;
+    return [$deboostBundles, $deboostedSubset, $normalSubset];
+  }
+
+  /**
+   * Build the filter clause for the single-KNN (non-deboost) path.
+   *
+   * @param array<string, mixed> $languageFilter
+   *   The base language term clause.
+   * @param string[]|null $bundles
+   *   Bundles to include, or NULL.
+   * @param string[]|null $excludeBundles
+   *   Bundles to exclude, or NULL.
+   *
+   * @return array<string, mixed>
+   *   An Elasticsearch filter clause.
+   */
+  private function buildBundleFilter(array $languageFilter, ?array $bundles, ?array $excludeBundles): array {
+    if (!$bundles && !$excludeBundles) {
+      return $languageFilter;
+    }
+    $bool = ['must' => [$languageFilter]];
+    if ($bundles) {
+      $bool['must'][] = ['terms' => ['entity_bundle' => $bundles]];
+    }
+    if ($excludeBundles) {
+      $bool['must_not'] = [['terms' => ['entity_bundle' => $excludeBundles]]];
+    }
+    return ['bool' => $bool];
   }
 
   /**
