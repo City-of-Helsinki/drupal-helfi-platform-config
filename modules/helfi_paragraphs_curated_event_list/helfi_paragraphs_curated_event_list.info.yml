@@ -11,6 +11,7 @@ dependencies:
   - linkit:linkit
   - external_entities:external_entities
   - helfi_api_base:helfi_api_base
+  - helfi_image_styles:helfi_image_styles
   - helfi_platform_config:helfi_platform_config
   - imagecache_external:imagecache_external
   - paragraphs:paragraphs
