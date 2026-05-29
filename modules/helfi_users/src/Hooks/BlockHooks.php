@@ -13,9 +13,11 @@ class BlockHooks {
 
   /**
    * Implements hook_block_alter().
+   *
+   * @phpstan-param array<mixed> $definitions
    */
   #[Hook('block_alter')]
-  public function localTasksBlockAlter(&$definitions) : void {
+  public function localTasksBlockAlter(array &$definitions): void {
     if (isset($definitions['local_tasks_block'])) {
       $definitions['local_tasks_block']['class'] = 'Drupal\helfi_users\Plugin\Block\LocalTasksBlock';
     }

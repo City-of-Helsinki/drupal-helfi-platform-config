@@ -42,8 +42,10 @@ class LocalTasksBlock extends CoreLocalTasksBlock {
 
   /**
    * {@inheritDoc}
+   *
+   * @phpstan-return array<mixed>
    */
-  public function build() {
+  public function build(): array {
     $build = parent::build();
 
     if (
