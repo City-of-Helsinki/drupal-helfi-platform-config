@@ -154,9 +154,13 @@ final class SearchController extends ControllerBase {
   /**
    * Resolve the bundle inclusion/exclusion filters from the request.
    *
-   * The 'others' sentinel from the React form means "everything except news
-   * bundles". When combined with an explicit news bundle the include and
-   * exclude cancel out, so all bundle filtering is dropped.
+   * The React form uses two sentinels:
+   * - 'news' expands to all configured news bundles.
+   * - 'others' means "everything except news bundles".
+   *
+   * When both are selected (or 'others' is combined with an explicit news
+   * bundle) the include and exclude cancel out, so all bundle filtering is
+   * dropped.
    *
    * @return array{0: list<string>|null, 1: list<string>|null}
    *   [$bundles, $excludeBundles] — each side NULL when not constrained.
@@ -165,6 +169,14 @@ final class SearchController extends ControllerBase {
     $bundles = array_values(array_filter(
       array_map('trim', explode(',', $request->query->getString('bundle'))),
     ));
+
+    // Expand the 'news' sentinel to the configured news bundles.
+    if (in_array('news', $bundles, TRUE)) {
+      $bundles = array_values(array_unique(array_merge(
+        array_filter($bundles, static fn (string $b): bool => $b !== 'news'),
+        self::NEWS_BUNDLES,
+      )));
+    }
 
     if (!in_array('others', $bundles, TRUE)) {
       return [$bundles ?: NULL, NULL];
