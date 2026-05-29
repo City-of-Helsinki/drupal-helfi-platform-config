@@ -13,6 +13,10 @@ use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Elastic\Elasticsearch\ClientBuilder;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -273,6 +277,56 @@ class SearchControllerTest extends KernelTestBase {
     $this->assertEquals(200, $response->getStatusCode());
     $data = json_decode((string) $response->getContent(), TRUE);
     $this->assertArrayNotHasKey('debug', $data);
+  }
+
+  /**
+   * Tests the 'news' sentinel expands to every configured news bundle.
+   *
+   * Captures the outgoing Elasticsearch request body and asserts the KNN
+   * filter's entity_bundle terms clause contains both news_item and
+   * news_article — the bug case was that only the literal value sent by
+   * the React form (news_item) reached the filter.
+   */
+  public function testNewsSentinelExpandsToAllNewsBundles(): void {
+    $embeddingsModel = $this->prophesize(EmbeddingsModelInterface::class);
+    $embeddingsModel->getEmbedding(Argument::type('string'), Argument::type('string'))
+      ->willReturn([0.1, 0.2, 0.3]);
+    $this->container->set(EmbeddingsModelInterface::class, $embeddingsModel->reveal());
+
+    $transactions = [];
+    $mock = new MockHandler([
+      $this->createElasticsearchResponse([
+        'hits' => ['total' => ['value' => 0], 'hits' => []],
+      ]),
+    ]);
+    $stack = HandlerStack::create($mock);
+    $stack->push(Middleware::history($transactions));
+    $elasticClient = ClientBuilder::create()
+      ->setHttpClient(new Client(['handler' => $stack]))
+      ->build();
+    $this->container->set('helfi_platform_config.etusivu_elastic_client', $elasticClient);
+
+    $request = $this->getMockedRequest('/api/v1/search', parameters: [
+      'q' => 'test query',
+      'bundle' => 'news',
+    ]);
+    $response = $this->processRequest($request);
+    $this->assertEquals(200, $response->getStatusCode());
+
+    $this->assertCount(1, $transactions);
+    $body = json_decode((string) $transactions[0]['request']->getBody(), TRUE);
+
+    // The bundle terms clause may sit alongside the language term clause
+    // under bool.must — scan rather than index-by-position.
+    $bundleClause = array_find(
+      $body['knn']['filter']['bool']['must'],
+      static fn (array $c): bool => isset($c['terms']['entity_bundle']),
+    );
+    $this->assertNotNull($bundleClause, 'KNN filter is missing the entity_bundle terms clause.');
+    $this->assertEqualsCanonicalizing(
+      ['news_item', 'news_article'],
+      $bundleClause['terms']['entity_bundle'],
+    );
   }
 
 }
