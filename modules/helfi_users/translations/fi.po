@@ -28,3 +28,7 @@ msgstr "Kirjoittaja"
 msgctxt "Node authorship filter"
 msgid "Last edited"
 msgstr "Viimeisin päivittäjä"
+
+msgctxt "Dashboard"
+msgid "My content"
+msgstr "Omat sisällöt"
