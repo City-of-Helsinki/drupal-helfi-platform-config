@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_users\Hooks;
+namespace Drupal\helfi_users\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
 

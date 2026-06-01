@@ -10,7 +10,6 @@
 
 declare(strict_types=1);
 
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\LegacyModuleImplementsAlter;
 use Drupal\Core\Session\AccountInterface;
@@ -141,48 +140,5 @@ function _helfi_users_reassign_nodes(AccountInterface $source, AccountInterface 
 
   if (!empty($affected_node_ids)) {
     \Drupal::entityTypeManager()->getStorage('node')->resetCache($affected_node_ids);
-  }
-}
-
-/**
- * Implements hook_views_data_alter().
- *
- * @phpstan-param array<string, mixed> $data
- */
-function helfi_users_views_data_alter(array &$data): void {
-  $data['node_field_data']['helfi_node_authorship'] = [
-    'title' => t('Node authorship (current user)'),
-    'filter' => [
-      'title' => t('Node authorship (current user)'),
-      'help' => t('Filter nodes by whether the current user authored or last edited them.'),
-      'id' => 'helfi_node_authorship',
-    ],
-  ];
-}
-
-/**
- * Implements hook_entity_extra_field_info().
- *
- * @phpstan-return array<string, mixed>
- */
-function helfi_users_entity_extra_field_info(): array {
-  $extra = [];
-  $extra['user']['user']['display']['user_content'] = [
-    'label' => t('User content'),
-    'description' => t('Lists all content authored by this user.'),
-    'weight' => 10,
-    'visible' => TRUE,
-  ];
-  return $extra;
-}
-
-/**
- * Implements hook_user_view().
- *
- * @phpstan-param array<string, mixed> $build
- */
-function helfi_users_user_view(array &$build, UserInterface $account, EntityViewDisplayInterface $display, string $_view_mode): void {
-  if ($display->getComponent('user_content')) {
-    $build['user_content'] = views_embed_view('dashboard_your_content', 'your_content_block', $account->id());
   }
 }

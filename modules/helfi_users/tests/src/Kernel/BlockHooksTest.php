@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_users\Kernel;
 
 use Drupal\Core\Menu\Plugin\Block\LocalTasksBlock as CoreLocalTasksBlock;
-use Drupal\helfi_users\Hooks\BlockHooks;
+use Drupal\helfi_users\Hook\BlockHooks;
 use Drupal\helfi_users\Plugin\Block\LocalTasksBlock;
 use Drupal\KernelTests\KernelTestBase;
 
