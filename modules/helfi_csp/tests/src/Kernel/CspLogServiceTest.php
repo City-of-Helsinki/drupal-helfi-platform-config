@@ -10,12 +10,14 @@ use Drupal\helfi_csp\CspLogService;
 use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Kernel tests for CspLogService database queries.
  */
 #[Group('helfi_csp')]
 #[CoversClass(CspLogService::class)]
+#[RunTestsInSeparateProcesses]
 class CspLogServiceTest extends KernelTestBase {
 
   /**
