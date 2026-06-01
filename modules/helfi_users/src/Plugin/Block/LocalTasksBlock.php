@@ -8,6 +8,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Menu\Plugin\Block\LocalTasksBlock as CoreLocalTasksBlock;
 use Drupal\Core\Session\AccountProxyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\user\UserInterface;
 
 /**
  * Class to override core's LocalTaskBlock.
@@ -51,6 +52,14 @@ class LocalTasksBlock extends CoreLocalTasksBlock {
     if (
       !isset($build['#primary']) ||
       !is_array($build['#primary'])
+    ) {
+      return $build;
+    }
+
+    // Return if the user is not the current user.
+    if (
+      !$this->routeMatch->getParameter('user') instanceof UserInterface ||
+      $this->routeMatch->getParameter('user')->id() !== $this->currentUser->id()
     ) {
       return $build;
     }

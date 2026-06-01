@@ -6,8 +6,12 @@ namespace Drupal\Tests\helfi_users\Kernel;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Menu\LocalTaskManagerInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\helfi_users\Plugin\Block\LocalTasksBlock;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\user\UserInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Tests for LocalTasksBlock.
@@ -35,7 +39,45 @@ class LocalTasksBlockTest extends KernelTestBase {
   }
 
   /**
-   * Tests that the scheduler user-page tab is removed.
+   * Tests that no modifications are made when viewing another user's page.
+   */
+  public function testNoModificationsWhenViewingAnotherUsersPage(): void {
+    $scheduleRoute = 'views_view:view.scheduler_scheduled_content.user_page';
+    $block = $this->createBlockWithPrimary(
+      primaryTasks: [
+        $scheduleRoute => ['#link' => ['title' => 'Scheduled']],
+        'entity.user.canonical' => ['#link' => ['title' => 'View']],
+      ],
+      currentUserId: '1',
+      routeUserId: '2',
+    );
+
+    $build = $block->build();
+    $this->assertArrayHasKey($scheduleRoute, $build['#primary']);
+    $this->assertEquals('View', $build['#primary']['entity.user.canonical']['#link']['title']);
+  }
+
+  /**
+   * Tests that no modifications are made when not on a user page.
+   */
+  public function testNoModificationsWhenNotOnUserPage(): void {
+    $scheduleRoute = 'views_view:view.scheduler_scheduled_content.user_page';
+    $block = $this->createBlockWithPrimary(
+      primaryTasks: [
+        $scheduleRoute => ['#link' => ['title' => 'Scheduled']],
+        'entity.user.canonical' => ['#link' => ['title' => 'View']],
+      ],
+      currentUserId: '1',
+      routeUserId: NULL,
+    );
+
+    $build = $block->build();
+    $this->assertArrayHasKey($scheduleRoute, $build['#primary']);
+    $this->assertEquals('View', $build['#primary']['entity.user.canonical']['#link']['title']);
+  }
+
+  /**
+   * Tests that the scheduler user-page tab is removed on the user's own page.
    */
   public function testScheduledContentLinkIsRemoved(): void {
     $schedulerRoute = 'views_view:view.scheduler_scheduled_content.user_page';
@@ -50,7 +92,7 @@ class LocalTasksBlockTest extends KernelTestBase {
   }
 
   /**
-   * Tests that the user canonical tab is renamed to "My content".
+   * Tests that the user canonical tab is renamed to "My content" on own page.
    */
   public function testUserCanonicalRenamedToMyContent(): void {
     $block = $this->createBlockWithPrimary([
@@ -66,12 +108,20 @@ class LocalTasksBlockTest extends KernelTestBase {
   }
 
   /**
-   * Creates a LocalTasksBlock instance.
+   * Creates a LocalTasksBlock with mocked dependencies.
    *
    * @param array<string, mixed> $primaryTasks
-   *   Tasks to return as the primary level from the mock.
+   *   Tasks to return as the primary level.
+   * @param string $currentUserId
+   *   The logged-in user's ID.
+   * @param string|null $routeUserId
+   *   The user ID from the route, or NULL if not on a user page.
    */
-  private function createBlockWithPrimary(array $primaryTasks): LocalTasksBlock {
+  private function createBlockWithPrimary(
+    array $primaryTasks,
+    string $currentUserId = '1',
+    ?string $routeUserId = '1',
+  ): LocalTasksBlock {
     $taskManager = $this->createMock(LocalTaskManagerInterface::class);
     $taskManager->method('getLocalTasks')
       ->willReturnCallback(function ($routeName, $level) use ($primaryTasks): array {
@@ -81,6 +131,22 @@ class LocalTasksBlockTest extends KernelTestBase {
         ];
       });
     $this->container->set('plugin.manager.menu.local_task', $taskManager);
+
+    $currentUser = $this->createMock(AccountProxyInterface::class);
+    $currentUser->method('id')->willReturn($currentUserId);
+    $currentUser->method('getPreferredAdminLangcode')->willReturn('en');
+    $this->container->set('current_user', $currentUser);
+
+    $routeUser = NULL;
+    if ($routeUserId !== NULL) {
+      $routeUser = $this->createMock(UserInterface::class);
+      $routeUser->method('id')->willReturn($routeUserId);
+    }
+    $routeMatch = $this->createMock(RouteMatchInterface::class);
+    $routeMatch->method('getParameters')->willReturn(new ParameterBag([]));
+    $routeMatch->method('getRouteName')->willReturn('entity.user.canonical');
+    $routeMatch->method('getParameter')->with('user')->willReturn($routeUser);
+    $this->container->set('current_route_match', $routeMatch);
 
     return LocalTasksBlock::create($this->container, [], 'local_tasks_block', ['provider' => 'core']);
   }
