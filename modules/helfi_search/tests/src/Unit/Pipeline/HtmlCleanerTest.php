@@ -27,7 +27,10 @@ class HtmlCleanerTest extends UnitTestCase {
    *   Classes the cleaner should treat as ignored. Defaults to the install set.
    */
   private function getSut(array $ignoredClasses = []): HtmlCleaner {
-    return new HtmlCleaner($this->stubIgnoredClassesConfigFactory($ignoredClasses));
+    return new HtmlCleaner(
+      $this->stubIgnoredClassesConfigFactory($ignoredClasses),
+      $this->stubIgnoredClassesSettings(),
+    );
   }
 
   /**
