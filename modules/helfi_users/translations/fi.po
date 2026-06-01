@@ -12,3 +12,23 @@ msgstr "Poista käyttäjä ja siirrä luotu sisältö käyttäjälle %uid1. Tät
 
 msgid "Banning accounts prevents them from logging in. If the account is no longer needed, it should be deleted."
 msgstr "Käyttäjän estäminen estää kirjautumisen käyttäjällä. Käyttäjä tulisi poistaa jos sitä ei enää tarvita."
+
+msgctxt "Node authorship filter"
+msgid "Show content"
+msgstr "Näytä sisältö"
+
+msgctxt "Node authorship filter"
+msgid "Authored or last edited"
+msgstr "Kirjoittaja tai viimeisin päivittäjä"
+
+msgctxt "Node authorship filter"
+msgid "Authored"
+msgstr "Kirjoittaja"
+
+msgctxt "Node authorship filter"
+msgid "Last edited"
+msgstr "Viimeisin päivittäjä"
+
+msgctxt "Dashboard"
+msgid "My content"
+msgstr "Omat sisällöt"
