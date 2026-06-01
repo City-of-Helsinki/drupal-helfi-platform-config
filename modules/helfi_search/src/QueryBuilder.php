@@ -84,15 +84,30 @@ final class QueryBuilder {
    *   Number of results per page.
    * @param int $from
    *   Offset for pagination.
+   * @param string[]|null $excludeBundles
+   *   Bundles that must not appear in results.
    * @param int $innerHitsSize
    *   How many matching chunks to return per parent doc. Defaults to 1
    *   (only the top chunk is surfaced). Set higher to surface per-chunk
    *   scores for debugging.
+   * @param bool $includeAggregations
+   *   When TRUE, attach a per-bundle terms aggregation to the body. Intended
+   *   for debug responses; the caller is responsible for gating this.
    *
    * @return array<mixed>
    *   An array with 'index' and 'body' keys for Elasticsearch.
    */
-  public function buildKnnQuery(array $embeddings, string $language, string $model, ?array $bundles = NULL, int $size = self::KNN_DEFAULT_SIZE, int $from = 0, int $innerHitsSize = 1): array {
+  public function buildKnnQuery(
+    array $embeddings,
+    string $language,
+    string $model,
+    ?array $bundles = NULL,
+    int $size = self::KNN_DEFAULT_SIZE,
+    int $from = 0,
+    ?array $excludeBundles = NULL,
+    int $innerHitsSize = 1,
+    bool $includeAggregations = FALSE,
+  ): array {
     $minScore = (float) ($this->getSetting('min_score') ?? 0.0);
     $language = match($language) {
       "fi", "sv", "en" => $language,
@@ -118,17 +133,7 @@ final class QueryBuilder {
       'size' => $innerHitsSize,
     ];
 
-    $deboostBundles = $this->getSetting('deboost_bundles') ?? [];
-    // Partition into deboosted vs. normal bundles. NULL on the non-deboosted
-    // side means "everything not in $deboostBundles". used when no $bundles
-    // filter is set.
-    $deboostedSubset = $bundles
-      ? array_values(array_intersect($bundles, $deboostBundles))
-      : $deboostBundles;
-    $normalSubset = $bundles
-      ? array_values(array_diff($bundles, $deboostBundles))
-      : NULL;
-
+    [$deboostBundles, $deboostedSubset, $normalSubset] = $this->partitionForDeboost($bundles, $excludeBundles);
     $applyDeboost = !empty($deboostedSubset) && ($normalSubset === NULL || !empty($normalSubset));
 
     if ($applyDeboost) {
@@ -136,9 +141,12 @@ final class QueryBuilder {
       // boosts. Documents in $deboostedSubset get their score multiplied by
       // $deboostFactor, so they only out-rank non-deboosted documents when
       // their raw similarity is sufficiently higher.
+      $contentMustNot = $excludeBundles
+        ? array_values(array_unique(array_merge($deboostBundles, $excludeBundles)))
+        : $deboostBundles;
       $contentBool = $normalSubset !== NULL
         ? ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $normalSubset]]]]
-        : ['must' => [$languageFilter], 'must_not' => [['terms' => ['entity_bundle' => $deboostBundles]]]];
+        : ['must' => [$languageFilter], 'must_not' => [['terms' => ['entity_bundle' => $contentMustNot]]]];
 
       // Each KNN clause needs a unique inner_hits name. Otherwise both
       // clauses keep the default key (the nested field path) and ES rejects
@@ -163,21 +171,92 @@ final class QueryBuilder {
       ];
     }
     else {
-      $filter = $bundles
-        ? ['bool' => ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $bundles]]]]]
-        : $languageFilter;
+      $filter = $this->buildBundleFilter($languageFilter, $bundles, $excludeBundles);
       $knn = $this->buildKnnEntry($fieldPrefix, $embeddings, $filter, $minScore, $innerHits, NULL);
+    }
+
+    $body = [
+      'knn' => $knn,
+      'size' => $size,
+      'from' => $from,
+      '_source' => $source,
+    ];
+
+    if ($includeAggregations) {
+      // Aggregations operate on the documents matched by the KNN clauses
+      // (capped at `k` per clause), so the counts reflect what KNN actually
+      // surfaced, not the entire index.
+      $body['aggs'] = [
+        'bundles' => [
+          'terms' => [
+            'field' => 'entity_bundle',
+            'size' => 50,
+          ],
+        ],
+      ];
     }
 
     return [
       'index' => self::EMBEDDINGS_INDEX,
-      'body' => [
-        'knn' => $knn,
-        'size' => $size,
-        'from' => $from,
-        '_source' => $source,
-      ],
+      'body' => $body,
     ];
+  }
+
+  /**
+   * Partition the bundle filter into deboosted vs. normal subsets.
+   *
+   * NULL on the non-deboosted side means "everything not in $deboostBundles",
+   * used when no $bundles filter is set. Excluded bundles are removed from
+   * the deboost universe so they can never appear, even via the deboost
+   * clause.
+   *
+   * @param string[]|null $bundles
+   *   Caller-selected bundle filter, or NULL.
+   * @param string[]|null $excludeBundles
+   *   Bundles that must not appear in results, or NULL.
+   *
+   * @return array{0: string[], 1: string[], 2: string[]|null}
+   *   [$deboostBundles, $deboostedSubset, $normalSubset].
+   */
+  private function partitionForDeboost(?array $bundles, ?array $excludeBundles): array {
+    $deboostBundles = $this->getSetting('deboost_bundles') ?? [];
+    if ($excludeBundles) {
+      $deboostBundles = array_values(array_diff($deboostBundles, $excludeBundles));
+    }
+    $deboostedSubset = $bundles
+      ? array_values(array_intersect($bundles, $deboostBundles))
+      : $deboostBundles;
+    $normalSubset = $bundles
+      ? array_values(array_diff($bundles, $deboostBundles))
+      : NULL;
+    return [$deboostBundles, $deboostedSubset, $normalSubset];
+  }
+
+  /**
+   * Build the filter clause for the single-KNN (non-deboost) path.
+   *
+   * @param array<string, mixed> $languageFilter
+   *   The base language term clause.
+   * @param string[]|null $bundles
+   *   Bundles to include, or NULL.
+   * @param string[]|null $excludeBundles
+   *   Bundles to exclude, or NULL.
+   *
+   * @return array<string, mixed>
+   *   An Elasticsearch filter clause.
+   */
+  private function buildBundleFilter(array $languageFilter, ?array $bundles, ?array $excludeBundles): array {
+    if (!$bundles && !$excludeBundles) {
+      return $languageFilter;
+    }
+    $bool = ['must' => [$languageFilter]];
+    if ($bundles) {
+      $bool['must'][] = ['terms' => ['entity_bundle' => $bundles]];
+    }
+    if ($excludeBundles) {
+      $bool['must_not'] = [['terms' => ['entity_bundle' => $excludeBundles]]];
+    }
+    return ['bool' => $bool];
   }
 
   /**
@@ -285,6 +364,27 @@ final class QueryBuilder {
       $results[] = $result;
     }
     return $results;
+  }
+
+  /**
+   * Parse bundle aggregation buckets from an Elasticsearch response.
+   *
+   * @param array<mixed> $response
+   *   The Elasticsearch response array.
+   *
+   * @return array<string, int>
+   *   Map of entity bundle => doc count, in bucket order returned by ES.
+   */
+  public function parseBundleAggregations(array $response): array {
+    $buckets = $response['aggregations']['bundles']['buckets'] ?? [];
+    $result = [];
+    foreach ($buckets as $bucket) {
+      $key = $bucket['key'] ?? NULL;
+      if (is_string($key) && $key !== '') {
+        $result[$key] = (int) ($bucket['doc_count'] ?? 0);
+      }
+    }
+    return $result;
   }
 
   /**

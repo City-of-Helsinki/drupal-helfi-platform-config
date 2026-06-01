@@ -7,8 +7,6 @@ dependencies:
     - node
     - user
     - views_bulk_operations
-_core:
-  default_config_hash: 34YYo-ZztItQsi3gAc9znORmso7sDaAIRJMKSoC6Ugs
 id: dashboard_your_content
 label: 'Dashboard - Your content'
 module: views
