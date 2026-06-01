@@ -46,7 +46,7 @@ class UserDashboardHooks {
    */
   #[Hook('entity_extra_field_info')]
   public function userContentExtraFieldInfo(): array {
-    // Create an extra field that will be used to inject dashboard view for the user display.
+    // Create an extra field to inject the dashboard view for the user display.
     $extra = [];
     $extra['user']['user']['display']['user_content'] = [
       'label' => $this->t('User content'),
@@ -81,4 +81,5 @@ class UserDashboardHooks {
       '#arguments' => [$account->id()],
     ];
   }
+
 }

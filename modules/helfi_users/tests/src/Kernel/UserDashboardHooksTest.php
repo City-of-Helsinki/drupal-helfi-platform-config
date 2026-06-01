@@ -11,7 +11,11 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\user\UserInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * Tests for UserDashboardHooks.
+ */
 #[CoversClass(UserDashboardHooks::class)]
 #[Group('helfi_users')]
 class UserDashboardHooksTest extends KernelTestBase {
@@ -25,7 +29,18 @@ class UserDashboardHooksTest extends KernelTestBase {
     'helfi_users',
   ];
 
-  private AccountProxyInterface $currentUser;
+  /**
+   * The current user mock.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface&\PHPUnit\Framework\MockObject\MockObject
+   */
+  private AccountProxyInterface&MockObject $currentUser;
+
+  /**
+   * The hooks under test.
+   *
+   * @var \Drupal\helfi_users\Hook\UserDashboardHooks
+   */
   private UserDashboardHooks $hooks;
 
   /**
@@ -78,7 +93,7 @@ class UserDashboardHooksTest extends KernelTestBase {
   }
 
   /**
-   * Tests that the view is not injected when the user_content component is absent.
+   * Tests that the view is skipped when the user_content component is absent.
    */
   public function testInjectDashboardViewSkipsWhenComponentMissing(): void {
     $this->currentUser->method('id')->willReturn('1');
