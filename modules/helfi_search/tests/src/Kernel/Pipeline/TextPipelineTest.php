@@ -120,7 +120,10 @@ class TextPipelineTest extends KernelTestBase {
 
     return new TextPipeline(
       $htmlExtractor,
-      new HtmlCleaner($this->stubIgnoredClassesConfigFactory([])),
+      new HtmlCleaner(
+        $this->stubIgnoredClassesConfigFactory([]),
+        $this->stubIgnoredClassesSettings(),
+      ),
       new ContentChunker(),
       new ChunkAnnotator(),
     );
