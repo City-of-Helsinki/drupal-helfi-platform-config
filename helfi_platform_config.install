@@ -577,3 +577,24 @@ function helfi_platform_config_update_11002(): void {
     $index->save();
   }
 }
+
+/**
+ * UHF-13024: Enable helfi_csp module on history portal.
+ */
+function helfi_platform_config_update_11003(): void {
+  try {
+    $project = \Drupal::service('helfi_api_base.environment_resolver')
+      ->getActiveProject();
+  }
+  catch (\InvalidArgumentException) {
+    // No need to proceed.
+    return;
+  }
+
+  if ($project->getName() === Project::HISTORIA) {
+    if (!\Drupal::moduleHandler()->moduleExists('helfi_csp')) {
+      $module_installer = \Drupal::service('module_installer');
+      $module_installer->install(['helfi_csp']);
+    }
+  }
+}

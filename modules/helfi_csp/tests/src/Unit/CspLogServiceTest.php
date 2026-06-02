@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_csp\Unit;
 
+use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\State\StateInterface;
@@ -18,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Unit tests for CspLogService (filtering, locking, rate limiting).
+ * Unit tests for CspLogService filtering, locking, and rate limiting.
  */
 #[Group('helfi_csp')]
 #[CoversClass(CspLogService::class)]
@@ -87,15 +90,17 @@ class CspLogServiceTest extends UnitTestCase {
 
       /**
        * Stub for Insert::fields().
+       *
+       * @phpstan-param array<mixed> $f
        */
-      public function fields(array $f) {
+      public function fields(array $f): self {
         return $this;
       }
 
       /**
        * Stub for Insert::execute().
        */
-      public function execute() {
+      public function execute(): void {
       }
 
     };
@@ -105,6 +110,44 @@ class CspLogServiceTest extends UnitTestCase {
       ->with(CspLogServiceInterface::DATABASE_TABLE)
       ->willReturn($insertStub);
     return $connection;
+  }
+
+  /**
+   * Creates a time mock returning a fixed request time.
+   *
+   * @param int $requestTime
+   *   Request timestamp.
+   *
+   * @return \Drupal\Component\Datetime\TimeInterface
+   *   Time mock.
+   */
+  private function createTimeMock(int $requestTime = 2_000_000): TimeInterface {
+    $time = $this->createMock(TimeInterface::class);
+    $time->method('getRequestTime')->willReturn($requestTime);
+    return $time;
+  }
+
+  /**
+   * Builds a config factory mock for CspLogService tests.
+   *
+   * @param bool $stopRecieving
+   *   Value for helfi_csp.settings stop_recieving.
+   *
+   * @return \Drupal\Core\Config\ConfigFactoryInterface
+   *   Config factory mock.
+   */
+  private function createConfigFactory(bool $stopRecieving = FALSE): ConfigFactoryInterface {
+    $helfiConfig = $this->createMock(ImmutableConfig::class);
+    $helfiConfig->method('get')
+      ->with('stop_recieving')
+      ->willReturn($stopRecieving);
+
+    $configFactory = $this->createMock(ConfigFactoryInterface::class);
+    $configFactory->method('get')
+      ->with('helfi_csp.settings')
+      ->willReturn($helfiConfig);
+
+    return $configFactory;
   }
 
   /**
@@ -118,6 +161,10 @@ class CspLogServiceTest extends UnitTestCase {
    *   State.
    * @param \Drupal\Core\Database\Connection $connection
    *   Database connection.
+   * @param \Drupal\Component\Datetime\TimeInterface|null $time
+   *   Time service; defaults to a fixed request time.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface|null $configFactory
+   *   Config factory; defaults to stop_recieving disabled.
    *
    * @return \Drupal\helfi_csp\CspLogService
    *   Service under test.
@@ -127,6 +174,8 @@ class CspLogServiceTest extends UnitTestCase {
     LockBackendInterface $lock,
     StateInterface $state,
     Connection $connection,
+    ?TimeInterface $time = NULL,
+    ?ConfigFactoryInterface $configFactory = NULL,
   ): CspLogService {
     $logger = $this->createMock(LoggerInterface::class);
     return new CspLogService(
@@ -135,41 +184,53 @@ class CspLogServiceTest extends UnitTestCase {
       $state,
       $connection,
       $logger,
+      $time ?? $this->createTimeMock(),
+      $configFactory ?? $this->createConfigFactory(),
     );
   }
 
   /**
    * Data provider for filtered reports that must not be logged.
    *
-   * @return array[]
+   * @return array<string, array{string, string, string|null}>
    *   Each element: document-uri, blocked-uri, request host (or null).
    */
   public static function providerFilteredDoesNotLog(): array {
     return [
       'blocked-uri matches browser scheme' => [
-        'https://example.com/page',
+        'https://hel.fi/page',
         'chrome-extension://some-extension/script.js',
-        'example.com',
+        'hel.fi',
       ],
       'blocked-uri contains blocked domain' => [
-        'https://example.com/page',
+        'https://hel.fi/page',
         'https://translate.googleapis.com/translate_static/js/element/main.js',
-        'example.com',
+        'hel.fi',
       ],
       'document-uri is off-site' => [
-        'https://other-site.com/page',
+        'https://evil.com/page',
         'https://evil.com/script.js',
-        'example.com',
+        'hel.fi',
       ],
       'no current request' => [
-        'https://any.com/page',
+        'https://hel.fi/page',
         'https://example.com/script.js',
         NULL,
       ],
       'document-uri has no host' => [
         'about:blank',
         'https://example.com/script.js',
+        'hel.fi',
+      ],
+      'document-uri root domain is not in allowlist' => [
+        'https://example.com/page',
+        'https://example.com/script.js',
         'example.com',
+      ],
+      'document-uri root domain differs from request' => [
+        'https://sub.hel.ninja/page',
+        'https://sub.hel.ninja/script.js',
+        'hel.fi',
       ],
     ];
   }
@@ -200,6 +261,29 @@ class CspLogServiceTest extends UnitTestCase {
   }
 
   /**
+   * Stops logging when stop_recieving is enabled.
+   */
+  public function testStopsReceivingWhenConfigured(): void {
+    $connection = $this->createConnectionMockNeverInsert();
+    $lock = $this->createMock(LockBackendInterface::class);
+    $lock->expects($this->never())->method('acquire');
+    $state = $this->createMock(StateInterface::class);
+    $state->expects($this->never())->method('get');
+
+    $sut = $this->createSut(
+      $this->createRequestStack('hel.fi'),
+      $lock,
+      $state,
+      $connection,
+      NULL,
+      $this->createConfigFactory(TRUE),
+    );
+
+    $report = self::report('https://hel.fi/page', 'https://hel.fi/script.js');
+    $sut->insertLog($report, 'report-only');
+  }
+
+  /**
    * Report that passes all filters is logged when rate limit is disabled.
    */
   public function testPassesFiltersReportIsLogged(): void {
@@ -212,20 +296,20 @@ class CspLogServiceTest extends UnitTestCase {
       ->willReturn(FALSE);
 
     $sut = $this->createSut(
-      $this->createRequestStack('example.com'),
+      $this->createRequestStack('hel.fi'),
       $lock,
       $state,
       $connection,
     );
 
-    $report = self::report('https://example.com/page', 'https://example.com/script.js');
+    $report = self::report('https://foo.hel.fi/page', 'https://foo.hel.fi/script.js');
     $sut->insertLog($report, 'report-only');
   }
 
   /**
    * Data provider for rate limit (enabled): lock result and expect insert flag.
    *
-   * @return array[]
+   * @return array<string, array{bool, bool}>
    *   Each element: lock acquired (bool), expect insert (bool).
    */
   public static function providerRateLimitWhenEnabled(): array {
@@ -256,15 +340,15 @@ class CspLogServiceTest extends UnitTestCase {
       ->willReturn(TRUE);
 
     $sut = $this->createSut(
-      $this->createRequestStack('example.com'),
+      $this->createRequestStack('hel.fi'),
       $lock,
       $state,
       $connection,
     );
 
     $report = self::report(
-      'https://example.com/page',
-      'https://example.com/script.js',
+      'https://hel.fi/page',
+      'https://hel.fi/script.js',
     );
     $sut->insertLog($report, 'report-only');
   }
