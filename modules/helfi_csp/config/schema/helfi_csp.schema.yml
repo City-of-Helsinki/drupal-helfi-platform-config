@@ -8,3 +8,9 @@ helfi_csp.settings:
     treshold:
       type: integer
       label: 'Minimum number of log reports within the time window to include in the aggregation'
+    stop_recieving:
+      type: boolean
+      label: 'Stop recieving incoming reports.'
+    stop_sending:
+      type: boolean
+      label: 'Stop sending aggregated reports in cron runs.'

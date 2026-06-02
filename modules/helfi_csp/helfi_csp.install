@@ -102,14 +102,14 @@ function helfi_csp_update_10000() : void {
  * Also enable csp-reporting on all instances and set reporting uri to etusivu
  * csp_log endpoint.
  */
-function helfi_csp_update_10001() : void {
+function helfi_csp_update_11000() : void {
   _helfi_csp_set_reporting_uri();
 }
 
 /**
  * Install helfi_csp.settings config.
  */
-function helfi_csp_update_10002() : void {
+function helfi_csp_update_11001() : void {
   $config = \Drupal::configFactory()->getEditable('helfi_csp.settings');
   $config->set('time_window', 3600);
   $config->set('treshold', 100);

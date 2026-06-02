@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_csp;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\State\StateInterface;
@@ -104,6 +105,7 @@ final class CspLogService extends BaseCspLogService {
     #[Autowire('@database')] Connection $database,
     #[Autowire('@logger.channel.csp_log')] LoggerInterface $logger,
     private readonly TimeInterface $time,
+    private readonly ConfigFactoryInterface $configFactory,
   ) {
     parent::__construct($database, $logger);
   }
@@ -112,9 +114,18 @@ final class CspLogService extends BaseCspLogService {
    * {@inheritDoc}
    */
   public function insertLog(object $data, string $type) {
+    // We can stop writing any incoming reports to db by running:
+    // @code
+    // drush cset helfi_csp.settings stop_recieving 1
+    // @endcode
+    if ($this->configFactory->get('helfi_csp.settings')->get('stop_recieving')) {
+      return;
+    }
+
     if ($this->shouldFilterReport($data)) {
       return;
     }
+
     // Acquire with 1s timeout so lock auto-expires; we don't release, so at
     // most one log per second from concurrent requests. The lock is released
     // automatically at the end of the request, so we might get more than one
@@ -125,6 +136,7 @@ final class CspLogService extends BaseCspLogService {
     ) {
       return;
     }
+
     parent::insertLog($data, $type);
   }
 
@@ -160,6 +172,7 @@ final class CspLogService extends BaseCspLogService {
     $query->groupBy('t.blocked_uri');
     $query->groupBy('t.effective_directive');
     $query->having('amount >= :treshold', [':treshold' => $treshold]);
+    $query->range(0, 100);
 
     return $query->execute()->fetchAll(\PDO::FETCH_ASSOC);
   }

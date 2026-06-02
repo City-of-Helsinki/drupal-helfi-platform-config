@@ -36,6 +36,8 @@ class CronHookTest extends UnitTestCase {
    *   Value for helfi_csp.settings time_window.
    * @param int $treshold
    *   Value for helfi_csp.settings treshold.
+   * @param bool $stopSending
+   *   Value for helfi_csp.settings stop_sending.
    *
    * @return \Drupal\Core\Config\ConfigFactoryInterface
    *   Config factory mock.
@@ -44,6 +46,7 @@ class CronHookTest extends UnitTestCase {
     ?string $reportingPlugin = 'csp_log',
     int $timeWindow = 3600,
     int $treshold = 5,
+    bool $stopSending = FALSE,
   ): ConfigFactoryInterface {
     $cspConfig = $this->createMock(ImmutableConfig::class);
     $cspConfig->method('get')
@@ -52,9 +55,10 @@ class CronHookTest extends UnitTestCase {
 
     $helfiConfig = $this->createMock(ImmutableConfig::class);
     $helfiConfig->method('get')->willReturnCallback(
-      static fn (string $key): int => match ($key) {
+      static fn (string $key): mixed => match ($key) {
         'time_window' => $timeWindow,
         'treshold' => $treshold,
+        'stop_sending' => $stopSending,
         default => 0,
       },
     );
@@ -130,6 +134,7 @@ class CronHookTest extends UnitTestCase {
       $connection,
       $this->createMock(LoggerInterface::class),
       $this->createTimeMock(),
+      $this->createMock(ConfigFactoryInterface::class),
     );
   }
 
@@ -150,6 +155,7 @@ class CronHookTest extends UnitTestCase {
       $connection,
       $this->createMock(LoggerInterface::class),
       $this->createTimeMock(),
+      $this->createMock(ConfigFactoryInterface::class),
     );
   }
 
@@ -216,6 +222,23 @@ class CronHookTest extends UnitTestCase {
       $this->createConfigFactory('csp_log', 7200, 10),
       $logger,
       $this->createCspLogService([]),
+    ))();
+  }
+
+  /**
+   * Stops cron handling when stop_sending is enabled.
+   */
+  public function testStopsSendingWhenConfigured(): void {
+    $logger = $this->createMock(LoggerInterface::class);
+    $logger->expects($this->once())
+      ->method('info')
+      ->with('Aggregated CSP-violation report handling currently switched off.');
+    $logger->expects($this->never())->method('error');
+
+    ($this->createCronHook(
+      $this->createConfigFactory('csp_log', 3600, 5, TRUE),
+      $logger,
+      $this->createCspLogServiceWithoutQueries(),
     ))();
   }
 

@@ -53,6 +53,16 @@ class CronHook {
     }
 
     $config = $this->configFactory->get('helfi_csp.settings');
+
+    // We can stop sending aggregated reports in cron runs by running:
+    // @code
+    // drush cset helfi_csp.settings stop_sending 1
+    // @endcode
+    if ($config->get('stop_sending')) {
+      $this->logger->info('Aggregated CSP-violation report handling currently switched off.');
+      return;
+    }
+
     $timeWindow = $config->get('time_window') ?: 3600;
     $treshold = $config->get('treshold') ?: NULL;
 
@@ -60,7 +70,7 @@ class CronHook {
     $logs = $this->cspLogService->fetchAggregatedLogsByTimeWindow($timeWindow, $treshold);
 
     foreach ($logs as $log) {
-      // Send a notification to Sentry.
+      // Log the CSP violation.
       $this->logger->error('CSP violation in {document_uri}', [
         'document_uri' => $log['document_uri'],
         '@blocked_uri' => $log['blocked_uri'],

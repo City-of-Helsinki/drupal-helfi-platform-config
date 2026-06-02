@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_csp\Unit;
 
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\State\StateInterface;
@@ -126,6 +128,29 @@ class CspLogServiceTest extends UnitTestCase {
   }
 
   /**
+   * Builds a config factory mock for CspLogService tests.
+   *
+   * @param bool $stopRecieving
+   *   Value for helfi_csp.settings stop_recieving.
+   *
+   * @return \Drupal\Core\Config\ConfigFactoryInterface
+   *   Config factory mock.
+   */
+  private function createConfigFactory(bool $stopRecieving = FALSE): ConfigFactoryInterface {
+    $helfiConfig = $this->createMock(ImmutableConfig::class);
+    $helfiConfig->method('get')
+      ->with('stop_recieving')
+      ->willReturn($stopRecieving);
+
+    $configFactory = $this->createMock(ConfigFactoryInterface::class);
+    $configFactory->method('get')
+      ->with('helfi_csp.settings')
+      ->willReturn($helfiConfig);
+
+    return $configFactory;
+  }
+
+  /**
    * Creates the service under test with the given mocks.
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
@@ -138,6 +163,8 @@ class CspLogServiceTest extends UnitTestCase {
    *   Database connection.
    * @param \Drupal\Component\Datetime\TimeInterface|null $time
    *   Time service; defaults to a fixed request time.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface|null $configFactory
+   *   Config factory; defaults to stop_recieving disabled.
    *
    * @return \Drupal\helfi_csp\CspLogService
    *   Service under test.
@@ -148,6 +175,7 @@ class CspLogServiceTest extends UnitTestCase {
     StateInterface $state,
     Connection $connection,
     ?TimeInterface $time = NULL,
+    ?ConfigFactoryInterface $configFactory = NULL,
   ): CspLogService {
     $logger = $this->createMock(LoggerInterface::class);
     return new CspLogService(
@@ -157,6 +185,7 @@ class CspLogServiceTest extends UnitTestCase {
       $connection,
       $logger,
       $time ?? $this->createTimeMock(),
+      $configFactory ?? $this->createConfigFactory(),
     );
   }
 
@@ -228,6 +257,29 @@ class CspLogServiceTest extends UnitTestCase {
     );
 
     $report = self::report($documentUri, $blockedUri);
+    $sut->insertLog($report, 'report-only');
+  }
+
+  /**
+   * Stops logging when stop_recieving is enabled.
+   */
+  public function testStopsReceivingWhenConfigured(): void {
+    $connection = $this->createConnectionMockNeverInsert();
+    $lock = $this->createMock(LockBackendInterface::class);
+    $lock->expects($this->never())->method('acquire');
+    $state = $this->createMock(StateInterface::class);
+    $state->expects($this->never())->method('get');
+
+    $sut = $this->createSut(
+      $this->createRequestStack('hel.fi'),
+      $lock,
+      $state,
+      $connection,
+      NULL,
+      $this->createConfigFactory(TRUE),
+    );
+
+    $report = self::report('https://hel.fi/page', 'https://hel.fi/script.js');
     $sut->insertLog($report, 'report-only');
   }
 
