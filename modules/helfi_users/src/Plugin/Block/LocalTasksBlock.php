@@ -70,10 +70,10 @@ class LocalTasksBlock extends CoreLocalTasksBlock {
       unset($build['#primary'][$scheduleRoute]);
     }
 
-    // Change the "View" to "My content" when viewing the user entity routes.
+    // Change the "View" to "My pages" when viewing the user entity routes.
     if (isset($build['#primary']['entity.user.canonical'])) {
       $adminLanguage = $this->currentUser->getPreferredAdminLangcode();
-      $build['#primary']['entity.user.canonical']['#link']['title'] = $this->t('My content', options: [
+      $build['#primary']['entity.user.canonical']['#link']['title'] = $this->t('My pages', options: [
         'context' => 'Dashboard',
         'langcode' => $adminLanguage,
       ]);

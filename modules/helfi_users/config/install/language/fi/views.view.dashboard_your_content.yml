@@ -58,7 +58,7 @@ display:
       empty:
         area:
           content:
-            value: "Et ole vielä luonut tai muokannut sisältöä tässä instanssissa."
+            value: "Ei näytettäviä sivuja."
       filters:
         title:
           expose:
