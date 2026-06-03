@@ -55,6 +55,10 @@ display:
           exposed_sorts_label: Lajittele
           sort_asc_label: Nousevasti
           sort_desc_label: Laskevasti
+      empty:
+        area:
+          content:
+            value: "Et ole vielä luonut tai muokannut sisältöä tässä instanssissa."
       filters:
         title:
           expose:
