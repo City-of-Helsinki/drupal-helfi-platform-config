@@ -1,0 +1,59 @@
+diff --git a/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php b/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php
+index f9640b396793e7bfa96833b96961dab90cc1281e..3e9a495bf9eddafecd9eaeece05672bd04380663 100644
+--- a/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php
++++ b/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php
+@@ -42,14 +42,11 @@ class LanguageNegotiationUserAdmin extends LanguageNegotiationMethodBase impleme
+   protected $adminContext;
+
+   /**
+-   * The router.
+-   *
+-   * This is only used when called from an event subscriber, before the request
+-   * has been populated with the route info.
++   * A router implementation which does not check access.
+    *
+    * @var \Symfony\Component\Routing\Matcher\UrlMatcherInterface
+    */
+-  protected $router;
++  protected $accessUnawareRouter;
+
+   /**
+    * The path processor manager.
+@@ -70,16 +67,16 @@ class LanguageNegotiationUserAdmin extends LanguageNegotiationMethodBase impleme
+    *
+    * @param \Drupal\Core\Routing\AdminContext $admin_context
+    *   The admin context.
+-   * @param \Symfony\Component\Routing\Matcher\UrlMatcherInterface $router
++   * @param \Symfony\Component\Routing\Matcher\UrlMatcherInterface $access_unaware_router
+    *   The router.
+    * @param \Drupal\Core\PathProcessor\PathProcessorManager $path_processor_manager
+    *   The path processor manager.
+    * @param \Drupal\Core\Routing\StackedRouteMatchInterface $stacked_route_match
+    *   The stacked route match.
+    */
+-  public function __construct(AdminContext $admin_context, UrlMatcherInterface $router, PathProcessorManager $path_processor_manager, StackedRouteMatchInterface $stacked_route_match) {
++  public function __construct(AdminContext $admin_context, UrlMatcherInterface $access_unaware_router, PathProcessorManager $path_processor_manager, StackedRouteMatchInterface $stacked_route_match) {
+     $this->adminContext = $admin_context;
+-    $this->router = $router;
++    $this->accessUnawareRouter = $access_unaware_router;
+     $this->pathProcessorManager = $path_processor_manager;
+     $this->stackedRouteMatch = $stacked_route_match;
+   }
+@@ -90,7 +87,7 @@ public function __construct(AdminContext $admin_context, UrlMatcherInterface $ro
+   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+     return new static(
+       $container->get('router.admin_context'),
+-      $container->get('router'),
++      $container->get('router.no_access_checks'),
+       $container->get('path_processor_manager'),
+       $container->get('current_route_match')
+     );
+@@ -137,7 +134,7 @@ protected function isAdminPath(Request $request) {
+           // prefixes and other path components that inbound processing would
+           // clear out, so we can attempt to load the route clearly.
+           $path = $this->pathProcessorManager->processInbound(urldecode(rtrim($cloned_request->getPathInfo(), '/')), $cloned_request);
+-          $attributes = $this->router->match($path);
++          $attributes = $this->accessUnawareRouter->match($path);
+         }
+         catch (ExceptionInterface | HttpException) {
+           return FALSE;
