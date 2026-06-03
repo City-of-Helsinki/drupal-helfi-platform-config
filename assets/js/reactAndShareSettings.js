@@ -1,4 +1,4 @@
-(($, Drupal, drupalSettings) => {
+((Drupal, drupalSettings) => {
   let scriptLoaded = false;
 
   const loadScript = () => {
@@ -32,14 +32,23 @@
     document.body.appendChild(scriptElement);
   };
 
+  const toggle = (selector, visible) => {
+    document.querySelectorAll(selector).forEach((element) => {
+      element.style.display = visible ? '' : 'none';
+    });
+  };
+
   const loadReactAndShare = () => {
+    const askemBanner = '.js-askem__container .askem:not(.js-askem-cookie-compliance)';
+    const complianceBanner = '.js-askem__container .js-askem-cookie-compliance';
+
     if (Drupal.cookieConsent.getConsentStatus(['statistics'])) {
       loadScript();
-      $('.js-askem__container .js-askem-cookie-compliance').hide();
-      $('.js-askem__container .askem').show();
+      toggle(complianceBanner, false);
+      toggle(askemBanner, true);
     } else {
-      $('.js-askem__container .askem').hide();
-      $('.js-askem__container .js-askem-cookie-compliance').show();
+      toggle(askemBanner, false);
+      toggle(complianceBanner, true);
     }
   };
 
@@ -51,4 +60,4 @@
 
   // Re-run the loadReactAndShare when cookie consent changes.
   window.addEventListener('hds-cookie-consent-changed', loadReactAndShare);
-})(jQuery, Drupal, drupalSettings);
+})(Drupal, drupalSettings);
