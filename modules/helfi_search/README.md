@@ -37,3 +37,14 @@ drush config:set helfi_search.settings deboost_factor 0.85
 drush config:set --input-format=yaml helfi_search.settings ignored_classes '[is-hidden, visually-hidden, new-class]'
 drush config:set --input-format=yaml helfi_search.settings deboost_bundles '[news_article, news_item, some_bundle]'
 ```
+
+### Per-site additions to `ignored_classes`
+
+The `ignored_classes` list is shared across every site that imports the same config. When a single site needs to strip an extra CSS class without polluting the shared list, declare it in `all.settings.php`:
+
+```php
+// settings.php
+$settings['helfi_search_additional_ignored_classes'] = [
+  'policymaker-members',
+];
+```

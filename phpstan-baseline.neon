@@ -1256,36 +1256,6 @@ parameters:
 			path: modules/helfi_csp/src/CspLogService.php
 
 		-
-			message: "#^Cannot access offset 'csp_log' on array\\|bool\\|float\\|int\\|string\\|UnitEnum\\.$#"
-			count: 1
-			path: modules/helfi_csp/src/HelfiCspServiceProvider.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_csp\\\\Unit\\\\CspLogServiceTest\\:\\:providerFilteredDoesNotLog\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_csp/tests/src/Unit/CspLogServiceTest.php
-
-		-
-			message: "#^Method Drupal\\\\Tests\\\\helfi_csp\\\\Unit\\\\CspLogServiceTest\\:\\:providerRateLimitWhenEnabled\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_csp/tests/src/Unit/CspLogServiceTest.php
-
-		-
-			message: "#^Method class@anonymous/modules/helfi_csp/tests/src/Unit/CspLogServiceTest\\.php\\:86\\:\\:execute\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: modules/helfi_csp/tests/src/Unit/CspLogServiceTest.php
-
-		-
-			message: "#^Method class@anonymous/modules/helfi_csp/tests/src/Unit/CspLogServiceTest\\.php\\:86\\:\\:fields\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: modules/helfi_csp/tests/src/Unit/CspLogServiceTest.php
-
-		-
-			message: "#^Method class@anonymous/modules/helfi_csp/tests/src/Unit/CspLogServiceTest\\.php\\:86\\:\\:fields\\(\\) has parameter \\$f with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_csp/tests/src/Unit/CspLogServiceTest.php
-
-		-
 			message: "#^Function helfi_etusivu_entities_install\\(\\) has parameter \\$is_syncing with no type specified\\.$#"
 			count: 1
 			path: modules/helfi_etusivu_entities/helfi_etusivu_entities.install

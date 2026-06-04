@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Drupal\helfi_search\Pipeline;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Site\Settings;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Cleans HTML by removing non-content elements before Markdown conversion.
@@ -29,6 +31,7 @@ class HtmlCleaner {
 
   public function __construct(
     private readonly ConfigFactoryInterface $configFactory,
+    #[Autowire(service: 'settings')] private readonly Settings $settings,
   ) {
   }
 
@@ -126,7 +129,10 @@ class HtmlCleaner {
 
     // Uses the whitespace-boundary trick: pad @class with spaces so that
     // contains() matches whole words only (e.g. " visually-hidden ").
-    $ignoredClasses = $this->configFactory->get('helfi_search.settings')->get('ignored_classes') ?? [];
+    $ignoredClasses = [
+      ...$this->configFactory->get('helfi_search.settings')->get('ignored_classes') ?? [],
+      ...$this->settings->get('helfi_search_additional_ignored_classes', []),
+    ];
     foreach ($ignoredClasses as $class) {
       $elements = $xpath->query(
         '//*[contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")]'

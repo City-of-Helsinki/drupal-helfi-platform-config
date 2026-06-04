@@ -10,6 +10,63 @@ declare(strict_types=1);
 use Drupal\helfi_api_base\Environment\Project;
 
 /**
+ * Implements hook_install().
+ */
+function helfi_csp_install() : void {
+  // Set reporting uri for CSP violation reports.
+  _helfi_csp_set_reporting_uri();
+}
+
+/**
+ * Set reporting uri for CSP violation reports.
+ */
+function _helfi_csp_set_reporting_uri() : void {
+  $projectName = NULL;
+  $etusivuCspLogEndpoint = NULL;
+
+  try {
+    $environmentResolver = \Drupal::service('helfi_api_base.environment_resolver');
+    $projectName = $environmentResolver->getActiveProject()->getName();
+    $environmentName = $environmentResolver->getActiveEnvironmentName();
+    $etusivuCspLogEndpoint = sprintf(
+      '%s/%s',
+      $environmentResolver->getEnvironment(Project::ETUSIVU, $environmentName)->getBaseUrl(),
+      'log-report-uri/enforce',
+    );
+  }
+  catch (\Exception $e) {
+    // No need to proceed.
+    return;
+  }
+
+  $config = \Drupal::configFactory()->getEditable('csp.settings');
+
+  // Enable csp_log on etusivu.
+  if ($projectName === Project::ETUSIVU && !\Drupal::moduleHandler()->moduleExists('csp_log')) {
+    \Drupal::service('module_installer')->install(['csp_log']);
+
+    // Enable csp_log reporting handler.
+    $config->set('enforce.reporting.plugin', 'csp_log');
+
+    // Keep logs for 2 days.
+    $config->set('enforce.reporting.options.cleanup', 2);
+    $config->save();
+  }
+  // Enable csp reporting by uri on all other instances.
+  elseif ($etusivuCspLogEndpoint) {
+    $config->set('enforce.reporting.plugin', 'uri');
+
+    // Clear cleanup option to comply with uri reporting plugin schema.
+    $config->clear('enforce.reporting.options.cleanup');
+
+    // Set reporting uri to etusivu csp_log endpoint. This value is overridden
+    // in settings.php if the environment variable CSP_REPORTING_URI is set.
+    $config->set('enforce.reporting.options.uri', $etusivuCspLogEndpoint);
+    $config->save();
+  }
+}
+
+/**
  * Install csp_log module on asuminen instance.
  */
 function helfi_csp_update_10000() : void {
@@ -36,5 +93,25 @@ function helfi_csp_update_10000() : void {
   // @todo Make this a lot shorter if we decide to continue this path and
   // create a cron job to process and forward relevant logs to Sentry.
   $config->set('enforce.reporting.options.cleanup', 14);
+  $config->save();
+}
+
+/**
+ * Install csp_log module on etusivu instance.
+ *
+ * Also enable csp-reporting on all instances and set reporting uri to etusivu
+ * csp_log endpoint.
+ */
+function helfi_csp_update_11000() : void {
+  _helfi_csp_set_reporting_uri();
+}
+
+/**
+ * Install helfi_csp.settings config.
+ */
+function helfi_csp_update_11001() : void {
+  $config = \Drupal::configFactory()->getEditable('helfi_csp.settings');
+  $config->set('time_window', 3600);
+  $config->set('treshold', 100);
   $config->save();
 }

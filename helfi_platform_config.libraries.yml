@@ -1,5 +1,5 @@
 react_and_share:
-  version: 1.0.2
+  version: 1.0.3
   js:
     dist/js/reactAndShareSettings.min.js: { minified: true }
   dependencies:
