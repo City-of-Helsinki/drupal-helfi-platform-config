@@ -30,5 +30,5 @@ msgid "Last edited"
 msgstr "Viimeisin päivittäjä"
 
 msgctxt "Dashboard"
-msgid "My content"
-msgstr "Omat sisällöt"
+msgid "My pages"
+msgstr "Omat sivut"

@@ -92,7 +92,7 @@ class LocalTasksBlockTest extends KernelTestBase {
   }
 
   /**
-   * Tests that the user canonical tab is renamed to "My content" on own page.
+   * Tests that the user canonical tab is renamed to "My pages" on own page.
    */
   public function testUserCanonicalRenamedToMyContent(): void {
     $block = $this->createBlockWithPrimary([
@@ -102,7 +102,7 @@ class LocalTasksBlockTest extends KernelTestBase {
 
     $build = $block->build();
     $this->assertEquals(
-      'My content',
+      'My pages',
       (string) $build['#primary']['entity.user.canonical']['#link']['title'],
     );
   }
