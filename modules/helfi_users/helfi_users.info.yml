@@ -3,5 +3,8 @@ description: 'Fixes related to deleting or canceling users.'
 package: HELfi
 type: module
 core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:user
+  - views_bulk_operations:views_bulk_operations
 'interface translation project': helfi_users
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_users/translations/%language.po
