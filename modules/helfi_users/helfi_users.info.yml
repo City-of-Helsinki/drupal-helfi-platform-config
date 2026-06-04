@@ -4,6 +4,7 @@ package: HELfi
 type: module
 core_version_requirement: ^10 || ^11
 dependencies:
+  - drupal:node
   - drupal:user
   - views_bulk_operations:views_bulk_operations
 'interface translation project': helfi_users
