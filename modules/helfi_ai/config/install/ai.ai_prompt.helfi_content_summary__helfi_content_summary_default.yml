@@ -6,7 +6,7 @@ dependencies:
     - ai.ai_prompt_type.helfi_content_summary
   enforced:
     module:
-      - helfi_ai_summary
+      - helfi_ai
 id: helfi_content_summary__helfi_content_summary_default
 label: 'HELfi content summary (default)'
 type: helfi_content_summary

@@ -4,7 +4,7 @@ status: true
 dependencies:
   enforced:
     module:
-      - helfi_ai_summary
+      - helfi_ai
 id: helfi_content_summary
 label: 'HELfi content summary'
 variables:

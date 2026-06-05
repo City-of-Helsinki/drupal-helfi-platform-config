@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_ai_summary\Unit\Service;
+namespace Drupal\Tests\helfi_ai\Unit\Service;
 
 use Drupal\ai\Entity\AiPromptInterface;
-use Drupal\helfi_ai_summary\Service\AiChatProviderInterface;
+use Drupal\helfi_ai\Service\AiChatProviderInterface;
 use Drupal\ai\OperationType\Chat\ChatInput;
 use Drupal\ai\OperationType\Chat\ChatInterface;
 use Drupal\ai\OperationType\Chat\ChatMessage;
@@ -14,22 +14,22 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\helfi_ai_summary\Service\AiSummaryGenerator;
+use Drupal\helfi_ai\Service\AiSummaryGenerator;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
 /**
- * @coversDefaultClass \Drupal\helfi_ai_summary\Service\AiSummaryGenerator
- * @group helfi_ai_summary
+ * @coversDefaultClass \Drupal\helfi_ai\Service\AiSummaryGenerator
+ * @group helfi_ai
  */
 class AiSummaryGeneratorTest extends UnitTestCase {
 
   /**
    * The AI chat provider mock.
    *
-   * @var \Drupal\helfi_ai_summary\Service\AiChatProviderInterface
+   * @var \Drupal\helfi_ai\Service\AiChatProviderInterface
    */
   private AiChatProviderInterface $aiProvider;
 

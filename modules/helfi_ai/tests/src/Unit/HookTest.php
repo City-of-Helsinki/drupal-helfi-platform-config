@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_ai_summary\Unit;
+namespace Drupal\Tests\helfi_ai\Unit;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -11,8 +11,8 @@ use Drupal\Tests\UnitTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @covers ::helfi_ai_summary_entity_base_field_info
- * @group helfi_ai_summary
+ * @covers ::helfi_ai_entity_base_field_info
+ * @group helfi_ai
  */
 class HookTest extends UnitTestCase {
 
@@ -21,7 +21,7 @@ class HookTest extends UnitTestCase {
    */
   public static function setUpBeforeClass(): void {
     parent::setUpBeforeClass();
-    require_once __DIR__ . '/../../../helfi_ai_summary.module';
+    require_once __DIR__ . '/../../../helfi_ai.module';
   }
 
   /**
@@ -34,18 +34,18 @@ class HookTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::helfi_ai_summary_entity_base_field_info
+   * @covers ::helfi_ai_entity_base_field_info
    */
   public function testReturnsEmptyArrayForNonNodeEntityType(): void {
     $entityType = $this->prophesize(EntityTypeInterface::class);
     $entityType->id()->willReturn('user');
 
-    $result = helfi_ai_summary_entity_base_field_info($entityType->reveal());
+    $result = helfi_ai_entity_base_field_info($entityType->reveal());
     $this->assertSame([], $result);
   }
 
   /**
-   * @covers ::helfi_ai_summary_entity_base_field_info
+   * @covers ::helfi_ai_entity_base_field_info
    */
   public function testReturnsFieldDefinitionForNodeEntityType(): void {
     $fieldTypeManager = $this->createMock(FieldTypePluginManagerInterface::class);
@@ -69,7 +69,7 @@ class HookTest extends UnitTestCase {
     $entityType = $this->prophesize(EntityTypeInterface::class);
     $entityType->id()->willReturn('node');
 
-    $result = helfi_ai_summary_entity_base_field_info($entityType->reveal());
+    $result = helfi_ai_entity_base_field_info($entityType->reveal());
 
     $this->assertArrayHasKey('field_ai_summary', $result);
     $this->assertInstanceOf(BaseFieldDefinition::class, $result['field_ai_summary']);

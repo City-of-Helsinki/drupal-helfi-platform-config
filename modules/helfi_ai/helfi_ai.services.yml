@@ -3,15 +3,15 @@ services:
     autowire: true
     autoconfigure: true
 
-  logger.channel.helfi_ai_summary:
+  logger.channel.helfi_ai:
     parent: logger.channel_base
-    arguments: ['helfi_ai_summary']
+    arguments: ['helfi_ai']
 
-  Drupal\helfi_ai_summary\Service\AiChatProviderBridge:
+  Drupal\helfi_ai\Service\AiChatProviderBridge:
     arguments:
       $manager: '@ai.provider'
 
-  Drupal\helfi_ai_summary\Service\AiSummaryGenerator:
+  Drupal\helfi_ai\Service\AiSummaryGenerator:
     arguments:
-      $aiProvider: '@Drupal\helfi_ai_summary\Service\AiChatProviderBridge'
-      $logger: '@logger.channel.helfi_ai_summary'
+      $aiProvider: '@Drupal\helfi_ai\Service\AiChatProviderBridge'
+      $logger: '@logger.channel.helfi_ai'

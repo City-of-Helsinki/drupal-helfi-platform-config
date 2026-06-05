@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_ai_summary\Service;
+namespace Drupal\helfi_ai\Service;
 
 use Drupal\ai\Entity\AiPromptInterface;
 use Drupal\ai\OperationType\Chat\ChatInput;
@@ -43,7 +43,7 @@ class AiSummaryGenerator {
 
     $content = $this->textConverterManager->convert($entity);
     if (!$content) {
-      $this->logger->warning('helfi_ai_summary: no text content for entity @type/@id.', [
+      $this->logger->warning('helfi_ai: no text content for entity @type/@id.', [
         '@type' => $entity->getEntityTypeId(),
         '@id' => $entity->id(),
       ]);
@@ -56,7 +56,7 @@ class AiSummaryGenerator {
       ->load('helfi_content_summary__helfi_content_summary_default');
 
     if (!$prompt instanceof AiPromptInterface) {
-      $this->logger->error('helfi_ai_summary: prompt helfi_content_summary__helfi_content_summary_default not found.');
+      $this->logger->error('helfi_ai: prompt helfi_content_summary__helfi_content_summary_default not found.');
       return NULL;
     }
 
@@ -75,7 +75,7 @@ class AiSummaryGenerator {
       return self::toHtmlBulletList($plain);
     }
     catch (\Throwable $e) {
-      $this->logger->error('helfi_ai_summary: generation failed: @message', ['@message' => $e->getMessage()]);
+      $this->logger->error('helfi_ai: generation failed: @message', ['@message' => $e->getMessage()]);
       return NULL;
     }
   }

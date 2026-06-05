@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_ai_summary\Unit\Plugin\Field\FieldWidget;
+namespace Drupal\Tests\helfi_ai\Unit\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Entity\ContentEntityFormInterface;
@@ -13,15 +13,15 @@ use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\helfi_ai_summary\Plugin\Field\FieldWidget\AiSummaryWidget;
-use Drupal\helfi_ai_summary\Service\AiSummaryGenerator;
+use Drupal\helfi_ai\Plugin\Field\FieldWidget\AiSummaryWidget;
+use Drupal\helfi_ai\Service\AiSummaryGenerator;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @coversDefaultClass \Drupal\helfi_ai_summary\Plugin\Field\FieldWidget\AiSummaryWidget
- * @group helfi_ai_summary
+ * @coversDefaultClass \Drupal\helfi_ai\Plugin\Field\FieldWidget\AiSummaryWidget
+ * @group helfi_ai
  */
 class AiSummaryWidgetTest extends UnitTestCase {
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_ai_summary\Plugin\Field\FieldWidget;
+namespace Drupal\helfi_ai\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Ajax\AjaxResponse;
@@ -15,7 +15,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_ai_summary\Service\AiSummaryGenerator;
+use Drupal\helfi_ai\Service\AiSummaryGenerator;
 
 /**
  * Widget for the AI summary field with a three-state AJAX flow.
@@ -113,7 +113,7 @@ final class AiSummaryWidget extends WidgetBase {
     $wrapper['field_label'] = [
       '#type' => 'html_tag',
       '#tag' => 'label',
-      '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai_summary']),
+      '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
       '#attributes' => ['class' => ['form-item__label']],
       '#weight' => -200,
     ];
@@ -132,7 +132,7 @@ final class AiSummaryWidget extends WidgetBase {
     if ($mode !== 'initial') {
       $wrapper['value'] = [
         '#type' => 'text_format',
-        '#title' => $this->t('AI summary', options: ['context' => 'helfi_ai_summary']),
+        '#title' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
         '#title_display' => 'invisible',
         '#default_value' => $state['value'],
         '#format' => self::TEXT_FORMAT,
@@ -158,7 +158,7 @@ final class AiSummaryWidget extends WidgetBase {
    * Returns the helper text shown below the buttons for the given mode.
    */
   private function modeDescription(string $mode): string {
-    $ctx = ['context' => 'helfi_ai_summary'];
+    $ctx = ['context' => 'helfi_ai'];
     return match ($mode) {
       'draft' => (string) $this->t('You can edit the text before accepting.', options: $ctx),
       'accepted' => (string) $this->t('The summary is saved with the page. You can create a new suggestion at any time.', options: $ctx),
@@ -182,7 +182,7 @@ final class AiSummaryWidget extends WidgetBase {
    *   Render array of button elements.
    */
   private function buildButtons(string $mode, string $field_name, int $delta, string $wrapper_id): array {
-    $ctx = ['context' => 'helfi_ai_summary'];
+    $ctx = ['context' => 'helfi_ai'];
     $buttons = [];
     if ($mode === 'initial') {
       $buttons['generate'] = $this->button('generate', $this->t('Generate AI summary', options: $ctx), $field_name, $delta, $wrapper_id, TRUE);
@@ -234,7 +234,7 @@ final class AiSummaryWidget extends WidgetBase {
     if ($with_progress) {
       $button['#ajax']['progress'] = [
         'type' => 'throbber',
-        'message' => $this->t('AI is creating a summary…', options: ['context' => 'helfi_ai_summary']),
+        'message' => $this->t('AI is creating a summary…', options: ['context' => 'helfi_ai']),
       ];
     }
     return $button;
@@ -281,7 +281,7 @@ final class AiSummaryWidget extends WidgetBase {
         }
         else {
           self::updateState($form_state, $field_name, $delta, [
-            'error' => (string) t('Could not generate summary. Ensure the content is saved and the AI provider is configured.', options: ['context' => 'helfi_ai_summary']),
+            'error' => (string) t('Could not generate summary. Ensure the content is saved and the AI provider is configured.', options: ['context' => 'helfi_ai']),
           ]);
         }
         break;

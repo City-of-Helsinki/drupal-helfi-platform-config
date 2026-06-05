@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_ai_summary\Service;
+namespace Drupal\helfi_ai\Service;
 
 /**
  * Narrow interface for resolving the configured chat provider.
