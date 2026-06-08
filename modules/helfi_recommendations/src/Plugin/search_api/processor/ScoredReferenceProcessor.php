@@ -7,6 +7,8 @@ namespace Drupal\helfi_recommendations\Plugin\search_api\processor;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\helfi_recommendations\Plugin\Field\FieldType\ScoredEntityReferenceItem;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -14,18 +16,16 @@ use Drupal\search_api\Processor\ProcessorProperty;
 
 /**
  * Indexes uuid with langcode.
- *
- * @SearchApiProcessor(
- *   id = "scored_reference",
- *   label = @Translation("Scored references"),
- *   description = @Translation("Indexes scored references"),
- *   stages = {
- *     "add_properties" = 0
- *   },
- *   locked = true,
- *   hidden = true,
- * )
  */
+#[SearchApiProcessor(
+  id: 'scored_reference',
+  label: new TranslatableMarkup('Scored references'),
+  description: new TranslatableMarkup('Indexes scored references'),
+  stages: [
+    'add_properties' => 0,
+  ],
+  hidden: TRUE,
+)]
 final class ScoredReferenceProcessor extends ProcessorPluginBase {
 
   /**

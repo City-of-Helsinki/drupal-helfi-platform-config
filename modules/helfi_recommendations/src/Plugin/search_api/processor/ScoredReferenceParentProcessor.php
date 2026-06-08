@@ -28,7 +28,8 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   description: new TranslatableMarkup('Indexes scored reference parent data'),
   stages: [
     'add_properties' => 0,
-  ]
+  ],
+  hidden: TRUE,
 )]
 final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
 
