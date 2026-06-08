@@ -60,7 +60,7 @@ final readonly class MetatagTitleResolver {
     }
 
     // Trim non-word characters from both ends, removing leftover separators.
-    $title = preg_replace('/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/u', '', $value) ?? '';
+    $title = preg_replace('/(?:^[^\p{L}\p{N}]+)|(?:[^\p{L}\p{N}]+$)/u', '', $value) ?? '';
 
     return $title !== '' ? $title : NULL;
   }
