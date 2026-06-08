@@ -14,29 +14,29 @@ interface EmbeddingsModelInterface {
    *
    * @param string $text
    *   Input text.
-   * @param string $model
-   *   Model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   Model to use.
    *
    * @return float[]
    *   Vector.
    *
    * @throws \Drupal\helfi_search\EmbeddingsModelException
    */
-  public function getEmbedding(string $text, string $model): array;
+  public function getEmbedding(string $text, EmbeddingModel $model): array;
 
   /**
    * Get vector embedding for batch.
    *
    * @param string[] $batch
    *   Input batch.
-   * @param string $model
-   *   Model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   Model to use.
    *
    * @return array<float[]>
    *   Vectors keyed by input keys.
    *
    * @throws \Drupal\helfi_search\EmbeddingsModelException
    */
-  public function batchGetEmbedding(array $batch, string $model): array;
+  public function batchGetEmbedding(array $batch, EmbeddingModel $model): array;
 
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_search;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\helfi_search\OpenAI\EmbeddingsApi;
 
 /**
  * Builds Elasticsearch queries for search features.
@@ -76,8 +75,8 @@ final class QueryBuilder {
    *   The embedding vector.
    * @param string $language
    *   The language code.
-   * @param string $model
-   *   The embedding model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   The embedding model to use.
    * @param string[]|null $bundles
    *   Filter only given bundles.
    * @param int $size
@@ -100,7 +99,7 @@ final class QueryBuilder {
   public function buildKnnQuery(
     array $embeddings,
     string $language,
-    string $model,
+    EmbeddingModel $model,
     ?array $bundles = NULL,
     int $size = self::KNN_DEFAULT_SIZE,
     int $from = 0,
@@ -114,7 +113,7 @@ final class QueryBuilder {
       default => "en",
     };
 
-    $fieldPrefix = 'embeddings_' . EmbeddingsApi::sanitizeModelName($model);
+    $fieldPrefix = $model->fieldPrefix();
 
     $languageFilter = [
       'term' => [
@@ -318,14 +317,14 @@ final class QueryBuilder {
    *
    * @param array<mixed> $response
    *   The Elasticsearch response array.
-   * @param string $model
-   *   The embedding model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   The embedding model to use.
    *
    * @return array<mixed>
    *   Parsed search results.
    */
-  public function parseKnnHits(array $response, string $model): array {
-    $fieldPrefix = 'embeddings_' . EmbeddingsApi::sanitizeModelName($model);
+  public function parseKnnHits(array $response, EmbeddingModel $model): array {
+    $fieldPrefix = $model->fieldPrefix();
     $results = [];
 
     foreach ($response['hits']['hits'] ?? [] as $hit) {

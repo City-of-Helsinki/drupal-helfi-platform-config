@@ -7,6 +7,7 @@ namespace Drupal\helfi_search\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Flood\FloodInterface;
+use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EmbeddingsModelException;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\QueryBuilder;
@@ -46,30 +47,6 @@ final class SearchController extends ControllerBase {
   }
 
   /**
-   * Get the model to use, from query parameter or first configured.
-   *
-   * This is pretty useless dance, since we already need to
-   * hard-code the models we support.
-   *
-   * @see \Drupal\helfi_search\Plugin\search_api\processor\VectorEmbeddingsProcessor::SUPPORTED_MODELS
-   */
-  private function resolveModel(Request $request): ?string {
-    $models = $this->config('helfi_search.settings')->get('openai_models') ?? [];
-
-    if (empty($models)) {
-      return NULL;
-    }
-
-    $requested = $request->query->getString('model');
-
-    if ($requested && in_array($requested, $models, TRUE)) {
-      return $requested;
-    }
-
-    return $models[0];
-  }
-
-  /**
    * Handle semantic search request.
    */
   public function search(Request $request): JsonResponse {
@@ -79,15 +56,6 @@ final class SearchController extends ControllerBase {
       return new JsonResponse(
         ['error' => 'Query must be between ' . self::MIN_QUERY_LENGTH . ' and ' . self::MAX_QUERY_LENGTH . ' characters.'],
         400,
-      );
-    }
-
-    $model = $this->resolveModel($request);
-
-    if (!$model) {
-      return new JsonResponse(
-        ['error' => 'No embedding models configured.'],
-        503,
       );
     }
 
@@ -101,6 +69,8 @@ final class SearchController extends ControllerBase {
     // Apply rewrite rules to query before embedding, so short
     // queries tokenize the same way they do in indexed content.
     $query = QueryRewriter::rewrite($query, $this->config('helfi_search.settings')->get('canonical_terms') ?? []);
+
+    $model = $this->resolveModel($request);
 
     try {
       $embeddings = $this->embeddingsModel->getEmbedding($query, $model);
@@ -141,6 +111,25 @@ final class SearchController extends ControllerBase {
         503,
       );
     }
+  }
+
+  /**
+   * Get the model to use, from query parameter or default model.
+   *
+   * The optional 'model' query parameter is honored only when it names one of
+   * the models enabled in the 'openai_models' config; otherwise the request
+   * falls back to the default model, which is always available.
+   */
+  private function resolveModel(Request $request): EmbeddingModel {
+    $requested = EmbeddingModel::tryFrom($request->query->getString('model'));
+
+    if ($requested) {
+      if (in_array($requested, EmbeddingModel::ENABLED, TRUE)) {
+        return $requested;
+      }
+    }
+
+    return EmbeddingModel::DEFAULT;
   }
 
   /**
@@ -186,8 +175,8 @@ final class SearchController extends ControllerBase {
    *
    * @param array<string, mixed> $knnQuery
    *   The pre-built KNN query (index + body).
-   * @param string $model
-   *   The embedding model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   The embedding model to use.
    * @param bool $debug
    *   Whether to include per-bundle aggregations in the result.
    *
@@ -195,7 +184,7 @@ final class SearchController extends ControllerBase {
    *   The promoted hits, KNN results, total hit count, and optional debug
    *   payload keyed under 'debug' when $debug is TRUE.
    */
-  private function executeFilteredSearch(array $knnQuery, string $model, bool $debug): array {
+  private function executeFilteredSearch(array $knnQuery, EmbeddingModel $model, bool $debug): array {
     $searchResult = $this->elasticClient->search([
       'index' => $knnQuery['index'],
       'body' => $knnQuery['body'],
@@ -223,8 +212,8 @@ final class SearchController extends ControllerBase {
    *   The user-supplied search query string.
    * @param string $language
    *   The active language code.
-   * @param string $model
-   *   The embedding model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   The embedding model to use.
    * @param bool $debug
    *   Whether to include per-bundle aggregations in the result.
    *
@@ -232,7 +221,7 @@ final class SearchController extends ControllerBase {
    *   The promoted hits, KNN results, total hit count, and optional debug
    *   payload keyed under 'debug' when $debug is TRUE.
    */
-  private function executeBlendedSearch(array $knnQuery, string $query, string $language, string $model, bool $debug): array {
+  private function executeBlendedSearch(array $knnQuery, string $query, string $language, EmbeddingModel $model, bool $debug): array {
     $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $language);
 
     $msearchResult = $this->elasticClient->msearch([

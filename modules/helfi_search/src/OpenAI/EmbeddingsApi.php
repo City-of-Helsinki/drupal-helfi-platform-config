@@ -6,6 +6,7 @@ namespace Drupal\helfi_search\OpenAI;
 
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EmbeddingsModelException;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\MissingConfigurationException;
@@ -38,20 +39,13 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
   }
 
   /**
-   * Sanitize model name into a safe field suffix.
-   */
-  public static function sanitizeModelName(string $model): string {
-    return preg_replace('/[^a-z0-9]/', '_', strtolower($model));
-  }
-
-  /**
    * Make request to OpenAI API.
    *
    * @phpstan-param string|array<string> $input
    *
    * @throws \Drupal\helfi_search\EmbeddingsModelException
    */
-  private function makeRequest(string|array $input, string $model): Response {
+  private function makeRequest(string|array $input, EmbeddingModel $model): Response {
     $config = $this->configFactory->get('helfi_search.settings');
     $apiKey = $config->get('openai_api_key');
     $baseUrl = $config->get('openai_base_url');
@@ -68,7 +62,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
     $input = array_map(static fn ($item) => Unicode::truncate($item, self::MAX_INPUT_LENGTH, TRUE), $input);
 
     try {
-      $response = $this->client->request('POST', str_replace('{model}', $model, $baseUrl) . '/embeddings', [
+      $response = $this->client->request('POST', str_replace('{model}', $model->value, $baseUrl) . '/embeddings', [
         'query' => [
           'api-version' => self::API_VERSION,
         ],
@@ -77,7 +71,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
           'Content-Type' => 'application/json',
         ],
         'json' => [
-          'model' => $model,
+          'model' => $model->value,
           'input' => $input,
         ],
       ]);
@@ -109,14 +103,14 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEmbedding(string $text, string $model): array {
+  public function getEmbedding(string $text, EmbeddingModel $model): array {
     return array_first($this->makeRequest($text, $model)->embedding) ?? throw new EmbeddingsModelException('No embedding found');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function batchGetEmbedding(array $batch, string $model): array {
+  public function batchGetEmbedding(array $batch, EmbeddingModel $model): array {
     if (empty($batch)) {
       return [];
     }

@@ -10,11 +10,6 @@ helfi_search.settings:
       type: string
       label: 'OpenAI base URL'
       description: 'Base URL for OpenAI API. Use {model} placeholder for Azure per-deployment URLs (e.g. https://example.openai.azure.com/openai/deployments/{model}).'
-    openai_models:
-      type: sequence
-      label: 'OpenAI embedding models'
-      sequence:
-        type: string
     openai_model_pricing:
       type: sequence
       label: 'Model pricing per million tokens (USD)'
