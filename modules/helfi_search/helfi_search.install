@@ -8,6 +8,8 @@
 declare(strict_types=1);
 
 use Drupal\language\ConfigurableLanguageManagerInterface;
+use Drupal\search_api\Entity\Index;
+use Drupal\search_api\Item\Field;
 
 /**
  * Implements hook_schema().
@@ -159,4 +161,45 @@ function helfi_search_update_11014(): void {
     ->getEditable('helfi_search.settings')
     ->clear('openai_models')
     ->save();
+}
+
+/**
+ * Add the metatag title field to the embeddings index.
+ */
+function helfi_search_update_11015(): void {
+  // The metatag title processor is only available when metatag is installed.
+  if (!\Drupal::moduleHandler()->moduleExists('metatag')) {
+    return;
+  }
+
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  $plugin_helper = \Drupal::service('search_api.plugin_helper');
+  $changed = FALSE;
+
+  // The field is populated by the metatag title processor, so make sure it is
+  // enabled on the index.
+  if (!$index->isValidProcessor('helfi_metatag_title')) {
+    $index->addProcessor(
+      $plugin_helper->createProcessorPlugin($index, 'helfi_metatag_title')
+    );
+    $changed = TRUE;
+  }
+
+  if (!$index->getField('metatag_title')) {
+    $field = (new Field($index, 'metatag_title'))
+      ->setType('string')
+      ->setPropertyPath('helfi_metatag_title')
+      ->setLabel('Metatag title');
+    $index->addField($field);
+    $changed = TRUE;
+  }
+
+  if ($changed) {
+    $index->save();
+  }
 }

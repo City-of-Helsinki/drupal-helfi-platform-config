@@ -32,6 +32,11 @@ class ScoredReferenceProcessorTest extends ProcessorTestBase {
     $searchApiField->setDatasourceId('entity:suggested_topics');
 
     $this->index->addField($searchApiField);
+
+    $processor = $this->container->get('search_api.plugin_helper')
+      ->createProcessorPlugin($this->index, 'scored_reference');
+    $this->index->addProcessor($processor);
+
     $this->index->setOption('index_directly', TRUE);
     $this->index->save();
   }

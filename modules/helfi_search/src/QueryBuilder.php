@@ -126,7 +126,7 @@ final class QueryBuilder {
       ],
     ];
 
-    $source = ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at'];
+    $source = ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at', 'metatag_title'];
 
     $innerHits = [
       '_source' => FALSE,
@@ -349,6 +349,7 @@ final class QueryBuilder {
         'bundle' => array_first($hit['_source']['entity_bundle'] ?? []),
         'url' => array_first($hit['_source']['url'] ?? []),
         'title' => array_first($hit['_source']['label'] ?? []),
+        'metatag_title' => array_first($hit['_source']['metatag_title'] ?? []),
         'published_at' => array_first($hit['_source']['published_at'] ?? []),
         'content' => $innerFields['content'][0] ?? '',
         'fragment' => $innerFields['fragment'][0] ?? NULL,

@@ -126,8 +126,6 @@ processor_settings:
   entity_status: {  }
   entity_type: {  }
   language_with_fallback: {  }
-  project_execution_schedule: {  }
-  project_plan_schedule: {  }
   rendered_item: {  }
   scored_reference: {  }
   scored_reference_parent: {  }

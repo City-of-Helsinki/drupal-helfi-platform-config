@@ -15,14 +15,17 @@ use Drupal\node\Entity\NodeType;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\search_api\Utility\Utility;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\Argument;
 
 /**
  * Tests the scored reference processor.
  *
- * @group helfi_recommendations
  * @coversDefaultClass \Drupal\helfi_recommendations\Plugin\search_api\processor\ScoredReferenceParentProcessor
  */
+#[Group('helfi_recommendations')]
+#[RunTestsInSeparateProcesses]
 class ScoredReferenceParentProcessorTest extends ProcessorTestBase {
 
   /**
@@ -88,6 +91,10 @@ class ScoredReferenceParentProcessorTest extends ProcessorTestBase {
       $this->index->addField($searchApiField);
     }
 
+    $processor = $this->container->get('search_api.plugin_helper')
+      ->createProcessorPlugin($this->index, 'scored_reference_parent');
+    $this->index->addProcessor($processor);
+
     $this->index->setOption('index_directly', TRUE);
     $this->index->save();
 
@@ -132,8 +139,6 @@ class ScoredReferenceParentProcessorTest extends ProcessorTestBase {
 
   /**
    * Tests that field values are added correctly.
-   *
-   * @covers ::getPropertyDefinitions
    */
   public function testDatasource() : void {
     /** @var \Drupal\search_api\Utility\PluginHelperInterface $pluginHelper */
@@ -173,8 +178,6 @@ class ScoredReferenceParentProcessorTest extends ProcessorTestBase {
 
   /**
    * Tests that field values are added correctly.
-   *
-   * @covers ::addFieldValues
    */
   public function testAddFieldValues() : void {
     $backend = $this->prophesize(BackendClientInterface::class);
