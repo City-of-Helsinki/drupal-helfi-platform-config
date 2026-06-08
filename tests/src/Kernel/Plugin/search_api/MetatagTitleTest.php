@@ -58,7 +58,7 @@ class MetatagTitleTest extends ProcessorTestBase {
 
     $titleField = new Field($this->index, 'metatag_title');
     $titleField->setType('string');
-    $titleField->setPropertyPath('helfi_search_title');
+    $titleField->setPropertyPath('helfi_metatag_title');
     $titleField->setLabel('Metatag title');
     $this->index->addField($titleField);
 

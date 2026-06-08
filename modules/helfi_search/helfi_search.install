@@ -193,7 +193,7 @@ function helfi_search_update_11015(): void {
   if (!$index->getField('metatag_title')) {
     $field = (new Field($index, 'metatag_title'))
       ->setType('string')
-      ->setPropertyPath('helfi_search_title')
+      ->setPropertyPath('helfi_metatag_title')
       ->setLabel('Metatag title');
     $index->addField($field);
     $changed = TRUE;

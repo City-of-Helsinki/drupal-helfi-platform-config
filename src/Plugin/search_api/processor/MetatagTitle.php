@@ -61,7 +61,7 @@ final class MetatagTitle extends ProcessorPluginBase {
     $properties = [];
 
     if (!$datasource) {
-      $properties['helfi_search_title'] = new ProcessorProperty([
+      $properties['helfi_metatag_title'] = new ProcessorProperty([
         'label' => $this->t('Metatag title'),
         'description' => $this->t("The entity's customized metatag title."),
         'type' => 'string',
@@ -92,7 +92,7 @@ final class MetatagTitle extends ProcessorPluginBase {
     $title ??= (string) $entity->label();
 
     $fields = $this->getFieldsHelper()
-      ->filterForPropertyPath($item->getFields(FALSE), NULL, 'helfi_search_title');
+      ->filterForPropertyPath($item->getFields(FALSE), NULL, 'helfi_metatag_title');
 
     foreach ($fields as $field) {
       $field->addValue($title);
