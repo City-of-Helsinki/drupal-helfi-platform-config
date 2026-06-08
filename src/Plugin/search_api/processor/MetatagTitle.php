@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_search\Plugin\search_api\processor;
+namespace Drupal\helfi_platform_config\Plugin\search_api\processor;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -21,6 +21,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Editors can override the page title via the metatag fields. This processor
  * exposes that overridden title so the search result title can be replaced
  * with it instead of the plain entity label.
+ *
+ * The processor depends on the metatag module, but that dependency is optional:
+ * it is removed from the list of available processors when metatag is not
+ * installed.
+ *
+ * @see \Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber::onGatheringProcessors()
  */
 #[SearchApiProcessor(
   id: 'helfi_search_metatag_title',

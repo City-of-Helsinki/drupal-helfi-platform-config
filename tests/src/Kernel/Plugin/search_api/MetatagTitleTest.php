@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_search\Kernel\Plugin\search_api;
+namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\search_api;
 
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -19,7 +19,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 /**
  * Tests for the MetatagTitle processor.
  */
-#[Group('helfi_search')]
+#[Group('helfi_platform_config')]
 #[RunTestsInSeparateProcesses]
 class MetatagTitleTest extends ProcessorTestBase {
 
@@ -30,7 +30,6 @@ class MetatagTitleTest extends ProcessorTestBase {
     'helfi_platform_config',
     'config_rewrite',
     'helfi_api_base',
-    'helfi_search',
     'metatag',
     'token',
   ];

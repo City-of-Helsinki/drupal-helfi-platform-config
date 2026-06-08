@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\EventSubscriber;
 
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
 use Drupal\elasticsearch_connector\Event\SupportsDataTypeEvent;
+use Drupal\search_api\Event\GatheringPluginInfoEvent;
 use Drupal\search_api\Event\MappingFieldTypesEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,6 +16,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Search api event subscriber.
  */
 final class SearchApiSubscriber implements EventSubscriberInterface {
+
+  public function __construct(
+    private readonly ModuleHandlerInterface $moduleHandler,
+  ) {
+  }
 
   /**
    * {@inheritdoc}
@@ -24,6 +31,7 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
     // Bail if search_api is not installed.
     if (class_exists(SearchApiEvents::class)) {
       $events[SearchApiEvents::MAPPING_FIELD_TYPES] = 'mapFieldTypes';
+      $events[SearchApiEvents::GATHERING_PROCESSORS] = 'onGatheringProcessors';
     }
 
     // Subscribe to elasticsearch_connector's SupportsDataTypeEvent.
@@ -37,6 +45,21 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
     }
 
     return $events;
+  }
+
+  /**
+   * Removes processors that depend on optional, uninstalled modules.
+   *
+   * This lets us ship the metatag title processor without a hard dependency on
+   * the metatag module.
+   */
+  public function onGatheringProcessors(GatheringPluginInfoEvent $event): void {
+    if ($this->moduleHandler->moduleExists('metatag')) {
+      return;
+    }
+
+    $definitions = &$event->getDefinitions();
+    unset($definitions['helfi_search_metatag_title']);
   }
 
   /**

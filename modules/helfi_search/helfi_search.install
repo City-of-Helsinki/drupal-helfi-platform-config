@@ -167,6 +167,11 @@ function helfi_search_update_11014(): void {
  * Add the metatag title field to the embeddings index.
  */
 function helfi_search_update_11015(): void {
+  // The metatag title processor is only available when metatag is installed.
+  if (!\Drupal::moduleHandler()->moduleExists('metatag')) {
+    return;
+  }
+
   $index = Index::load('embeddings');
 
   if (!$index) {

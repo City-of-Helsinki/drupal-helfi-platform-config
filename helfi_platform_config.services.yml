@@ -20,9 +20,7 @@ services:
     class: Drupal\helfi_platform_config\EventSubscriber\RouteSubscriber
     arguments: ['@current_route_match']
 
-  Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber:
-    class: Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber
-    arguments: []
+  Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber: ~
 
   Drupal\helfi_platform_config\EventSubscriber\ElasticsearchParamsSubscriber: ~
 
