@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_recommendations;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\State\StateInterface;
@@ -22,36 +21,18 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Elastic\Elasticsearch\Client;
 
 /**
- * The recommendation managerplat.
+ * The recommendation manager.
  */
 class RecommendationManager implements RecommendationManagerInterface {
 
-  public const INDEX_NAME = 'suggestions';
-  public const EXTERNAL_CACHE_TAG_PREFIX = 'suggested_topics_uuid:';
+  public const string INDEX_NAME = 'suggestions';
+  public const string EXTERNAL_CACHE_TAG_PREFIX = 'suggested_topics_uuid:';
 
   /**
    * The recommendations.
-   *
-   * @var array
    */
   private array $recommendations;
 
-  /**
-   * The constructor.
-   *
-   * @param \Psr\Log\LoggerInterface $logger
-   *   The logger.
-   * @param \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface $environmentResolver
-   *   The environment resolver.
-   * @param \Drupal\helfi_recommendations\TopicsManagerInterface $topicsManager
-   *   The topics manager.
-   * @param \Elastic\Elasticsearch\Client $elasticClient
-   *   The Elasticsearch client.
-   * @param \Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface $cacheTagInvalidator
-   *   The cache tag invalidator.
-   * @param \Drupal\Core\State\StateInterface $state
-   *   The State API.
-   */
   public function __construct(
     #[Autowire(service: 'logger.channel.helfi_recommendations')]
     private readonly LoggerInterface $logger,
@@ -117,13 +98,11 @@ class RecommendationManager implements RecommendationManagerInterface {
   public function getRecommendations(ContentEntityInterface $entity, int $limit = 3, ?string $target_langcode = NULL, ?array $options = []): array {
     $destination_langcode = $entity->language()->getId();
     $target_langcode = $target_langcode ?? $destination_langcode;
-    if ($entity instanceof TranslatableInterface && !$entity->hasTranslation($target_langcode)) {
+    if (!$entity->hasTranslation($target_langcode)) {
       $target_langcode = $destination_langcode;
     }
 
     if (empty($this->recommendations[$entity->id()][$target_langcode][$limit])) {
-      $data = [];
-
       // Get results from Elasticsearch.
       $query = $this->getElasticQuery($entity, $target_langcode, $limit, $options);
       $results = $query ? $this->searchElastic($query) : [];
@@ -463,7 +442,7 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   Which translation to use to select the recommendations.
    * @param int $limit
    *   How many recommendations should be returned. Defaults to 3.
-   * @param array $options
+   * @param array<mixed> $options
    *   Additional options to limit recommendations.
    *
    * @return array
@@ -626,10 +605,10 @@ class RecommendationManager implements RecommendationManagerInterface {
   /**
    * Search Elasticsearch.
    *
-   * @param array $query
+   * @param array<mixed> $query
    *   The query.
    *
-   * @return array
+   * @return array<mixed>
    *   The search results.
    */
   private function searchElastic(array $query) : array {
@@ -650,14 +629,14 @@ class RecommendationManager implements RecommendationManagerInterface {
   /**
    * Fetch node data.
    *
-   * @param array $results
+   * @param array<mixed> $results
    *   The search results.
    * @param string $target_langcode
    *   The target language code.
    * @param int $limit
    *   The result amount limit.
    *
-   * @return array
+   * @return array<mixed>
    *   The node data.
    */
   private function fetchNodeData(array $results, string $target_langcode, int $limit) : array {

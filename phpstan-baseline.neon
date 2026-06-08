@@ -4026,22 +4026,7 @@ parameters:
 			path: modules/helfi_recommendations/src/RecommendationManager.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:fetchNodeData\\(\\) has parameter \\$results with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:fetchNodeData\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getAllowedInstances\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getElasticQuery\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManager.php
 
@@ -4066,16 +4051,6 @@ parameters:
 			path: modules/helfi_recommendations/src/RecommendationManager.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getRecommendations\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getRecommendations\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getValidContentTypesAndBundles\\(\\) has parameter \\$content_types_and_bundles with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManager.php
@@ -4092,21 +4067,6 @@ parameters:
 
 		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:getValidInstances\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:invalidateExternalCacheTags\\(\\) has parameter \\$uuids with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:searchElastic\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManager.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManager\\:\\:searchElastic\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManager.php
 
@@ -4142,21 +4102,6 @@ parameters:
 
 		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:getAllowedInstances\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManagerInterface.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:getRecommendations\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManagerInterface.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:getRecommendations\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/RecommendationManagerInterface.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\RecommendationManagerInterface\\:\\:invalidateExternalCacheTags\\(\\) has parameter \\$uuids with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/RecommendationManagerInterface.php
 
