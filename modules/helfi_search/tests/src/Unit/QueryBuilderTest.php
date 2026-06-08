@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Unit;
 
+use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\QueryBuilder;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -15,7 +16,7 @@ use PHPUnit\Framework\Attributes\Group;
 #[Group('helfi_search')]
 class QueryBuilderTest extends UnitTestCase {
 
-  private const string TEST_MODEL = 'text-embedding-3-small';
+  private const EmbeddingModel TEST_MODEL = EmbeddingModel::Small;
   private const string TEST_MODEL_FIELD = 'embeddings_text_embedding_3_small';
 
   private const float TEST_MIN_SCORE = 0.68;
@@ -65,8 +66,9 @@ class QueryBuilderTest extends UnitTestCase {
     $query = (new QueryBuilder())->buildPromotionQuery('test', $language);
 
     $this->assertEquals(QueryBuilder::PROMOTIONS_INDEX, $query['index']);
-    $this->assertArrayHasKey($expectedField, $query['body']['query']['bool']['must']['match_phrase']);
-    $this->assertEquals('test', $query['body']['query']['bool']['must']['match_phrase'][$expectedField]['query']);
+    $this->assertArrayHasKey($expectedField, $query['body']['query']['bool']['must']['match']);
+    $this->assertEquals('test', $query['body']['query']['bool']['must']['match'][$expectedField]['query']);
+    $this->assertEquals('or', $query['body']['query']['bool']['must']['match'][$expectedField]['operator']);
     $this->assertEquals($language, $query['body']['query']['bool']['filter']['term']['search_api_language']);
     $this->assertEquals(QueryBuilder::PROMOTIONS_LIMIT, $query['body']['size']);
     $this->assertEquals(['title', 'description', 'link'], $query['body']['_source']);

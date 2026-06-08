@@ -7,11 +7,11 @@ namespace Drupal\helfi_search\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Flood\FloodInterface;
-use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EmbeddingsModelException;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\QueryBuilder;
+use Drupal\helfi_search\QueryRewriter;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Elasticsearch\Response\Elasticsearch;
@@ -41,44 +41,9 @@ final class SearchController extends ControllerBase {
     private readonly EmbeddingsModelInterface $embeddingsModel,
     private readonly FloodInterface $flood,
     private readonly QueryBuilder $queryBuilder,
-    private readonly EnvironmentResolverInterface $environmentResolver,
     #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
     private readonly Client $elasticClient,
   ) {
-  }
-
-  /**
-   * Whether debug data (e.g. per-bundle aggs) can be returned in responses.
-   *
-   * Debug data is exposed only outside production. If the environment cannot
-   * be resolved we default to FALSE so production-like setups stay quiet.
-   */
-  private function isDebugAllowed(): bool {
-    try {
-      return $this->environmentResolver->getActiveEnvironmentName() !== EnvironmentEnum::Prod->value;
-    }
-    catch (\InvalidArgumentException) {
-      return FALSE;
-    }
-  }
-
-  /**
-   * Get the model to use, from query parameter or first configured.
-   */
-  private function resolveModel(Request $request): ?string {
-    $models = $this->config('helfi_search.settings')->get('openai_models') ?? [];
-
-    if (empty($models)) {
-      return NULL;
-    }
-
-    $requested = $request->query->getString('model');
-
-    if ($requested && in_array($requested, $models, TRUE)) {
-      return $requested;
-    }
-
-    return $models[0];
   }
 
   /**
@@ -94,15 +59,6 @@ final class SearchController extends ControllerBase {
       );
     }
 
-    $model = $this->resolveModel($request);
-
-    if (!$model) {
-      return new JsonResponse(
-        ['error' => 'No embedding models configured.'],
-        503,
-      );
-    }
-
     if (!$this->flood->isAllowed(self::FLOOD_EVENT, self::FLOOD_THRESHOLD, self::FLOOD_WINDOW)) {
       return new JsonResponse(
         ['error' => 'Too many requests. Please try again later.'],
@@ -110,18 +66,26 @@ final class SearchController extends ControllerBase {
       );
     }
 
-    try {
-      $embeddings = $this->embeddingsModel->getEmbedding($query, $model);
+    // Apply rewrite rules to query before embedding, so short
+    // queries tokenize the same way they do in indexed content.
+    $query = QueryRewriter::rewrite($query, $this->config('helfi_search.settings')->get('canonical_terms') ?? []);
 
-      // Register flood after the expensive embedding API call.
+    $model = $this->resolveModel($request);
+
+    try {
+      // Register a flood event before allowing the expensive embedding API
+      // call. This trips flood protection even if the embedding API call
+      // fails.
       $this->flood->register(self::FLOOD_EVENT, self::FLOOD_WINDOW);
+
+      $embeddings = $this->embeddingsModel->getEmbedding($query, $model);
 
       $currentLanguage = $this->languageManager()->getCurrentLanguage()->getId();
       [$bundles, $excludeBundles] = $this->resolveBundleFilters($request);
 
       $page = max(1, $request->query->getInt('page', 1));
       $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
-      $debug = $request->query->getBoolean('debug') && $this->isDebugAllowed();
+      $debug = $request->query->getBoolean('debug');
 
       $knnQuery = $this->queryBuilder->buildKnnQuery(
         $embeddings,
@@ -152,6 +116,23 @@ final class SearchController extends ControllerBase {
   }
 
   /**
+   * Get the model to use, from query parameter or default model.
+   *
+   * The optional 'model' query parameter is honored only when it names one of
+   * the models enabled in the 'openai_models' config; otherwise the request
+   * falls back to the default model, which is always available.
+   */
+  private function resolveModel(Request $request): EmbeddingModel {
+    $requested = EmbeddingModel::tryFrom($request->query->getString('model'));
+
+    if ($requested && in_array($requested, EmbeddingModel::ENABLED, TRUE)) {
+      return $requested;
+    }
+
+    return EmbeddingModel::DEFAULT;
+  }
+
+  /**
    * Resolve the bundle inclusion/exclusion filters from the request.
    *
    * The React form uses two sentinels:
@@ -163,7 +144,7 @@ final class SearchController extends ControllerBase {
    * dropped.
    *
    * @return array{0: list<string>|null, 1: list<string>|null}
-   *   [$bundles, $excludeBundles] — each side NULL when not constrained.
+   *   [$bundles, $excludeBundles], each side NULL when not constrained.
    */
   private function resolveBundleFilters(Request $request): array {
     $bundles = array_values(array_filter(
@@ -194,16 +175,19 @@ final class SearchController extends ControllerBase {
    *
    * @param array<string, mixed> $knnQuery
    *   The pre-built KNN query (index + body).
-   * @param string $model
-   *   The embedding model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   The embedding model to use.
    * @param bool $debug
    *   Whether to include per-bundle aggregations in the result.
    *
    * @return array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
    *   The promoted hits, KNN results, total hit count, and optional debug
    *   payload keyed under 'debug' when $debug is TRUE.
+   *
+   * @throws \Elastic\Elasticsearch\Exception\ElasticsearchException
+   * @throws \Elastic\Transport\Exception\TransportException
    */
-  private function executeFilteredSearch(array $knnQuery, string $model, bool $debug): array {
+  private function executeFilteredSearch(array $knnQuery, EmbeddingModel $model, bool $debug): array {
     $searchResult = $this->elasticClient->search([
       'index' => $knnQuery['index'],
       'body' => $knnQuery['body'],
@@ -231,16 +215,19 @@ final class SearchController extends ControllerBase {
    *   The user-supplied search query string.
    * @param string $language
    *   The active language code.
-   * @param string $model
-   *   The embedding model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   The embedding model to use.
    * @param bool $debug
    *   Whether to include per-bundle aggregations in the result.
    *
    * @return array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
    *   The promoted hits, KNN results, total hit count, and optional debug
    *   payload keyed under 'debug' when $debug is TRUE.
+   *
+   * @throws \Elastic\Elasticsearch\Exception\ElasticsearchException
+   * @throws \Elastic\Transport\Exception\TransportException
    */
-  private function executeBlendedSearch(array $knnQuery, string $query, string $language, string $model, bool $debug): array {
+  private function executeBlendedSearch(array $knnQuery, string $query, string $language, EmbeddingModel $model, bool $debug): array {
     $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $language);
 
     $msearchResult = $this->elasticClient->msearch([

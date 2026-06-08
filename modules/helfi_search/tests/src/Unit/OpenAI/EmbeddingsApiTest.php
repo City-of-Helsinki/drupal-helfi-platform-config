@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_search\Unit\OpenAI;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
+use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\OpenAI\EmbeddingsApi;
 use Drupal\helfi_search\TokenUsageTracker;
 use GuzzleHttp\ClientInterface;
@@ -67,7 +68,7 @@ class EmbeddingsApiTest extends TestCase {
       ->willReturn($this->createEmbeddingResponse());
 
     $api = $this->createApi('https://api.openai.com/v1', $client);
-    $api->getEmbedding('test', 'text-embedding-3-small');
+    $api->getEmbedding('test', EmbeddingModel::Small);
   }
 
   /**
@@ -88,7 +89,7 @@ class EmbeddingsApiTest extends TestCase {
       'https://test.openai.azure.com/openai/deployments/{model}',
       $client,
     );
-    $api->getEmbedding('test', 'text-embedding-3-small');
+    $api->getEmbedding('test', EmbeddingModel::Small);
   }
 
 }

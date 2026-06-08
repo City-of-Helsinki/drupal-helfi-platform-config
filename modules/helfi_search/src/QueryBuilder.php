@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_search;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\helfi_search\OpenAI\EmbeddingsApi;
 
 /**
  * Builds Elasticsearch queries for search features.
@@ -26,6 +25,8 @@ final class QueryBuilder {
   /**
    * Build a promotion search query for use in search() or msearch().
    *
+   * This method is tested in etusivu.
+   *
    * @param string $query
    *   The search query string.
    * @param string $language
@@ -33,6 +34,8 @@ final class QueryBuilder {
    *
    * @return array<mixed>
    *   An array with 'index' and 'body' keys for Elasticsearch.
+   *
+   * @see \Drupal\Tests\helfi_etusivu\Kernel\Search\PromotionQueryTest
    */
   public function buildPromotionQuery(string $query, string $language): array {
     $field = match ($language) {
@@ -46,9 +49,10 @@ final class QueryBuilder {
         'query' => [
           'bool' => [
             'must' => [
-              'match_phrase' => [
+              'match' => [
                 $field => [
                   'query' => $query,
+                  'operator' => 'or',
                 ],
               ],
             ],
@@ -76,8 +80,8 @@ final class QueryBuilder {
    *   The embedding vector.
    * @param string $language
    *   The language code.
-   * @param string $model
-   *   The embedding model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   The embedding model to use.
    * @param string[]|null $bundles
    *   Filter only given bundles.
    * @param int $size
@@ -100,7 +104,7 @@ final class QueryBuilder {
   public function buildKnnQuery(
     array $embeddings,
     string $language,
-    string $model,
+    EmbeddingModel $model,
     ?array $bundles = NULL,
     int $size = self::KNN_DEFAULT_SIZE,
     int $from = 0,
@@ -114,7 +118,7 @@ final class QueryBuilder {
       default => "en",
     };
 
-    $fieldPrefix = 'embeddings_' . EmbeddingsApi::sanitizeModelName($model);
+    $fieldPrefix = $model->fieldPrefix();
 
     $languageFilter = [
       'term' => [
@@ -148,8 +152,8 @@ final class QueryBuilder {
         ? ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $normalSubset]]]]
         : ['must' => [$languageFilter], 'must_not' => [['terms' => ['entity_bundle' => $contentMustNot]]]];
 
-      // Each KNN clause needs a unique inner_hits name. Otherwise both
-      // clauses keep the default key (the nested field path) and ES rejects
+      // Each KNN clause needs a unique inner_hits name. Otherwise, both
+      // clauses keep the default key (the nested field path), and ES rejects
       // the search.
       $knn = [
         $this->buildKnnEntry(
@@ -318,14 +322,14 @@ final class QueryBuilder {
    *
    * @param array<mixed> $response
    *   The Elasticsearch response array.
-   * @param string $model
-   *   The embedding model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   The embedding model to use.
    *
    * @return array<mixed>
    *   Parsed search results.
    */
-  public function parseKnnHits(array $response, string $model): array {
-    $fieldPrefix = 'embeddings_' . EmbeddingsApi::sanitizeModelName($model);
+  public function parseKnnHits(array $response, EmbeddingModel $model): array {
+    $fieldPrefix = $model->fieldPrefix();
     $results = [];
 
     foreach ($response['hits']['hits'] ?? [] as $hit) {
