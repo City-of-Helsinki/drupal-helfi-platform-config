@@ -6,6 +6,8 @@ namespace Drupal\helfi_search;
 
 /**
  * Embedding model interface.
+ *
+ * @todo Better name for this interface would be e.g. EmbeddingApiInterface.
  */
 interface EmbeddingsModelInterface {
 

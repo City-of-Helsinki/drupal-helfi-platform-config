@@ -115,7 +115,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
       return [];
     }
 
-    // @fixme This is not the batch API which makes cheaper requests.
+    // @fixme This is not the batch API which makes cheaper requests UHF-13067.
     // The cheaper requests are run asynchronously. Getting the batch
     // API to work with search_api does not seem trivial.
     // See https://platform.openai.com/docs/guides/batch.
