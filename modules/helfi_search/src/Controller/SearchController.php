@@ -47,6 +47,11 @@ final class SearchController extends ControllerBase {
 
   /**
    * Get the model to use, from query parameter or first configured.
+   *
+   * This is pretty useless dance, since we already need to
+   * hard-code the models we support.
+   *
+   * @see \Drupal\helfi_search\Plugin\search_api\processor\VectorEmbeddingsProcessor::SUPPORTED_MODELS
    */
   private function resolveModel(Request $request): ?string {
     $models = $this->config('helfi_search.settings')->get('openai_models') ?? [];
