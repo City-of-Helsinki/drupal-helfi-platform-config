@@ -3971,22 +3971,12 @@ parameters:
 			path: modules/helfi_recommendations/src/Plugin/QueueWorker/QueueWorker.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\Plugin\\\\search_api\\\\processor\\\\ScoredReferenceParentProcessor\\:\\:addFieldValues\\(\\) has parameter \\$item with no value type specified in iterable type Drupal\\\\search_api\\\\Item\\\\ItemInterface\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/Plugin/search_api/processor/ScoredReferenceParentProcessor.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\Plugin\\\\search_api\\\\processor\\\\ScoredReferenceParentProcessor\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/Plugin/search_api/processor/ScoredReferenceParentProcessor.php
 
 		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\Plugin\\\\search_api\\\\processor\\\\ScoredReferenceParentProcessor\\:\\:getLanguageSpecificFields\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/Plugin/search_api/processor/ScoredReferenceParentProcessor.php
-
-		-
-			message: "#^Property Drupal\\\\helfi_recommendations\\\\Plugin\\\\search_api\\\\processor\\\\ScoredReferenceParentProcessor\\:\\:\\$renderer is never read, only written\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/Plugin/search_api/processor/ScoredReferenceParentProcessor.php
 

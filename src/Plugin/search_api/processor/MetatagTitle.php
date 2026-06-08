@@ -7,7 +7,7 @@ namespace Drupal\helfi_platform_config\Plugin\search_api\processor;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\metatag\MetatagManager;
+use Drupal\helfi_platform_config\Token\MetatagTitleResolver;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
@@ -39,14 +39,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class MetatagTitle extends ProcessorPluginBase {
 
   /**
-   * Tokens to remove from the title template.
+   * The metatag title resolver.
    */
-  private const array STRIP_TOKENS = ['[site:page-title-suffix]'];
-
-  /**
-   * The metatag manager.
-   */
-  private MetatagManager $metatagManager;
+  private MetatagTitleResolver $titleResolver;
 
   /**
    * {@inheritdoc}
@@ -55,7 +50,7 @@ final class MetatagTitle extends ProcessorPluginBase {
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $processor->metatagManager = $container->get('metatag.manager');
+    $processor->titleResolver = $container->get(MetatagTitleResolver::class);
     return $processor;
   }
 
@@ -89,31 +84,12 @@ final class MetatagTitle extends ProcessorPluginBase {
       return;
     }
 
-    $title = NULL;
-
-    // Metatag overrides are only available on content entities.
-    // Defaults so the entity label unless an editor has customized
-    // the title.
-    if ($entity instanceof ContentEntityInterface) {
-      $tags = $this->metatagManager->tagsFromEntity($entity);
-
-      // Strip configured tokens from the template so
-      // they are never resolved into the indexed title.
-      if (!empty($tags['title'])) {
-        $tags['title'] = $this->stripTokens($tags['title']);
-
-        $value = $this->metatagManager->generateTokenValues($tags, $entity)['title'] ?? '';
-
-        // Trim non-word character from string,
-        // this removes leftover separators.
-        $title = preg_replace('/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/u', '', $value) ?? NULL;
-      }
-    }
-
-    // Fall back to the entity label when the title has not been customized.
-    if (!is_string($title) || !$title) {
-      $title = (string) $entity->label();
-    }
+    // Metatag overrides are only available on content entities. Fall back to
+    // the entity label when the title has not been customized.
+    $title = $entity instanceof ContentEntityInterface
+      ? $this->titleResolver->resolve($entity)
+      : NULL;
+    $title ??= (string) $entity->label();
 
     $fields = $this->getFieldsHelper()
       ->filterForPropertyPath($item->getFields(FALSE), NULL, 'helfi_search_title');
@@ -121,13 +97,6 @@ final class MetatagTitle extends ProcessorPluginBase {
     foreach ($fields as $field) {
       $field->addValue($title);
     }
-  }
-
-  /**
-   * Removes the configured tokens from a raw metatag value.
-   */
-  private function stripTokens(string $value): string {
-    return trim(str_replace(self::STRIP_TOKENS, '', $value));
   }
 
 }

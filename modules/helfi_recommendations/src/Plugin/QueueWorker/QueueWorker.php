@@ -8,21 +8,22 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_recommendations\Client\ApiClientException;
 use Drupal\helfi_recommendations\TopicsManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Queue\Attribute\QueueWorker as QueueWorkerAttribute;
 
 /**
  * Keyword processing queue.
- *
- * @QueueWorker(
- *   id = "helfi_recommendations_queue",
- *   title = @Translation("Keywords queue"),
- *   cron = {"time" = 60}
- * )
  */
+#[QueueWorkerAttribute(
+  id: 'helfi_recommendations_queue',
+  title: new TranslatableMarkup('Keywords queue'),
+  cron: ['time' => 60],
+)]
 final class QueueWorker extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
   /**

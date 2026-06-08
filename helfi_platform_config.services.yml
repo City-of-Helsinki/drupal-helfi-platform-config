@@ -3,6 +3,12 @@ services:
     autoconfigure: true
     autowire: true
 
+  # The metatag dependency is optional, so it is injected with "@?" and the
+  # service falls back to a no-op when metatag is not installed.
+  Drupal\helfi_platform_config\Token\MetatagTitleResolver:
+    arguments:
+      - '@?metatag.manager'
+
   Drupal\helfi_platform_config\Helper\BlockInstaller: '@helfi_platform_config.helper.block_installer'
   helfi_platform_config.helper.block_installer:
     class: Drupal\helfi_platform_config\Helper\BlockInstaller
