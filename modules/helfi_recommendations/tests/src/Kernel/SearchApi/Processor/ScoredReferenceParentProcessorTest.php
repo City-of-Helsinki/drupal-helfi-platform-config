@@ -139,8 +139,6 @@ class ScoredReferenceParentProcessorTest extends ProcessorTestBase {
 
   /**
    * Tests that field values are added correctly.
-   *
-   * @covers ::getPropertyDefinitions
    */
   public function testDatasource() : void {
     /** @var \Drupal\search_api\Utility\PluginHelperInterface $pluginHelper */
@@ -180,8 +178,6 @@ class ScoredReferenceParentProcessorTest extends ProcessorTestBase {
 
   /**
    * Tests that field values are added correctly.
-   *
-   * @covers ::addFieldValues
    */
   public function testAddFieldValues() : void {
     $backend = $this->prophesize(BackendClientInterface::class);
