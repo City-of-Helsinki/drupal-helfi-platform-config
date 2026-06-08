@@ -59,7 +59,7 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
     }
 
     $definitions = &$event->getDefinitions();
-    unset($definitions['helfi_search_metatag_title']);
+    unset($definitions['helfi_metatag_title']);
   }
 
   /**

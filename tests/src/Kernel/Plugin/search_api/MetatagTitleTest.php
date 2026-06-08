@@ -38,7 +38,7 @@ class MetatagTitleTest extends ProcessorTestBase {
    * {@inheritdoc}
    */
   public function setUp($processor = NULL): void {
-    parent::setUp('helfi_search_metatag_title');
+    parent::setUp('helfi_metatag_title');
 
     $this->installConfig(['metatag']);
 

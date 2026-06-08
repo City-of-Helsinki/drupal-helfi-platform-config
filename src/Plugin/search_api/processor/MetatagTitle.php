@@ -29,7 +29,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @see \Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber::onGatheringProcessors()
  */
 #[SearchApiProcessor(
-  id: 'helfi_search_metatag_title',
+  id: 'helfi_metatag_title',
   label: new TranslatableMarkup('Metatag title'),
   description: new TranslatableMarkup("Adds the entity's customized metatag title to the indexed data."),
   stages: [

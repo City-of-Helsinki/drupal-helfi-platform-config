@@ -183,9 +183,9 @@ function helfi_search_update_11015(): void {
 
   // The field is populated by the metatag title processor, so make sure it is
   // enabled on the index.
-  if (!$index->isValidProcessor('helfi_search_metatag_title')) {
+  if (!$index->isValidProcessor('helfi_metatag_title')) {
     $index->addProcessor(
-      $plugin_helper->createProcessorPlugin($index, 'helfi_search_metatag_title')
+      $plugin_helper->createProcessorPlugin($index, 'helfi_metatag_title')
     );
     $changed = TRUE;
   }
