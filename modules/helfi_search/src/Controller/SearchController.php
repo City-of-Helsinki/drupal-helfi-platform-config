@@ -183,6 +183,9 @@ final class SearchController extends ControllerBase {
    * @return array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
    *   The promoted hits, KNN results, total hit count, and optional debug
    *   payload keyed under 'debug' when $debug is TRUE.
+   *
+   * @throws \Elastic\Elasticsearch\Exception\ElasticsearchException
+   * @throws \Elastic\Transport\Exception\TransportException
    */
   private function executeFilteredSearch(array $knnQuery, EmbeddingModel $model, bool $debug): array {
     $searchResult = $this->elasticClient->search([
@@ -220,6 +223,9 @@ final class SearchController extends ControllerBase {
    * @return array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
    *   The promoted hits, KNN results, total hit count, and optional debug
    *   payload keyed under 'debug' when $debug is TRUE.
+   *
+   * @throws \Elastic\Elasticsearch\Exception\ElasticsearchException
+   * @throws \Elastic\Transport\Exception\TransportException
    */
   private function executeBlendedSearch(array $knnQuery, string $query, string $language, EmbeddingModel $model, bool $debug): array {
     $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $language);
