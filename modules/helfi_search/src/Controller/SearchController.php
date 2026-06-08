@@ -125,10 +125,8 @@ final class SearchController extends ControllerBase {
   private function resolveModel(Request $request): EmbeddingModel {
     $requested = EmbeddingModel::tryFrom($request->query->getString('model'));
 
-    if ($requested) {
-      if (in_array($requested, EmbeddingModel::ENABLED, TRUE)) {
-        return $requested;
-      }
+    if ($requested && in_array($requested, EmbeddingModel::ENABLED, TRUE)) {
+      return $requested;
     }
 
     return EmbeddingModel::DEFAULT;
