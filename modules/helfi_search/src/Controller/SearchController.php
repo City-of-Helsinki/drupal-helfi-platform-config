@@ -7,8 +7,6 @@ namespace Drupal\helfi_search\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Flood\FloodInterface;
-use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_search\EmbeddingsModelException;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\QueryBuilder;
@@ -42,25 +40,9 @@ final class SearchController extends ControllerBase {
     private readonly EmbeddingsModelInterface $embeddingsModel,
     private readonly FloodInterface $flood,
     private readonly QueryBuilder $queryBuilder,
-    private readonly EnvironmentResolverInterface $environmentResolver,
     #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
     private readonly Client $elasticClient,
   ) {
-  }
-
-  /**
-   * Whether debug data (e.g. per-bundle aggs) can be returned in responses.
-   *
-   * Debug data is exposed only outside production. If the environment cannot
-   * be resolved we default to FALSE so production-like setups stay quiet.
-   */
-  private function isDebugAllowed(): bool {
-    try {
-      return $this->environmentResolver->getActiveEnvironmentName() !== EnvironmentEnum::Prod->value;
-    }
-    catch (\InvalidArgumentException) {
-      return FALSE;
-    }
   }
 
   /**
@@ -126,7 +108,7 @@ final class SearchController extends ControllerBase {
 
       $page = max(1, $request->query->getInt('page', 1));
       $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
-      $debug = $request->query->getBoolean('debug') && $this->isDebugAllowed();
+      $debug = $request->query->getBoolean('debug');
 
       $knnQuery = $this->queryBuilder->buildKnnQuery(
         $embeddings,

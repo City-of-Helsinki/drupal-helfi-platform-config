@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Kernel\Controller;
 
-use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_search\Controller\SearchController;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
@@ -204,18 +202,13 @@ class SearchControllerTest extends KernelTestBase {
    * Tests the 'others' sentinel and the debug query param.
    *
    * 'others' expands to "everything except news bundles" and routes through
-   * single search() (not msearch). The debug param surfaces per-bundle aggs
-   * — but only when the environment is non-prod.
+   * single search() (not msearch). The debug param surfaces per-bundle aggs.
    */
   public function testOthersBundleAndDebugAggregations(): void {
     $embeddingsModel = $this->prophesize(EmbeddingsModelInterface::class);
     $embeddingsModel->getEmbedding(Argument::type('string'), Argument::type('string'))
       ->willReturn([0.1, 0.2, 0.3]);
     $this->container->set(EmbeddingsModelInterface::class, $embeddingsModel->reveal());
-
-    $environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
-    $environmentResolver->getActiveEnvironmentName()->willReturn(EnvironmentEnum::Local->value);
-    $this->container->set(EnvironmentResolverInterface::class, $environmentResolver->reveal());
 
     // Two single-search responses; both carry an aggs section so we can
     // assert downstream handling regardless of whether debug is honoured.
@@ -264,19 +257,6 @@ class SearchControllerTest extends KernelTestBase {
     // 'others' takes the single-search branch, so no promotions are queried.
     $this->assertEmpty($data['promoted']);
     $this->assertSame(['page' => 4, 'landing_page' => 2], $data['debug']['bundles']);
-
-    // 2) Same query in prod → debug is gated off, no aggs leak into payload.
-    $environmentResolver->getActiveEnvironmentName()->willReturn(EnvironmentEnum::Prod->value);
-
-    $request = $this->getMockedRequest('/api/v1/search', parameters: [
-      'q' => 'test query',
-      'bundle' => 'others',
-      'debug' => '1',
-    ]);
-    $response = $this->processRequest($request);
-    $this->assertEquals(200, $response->getStatusCode());
-    $data = json_decode((string) $response->getContent(), TRUE);
-    $this->assertArrayNotHasKey('debug', $data);
   }
 
   /**
