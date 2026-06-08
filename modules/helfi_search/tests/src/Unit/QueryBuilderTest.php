@@ -141,7 +141,7 @@ class QueryBuilderTest extends UnitTestCase {
       $query['body']['knn']['inner_hits']['fields'],
     );
     $this->assertEquals(
-      ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at'],
+      ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at', 'metatag_title'],
       $query['body']['_source'],
     );
     $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $query['body']['size']);
@@ -180,6 +180,7 @@ class QueryBuilderTest extends UnitTestCase {
               'entity_bundle' => ['news_article'],
               'url' => ['/fi/test'],
               'label' => ['Test Page'],
+              'metatag_title' => ['Custom Page Title'],
               'published_at' => ['2026-05-04T12:00:00+00:00'],
             ],
           ],
@@ -196,6 +197,7 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals('news_article', $results[0]['bundle']);
     $this->assertEquals('/fi/test', $results[0]['url']);
     $this->assertEquals('Test Page', $results[0]['title']);
+    $this->assertEquals('Custom Page Title', $results[0]['metatag_title']);
     $this->assertEquals('2026-05-04T12:00:00+00:00', $results[0]['published_at']);
     // Missing inner_hits content gracefully degrades to empty string.
     $this->assertEquals('', $results[0]['content']);
