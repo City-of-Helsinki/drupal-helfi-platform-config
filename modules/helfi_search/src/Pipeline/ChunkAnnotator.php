@@ -19,11 +19,10 @@ class ChunkAnnotator {
    *   The chunks with snippet and fragment populated.
    */
   public function annotate(array $chunks, array $headingFragments): array {
-    $perSectionFragment = $this->buildSectionFragmentMap($chunks, $headingFragments);
-
     foreach ($chunks as $i => $chunk) {
       $chunk->snippet = SnippetRenderer::render($chunk->text);
-      $chunk->fragment = $perSectionFragment[$i] ?? NULL;
+      $chunk->fragment = $this->buildSectionFragmentMap($chunks, $headingFragments)[$i] ?? NULL;
+      $chunk->text_fragment = count($chunks) > 1 ? SnippetRenderer::renderTextFragment($chunk->text) : NULL;
     }
     return $chunks;
   }
@@ -40,6 +39,10 @@ class ChunkAnnotator {
    * @phpstan-param \Drupal\helfi_search\Pipeline\Chunk[] $chunks
    * @phpstan-param HeadingFragment[] $headingFragments
    * @phpstan-return array<int, string>
+   *
+   * @todo This is not in use while we POC with search snippet highlighting
+   * via text fragment matching. It's likely we still need this with the final
+   * approach, as text matching might not be reliable enough for our needs.
    */
   private function buildSectionFragmentMap(array $chunks, array $headingFragments): array {
     $perChunkIndex = [];

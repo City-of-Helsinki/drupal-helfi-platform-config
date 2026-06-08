@@ -145,6 +145,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
             'vector' => $vector,
             'content' => Unicode::truncate($chunks[$index]->snippet ?? '', 200, TRUE, TRUE),
             'fragment' => $chunks[$index]->fragment,
+            'text_fragment' => $chunks[$index]->text_fragment,
           ]);
         }
       }
