@@ -73,10 +73,12 @@ final class SearchController extends ControllerBase {
     $model = $this->resolveModel($request);
 
     try {
-      $embeddings = $this->embeddingsModel->getEmbedding($query, $model);
-
-      // Register flood after the expensive embedding API call.
+      // Register a flood event before allowing the expensive embedding API
+      // call. This trips flood protection even if the embedding API call
+      // fails.
       $this->flood->register(self::FLOOD_EVENT, self::FLOOD_WINDOW);
+
+      $embeddings = $this->embeddingsModel->getEmbedding($query, $model);
 
       $currentLanguage = $this->languageManager()->getCurrentLanguage()->getId();
       [$bundles, $excludeBundles] = $this->resolveBundleFilters($request);
