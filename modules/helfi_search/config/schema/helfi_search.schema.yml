@@ -36,6 +36,11 @@ helfi_search.settings:
       label: 'CSS classes whose elements are stripped from indexed HTML'
       sequence:
         type: string
+    canonical_terms:
+      type: sequence
+      label: 'Canonical terms applied to the query before embedding'
+      sequence:
+        type: string
     external_links:
       type: mapping
       label: 'Links for other searches'

@@ -12,6 +12,7 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_search\EmbeddingsModelException;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\QueryBuilder;
+use Drupal\helfi_search\QueryRewriter;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Elasticsearch\Response\Elasticsearch;
@@ -109,6 +110,10 @@ final class SearchController extends ControllerBase {
         429,
       );
     }
+
+    // Apply rewrite rules to query before embedding, so short
+    // queries tokenize the same way they do in indexed content.
+    $query = QueryRewriter::rewrite($query, $this->config('helfi_search.settings')->get('canonical_terms') ?? []);
 
     try {
       $embeddings = $this->embeddingsModel->getEmbedding($query, $model);

@@ -21,6 +21,8 @@ ignored_classes:
   - content-date
   - content-links
   - block--askem
+canonical_terms:
+  - OmaStadi
 external_links:
   jobs: 'https://www.hel.fi/en/open-jobs'
   events: 'https://tapahtumat.hel.fi/en'

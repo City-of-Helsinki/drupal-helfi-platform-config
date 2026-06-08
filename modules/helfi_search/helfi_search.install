@@ -432,3 +432,18 @@ function helfi_search_update_11012(): void {
   $ignored_classes[] = 'views--unit-search';
   $config->set('ignored_classes', $ignored_classes)->save();
 }
+
+/**
+ * Add OmaStadi to canonical_terms.
+ */
+function helfi_search_update_11013(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+  $terms = $config->get('canonical_terms') ?? [];
+
+  if (in_array('OmaStadi', $terms, TRUE)) {
+    return;
+  }
+
+  $terms[] = 'OmaStadi';
+  $config->set('canonical_terms', $terms)->save();
+}
