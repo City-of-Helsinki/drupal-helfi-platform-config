@@ -146,7 +146,7 @@ final class SearchController extends ControllerBase {
    * dropped.
    *
    * @return array{0: list<string>|null, 1: list<string>|null}
-   *   [$bundles, $excludeBundles] — each side NULL when not constrained.
+   *   [$bundles, $excludeBundles], each side NULL when not constrained.
    */
   private function resolveBundleFilters(Request $request): array {
     $bundles = array_values(array_filter(
