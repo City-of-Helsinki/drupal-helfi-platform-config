@@ -137,7 +137,10 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals(50, $query['body']['knn']['k']);
     $this->assertEquals('fi', $query['body']['knn']['filter']['term']['search_api_language']);
     $this->assertEquals(
-      [self::TEST_MODEL_FIELD . '.content', self::TEST_MODEL_FIELD . '.fragment'],
+      [
+        self::TEST_MODEL_FIELD . '.content',
+        self::TEST_MODEL_FIELD . '.fragment',
+      ],
       $query['body']['knn']['inner_hits']['fields'],
     );
     $this->assertEquals(
@@ -407,7 +410,10 @@ class QueryBuilderTest extends UnitTestCase {
 
     [$news, $content] = $query['body']['knn'];
 
-    $expectedFields = [self::TEST_MODEL_FIELD . '.content', self::TEST_MODEL_FIELD . '.fragment'];
+    $expectedFields = [
+      self::TEST_MODEL_FIELD . '.content',
+      self::TEST_MODEL_FIELD . '.fragment',
+    ];
     $this->assertEquals($expectedFields, $news['inner_hits']['fields']);
     $this->assertEquals($expectedFields, $content['inner_hits']['fields']);
     $this->assertEquals('deboosted', $news['inner_hits']['name']);
