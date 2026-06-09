@@ -23,7 +23,7 @@ final class Chunk {
     public array $metadata = [],
     public ?string $snippet = NULL,
     public ?string $fragment = NULL,
-    public ?string $text_fragment = NULL,
+    public ?string $textFragment = NULL,
   ) {
   }
 
@@ -64,7 +64,7 @@ final class Chunk {
       heading: $this->heading,
       metadata: $this->metadata,
       fragment: $this->fragment,
-      text_fragment: $this->text_fragment,
+      textFragment: $this->textFragment,
     );
   }
 
