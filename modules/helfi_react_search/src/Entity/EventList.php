@@ -43,6 +43,13 @@ class EventList extends Paragraph implements ParagraphInterface {
   }
 
   /**
+   * Get the display layout (e.g. 'default' list view or 'lifts').
+   */
+  public function getEventListLayout(): string {
+    return $this->get('field_event_list_layout')->value ?? 'default';
+  }
+
+  /**
    * Get event categories.
    *
    * Caller must check if courses should be enabled with getEventListType().

@@ -14,6 +14,14 @@ msgid "Events and hobbies"
 msgstr "Tapahtumat ja harrastukset"
 
 msgctxt "helfi_react_search"
+msgid "Default (list view)"
+msgstr "Oletus (listanäkymä)"
+
+msgctxt "helfi_react_search"
+msgid "Lifts (three latest)"
+msgstr "Nostot (kolme uusinta)"
+
+msgctxt "helfi_react_search"
 msgid "Movies"
 msgstr "Elokuva"
 

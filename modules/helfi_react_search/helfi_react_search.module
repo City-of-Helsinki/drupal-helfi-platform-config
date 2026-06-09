@@ -25,6 +25,16 @@ function helfi_react_search_event_list_allowed_types(): array {
 }
 
 /**
+ * Event list display (layout) allowed values.
+ */
+function helfi_react_search_event_list_allowed_layouts(): array {
+  return [
+    'default' => new TranslatableMarkup('Default (list view)', [], ['context' => 'helfi_react_search']),
+    'lifts' => new TranslatableMarkup('Lifts (three latest)', [], ['context' => 'helfi_react_search']),
+  ];
+}
+
+/**
  * Event count dropdown selectable values.
  *
  * @return int[]
