@@ -21,7 +21,7 @@ display:
           label: Kirjoittaja
           separator: ', '
         revision_uid:
-          label: 'Viimesin päivittäjä'
+          label: 'Viimeisin päivittäjä'
           separator: ', '
         langcode:
           label: Kieli
