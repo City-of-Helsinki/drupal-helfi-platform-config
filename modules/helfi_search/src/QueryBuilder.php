@@ -129,7 +129,6 @@ final class QueryBuilder {
       'fields' => [
         $fieldPrefix . '.content',
         $fieldPrefix . '.fragment',
-        $fieldPrefix . '.text_fragment',
       ],
       'size' => $innerHitsSize,
     ];
@@ -348,7 +347,7 @@ final class QueryBuilder {
         'title' => array_first($hit['_source']['label'] ?? []),
         'published_at' => array_first($hit['_source']['published_at'] ?? []),
         'content' => $innerFields['content'][0] ?? '',
-        'fragment' => $innerFields['text_fragment'][0] ?? NULL,
+        'fragment' => $innerFields['fragment'][0] ?? NULL,
       ];
       // Debug: when more than one inner hit was requested, surface every
       // matching chunk with its individual similarity score.
@@ -357,7 +356,7 @@ final class QueryBuilder {
           static fn (array $h) => [
             'score' => $h['_score'] ?? 0,
             'content' => $h['fields'][$fieldPrefix][0]['content'][0] ?? '',
-            'fragment' => $h['fields'][$fieldPrefix][0]['text_fragment'][0] ?? NULL,
+            'fragment' => $h['fields'][$fieldPrefix][0]['fragment'][0] ?? NULL,
           ],
           $innerHits,
         );

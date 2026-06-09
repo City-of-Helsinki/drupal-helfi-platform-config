@@ -138,7 +138,6 @@ class QueryBuilderTest extends UnitTestCase {
       [
         self::TEST_MODEL_FIELD . '.content',
         self::TEST_MODEL_FIELD . '.fragment',
-        self::TEST_MODEL_FIELD . '.text_fragment',
       ],
       $query['body']['knn']['inner_hits']['fields'],
     );
@@ -230,7 +229,6 @@ class QueryBuilderTest extends UnitTestCase {
                           [
                             'content' => ['Some content'],
                             'fragment' => ['some-section'],
-                            'text_fragment' => ['some-text-fragment'],
                           ],
                         ],
                       ],
@@ -249,7 +247,7 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertCount(1, $results);
     $this->assertEquals('doc1', $results[0]['id']);
     $this->assertEquals('Some content', $results[0]['content']);
-    $this->assertEquals('some-text-fragment', $results[0]['fragment']);
+    $this->assertEquals('some-section', $results[0]['fragment']);
   }
 
   /**
@@ -286,7 +284,6 @@ class QueryBuilderTest extends UnitTestCase {
                           [
                             'content' => ['Named hit content'],
                             'fragment' => ['fragment'],
-                            'text_fragment' => ['text-fragment'],
                           ],
                         ],
                       ],
@@ -303,7 +300,7 @@ class QueryBuilderTest extends UnitTestCase {
     $results = (new QueryBuilder())->parseKnnHits($response, self::TEST_MODEL);
 
     $this->assertEquals('Named hit content', $results[0]['content']);
-    $this->assertEquals('text-fragment', $results[0]['fragment']);
+    $this->assertEquals('fragment', $results[0]['fragment']);
   }
 
   /**
@@ -412,7 +409,6 @@ class QueryBuilderTest extends UnitTestCase {
     $expectedFields = [
       self::TEST_MODEL_FIELD . '.content',
       self::TEST_MODEL_FIELD . '.fragment',
-      self::TEST_MODEL_FIELD . '.text_fragment',
     ];
     $this->assertEquals($expectedFields, $news['inner_hits']['fields']);
     $this->assertEquals($expectedFields, $content['inner_hits']['fields']);
