@@ -203,3 +203,18 @@ function helfi_search_update_11015(): void {
     $index->save();
   }
 }
+
+/**
+ * Add component--list-of-links to ignored_classes config.
+ */
+function helfi_search_update_11016(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+  $ignored_classes = $config->get('ignored_classes') ?? [];
+
+  if (in_array('component--list-of-links', $ignored_classes, TRUE)) {
+    return;
+  }
+
+  $ignored_classes[] = 'component--list-of-links';
+  $config->set('ignored_classes', $ignored_classes)->save();
+}
