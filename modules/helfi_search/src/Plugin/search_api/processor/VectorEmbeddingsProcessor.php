@@ -89,6 +89,11 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
     $embeddingTexts = array_map('strval', $chunks);
 
+    // The first chunk usually holds the page intro. Hidden chunks have
+    // low-quality snippets/fragments, so they borrow the first chunk's for
+    // display while still being matched on their own vector.
+    $first = $chunks[array_key_first($chunks)];
+
     foreach (EmbeddingModel::ENABLED as $model) {
       // Throw if processing fails. This will interrupt search api. This
       // will interrupt search api indexing until the issue is resolved.
@@ -100,11 +105,14 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
         ->filterForPropertyPath($item->getFields(FALSE), NULL, $fieldName);
 
       foreach ($vectors as $index => $vector) {
+        // Hidden chunks display the first chunk's snippet/fragment instead of
+        // their own; the vector is always the matched chunk's.
+        $source = $chunks[$index]->hidden ? $first : $chunks[$index];
         foreach ($fields as $field) {
           $field->addValue([
             'vector' => $vector,
-            'content' => Unicode::truncate($chunks[$index]->snippet ?? '', 200, TRUE, TRUE),
-            'fragment' => $chunks[$index]->fragment,
+            'content' => Unicode::truncate($source->snippet ?? '', 200, TRUE, TRUE),
+            'fragment' => $source->fragment,
           ]);
         }
       }

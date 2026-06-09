@@ -164,6 +164,70 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   }
 
   /**
+   * Tests hidden chunks borrow the first chunk's snippet and fragment.
+   */
+  public function testHiddenChunkBorrowsFirstChunkSnippet(): void {
+    $first = new Chunk('Intro body');
+    $first->snippet = 'Intro snippet';
+    $first->fragment = NULL;
+
+    $hidden = new Chunk('Short body');
+    $hidden->snippet = 'Short snippet';
+    $hidden->fragment = 'thin-section';
+    $hidden->hidden = TRUE;
+
+    $textPipeline = $this->prophesize(TextPipeline::class);
+    $textPipeline->process(Argument::any())->willReturn([$first, $hidden]);
+    $this->container->set(TextPipeline::class, $textPipeline->reveal());
+
+    $this->container->set(EmbeddingsModelInterface::class, new class implements EmbeddingsModelInterface {
+
+      /**
+       * {@inheritdoc}
+       */
+      public function getEmbedding(string $text, EmbeddingModel $model): array {
+        return [0.1, 0.2, 0.3];
+      }
+
+      /**
+       * {@inheritdoc}
+       */
+      public function batchGetEmbedding(array $batch, EmbeddingModel $model): array {
+        // Distinct vector per chunk so we can assert the real chunk is kept.
+        return array_map(static fn (string $text) => [(float) mb_strlen($text)], $batch);
+      }
+
+    });
+
+    $this->processor = $this->container
+      ->get('search_api.plugin_helper')
+      ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
+
+    $items = $this->createNodeItems([
+      ['title' => 'Test', 'type' => 'test_node_bundle_1'],
+    ]);
+
+    $item = array_first($items);
+
+    $field = $this->index->getField(EmbeddingModel::DEFAULT->fieldPrefix());
+    $field->setType('embeddings');
+    $item->setField(EmbeddingModel::DEFAULT->fieldPrefix(), $field);
+    $this->processor->addFieldValues($item);
+
+    $values = $item->getField(EmbeddingModel::DEFAULT->fieldPrefix())->getValues();
+    $this->assertCount(2, $values);
+
+    // First chunk: its own snippet/fragment.
+    $this->assertSame('Intro snippet', $values[0]['content']);
+    $this->assertNull($values[0]['fragment']);
+
+    // Hidden chunk: its own vector, but the first chunk's snippet/fragment.
+    $this->assertSame([(float) mb_strlen('Short body')], $values[1]['vector']);
+    $this->assertSame('Intro snippet', $values[1]['content']);
+    $this->assertNull($values[1]['fragment']);
+  }
+
+  /**
    * Create search api items for testing.
    *
    * @phpstan-param array<array<string, mixed>> $values

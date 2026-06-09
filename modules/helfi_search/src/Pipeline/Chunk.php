@@ -23,6 +23,9 @@ final class Chunk {
     public array $metadata = [],
     public ?string $snippet = NULL,
     public ?string $fragment = NULL,
+    // When TRUE the chunk's own snippet and fragment are too short to display;
+    // search results fall back to the document's first chunk instead.
+    public bool $hidden = FALSE,
   ) {
   }
 

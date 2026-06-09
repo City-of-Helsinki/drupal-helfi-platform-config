@@ -203,3 +203,14 @@ function helfi_search_update_11015(): void {
     $index->save();
   }
 }
+
+/**
+ * Re-index embeddings so short chunks borrow the first chunk's snippet.
+ */
+function helfi_search_update_11016(): void {
+  $index = Index::load('embeddings');
+
+  // Stored content/fragment for short chunks changed; queue a re-index to
+  // pick up the new values. The mapping is unchanged.
+  $index?->reindex();
+}

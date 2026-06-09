@@ -132,6 +132,60 @@ class ContentChunkerTest extends UnitTestCase {
   }
 
   /**
+   * Tests flagHidden marks short non-first chunks as hidden.
+   */
+  public function testFlagHidden(): void {
+    $long = str_repeat('Long content. ', 80);
+    $chunks = [
+      // First chunk is never hidden, even when short: it is the fallback.
+      new Chunk('Short intro.'),
+      new Chunk('Short section.'),
+      new Chunk($long),
+    ];
+
+    $result = ContentChunker::flagHidden($chunks);
+
+    $this->assertFalse($result[0]->hidden);
+    $this->assertTrue($result[1]->hidden);
+    $this->assertFalse($result[2]->hidden);
+  }
+
+  /**
+   * Tests chunk() upholds the hidden invariant across a multi-section doc.
+   *
+   * The first chunk is never hidden; every other chunk is hidden exactly when
+   * its final text is below the display threshold.
+   */
+  public function testChunkFlagsShortSections(): void {
+    $markdown = implode("\n", [
+      // Intro is long enough (>=800) to flush on its own, so the tiny section
+      // that follows stays a standalone short chunk.
+      str_repeat('Intro text. ', 80),
+      '',
+      '## Tiny section',
+      '',
+      'Just a sentence.',
+      '',
+      '## Big section',
+      '',
+      str_repeat('Content. ', 400),
+    ]);
+
+    $chunks = $this->getSut()->chunk($markdown);
+
+    // More than one chunk, and at least one short section got hidden.
+    $this->assertGreaterThan(1, count($chunks));
+    $this->assertFalse($chunks[0]->hidden);
+    $this->assertContains(TRUE, array_map(static fn (Chunk $c) => $c->hidden, $chunks));
+
+    foreach ($chunks as $i => $chunk) {
+      // Hidden iff not the first chunk and shorter than the display threshold.
+      $expected = $i > 0 && mb_strlen($chunk->text) < 800;
+      $this->assertSame($expected, $chunk->hidden);
+    }
+  }
+
+  /**
    * Tests heading-based splitting with headings.
    */
   public function testSplitsByHeadings(): void {
