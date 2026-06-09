@@ -14,6 +14,7 @@ ignored_classes:
   - component--recommendations
   - component--map
   - component--hearings
+  - component--list-of-links
   - announcement
   - content-tags
   - content-date
