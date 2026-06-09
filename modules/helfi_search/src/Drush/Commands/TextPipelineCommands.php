@@ -86,10 +86,11 @@ final class TextPipelineCommands extends Command {
         }
 
         $output->writeln('Title: ' . ($chunk->heading?->title ?? ''));
-        // Hidden chunks display nothing of their own; the snippet and fragment
-        // fall back to the first chunk at index time.
-        $output->writeln('Fragment: ' . ($chunk->hidden ? '' : ($chunk->fragment ?? '')));
-        $output->writeln('Snippet: ' . ($chunk->hidden ? '' : ($chunk->snippet ?? '')));
+        // A hidden chunk (after the first) does
+        // not show its snippet and fragment.
+        $blank = $i > 0 && $chunk->hidden();
+        $output->writeln('Fragment: ' . ($blank ? '' : ($chunk->fragment ?? '')));
+        $output->writeln('Snippet: ' . ($blank ? '' : ($chunk->snippet ?? '')));
         $output->writeln('===');
         $output->writeln((string) $chunk);
       }

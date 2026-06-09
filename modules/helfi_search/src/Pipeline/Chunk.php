@@ -12,6 +12,11 @@ use Drupal\Component\Utility\Unicode;
 final class Chunk {
 
   /**
+   * Body length below which the snippet/fragment is too short to display.
+   */
+  private const int MIN_DISPLAY_LENGTH = 800;
+
+  /**
    * Constructs a new chunk.
    *
    * @phpstan-param array<string, string> $metadata
@@ -23,10 +28,14 @@ final class Chunk {
     public array $metadata = [],
     public ?string $snippet = NULL,
     public ?string $fragment = NULL,
-    // When TRUE the chunk's own snippet and fragment are too short to display;
-    // search results fall back to the document's first chunk instead.
-    public bool $hidden = FALSE,
   ) {
+  }
+
+  /**
+   * Whether this chunk's own snippet and fragment are too short to display.
+   */
+  public function hidden(): bool {
+    return mb_strlen($this->text) < self::MIN_DISPLAY_LENGTH;
   }
 
   /**

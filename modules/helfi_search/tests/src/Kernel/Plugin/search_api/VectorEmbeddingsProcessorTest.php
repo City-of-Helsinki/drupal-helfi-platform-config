@@ -171,10 +171,10 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     $first->snippet = 'Intro snippet';
     $first->fragment = NULL;
 
+    // A short body reports hidden() === TRUE.
     $hidden = new Chunk('Short body');
     $hidden->snippet = 'Short snippet';
     $hidden->fragment = 'thin-section';
-    $hidden->hidden = TRUE;
 
     $textPipeline = $this->prophesize(TextPipeline::class);
     $textPipeline->process(Argument::any())->willReturn([$first, $hidden]);

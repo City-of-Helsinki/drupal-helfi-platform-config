@@ -35,15 +35,6 @@ class ContentChunker {
   private const int SHORT_CHUNK_LENGTH = 200;
 
   /**
-   * Final chunk length below which the snippet/fragment is not displayed.
-   *
-   * Snippets and fragments built from short content are low quality. Such
-   * chunks are flagged hidden so search results fall back to the document's
-   * first chunk. The bound matches the merge-accumulator cap.
-   */
-  private const int MIN_DISPLAY_LENGTH = self::SHORT_CONTENT_THRESHOLD / 2;
-
-  /**
    * Chunk markdown content into embedding-ready pieces.
    *
    * @param string $markdown
@@ -92,24 +83,7 @@ class ContentChunker {
       }
     }
 
-    return self::flagHidden(self::mergeShortChunks($chunks ?: [new Chunk($markdown)]));
-  }
-
-  /**
-   * Flag chunks whose final text is too short to display its own snippet.
-   *
-   * The first chunk is never flagged: it is the fallback target (it usually
-   * holds the page intro). Every other chunk shorter than MIN_DISPLAY_LENGTH
-   * is hidden, regardless of whether it was merged.
-   *
-   * @phpstan-param Chunk[] $chunks
-   * @phpstan-return Chunk[]
-   */
-  public static function flagHidden(array $chunks): array {
-    foreach (array_values($chunks) as $i => $chunk) {
-      $chunk->hidden = $i > 0 && mb_strlen($chunk->text) < self::MIN_DISPLAY_LENGTH;
-    }
-    return $chunks;
+    return self::mergeShortChunks($chunks ?: [new Chunk($markdown)]);
   }
 
   /**

@@ -89,9 +89,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
     $embeddingTexts = array_map('strval', $chunks);
 
-    // The first chunk usually holds the page intro. Hidden chunks have
-    // low-quality snippets/fragments, so they borrow the first chunk's for
-    // display while still being matched on their own vector.
+    // The first chunk usually holds the page intro.
     $first = $chunks[array_key_first($chunks)];
 
     foreach (EmbeddingModel::ENABLED as $model) {
@@ -106,8 +104,8 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
       foreach ($vectors as $index => $vector) {
         // Hidden chunks display the first chunk's snippet/fragment instead of
-        // their own; the vector is always the matched chunk's.
-        $source = $chunks[$index]->hidden ? $first : $chunks[$index];
+        // their own. The first chunk falls back to itself.
+        $source = $chunks[$index]->hidden() ? $first : $chunks[$index];
         foreach ($fields as $field) {
           $field->addValue([
             'vector' => $vector,
