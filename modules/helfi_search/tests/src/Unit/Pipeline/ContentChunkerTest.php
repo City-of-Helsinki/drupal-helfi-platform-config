@@ -133,9 +133,6 @@ class ContentChunkerTest extends UnitTestCase {
 
   /**
    * Tests chunk() yields a short, hidden section beyond the first chunk.
-   *
-   * Confirms the feature actually fires through the pipeline: a thin section
-   * surfaces as a non-first chunk that reports hidden().
    */
   public function testChunkProducesHiddenSection(): void {
     $markdown = implode("\n", [

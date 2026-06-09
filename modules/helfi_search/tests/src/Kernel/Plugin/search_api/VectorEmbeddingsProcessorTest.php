@@ -112,66 +112,10 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
    * Tests embedding plugin.
    */
   public function testPipeline(): void {
-    $chunk = new Chunk('Body text');
-    $chunk->snippet = 'Text';
-    $chunk->fragment = 'how-to-apply';
-
-    $textPipeline = $this->prophesize(TextPipeline::class);
-    $textPipeline->process(Argument::any())->willReturn([$chunk]);
-    $this->container->set(TextPipeline::class, $textPipeline->reveal());
-
-    $this->container->set(EmbeddingsModelInterface::class, new class implements EmbeddingsModelInterface {
-
-      /**
-       * {@inheritdoc}
-       */
-      public function getEmbedding(string $text, EmbeddingModel $model): array {
-        return [0.1, 0.2, 0.3];
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function batchGetEmbedding(array $batch, EmbeddingModel $model): array {
-        return array_map(static fn () => [0.1, 0.2, 0.3], $batch);
-      }
-
-    });
-
-    $this->processor = $this->container
-      ->get('search_api.plugin_helper')
-      ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
-
-    $items = $this->createNodeItems([
-      ['title' => 'Test', 'type' => 'test_node_bundle_1'],
-    ]);
-
-    $item = array_first($items);
-
-    // Attach the embedings field to the item so that getFields(FALSE) inside
-    // the processor returns it.
-    $field = $this->index->getField(EmbeddingModel::DEFAULT->fieldPrefix());
-    $field->setType('embeddings');
-    $item->setField(EmbeddingModel::DEFAULT->fieldPrefix(), $field);
-    $this->processor->addFieldValues($item);
-
-    $field = $item->getField(EmbeddingModel::DEFAULT->fieldPrefix());
-    $values = $field->getValues();
-    $this->assertCount(1, $values);
-    $this->assertSame([0.1, 0.2, 0.3], $values[0]['vector']);
-    $this->assertSame($chunk->snippet, $values[0]['content']);
-    $this->assertSame('how-to-apply', $values[0]['fragment']);
-  }
-
-  /**
-   * Tests hidden chunks borrow the first chunk's snippet and fragment.
-   */
-  public function testHiddenChunkBorrowsFirstChunkSnippet(): void {
-    $first = new Chunk('Intro body');
+    $first = new Chunk('Body text');
     $first->snippet = 'Intro snippet';
-    $first->fragment = NULL;
+    $first->fragment = 'how-to-apply';
 
-    // A short body reports hidden() === TRUE.
     $hidden = new Chunk('Short body');
     $hidden->snippet = 'Short snippet';
     $hidden->fragment = 'thin-section';
@@ -193,7 +137,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
        * {@inheritdoc}
        */
       public function batchGetEmbedding(array $batch, EmbeddingModel $model): array {
-        // Distinct vector per chunk so we can assert the real chunk is kept.
+        // Distinct vector per chunk so we can assert each keeps its own.
         return array_map(static fn (string $text) => [(float) mb_strlen($text)], $batch);
       }
 
@@ -209,6 +153,8 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
 
     $item = array_first($items);
 
+    // Attach the embedings field to the item so that getFields(FALSE) inside
+    // the processor returns it.
     $field = $this->index->getField(EmbeddingModel::DEFAULT->fieldPrefix());
     $field->setType('embeddings');
     $item->setField(EmbeddingModel::DEFAULT->fieldPrefix(), $field);
@@ -217,14 +163,15 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     $values = $item->getField(EmbeddingModel::DEFAULT->fieldPrefix())->getValues();
     $this->assertCount(2, $values);
 
-    // First chunk: its own snippet/fragment.
+    // First chunk: its own vector, snippet and fragment.
+    $this->assertSame([(float) mb_strlen('Body text')], $values[0]['vector']);
     $this->assertSame('Intro snippet', $values[0]['content']);
-    $this->assertNull($values[0]['fragment']);
+    $this->assertSame('how-to-apply', $values[0]['fragment']);
 
-    // Hidden chunk: its own vector, but the first chunk's snippet/fragment.
+    // Hidden chunk: its own vector, but the first chunk's snippet and fragment.
     $this->assertSame([(float) mb_strlen('Short body')], $values[1]['vector']);
     $this->assertSame('Intro snippet', $values[1]['content']);
-    $this->assertNull($values[1]['fragment']);
+    $this->assertSame('how-to-apply', $values[1]['fragment']);
   }
 
   /**
