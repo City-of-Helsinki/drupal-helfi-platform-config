@@ -38,7 +38,7 @@ final readonly class Heading {
   private static function normalize(string $text): string {
     $text = preg_replace('/[*_`]/u', '', $text) ?? $text;
     $text = preg_replace('/\s+/u', ' ', $text) ?? $text;
-    return htmlspecialchars_decode(mb_strtolower(trim($text)));
+    return mb_strtolower(trim($text));
   }
 
 }

@@ -19,10 +19,11 @@ class ChunkAnnotator {
    *   The chunks with snippet and fragment populated.
    */
   public function annotate(array $chunks, array $headingFragments): array {
+    $perSectionFragment = $this->buildSectionFragmentMap($chunks, $headingFragments);
+
     foreach ($chunks as $i => $chunk) {
       $chunk->snippet = SnippetRenderer::render($chunk->text);
-      $chunk->fragment = $this->buildSectionFragmentMap($chunks, $headingFragments)[$i] ?? NULL;
-      $chunk->textFragment = count($chunks) > 1 ? SnippetRenderer::renderTextFragment($chunk->text) : NULL;
+      $chunk->fragment = $perSectionFragment[$i] ?? NULL;
     }
     return $chunks;
   }
