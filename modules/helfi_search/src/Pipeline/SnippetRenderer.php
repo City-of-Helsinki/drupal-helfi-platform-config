@@ -67,7 +67,7 @@ final class SnippetRenderer {
    *
    * @see https://wicg.github.io/scroll-to-text-fragment/#syntax
    */
-  public static function percentEncode(string $text): string {
+  private static function percentEncode(string $text): string {
     $text = rawurlencode($text);
     return str_replace('-', '%2D', $text);
   }
