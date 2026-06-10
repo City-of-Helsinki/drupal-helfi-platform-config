@@ -59,19 +59,37 @@ class QueryBuilderTest extends UnitTestCase {
   }
 
   /**
-   * Tests that buildPromotionQuery picks correct field per language.
+   * Tests buildPromotionQuery percolates the user query, filtered by language.
    */
-  #[DataProvider('languageFieldProvider')]
-  public function testBuildPromotionQueryFieldMapping(string $language, string $expectedField): void {
-    $query = (new QueryBuilder())->buildPromotionQuery('test', $language);
+  public function testBuildPromotionQuery(): void {
+    $query = (new QueryBuilder())->buildPromotionQuery('test', 'fi');
 
     $this->assertEquals(QueryBuilder::PROMOTIONS_INDEX, $query['index']);
-    $this->assertArrayHasKey($expectedField, $query['body']['query']['bool']['must']['match']);
-    $this->assertEquals('test', $query['body']['query']['bool']['must']['match'][$expectedField]['query']);
-    $this->assertEquals('or', $query['body']['query']['bool']['must']['match'][$expectedField]['operator']);
-    $this->assertEquals($language, $query['body']['query']['bool']['filter']['term']['search_api_language']);
+
+    $percolate = $query['body']['query']['bool']['must']['percolate'];
+    $this->assertEquals('query', $percolate['field']);
+    $this->assertEquals(['keywords' => 'test'], $percolate['document']);
+
+    $this->assertEquals('fi', $query['body']['query']['bool']['filter']['term']['search_api_language']);
     $this->assertEquals(QueryBuilder::PROMOTIONS_LIMIT, $query['body']['size']);
     $this->assertEquals(['title', 'description', 'link'], $query['body']['_source']);
+  }
+
+  /**
+   * Tests the stored percolator query picks the correct field per language.
+   */
+  #[DataProvider('languageFieldProvider')]
+  public function testBuildPromotionPercolatorQueryFieldMapping(string $language, string $expectedField): void {
+    $query = QueryBuilder::buildPromotionPercolatorQuery(['sauna', 'uimahalli'], $language);
+
+    $should = $query['bool']['should'];
+    $this->assertEquals(1, $query['bool']['minimum_should_match']);
+    // One match clause per keyword, each requiring all of its tokens.
+    $this->assertCount(2, $should);
+    $this->assertArrayHasKey($expectedField, $should[0]['match']);
+    $this->assertEquals('sauna', $should[0]['match'][$expectedField]['query']);
+    $this->assertEquals('and', $should[0]['match'][$expectedField]['operator']);
+    $this->assertEquals('uimahalli', $should[1]['match'][$expectedField]['query']);
   }
 
   /**
