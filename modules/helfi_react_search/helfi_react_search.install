@@ -210,3 +210,30 @@ function helfi_react_search_update_9019(): void {
 
   $form_display->save();
 }
+
+/**
+ * Note in the event count description that the lifts layout always shows 3.
+ */
+function helfi_react_search_update_9020(): void {
+  $config_name = 'field.field.paragraph.event_list.field_event_count';
+
+  $config = \Drupal::configFactory()->getEditable($config_name);
+  if (!$config->isNew()) {
+    $config->set('description', 'Select the number of items to display on the site. When the Lifts display mode is selected, only 3 events are shown.')
+      ->save();
+  }
+
+  $language_manager = \Drupal::languageManager();
+  if (
+    !$language_manager instanceof ConfigurableLanguageManagerInterface ||
+    !$language_manager->getLanguage('fi')
+  ) {
+    return;
+  }
+
+  $override = $language_manager->getLanguageConfigOverride('fi', $config_name);
+  if (!$override->isNew()) {
+    $override->set('description', 'Valitse sivustolla näytettävien sisältöjen lukumäärä. Kun esitystavaksi on valittu Nostot, näytetään vain 3 tapahtumaa.')
+      ->save();
+  }
+}

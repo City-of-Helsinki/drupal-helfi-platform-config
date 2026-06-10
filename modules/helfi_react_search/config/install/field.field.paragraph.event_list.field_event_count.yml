@@ -12,7 +12,7 @@ field_name: field_event_count
 entity_type: paragraph
 bundle: event_list
 label: 'Count'
-description: 'Select the number of items to display on the site.'
+description: 'Select the number of items to display on the site. When the Lifts display mode is selected, only 3 events are shown.'
 required: false
 translatable: false
 default_value:

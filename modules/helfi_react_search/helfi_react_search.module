@@ -88,23 +88,30 @@ function helfi_react_search_field_widget_complete_form_alter(
   $items = $context['items'];
   $entity = $items->getEntity();
 
-  if (
-    !$entity instanceof ParagraphInterface ||
-    $entity->bundle() !== 'event_list' ||
-    $items->getFieldDefinition()->getName() !== 'field_search_term'
-  ) {
+  if (!$entity instanceof ParagraphInterface || $entity->bundle() !== 'event_list') {
     return;
   }
 
-  // The paragraph's `field_event_list_free_text` is sent to the Linked Events
-  // API as `full_text`; so is the user-facing search bar. Letting both be set
-  // would mean the user's input overrides the editor's pre-filter. Disable the
-  // toggle whenever the pre-filter is already in use.
-  $checkbox = &$field_widget_complete_form['widget']['value'];
-  $checkbox['#states']['disabled'][':input[name$="[field_event_list_free_text][0][value]"]'] = ['filled' => TRUE];
-  $checkbox['#description'] = new TranslatableMarkup(
-    'Cannot be combined with a pre-filter set in "Free text".',
-    [],
-    ['context' => 'Event list paragraph: search term disabled hint'],
-  );
+  switch ($items->getFieldDefinition()->getName()) {
+    case 'field_search_term':
+      // The paragraph's `field_event_list_free_text` is sent to the Linked
+      // Events API as `full_text`; so is the user-facing search bar. Letting
+      // both be set would mean the user's input overrides the editor's
+      // pre-filter. Disable the toggle whenever the pre-filter is already in
+      // use.
+      $checkbox = &$field_widget_complete_form['widget']['value'];
+      $checkbox['#states']['disabled'][':input[name$="[field_event_list_free_text][0][value]"]'] = ['filled' => TRUE];
+      $checkbox['#description'] = new TranslatableMarkup(
+        'Cannot be combined with a pre-filter set in "Free text".',
+        [],
+        ['context' => 'Event list paragraph: search term disabled hint'],
+      );
+      break;
+
+    case 'field_event_count':
+      // The lifts layout always renders the three latest events, so the count
+      // is fixed; disable the widget while that layout is selected.
+      $field_widget_complete_form['widget']['#states']['disabled'][':input[name$="[field_event_list_layout]"]'] = ['value' => 'lifts'];
+      break;
+  }
 }
