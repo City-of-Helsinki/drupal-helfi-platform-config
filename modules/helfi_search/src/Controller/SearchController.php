@@ -251,7 +251,7 @@ final class SearchController extends ControllerBase {
     $result = [
       'promoted' => $promoted,
       'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
-      'total_hits' => $knnResponse['hits']['total']['value'] ?? 0,
+      'total_hits' => ($knnResponse['hits']['total']['value'] ?? 0) + count($promoted),
     ];
     if ($debug && !isset($responses[1]['error'])) {
       $result['debug'] = ['bundles' => $this->queryBuilder->parseBundleAggregations($knnResponse)];
