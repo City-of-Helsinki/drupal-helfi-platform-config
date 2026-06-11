@@ -29,8 +29,8 @@ function helfi_react_search_event_list_allowed_types(): array {
  */
 function helfi_react_search_event_list_allowed_layouts(): array {
   return [
-    'default' => new TranslatableMarkup('Default (list view)', [], ['context' => 'helfi_react_search']),
-    'lifts' => new TranslatableMarkup('Lifts (three latest)', [], ['context' => 'helfi_react_search']),
+    'default' => new TranslatableMarkup('List (default)', [], ['context' => 'helfi_react_search']),
+    'lifts' => new TranslatableMarkup('Cards (three cards)', [], ['context' => 'helfi_react_search']),
   ];
 }
 
@@ -102,7 +102,7 @@ function helfi_react_search_field_widget_complete_form_alter(
       $checkbox = &$field_widget_complete_form['widget']['value'];
       $checkbox['#states']['disabled'][':input[name$="[field_event_list_free_text][0][value]"]'] = ['filled' => TRUE];
       $checkbox['#description'] = new TranslatableMarkup(
-        'Cannot be combined with a pre-filter set in "Free text".',
+        'This filter does not work if you have applied filters in "Filter events and hobbies".',
         [],
         ['context' => 'Event list paragraph: search term disabled hint'],
       );
