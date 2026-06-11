@@ -352,7 +352,9 @@ final class QueryBuilder {
         'metatag_title' => array_first($hit['_source']['metatag_title'] ?? []),
         'published_at' => array_first($hit['_source']['published_at'] ?? []),
         'content' => $innerFields['content'][0] ?? '',
-        'fragment' => $innerFields['fragment'][0] ?? NULL,
+        // @fixme Link fragment system is disabled for now. Matching
+        // individual chunks is not reliable enough at the moment.
+        'fragment' => NULL,
       ];
       // Debug: when more than one inner hit was requested, surface every
       // matching chunk with its individual similarity score.
