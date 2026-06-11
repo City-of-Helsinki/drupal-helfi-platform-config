@@ -38,21 +38,18 @@ final class QueryBuilder {
    * @see \Drupal\Tests\helfi_etusivu\Kernel\Search\PromotionQueryTest
    */
   public function buildPromotionQuery(string $query, string $language): array {
-    $field = match ($language) {
-      "fi", "sv", "en" => "keywords.$language",
-      default => "keywords.en",
-    };
-
     return [
       'index' => self::PROMOTIONS_INDEX,
       'body' => [
         'query' => [
           'bool' => [
+            // Percolate the user's query as a document against the stored
+            // promotion queries (see buildPromotionPercolatorQuery()).
             'must' => [
-              'match' => [
-                $field => [
-                  'query' => $query,
-                  'operator' => 'or',
+              'percolate' => [
+                'field' => 'query',
+                'document' => [
+                  'keywords' => $query,
                 ],
               ],
             ],
@@ -69,6 +66,45 @@ final class QueryBuilder {
           'description',
           'link',
         ],
+      ],
+    ];
+  }
+
+  /**
+   * Build the percolator query stored on a promotion document.
+   *
+   * @param string[] $keywords
+   *   The promotion keywords.
+   * @param string $language
+   *   The promotion language.
+   *
+   * @return array<mixed>
+   *   A query suitable for storing in a `percolator` field.
+   *
+   * @see \Drupal\Tests\helfi_etusivu\Kernel\Search\PromotionQueryTest
+   */
+  public static function buildPromotionPercolatorQuery(array $keywords, string $language): array {
+    $field = match ($language) {
+      "fi", "sv", "en" => "keywords.$language",
+      default => "keywords.en",
+    };
+
+    $should = array_map(
+      static fn (string $keyword): array => [
+        'match' => [
+          $field => [
+            'query' => $keyword,
+            'operator' => 'and',
+          ],
+        ],
+      ],
+      array_values($keywords),
+    );
+
+    return [
+      'bool' => [
+        'should' => $should,
+        'minimum_should_match' => 1,
       ],
     ];
   }
