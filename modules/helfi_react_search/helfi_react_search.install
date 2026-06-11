@@ -157,15 +157,9 @@ function helfi_react_search_update_9018(): void {
  * Install field_event_list_layout display option for event_list paragraph.
  */
 function helfi_react_search_update_9019(): void {
-  // Install new configs (field_event_list_layout storage + field config and
-  // its language overrides). The helper skips existing configs, so this is
-  // safe on already-installed sites.
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_react_search');
 
-  // The installer skips the already-installed form display, so manually fold
-  // the new widget in (between the body and type fields) and bump the weights
-  // of the following fields on sites that already had helfi_react_search.
   $form_display = \Drupal::configFactory()
     ->getEditable('core.entity_form_display.paragraph.event_list.default');
 
@@ -219,7 +213,7 @@ function helfi_react_search_update_9020(): void {
 
   $config = \Drupal::configFactory()->getEditable($config_name);
   if (!$config->isNew()) {
-    $config->set('description', 'Select the number of items to display on the site. When the Lifts display mode is selected, only 3 events are shown.')
+    $config->set('description', 'Select the number of items shown in the list. If you select the card layout, a maximum of three items is always shown.')
       ->save();
   }
 
@@ -233,7 +227,7 @@ function helfi_react_search_update_9020(): void {
 
   $override = $language_manager->getLanguageConfigOverride('fi', $config_name);
   if (!$override->isNew()) {
-    $override->set('description', 'Valitse sivustolla näytettävien sisältöjen lukumäärä. Kun esitystavaksi on valittu Nostot, näytetään vain 3 tapahtumaa.')
+    $override->set('description', 'Valitse listalla näytettävien sisältöjen lukumäärä. Jos olet valinnut esitystavaksi nostot, näytetään aina enintään kolme sisältöä.')
       ->save();
   }
 }

@@ -1,2 +1,2 @@
 label: 'Lukumäärä'
-description: 'Valitse sivustolla näytettävien sisältöjen lukumäärä. Kun esitystavaksi on valittu Nostot, näytetään vain 3 tapahtumaa.'
+description: 'Valitse listalla näytettävien sisältöjen lukumäärä. Jos olet valinnut esitystavaksi nostot, näytetään aina enintään kolme sisältöä.'

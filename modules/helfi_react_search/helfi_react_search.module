@@ -26,6 +26,9 @@ function helfi_react_search_event_list_allowed_types(): array {
 
 /**
  * Event list display (layout) allowed values.
+ *
+ * @return array<string, \Drupal\Core\StringTranslation\TranslatableMarkup>
+ *   Layout options keyed by machine name.
  */
 function helfi_react_search_event_list_allowed_layouts(): array {
   return [
@@ -110,7 +113,7 @@ function helfi_react_search_field_widget_complete_form_alter(
 
     case 'field_event_count':
       // The lifts layout always renders the three latest events, so the count
-      // is fixed; disable the widget while that layout is selected.
+      // is fixed. Disable the widget while that layout is selected.
       $field_widget_complete_form['widget']['#states']['disabled'][':input[name$="[field_event_list_layout]"]'] = ['value' => 'lifts'];
       break;
   }
