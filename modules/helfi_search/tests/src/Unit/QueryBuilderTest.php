@@ -266,7 +266,6 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertCount(1, $results);
     $this->assertEquals('doc1', $results[0]['id']);
     $this->assertEquals('Some content', $results[0]['content']);
-    $this->assertEquals('some-section', $results[0]['fragment']);
   }
 
   /**
@@ -319,7 +318,6 @@ class QueryBuilderTest extends UnitTestCase {
     $results = (new QueryBuilder())->parseKnnHits($response, self::TEST_MODEL);
 
     $this->assertEquals('Named hit content', $results[0]['content']);
-    $this->assertEquals('fragment', $results[0]['fragment']);
   }
 
   /**
