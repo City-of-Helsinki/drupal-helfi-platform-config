@@ -59,9 +59,13 @@ class AccordionItem extends Paragraph implements ParagraphInterface {
    *   The title level.
    */
   protected function getTitleLevel(): int {
-    return (int) $this->getParentEntity()
-      ->get('field_accordion_title_level')
-      ->getString();
+    if ($parentEntity = $this->getParentEntity()) {
+      return (int) $parentEntity
+        ->get('field_accordion_title_level')
+        ->getString();
+    }
+    // 2 is set as default value for the required field.
+    return 2;
   }
 
 }
