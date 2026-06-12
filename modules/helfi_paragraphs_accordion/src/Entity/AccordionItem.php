@@ -19,9 +19,12 @@ class AccordionItem extends Paragraph implements ParagraphInterface {
    *   Parent paragraph has a heading.
    */
   public function hasTitle(): bool {
-    return !$this->getParentEntity()
-      ?->get('field_accordion_title')
-      ?->isEmpty() ?? FALSE;
+    if ($parentEntity = $this->getParentEntity()) {
+      return !$parentEntity
+        ->get('field_accordion_title')
+        ->isEmpty();
+    }
+    return FALSE;
   }
 
   /**
