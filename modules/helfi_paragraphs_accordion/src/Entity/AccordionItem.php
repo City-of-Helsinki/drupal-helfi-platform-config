@@ -41,11 +41,10 @@ class AccordionItem extends Paragraph implements ParagraphInterface {
     $title_level = $this->getTitleLevel();
     $heading_level = 3;
     if ($parentEntity = $this->getParentEntity()) {
-     $heading_level = $parentEntity
-       ->get('field_accordion_heading_level')
-       ->getString();
+      $heading_level = $parentEntity
+        ->get('field_accordion_heading_level')
+        ->getString();
     }
-
 
     // Remove inaccessible skipping between title level and item level.
     // For example:
