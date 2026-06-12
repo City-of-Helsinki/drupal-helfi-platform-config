@@ -20,8 +20,8 @@ class AccordionItem extends Paragraph implements ParagraphInterface {
    */
   public function hasTitle(): bool {
     return !$this->getParentEntity()
-      ->get('field_accordion_title')
-      ->isEmpty();
+      ?->get('field_accordion_title')
+      ?->isEmpty() ?? FALSE;
   }
 
   /**
