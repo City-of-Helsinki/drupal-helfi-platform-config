@@ -22,6 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Semantic search API controller.
+ *
+ * @phpstan-type SearchResult array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
  */
 final class SearchController extends ControllerBase {
 
@@ -180,7 +182,7 @@ final class SearchController extends ControllerBase {
    * @param bool $debug
    *   Whether to include per-bundle aggregations in the result.
    *
-   * @return array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
+   * @return SearchResult
    *   The promoted hits, KNN results, total hit count, and optional debug
    *   payload keyed under 'debug' when $debug is TRUE.
    *
@@ -220,7 +222,7 @@ final class SearchController extends ControllerBase {
    * @param bool $debug
    *   Whether to include per-bundle aggregations in the result.
    *
-   * @return array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
+   * @return SearchResult
    *   The promoted hits, KNN results, total hit count, and optional debug
    *   payload keyed under 'debug' when $debug is TRUE.
    *
@@ -249,7 +251,7 @@ final class SearchController extends ControllerBase {
     $result = [
       'promoted' => $promoted,
       'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
-      'total_hits' => $knnResponse['hits']['total']['value'] ?? 0,
+      'total_hits' => ($knnResponse['hits']['total']['value'] ?? 0) + count($promoted),
     ];
     if ($debug && !isset($responses[1]['error'])) {
       $result['debug'] = ['bundles' => $this->queryBuilder->parseBundleAggregations($knnResponse)];
@@ -260,7 +262,7 @@ final class SearchController extends ControllerBase {
   /**
    * Assemble the JSON response with cache headers.
    *
-   * @param array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>} $result
+   * @param SearchResult $result
    *   The search result payload from one of the execute*() helpers.
    * @param int $page
    *   The 1-based page number echoed back to the client.

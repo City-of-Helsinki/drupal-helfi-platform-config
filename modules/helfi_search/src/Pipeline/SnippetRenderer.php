@@ -25,54 +25,6 @@ final class SnippetRenderer {
   }
 
   /**
-   * Render a text fragment from markdown.
-   *
-   * Text fragment allows linking and highlighting a specific part of the text.
-   */
-  public static function renderTextFragment(string $markdown): string {
-    $text = self::stripMarkdown($markdown);
-    $text = html_entity_decode(strip_tags($text), ENT_HTML5, 'UTF-8');
-    $lines = explode("\n", $text);
-    $textLines = [];
-
-    // Create a text fragment from all lines that have at least 3 words.
-    // If the line has less than 6 words, use the entire line for an exact
-    // match. Else, use the first 3 and last 3 words to mark the start and end
-    // of the fragment.
-    foreach ($lines as $line) {
-      $words = explode(' ', html_entity_decode($line));
-      if (count($words) < 3) {
-        continue;
-      }
-
-      if (count($words) < 6) {
-        $text = implode(' ', $words);
-        $textLines[] = sprintf('text=%s', self::percentEncode($text));
-      }
-      else {
-        $start = implode(' ', array_slice($words, 0, 3));
-        $end = implode(' ', array_slice($words, -3));
-
-        $textLines[] = sprintf('text=%s,%s', self::percentEncode($start), self::percentEncode($end));
-      }
-    }
-
-    return sprintf(':~:%s', implode('&', $textLines));
-  }
-
-  /**
-   * Percent encode a string according to text matching spec.
-   *
-   * In addition to rawurlencode(), we also replace '-'.
-   *
-   * @see https://wicg.github.io/scroll-to-text-fragment/#syntax
-   */
-  private static function percentEncode(string $text): string {
-    $text = rawurlencode($text);
-    return str_replace('-', '%2D', $text);
-  }
-
-  /**
    * Strip Markdown formatting from a string.
    */
   private static function stripMarkdown(string $markdown): string {

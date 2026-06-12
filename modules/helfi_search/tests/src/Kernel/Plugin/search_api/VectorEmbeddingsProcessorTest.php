@@ -160,7 +160,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     $this->assertCount(1, $values);
     $this->assertSame([0.1, 0.2, 0.3], $values[0]['vector']);
     $this->assertSame($chunk->snippet, $values[0]['content']);
-    $this->assertNull($values[0]['fragment']);
+    $this->assertSame('how-to-apply', $values[0]['fragment']);
   }
 
   /**
