@@ -41,7 +41,7 @@ class AccordionItem extends Paragraph implements ParagraphInterface {
     $title_level = $this->getTitleLevel();
     $heading_level = 3;
     if ($parentEntity = $this->getParentEntity()) {
-      $heading_level = $parentEntity
+      $heading_level = (int) $parentEntity
         ->get('field_accordion_heading_level')
         ->getString();
     }
