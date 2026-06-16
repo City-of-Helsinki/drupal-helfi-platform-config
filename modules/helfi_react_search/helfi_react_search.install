@@ -152,3 +152,82 @@ function helfi_react_search_update_9018(): void {
     )
     ->save();
 }
+
+/**
+ * Install field_event_list_layout display option for event_list paragraph.
+ */
+function helfi_react_search_update_9019(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+
+  $form_display = \Drupal::configFactory()
+    ->getEditable('core.entity_form_display.paragraph.event_list.default');
+
+  if ($form_display->isNew()) {
+    return;
+  }
+
+  $config_deps = $form_display->get('dependencies.config') ?? [];
+  $layout_dep = 'field.field.paragraph.event_list.field_event_list_layout';
+  if (!in_array($layout_dep, $config_deps, TRUE)) {
+    $config_deps[] = $layout_dep;
+    sort($config_deps);
+    $form_display->set('dependencies.config', $config_deps);
+  }
+
+  // Make room for the new field at weight 2 by bumping the fields that follow
+  // the body (field_event_list_description, weight 1) by one.
+  $reweight = [
+    'content.field_event_list_type.weight' => 3,
+    'content.field_event_count.weight' => 4,
+    'content.field_event_list_free_text.weight' => 5,
+    'content.field_event_list_category_event.weight' => 6,
+    'content.field_event_list_category_hobby.weight' => 7,
+    'content.field_event_list_keywords.weight' => 8,
+    'third_party_settings.field_group.group_search_filters.weight' => 9,
+  ];
+  foreach ($reweight as $key => $weight) {
+    if ($form_display->get($key) !== NULL) {
+      $form_display->set($key, $weight);
+    }
+  }
+
+  if (!$form_display->get('content.field_event_list_layout')) {
+    $form_display->set('content.field_event_list_layout', [
+      'type' => 'options_buttons',
+      'weight' => 2,
+      'region' => 'content',
+      'settings' => [],
+      'third_party_settings' => [],
+    ]);
+  }
+
+  $form_display->save();
+}
+
+/**
+ * Note in the event count description that the lifts layout always shows 3.
+ */
+function helfi_react_search_update_9020(): void {
+  $config_name = 'field.field.paragraph.event_list.field_event_count';
+
+  $config = \Drupal::configFactory()->getEditable($config_name);
+  if (!$config->isNew()) {
+    $config->set('description', 'Select the number of items shown in the list. If you select the card layout, a maximum of three items is always shown.')
+      ->save();
+  }
+
+  $language_manager = \Drupal::languageManager();
+  if (
+    !$language_manager instanceof ConfigurableLanguageManagerInterface ||
+    !$language_manager->getLanguage('fi')
+  ) {
+    return;
+  }
+
+  $override = $language_manager->getLanguageConfigOverride('fi', $config_name);
+  if (!$override->isNew()) {
+    $override->set('description', 'Valitse listalla näytettävien sisältöjen lukumäärä. Jos olet valinnut esitystavaksi nostot, näytetään aina enintään kolme sisältöä.')
+      ->save();
+  }
+}

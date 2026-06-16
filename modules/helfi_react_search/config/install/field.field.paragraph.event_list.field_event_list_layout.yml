@@ -1,0 +1,23 @@
+uuid: 3c5c4670-1fde-4088-ae35-96a9af7ba178
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_event_list_layout
+    - paragraphs.paragraphs_type.event_list
+  module:
+    - options
+id: paragraph.event_list.field_event_list_layout
+field_name: field_event_list_layout
+entity_type: paragraph
+bundle: event_list
+label: Layout
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: default
+default_value_callback: ''
+settings: {  }
+field_type: list_string
