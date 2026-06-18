@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Unit;
 
+use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\QueryBuilder;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -15,7 +16,7 @@ use PHPUnit\Framework\Attributes\Group;
 #[Group('helfi_search')]
 class QueryBuilderTest extends UnitTestCase {
 
-  private const string TEST_MODEL = 'text-embedding-3-small';
+  private const EmbeddingModel TEST_MODEL = EmbeddingModel::Small;
   private const string TEST_MODEL_FIELD = 'embeddings_text_embedding_3_small';
 
   private const float TEST_MIN_SCORE = 0.68;
@@ -58,18 +59,37 @@ class QueryBuilderTest extends UnitTestCase {
   }
 
   /**
-   * Tests that buildPromotionQuery picks correct field per language.
+   * Tests buildPromotionQuery percolates the user query, filtered by language.
    */
-  #[DataProvider('languageFieldProvider')]
-  public function testBuildPromotionQueryFieldMapping(string $language, string $expectedField): void {
-    $query = (new QueryBuilder())->buildPromotionQuery('test', $language);
+  public function testBuildPromotionQuery(): void {
+    $query = (new QueryBuilder())->buildPromotionQuery('test', 'fi');
 
     $this->assertEquals(QueryBuilder::PROMOTIONS_INDEX, $query['index']);
-    $this->assertArrayHasKey($expectedField, $query['body']['query']['bool']['must']['match_phrase']);
-    $this->assertEquals('test', $query['body']['query']['bool']['must']['match_phrase'][$expectedField]['query']);
-    $this->assertEquals($language, $query['body']['query']['bool']['filter']['term']['search_api_language']);
+
+    $percolate = $query['body']['query']['bool']['must']['percolate'];
+    $this->assertEquals('query', $percolate['field']);
+    $this->assertEquals(['keywords' => 'test'], $percolate['document']);
+
+    $this->assertEquals('fi', $query['body']['query']['bool']['filter']['term']['search_api_language']);
     $this->assertEquals(QueryBuilder::PROMOTIONS_LIMIT, $query['body']['size']);
     $this->assertEquals(['title', 'description', 'link'], $query['body']['_source']);
+  }
+
+  /**
+   * Tests the stored percolator query picks the correct field per language.
+   */
+  #[DataProvider('languageFieldProvider')]
+  public function testBuildPromotionPercolatorQueryFieldMapping(string $language, string $expectedField): void {
+    $query = QueryBuilder::buildPromotionPercolatorQuery(['sauna', 'uimahalli'], $language);
+
+    $should = $query['bool']['should'];
+    $this->assertEquals(1, $query['bool']['minimum_should_match']);
+    // One match clause per keyword, each requiring all of its tokens.
+    $this->assertCount(2, $should);
+    $this->assertArrayHasKey($expectedField, $should[0]['match']);
+    $this->assertEquals('sauna', $should[0]['match'][$expectedField]['query']);
+    $this->assertEquals('and', $should[0]['match'][$expectedField]['operator']);
+    $this->assertEquals('uimahalli', $should[1]['match'][$expectedField]['query']);
   }
 
   /**
@@ -139,7 +159,7 @@ class QueryBuilderTest extends UnitTestCase {
       $query['body']['knn']['inner_hits']['fields'],
     );
     $this->assertEquals(
-      ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at'],
+      ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at', 'metatag_title'],
       $query['body']['_source'],
     );
     $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $query['body']['size']);
@@ -178,6 +198,7 @@ class QueryBuilderTest extends UnitTestCase {
               'entity_bundle' => ['news_article'],
               'url' => ['/fi/test'],
               'label' => ['Test Page'],
+              'metatag_title' => ['Custom Page Title'],
               'published_at' => ['2026-05-04T12:00:00+00:00'],
             ],
           ],
@@ -194,6 +215,7 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals('news_article', $results[0]['bundle']);
     $this->assertEquals('/fi/test', $results[0]['url']);
     $this->assertEquals('Test Page', $results[0]['title']);
+    $this->assertEquals('Custom Page Title', $results[0]['metatag_title']);
     $this->assertEquals('2026-05-04T12:00:00+00:00', $results[0]['published_at']);
     // Missing inner_hits content gracefully degrades to empty string.
     $this->assertEquals('', $results[0]['content']);
@@ -244,7 +266,6 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertCount(1, $results);
     $this->assertEquals('doc1', $results[0]['id']);
     $this->assertEquals('Some content', $results[0]['content']);
-    $this->assertEquals('some-section', $results[0]['fragment']);
   }
 
   /**
@@ -297,7 +318,6 @@ class QueryBuilderTest extends UnitTestCase {
     $results = (new QueryBuilder())->parseKnnHits($response, self::TEST_MODEL);
 
     $this->assertEquals('Named hit content', $results[0]['content']);
-    $this->assertEquals('fragment', $results[0]['fragment']);
   }
 
   /**

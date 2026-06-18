@@ -32,6 +32,11 @@ class EventList extends Paragraph implements ParagraphInterface {
   public function getCount(): int {
     $default_value = 3;
 
+    // The lifts layout always renders the three latest events.
+    if ($this->getEventListLayout() === 'lifts') {
+      return $default_value;
+    }
+
     return (int) ($this->get('field_event_count')->value ?? $default_value);
   }
 
@@ -40,6 +45,13 @@ class EventList extends Paragraph implements ParagraphInterface {
    */
   public function getEventListType(): ?string {
     return $this->get('field_event_list_type')->value;
+  }
+
+  /**
+   * Get the display layout (e.g. 'default' list view or 'lifts').
+   */
+  public function getEventListLayout(): string {
+    return $this->get('field_event_list_layout')->value ?? 'default';
   }
 
   /**

@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace Drupal\helfi_recommendations\Entity;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\Attribute\ContentEntityType;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Component\Plugin\Exception\PluginException;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\taxonomy\TermInterface;
+use Drupal\views\EntityViewsData;
 
 /**
  * Defines the suggested topics entity class.
@@ -23,22 +26,21 @@ use Drupal\taxonomy\TermInterface;
  * This entity stores the AI suggested topics with their scores. The background
  * tasks that generate the suggested topics should write to this entity instead
  * of the content itself in order to avoid conflicts.
- *
- * @ContentEntityType(
- *   id = "suggested_topics",
- *   label = @Translation("AI suggested topics for text"),
- *   handlers = {
- *     "views_data" = "Drupal\views\EntityViewsData",
- *   },
- *   base_table = "suggested_topics",
- *   entity_keys = {
- *     "id" = "uuid",
- *     "uuid" = "uuid",
- *     "published" = "status",
- *     "label" = "id",
- *   },
- * )
  */
+#[ContentEntityType(
+  id: 'suggested_topics',
+  label: new TranslatableMarkup('AI suggested topics for text'),
+  entity_keys: [
+    'id' => 'uuid',
+    'uuid' => 'uuid',
+    'published' => 'status',
+    'label' => 'id',
+  ],
+  handlers: [
+    'views_data' => EntityViewsData::class,
+  ],
+  base_table: 'suggested_topics',
+)]
 class SuggestedTopics extends ContentEntityBase implements SuggestedTopicsInterface {
 
   use EntityPublishedTrait;
@@ -76,8 +78,7 @@ class SuggestedTopics extends ContentEntityBase implements SuggestedTopicsInterf
       return NULL;
     }
 
-    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager */
-    $entityTypeManager = \Drupal::service('entity_type.manager');
+    $entityTypeManager = \Drupal::service(EntityTypeManagerInterface::class);
 
     try {
       $parent = $entityTypeManager->getStorage($parent_type)->load($parent_id);

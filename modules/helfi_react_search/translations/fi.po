@@ -14,6 +14,14 @@ msgid "Events and hobbies"
 msgstr "Tapahtumat ja harrastukset"
 
 msgctxt "helfi_react_search"
+msgid "List (default)"
+msgstr "Lista (oletus)"
+
+msgctxt "helfi_react_search"
+msgid "Cards (three cards)"
+msgstr "Nostot (kolme korttia)"
+
+msgctxt "helfi_react_search"
 msgid "Movies"
 msgstr "Elokuva"
 
@@ -78,5 +86,5 @@ msgid "Games"
 msgstr "Pelit"
 
 msgctxt "Event list paragraph: search term disabled hint"
-msgid "Cannot be combined with a pre-filter set in \"Free text\"."
-msgstr "Ei voi käyttää yhdessä \"Vapaa teksti\" -kentässä asetetun esisuodattimen kanssa."
+msgid "This filter does not work if you have applied filters in \"Filter events and hobbies\"."
+msgstr "Tämä suodatin ei toimi, jos olet tehnyt rajauksia kentässä \"Tapahtumien ja harrastusten rajaus\"."

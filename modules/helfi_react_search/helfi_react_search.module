@@ -25,6 +25,19 @@ function helfi_react_search_event_list_allowed_types(): array {
 }
 
 /**
+ * Event list display (layout) allowed values.
+ *
+ * @return array<string, \Drupal\Core\StringTranslation\TranslatableMarkup>
+ *   Layout options keyed by machine name.
+ */
+function helfi_react_search_event_list_allowed_layouts(): array {
+  return [
+    'default' => new TranslatableMarkup('List (default)', [], ['context' => 'helfi_react_search']),
+    'lifts' => new TranslatableMarkup('Cards (three cards)', [], ['context' => 'helfi_react_search']),
+  ];
+}
+
+/**
  * Event count dropdown selectable values.
  *
  * @return int[]
@@ -78,23 +91,30 @@ function helfi_react_search_field_widget_complete_form_alter(
   $items = $context['items'];
   $entity = $items->getEntity();
 
-  if (
-    !$entity instanceof ParagraphInterface ||
-    $entity->bundle() !== 'event_list' ||
-    $items->getFieldDefinition()->getName() !== 'field_search_term'
-  ) {
+  if (!$entity instanceof ParagraphInterface || $entity->bundle() !== 'event_list') {
     return;
   }
 
-  // The paragraph's `field_event_list_free_text` is sent to the Linked Events
-  // API as `full_text`; so is the user-facing search bar. Letting both be set
-  // would mean the user's input overrides the editor's pre-filter. Disable the
-  // toggle whenever the pre-filter is already in use.
-  $checkbox = &$field_widget_complete_form['widget']['value'];
-  $checkbox['#states']['disabled'][':input[name$="[field_event_list_free_text][0][value]"]'] = ['filled' => TRUE];
-  $checkbox['#description'] = new TranslatableMarkup(
-    'Cannot be combined with a pre-filter set in "Free text".',
-    [],
-    ['context' => 'Event list paragraph: search term disabled hint'],
-  );
+  switch ($items->getFieldDefinition()->getName()) {
+    case 'field_search_term':
+      // The paragraph's `field_event_list_free_text` is sent to the Linked
+      // Events API as `full_text`; so is the user-facing search bar. Letting
+      // both be set would mean the user's input overrides the editor's
+      // pre-filter. Disable the toggle whenever the pre-filter is already in
+      // use.
+      $checkbox = &$field_widget_complete_form['widget']['value'];
+      $checkbox['#states']['disabled'][':input[name$="[field_event_list_free_text][0][value]"]'] = ['filled' => TRUE];
+      $checkbox['#description'] = new TranslatableMarkup(
+        'This filter does not work if you have applied filters in "Filter events and hobbies".',
+        [],
+        ['context' => 'Event list paragraph: search term disabled hint'],
+      );
+      break;
+
+    case 'field_event_count':
+      // The lifts layout always renders the three latest events, so the count
+      // is fixed. Disable the widget while that layout is selected.
+      $field_widget_complete_form['widget']['#states']['disabled'][':input[name$="[field_event_list_layout]"]'] = ['value' => 'lifts'];
+      break;
+  }
 }
