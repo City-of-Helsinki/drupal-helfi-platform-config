@@ -17,7 +17,6 @@
             'click',
             (event) => {
               const message = button.getAttribute('data-helfi-ai-confirm');
-              // eslint-disable-next-line no-alert
               if (message && !window.confirm(message)) {
                 event.preventDefault();
                 event.stopImmediatePropagation();

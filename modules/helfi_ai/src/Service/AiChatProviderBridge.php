@@ -7,7 +7,13 @@ namespace Drupal\helfi_ai\Service;
 use Drupal\ai\AiProviderPluginManager;
 
 /**
- * Bridges the final AiProviderPluginManager to AiChatProviderInterface.
+ * Adapts the AI module's provider manager to a mockable local interface.
+ *
+ * Delegates to the ai.provider service (AiProviderPluginManager) and changes
+ * nothing about its behaviour. It exists purely as a test seam: that manager
+ * is a final class with no interface, so it cannot be mocked directly.
+ * Depending on AiChatProviderInterface instead lets AiSummaryGenerator be unit
+ * tested with a mocked provider.
  */
 final class AiChatProviderBridge implements AiChatProviderInterface {
 
