@@ -189,7 +189,7 @@ final class AiSummaryWidget extends WidgetBase {
     $button = [
       '#type' => 'button',
       '#value' => $has_value
-        ? $this->t('Regenerate AI summary', options: $ctx)
+        ? $this->t('Generate new AI summary', options: $ctx)
         : $this->t('Generate AI summary', options: $ctx),
       '#name' => 'ai_summary_generate_' . $field_name . '_' . $delta,
       '#weight' => 50,
@@ -290,7 +290,7 @@ final class AiSummaryWidget extends WidgetBase {
       }
       if (isset($wrapper['description'])) {
         $wrapper['description']['#value'] = \Drupal::translation()
-          ->translate('You can generate a new AI summary suggestion. The new suggestion will replace the previous summary.', [], ['context' => 'helfi_ai']);
+          ->translate('Generate a new AI summary. It will replace the previous summary.', [], ['context' => 'helfi_ai']);
       }
     }
     else {
