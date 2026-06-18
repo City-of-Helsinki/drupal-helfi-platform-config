@@ -17,13 +17,14 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\helfi_ai\Service\AiSummaryGenerator;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \Drupal\helfi_ai\Service\AiSummaryGenerator
- * @group helfi_ai
  */
+#[Group('helfi_ai')]
 class AiSummaryGeneratorTest extends UnitTestCase {
 
   /**

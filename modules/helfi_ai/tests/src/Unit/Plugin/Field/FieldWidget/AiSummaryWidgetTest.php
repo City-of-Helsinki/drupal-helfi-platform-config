@@ -15,13 +15,14 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\helfi_ai\Plugin\Field\FieldWidget\AiSummaryWidget;
 use Drupal\helfi_ai\Service\AiSummaryGenerator;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @coversDefaultClass \Drupal\helfi_ai\Plugin\Field\FieldWidget\AiSummaryWidget
- * @group helfi_ai
  */
+#[Group('helfi_ai')]
 class AiSummaryWidgetTest extends UnitTestCase {
 
   /**

@@ -8,12 +8,13 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @covers ::helfi_ai_entity_base_field_info
- * @group helfi_ai
  */
+#[Group('helfi_ai')]
 class HookTest extends UnitTestCase {
 
   /**
