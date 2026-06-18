@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_ai\Kernel;
+namespace Drupal\Tests\helfi_platform_config\Kernel\TextConverter;
 
 use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
@@ -11,18 +11,19 @@ use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
- * Proves the summary feature can render *unsaved* form state.
+ * Tests that the text converter renders unsaved, in-memory entity values.
  *
- * The AI summary widget builds the entity from the current edit form
- * (ContentEntityForm::buildEntity()), marks it in_preview, and hands it to the
- * generator, which renders it via the text_converter view mode. This test
- * locks in the underlying capability: an unsaved / in-memory-edited node is
- * converted to text from its *current* values, not the persisted ones.
- *
- * @group helfi_ai
+ * When an entity is marked in_preview, the text_converter view mode renders its
+ * current in-memory values rather than the persisted (and possibly cached)
+ * ones. This is covered for a brand-new unsaved node and for an existing node
+ * carrying unsaved edits.
  */
+#[Group('helfi_platform_config')]
+#[RunTestsInSeparateProcesses]
 class UnsavedTextConversionTest extends EntityKernelTestBase {
 
   /**
