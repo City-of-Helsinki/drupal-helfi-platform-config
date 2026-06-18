@@ -1,6 +1,4 @@
 langcode: en
-openai_models:
-  - text-embedding-3-large
 openai_model_pricing:
   text-embedding-3-large: 0.13
 deboost_bundles:
@@ -16,11 +14,14 @@ ignored_classes:
   - component--recommendations
   - component--map
   - component--hearings
+  - component--list-of-links
   - announcement
   - content-tags
   - content-date
   - content-links
   - block--askem
+canonical_terms:
+  - OmaStadi
 external_links:
   jobs: 'https://www.hel.fi/en/open-jobs'
   events: 'https://tapahtumat.hel.fi/en'

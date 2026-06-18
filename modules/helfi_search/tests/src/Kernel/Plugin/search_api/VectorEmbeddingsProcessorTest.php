@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Kernel\Plugin\search_api;
 
+use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\Pipeline\Chunk;
 use Drupal\helfi_search\Pipeline\PipelineException;
@@ -48,15 +49,10 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
       'type' => 'test_node_bundle_2',
     ])->save();
 
-    // Configure models.
-    $this->config('helfi_search.settings')
-      ->set('openai_models', ['text-embedding-3-small'])
-      ->save();
-
-    $embeddings = new Field($this->index, 'embeddings_text_embedding_3_small');
-    $embeddings->setPropertyPath('embeddings_text_embedding_3_small');
+    $embeddings = new Field($this->index, EmbeddingModel::DEFAULT->fieldPrefix());
+    $embeddings->setPropertyPath(EmbeddingModel::DEFAULT->fieldPrefix());
     $embeddings->setType('string');
-    $embeddings->setLabel('Vector embeddings (text-embedding-3-small)');
+    $embeddings->setLabel('Vector embeddings (default model)');
     $this->index->addField($embeddings);
     $this->index->save();
   }
@@ -108,7 +104,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     $this->processor->addFieldValues($item);
 
     // Item still exists, just has no embedding field values.
-    $field = $item->getField('embeddings_text_embedding_3_small');
+    $field = $item->getField(EmbeddingModel::DEFAULT->fieldPrefix());
     $this->assertEmpty($field?->getValues() ?? []);
   }
 
@@ -129,14 +125,14 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
       /**
        * {@inheritdoc}
        */
-      public function getEmbedding(string $text, string $model): array {
+      public function getEmbedding(string $text, EmbeddingModel $model): array {
         return [0.1, 0.2, 0.3];
       }
 
       /**
        * {@inheritdoc}
        */
-      public function batchGetEmbedding(array $batch, string $model): array {
+      public function batchGetEmbedding(array $batch, EmbeddingModel $model): array {
         return array_map(static fn () => [0.1, 0.2, 0.3], $batch);
       }
 
@@ -154,41 +150,17 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
 
     // Attach the embedings field to the item so that getFields(FALSE) inside
     // the processor returns it.
-    $field = $this->index->getField('embeddings_text_embedding_3_small');
+    $field = $this->index->getField(EmbeddingModel::DEFAULT->fieldPrefix());
     $field->setType('embeddings');
-    $item->setField('embeddings_text_embedding_3_small', $field);
+    $item->setField(EmbeddingModel::DEFAULT->fieldPrefix(), $field);
     $this->processor->addFieldValues($item);
 
-    $field = $item->getField('embeddings_text_embedding_3_small');
+    $field = $item->getField(EmbeddingModel::DEFAULT->fieldPrefix());
     $values = $field->getValues();
     $this->assertCount(1, $values);
     $this->assertSame([0.1, 0.2, 0.3], $values[0]['vector']);
     $this->assertSame($chunk->snippet, $values[0]['content']);
     $this->assertSame('how-to-apply', $values[0]['fragment']);
-  }
-
-  /**
-   * Tests no error when no models are configured.
-   */
-  public function testNoErrorWhenNoModels(): void {
-    $this->config('helfi_search.settings')
-      ->set('openai_models', [])
-      ->save();
-
-    $this->processor = \Drupal::getContainer()
-      ->get('search_api.plugin_helper')
-      ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
-
-    $items = $this->createNodeItems([
-      ['title' => 'Test', 'type' => 'test_node_bundle_1'],
-    ]);
-
-    $item = array_first($items);
-    $this->processor->addFieldValues($item);
-
-    // No error thrown, item still exists.
-    $field = $item->getField('embeddings_text_embedding_3_small');
-    $this->assertEmpty($field?->getValues() ?? []);
   }
 
   /**

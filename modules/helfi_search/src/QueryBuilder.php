@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_search;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\helfi_search\OpenAI\EmbeddingsApi;
 
 /**
  * Builds Elasticsearch queries for search features.
@@ -26,6 +25,8 @@ final class QueryBuilder {
   /**
    * Build a promotion search query for use in search() or msearch().
    *
+   * This method is tested in etusivu.
+   *
    * @param string $query
    *   The search query string.
    * @param string $language
@@ -33,22 +34,22 @@ final class QueryBuilder {
    *
    * @return array<mixed>
    *   An array with 'index' and 'body' keys for Elasticsearch.
+   *
+   * @see \Drupal\Tests\helfi_etusivu\Kernel\Search\PromotionQueryTest
    */
   public function buildPromotionQuery(string $query, string $language): array {
-    $field = match ($language) {
-      "fi", "sv", "en" => "keywords.$language",
-      default => "keywords.en",
-    };
-
     return [
       'index' => self::PROMOTIONS_INDEX,
       'body' => [
         'query' => [
           'bool' => [
+            // Percolate the user's query as a document against the stored
+            // promotion queries (see buildPromotionPercolatorQuery()).
             'must' => [
-              'match_phrase' => [
-                $field => [
-                  'query' => $query,
+              'percolate' => [
+                'field' => 'query',
+                'document' => [
+                  'keywords' => $query,
                 ],
               ],
             ],
@@ -70,14 +71,53 @@ final class QueryBuilder {
   }
 
   /**
+   * Build the percolator query stored on a promotion document.
+   *
+   * @param string[] $keywords
+   *   The promotion keywords.
+   * @param string $language
+   *   The promotion language.
+   *
+   * @return array<mixed>
+   *   A query suitable for storing in a `percolator` field.
+   *
+   * @see \Drupal\Tests\helfi_etusivu\Kernel\Search\PromotionQueryTest
+   */
+  public static function buildPromotionPercolatorQuery(array $keywords, string $language): array {
+    $field = match ($language) {
+      "fi", "sv", "en" => "keywords.$language",
+      default => "keywords.en",
+    };
+
+    $should = array_map(
+      static fn (string $keyword): array => [
+        'match' => [
+          $field => [
+            'query' => $keyword,
+            'operator' => 'and',
+          ],
+        ],
+      ],
+      array_values($keywords),
+    );
+
+    return [
+      'bool' => [
+        'should' => $should,
+        'minimum_should_match' => 1,
+      ],
+    ];
+  }
+
+  /**
    * Build a KNN search query for use in search() or msearch().
    *
    * @param float[] $embeddings
    *   The embedding vector.
    * @param string $language
    *   The language code.
-   * @param string $model
-   *   The embedding model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   The embedding model to use.
    * @param string[]|null $bundles
    *   Filter only given bundles.
    * @param int $size
@@ -100,7 +140,7 @@ final class QueryBuilder {
   public function buildKnnQuery(
     array $embeddings,
     string $language,
-    string $model,
+    EmbeddingModel $model,
     ?array $bundles = NULL,
     int $size = self::KNN_DEFAULT_SIZE,
     int $from = 0,
@@ -114,7 +154,7 @@ final class QueryBuilder {
       default => "en",
     };
 
-    $fieldPrefix = 'embeddings_' . EmbeddingsApi::sanitizeModelName($model);
+    $fieldPrefix = $model->fieldPrefix();
 
     $languageFilter = [
       'term' => [
@@ -122,7 +162,7 @@ final class QueryBuilder {
       ],
     ];
 
-    $source = ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at'];
+    $source = ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at', 'metatag_title'];
 
     $innerHits = [
       '_source' => FALSE,
@@ -148,8 +188,8 @@ final class QueryBuilder {
         ? ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $normalSubset]]]]
         : ['must' => [$languageFilter], 'must_not' => [['terms' => ['entity_bundle' => $contentMustNot]]]];
 
-      // Each KNN clause needs a unique inner_hits name. Otherwise both
-      // clauses keep the default key (the nested field path) and ES rejects
+      // Each KNN clause needs a unique inner_hits name. Otherwise, both
+      // clauses keep the default key (the nested field path), and ES rejects
       // the search.
       $knn = [
         $this->buildKnnEntry(
@@ -318,14 +358,14 @@ final class QueryBuilder {
    *
    * @param array<mixed> $response
    *   The Elasticsearch response array.
-   * @param string $model
-   *   The embedding model name.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   The embedding model to use.
    *
    * @return array<mixed>
    *   Parsed search results.
    */
-  public function parseKnnHits(array $response, string $model): array {
-    $fieldPrefix = 'embeddings_' . EmbeddingsApi::sanitizeModelName($model);
+  public function parseKnnHits(array $response, EmbeddingModel $model): array {
+    $fieldPrefix = $model->fieldPrefix();
     $results = [];
 
     foreach ($response['hits']['hits'] ?? [] as $hit) {
@@ -345,9 +385,12 @@ final class QueryBuilder {
         'bundle' => array_first($hit['_source']['entity_bundle'] ?? []),
         'url' => array_first($hit['_source']['url'] ?? []),
         'title' => array_first($hit['_source']['label'] ?? []),
+        'metatag_title' => array_first($hit['_source']['metatag_title'] ?? []),
         'published_at' => array_first($hit['_source']['published_at'] ?? []),
         'content' => $innerFields['content'][0] ?? '',
-        'fragment' => $innerFields['fragment'][0] ?? NULL,
+        // @fixme Link fragment system is disabled for now. Matching
+        // individual chunks is not reliable enough at the moment.
+        'fragment' => NULL,
       ];
       // Debug: when more than one inner hit was requested, surface every
       // matching chunk with its individual similarity score.

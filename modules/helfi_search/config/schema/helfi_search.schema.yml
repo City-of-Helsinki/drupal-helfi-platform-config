@@ -10,11 +10,6 @@ helfi_search.settings:
       type: string
       label: 'OpenAI base URL'
       description: 'Base URL for OpenAI API. Use {model} placeholder for Azure per-deployment URLs (e.g. https://example.openai.azure.com/openai/deployments/{model}).'
-    openai_models:
-      type: sequence
-      label: 'OpenAI embedding models'
-      sequence:
-        type: string
     openai_model_pricing:
       type: sequence
       label: 'Model pricing per million tokens (USD)'
@@ -34,6 +29,11 @@ helfi_search.settings:
     ignored_classes:
       type: sequence
       label: 'CSS classes whose elements are stripped from indexed HTML'
+      sequence:
+        type: string
+    canonical_terms:
+      type: sequence
+      label: 'Canonical terms applied to the query before embedding'
       sequence:
         type: string
     external_links:
