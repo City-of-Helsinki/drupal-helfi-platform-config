@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_ai\Service;
 
+use Drupal\ai\AiProviderPluginManager;
 use Drupal\ai\Entity\AiPromptInterface;
 use Drupal\ai\OperationType\Chat\ChatInput;
 use Drupal\ai\OperationType\Chat\ChatMessage;
@@ -18,7 +19,7 @@ use Psr\Log\LoggerInterface;
 class AiSummaryGenerator {
 
   public function __construct(
-    private readonly AiChatProviderInterface $aiProvider,
+    private readonly AiProviderPluginManager $aiProvider,
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly TextConverterManager $textConverterManager,
     private readonly LoggerInterface $logger,
