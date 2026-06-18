@@ -18,18 +18,25 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_ai\Service\AiSummaryGenerator;
 
 /**
- * Widget for the AI summary field with a three-state AJAX flow.
+ * Widget for the AI summary field.
  *
- * Modes:
- *   - initial: Generate button only.
- *   - draft: editable WYSIWYG textarea, Accept and Reject buttons.
- *   - accepted: editable WYSIWYG textarea, Regenerate button.
+ * Renders an editable WYSIWYG field plus a single "Generate" button. Clicking
+ * Generate builds the entity from the *current* (unsaved) form values, asks the
+ * AI provider for a summary of that live content, and fills the editable field
+ * with the result. The editor can then freely edit the text and saves it with
+ * the node like any other field.
  *
- * The current mode and value live in the form state. AJAX button handlers
- * mutate that state and write back into raw user input so a form rebuild
- * shows the new value. extractFormValues() reads from the form state when
- * the parent node form is saved, so the persisted value matches what the
- * user accepted, rejected, or regenerated.
+ * The editor is hidden until a summary exists: an empty field shows only the
+ * button. Regenerating a summary that already has content first asks the editor
+ * to confirm, so reviewed or hand-edited text is not overwritten by accident.
+ *
+ * The button is a plain (non-submit) AJAX button on purpose:
+ *   - Its AJAX callback runs regardless of validation and sees the full,
+ *     un-pruned form values, so
+ *     {@see \Drupal\Core\Entity\ContentEntityForm::buildEntity()} reconstructs
+ *     the unsaved entity (including unsaved paragraphs) in memory.
+ *   - It carries no `#limit_validation_errors`, which would otherwise prune the
+ *     submitted values to nothing and hide the editor's unsaved changes.
  */
 #[FieldWidget(
   id: 'ai_summary',
@@ -51,7 +58,12 @@ final class AiSummaryWidget extends WidgetBase {
   }
 
   /**
-   * Reads accepted summary from form state and sets it on the field.
+   * Reads the submitted summary value and sets it on the field.
+   *
+   * The editable element is nested under the AJAX wrapper's summary container,
+   * so its submitted value lives at field[delta][ajax_wrapper][summary][value]
+   * rather than the path the parent WidgetBase expects. Read it explicitly
+   * here.
    *
    * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
    *   The field values.
@@ -61,14 +73,13 @@ final class AiSummaryWidget extends WidgetBase {
    *   The current form state.
    */
   public function extractFormValues(FieldItemListInterface $items, array $form, FormStateInterface $form_state): void {
-    // Skip the parent which reads from raw input; we read from form state
-    // because the accepted value is authoritative there.
     $field_name = $this->fieldDefinition->getName();
-    $state = self::readState($form_state, $field_name, 0);
-    if ($state !== NULL) {
+    $value = $form_state->getValue([$field_name, 0, 'ajax_wrapper', 'summary', 'value']);
+    // A text_format element submits as ['value' => ..., 'format' => ...].
+    if (is_array($value) && array_key_exists('value', $value)) {
       $items->setValue([
         [
-          'value' => $state['value'],
+          'value' => (string) $value['value'],
           'format' => self::TEXT_FORMAT,
         ],
       ]);
@@ -95,10 +106,7 @@ final class AiSummaryWidget extends WidgetBase {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
     $field_name = $items->getFieldDefinition()->getName();
     $wrapper_id = 'ai-summary-' . str_replace('_', '-', $field_name) . '-' . $delta;
-
-    $saved_value = $items[$delta]->value ?? '';
-    $state = self::initState($form_state, $field_name, $delta, $saved_value);
-    $mode = $state['mode'];
+    $saved_value = (string) ($items[$delta]->value ?? '');
 
     // All dynamic content lives inside this container. It is the sole AJAX
     // replacement target.
@@ -109,8 +117,23 @@ final class AiSummaryWidget extends WidgetBase {
     ];
     $wrapper = &$element['ajax_wrapper'];
 
+    // Label and editor live inside a container that is hidden until a summary
+    // exists: an empty field shows only the Generate button. The container is
+    // revealed server-side once it holds a value (saved here, or freshly
+    // generated in self::ajaxCallback()). The editor stays in the DOM while
+    // hidden so the AJAX callback can inject into it and the value still
+    // submits. '.hidden' is core's system/base display:none utility.
+    $wrapper['summary'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => $saved_value === '' ? ['hidden'] : [],
+      ],
+      '#weight' => 0,
+    ];
+    $summary = &$wrapper['summary'];
+
     // Label is rendered inside the AJAX wrapper so it survives replacements.
-    $wrapper['field_label'] = [
+    $summary['field_label'] = [
       '#type' => 'html_tag',
       '#tag' => 'label',
       '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
@@ -118,35 +141,23 @@ final class AiSummaryWidget extends WidgetBase {
       '#weight' => -200,
     ];
 
-    if (!empty($state['error'])) {
-      $wrapper['error'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $state['error'],
-        '#attributes' => ['class' => ['messages', 'messages--error']],
-        '#weight' => -20,
-      ];
-      self::updateState($form_state, $field_name, $delta, ['error' => '']);
-    }
+    $summary['value'] = [
+      '#type' => 'text_format',
+      '#title' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
+      '#title_display' => 'invisible',
+      '#default_value' => $saved_value,
+      '#format' => self::TEXT_FORMAT,
+      '#allowed_formats' => [self::TEXT_FORMAT],
+      '#rows' => 6,
+      '#weight' => 0,
+    ];
 
-    if ($mode !== 'initial') {
-      $wrapper['value'] = [
-        '#type' => 'text_format',
-        '#title' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
-        '#title_display' => 'invisible',
-        '#default_value' => $state['value'],
-        '#format' => self::TEXT_FORMAT,
-        '#allowed_formats' => [self::TEXT_FORMAT],
-        '#rows' => 6,
-      ];
-    }
+    $wrapper['generate'] = $this->generateButton($saved_value !== '', $field_name, $delta, $wrapper_id);
 
-    $wrapper += $this->buildButtons($mode, $field_name, $delta, $wrapper_id);
-
-    $wrapper['mode_description'] = [
+    $wrapper['description'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
-      '#value' => $this->modeDescription($mode),
+      '#value' => $this->t('AI generates a 4–6 bullet point summary based on the current page content. You can edit the summary before saving.', options: ['context' => 'helfi_ai']),
       '#attributes' => ['class' => ['description', 'form-item__description']],
       '#weight' => 100,
     ];
@@ -155,179 +166,117 @@ final class AiSummaryWidget extends WidgetBase {
   }
 
   /**
-   * Returns the helper text shown below the buttons for the given mode.
-   */
-  private function modeDescription(string $mode): string {
-    $ctx = ['context' => 'helfi_ai'];
-    return match ($mode) {
-      'draft' => (string) $this->t('You can edit the text before accepting.', options: $ctx),
-      'accepted' => (string) $this->t('The summary is saved with the page. You can create a new suggestion at any time.', options: $ctx),
-      default => (string) $this->t('AI generates a 4–6 bullet point summary of the page. You can edit the summary before accepting.', options: $ctx),
-    };
-  }
-
-  /**
-   * Builds the action buttons rendered for the given mode.
+   * Builds the Generate / Regenerate AJAX button.
    *
-   * @param string $mode
-   *   Current widget mode: initial, draft, or accepted.
+   * @param bool $has_value
+   *   Whether the field already holds a summary (controls the label).
    * @param string $field_name
    *   Machine name of the field.
    * @param int $delta
    *   Field delta.
    * @param string $wrapper_id
    *   HTML id of the AJAX wrapper element.
-   *
-   * @return array<string, mixed>
-   *   Render array of button elements.
-   */
-  private function buildButtons(string $mode, string $field_name, int $delta, string $wrapper_id): array {
-    $ctx = ['context' => 'helfi_ai'];
-    $buttons = [];
-    if ($mode === 'initial') {
-      $buttons['generate'] = $this->button('generate', $this->t('Generate AI summary', options: $ctx), $field_name, $delta, $wrapper_id, TRUE);
-    }
-    elseif ($mode === 'draft') {
-      $buttons['accept'] = $this->button('accept', $this->t('Accept', options: $ctx), $field_name, $delta, $wrapper_id);
-      $buttons['accept']['#button_type'] = 'primary';
-      $buttons['reject'] = $this->button('reject', $this->t('Reject', options: $ctx), $field_name, $delta, $wrapper_id);
-    }
-    elseif ($mode === 'accepted') {
-      $buttons['regenerate'] = $this->button('generate', $this->t('Regenerate AI summary', options: $ctx), $field_name, $delta, $wrapper_id, TRUE);
-      $buttons['regenerate']['#attributes']['class'][] = 'button--link';
-    }
-    return $buttons;
-  }
-
-  /**
-   * Builds a single AJAX button render array.
-   *
-   * @param string $action
-   *   Button action: generate, accept, or reject.
-   * @param \Drupal\Core\StringTranslation\TranslatableMarkup $label
-   *   Button label.
-   * @param string $field_name
-   *   Machine name of the field.
-   * @param int $delta
-   *   Field delta.
-   * @param string $wrapper_id
-   *   HTML id of the AJAX wrapper element.
-   * @param bool $with_progress
-   *   Whether to show an AJAX throbber while waiting.
    *
    * @return array<string, mixed>
    *   Render array for the button.
    */
-  private function button(string $action, TranslatableMarkup $label, string $field_name, int $delta, string $wrapper_id, bool $with_progress = FALSE): array {
+  private function generateButton(bool $has_value, string $field_name, int $delta, string $wrapper_id): array {
+    $ctx = ['context' => 'helfi_ai'];
     $button = [
       '#type' => 'button',
-      '#value' => $label,
-      '#name' => 'ai_summary_' . $action . '_' . $field_name . '_' . $delta,
-      '#executes_submit_callback' => TRUE,
-      '#limit_validation_errors' => [],
-      '#submit' => [[static::class, 'buttonSubmit']],
+      '#value' => $has_value
+        ? $this->t('Regenerate AI summary', options: $ctx)
+        : $this->t('Generate AI summary', options: $ctx),
+      '#name' => 'ai_summary_generate_' . $field_name . '_' . $delta,
+      '#weight' => 50,
       '#ajax' => [
         'callback' => [static::class, 'ajaxCallback'],
         'wrapper' => $wrapper_id,
+        // Buttons default to the 'mousedown' AJAX event; the confirm behavior
+        // listens on 'click', which fires later. Bind AJAX to 'click' too so a
+        // declined confirm can cancel the request before it starts.
+        'event' => 'click',
+        'progress' => [
+          'type' => 'throbber',
+          'message' => $this->t('AI is creating a summary…', options: $ctx),
+        ],
       ],
     ];
-    if ($with_progress) {
-      $button['#ajax']['progress'] = [
-        'type' => 'throbber',
-        'message' => $this->t('AI is creating a summary…', options: ['context' => 'helfi_ai']),
-      ];
+
+    // A summary that already exists may have been reviewed or hand-edited;
+    // regenerating overwrites it. The confirm behavior loads on every instance
+    // but only acts when the button carries data-helfi-ai-confirm. That marker
+    // is set whenever the button is a "regenerate": here when a saved value
+    // exists, and in self::ajaxCallback() after a fresh generation (covering a
+    // summary created earlier in this same unsaved session).
+    $button['#attached']['library'][] = 'helfi_ai/ai_summary_confirm';
+    if ($has_value) {
+      $button['#attributes']['data-helfi-ai-confirm'] = $this->t('Regenerating replaces the current AI summary, including any manual changes. Continue?', options: $ctx);
     }
+
     return $button;
   }
 
   /**
-   * Submit handler shared by all widget action buttons.
+   * AJAX callback: summarizes live form state and fills the field.
    *
-   * Updates the widget state and the raw user input before the form is
-   * rebuilt. The AJAX callback then returns the rebuilt element.
-   *
-   * @param array<string, mixed> $form
-   *   The form structure.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current form state.
-   */
-  public static function buttonSubmit(array &$form, FormStateInterface $form_state): void {
-    $trigger = $form_state->getTriggeringElement();
-    if (!preg_match('/^ai_summary_(generate|accept|reject)_(.+)_(\d+)$/', $trigger['#name'] ?? '', $m)) {
-      return;
-    }
-    [, $action, $field_name, $delta] = $m;
-    $delta = (int) $delta;
-
-    $form_object = $form_state->getFormObject();
-    if (!$form_object instanceof ContentEntityFormInterface) {
-      return;
-    }
-    $entity = $form_object->getEntity();
-    if (!$entity instanceof ContentEntityInterface) {
-      return;
-    }
-
-    switch ($action) {
-      case 'generate':
-        $generator = \Drupal::service(AiSummaryGenerator::class);
-        $summary = $generator->generate($entity, $entity->language()->getId());
-        if ($summary !== NULL) {
-          self::updateState($form_state, $field_name, $delta, [
-            'mode' => 'draft',
-            'value' => $summary,
-          ]);
-          self::writeUserInputValue($form_state, $field_name, $delta, $summary);
-        }
-        else {
-          self::updateState($form_state, $field_name, $delta, [
-            'error' => (string) t('Could not generate summary. Ensure the content is saved and the AI provider is configured.', options: ['context' => 'helfi_ai']),
-          ]);
-        }
-        break;
-
-      case 'accept':
-        // text_format submits as
-        // field[delta][ajax_wrapper][value][value] and [value][format].
-        $input = $form_state->getUserInput();
-        $edited = NestedArray::getValue($input, [$field_name, $delta, 'ajax_wrapper', 'value', 'value']) ?? '';
-        self::updateState($form_state, $field_name, $delta, [
-          'mode' => 'accepted',
-          'value' => (string) $edited,
-        ]);
-        break;
-
-      case 'reject':
-        $state = self::readState($form_state, $field_name, $delta) ?? [];
-        $original = $state['original'] ?? '';
-        self::updateState($form_state, $field_name, $delta, [
-          'mode' => $original !== '' ? 'accepted' : 'initial',
-          'value' => $original,
-        ]);
-        self::writeUserInputValue($form_state, $field_name, $delta, $original);
-        break;
-    }
-
-    $form_state->setRebuild(TRUE);
-  }
-
-  /**
-   * AJAX callback. Returns the rebuilt widget element for the wrapper.
+   * Runs as the callback of a plain button, so it executes regardless of
+   * validation and sees the full submitted values. Builds the unsaved entity,
+   * asks the generator for a summary, and replaces the wrapper with the value
+   * injected into the editable element.
    *
    * @param array<string, mixed> $form
-   *   The form structure.
+   *   The (rebuilt, processed) form structure.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current form state.
    *
    * @return \Drupal\Core\Ajax\AjaxResponse
-   *   Response replacing the widget wrapper with the rebuilt element.
+   *   Response replacing the widget wrapper.
    */
   public static function ajaxCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
     $trigger = $form_state->getTriggeringElement();
-    // Buttons are children of ajax_wrapper; slice to -1 to get ajax_wrapper.
-    $parents = array_slice($trigger['#array_parents'], 0, -1);
+    // The button is a child of ajax_wrapper; slice off the button key.
+    $parents = array_slice($trigger['#array_parents'] ?? [], 0, -1);
     $wrapper = NestedArray::getValue($form, $parents);
     $wrapper_id = $wrapper['#attributes']['id'] ?? '';
+
+    $summary = self::generateSummary($form, $form_state);
+
+    if ($summary !== NULL && $summary !== '') {
+      // Inject the generated value into the processed text_format textarea
+      // (text_format expands to a 'value' textarea child after processing).
+      if (isset($wrapper['summary']['value']['value'])) {
+        $wrapper['summary']['value']['value']['#value'] = $summary;
+      }
+      // Reveal the editor now that it holds a summary.
+      if (isset($wrapper['summary']['#attributes']['class'])) {
+        $wrapper['summary']['#attributes']['class'] = array_values(
+          array_diff($wrapper['summary']['#attributes']['class'], ['hidden']),
+        );
+      }
+      // Once there is a value, the action becomes a regenerate. Relabel it and
+      // add the confirm marker so a later click in this same session does not
+      // silently overwrite the summary just generated.
+      if (isset($wrapper['generate'])) {
+        $translation = \Drupal::translation();
+        $wrapper['generate']['#value'] = $translation
+          ->translate('Regenerate AI summary', [], ['context' => 'helfi_ai']);
+        $wrapper['generate']['#attributes']['data-helfi-ai-confirm'] = (string) $translation
+          ->translate('Regenerating replaces the current AI summary, including any manual changes. Continue?', [], ['context' => 'helfi_ai']);
+      }
+    }
+    else {
+      // Generation produced nothing: show an inline error and leave the field
+      // unchanged.
+      $wrapper['error'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => \Drupal::translation()
+          ->translate('Could not generate a summary. Add some page content and make sure the AI provider is configured.', [], ['context' => 'helfi_ai']),
+        '#attributes' => ['class' => ['messages', 'messages--error']],
+        '#weight' => -20,
+      ];
+    }
 
     return (new AjaxResponse())->addCommand(
       new ReplaceCommand('#' . $wrapper_id, $wrapper),
@@ -335,89 +284,34 @@ final class AiSummaryWidget extends WidgetBase {
   }
 
   /**
-   * Builds the form-state key for the widget's state bundle.
-   */
-  private static function stateKey(string $field_name, int $delta): string {
-    return 'ai_summary_state_' . $field_name . '_' . $delta;
-  }
-
-  /**
-   * Returns the stored widget state, or NULL if not initialised.
+   * Builds the unsaved entity from current form state and generates a summary.
    *
+   * @param array<string, mixed> $form
+   *   The form structure.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current form state.
-   * @param string $field_name
-   *   Machine name of the field.
-   * @param int $delta
-   *   Field delta.
    *
-   * @return array<string, mixed>|null
-   *   State array, or NULL if not yet initialised.
+   * @return string|null
+   *   The generated summary HTML, or NULL on failure.
    */
-  private static function readState(FormStateInterface $form_state, string $field_name, int $delta): ?array {
-    return $form_state->get(self::stateKey($field_name, $delta));
-  }
-
-  /**
-   * Initialises widget state on first render and returns the current state.
-   *
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current form state.
-   * @param string $field_name
-   *   Machine name of the field.
-   * @param int $delta
-   *   Field delta.
-   * @param string $saved_value
-   *   The currently stored field value, used to set the initial mode.
-   *
-   * @return array<string, mixed>
-   *   The current state array.
-   */
-  private static function initState(FormStateInterface $form_state, string $field_name, int $delta, string $saved_value): array {
-    $key = self::stateKey($field_name, $delta);
-    $state = $form_state->get($key);
-    if ($state === NULL) {
-      $state = [
-        'mode' => $saved_value !== '' ? 'accepted' : 'initial',
-        'value' => $saved_value,
-        'original' => $saved_value,
-        'error' => '',
-      ];
-      $form_state->set($key, $state);
+  private static function generateSummary(array &$form, FormStateInterface $form_state): ?string {
+    $form_object = $form_state->getFormObject();
+    if (!$form_object instanceof ContentEntityFormInterface) {
+      return NULL;
     }
-    return $state;
-  }
-
-  /**
-   * Merges the given changes into the widget state.
-   *
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current form state.
-   * @param string $field_name
-   *   Machine name of the field.
-   * @param int $delta
-   *   Field delta.
-   * @param array<string, mixed> $changes
-   *   Keys to merge into the existing state.
-   */
-  private static function updateState(FormStateInterface $form_state, string $field_name, int $delta, array $changes): void {
-    $key = self::stateKey($field_name, $delta);
-    $state = $form_state->get($key) ?? [];
-    $form_state->set($key, $changes + $state);
-  }
-
-  /**
-   * Writes the given value into raw user input.
-   *
-   * Required so the form rebuild after generate or reject reflects the new
-   * value in the text_format element. The element submits as nested keys
-   * field[delta][value][value] and field[delta][value][format].
-   */
-  private static function writeUserInputValue(FormStateInterface $form_state, string $field_name, int $delta, string $value): void {
-    $input = $form_state->getUserInput();
-    NestedArray::setValue($input, [$field_name, $delta, 'ajax_wrapper', 'value', 'value'], $value);
-    NestedArray::setValue($input, [$field_name, $delta, 'ajax_wrapper', 'value', 'format'], self::TEXT_FORMAT);
-    $form_state->setUserInput($input);
+    $entity = $form_object->buildEntity($form, $form_state);
+    if (!$entity instanceof ContentEntityInterface) {
+      return NULL;
+    }
+    // This is a throwaway clone holding the editor's unsaved changes. Mark it
+    // as a preview so the view builder renders the in-memory state and skips
+    // the render cache — otherwise an existing node would render its saved
+    // (cached) content instead of the current edits. in_preview is an
+    // untyped dynamic property that core's NodeViewBuilder reads.
+    // @phpstan-ignore-next-line
+    $entity->in_preview = TRUE;
+    return \Drupal::service(AiSummaryGenerator::class)
+      ->generate($entity, $entity->language()->getId());
   }
 
 }

@@ -1,0 +1,7 @@
+ai_summary_confirm:
+  version: VERSION
+  js:
+    js/ai-summary-confirm.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

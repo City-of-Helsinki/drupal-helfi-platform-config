@@ -9,7 +9,6 @@ use Drupal\Core\Entity\ContentEntityFormInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Render\RendererInterface;
@@ -41,28 +40,29 @@ class AiSummaryWidgetTest extends UnitTestCase {
   private function createWidget(string $fieldName = 'field_ai_summary'): AiSummaryWidget {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
     $fieldDef->getName()->willReturn($fieldName);
-    return new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], []);
+    $widget = new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], []);
+    $widget->setStringTranslation($this->getStringTranslationStub());
+    return $widget;
   }
 
   /**
-   * Builds a FormState wired with a triggering button and entity form object.
+   * Builds a FieldItemListInterface prophecy with a single item value.
+   *
+   * @return \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface>
+   *   The field item list prophecy double.
    */
-  private function makeFormState(string $action, string $fieldName, int $delta): FormState {
-    $language = $this->prophesize(LanguageInterface::class);
-    $language->getId()->willReturn('fi');
+  private function makeItems(string $savedValue, string $fieldName = 'field_ai_summary'): FieldItemListInterface {
+    $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
+    $fieldDef->getName()->willReturn($fieldName);
 
-    $entity = $this->prophesize(ContentEntityInterface::class);
-    $entity->language()->willReturn($language->reveal());
+    $item = new \stdClass();
+    $item->value = $savedValue;
 
-    $formObject = $this->prophesize(ContentEntityFormInterface::class);
-    $formObject->getEntity()->willReturn($entity->reveal());
-
-    $formState = new FormState();
-    $formState->setTriggeringElement([
-      '#name' => 'ai_summary_' . $action . '_' . $fieldName . '_' . $delta,
-    ]);
-    $formState->setFormObject($formObject->reveal());
-    return $formState;
+    $items = $this->prophesize(FieldItemListInterface::class);
+    $items->getFieldDefinition()->willReturn($fieldDef->reveal());
+    $items->offsetExists(Argument::any())->willReturn(TRUE);
+    $items->offsetGet(Argument::any())->willReturn($item);
+    return $items->reveal();
   }
 
   /**
@@ -84,33 +84,116 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::extractFormValues
-   * @covers ::readState
-   * @covers ::stateKey
+   * @covers ::formElement
+   * @covers ::generateButton
    */
-  public function testExtractFormValuesUsesStateWhenPresent(): void {
+  public function testFormElementEmptyValueBuildsGenerateButton(): void {
+    $widget = $this->createWidget();
+
+    $form = [];
+    $formState = new FormState();
+    $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
+
+    $wrapper = $result['ajax_wrapper'];
+    $this->assertSame('ai-summary-field-ai-summary-0', $wrapper['#attributes']['id']);
+    // Empty field: the editor container is hidden, only the button shows.
+    $this->assertArrayHasKey('summary', $wrapper);
+    $this->assertContains('hidden', $wrapper['summary']['#attributes']['class']);
+    $this->assertArrayHasKey('field_label', $wrapper['summary']);
+    $this->assertArrayHasKey('value', $wrapper['summary']);
+    $this->assertSame('text_format', $wrapper['summary']['value']['#type']);
+    $this->assertSame('', $wrapper['summary']['value']['#default_value']);
+    $this->assertSame('minimal', $wrapper['summary']['value']['#format']);
+    $this->assertArrayHasKey('generate', $wrapper);
+    $this->assertSame('ai_summary_generate_field_ai_summary_0', $wrapper['generate']['#name']);
+    $this->assertSame('Generate AI summary', (string) $wrapper['generate']['#value']);
+    // The behavior always loads, but with nothing to overwrite there is no
+    // confirm marker, so it stays inert.
+    $this->assertContains('helfi_ai/ai_summary_confirm', $wrapper['generate']['#attached']['library']);
+    $this->assertArrayNotHasKey('data-helfi-ai-confirm', $wrapper['generate']['#attributes'] ?? []);
+    $this->assertArrayHasKey('description', $wrapper);
+    $this->assertArrayNotHasKey('error', $wrapper);
+  }
+
+  /**
+   * @covers ::formElement
+   * @covers ::generateButton
+   */
+  public function testFormElementWithSavedValueShowsRegenerateAndDefault(): void {
+    $widget = $this->createWidget();
+
+    $form = [];
+    $formState = new FormState();
+    $result = $widget->formElement($this->makeItems('<ul><li>Saved</li></ul>'), 0, [], $form, $formState);
+
+    $wrapper = $result['ajax_wrapper'];
+    // Saved value: editor visible (not hidden), regenerate guarded by confirm.
+    $this->assertNotContains('hidden', $wrapper['summary']['#attributes']['class']);
+    $this->assertSame('<ul><li>Saved</li></ul>', $wrapper['summary']['value']['#default_value']);
+    $this->assertSame('Regenerate AI summary', (string) $wrapper['generate']['#value']);
+    $this->assertArrayHasKey('data-helfi-ai-confirm', $wrapper['generate']['#attributes']);
+    $this->assertContains('helfi_ai/ai_summary_confirm', $wrapper['generate']['#attached']['library']);
+  }
+
+  /**
+   * @covers ::formElement
+   */
+  public function testFormElementWrapperIdIncludesDelta(): void {
+    $widget = $this->createWidget();
+
+    $form = [];
+    $formState = new FormState();
+    $result = $widget->formElement($this->makeItems(''), 2, [], $form, $formState);
+
+    $this->assertSame('ai-summary-field-ai-summary-2', $result['ajax_wrapper']['#attributes']['id']);
+  }
+
+  /**
+   * @covers ::formElement
+   */
+  public function testFormElementButtonIsPlainAjaxButtonWithoutSubmit(): void {
+    $widget = $this->createWidget();
+
+    $form = [];
+    $formState = new FormState();
+    $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
+
+    $button = $result['ajax_wrapper']['generate'];
+    $this->assertSame('button', $button['#type']);
+    // No submit gating / value pruning.
+    $this->assertArrayNotHasKey('#submit', $button);
+    $this->assertArrayNotHasKey('#executes_submit_callback', $button);
+    $this->assertArrayNotHasKey('#limit_validation_errors', $button);
+    // Wired as an AJAX button, bound to 'click' so the confirm interceptor
+    // (also on 'click') can cancel before the request, unlike the default
+    // button 'mousedown' event.
+    $this->assertSame([AiSummaryWidget::class, 'ajaxCallback'], $button['#ajax']['callback']);
+    $this->assertSame('ai-summary-field-ai-summary-0', $button['#ajax']['wrapper']);
+    $this->assertSame('click', $button['#ajax']['event']);
+  }
+
+  /**
+   * @covers ::extractFormValues
+   */
+  public function testExtractFormValuesSetsValueFromNestedPath(): void {
     $widget = $this->createWidget();
 
     $formState = new FormState();
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'accepted',
-      'value' => 'Summary content here',
-      'original' => '',
-      'error' => '',
+    $formState->setValue(['field_ai_summary', 0, 'ajax_wrapper', 'summary', 'value'], [
+      'value' => '<ul><li>Edited</li></ul>',
+      'format' => 'minimal',
     ]);
 
     $items = $this->prophesize(FieldItemListInterface::class);
-    $items->setValue([['value' => 'Summary content here', 'format' => 'minimal']])->shouldBeCalled();
+    $items->setValue([['value' => '<ul><li>Edited</li></ul>', 'format' => 'minimal']])->shouldBeCalled();
 
     $widget->extractFormValues($items->reveal(), [], $formState);
   }
 
   /**
    * @covers ::extractFormValues
-   * @covers ::readState
-   * @covers ::stateKey
    */
-  public function testExtractFormValuesSkipsWhenNoState(): void {
+  public function testExtractFormValuesSkipsWhenNoValue(): void {
     $widget = $this->createWidget();
 
     $formState = new FormState();
@@ -122,533 +205,49 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::buttonSubmit
-   * @covers ::updateState
-   * @covers ::stateKey
-   */
-  public function testButtonSubmitAccept(): void {
-    $formState = $this->makeFormState('accept', 'field_ai_summary', 0);
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'draft',
-      'value' => 'Draft text',
-      'original' => '',
-      'error' => '',
-    ]);
-    $formState->setUserInput([
-      'field_ai_summary' => [
-        0 => ['ajax_wrapper' => ['value' => ['value' => 'User edited text']]],
-      ],
-    ]);
-
-    $form = [];
-    AiSummaryWidget::buttonSubmit($form, $formState);
-
-    $state = $formState->get('ai_summary_state_field_ai_summary_0');
-    $this->assertSame('accepted', $state['mode']);
-    $this->assertSame('User edited text', $state['value']);
-  }
-
-  /**
-   * @covers ::buttonSubmit
-   * @covers ::updateState
-   * @covers ::writeUserInputValue
-   * @covers ::readState
-   * @covers ::stateKey
-   */
-  public function testButtonSubmitRejectWithOriginal(): void {
-    $formState = $this->makeFormState('reject', 'field_ai_summary', 0);
-    $formState->setUserInput([]);
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'draft',
-      'value' => 'Draft text',
-      'original' => 'Original saved text',
-      'error' => '',
-    ]);
-
-    $form = [];
-    AiSummaryWidget::buttonSubmit($form, $formState);
-
-    $state = $formState->get('ai_summary_state_field_ai_summary_0');
-    $this->assertSame('accepted', $state['mode']);
-    $this->assertSame('Original saved text', $state['value']);
-  }
-
-  /**
-   * @covers ::buttonSubmit
-   * @covers ::updateState
-   * @covers ::writeUserInputValue
-   * @covers ::readState
-   * @covers ::stateKey
-   */
-  public function testButtonSubmitRejectWithoutOriginal(): void {
-    $formState = $this->makeFormState('reject', 'field_ai_summary', 0);
-    $formState->setUserInput([]);
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'draft',
-      'value' => 'Draft text',
-      'original' => '',
-      'error' => '',
-    ]);
-
-    $form = [];
-    AiSummaryWidget::buttonSubmit($form, $formState);
-
-    $state = $formState->get('ai_summary_state_field_ai_summary_0');
-    $this->assertSame('initial', $state['mode']);
-    $this->assertSame('', $state['value']);
-  }
-
-  /**
-   * @covers ::buttonSubmit
-   * @covers ::updateState
-   * @covers ::writeUserInputValue
-   * @covers ::stateKey
-   */
-  public function testButtonSubmitGenerateSuccess(): void {
-    $mockGenerator = $this->prophesize(AiSummaryGenerator::class);
-    $mockGenerator->generate(Argument::any(), 'fi')->willReturn('<ul><li>Summary point</li></ul>');
-
-    $container = $this->createMock(ContainerInterface::class);
-    $container->method('get')->willReturnCallback(
-      function (string $id) use ($mockGenerator): object {
-        if ($id === AiSummaryGenerator::class) {
-          return $mockGenerator->reveal();
-        }
-        throw new \RuntimeException('Unexpected service: ' . $id);
-      }
-    );
-    \Drupal::setContainer($container);
-
-    $formState = $this->makeFormState('generate', 'field_ai_summary', 0);
-    $formState->setUserInput([]);
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'initial',
-      'value' => '',
-      'original' => '',
-      'error' => '',
-    ]);
-
-    $form = [];
-    AiSummaryWidget::buttonSubmit($form, $formState);
-
-    $state = $formState->get('ai_summary_state_field_ai_summary_0');
-    $this->assertSame('draft', $state['mode']);
-    $this->assertSame('<ul><li>Summary point</li></ul>', $state['value']);
-  }
-
-  /**
-   * @covers ::buttonSubmit
-   * @covers ::updateState
-   * @covers ::stateKey
-   */
-  public function testButtonSubmitGenerateNullSetsError(): void {
-    $mockGenerator = $this->prophesize(AiSummaryGenerator::class);
-    $mockGenerator->generate(Argument::any(), 'fi')->willReturn(NULL);
-
-    $stringTranslation = $this->getStringTranslationStub();
-
-    $container = $this->createMock(ContainerInterface::class);
-    $container->method('get')->willReturnCallback(
-      function (string $id) use ($mockGenerator, $stringTranslation): object {
-        if ($id === AiSummaryGenerator::class) {
-          return $mockGenerator->reveal();
-        }
-        if ($id === 'string_translation') {
-          return $stringTranslation;
-        }
-        throw new \RuntimeException('Unexpected service: ' . $id);
-      }
-    );
-    \Drupal::setContainer($container);
-
-    $formState = $this->makeFormState('generate', 'field_ai_summary', 0);
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'initial',
-      'value' => '',
-      'original' => '',
-      'error' => '',
-    ]);
-
-    $form = [];
-    AiSummaryWidget::buttonSubmit($form, $formState);
-
-    $state = $formState->get('ai_summary_state_field_ai_summary_0');
-    $this->assertSame('initial', $state['mode']);
-    $this->assertNotEmpty($state['error']);
-  }
-
-  /**
-   * Builds a FieldItemListInterface prophecy with a single item value.
+   * Builds a form + form state wired for the ajax callback.
    *
-   * @return \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface>
-   *   The field item list prophecy double.
+   * @param string|null $summary
+   *   The summary the mocked generator returns.
+   * @param array<string, mixed> $captured
+   *   Receives the render array passed to the renderer (by reference).
+   *
+   * @return array{0: array<string, mixed>, 1: \Drupal\Core\Form\FormState}
+   *   The form structure and form state.
    */
-  private function makeItems(string $savedValue, string $fieldName = 'field_ai_summary'): FieldItemListInterface {
-    $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
-    $fieldDef->getName()->willReturn($fieldName);
+  private function makeAjaxContext(?string $summary, array &$captured): array {
+    $language = $this->prophesize(LanguageInterface::class);
+    $language->getId()->willReturn('fi');
 
-    $item = new \stdClass();
-    $item->value = $savedValue;
+    $entity = $this->prophesize(ContentEntityInterface::class);
+    $entity->isNew()->willReturn(FALSE);
+    $entity->language()->willReturn($language->reveal());
 
-    $items = $this->prophesize(FieldItemListInterface::class);
-    $items->getFieldDefinition()->willReturn($fieldDef->reveal());
-    $items->offsetExists(0)->willReturn(TRUE);
-    $items->offsetGet(0)->willReturn($item);
-    return $items->reveal();
-  }
+    $formObject = $this->prophesize(ContentEntityFormInterface::class);
+    $formObject->buildEntity(Argument::cetera())->willReturn($entity->reveal());
 
-  /**
-   * @covers ::formElement
-   * @covers ::buildButtons
-   * @covers ::button
-   * @covers ::modeDescription
-   * @covers ::initState
-   * @covers ::stateKey
-   */
-  public function testFormElementInitialModeBuildsGenerateButton(): void {
-    $widget = $this->createWidget();
-    $widget->setStringTranslation($this->getStringTranslationStub());
+    $generator = $this->prophesize(AiSummaryGenerator::class);
+    $generator->generate(Argument::any(), 'fi')->willReturn($summary);
 
-    $form = [];
-    $formState = new FormState();
-    $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
-
-    $wrapper = $result['ajax_wrapper'];
-    $this->assertSame('ai-summary-field-ai-summary-0', $wrapper['#attributes']['id']);
-    $this->assertArrayHasKey('generate', $wrapper);
-    $this->assertArrayNotHasKey('value', $wrapper);
-  }
-
-  /**
-   * @covers ::formElement
-   * @covers ::buildButtons
-   * @covers ::button
-   * @covers ::modeDescription
-   * @covers ::initState
-   * @covers ::stateKey
-   */
-  public function testFormElementAcceptedModeBuildsTextFormatAndRegenerateButton(): void {
-    $widget = $this->createWidget();
-    $widget->setStringTranslation($this->getStringTranslationStub());
-
-    $form = [];
-    $formState = new FormState();
-    $result = $widget->formElement($this->makeItems('<ul><li>Saved</li></ul>'), 0, [], $form, $formState);
-
-    $wrapper = $result['ajax_wrapper'];
-    $this->assertArrayHasKey('value', $wrapper);
-    $this->assertArrayHasKey('regenerate', $wrapper);
-    $this->assertArrayNotHasKey('generate', $wrapper);
-  }
-
-  /**
-   * @covers ::formElement
-   * @covers ::buildButtons
-   * @covers ::button
-   * @covers ::modeDescription
-   * @covers ::initState
-   * @covers ::readState
-   * @covers ::stateKey
-   */
-  public function testFormElementDraftModeBuildsAcceptAndRejectButtons(): void {
-    $widget = $this->createWidget();
-    $widget->setStringTranslation($this->getStringTranslationStub());
-
-    $form = [];
-    $formState = new FormState();
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'draft',
-      'value' => '<ul><li>Draft</li></ul>',
-      'original' => '',
-      'error' => '',
-    ]);
-
-    $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
-
-    $wrapper = $result['ajax_wrapper'];
-    $this->assertArrayHasKey('accept', $wrapper);
-    $this->assertArrayHasKey('reject', $wrapper);
-    $this->assertArrayHasKey('value', $wrapper);
-  }
-
-  /**
-   * @covers ::formElement
-   * @covers ::updateState
-   * @covers ::initState
-   * @covers ::stateKey
-   */
-  public function testFormElementShowsErrorWhenSet(): void {
-    $widget = $this->createWidget();
-    $widget->setStringTranslation($this->getStringTranslationStub());
-
-    $form = [];
-    $formState = new FormState();
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'initial',
-      'value' => '',
-      'original' => '',
-      'error' => 'Something went wrong.',
-    ]);
-
-    $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
-
-    $this->assertArrayHasKey('error', $result['ajax_wrapper']);
-    $this->assertSame('Something went wrong.', $result['ajax_wrapper']['error']['#value']);
-  }
-
-  /**
-   * @covers ::buttonSubmit
-   */
-  public function testButtonSubmitIgnoresInvalidTriggerName(): void {
-    $formState = new FormState();
-    $formState->setTriggeringElement(['#name' => 'some_unrelated_button']);
-
-    $form = [];
-    AiSummaryWidget::buttonSubmit($form, $formState);
-
-    // No state was written; rebuild was not set.
-    $this->assertFalse($formState->isRebuilding());
-  }
-
-  /**
-   * @covers ::buttonSubmit
-   */
-  public function testButtonSubmitIgnoresNonEntityFormObject(): void {
-    $formObject = $this->prophesize(FormInterface::class);
-
-    $formState = new FormState();
-    $formState->setTriggeringElement(['#name' => 'ai_summary_accept_field_ai_summary_0']);
-    $formState->setFormObject($formObject->reveal());
-
-    $form = [];
-    AiSummaryWidget::buttonSubmit($form, $formState);
-
-    $this->assertFalse($formState->isRebuilding());
-  }
-
-  /**
-   * @covers ::formElement
-   * @covers ::buildButtons
-   * @covers ::button
-   * @covers ::modeDescription
-   * @covers ::initState
-   * @covers ::readState
-   * @covers ::stateKey
-   */
-  public function testFormElementAcceptedModeFromStateShowsRegenerateButton(): void {
-    $widget = $this->createWidget();
-    $widget->setStringTranslation($this->getStringTranslationStub());
-
-    $form = [];
-    $formState = new FormState();
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'accepted',
-      'value' => '<ul><li>Accepted summary</li></ul>',
-      'original' => '<ul><li>Accepted summary</li></ul>',
-      'error' => '',
-    ]);
-
-    $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
-
-    $wrapper = $result['ajax_wrapper'];
-    $this->assertArrayHasKey('regenerate', $wrapper);
-    $this->assertArrayHasKey('value', $wrapper);
-    $this->assertArrayNotHasKey('generate', $wrapper);
-    $this->assertArrayNotHasKey('accept', $wrapper);
-  }
-
-  /**
-   * @covers ::formElement
-   * @covers ::buildButtons
-   * @covers ::button
-   * @covers ::modeDescription
-   * @covers ::initState
-   * @covers ::stateKey
-   */
-  public function testFormElementWrapperIdIncludesDelta(): void {
-    $widget = $this->createWidget();
-    $widget->setStringTranslation($this->getStringTranslationStub());
-
-    $form = [];
-    $formState = new FormState();
-    $result = $widget->formElement($this->makeItems('', 'field_ai_summary'), 0, [], $form, $formState);
-
-    $this->assertSame('ai-summary-field-ai-summary-0', $result['ajax_wrapper']['#attributes']['id']);
-  }
-
-  /**
-   * @covers ::formElement
-   * @covers ::buildButtons
-   * @covers ::button
-   * @covers ::modeDescription
-   * @covers ::initState
-   * @covers ::stateKey
-   */
-  public function testFormElementFieldLabelAlwaysPresent(): void {
-    $widget = $this->createWidget();
-    $widget->setStringTranslation($this->getStringTranslationStub());
-
-    $form = [];
-    $formState = new FormState();
-    $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
-
-    $this->assertArrayHasKey('field_label', $result['ajax_wrapper']);
-    $this->assertSame('label', $result['ajax_wrapper']['field_label']['#tag']);
-    $this->assertSame(-200, $result['ajax_wrapper']['field_label']['#weight']);
-  }
-
-  /**
-   * @covers ::formElement
-   * @covers ::buildButtons
-   * @covers ::button
-   * @covers ::modeDescription
-   * @covers ::initState
-   * @covers ::stateKey
-   */
-  public function testFormElementModeDescriptionPresent(): void {
-    $widget = $this->createWidget();
-    $widget->setStringTranslation($this->getStringTranslationStub());
-
-    $form = [];
-    $formState = new FormState();
-    $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
-
-    $this->assertArrayHasKey('mode_description', $result['ajax_wrapper']);
-    $this->assertSame('div', $result['ajax_wrapper']['mode_description']['#tag']);
-    $this->assertSame(100, $result['ajax_wrapper']['mode_description']['#weight']);
-  }
-
-  /**
-   * @covers ::buttonSubmit
-   * @covers ::updateState
-   * @covers ::writeUserInputValue
-   * @covers ::stateKey
-   */
-  public function testButtonSubmitGenerateWritesValueToUserInput(): void {
-    $mockGenerator = $this->prophesize(AiSummaryGenerator::class);
-    $mockGenerator->generate(Argument::any(), 'fi')->willReturn('<ul><li>Generated</li></ul>');
-
-    $container = $this->createMock(ContainerInterface::class);
-    $container->method('get')->willReturnCallback(
-      function (string $id) use ($mockGenerator): object {
-        if ($id === AiSummaryGenerator::class) {
-          return $mockGenerator->reveal();
-        }
-        throw new \RuntimeException('Unexpected service: ' . $id);
+    $renderer = $this->createMock(RendererInterface::class);
+    $renderer->method('renderRoot')->willReturnCallback(
+      function (&$elements) use (&$captured): string {
+        $captured = $elements;
+        // The real renderer populates #attached; ReplaceCommand reads it.
+        $elements['#attached'] = $elements['#attached'] ?? [];
+        return '<div>rendered</div>';
       }
     );
-    \Drupal::setContainer($container);
-
-    $formState = $this->makeFormState('generate', 'field_ai_summary', 0);
-    $formState->setUserInput([]);
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'initial',
-      'value' => '',
-      'original' => '',
-      'error' => '',
-    ]);
-
-    $form = [];
-    AiSummaryWidget::buttonSubmit($form, $formState);
-
-    $input = $formState->getUserInput();
-    $this->assertSame(
-      '<ul><li>Generated</li></ul>',
-      $input['field_ai_summary'][0]['ajax_wrapper']['value']['value'],
-    );
-    $this->assertSame('minimal', $input['field_ai_summary'][0]['ajax_wrapper']['value']['format']);
-  }
-
-  /**
-   * @covers ::buttonSubmit
-   * @covers ::updateState
-   * @covers ::writeUserInputValue
-   * @covers ::readState
-   * @covers ::stateKey
-   */
-  public function testButtonSubmitRejectWritesValueToUserInput(): void {
-    $formState = $this->makeFormState('reject', 'field_ai_summary', 0);
-    $formState->setUserInput([]);
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'draft',
-      'value' => 'Draft text',
-      'original' => 'Original',
-      'error' => '',
-    ]);
-
-    $form = [];
-    AiSummaryWidget::buttonSubmit($form, $formState);
-
-    $input = $formState->getUserInput();
-    $this->assertSame('Original', $input['field_ai_summary'][0]['ajax_wrapper']['value']['value']);
-    $this->assertSame('minimal', $input['field_ai_summary'][0]['ajax_wrapper']['value']['format']);
-  }
-
-  /**
-   * @covers ::buttonSubmit
-   * @covers ::updateState
-   * @covers ::stateKey
-   */
-  public function testButtonSubmitAcceptReadsEditedValueFromUserInput(): void {
-    $formState = $this->makeFormState('accept', 'field_ai_summary', 0);
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'draft',
-      'value' => 'Old draft',
-      'original' => '',
-      'error' => '',
-    ]);
-    $formState->setUserInput([
-      'field_ai_summary' => [
-        0 => ['ajax_wrapper' => ['value' => ['value' => 'Edited by user']]],
-      ],
-    ]);
-
-    $form = [];
-    AiSummaryWidget::buttonSubmit($form, $formState);
-
-    $state = $formState->get('ai_summary_state_field_ai_summary_0');
-    $this->assertSame('accepted', $state['mode']);
-    $this->assertSame('Edited by user', $state['value']);
-    $this->assertTrue($formState->isRebuilding());
-  }
-
-  /**
-   * @covers ::buttonSubmit
-   * @covers ::updateState
-   * @covers ::writeUserInputValue
-   * @covers ::readState
-   * @covers ::stateKey
-   */
-  public function testButtonSubmitSetsRebuildOnSuccess(): void {
-    $formState = $this->makeFormState('reject', 'field_ai_summary', 0);
-    $formState->setUserInput([]);
-    $formState->set('ai_summary_state_field_ai_summary_0', [
-      'mode' => 'draft',
-      'value' => 'Draft',
-      'original' => '',
-      'error' => '',
-    ]);
-
-    $form = [];
-    AiSummaryWidget::buttonSubmit($form, $formState);
-
-    $this->assertTrue($formState->isRebuilding());
-  }
-
-  /**
-   * @covers ::ajaxCallback
-   */
-  public function testAjaxCallbackReturnsReplaceResponse(): void {
-    $renderer = $this->createMock(RendererInterface::class);
-    $renderer->method('renderRoot')->willReturn('<div>rendered</div>');
 
     $container = $this->createMock(ContainerInterface::class);
     $container->method('get')->willReturnCallback(
-      function (string $id) use ($renderer): object {
-        if ($id === 'renderer') {
-          return $renderer;
-        }
-        throw new \RuntimeException('Unexpected service: ' . $id);
+      function (string $id) use ($generator, $renderer): object {
+        return match ($id) {
+          AiSummaryGenerator::class => $generator->reveal(),
+          'renderer' => $renderer,
+          'string_translation' => $this->getStringTranslationStub(),
+          default => throw new \RuntimeException('Unexpected service: ' . $id),
+        };
       }
     );
     \Drupal::setContainer($container);
@@ -660,19 +259,76 @@ class AiSummaryWidgetTest extends UnitTestCase {
           'ajax_wrapper' => [
             '#type' => 'container',
             '#attributes' => ['id' => $wrapperId],
-            '#attached' => [],
+            'summary' => [
+              '#type' => 'container',
+              // Starts hidden (empty field); the callback should reveal it.
+              '#attributes' => ['class' => ['hidden']],
+              'value' => [
+                '#type' => 'text_format',
+                // Processed text_format exposes the textarea at value.value.
+                'value' => ['#type' => 'textarea', '#value' => ''],
+                'format' => ['#type' => 'select'],
+              ],
+            ],
+            'generate' => ['#type' => 'button', '#value' => 'Generate AI summary'],
           ],
         ],
       ],
     ];
 
     $formState = new FormState();
+    $formState->setFormObject($formObject->reveal());
     $formState->setTriggeringElement([
       '#array_parents' => ['field_ai_summary', 0, 'ajax_wrapper', 'generate'],
     ]);
 
+    return [$form, $formState];
+  }
+
+  /**
+   * @covers ::ajaxCallback
+   * @covers ::generateSummary
+   */
+  public function testAjaxCallbackInjectsSummaryOnSuccess(): void {
+    $captured = [];
+    [$form, $formState] = $this->makeAjaxContext('<ul><li>Generated</li></ul>', $captured);
+
     $response = AiSummaryWidget::ajaxCallback($form, $formState);
+
     $this->assertInstanceOf(AjaxResponse::class, $response);
+    $commands = $response->getCommands();
+    $this->assertCount(1, $commands);
+    $this->assertSame('#ai-summary-field-ai-summary-0', $commands[0]['selector']);
+    $this->assertSame('replaceWith', $commands[0]['method']);
+
+    // The generated value was injected into the processed textarea, the editor
+    // container was revealed, and the button relabelled to regenerate. No
+    // error element.
+    $this->assertSame('<ul><li>Generated</li></ul>', $captured['summary']['value']['value']['#value']);
+    $this->assertNotContains('hidden', $captured['summary']['#attributes']['class']);
+    $this->assertSame('Regenerate AI summary', (string) $captured['generate']['#value']);
+    // The fresh summary is now guarded, so regenerating it in this same
+    // session also confirms.
+    $this->assertArrayHasKey('data-helfi-ai-confirm', $captured['generate']['#attributes']);
+    $this->assertArrayNotHasKey('error', $captured);
+  }
+
+  /**
+   * @covers ::ajaxCallback
+   * @covers ::generateSummary
+   */
+  public function testAjaxCallbackShowsErrorWhenGeneratorReturnsNull(): void {
+    $captured = [];
+    [$form, $formState] = $this->makeAjaxContext(NULL, $captured);
+
+    $response = AiSummaryWidget::ajaxCallback($form, $formState);
+
+    $this->assertInstanceOf(AjaxResponse::class, $response);
+    // An error element is rendered; the textarea value is left untouched and
+    // the editor container stays hidden.
+    $this->assertArrayHasKey('error', $captured);
+    $this->assertSame('', $captured['summary']['value']['value']['#value']);
+    $this->assertContains('hidden', $captured['summary']['#attributes']['class']);
   }
 
 }
