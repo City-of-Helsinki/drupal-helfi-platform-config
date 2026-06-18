@@ -20,20 +20,24 @@ msgid "Generate AI summary"
 msgstr "Luo tekoälytiivistelmä"
 
 msgctxt "helfi_ai"
-msgid "Regenerate AI summary"
-msgstr "Luo tekoälytiivistelmä uudelleen"
+msgid "Generate new AI summary"
+msgstr "Luo uusi tekoälytiivistelmä"
 
 msgctxt "helfi_ai"
-msgid "AI is creating a summary…"
-msgstr "Tekoäly luo tiivistelmää…"
+msgid "Generating summary…"
+msgstr "Luodaan tiivistelmää…"
 
 msgctxt "helfi_ai"
 msgid "Regenerating replaces the current AI summary, including any manual changes. Continue?"
 msgstr "Uudelleenluonti korvaa nykyisen tekoälytiivistelmän, mukaan lukien mahdolliset käsin tehdyt muutokset. Haluatko jatkaa?"
 
 msgctxt "helfi_ai"
-msgid "AI generates a 4–6 bullet point summary based on the current page content. You can edit the summary before saving."
-msgstr "Tekoäly luo sivun nykyisestä sisällöstä 4–6 bullet-pisteen tiivistelmän. Voit muokata tiivistelmää ennen tallentamista."
+msgid "AI generates a summary of the page content as a short list of bullet points. Review the summary and edit it if needed. Keep the bullet points."
+msgstr "Tekoäly tiivistää sivun sisällön muutaman kohdan listaksi. Tarkista tiivistelmä ja muokkaa sitä tarvittaessa. Säilytä listamuotoilu."
+
+msgctxt "helfi_ai"
+msgid "Generate a new AI summary. It will replace the previous summary."
+msgstr "Luo uuden tekoälytiivistelmän, joka korvaa aiemman tiivistelmän."
 
 msgctxt "helfi_ai"
 msgid "Could not generate a summary. Add some page content and make sure the AI provider is configured."

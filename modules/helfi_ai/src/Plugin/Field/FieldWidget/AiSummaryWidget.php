@@ -132,13 +132,14 @@ final class AiSummaryWidget extends WidgetBase {
     ];
     $summary = &$wrapper['summary'];
 
-    // Label is rendered inside the AJAX wrapper so it survives replacements.
-    $summary['field_label'] = [
+    // Label lives outside the summary container so it is always visible, even
+    // before a summary has been generated.
+    $wrapper['field_label'] = [
       '#type' => 'html_tag',
       '#tag' => 'label',
       '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
       '#attributes' => ['class' => ['form-item__label']],
-      '#weight' => -200,
+      '#weight' => -10,
     ];
 
     $summary['value'] = [
@@ -150,6 +151,7 @@ final class AiSummaryWidget extends WidgetBase {
       '#allowed_formats' => [self::TEXT_FORMAT],
       '#rows' => 6,
       '#weight' => 0,
+      '#after_build' => [[static::class, 'removeFormatHelp']],
     ];
 
     $wrapper['generate'] = $this->generateButton($saved_value !== '', $field_name, $delta, $wrapper_id);
@@ -157,7 +159,9 @@ final class AiSummaryWidget extends WidgetBase {
     $wrapper['description'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
-      '#value' => $this->t('AI generates a 4–6 bullet point summary based on the current page content. You can edit the summary before saving.', options: ['context' => 'helfi_ai']),
+      '#value' => $saved_value === ''
+        ? $this->t('AI generates a summary of the page content as a short list of bullet points. Review the summary and edit it if needed. Keep the bullet points.', options: ['context' => 'helfi_ai'])
+        : $this->t('Generate a new AI summary. It will replace the previous summary.', options: ['context' => 'helfi_ai']),
       '#attributes' => ['class' => ['description', 'form-item__description']],
       '#weight' => 100,
     ];
@@ -198,7 +202,7 @@ final class AiSummaryWidget extends WidgetBase {
         'event' => 'click',
         'progress' => [
           'type' => 'throbber',
-          'message' => $this->t('AI is creating a summary…', options: $ctx),
+          'message' => $this->t('Generating summary…', options: $ctx),
         ],
       ],
     ];
@@ -215,6 +219,26 @@ final class AiSummaryWidget extends WidgetBase {
     }
 
     return $button;
+  }
+
+  /**
+   * After-build callback: strips the "About text formats" help link.
+   *
+   * filter_process_format() always appends a format[help] child containing a
+   * "More information about text formats" link. It cannot be removed through
+   * the UI or field settings, so we unset it here after the element is built.
+   *
+   * @param array<string, mixed> $element
+   *   The processed text_format element.
+   * @param \Drupal\Core\Form\FormStateInterface $_form_state
+   *   The current form state (unused, required by after_build signature).
+   *
+   * @return array<string, mixed>
+   *   The element with the help link removed.
+   */
+  public static function removeFormatHelp(array $element, FormStateInterface $_form_state): array {
+    unset($element['format']['help']);
+    return $element;
   }
 
   /**
@@ -260,9 +284,13 @@ final class AiSummaryWidget extends WidgetBase {
       if (isset($wrapper['generate'])) {
         $translation = \Drupal::translation();
         $wrapper['generate']['#value'] = $translation
-          ->translate('Regenerate AI summary', [], ['context' => 'helfi_ai']);
+          ->translate('Generate new AI summary', [], ['context' => 'helfi_ai']);
         $wrapper['generate']['#attributes']['data-helfi-ai-confirm'] = (string) $translation
           ->translate('Regenerating replaces the current AI summary, including any manual changes. Continue?', [], ['context' => 'helfi_ai']);
+      }
+      if (isset($wrapper['description'])) {
+        $wrapper['description']['#value'] = \Drupal::translation()
+          ->translate('You can generate a new AI summary suggestion. The new suggestion will replace the previous summary.', [], ['context' => 'helfi_ai']);
       }
     }
     else {
