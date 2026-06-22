@@ -1,5 +1,5 @@
 ai_summary_confirm:
-  version: VERSION
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     js/ai-summary-confirm.js: {}
   dependencies:
