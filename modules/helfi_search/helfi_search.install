@@ -218,3 +218,24 @@ function helfi_search_update_11016(): void {
   $ignored_classes[] = 'component--list-of-links';
   $config->set('ignored_classes', $ignored_classes)->save();
 }
+
+/**
+ * Add the metatag noindex processor to the embeddings index.
+ */
+function helfi_search_update_11017(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  // Exclude entities that have the robots "noindex" metatag set from being
+  // indexed.
+  if (!$index->isValidProcessor('helfi_metatag_noindex')) {
+    $plugin_helper = \Drupal::service('search_api.plugin_helper');
+    $index->addProcessor(
+      $plugin_helper->createProcessorPlugin($index, 'helfi_metatag_noindex')
+    );
+    $index->save();
+  }
+}
