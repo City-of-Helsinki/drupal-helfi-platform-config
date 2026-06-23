@@ -3,6 +3,12 @@ services:
     autoconfigure: true
     autowire: true
 
+  # The metatag dependency is optional, so it is injected with "@?" and the
+  # service falls back to a no-op when metatag is not installed.
+  Drupal\helfi_platform_config\Helper\MetatagHelper:
+    arguments:
+      - '@?metatag.manager'
+
   Drupal\helfi_platform_config\Helper\BlockInstaller: '@helfi_platform_config.helper.block_installer'
   helfi_platform_config.helper.block_installer:
     class: Drupal\helfi_platform_config\Helper\BlockInstaller
@@ -20,9 +26,7 @@ services:
     class: Drupal\helfi_platform_config\EventSubscriber\RouteSubscriber
     arguments: ['@current_route_match']
 
-  Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber:
-    class: Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber
-    arguments: []
+  Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber: ~
 
   Drupal\helfi_platform_config\EventSubscriber\ElasticsearchParamsSubscriber: ~
 

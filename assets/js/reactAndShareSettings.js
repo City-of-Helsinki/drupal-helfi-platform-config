@@ -1,78 +1,55 @@
-(($, Drupal, drupalSettings) => {
-  let loadReactAndShare = () => {
-    if (Drupal.cookieConsent.getConsentStatus(['statistics'])) {
-      window.askem = { settings: { apiKey: drupalSettings.reactAndShareApiKey, disableFonts: true } };
+((Drupal, drupalSettings) => {
+  let scriptLoaded = false;
 
-      if (drupalSettings.siteName !== undefined) {
-        window.askem.settings.categories = [drupalSettings.siteName];
-      }
+  const loadScript = () => {
+    if (scriptLoaded) return;
+    scriptLoaded = true;
 
-      const errorTracker = {};
-      const errorFrequency = 10;
+    window.askem = { settings: { apiKey: drupalSettings.reactAndShareApiKey, disableFonts: true } };
 
-      // Report errors to Sentry but throttle them so that only every tenth
-      // is sent to avoid spamming logs.
-      // biome-ignore lint/correctness/noUnusedVariables: @todo UHF-12501
-      function reportToSentryThrottled(errorKey, error) {
-        if (!errorTracker[errorKey]) {
-          errorTracker[errorKey] = { count: 0 };
-        }
-
-        errorTracker[errorKey].count++;
-
-        if (errorTracker[errorKey].count === 1 || errorTracker[errorKey].count % errorFrequency === 0) {
-          Sentry.captureException(error);
-        }
-      }
-
-      function handleScriptError(event) {
-        const script = event.target;
-        const src = script.src || 'inline-script';
-        const _err = new Error(`Askem script failed to load: ${src}`);
-
-        // reportToSentryThrottled(src, err);
-        console.warn('error reporting works');
-      }
-
-      // Prevent Sentry noise from Askem's internal failed fetches in Safari.
-      // Askem can emit unhandled promise rejections like
-      // "TypeError: Load failed (feedback.askem.com)" when its API calls fail.
-      if (drupalSettings.askemMonitoringEnabled && !window.__askemUnhandledRejectionHandlerInstalled) {
-        window.__askemUnhandledRejectionHandlerInstalled = true;
-
-        window.addEventListener('unhandledrejection', (event) => {
-          const reason = event.reason;
-          const reasonText = (typeof reason === 'string' ? reason : reason?.message) ?? '';
-
-          const isAskemLoadFailed =
-            reasonText.includes('Load failed') &&
-            (reasonText.includes('feedback.askem.com') || reasonText.includes('askem.com'));
-
-          if (isAskemLoadFailed) {
-            event.preventDefault();
-          }
-        });
-      }
-
-      const scriptElement = document.createElement('script');
-      scriptElement.crossOrigin = 'anonymous';
-      scriptElement.src = 'https://cdn.askem.com/plugin/askem.js';
-
-      // Use the error monitoring only if it is set on.
-      if (drupalSettings.askemMonitoringEnabled) {
-        scriptElement.onerror = handleScriptError;
-      }
-
-      document.body.appendChild(scriptElement);
-
-      $('.js-askem__container .js-askem-cookie-compliance').hide();
-      $('.js-askem__container .askem').show();
-    } else {
-      $('.js-askem__container .js-askem-cookie-compliance').show();
+    if (drupalSettings.siteName !== undefined) {
+      window.askem.settings.categories = [drupalSettings.siteName];
     }
 
-    // Only load once.
-    loadReactAndShare = () => {};
+    function handleScriptError(event) {
+      const script = event.target;
+      const src = script.src || 'inline-script';
+      const _err = new Error(`Askem script failed to load: ${src}`);
+
+      // reportToSentryThrottled(src, err);
+      console.warn('error reporting works');
+    }
+
+    const scriptElement = document.createElement('script');
+    scriptElement.crossOrigin = 'anonymous';
+    scriptElement.src = 'https://cdn.askem.com/plugin/askem.js';
+
+    // Use the error monitoring only if it is set on.
+    if (drupalSettings.askemMonitoringEnabled) {
+      scriptElement.onerror = handleScriptError;
+    }
+
+    document.body.appendChild(scriptElement);
+  };
+
+  const toggle = (selector, visible) => {
+    document.querySelectorAll(selector).forEach((element) => {
+      element.style.display = visible ? '' : 'none';
+    });
+  };
+
+  const loadReactAndShare = () => {
+    const askemBanner = '.js-askem__container .askem:not(.js-askem-cookie-compliance)';
+    const complianceBanner = '.js-askem__container .js-askem-cookie-compliance';
+
+    if (Drupal.cookieConsent.getConsentStatus(['statistics'])) {
+      loadScript();
+      toggle(complianceBanner, false);
+      toggle(askemBanner, true);
+    } else {
+      toggle(askemBanner, false);
+      toggle(complianceBanner, true);
+    }
   };
 
   if (Drupal.cookieConsent.initialized()) {
@@ -80,4 +57,7 @@
   } else {
     Drupal.cookieConsent.loadFunction(loadReactAndShare);
   }
-})(jQuery, Drupal, drupalSettings);
+
+  // Re-run the loadReactAndShare when cookie consent changes.
+  window.addEventListener('hds-cookie-consent-changed', loadReactAndShare);
+})(Drupal, drupalSettings);

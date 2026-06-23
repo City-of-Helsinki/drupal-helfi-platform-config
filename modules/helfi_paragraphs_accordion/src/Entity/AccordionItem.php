@@ -19,9 +19,12 @@ class AccordionItem extends Paragraph implements ParagraphInterface {
    *   Parent paragraph has a heading.
    */
   public function hasTitle(): bool {
-    return !$this->getParentEntity()
-      ->get('field_accordion_title')
-      ->isEmpty();
+    if ($parentEntity = $this->getParentEntity()) {
+      return !$parentEntity
+        ->get('field_accordion_title')
+        ->isEmpty();
+    }
+    return FALSE;
   }
 
   /**
@@ -36,9 +39,12 @@ class AccordionItem extends Paragraph implements ParagraphInterface {
     }
 
     $title_level = $this->getTitleLevel();
-    $heading_level = (int) $this->getParentEntity()
-      ->get('field_accordion_heading_level')
-      ->getString();
+    $heading_level = 3;
+    if ($parentEntity = $this->getParentEntity()) {
+      $heading_level = (int) $parentEntity
+        ->get('field_accordion_heading_level')
+        ->getString();
+    }
 
     // Remove inaccessible skipping between title level and item level.
     // For example:
@@ -56,9 +62,13 @@ class AccordionItem extends Paragraph implements ParagraphInterface {
    *   The title level.
    */
   protected function getTitleLevel(): int {
-    return (int) $this->getParentEntity()
-      ->get('field_accordion_title_level')
-      ->getString();
+    if ($parentEntity = $this->getParentEntity()) {
+      return (int) $parentEntity
+        ->get('field_accordion_title_level')
+        ->getString();
+    }
+    // 2 is set as default value for the required field.
+    return 2;
   }
 
 }

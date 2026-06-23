@@ -47,6 +47,7 @@
           theme: settings.hdbt_cookie_banner.theme,
           settingsPageSelector: settings.hdbt_cookie_banner.settingsPageSelector,
           spacerParentSelector: settings.hdbt_cookie_banner.spacerParentSelector || '.footer',
+          submitEvent: true,
         };
         window.hdsCookieConsentInitialized = true;
         window.hds.CookieConsentCore.create(apiUrl, options);

@@ -58,6 +58,7 @@ class HtmxControllerTest extends KernelTestBase {
     'imagecache_external',
     'paragraphs',
     'external_entities',
+    'text',
     'node',
     'helfi_paragraphs_curated_event_list',
   ];

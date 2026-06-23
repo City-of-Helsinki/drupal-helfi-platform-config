@@ -15,14 +15,9 @@ services:
   Drupal\helfi_search\Pipeline\HtmlExtractor: ~
   Drupal\helfi_search\Pipeline\HtmlCleaner: ~
   Drupal\helfi_search\Pipeline\ContentChunker: ~
-  Drupal\helfi_search\Pipeline\MetadataComposer: ~
+  Drupal\helfi_search\Pipeline\ChunkAnnotator: ~
   Drupal\helfi_search\Pipeline\TextPipeline: ~
 
   Drupal\helfi_search\QueryBuilder: ~
 
   Drupal\helfi_search\EventSubscriber\SearchApiSubscriber: ~
-
-  Drupal\helfi_search\ClientBuilder: ~
-  helfi_search.etusivu_elastic_client:
-    class: Elastic\Elasticsearch\Client
-    factory: ['@Drupal\helfi_search\ClientBuilder', 'create']

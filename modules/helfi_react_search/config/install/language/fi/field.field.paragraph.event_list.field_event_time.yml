@@ -1,5 +1,5 @@
 label: Ajankohta
-description: 'Näytä "ajankohta" -suodatin.'
+description: ''
 settings:
   on_label: Kyllä
   off_label: Ei

@@ -1,0 +1,21 @@
+uuid: 52166225-b776-4231-b5ee-babe3b5e4581
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_event_list_layout
+field_name: field_event_list_layout
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: 'helfi_react_search_event_list_allowed_layouts'
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

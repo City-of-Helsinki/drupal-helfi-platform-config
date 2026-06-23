@@ -61,7 +61,7 @@ class UnitsForServiceTest extends ServiceProcessorTestBase {
 
     $imageStyle = ImageStyle::create([
       'label' => 'Test image style',
-      'name' => '1.5_1022w_682h_LQ',
+      'name' => '1_5_1022w_682h_lq',
     ]);
     $imageStyle->save();
 

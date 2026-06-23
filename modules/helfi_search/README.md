@@ -13,8 +13,8 @@ flowchart TD
     HtmlCleaner -- "Strips non-content elements from the HTML" --> MarkdownConverter
     MarkdownConverter -- "Converts clean HTML to Markdown" --> TextNormalizer
     TextNormalizer -- "Whitespace normalization" --> ContentChunker
-    ContentChunker -- "Splits long content into overlapping chunks" --> MetadataComposer
-    MetadataComposer -- "Adds metadata to each chunk" --> EmbeddingsModelInterface
+    ContentChunker -- "Splits long content into overlapping chunks" --> ChunkAnnotator
+    ChunkAnnotator -- "Merges short chunks and annotates with snippet/fragment" --> EmbeddingsModelInterface
     EmbeddingsModelInterface -- "Converts chunks to vectors" --> Vectors
 ```
 
@@ -36,4 +36,15 @@ drush config:set helfi_search.settings min_score 0.7
 drush config:set helfi_search.settings deboost_factor 0.85
 drush config:set --input-format=yaml helfi_search.settings ignored_classes '[is-hidden, visually-hidden, new-class]'
 drush config:set --input-format=yaml helfi_search.settings deboost_bundles '[news_article, news_item, some_bundle]'
+```
+
+### Per-site additions to `ignored_classes`
+
+The `ignored_classes` list is shared across every site that imports the same config. When a single site needs to strip an extra CSS class without polluting the shared list, declare it in `all.settings.php`:
+
+```php
+// settings.php
+$settings['helfi_search_additional_ignored_classes'] = [
+  'policymaker-members',
+];
 ```

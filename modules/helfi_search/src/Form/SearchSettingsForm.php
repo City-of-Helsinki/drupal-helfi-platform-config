@@ -121,6 +121,7 @@ final class SearchSettingsForm extends ConfigFormBase {
       'events' => $this->t('Events URL'),
       'decisions' => $this->t('Decisions URL'),
       'contact' => $this->t('Contact URL'),
+      'helsinki_near_you' => $this->t('Helsinki near you URL'),
     ];
 
     foreach ($external_link_labels as $key => $label) {
@@ -137,6 +138,20 @@ final class SearchSettingsForm extends ConfigFormBase {
       '#config_target' => 'helfi_search.settings:ai_register_url',
     ];
 
+    $form['query_preprocessing'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Query preprocessing'),
+      '#open' => TRUE,
+    ];
+
+    $form['query_preprocessing']['canonical_terms'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Canonical brand terms'),
+      '#description' => $this->t('Brand terms whose canonical stylization should be restored in the query before it is embedded, e.g. <code>OmaStadi</code>. This keeps short query tokenization the same way it is in the indexed content. One term per line, written exactly as it should appear.'),
+      '#rows' => 8,
+      '#config_target' => $this->linesConfigTarget('canonical_terms'),
+    ];
+
     $form['pipeline'] = [
       '#type' => 'details',
       '#title' => $this->t('Indexing pipeline'),
@@ -146,25 +161,35 @@ final class SearchSettingsForm extends ConfigFormBase {
     $form['pipeline']['ignored_classes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Ignored CSS classes'),
-      '#description' => $this->t('Elements whose <code>class</code> attribute contains any of these classes are stripped from indexed HTML. One class per line. Exact match (no partials, no leading dot).<br><strong>Note:</strong> this value is not in <code>config_ignore</code>. To keep the shared Elasticsearch index consistent, the same list should be applied on every site.'),
+      '#description' => $this->t('Elements whose <code>class</code> attribute contains any of these classes are stripped from indexed HTML. One class per line. Exact match (no partials, no leading dot).<br><strong>Note:</strong> this value is not in <code>config_ignore</code>.'),
       '#rows' => 12,
-      '#config_target' => new ConfigTarget(
-        'helfi_search.settings',
-        'ignored_classes',
-        static function (?array $value): string {
-          return implode("\n", $value ?? []);
-        },
-        static function (string $value): array {
-          $lines = preg_split('/\R/', $value, -1, PREG_SPLIT_NO_EMPTY) ?: [];
-          return array_values(array_filter(
-            array_map('trim', $lines),
-            static fn (string $line): bool => $line !== '',
-          ));
-        },
-      ),
+      '#config_target' => $this->linesConfigTarget('ignored_classes'),
     ];
 
     return $form;
+  }
+
+  /**
+   * Builds a config target mapping a newline-separated textarea to a list.
+   *
+   * @param string $property
+   *   The config property path within helfi_search.settings.
+   */
+  private function linesConfigTarget(string $property): ConfigTarget {
+    return new ConfigTarget(
+      'helfi_search.settings',
+      $property,
+      static function (?array $value): string {
+        return implode("\n", $value ?? []);
+      },
+      static function (string $value): array {
+        $lines = preg_split('/\R/', $value, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        return array_values(array_filter(
+          array_map('trim', $lines),
+          static fn (string $line): bool => $line !== '',
+        ));
+      },
+    );
   }
 
 }

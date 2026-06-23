@@ -12,7 +12,7 @@ field_name: field_event_count
 entity_type: paragraph
 bundle: event_list
 label: 'Count'
-description: 'Select the number of items to display on the site.'
+description: 'Select the number of items shown in the list. If you select the card layout, a maximum of three items is always shown.'
 required: false
 translatable: false
 default_value:

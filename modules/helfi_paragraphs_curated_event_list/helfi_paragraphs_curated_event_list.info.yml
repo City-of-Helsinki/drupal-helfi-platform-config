@@ -3,14 +3,18 @@ type: module
 core_version_requirement: '^10 || ^11'
 container_rebuild_required: true
 dependencies:
+  - drupal:content_translation
   - drupal:link
   - drupal:field
   - drupal:datetime
   - drupal:breakpoint
   - drupal:responsive_image
+  - drupal:text
   - linkit:linkit
   - external_entities:external_entities
   - helfi_api_base:helfi_api_base
+  - helfi_ckeditor:helfi_ckeditor
+  - helfi_image_styles:helfi_image_styles
   - helfi_platform_config:helfi_platform_config
   - imagecache_external:imagecache_external
   - paragraphs:paragraphs

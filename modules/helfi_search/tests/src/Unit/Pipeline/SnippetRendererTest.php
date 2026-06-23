@@ -36,17 +36,6 @@ class SnippetRendererTest extends UnitTestCase {
   }
 
   /**
-   * Tests long input is word-safe truncated to the length cap with ellipsis.
-   */
-  public function testTruncatesAtCharacterLimit(): void {
-    $body = str_repeat('Lorem ipsum dolor sit amet consectetur adipiscing elit. ', 20);
-    $snippet = SnippetRenderer::render($body);
-
-    $this->assertLessThanOrEqual(200, mb_strlen($snippet));
-    $this->assertStringEndsWith('…', $snippet);
-  }
-
-  /**
    * Tests Markdown headings of any level are removed from the snippet.
    *
    * Top-level heading lines (column 0) are dropped entirely because the

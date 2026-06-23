@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - image.style.1_250w_250h
-    - image.style.1_500w_500h_LQ
+    - image.style.1_500w_500h_lq
   module:
     - helfi_image_styles
 id: square_thumbnail
@@ -17,7 +17,7 @@ image_style_mappings:
     multiplier: 1x
   -
     image_mapping_type: image_style
-    image_mapping: 1_500w_500h_LQ
+    image_mapping: 1_500w_500h_lq
     breakpoint_id: helfi_image_styles.xs
     multiplier: 2x
 breakpoint_group: helfi_image_styles

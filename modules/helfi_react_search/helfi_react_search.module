@@ -7,9 +7,11 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_react_search\Enum\CourseCategory;
 use Drupal\helfi_react_search\Enum\EventCategory;
+use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Event list type allowed values.
@@ -19,6 +21,19 @@ function helfi_react_search_event_list_allowed_types(): array {
     'events' => new TranslatableMarkup('Events', [], ['context' => 'helfi_react_search']),
     'hobbies' => new TranslatableMarkup('Hobbies', [], ['context' => 'helfi_react_search']),
     'events_and_hobbies' => new TranslatableMarkup('Events and hobbies', [], ['context' => 'helfi_react_search']),
+  ];
+}
+
+/**
+ * Event list display (layout) allowed values.
+ *
+ * @return array<string, \Drupal\Core\StringTranslation\TranslatableMarkup>
+ *   Layout options keyed by machine name.
+ */
+function helfi_react_search_event_list_allowed_layouts(): array {
+  return [
+    'default' => new TranslatableMarkup('List (default)', [], ['context' => 'helfi_react_search']),
+    'lifts' => new TranslatableMarkup('Cards (three cards)', [], ['context' => 'helfi_react_search']),
   ];
 }
 
@@ -60,4 +75,46 @@ function helfi_react_search_event_list_allowed_hobby_categories(): array {
   }
 
   return $values;
+}
+
+/**
+ * Implements hook_field_widget_complete_form_alter().
+ *
+ * @phpstan-param array<string, mixed> $field_widget_complete_form
+ * @phpstan-param array<string, mixed> $context
+ */
+function helfi_react_search_field_widget_complete_form_alter(
+  array &$field_widget_complete_form,
+  FormStateInterface $form_state,
+  array $context,
+): void {
+  $items = $context['items'];
+  $entity = $items->getEntity();
+
+  if (!$entity instanceof ParagraphInterface || $entity->bundle() !== 'event_list') {
+    return;
+  }
+
+  switch ($items->getFieldDefinition()->getName()) {
+    case 'field_search_term':
+      // The paragraph's `field_event_list_free_text` is sent to the Linked
+      // Events API as `full_text`; so is the user-facing search bar. Letting
+      // both be set would mean the user's input overrides the editor's
+      // pre-filter. Disable the toggle whenever the pre-filter is already in
+      // use.
+      $checkbox = &$field_widget_complete_form['widget']['value'];
+      $checkbox['#states']['disabled'][':input[name$="[field_event_list_free_text][0][value]"]'] = ['filled' => TRUE];
+      $checkbox['#description'] = new TranslatableMarkup(
+        'This filter does not work if you have applied filters in "Filter events and hobbies".',
+        [],
+        ['context' => 'Event list paragraph: search term disabled hint'],
+      );
+      break;
+
+    case 'field_event_count':
+      // The lifts layout always renders the three latest events, so the count
+      // is fixed. Disable the widget while that layout is selected.
+      $field_widget_complete_form['widget']['#states']['disabled'][':input[name$="[field_event_list_layout]"]'] = ['value' => 'lifts'];
+      break;
+  }
 }

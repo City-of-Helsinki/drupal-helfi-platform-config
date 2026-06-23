@@ -1,0 +1,86 @@
+label: 'Dashboard - Omat sisällöt'
+description: 'Kaikki käyttäjän luoma/viimeisenä päivittämä sisältö.'
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      title: 'Omat sisällöt'
+      fields:
+        content_translation_outdated:
+          label: 'Käännös vanhentunut'
+          settings:
+            format_custom_true: outdated
+          separator: ', '
+        title:
+          label: Otsikko
+          separator: ', '
+        type:
+          label: Sisältötyyppi
+          separator: ', '
+        uid:
+          label: Kirjoittaja
+          separator: ', '
+        revision_uid:
+          label: 'Viimeisin päivittäjä'
+          separator: ', '
+        langcode:
+          label: Kieli
+          separator: ', '
+        status:
+          label: Tila
+          settings:
+            format_custom_false: Julkaisematon
+            format_custom_true: Julkaistu
+          separator: ', '
+        changed:
+          label: Muuttunut
+          separator: ', '
+        operations:
+          label: Toimenpiteet
+      pager:
+        options:
+          tags:
+            next: Seuraava
+            previous: Edellinen
+            first: Ensimmäinen
+            last: Viimeinen
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
+      exposed_form:
+        options:
+          submit_button: Suodata
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      empty:
+        area:
+          content:
+            value: "Ei näytettäviä sivuja."
+      filters:
+        title:
+          expose:
+            label: Otsikko
+        type:
+          expose:
+            label: Sisältötyyppi
+        status:
+          expose:
+            label: Julkaisutila
+          group_info:
+            label: Julkaisutila
+            group_items:
+              1:
+                title: Julkaistu
+              2:
+                title: Julkaisematon
+        langcode:
+          expose:
+            label: Kieli
+        helfi_node_authorship:
+          expose:
+            label: 'Kirjoittaja & päivittäjä'
+  your_content_block:
+    display_title: Lohko

@@ -1,5 +1,5 @@
 label: 'Tapahtuman kieli'
-description: 'Näytä “Kieli” -suodatin'
+description: ''
 settings:
   on_label: Kyllä
   off_label: Ei

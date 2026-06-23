@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\Plugin\search_api\processor;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_search\EmbeddingsModelException;
+use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EmbeddingsModelInterface;
-use Drupal\helfi_search\OpenAI\EmbeddingsApi;
-use Drupal\helfi_search\Pipeline\PipelineException;
 use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
@@ -32,17 +30,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
   /**
-   * All supported models that have fields in the index.
-   *
-   * Hardcoded because removing or renaming fields breaks search_api.
-   * To enable/disable indexing for a model, use the 'openai_models' config.
-   */
-  private const array SUPPORTED_MODELS = [
-    'text-embedding-3-small',
-    'text-embedding-3-large',
-  ];
-
-  /**
    * Text pipeline.
    */
   private TextPipeline $textPipeline;
@@ -53,11 +40,6 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
   private EmbeddingsModelInterface $embeddingsModel;
 
   /**
-   * Config factory.
-   */
-  private ConfigFactoryInterface $configFactory;
-
-  /**
    * {@inheritdoc}
    *
    * @phpstan-param array<string, mixed> $configuration
@@ -66,20 +48,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $processor->textPipeline = $container->get(TextPipeline::class);
     $processor->embeddingsModel = $container->get(EmbeddingsModelInterface::class);
-    $processor->configFactory = $container->get(ConfigFactoryInterface::class);
     return $processor;
-  }
-
-  /**
-   * Get configured models.
-   *
-   * @return string[]
-   *   Model names.
-   */
-  private function getModels(): array {
-    return $this->configFactory
-      ->get('helfi_search.settings')
-      ->get('openai_models') ?? [];
   }
 
   /**
@@ -89,13 +58,10 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
     $properties = [];
 
     if (!$datasource) {
-      foreach (self::SUPPORTED_MODELS as $model) {
-        $suffix = EmbeddingsApi::sanitizeModelName($model);
-        $fieldName = 'embeddings_' . $suffix;
-
-        $properties[$fieldName] = new ProcessorProperty([
-          'label' => $this->t('Embeddings (@model)', ['@model' => $model]),
-          'description' => $this->t('Vector embeddings for @model.', ['@model' => $model]),
+      foreach (EmbeddingModel::cases() as $model) {
+        $properties[$model->fieldPrefix()] = new ProcessorProperty([
+          'label' => $this->t('Embeddings (@model)', ['@model' => $model->value]),
+          'description' => $this->t('Vector embeddings for @model.', ['@model' => $model->value]),
           'type' => 'embeddings',
           'processor_id' => $this->getPluginId(),
         ]);
@@ -111,20 +77,11 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
    * @phpstan-param \Drupal\search_api\Item\ItemInterface<mixed> $item
    */
   public function addFieldValues(ItemInterface $item): void {
-    $models = $this->getModels();
-
-    if (empty($models)) {
-      return;
-    }
-
     $entity = $item->getOriginalObject()->getValue();
 
-    try {
-      $chunks = $this->textPipeline->process($entity);
-    }
-    catch (PipelineException) {
-      return;
-    }
+    // Throw if processing fails. This will interrupt search api. This
+    // will interrupt search api indexing until the issue is resolved.
+    $chunks = $this->textPipeline->process($entity);
 
     if (empty($chunks)) {
       return;
@@ -132,16 +89,12 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
     $embeddingTexts = array_map('strval', $chunks);
 
-    foreach ($models as $model) {
-      try {
-        $vectors = $this->embeddingsModel->batchGetEmbedding($embeddingTexts, $model);
-      }
-      catch (EmbeddingsModelException) {
-        continue;
-      }
+    foreach (EmbeddingModel::ENABLED as $model) {
+      // Throw if processing fails. This will interrupt search api. This
+      // will interrupt search api indexing until the issue is resolved.
+      $vectors = $this->embeddingsModel->batchGetEmbedding($embeddingTexts, $model);
 
-      $suffix = EmbeddingsApi::sanitizeModelName($model);
-      $fieldName = 'embeddings_' . $suffix;
+      $fieldName = $model->fieldPrefix();
 
       $fields = $this->getFieldsHelper()
         ->filterForPropertyPath($item->getFields(FALSE), NULL, $fieldName);
@@ -150,7 +103,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
         foreach ($fields as $field) {
           $field->addValue([
             'vector' => $vector,
-            'content' => $chunks[$index]->snippet ?? '',
+            'content' => Unicode::truncate($chunks[$index]->snippet ?? '', 200, TRUE, TRUE),
             'fragment' => $chunks[$index]->fragment,
           ]);
         }

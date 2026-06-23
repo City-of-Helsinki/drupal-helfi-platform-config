@@ -6,6 +6,8 @@ namespace Drupal\helfi_recommendations\Plugin\search_api\processor;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\helfi_platform_config\Helper\MetatagHelper;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -14,47 +16,40 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\media\MediaInterface;
-use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Indexes scored reference parent data.
- *
- * @SearchApiProcessor(
- *   id = "scored_reference_parent",
- *   label = @Translation("Scored reference parent"),
- *   description = @Translation("Indexes scored reference parent data"),
- *   stages = {
- *     "add_properties" = 0
- *   },
- *   locked = true,
- *   hidden = true,
- * )
  */
+#[SearchApiProcessor(
+  id: 'scored_reference_parent',
+  label: new TranslatableMarkup('Scored reference parent'),
+  description: new TranslatableMarkup('Indexes scored reference parent data'),
+  stages: [
+    'add_properties' => 0,
+  ],
+  hidden: TRUE,
+)]
 final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
 
   /**
    * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   private EntityTypeManagerInterface $entityTypeManager;
 
   /**
-   * The renderer.
-   *
-   * @var \Drupal\Core\Render\RendererInterface
+   * The metatag helper.
    */
-  private RendererInterface $renderer;
+  private MetatagHelper $metatagHelper;
 
   /**
    * {@inheritDoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->entityTypeManager = $container->get('entity_type.manager');
-    $instance->renderer = $container->get('renderer');
+    $instance->entityTypeManager = $container->get(EntityTypeManagerInterface::class);
+    $instance->metatagHelper = $container->get(MetatagHelper::class);
     return $instance;
   }
 
@@ -127,6 +122,8 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param \Drupal\search_api\Item\ItemInterface<mixed> $item
    */
   public function addFieldValues(Iteminterface $item) : void {
     $entity = $item->getOriginalObject()?->getValue();
@@ -144,55 +141,20 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
     }
 
     foreach ($item->getFields() as $field) {
-      $indexableValue = NULL;
-      $propertyPath = $field->getPropertyPath();
-
-      switch ($propertyPath) {
-        case 'parent_url_fi':
-          $indexableValue = $this->getParentUrl($parentEntity, 'fi');
-          break;
-
-        case 'parent_url_sv':
-          $indexableValue = $this->getParentUrl($parentEntity, 'sv');
-          break;
-
-        case 'parent_url_en':
-          $indexableValue = $this->getParentUrl($parentEntity, 'en');
-          break;
-
-        case 'parent_title_fi':
-          $indexableValue = $this->getParentTitle($parentEntity, 'fi');
-          break;
-
-        case 'parent_title_sv':
-          $indexableValue = $this->getParentTitle($parentEntity, 'sv');
-          break;
-
-        case 'parent_title_en':
-          $indexableValue = $this->getParentTitle($parentEntity, 'en');
-          break;
-
-        case 'parent_image_url':
-          $indexableValue = $this->getParentImageUrl($parentEntity);
-          break;
-
-        case 'parent_image_alt_fi':
-          $indexableValue = $this->getParentImageAlt($parentEntity, 'fi');
-          break;
-
-        case 'parent_image_alt_sv':
-          $indexableValue = $this->getParentImageAlt($parentEntity, 'sv');
-          break;
-
-        case 'parent_image_alt_en':
-          $indexableValue = $this->getParentImageAlt($parentEntity, 'en');
-          break;
-
-        case 'parent_published_at':
-          $indexableValue = $this->getParentPublishedDate($parentEntity);
-          break;
-
-      }
+      $indexableValue = match ($field->getPropertyPath()) {
+        'parent_url_fi' => $this->getParentUrl($parentEntity, 'fi'),
+        'parent_url_sv' => $this->getParentUrl($parentEntity, 'sv'),
+        'parent_url_en' => $this->getParentUrl($parentEntity, 'en'),
+        'parent_title_fi' => $this->getParentTitle($parentEntity, 'fi'),
+        'parent_title_sv' => $this->getParentTitle($parentEntity, 'sv'),
+        'parent_title_en' => $this->getParentTitle($parentEntity, 'en'),
+        'parent_image_url' => $this->getParentImageUrl($parentEntity),
+        'parent_image_alt_fi' => $this->getParentImageAlt($parentEntity, 'fi'),
+        'parent_image_alt_sv' => $this->getParentImageAlt($parentEntity, 'sv'),
+        'parent_image_alt_en' => $this->getParentImageAlt($parentEntity, 'en'),
+        'parent_published_at' => $this->getParentPublishedDate($parentEntity),
+        default => NULL,
+      };
 
       if ($indexableValue === NULL) {
         continue;
@@ -235,19 +197,24 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
    *   The parent title or NULL if no translation is found.
    */
   private function getParentTitle(ContentEntityInterface $parentEntity, string $langcode) : ?string {
-    $shortTitle = '';
-
     if (!$parentEntity->hasTranslation($langcode)) {
       return NULL;
     }
 
     $translation = $parentEntity->getTranslation($langcode);
 
-    if ($translation->hasField('field_short_title')) {
-      $shortTitle = $translation->get('field_short_title')->value;
+    if ($title = $this->metatagHelper->resolveTitle($translation)) {
+      return $title;
     }
 
-    return !empty($shortTitle) ? $shortTitle : $translation->label();
+    if ($translation->hasField('field_short_title')) {
+      $title = $translation->get('field_short_title')->value;
+      if (!empty($title)) {
+        return $title;
+      }
+    }
+
+    return (string) $translation->label();
   }
 
   /**

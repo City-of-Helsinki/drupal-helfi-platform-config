@@ -40,10 +40,10 @@ interface RecommendationManagerInterface {
    * @param string|null $target_langcode
    *   Which translation to use to select the recommendations,
    *   null uses the entity's translation.
-   * @param array $options
+   * @param array<mixed> $options
    *   Additional options to limit recommendations.
    *
-   * @return array
+   * @return array<mixed>
    *   Array of recommendations.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
@@ -73,7 +73,7 @@ interface RecommendationManagerInterface {
   /**
    * Invalidate external cache tags.
    *
-   * @param array $uuids
+   * @param array<string> $uuids
    *   The UUIDs.
    */
   public function invalidateExternalCacheTags(array $uuids): void;
