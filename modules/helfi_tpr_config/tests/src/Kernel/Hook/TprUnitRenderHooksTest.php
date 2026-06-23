@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_tpr\Entity\Unit;
 use Drupal\helfi_tpr_config\Hook\TprUnitRenderHooks;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\views\ViewExecutable;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -41,56 +42,67 @@ class TprUnitRenderHooksTest extends KernelTestBase {
   }
 
   /**
-   * Builds a $variables array shaped like preprocess_views_view input.
-   *
-   * @return array<string, mixed>
-   *   Preprocess variables.
+   * Creates a tpr_unit entity.
    */
-  private function buildVariables(Unit $unit, int $totalRows): array {
+  private function createUnit(): Unit {
+    /** @var \Drupal\helfi_tpr\Entity\Unit $unit */
+    $unit = $this->container->get(EntityTypeManagerInterface::class)
+      ->getStorage('tpr_unit')
+      ->create(['id' => 'test-unit']);
+    return $unit;
+  }
+
+  /**
+   * Builds a service_units ViewExecutable mock with the given result.
+   */
+  private function buildView(Unit $unit, int $totalRows, string $id = 'service_units'): ViewExecutable {
     $row = new \stdClass();
     $row->_entity = $unit;
-    $view = new \stdClass();
+    $view = $this->createMock(ViewExecutable::class);
+    $view->method('id')->willReturn($id);
+    $view->total_rows = $totalRows;
     $view->result = [$row];
-    return [
-      'view' => $view,
-      'total_rows' => $totalRows,
-    ];
+    return $view;
   }
 
   /**
-   * Single result triggers count suppression and h3 heading.
+   * Single result sets the h3 heading on the entity in views_post_execute.
    */
-  public function testPreprocessSingleResult(): void {
-    /** @var \Drupal\helfi_tpr\Entity\Unit $unit */
-    $unit = $this->container->get(EntityTypeManagerInterface::class)
-      ->getStorage('tpr_unit')
-      ->create(['id' => 'test-unit']);
-    $variables = $this->buildVariables($unit, 1);
+  public function testViewsPostExecute(): void {
+    $unit = $this->createUnit();
+    $view = $this->buildView($unit, 2);
 
-    (new TprUnitRenderHooks())->preprocessServiceUnitsView($variables);
+    (new TprUnitRenderHooks())->viewsPostExecute($view);
 
-    $this->assertFalse($variables['show_count_container']);
+    $this->assertFalse(isset($unit->card_heading_level));
+
+    $view = $this->buildView($unit, 1);
+
+    (new TprUnitRenderHooks())->viewsPostExecute($view);
+
     $this->assertSame('h3', $unit->card_heading_level);
-  }
 
-  /**
-   * Card heading level on the entity is appended to render cache keys.
-   */
-  public function testBuildDefaultsAlterAppendsCacheKey(): void {
-    /** @var \Drupal\helfi_tpr\Entity\Unit $unit */
-    $unit = $this->container->get(EntityTypeManagerInterface::class)
-      ->getStorage('tpr_unit')
-      ->create(['id' => 'test-unit']);
-    // @phpstan-ignore-next-line property.notFound
-    $unit->card_heading_level = 'h3';
     $build = ['#cache' => ['keys' => ['entity_view', 'tpr_unit']]];
 
     (new TprUnitRenderHooks())->buildDefaultsAlter($build, $unit, 'teaser_with_image');
 
+    // Card heading level on the entity is appended to render cache keys.
     $this->assertSame(
       ['entity_view', 'tpr_unit', 'card_heading_level:h3'],
       $build['#cache']['keys'],
     );
+  }
+
+  /**
+   * A single result suppresses the count container in the view template.
+   */
+  public function testPreprocessSingleResult(): void {
+    $unit = $this->createUnit();
+    $variables = ['view' => $this->buildView($unit, 1)];
+
+    (new TprUnitRenderHooks())->preprocessServiceUnitsView($variables);
+
+    $this->assertFalse($variables['show_count_container']);
   }
 
 }
