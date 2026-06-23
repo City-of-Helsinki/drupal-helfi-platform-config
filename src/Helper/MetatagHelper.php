@@ -2,19 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_platform_config\Token;
+namespace Drupal\helfi_platform_config\Helper;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\metatag\MetatagManager;
 
 /**
- * Resolves the customized metatag title of an entity.
- *
- * Editors can override the page title through the metatag fields. This service
- * returns that overridden title (with the configured tokens and leftover
- * separators stripped), or NULL when the entity has no customized title.
+ * Reads metatag values customized on an entity.
  */
-final readonly class MetatagTitleResolver {
+final readonly class MetatagHelper {
 
   /**
    * Tokens to remove from the title template.
@@ -36,7 +32,7 @@ final readonly class MetatagTitleResolver {
    *   The customized metatag title, or NULL when the title has not been
    *   customized (or metatag is not installed).
    */
-  public function resolve(ContentEntityInterface $entity): ?string {
+  public function resolveTitle(ContentEntityInterface $entity): ?string {
     if (!$this->metatagManager) {
       return NULL;
     }
