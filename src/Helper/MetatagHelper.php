@@ -2,19 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_platform_config\Token;
+namespace Drupal\helfi_platform_config\Helper;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\metatag\MetatagManager;
 
 /**
- * Resolves the customized metatag title of an entity.
- *
- * Editors can override the page title through the metatag fields. This service
- * returns that overridden title (with the configured tokens and leftover
- * separators stripped), or NULL when the entity has no customized title.
+ * Reads metatag values customized on an entity.
  */
-final readonly class MetatagTitleResolver {
+final readonly class MetatagHelper {
 
   /**
    * Tokens to remove from the title template.
@@ -36,7 +32,7 @@ final readonly class MetatagTitleResolver {
    *   The customized metatag title, or NULL when the title has not been
    *   customized (or metatag is not installed).
    */
-  public function resolve(ContentEntityInterface $entity): ?string {
+  public function resolveTitle(ContentEntityInterface $entity): ?string {
     if (!$this->metatagManager) {
       return NULL;
     }
@@ -63,6 +59,36 @@ final readonly class MetatagTitleResolver {
     $title = preg_replace('/(?:^[^\p{L}\p{N}]+)|(?:[^\p{L}\p{N}]+$)/u', '', $value) ?? '';
 
     return $title !== '' ? $title : NULL;
+  }
+
+  /**
+   * Checks whether the entity has the robots "noindex" directive set.
+   *
+   * Only the tags set on the entity itself are inspected. Entity-type and
+   * global defaults don't cause a page to be reported as noindex.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity to check.
+   *
+   * @return bool
+   *   TRUE when the entity is set to noindex.
+   */
+  public function isNoindex(ContentEntityInterface $entity): bool {
+    if (!$this->metatagManager) {
+      return FALSE;
+    }
+
+    $tags = $this->metatagManager->tagsFromEntity($entity);
+
+    if (empty($tags['robots']) || !is_string($tags['robots'])) {
+      return FALSE;
+    }
+
+    // The robots tag is stored as a comma-separated list of directives, e.g.
+    // "noindex, nofollow".
+    $directives = array_map('trim', explode(',', $tags['robots']));
+
+    return in_array('noindex', $directives, TRUE);
   }
 
   /**
