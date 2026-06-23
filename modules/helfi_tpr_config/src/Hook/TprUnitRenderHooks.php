@@ -27,7 +27,7 @@ class TprUnitRenderHooks {
     if ((int) ($view->total_rows ?: 0) !== 1) {
       return;
     }
-    $entity = $view->result[0]->_entity ?? NULL;
+    $entity = $view->result[0]?->_entity ?? NULL;
     if (!$entity instanceof Unit) {
       return;
     }

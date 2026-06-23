@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_tpr\Entity\Unit;
 use Drupal\helfi_tpr_config\Hook\TprUnitRenderHooks;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\views\ResultRow;
 use Drupal\views\ViewExecutable;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -42,30 +43,6 @@ class TprUnitRenderHooksTest extends KernelTestBase {
   }
 
   /**
-   * Creates a tpr_unit entity.
-   */
-  private function createUnit(): Unit {
-    /** @var \Drupal\helfi_tpr\Entity\Unit $unit */
-    $unit = $this->container->get(EntityTypeManagerInterface::class)
-      ->getStorage('tpr_unit')
-      ->create(['id' => 'test-unit']);
-    return $unit;
-  }
-
-  /**
-   * Builds a service_units ViewExecutable mock with the given result.
-   */
-  private function buildView(Unit $unit, int $totalRows, string $id = 'service_units'): ViewExecutable {
-    $row = new \stdClass();
-    $row->_entity = $unit;
-    $view = $this->createMock(ViewExecutable::class);
-    $view->method('id')->willReturn($id);
-    $view->total_rows = $totalRows;
-    $view->result = [$row];
-    return $view;
-  }
-
-  /**
    * Single result sets the h3 heading on the entity in views_post_execute.
    */
   public function testViewsPostExecute(): void {
@@ -74,12 +51,14 @@ class TprUnitRenderHooksTest extends KernelTestBase {
 
     (new TprUnitRenderHooks())->viewsPostExecute($view);
 
+    // Multiple result, no change.
     $this->assertFalse(isset($unit->card_heading_level));
 
     $view = $this->buildView($unit, 1);
 
     (new TprUnitRenderHooks())->viewsPostExecute($view);
 
+    // Single result sets the h3 heading on the entity in views_post_execute.
     $this->assertSame('h3', $unit->card_heading_level);
 
     $build = ['#cache' => ['keys' => ['entity_view', 'tpr_unit']]];
@@ -103,6 +82,30 @@ class TprUnitRenderHooksTest extends KernelTestBase {
     (new TprUnitRenderHooks())->preprocessServiceUnitsView($variables);
 
     $this->assertFalse($variables['show_count_container']);
+  }
+
+  /**
+   * Creates a tpr_unit entity.
+   */
+  private function createUnit(): Unit {
+    /** @var \Drupal\helfi_tpr\Entity\Unit $unit */
+    $unit = $this->container->get(EntityTypeManagerInterface::class)
+      ->getStorage('tpr_unit')
+      ->create(['id' => 'test-unit']);
+    return $unit;
+  }
+
+  /**
+   * Builds a service_units ViewExecutable mock with the given result.
+   */
+  private function buildView(Unit $unit, int $totalRows, string $id = 'service_units'): ViewExecutable {
+    $row = new ResultRow();
+    $row->_entity = $unit;
+    $view = $this->createMock(ViewExecutable::class);
+    $view->method('id')->willReturn($id);
+    $view->total_rows = $totalRows;
+    $view->result = [$row];
+    return $view;
   }
 
 }
