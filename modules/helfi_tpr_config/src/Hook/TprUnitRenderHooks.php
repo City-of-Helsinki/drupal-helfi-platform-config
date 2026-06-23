@@ -23,10 +23,13 @@ class TprUnitRenderHooks {
    */
   #[Hook('preprocess_views_view__service_units')]
   public function preprocessServiceUnitsView(array &$variables): void {
-    if (($variables['total_rows'] ?? 0) !== 1) {
+    /** @var \Drupal\views\ViewExecutable $view */
+    $view = $variables['view'];
+
+    if ((int)($view->total_rows ?: 0) !== 1) {
       return;
     }
-    $entity = $variables['view']->result[0]->_entity ?? NULL;
+    $entity = $view->result[0]->_entity ?? NULL;
     if (!$entity instanceof Unit) {
       return;
     }
