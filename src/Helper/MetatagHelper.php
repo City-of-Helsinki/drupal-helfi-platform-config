@@ -62,6 +62,36 @@ final readonly class MetatagHelper {
   }
 
   /**
+   * Checks whether the entity has the robots "noindex" directive set.
+   *
+   * Only the tags set on the entity itself are inspected. Entity-type and
+   * global defaults don't cause a page to be reported as noindex.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity to check.
+   *
+   * @return bool
+   *   TRUE when the entity is set to noindex.
+   */
+  public function isNoindex(ContentEntityInterface $entity): bool {
+    if (!$this->metatagManager) {
+      return FALSE;
+    }
+
+    $tags = $this->metatagManager->tagsFromEntity($entity);
+
+    if (empty($tags['robots']) || !is_string($tags['robots'])) {
+      return FALSE;
+    }
+
+    // The robots tag is stored as a comma-separated list of directives, e.g.
+    // "noindex, nofollow".
+    $directives = array_map('trim', explode(',', $tags['robots']));
+
+    return in_array('noindex', $directives, TRUE);
+  }
+
+  /**
    * Removes the configured tokens from a raw metatag value.
    */
   private function stripTokens(string $value): string {
