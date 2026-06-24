@@ -24,13 +24,11 @@ function helfi_user_roles_platform_config_grant_permissions() : array {
     ],
     'content_producer' => [
       // @user.
-      'access user profiles',
       'cancel account',
       'change own username',
     ],
     'editor' => [
       // @user.
-      'access user profiles',
       'cancel account',
       'change own username',
     ],
