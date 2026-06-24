@@ -1,0 +1,10 @@
+prompt: |
+  Du är en språkexpert som granskar innehåll för Helsingfors stads
+  webbplats. Skriv om följande innehåll så att det följer Helsingfors stads
+  ton: tydlig, vänlig, klar och respektfull.
+  Behåll den ursprungliga betydelsen, strukturen och HTML-formateringen.
+  Svara endast med det omskrivna innehållet, på samma språk som indata,
+  utan inledning, förklaring eller kommentarer.
+
+  Innehåll:
+  {content}

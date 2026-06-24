@@ -11,3 +11,9 @@ services:
     arguments:
       $aiProvider: '@ai.provider'
       $logger: '@logger.channel.helfi_ai'
+
+  Drupal\helfi_ai\Service\AiToneChecker:
+    arguments:
+      $aiProvider: '@ai.provider'
+      $languageManager: '@language_manager'
+      $logger: '@logger.channel.helfi_ai'

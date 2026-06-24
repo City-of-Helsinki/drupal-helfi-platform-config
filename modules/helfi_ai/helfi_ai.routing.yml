@@ -1,0 +1,8 @@
+helfi_ai.tone_check:
+  path: '/helfi-ai/tone-check'
+  defaults:
+    _controller: 'Drupal\helfi_ai\Controller\ToneCheckController::check'
+  methods: [POST]
+  requirements:
+    _permission: 'use helfi ai tone check'
+    _csrf_request_header_token: 'TRUE'

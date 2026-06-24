@@ -1,0 +1,17 @@
+# CKEditor 5 configuration for helfi_ai.
+helfi_ai_tone_check:
+  # Configuration sent to the CKEditor 5 JavaScript plugin.
+  ckeditor5:
+    plugins:
+      - helfiAiToneCheck.HelfiAiToneCheck
+
+  # Configuration used directly by Drupal.
+  drupal:
+    label: 'HELfi AI tone check'
+    library: helfi_ai/tone_check
+    toolbar_items:
+      helfiAiToneCheck:
+        label: 'Check tone'
+    # The plugin rewrites existing content; it introduces no new HTML elements.
+    elements: false
+    class: Drupal\helfi_ai\Plugin\CKEditor5Plugin\HelfiAiToneCheck
