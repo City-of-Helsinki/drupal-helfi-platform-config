@@ -57,7 +57,7 @@ class TprUnitRenderHooks {
   /**
    * Implements hook_ENTITY_TYPE_build_defaults_alter() for tpr_unit.
    *
-   * Ccode may set card_heading_level on the entity to change
+   * Code may set card_heading_level on the entity to change
    * the rendered heading tag. Append card_heading_level to the cache
    * keys so each variant gets its own cache entry.
    *
@@ -66,7 +66,7 @@ class TprUnitRenderHooks {
    * @see self::viewsPostExecute
    */
   #[Hook('tpr_unit_build_defaults_alter')]
-  public function buildDefaultsAlter(array &$build, EntityInterface $entity, string $view_mode): void {
+  public function buildDefaultsAlter(array &$build, EntityInterface $entity): void {
     if (!empty($entity->card_heading_level)) {
       $build['#cache']['keys'][] = 'card_heading_level:' . $entity->card_heading_level;
     }
