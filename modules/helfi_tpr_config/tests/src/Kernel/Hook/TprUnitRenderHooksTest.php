@@ -63,7 +63,7 @@ class TprUnitRenderHooksTest extends KernelTestBase {
 
     $build = ['#cache' => ['keys' => ['entity_view', 'tpr_unit']]];
 
-    (new TprUnitRenderHooks())->buildDefaultsAlter($build, $unit, 'teaser_with_image');
+    (new TprUnitRenderHooks())->buildDefaultsAlter($build, $unit);
 
     // Card heading level on the entity is appended to render cache keys.
     $this->assertSame(
