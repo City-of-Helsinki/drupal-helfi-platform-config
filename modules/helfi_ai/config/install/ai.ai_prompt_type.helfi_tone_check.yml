@@ -1,0 +1,15 @@
+uuid: baf6b536-9b9d-4ab9-bc37-14e9ee987d81
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - helfi_ai
+id: helfi_tone_check
+label: 'HELfi tone check'
+variables:
+  -
+    name: content
+    help_text: 'The editor content to check, as HTML'
+    required: true
+tokens: {  }

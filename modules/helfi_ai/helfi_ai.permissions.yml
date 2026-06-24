@@ -1,0 +1,4 @@
+'use helfi ai tone check':
+  title: 'Use HELfi AI tone check'
+  description: 'Run the AI tone check on editor content.'
+  restrict_access: true

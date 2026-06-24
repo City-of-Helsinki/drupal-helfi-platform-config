@@ -1,0 +1,33 @@
+/**
+ * Minimal layout for the tone-check dialog. Presentation is intentionally
+ * basic for now; richer styling can be layered on later.
+ */
+.helfi-ai-tone-check__comparison {
+  display: flex;
+  gap: 1rem;
+  max-width: 60rem;
+}
+
+.helfi-ai-tone-check__column {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.helfi-ai-tone-check__heading {
+  margin: 0 0 0.5rem;
+  font-size: var(--ck-font-size-base, 1rem);
+}
+
+.helfi-ai-tone-check__pane {
+  max-height: 20rem;
+  overflow: auto;
+  padding: 0.75rem;
+  border: 1px solid var(--ck-color-base-border, #ccced1);
+  border-radius: var(--ck-border-radius, 2px);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.helfi-ai-tone-check__message {
+  padding: 1rem;
+}

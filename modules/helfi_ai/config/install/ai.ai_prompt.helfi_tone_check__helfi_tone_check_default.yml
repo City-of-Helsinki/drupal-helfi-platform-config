@@ -1,0 +1,22 @@
+uuid: e9a39ab0-dd0f-413e-a268-0b0ec5f89ae1
+langcode: en
+status: true
+dependencies:
+  config:
+    - ai.ai_prompt_type.helfi_tone_check
+  enforced:
+    module:
+      - helfi_ai
+id: helfi_tone_check__helfi_tone_check_default
+label: 'HELfi tone check (default)'
+type: helfi_tone_check
+prompt: |
+  You are a language expert reviewing content for the City of Helsinki website.
+  Rewrite the following content so that it conforms to the City of Helsinki's
+  standard tone of voice: clear, friendly, plain, and respectful.
+  Keep the original meaning, structure, and HTML formatting intact.
+  Respond with the rewritten content only, in the same language as the input,
+  without any introduction, explanation, or commentary.
+
+  Content:
+  {content}

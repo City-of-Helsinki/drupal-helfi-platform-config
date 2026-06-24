@@ -100,7 +100,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     // Empty field: the editor container is hidden, only the button shows.
     $this->assertArrayHasKey('summary', $wrapper);
     $this->assertContains('hidden', $wrapper['summary']['#attributes']['class']);
-    $this->assertArrayHasKey('field_label', $wrapper['summary']);
+    $this->assertArrayHasKey('field_label', $wrapper);
     $this->assertArrayHasKey('value', $wrapper['summary']);
     $this->assertSame('text_format', $wrapper['summary']['value']['#type']);
     $this->assertSame('', $wrapper['summary']['value']['#default_value']);
@@ -307,7 +307,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     // error element.
     $this->assertSame('<ul><li>Generated</li></ul>', $captured['summary']['value']['value']['#value']);
     $this->assertNotContains('hidden', $captured['summary']['#attributes']['class']);
-    $this->assertSame('Regenerate AI summary', (string) $captured['generate']['#value']);
+    $this->assertSame('Generate new AI summary', (string) $captured['generate']['#value']);
     // The fresh summary is now guarded, so regenerating it in this same
     // session also confirms.
     $this->assertArrayHasKey('data-helfi-ai-confirm', $captured['generate']['#attributes']);
