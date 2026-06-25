@@ -20,7 +20,7 @@ function helfi_ai_entity_base_field_info(EntityTypeInterface $entity_type): arra
     return [];
   }
 
-  $fields['field_ai_summary'] = BaseFieldDefinition::create('text_long')
+  $fields['ai_summary'] = BaseFieldDefinition::create('text_long')
     ->setLabel(t('AI summary', options: ['context' => 'helfi_ai']))
     ->setDescription(t('AI-generated content summary as a bullet list. Edit before accepting.', options: ['context' => 'helfi_ai']))
     ->setRevisionable(TRUE)

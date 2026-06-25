@@ -72,10 +72,10 @@ class HookTest extends UnitTestCase {
 
     $result = helfi_ai_entity_base_field_info($entityType->reveal());
 
-    $this->assertArrayHasKey('field_ai_summary', $result);
-    $this->assertInstanceOf(BaseFieldDefinition::class, $result['field_ai_summary']);
-    $this->assertTrue($result['field_ai_summary']->isRevisionable());
-    $this->assertTrue($result['field_ai_summary']->isTranslatable());
+    $this->assertArrayHasKey('ai_summary', $result);
+    $this->assertInstanceOf(BaseFieldDefinition::class, $result['ai_summary']);
+    $this->assertTrue($result['ai_summary']->isRevisionable());
+    $this->assertTrue($result['ai_summary']->isTranslatable());
   }
 
 }

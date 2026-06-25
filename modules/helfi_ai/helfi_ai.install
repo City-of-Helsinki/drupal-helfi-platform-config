@@ -20,8 +20,8 @@ function helfi_ai_install(bool $is_syncing): void {
   }
   $manager = \Drupal::entityDefinitionUpdateManager();
   $definition = \Drupal::service('entity_field.manager')
-    ->getFieldStorageDefinitions('node')['field_ai_summary'] ?? NULL;
-  if ($definition && !$manager->getFieldStorageDefinition('field_ai_summary', 'node')) {
-    $manager->installFieldStorageDefinition('field_ai_summary', 'node', 'helfi_ai', $definition);
+    ->getFieldStorageDefinitions('node')['ai_summary'] ?? NULL;
+  if ($definition && !$manager->getFieldStorageDefinition('ai_summary', 'node')) {
+    $manager->installFieldStorageDefinition('ai_summary', 'node', 'helfi_ai', $definition);
   }
 }

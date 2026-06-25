@@ -38,7 +38,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   /**
    * Creates a widget instance for the given field name.
    */
-  private function createWidget(string $fieldName = 'field_ai_summary'): AiSummaryWidget {
+  private function createWidget(string $fieldName = 'ai_summary'): AiSummaryWidget {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
     $fieldDef->getName()->willReturn($fieldName);
     $widget = new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], []);
@@ -52,7 +52,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
    * @return \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface>
    *   The field item list prophecy double.
    */
-  private function makeItems(string $savedValue, string $fieldName = 'field_ai_summary'): FieldItemListInterface {
+  private function makeItems(string $savedValue, string $fieldName = 'ai_summary'): FieldItemListInterface {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
     $fieldDef->getName()->willReturn($fieldName);
 
@@ -71,7 +71,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
    */
   public function testIsApplicableReturnsTrueForAiSummaryField(): void {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
-    $fieldDef->getName()->willReturn('field_ai_summary');
+    $fieldDef->getName()->willReturn('ai_summary');
     $this->assertTrue(AiSummaryWidget::isApplicable($fieldDef->reveal()));
   }
 
@@ -96,7 +96,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $result = $widget->formElement($this->makeItems(''), 0, [], $form, $formState);
 
     $wrapper = $result['ajax_wrapper'];
-    $this->assertSame('ai-summary-field-ai-summary-0', $wrapper['#attributes']['id']);
+    $this->assertSame('ai-summary-ai-summary-0', $wrapper['#attributes']['id']);
     // Empty field: the editor container is hidden, only the button shows.
     $this->assertArrayHasKey('summary', $wrapper);
     $this->assertContains('hidden', $wrapper['summary']['#attributes']['class']);
@@ -106,7 +106,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $this->assertSame('', $wrapper['summary']['value']['#default_value']);
     $this->assertSame('minimal', $wrapper['summary']['value']['#format']);
     $this->assertArrayHasKey('generate', $wrapper);
-    $this->assertSame('ai_summary_generate_field_ai_summary_0', $wrapper['generate']['#name']);
+    $this->assertSame('ai_summary_generate_ai_summary_0', $wrapper['generate']['#name']);
     $this->assertSame('Generate AI summary', (string) $wrapper['generate']['#value']);
     // The behavior always loads, but with nothing to overwrite there is no
     // confirm marker, so it stays inert.
@@ -146,7 +146,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $formState = new FormState();
     $result = $widget->formElement($this->makeItems(''), 2, [], $form, $formState);
 
-    $this->assertSame('ai-summary-field-ai-summary-2', $result['ajax_wrapper']['#attributes']['id']);
+    $this->assertSame('ai-summary-ai-summary-2', $result['ajax_wrapper']['#attributes']['id']);
   }
 
   /**
@@ -169,7 +169,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     // (also on 'click') can cancel before the request, unlike the default
     // button 'mousedown' event.
     $this->assertSame([AiSummaryWidget::class, 'ajaxCallback'], $button['#ajax']['callback']);
-    $this->assertSame('ai-summary-field-ai-summary-0', $button['#ajax']['wrapper']);
+    $this->assertSame('ai-summary-ai-summary-0', $button['#ajax']['wrapper']);
     $this->assertSame('click', $button['#ajax']['event']);
   }
 
@@ -180,7 +180,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $widget = $this->createWidget();
 
     $formState = new FormState();
-    $formState->setValue(['field_ai_summary', 0, 'ajax_wrapper', 'summary', 'value'], [
+    $formState->setValue(['ai_summary', 0, 'ajax_wrapper', 'summary', 'value'], [
       'value' => '<ul><li>Edited</li></ul>',
       'format' => 'minimal',
     ]);
@@ -253,9 +253,9 @@ class AiSummaryWidgetTest extends UnitTestCase {
     );
     \Drupal::setContainer($container);
 
-    $wrapperId = 'ai-summary-field-ai-summary-0';
+    $wrapperId = 'ai-summary-ai-summary-0';
     $form = [
-      'field_ai_summary' => [
+      'ai_summary' => [
         0 => [
           'ajax_wrapper' => [
             '#type' => 'container',
@@ -280,7 +280,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $formState = new FormState();
     $formState->setFormObject($formObject->reveal());
     $formState->setTriggeringElement([
-      '#array_parents' => ['field_ai_summary', 0, 'ajax_wrapper', 'generate'],
+      '#array_parents' => ['ai_summary', 0, 'ajax_wrapper', 'generate'],
     ]);
 
     return [$form, $formState];
@@ -299,7 +299,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $this->assertInstanceOf(AjaxResponse::class, $response);
     $commands = $response->getCommands();
     $this->assertCount(1, $commands);
-    $this->assertSame('#ai-summary-field-ai-summary-0', $commands[0]['selector']);
+    $this->assertSame('#ai-summary-ai-summary-0', $commands[0]['selector']);
     $this->assertSame('replaceWith', $commands[0]['method']);
 
     // The generated value was injected into the processed textarea, the editor

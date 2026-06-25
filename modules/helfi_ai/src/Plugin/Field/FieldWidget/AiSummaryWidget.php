@@ -54,7 +54,7 @@ final class AiSummaryWidget extends WidgetBase {
    * {@inheritdoc}
    */
   public static function isApplicable(FieldDefinitionInterface $field_definition): bool {
-    return $field_definition->getName() === 'field_ai_summary';
+    return $field_definition->getName() === 'ai_summary';
   }
 
   /**
