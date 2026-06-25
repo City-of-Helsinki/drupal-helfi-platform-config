@@ -1,0 +1,19 @@
+display:
+  default:
+    display_options:
+      fields:
+        id:
+          element_wrapper_type: '0'
+        label:
+          element_wrapper_type: '0'
+  entity_reference:
+    display_options:
+      row:
+        type: entity_reference_revisions
+        options:
+          default_field_elements: true
+          inline:
+            id: id
+            label: label
+          separator: ' - '
+          hide_empty: false
