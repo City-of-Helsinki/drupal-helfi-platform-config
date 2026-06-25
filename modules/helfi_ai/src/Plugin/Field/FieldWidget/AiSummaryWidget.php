@@ -189,7 +189,7 @@ final class AiSummaryWidget extends WidgetBase {
     $button = [
       '#type' => 'button',
       '#value' => $has_value
-        ? $this->t('Generate new AI summary', options: $ctx)
+        ? $this->t('Regenerate AI summary', options: $ctx)
         : $this->t('Generate AI summary', options: $ctx),
       '#name' => 'ai_summary_generate_' . $field_name . '_' . $delta,
       '#weight' => 50,
@@ -284,7 +284,7 @@ final class AiSummaryWidget extends WidgetBase {
       if (isset($wrapper['generate'])) {
         $translation = \Drupal::translation();
         $wrapper['generate']['#value'] = $translation
-          ->translate('Generate new AI summary', [], ['context' => 'helfi_ai']);
+          ->translate('Regenerate AI summary', [], ['context' => 'helfi_ai']);
         $wrapper['generate']['#attributes']['data-helfi-ai-confirm'] = (string) $translation
           ->translate('Regenerating replaces the current AI summary, including any manual changes. Continue?', [], ['context' => 'helfi_ai']);
       }

@@ -20,8 +20,8 @@ msgid "Generate AI summary"
 msgstr "Luo tekoälytiivistelmä"
 
 msgctxt "helfi_ai"
-msgid "Generate new AI summary"
-msgstr "Luo uusi tekoälytiivistelmä"
+msgid "Regenerate AI summary"
+msgstr "Luo tekoälytiivistelmä uudelleen"
 
 msgctxt "helfi_ai"
 msgid "Generating summary…"
