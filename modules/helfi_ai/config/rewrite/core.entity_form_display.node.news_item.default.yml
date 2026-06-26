@@ -1,0 +1,13 @@
+dependencies:
+  module:
+    - helfi_ai
+content:
+  ai_summary:
+    type: ai_summary
+    weight: 18
+    region: content
+    settings: { }
+    third_party_settings:
+      allowed_formats:
+        hide_help: '1'
+        hide_guidelines: '1'
