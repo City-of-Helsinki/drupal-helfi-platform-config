@@ -30,7 +30,7 @@ final readonly class NewsListLazyBuilder implements TrustedCallbackInterface {
    * @param string|null $id
    *   The entity ID.
    *
-   * @return array
+   * @return array<mixed>
    *   The render array.
    */
   public function build(?string $id) : array {
