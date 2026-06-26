@@ -27,7 +27,7 @@ final readonly class NewsListLazyBuilder implements TrustedCallbackInterface {
   /**
    * Lazy loader callback for news list.
    *
-   * @param string|NULL $id
+   * @param string|null $id
    *   The entity ID.
    *
    * @return array
