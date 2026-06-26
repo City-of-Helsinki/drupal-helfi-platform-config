@@ -6,7 +6,9 @@ namespace Drupal\helfi_platform_config;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
+use Drupal\helfi_platform_config\Asset\JsCollectionRenderer;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigRewriter;
+use Drupal\helfi_platform_config\Render\CspHashAttachmentsProcessor;
 use Drupal\helfi_platform_config\EventSubscriber\CspCleanSubscriber;
 use Drupal\helfi_platform_config\EventSubscriber\CspIbmChatAppSubscriber;
 use Drupal\helfi_platform_config\EventSubscriber\CspReactAndShareSubscriber;
@@ -61,6 +63,8 @@ final class HelfiPlatformConfigServiceProvider extends ServiceProviderBase {
       CspSentrySubscriber::class,
       CspSocialMediaSubscriber::class,
     ]);
+
+    self::registerCspDependentServices($container);
   }
 
   /**
@@ -87,6 +91,31 @@ final class HelfiPlatformConfigServiceProvider extends ServiceProviderBase {
         ->addArgument(new Reference('module_handler'))
         ->addArgument(new Reference('helfi_api_base.environment_resolver'))
         ->addArgument(new Reference('csp.policy_helper'));
+    }
+  }
+
+  /**
+   * Register services that depend on the CSP module.
+   *
+   * @param \Drupal\Core\DependencyInjection\ContainerBuilder $container
+   *   The container builder.
+   */
+  public static function registerCspDependentServices(ContainerBuilder $container): void {
+    // We cannot use the module handler as the container is not yet compiled.
+    // @see \Drupal\Core\DrupalKernel::compileContainer()
+    $modules = $container->getParameter('container.modules');
+
+    if (!is_array($modules) || !isset($modules['csp'])) {
+      return;
+    }
+
+    foreach ([
+      JsCollectionRenderer::class,
+      CspHashAttachmentsProcessor::class,
+    ] as $service) {
+      $container->register($service, $service)
+        ->setAutowired(TRUE)
+        ->setAutoconfigured(TRUE);
     }
   }
 

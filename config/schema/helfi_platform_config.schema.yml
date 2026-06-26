@@ -1,4 +1,15 @@
 
+helfi_platform_config.csp:
+  type: config_object
+  label: 'HELfi CSP settings'
+  mapping:
+    external_script_hashes:
+      type: boolean
+      label: 'Add SRI and CSP hashes for file-based JavaScript assets'
+    strict_dynamic:
+      type: boolean
+      label: "Add 'strict-dynamic' to script-src when external script hashes are enabled"
+
 block.settings.telia_ace_widget:
   type: block_settings
   label: 'Block config translation for Telia ACE widget'

@@ -109,6 +109,12 @@ services:
 
   Drupal\helfi_platform_config\JsInliner: ~
 
+  Drupal\helfi_platform_config\Asset\JsIntegrityBuilder: ~
+
+  Drupal\helfi_platform_config\Asset\JsCspHashCollector: ~
+
+  Drupal\helfi_platform_config\EventSubscriber\ExternalScriptHashCspSubscriber: ~
+
   Drupal\helfi_platform_config\ClearSiteData: ~
 
   Drupal\helfi_platform_config\EventSubscriber\ClearSiteDataSubscriber: ~
