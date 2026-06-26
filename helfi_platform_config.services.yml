@@ -5,7 +5,7 @@ services:
 
   # The metatag dependency is optional, so it is injected with "@?" and the
   # service falls back to a no-op when metatag is not installed.
-  Drupal\helfi_platform_config\Token\MetatagTitleResolver:
+  Drupal\helfi_platform_config\Helper\MetatagHelper:
     arguments:
       - '@?metatag.manager'
 

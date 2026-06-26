@@ -6,7 +6,7 @@ namespace Drupal\helfi_recommendations\Plugin\search_api\processor;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\helfi_platform_config\Token\MetatagTitleResolver;
+use Drupal\helfi_platform_config\Helper\MetatagHelper;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
@@ -39,9 +39,9 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
   private EntityTypeManagerInterface $entityTypeManager;
 
   /**
-   * Metatag title resolver.
+   * The metatag helper.
    */
-  private MetatagTitleResolver $metatagTitleResolver;
+  private MetatagHelper $metatagHelper;
 
   /**
    * {@inheritDoc}
@@ -49,7 +49,7 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->entityTypeManager = $container->get(EntityTypeManagerInterface::class);
-    $instance->metatagTitleResolver = $container->get(MetatagTitleResolver::class);
+    $instance->metatagHelper = $container->get(MetatagHelper::class);
     return $instance;
   }
 
@@ -203,7 +203,7 @@ final class ScoredReferenceParentProcessor extends ProcessorPluginBase {
 
     $translation = $parentEntity->getTranslation($langcode);
 
-    if ($title = $this->metatagTitleResolver->resolve($translation)) {
+    if ($title = $this->metatagHelper->resolveTitle($translation)) {
       return $title;
     }
 

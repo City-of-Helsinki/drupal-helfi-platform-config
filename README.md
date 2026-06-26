@@ -16,6 +16,7 @@ This repository holds configuration for the Hel.fi platform.
 - [News item](/modules/helfi_node_news_item/README.md)
 - [Recommendations](./modules/helfi_recommendations/README.md)
 - [Search API](./documentation/search-api.md)
+- [AI](./documentation/ai.md)
 
 ## Contact
 

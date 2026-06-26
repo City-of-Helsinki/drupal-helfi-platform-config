@@ -11,13 +11,16 @@ use Drupal\helfi_tpr_config\Entity\Service;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\helfi_tpr_config\Entity\Unit;
 use Drupal\Core\Url;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests helfi_tpr_config Entity class overrides.
  *
  * @covers \Drupal\helfi_tpr_config\Entity\Unit::getWebsiteUrl
- * @group helfi_tpr_config
  */
+#[Group('helfi_tpr_config')]
+#[RunTestsInSeparateProcesses]
 class EntityTest extends KernelTestBase {
 
   /**
