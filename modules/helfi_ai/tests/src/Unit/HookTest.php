@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @coversDefaultClass \Drupal\helfi_ai\Hook\EntityHooks
+ * Tests entity hooks for helfi_ai module.
  */
 #[Group('helfi_ai')]
 class HookTest extends UnitTestCase {
@@ -28,7 +28,7 @@ class HookTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::entityBaseFieldInfo
+   * Test that there is no ai_summary for non node entity types.
    */
   public function testReturnsEmptyArrayForNonNodeEntityType(): void {
     $entityType = $this->prophesize(EntityTypeInterface::class);
@@ -42,7 +42,7 @@ class HookTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::entityBaseFieldInfo
+   * Test that the hook adds the ai_summary base field to node entities.
    */
   public function testReturnsFieldDefinitionForNodeEntityType(): void {
     $fieldTypeManager = $this->createMock(FieldTypePluginManagerInterface::class);

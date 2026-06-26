@@ -20,7 +20,7 @@ use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * @coversDefaultClass \Drupal\helfi_ai\Plugin\Field\FieldWidget\AiSummaryWidget
+ * Tests the AI summary field widget.
  */
 #[Group('helfi_ai')]
 class AiSummaryWidgetTest extends UnitTestCase {
@@ -67,7 +67,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::isApplicable
+   * Test that the widget applies to the ai_summary field.
    */
   public function testIsApplicableReturnsTrueForAiSummaryField(): void {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
@@ -76,7 +76,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::isApplicable
+   * Test that the widget does not apply to other fields.
    */
   public function testIsApplicableReturnsFalseForOtherFields(): void {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
@@ -85,8 +85,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::formElement
-   * @covers ::generateButton
+   * Test that an empty field renders only the generate button.
    */
   public function testFormElementEmptyValueBuildsGenerateButton(): void {
     $widget = $this->createWidget();
@@ -119,8 +118,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::formElement
-   * @covers ::generateButton
+   * Test that a saved value shows the editor and regenerate button.
    */
   public function testFormElementWithSavedValueShowsRegenerateAndDefault(): void {
     $widget = $this->createWidget();
@@ -139,7 +137,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::formElement
+   * Test that the wrapper id includes the field delta.
    */
   public function testFormElementWrapperIdIncludesDelta(): void {
     $widget = $this->createWidget();
@@ -152,7 +150,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::formElement
+   * Test that the generate button is a plain ajax button.
    */
   public function testFormElementButtonIsPlainAjaxButtonWithoutSubmit(): void {
     $widget = $this->createWidget();
@@ -176,7 +174,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::extractFormValues
+   * Test that the edited value is read from the nested form path.
    */
   public function testExtractFormValuesSetsValueFromNestedPath(): void {
     $widget = $this->createWidget();
@@ -194,7 +192,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::extractFormValues
+   * Test that nothing is set when no value is submitted.
    */
   public function testExtractFormValuesSkipsWhenNoValue(): void {
     $widget = $this->createWidget();
@@ -289,8 +287,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::ajaxCallback
-   * @covers ::generateSummary
+   * Test that a generated summary is injected into the form.
    */
   public function testAjaxCallbackInjectsSummaryOnSuccess(): void {
     $captured = [];
@@ -317,8 +314,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::ajaxCallback
-   * @covers ::generateSummary
+   * Test that an error is shown when generation returns nothing.
    */
   public function testAjaxCallbackShowsErrorWhenGeneratorReturnsNull(): void {
     $captured = [];
