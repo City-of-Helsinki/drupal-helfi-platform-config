@@ -27,13 +27,17 @@ final readonly class NewsListLazyBuilder implements TrustedCallbackInterface {
   /**
    * Lazy loader callback for news list.
    *
-   * @param string $id
+   * @param string|NULL $id
    *   The entity ID.
    *
    * @return array
    *   The render array.
    */
-  public function build(string $id) : array {
+  public function build(?string $id) : array {
+    if (!$id) {
+      return [];
+    }
+
     $entity = $this->entityTypeManager->getStorage('paragraph')
       ->load($id);
 
