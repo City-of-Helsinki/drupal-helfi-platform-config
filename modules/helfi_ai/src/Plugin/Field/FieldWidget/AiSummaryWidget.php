@@ -224,7 +224,7 @@ final class AiSummaryWidget extends WidgetBase {
   /**
    * After-build callback: strips the "About text formats" help link.
    *
-   * filter_process_format() always appends a format[help] child containing a
+   * Filter_process_format() always appends a format[help] child containing a
    * "More information about text formats" link. It cannot be removed through
    * the UI or field settings, so we unset it here after the element is built.
    *
