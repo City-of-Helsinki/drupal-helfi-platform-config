@@ -63,6 +63,11 @@ class ConfigurationTest extends ExistingSiteBase {
     // this one have all the modules installed.
     $this->expectNotToPerformAssertions();
 
+    // Temporary experiment: bump the memory limit to check whether the OOM
+    // during helfi_test_content installation is a hard limit being slightly
+    // exceeded or an unbounded memory leak.
+    ini_set('memory_limit', '1G');
+
     /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
     $moduleInstaller = $this->container->get('module_installer');
     $moduleInstaller->install([$module]);
