@@ -600,6 +600,44 @@ function helfi_platform_config_update_11003(): void {
 }
 
 /**
+ * Enable the advanced metatag group.
+ */
+function helfi_platform_config_update_11004(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('metatag')) {
+    return;
+  }
+
+  // The advanced group is enabled on these entity types.
+  $types = [
+    'node' => ['page', 'landing_page'],
+    'tpr_service' => ['tpr_service'],
+    'tpr_unit' => ['tpr_unit'],
+  ];
+
+  $config = \Drupal::configFactory()->getEditable('metatag.settings');
+  $entityTypeGroups = $config->get('entity_type_groups') ?? [];
+  $changed = FALSE;
+
+  foreach ($types as $entityType => $bundles) {
+    foreach ($bundles as $bundle) {
+      $groups = $entityTypeGroups[$entityType][$bundle] ?? [];
+
+      // Only act on bundles that already has metatag groups configuration.
+      if (empty($groups) || isset($groups['advanced'])) {
+        continue;
+      }
+
+      $entityTypeGroups[$entityType][$bundle]['advanced'] = 'advanced';
+      $changed = TRUE;
+    }
+  }
+
+  if ($changed) {
+    $config->set('entity_type_groups', $entityTypeGroups)->save();
+  }
+}
+
+/**
  * UHF-13110: Install Drupal AI and Azure provider configuration.
  */
 function helfi_platform_config_update_11005(): void {
