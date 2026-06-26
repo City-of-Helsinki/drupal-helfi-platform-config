@@ -5,10 +5,10 @@ display:
         type: full
         options:
           tags:
-            next: 'Next ››'
-            previous: '‹‹ Previous'
-            first: '« First'
-            last: 'Last »'
+            next: Next
+            previous: Previous
+            first: First
+            last: Last
           quantity: 9
       style:
         type: table
