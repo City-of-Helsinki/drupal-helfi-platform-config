@@ -636,3 +636,23 @@ function helfi_platform_config_update_11004(): void {
     $config->set('entity_type_groups', $entityTypeGroups)->save();
   }
 }
+
+/**
+ * UHF-13110: Install Drupal AI and Azure provider configuration.
+ */
+function helfi_platform_config_update_11005(): void {
+  /** @var \Drupal\helfi_api_base\Environment\ActiveProjectRoles $projectRoles */
+  $projectRoles = \Drupal::service(ActiveProjectRoles::class);
+
+  // Only enable the AI summary feature on core instances; other instances can
+  // enable helfi_ai manually. Enabling helfi_ai pulls in its dependencies
+  // (ai, ai_provider_azure, key) automatically.
+  if ($projectRoles->hasRole(ProjectRoleEnum::Core)) {
+    if (!\Drupal::moduleHandler()->moduleExists('helfi_ai')) {
+      \Drupal::service('module_installer')->install(['helfi_ai']);
+    }
+  }
+
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_platform_config');
+}
