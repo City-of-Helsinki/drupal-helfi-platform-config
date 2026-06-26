@@ -63,6 +63,14 @@ class ConfigurationTest extends ExistingSiteBase {
     // this one have all the modules installed.
     $this->expectNotToPerformAssertions();
 
+    // Phpunit runs into OOM quite easily with this test. The
+    // main culprit seems to be deprecation warnings, e.g. if
+    // any entity update hook run deprecated code, it quickly
+    // racks up 10s of thousands of entries to deprecation log.
+    // Easiest way around this is to increase memory limit for
+    // this test.
+    ini_set('memory_limit', '1G');
+
     /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
     $moduleInstaller = $this->container->get('module_installer');
     $moduleInstaller->install([$module]);
