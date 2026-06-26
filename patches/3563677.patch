@@ -1,0 +1,274 @@
+diff --git a/core/lib/Drupal/Core/Template/TwigThemeEngine.php b/core/lib/Drupal/Core/Template/TwigThemeEngine.php
+index 23017a967c13f6541ba301b0ee021c6775732186..c40b5cd57eb22922528516e2ed02103662746f7e 100644
+--- a/core/lib/Drupal/Core/Template/TwigThemeEngine.php
++++ b/core/lib/Drupal/Core/Template/TwigThemeEngine.php
+@@ -52,8 +52,8 @@ public function renderTemplate(string $template_file, array $variables): string|
+         'debug_suffix' => '',
+       ];
+ 
+-      $output['debug_prefix'] .= "\n\n<!-- THEME DEBUG -->";
+-      $output['debug_prefix'] .= "\n<!-- THEME HOOK: '" . Html::escape($variables['theme_hook_original']) . "' -->";
++      $output['debug_prefix'] .= "<!--\n\nTHEME DEBUG -->";
++      $output['debug_prefix'] .= "<!--\nTHEME HOOK: '" . Html::escape($variables['theme_hook_original']) . "' -->";
+       // If there are theme suggestions, reverse the array so more specific
+       // suggestions are shown first.
+       if (!empty($variables['theme_hook_suggestions'])) {
+@@ -100,10 +100,10 @@ public function renderTemplate(string $template_file, array $variables): string|
+           }
+           $suggestion = $prefix . ' ' . $template;
+         }
+-        $output['debug_info'] .= "\n<!-- FILE NAME SUGGESTIONS:\n   " . Html::escape(implode("\n   ", $suggestions)) . "\n-->";
++        $output['debug_info'] .= "<!--\nFILE NAME SUGGESTIONS:\n   " . Html::escape(implode("\n   ", $suggestions)) . "\n-->";
+ 
+         if (!empty($invalid_suggestions)) {
+-          $output['debug_info'] .= "\n<!-- INVALID FILE NAME SUGGESTIONS:";
++          $output['debug_info'] .= "<!--\nINVALID FILE NAME SUGGESTIONS:";
+           $output['debug_info'] .= "\n   See https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!theme.api.php/function/hook_theme_suggestions_alter";
+           $output['debug_info'] .= "\n   " . Html::escape(implode("\n   ", $invalid_suggestions));
+           $output['debug_info'] .= "\n-->";
+@@ -116,8 +116,8 @@ public function renderTemplate(string $template_file, array $variables): string|
+         $template_override_status_output = "💡 BEGIN CUSTOM TEMPLATE OUTPUT";
+         $template_override_suffix_output = "END CUSTOM TEMPLATE OUTPUT";
+       }
+-      $output['debug_info']   .= "\n<!-- " . $template_override_status_output . " from '" . Html::escape($template_file) . "' -->\n";
+-      $output['debug_suffix'] .= "\n<!-- " . $template_override_suffix_output . " from '" . Html::escape($template_file) . "' -->\n\n";
++      $output['debug_info']   .= "<!--\n" . $template_override_status_output . " from '" . Html::escape($template_file) . "'\n-->";
++      $output['debug_suffix'] .= "<!--\n" . $template_override_suffix_output . " from '" . Html::escape($template_file) . "'\n\n-->";
+       // This output has already been rendered and is therefore considered safe.
+       return Markup::create(implode('', $output));
+     }
+diff --git a/core/modules/filter/src/Plugin/Filter/FilterAutoP.php b/core/modules/filter/src/Plugin/Filter/FilterAutoP.php
+index 31277fe808624e8896cbc96a46e90aeb340dfb82..8f24286e55ea774bd9a4ccc6a9881392efe21e82 100644
+--- a/core/modules/filter/src/Plugin/Filter/FilterAutoP.php
++++ b/core/modules/filter/src/Plugin/Filter/FilterAutoP.php
+@@ -61,8 +61,7 @@ public function process($text, $langcode) {
+       elseif (!$ignore) {
+         // Skip if the next chunk starts with Twig theme debug.
+         // @see twig_render_template()
+-        if (isset($chunks[$i + 1]) && $chunks[$i + 1] === '<!-- THEME DEBUG -->') {
+-          $chunk = rtrim($chunk, "\n");
++        if (isset($chunks[$i + 1]) && $chunks[$i + 1] === "<!--\n\nTHEME DEBUG -->") {
+           $output .= $chunk;
+           continue;
+         }
+@@ -71,10 +70,9 @@ public function process($text, $langcode) {
+         // @see \Drupal\Core\Template\TwigThemeEngine::renderTemplate()
+         if (isset($chunks[$i - 1])) {
+           if (
+-            str_starts_with($chunks[$i - 1], '<!-- BEGIN OUTPUT from ')
+-            || str_starts_with($chunks[$i - 1], '<!-- 💡 BEGIN CUSTOM TEMPLATE OUTPUT from ')
++            str_starts_with($chunks[$i - 1], "<!--\nBEGIN OUTPUT from ")
++            || str_starts_with($chunks[$i - 1], "<!--\n💡 BEGIN CUSTOM TEMPLATE OUTPUT from ")
+           ) {
+-            $chunk = ltrim($chunk, "\n");
+             $output .= $chunk;
+             continue;
+           }
+diff --git a/core/modules/filter/tests/src/Kernel/FilterCaptionTwigDebugTest.php b/core/modules/filter/tests/src/Kernel/FilterCaptionTwigDebugTest.php
+index a9f3f8c8db53f102c0ff9e5821986d89b584282c..c2f67ac6ed6c18a207ae37529b6a003ff3a6153f 100644
+--- a/core/modules/filter/tests/src/Kernel/FilterCaptionTwigDebugTest.php
++++ b/core/modules/filter/tests/src/Kernel/FilterCaptionTwigDebugTest.php
+@@ -60,7 +60,7 @@ public function testCaptionFilter(): void {
+     $expected = '<img src="llama.jpg">' . "\n" . '<figcaption>Loquacious llama!</figcaption>';
+     $output = $test($input)->getProcessedText();
+     $this->assertStringContainsString($expected, $output);
+-    $this->assertStringContainsString("<!-- THEME HOOK: 'filter_caption' -->", $output);
++    $this->assertStringContainsString("<!--\nTHEME HOOK: 'filter_caption' -->", $output);
+   }
+ 
+ }
+diff --git a/core/modules/filter/tests/src/Kernel/FilterKernelTest.php b/core/modules/filter/tests/src/Kernel/FilterKernelTest.php
+index f7d12011b6793145a4e0dcb8087638b629e40889..d020d85c26bef9d01b46a3e880c9fa2f76f52de2 100644
+--- a/core/modules/filter/tests/src/Kernel/FilterKernelTest.php
++++ b/core/modules/filter/tests/src/Kernel/FilterKernelTest.php
+@@ -444,14 +444,14 @@ public function testLineBreakFilter(): void {
+         "<!--\nThree.\n-->" => TRUE,
+       ],
+       // Do not add paragraph tags around Twig theme debugging.
+-      "<p>Text here\n<!-- THEME DEBUG -->\n<!-- THEME HOOK: 'html' -->\n<!-- FILE NAME SUGGESTIONS:\n* html--node.html.twig\nx html.html.twig\n-->\n<!-- BEGIN OUTPUT from 'core/themes/olivero/templates/layout/html.html.twig' -->\n<span>Test</span></p>" => [
++      "<p>Text here<!--\n\nTHEME DEBUG --><!--\nTHEME HOOK: 'html' --><!--\nFILE NAME SUGGESTIONS:\n* html--node.html.twig\nx html.html.twig\n--><!--\nBEGIN OUTPUT from 'core/themes/olivero/templates/layout/html.html.twig'\n--><span>Test</span></p>" => [
+         "<p>Text here" => TRUE,
+         "<p>Text here</p>" => FALSE,
+         "<span>Test</span></p>" => TRUE,
+         "<p><span>Test</span></p>" => FALSE,
+       ],
+       // Do not add paragraph tags around custom template Twig theme debugging.
+-      "<p>Text here\n<!-- THEME DEBUG -->\n<!-- THEME HOOK: 'html' -->\n<!-- FILE NAME SUGGESTIONS:\n* html--node.html.twig\nx html.html.twig\n-->\n<!-- 💡 BEGIN CUSTOM TEMPLATE OUTPUT from 'custom/themes/custom-theme/templates/layout/html.html.twig' -->\n<span>Test</span></p>" => [
++      "<p>Text here<!--\n\nTHEME DEBUG --><!--\nTHEME HOOK: 'html' --><!--\nFILE NAME SUGGESTIONS:\n* html--node.html.twig\nx html.html.twig\n--><!--\n💡 BEGIN CUSTOM TEMPLATE OUTPUT from 'custom/themes/custom-theme/templates/layout/html.html.twig'\n--><span>Test</span></p>" => [
+         "<p>Text here" => TRUE,
+         "<p>Text here</p>" => FALSE,
+         "<span>Test</span></p>" => TRUE,
+@@ -527,21 +527,32 @@ public function testLineBreakFilterTwigDebug(): void {
+     $render = trim($render);
+ 
+     // Render text before applying the auto paragraph filter.
+-    $this->assertSame("<!-- THEME DEBUG -->
+-<!-- THEME HOOK: 'container' -->
+-<!-- 💡 BEGIN CUSTOM TEMPLATE OUTPUT from 'container.html.twig' -->
+-<div>Test two</div>
++    $this->assertSame("<!--
+ 
+-<!-- END CUSTOM TEMPLATE OUTPUT from 'container.html.twig' -->", $render);
++THEME DEBUG --><!--
++THEME HOOK: 'container' --><!--
++💡 BEGIN CUSTOM TEMPLATE OUTPUT from 'container.html.twig'
++--><div>Test two</div>
++<!--
++END CUSTOM TEMPLATE OUTPUT from 'container.html.twig'
++
++-->", $render);
+     $plugin = \Drupal::service('plugin.manager.filter')->createInstance('filter_autop');
+     assert($plugin instanceof FilterAutoP);
+     $result = $plugin->process($render, 'en');
+ 
+     // After auto-p is applied, the theme debug should no longer have
+     // line breaks but the true line breaks should still.
+-    $this->assertSame("<!-- THEME DEBUG --><!-- THEME HOOK: 'container' --><!-- 💡 BEGIN CUSTOM TEMPLATE OUTPUT from 'container.html.twig' --><div>Test two</div>
++    $this->assertSame("<!--
++
++THEME DEBUG --><!--
++THEME HOOK: 'container' --><!--
++💡 BEGIN CUSTOM TEMPLATE OUTPUT from 'container.html.twig'
++--><div>Test two</div>
++<!--
++END CUSTOM TEMPLATE OUTPUT from 'container.html.twig'
+ 
+-<!-- END CUSTOM TEMPLATE OUTPUT from 'container.html.twig' -->", $result->getProcessedText());
++-->", $result->getProcessedText());
+   }
+ 
+   /**
+diff --git a/core/modules/system/tests/src/Functional/Theme/TwigDebugMarkupTest.php b/core/modules/system/tests/src/Functional/Theme/TwigDebugMarkupTest.php
+index e7d85c3555efbcc991f08e4761893afcb48b1501..ba8f3fbe6c7276ff33bece6cbc9d8939c098b4bc 100644
+--- a/core/modules/system/tests/src/Functional/Theme/TwigDebugMarkupTest.php
++++ b/core/modules/system/tests/src/Functional/Theme/TwigDebugMarkupTest.php
+@@ -4,7 +4,9 @@
+ 
+ namespace Drupal\Tests\system\Functional\Theme;
+ 
++use Dom\HTMLDocument;
+ use Drupal\Component\Utility\Html;
++use Drupal\Core\Url;
+ use Drupal\Tests\BrowserTestBase;
+ use PHPUnit\Framework\Attributes\Group;
+ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+@@ -27,18 +29,31 @@ class TwigDebugMarkupTest extends BrowserTestBase {
+   protected $defaultTheme = 'stark';
+ 
+   /**
+-   * Tests debug markup added to Twig template output.
++   * {@inheritdoc}
+    */
+-  public function testTwigDebugMarkup(): void {
+-    \Drupal::service('theme_installer')->install(['test_theme']);
+-    $this->config('system.theme')->set('default', 'test_theme')->save();
++  protected function setUp(): void {
++    parent::setUp();
+     $this->drupalCreateContentType(['type' => 'page']);
+-    // Enable debug, rebuild the service container, and clear all caches.
++  }
++
++  /**
++   * Enable debug, rebuild the service container, and clear all caches.
++   */
++  protected function enableTwigDebug(): void {
+     $parameters = $this->container->getParameter('twig.config');
+     $parameters['debug'] = TRUE;
+     $this->setContainerParameter('twig.config', $parameters);
+     $this->rebuildContainer();
+     $this->resetAll();
++  }
++
++  /**
++   * Tests debug markup added to Twig template output.
++   */
++  public function testTwigDebugMarkup(): void {
++    \Drupal::service('theme_installer')->install(['test_theme']);
++    $this->config('system.theme')->set('default', 'test_theme')->save();
++    $this->enableTwigDebug();
+ 
+     $cache = $this->container->get('theme.registry')->get();
+     // Create array of Twig templates.
+@@ -50,11 +65,11 @@ public function testTwigDebugMarkup(): void {
+     $builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+     $build = $builder->view($node);
+     $output = (string) $this->container->get('renderer')->renderRoot($build);
+-    $this->assertStringContainsString('<!-- THEME DEBUG -->', $output, 'Twig debug markup found in theme output when debug is enabled.');
++    $this->assertStringContainsString("<!--\n\nTHEME DEBUG -->", $output, 'Twig debug markup found in theme output when debug is enabled.');
+     $this->assertStringContainsString("THEME HOOK: 'node'", $output, 'Theme call information found.');
+     $this->assertStringContainsString('▪️ node--1--full.html.twig' . PHP_EOL . '   ✅ node--1.html.twig' . PHP_EOL . '   ▪️ node--page--full.html.twig' . PHP_EOL . '   ▪️ node--page.html.twig' . PHP_EOL . '   ▪️ node--full.html.twig' . PHP_EOL . '   ▪️ node.html.twig', $output, 'Suggested template files found in order and node ID specific template shown as current template.');
+     $this->assertStringContainsString(Html::escape('node--<script type="text/javascript">alert(\'yo\');</script>'), (string) $output);
+-    $this->assertStringContainsString('<!-- INVALID FILE NAME SUGGESTIONS:' . PHP_EOL . '   See https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!theme.api.php/function/hook_theme_suggestions_alter' . PHP_EOL . '   invalid_theme_suggestions' . PHP_EOL . '-->', $output, 'Twig debug markup found invalid suggestions.');
++    $this->assertStringContainsString("<!--\nINVALID FILE NAME SUGGESTIONS:" . PHP_EOL . '   See https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!theme.api.php/function/hook_theme_suggestions_alter' . PHP_EOL . '   invalid_theme_suggestions' . PHP_EOL . '-->', $output, 'Twig debug markup found invalid suggestions.');
+     $template_filename = $templates['node__1']['path'] . '/' . $templates['node__1']['template'] . '.html.twig';
+     $this->assertStringContainsString("💡 BEGIN CUSTOM TEMPLATE OUTPUT from '$template_filename'", $output, 'Full path to current template file found.');
+ 
+@@ -83,7 +98,47 @@ public function testTwigDebugMarkup(): void {
+ 
+     $build = $builder->view($node);
+     $output = (string) $this->container->get('renderer')->renderRoot($build);
+-    $this->assertStringNotContainsString('<!-- THEME DEBUG -->', $output, 'Twig debug markup not found in theme output when debug is disabled.');
++    $this->assertStringNotContainsString("<!--\n\nTHEME DEBUG -->", $output, 'Twig debug markup not found in theme output when debug is disabled.');
++  }
++
++  /**
++   * Tests that the debug markup does not significantly alter the DOM.
++   *
++   * This is done by comparing the textContent property of the document body
++   * with and without the debug output. Since textContent is the concatenation
++   * of all child nodes, including whitespace and text nodes, it will
++   * significantly differ if new whitespace is added by the HTML comments. The
++   * comments themselves will not be part of the textContent.
++   *
++   * @see https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
++   */
++  public function testTwigDebugMarkupDomParity(): void {
++    $node = $this->drupalCreateNode();
++
++    /**
++     * @return array{textContent: string, innerHTML: string}
++     */
++    $get_text_and_html = function () use ($node): array {
++      $html = $this->drupalGet(Url::fromRoute('entity.node.canonical', ['node' => $node->id()]));
++      $dom = HTMLDocument::createFromString($html);
++      $element = $dom->querySelector('body');
++      return [
++        'textContent' => trim($element->textContent),
++        'innerHTML' => $element->innerHTML,
++      ];
++    };
++
++    $twig_debug_output_needle = "<!--\n\nTHEME DEBUG -->";
++
++    $text_and_html = $get_text_and_html();
++    $this->assertStringNotContainsString($twig_debug_output_needle, $text_and_html['innerHTML']);
++
++    $this->enableTwigDebug();
++    $text_and_html_debug = $get_text_and_html();
++    $this->assertStringContainsString($twig_debug_output_needle, $text_and_html_debug['innerHTML']);
++
++    $this->assertEquals($text_and_html['textContent'], $text_and_html_debug['textContent']);
++
+   }
+ 
+ }
+diff --git a/core/modules/views/tests/src/Kernel/ViewsTemplateTest.php b/core/modules/views/tests/src/Kernel/ViewsTemplateTest.php
+index eaac4bc9dd55090f7914c934c4d6efab99723edd..01746d8fd90dd185d4fe2321e0e040a75a40715f 100644
+--- a/core/modules/views/tests/src/Kernel/ViewsTemplateTest.php
++++ b/core/modules/views/tests/src/Kernel/ViewsTemplateTest.php
+@@ -63,13 +63,13 @@ public function testThemeSuggestionsContainerAlter(): void {
+ 
+     $output = $this->render($build);
+     $extension = '.html.twig';
+-    $expected = '<!-- FILE NAME SUGGESTIONS:' . PHP_EOL
++    $expected = '<!--' . PHP_EOL . 'FILE NAME SUGGESTIONS:' . PHP_EOL
+       . '   ▪️ container--more-link--test-page-display--default' . $extension . PHP_EOL
+       . '   ▪️ container--more-link--default' . $extension . PHP_EOL
+       . '   ▪️ container--more-link--test-page-display' . $extension . PHP_EOL
+       . '   ▪️ container--more-link' . $extension . PHP_EOL
+       . '   ✅ container' . $extension . PHP_EOL
+-      . '-->' . PHP_EOL;
++      . '-->';
+     $this->assertStringContainsString($expected, $output, 'Views more link container suggestions found in Twig debug output');
+   }
+ 
