@@ -331,8 +331,6 @@ display:
           separator: ' - '
           hide_empty: false
       rendering_language: '***LANGUAGE_language_content***'
-      display_extenders:
-        metatag_display_extender: {  }
     cache_metadata:
       max-age: -1
       contexts:
