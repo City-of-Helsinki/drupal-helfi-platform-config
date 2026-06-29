@@ -1,8 +1,0 @@
-content:
-  ai_summary:
-    type: text_default
-    label: hidden
-    settings: { }
-    third_party_settings: { }
-    weight: 3
-    region: content
