@@ -7,7 +7,6 @@ namespace Drupal\helfi_ai\Plugin\Field\FieldWidget;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
-use Drupal\Core\Entity\ContentEntityFormInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -15,6 +14,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_ai\PreviewEntityBuilder;
 use Drupal\helfi_ai\Service\AiSummaryGenerator;
 
 /**
@@ -323,21 +323,10 @@ final class AiSummaryWidget extends WidgetBase {
    *   The generated summary HTML, or NULL on failure.
    */
   private static function generateSummary(array &$form, FormStateInterface $form_state): ?string {
-    $form_object = $form_state->getFormObject();
-    if (!$form_object instanceof ContentEntityFormInterface) {
-      return NULL;
-    }
-    $entity = $form_object->buildEntity($form, $form_state);
+    $entity = PreviewEntityBuilder::fromFormState($form, $form_state);
     if (!$entity instanceof ContentEntityInterface) {
       return NULL;
     }
-    // This is a throwaway clone holding the editor's unsaved changes. Mark it
-    // as a preview so the view builder renders the in-memory state and skips
-    // the render cache — otherwise an existing node would render its saved
-    // (cached) content instead of the current edits. in_preview is an
-    // untyped dynamic property that core's NodeViewBuilder reads.
-    // @phpstan-ignore-next-line
-    $entity->in_preview = TRUE;
     return \Drupal::service(AiSummaryGenerator::class)
       ->generate($entity, $entity->language()->getId());
   }
