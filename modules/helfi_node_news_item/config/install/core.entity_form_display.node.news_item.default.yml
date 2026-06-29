@@ -46,7 +46,7 @@ third_party_settings:
       label: Links
       region: content
       parent_name: ''
-      weight: 18
+      weight: 19
       format_type: fieldset
       format_settings:
         classes: ''
@@ -83,7 +83,7 @@ content:
     third_party_settings: {  }
   field_content:
     type: paragraphs
-    weight: 17
+    weight: 18
     region: content
     settings:
       title: Paragraph
