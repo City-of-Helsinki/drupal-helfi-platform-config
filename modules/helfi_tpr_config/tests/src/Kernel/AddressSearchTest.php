@@ -6,12 +6,14 @@ namespace Drupal\Tests\helfi_tpr_config\Kernel;
 
 use Drupal\helfi_tpr_config\Plugin\views\filter\AddressSearch;
 use Drupal\KernelTests\KernelTestBase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests AddressSearch override.
- *
- * @group helfi_tpr_config
  */
+#[RunTestsInSeparateProcesses]
+#[Group('helfi_tpr_config')]
 class AddressSearchTest extends KernelTestBase {
 
   /**

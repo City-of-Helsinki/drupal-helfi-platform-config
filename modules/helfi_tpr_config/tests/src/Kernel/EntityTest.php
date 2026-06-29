@@ -8,45 +8,19 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_tpr\Entity\Service as ServiceBase;
 use Drupal\helfi_tpr\Entity\Unit as UnitBase;
 use Drupal\helfi_tpr_config\Entity\Service;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\helfi_tpr_config\Entity\Unit;
 use Drupal\Core\Url;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests helfi_tpr_config Entity class overrides.
  *
  * @covers \Drupal\helfi_tpr_config\Entity\Unit::getWebsiteUrl
- * @group helfi_tpr_config
  */
+#[RunTestsInSeparateProcesses]
+#[Group('helfi_tpr_config')]
 class EntityTest extends KernelTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'system',
-    'field',
-    'text',
-    'link',
-    'user',
-    'file',
-    'media',
-    'image',
-    'address',
-    'menu_link_content',
-    'telephone',
-    'metatag',
-    'metatag_open_graph',
-    'metatag_twitter_cards',
-    'entity_reference_revisions',
-    'paragraphs',
-    'paragraphs_library',
-    'options',
-    'token',
-    'helfi_api_base',
-    'helfi_tpr',
-    'helfi_tpr_config',
-  ];
 
   /**
    * The entity type manager.
