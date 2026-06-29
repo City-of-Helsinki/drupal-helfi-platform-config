@@ -67,6 +67,32 @@ export const sanitizeSafeLinks = (url) => {
 };
 
 /**
+ * Encode the tel-href in same way as Drupal to prevent accessibility problems.
+ *
+ * @param {string} url The URL as string.
+ * @return {string} The sanitized URL as a string or original URL.
+ */
+export const encodeTelHref = (url) => {
+  const phoneNumber = url.split(':')[1];
+
+  let decodedPhoneNumber;
+  try {
+    decodedPhoneNumber = decodeURIComponent(phoneNumber);
+  } catch (_exception) {
+    return url;
+  }
+
+  try {
+    const encodedPhoneNumber = encodeURIComponent(decodedPhoneNumber);
+    return `tel:${encodedPhoneNumber}`;
+  } catch (exception) {
+    console.error(exception, exception.stack);
+  }
+
+  return url;
+};
+
+/**
  * Add a class to a view.
  *
  * @param {object} view The view.

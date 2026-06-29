@@ -5,7 +5,13 @@ import { Plugin } from 'ckeditor5/src/core';
 import { findAttributeRange } from 'ckeditor5/src/typing';
 import { Widget } from 'ckeditor5/src/widget';
 import formElements from './formElements';
-import { isUrlExternal, parseProtocol, sanitizeSafeLinks, shouldApplyModelAttribute } from './utils/utils';
+import {
+  encodeTelHref,
+  isUrlExternal,
+  parseProtocol,
+  sanitizeSafeLinks,
+  shouldApplyModelAttribute,
+} from './utils/utils';
 
 /**
  * CKEditor 5 plugins do not work directly with the DOM. They are defined as
@@ -597,6 +603,7 @@ export default class HelfiLinkEditing extends Plugin {
           const linkProtocol = parseProtocol(trimmedHref);
           if (linkProtocol === 'tel') {
             trimmedHref = trimmedHref.replace(/[\s()-]/g, '');
+            trimmedHref = encodeTelHref(trimmedHref);
           }
 
           // Replace the href with trimmed href.
