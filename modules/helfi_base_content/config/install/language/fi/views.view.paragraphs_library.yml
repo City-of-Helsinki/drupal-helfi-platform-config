@@ -22,7 +22,7 @@ display:
             items_per_page_options_all_label: '- Kaikki -'
       fields:
         label:
-          label: Tunnus
+          label: Otsikko
         type:
           label: Tyyppi
         paragraphs__target_id:
@@ -37,9 +37,9 @@ display:
       filters:
         label:
           expose:
-            label: Tunnus
+            label: Otsikko
           group_info:
-            label: Tunnus
+            label: Otsikko
             description: ''
         type:
           expose:

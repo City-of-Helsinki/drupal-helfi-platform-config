@@ -1,6 +1,15 @@
 display:
   default:
     display_options:
+      fields:
+        label:
+          label: Title
+      filters:
+        label:
+          expose:
+            label: Title
+          group_info:
+            label: Title
       pager:
         type: full
         options:

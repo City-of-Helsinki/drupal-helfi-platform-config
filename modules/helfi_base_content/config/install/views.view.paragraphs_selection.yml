@@ -234,7 +234,7 @@ display:
           exposed: true
           expose:
             operator_id: label_op
-            label: Label
+            label: Title
             description: ''
             use_operator: false
             operator: label_op
