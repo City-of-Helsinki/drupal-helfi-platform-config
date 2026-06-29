@@ -17,8 +17,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 /**
  * Tests the unit contact card paragraph bundle class.
  */
-#[RunTestsInSeparateProcesses]
 #[Group('helfi_tpr_config')]
+#[RunTestsInSeparateProcesses]
 class UnitContactCardTest extends KernelTestBase {
 
   /**

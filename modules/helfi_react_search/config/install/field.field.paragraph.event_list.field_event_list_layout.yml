@@ -11,7 +11,7 @@ id: paragraph.event_list.field_event_list_layout
 field_name: field_event_list_layout
 entity_type: paragraph
 bundle: event_list
-label: Layout
+label: Display
 description: ''
 required: true
 translatable: false

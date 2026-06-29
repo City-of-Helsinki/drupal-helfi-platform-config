@@ -18,8 +18,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  *
  * @covers \Drupal\helfi_tpr_config\Entity\Unit::getWebsiteUrl
  */
-#[RunTestsInSeparateProcesses]
 #[Group('helfi_tpr_config')]
+#[RunTestsInSeparateProcesses]
 class EntityTest extends KernelTestBase {
 
   /**

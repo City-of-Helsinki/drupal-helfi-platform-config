@@ -7,7 +7,7 @@ namespace Drupal\helfi_platform_config\Plugin\search_api\processor;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_platform_config\Token\MetatagTitleResolver;
+use Drupal\helfi_platform_config\Helper\MetatagHelper;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
@@ -39,9 +39,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class MetatagTitle extends ProcessorPluginBase {
 
   /**
-   * The metatag title resolver.
+   * The metatag helper.
    */
-  private MetatagTitleResolver $titleResolver;
+  private MetatagHelper $metatagHelper;
 
   /**
    * {@inheritdoc}
@@ -50,7 +50,7 @@ final class MetatagTitle extends ProcessorPluginBase {
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $processor->titleResolver = $container->get(MetatagTitleResolver::class);
+    $processor->metatagHelper = $container->get(MetatagHelper::class);
     return $processor;
   }
 
@@ -87,7 +87,7 @@ final class MetatagTitle extends ProcessorPluginBase {
     // Metatag overrides are only available on content entities. Fall back to
     // the entity label when the title has not been customized.
     $title = $entity instanceof ContentEntityInterface
-      ? $this->titleResolver->resolve($entity)
+      ? $this->metatagHelper->resolveTitle($entity)
       : NULL;
     $title ??= (string) $entity->label();
 

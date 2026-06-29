@@ -12,8 +12,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 /**
  * Tests AddressSearch override.
  */
-#[RunTestsInSeparateProcesses]
 #[Group('helfi_tpr_config')]
+#[RunTestsInSeparateProcesses]
 class AddressSearchTest extends KernelTestBase {
 
   /**

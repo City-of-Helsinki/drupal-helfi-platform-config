@@ -10,7 +10,7 @@ field_name: field_iframe_title
 entity_type: paragraph
 bundle: map
 label: 'Assistive technology title'
-description: 'Users of assistive technology need a descriptive title to know what is in the embedded content.'
+description: 'Write a title for users of assistive technology. If the map already has a title, use the same one. The title is read by screen readers before the map. This text is not visible on the page. The prefix “Map: ” is added automatically.'
 required: true
 translatable: false
 default_value: {  }
