@@ -124,6 +124,12 @@ msgstr "Yläsivu"
 msgid "News Keywords"
 msgstr "Uutisten asiasanat"
 
+msgid "noindex - Prevents search engines from indexing this page."
+msgstr "noindex - Estää sivun indeksoinnin hel.fin päähakuun ja ulkoisiin hakukoneisiin"
+
+msgid "nofollow - Prevents search engines from following links on this page."
+msgstr "nofollow - Estää hakukoneita seuraamasta sivulla olevia linkkejä"
+
 # Node
 msgid "The date and time that the content was created."
 msgstr "Päivämäärä jolloin sisältö on luotu."
