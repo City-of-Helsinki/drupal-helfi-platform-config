@@ -6,25 +6,24 @@ namespace Drupal\helfi_platform_config\SchemaOrg\Builder;
 
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\helfi_platform_config\SchemaOrg\DateFormatTrait;
 use Drupal\helfi_platform_config\SchemaOrg\EntityIdTrait;
 use Drupal\helfi_platform_config\SchemaOrg\SchemaBuilderInterface;
-use Drupal\helfi_platform_config\Token\OGImageManager;
 
 /**
  * Emits a per-page WebPage entity for any content entity page.
  */
 final class WebPageBuilder implements SchemaBuilderInterface {
 
+  use DateFormatTrait;
   use EntityIdTrait;
 
   public function __construct(
     private readonly ConfigFactoryInterface $configFactory,
-    private readonly DateFormatterInterface $dateFormatter,
   ) {
   }
 
@@ -70,19 +69,6 @@ final class WebPageBuilder implements SchemaBuilderInterface {
     }
 
     return [$webpage];
-  }
-
-  /**
-   * Formats a timestamp as an ISO 8601 string.
-   *
-   * @param int|string $timestamp
-   *   The UNIX timestamp.
-   *
-   * @return string
-   *   ISO 8601 date string.
-   */
-  private function formatDate(int|string $timestamp): string {
-    return $this->dateFormatter->format((int) $timestamp, 'custom', 'c');
   }
 
 }
