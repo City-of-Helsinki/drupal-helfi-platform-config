@@ -1,0 +1,7 @@
+# Sitewide schema.org identity defaults.
+organization_id: 'https://www.hel.fi/#organization'
+organization_type: 'GovernmentOrganization'
+organization_name: 'City of Helsinki'
+organization_url: 'https://www.hel.fi'
+website_id: 'https://www.hel.fi/#website'
+website_name: 'City of Helsinki'
