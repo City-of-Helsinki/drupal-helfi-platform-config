@@ -25,3 +25,17 @@ function helfi_ai_install(bool $is_syncing): void {
     $manager->installFieldStorageDefinition('ai_summary', 'node', 'helfi_ai', $definition);
   }
 }
+
+/**
+ * Installs the GEO/SEO title suggestion config on existing installs.
+ *
+ * Default config under config/install is only imported on module install, so
+ * existing sites that already have helfi_ai do not get the new SEO-title prompt
+ * or settings from a version bump. The helfi config update helper re-installs
+ * the module's default config (skipping anything already present) and refreshes
+ * permissions.
+ */
+function helfi_ai_update_10001(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_ai');
+}

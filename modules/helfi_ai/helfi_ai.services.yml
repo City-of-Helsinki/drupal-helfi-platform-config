@@ -16,3 +16,9 @@ services:
     arguments:
       $aiProvider: '@ai.provider'
       $logger: '@logger.channel.helfi_ai'
+
+  Drupal\helfi_ai\Form\TitleSuggestionFormAlter:
+    arguments:
+      $currentUser: '@current_user'
+      $configFactory: '@config.factory'
+      $stringTranslation: '@string_translation'

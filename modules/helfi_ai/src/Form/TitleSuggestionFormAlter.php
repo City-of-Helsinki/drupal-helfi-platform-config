@@ -6,37 +6,50 @@ namespace Drupal\helfi_ai\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityFormInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\helfi_ai\PreviewEntityBuilder;
 use Drupal\helfi_ai\Service\AiTitleSuggester;
 use Drupal\node\NodeInterface;
 
 /**
- * Adds a "Suggest SEO title" button next to the node title field.
+ * Adds an AI "Suggest SEO title" button next to the node title field.
  *
- * POC for AI-assisted GEO/SEO titles: an AJAX button beside the title builds
- * the unsaved node from current form values, asks {@see AiTitleSuggester} for
- * a few title candidates and shows them in a modal. Picking one fills the title
- * field client-side (see js/ai-title-suggest.js); the editor can still edit it.
+ * An AJAX button beside the title builds the unsaved node from the current form
+ * values, asks {@see AiTitleSuggester} for a few GEO/SEO-optimized title
+ * candidates and shows them in a modal. Picking one fills the title field
+ * client-side (see js/ai-title-suggest.js); the editor can still edit it.
  *
  * The button is a plain (non-submit) AJAX button on purpose, for the same
  * reason as the AI summary widget: its callback runs regardless of validation
  * and sees the full, un-pruned form values, so the unsaved entity (including
  * unsaved paragraphs) can be rebuilt in memory.
+ *
+ * The content types the button is offered on are read from the
+ * `helfi_ai.settings:seo_title_bundles` config, so sites can adjust them
+ * through configuration without a code change.
  */
 final class TitleSuggestionFormAlter {
 
-  /**
-   * Node bundles the title suggester is offered on (POC: basic page only).
-   */
-  private const BUNDLES = ['page'];
+  use StringTranslationTrait;
 
   /**
    * Permission required to use the title suggester.
    */
   private const PERMISSION = 'use helfi ai title suggestion';
+
+  public function __construct(
+    private readonly AccountInterface $currentUser,
+    private readonly ConfigFactoryInterface $configFactory,
+    TranslationInterface $stringTranslation,
+  ) {
+    $this->setStringTranslation($stringTranslation);
+  }
 
   /**
    * Alters a node form to add the title suggestion button.
@@ -46,13 +59,17 @@ final class TitleSuggestionFormAlter {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current form state.
    */
-  public static function alter(array &$form, FormStateInterface $form_state): void {
+  public function alter(array &$form, FormStateInterface $form_state): void {
     $form_object = $form_state->getFormObject();
     if (!$form_object instanceof ContentEntityFormInterface) {
       return;
     }
     $entity = $form_object->getEntity();
-    if (!$entity instanceof NodeInterface || !in_array($entity->bundle(), self::BUNDLES, TRUE)) {
+    if (!$entity instanceof NodeInterface) {
+      return;
+    }
+    $bundles = $this->configFactory->get('helfi_ai.settings')->get('seo_title_bundles') ?? [];
+    if (!in_array($entity->bundle(), $bundles, TRUE)) {
       return;
     }
     // The title base field uses the standard string widget; bail if it is not
@@ -60,11 +77,10 @@ final class TitleSuggestionFormAlter {
     if (!isset($form['title']['widget'][0]['value'])) {
       return;
     }
-    if (!\Drupal::currentUser()->hasPermission(self::PERMISSION)) {
+    if (!$this->currentUser->hasPermission(self::PERMISSION)) {
       return;
     }
 
-    $translation = \Drupal::translation();
     $form['title']['helfi_ai_suggest'] = [
       '#type' => 'container',
       '#attributes' => ['class' => ['helfi-ai-title-suggest']],
@@ -72,7 +88,7 @@ final class TitleSuggestionFormAlter {
       '#weight' => ($form['title']['widget'][0]['value']['#weight'] ?? 0) + 0.5,
       'button' => [
         '#type' => 'button',
-        '#value' => $translation->translate('Suggest SEO title', [], ['context' => 'helfi_ai']),
+        '#value' => $this->t('Suggest SEO title', options: ['context' => 'helfi_ai']),
         '#name' => 'helfi_ai_suggest_title',
         '#attributes' => ['class' => ['button--small']],
         '#ajax' => [
@@ -80,7 +96,7 @@ final class TitleSuggestionFormAlter {
           'event' => 'click',
           'progress' => [
             'type' => 'throbber',
-            'message' => $translation->translate('Generating title suggestions…', [], ['context' => 'helfi_ai']),
+            'message' => $this->t('Generating title suggestions…', options: ['context' => 'helfi_ai']),
           ],
         ],
         '#attached' => ['library' => ['helfi_ai/title_suggest']],
@@ -90,6 +106,11 @@ final class TitleSuggestionFormAlter {
 
   /**
    * AJAX callback: builds suggestions from live form state, shows them modally.
+   *
+   * This is a static method because Drupal serializes the form (and its #ajax
+   * callbacks) into the cache, so the callback must be a plain callable rather
+   * than a bound service instance. It therefore resolves its collaborators
+   * from the container, mirroring the AI summary widget.
    *
    * @param array<string, mixed> $form
    *   The (rebuilt) form structure.

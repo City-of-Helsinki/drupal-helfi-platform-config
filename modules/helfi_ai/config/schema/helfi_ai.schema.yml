@@ -1,0 +1,10 @@
+helfi_ai.settings:
+  type: config_object
+  label: 'HELfi AI settings'
+  mapping:
+    seo_title_bundles:
+      type: sequence
+      label: 'Content types offering AI SEO title suggestions'
+      sequence:
+        type: string
+        label: 'Content type machine name'
