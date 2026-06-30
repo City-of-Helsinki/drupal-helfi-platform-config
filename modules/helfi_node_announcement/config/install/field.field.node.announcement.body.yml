@@ -13,7 +13,7 @@ field_name: body
 entity_type: node
 bundle: announcement
 label: Body
-description: 'Please note that title is not shown alongside with the body text.'
+description: ''
 required: false
 translatable: true
 default_value: {  }
