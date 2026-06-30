@@ -122,6 +122,17 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
   }
 
   /**
+   * Content larger than the byte cap is skipped (empty array, no AI call).
+   */
+  public function testReturnsEmptyWhenContentTooLarge(): void {
+    // A title well over the 256 KB cap; the text converter includes it in the
+    // rendered content, pushing the payload past the limit.
+    $node = $this->createNode(str_repeat('A', 300 * 1024));
+
+    $this->assertSame([], $this->suggester->suggest($node, $node->language()->getId()));
+  }
+
+  /**
    * A missing prompt entity makes suggestion fail gracefully (empty array).
    */
   public function testReturnsEmptyWhenPromptMissing(): void {

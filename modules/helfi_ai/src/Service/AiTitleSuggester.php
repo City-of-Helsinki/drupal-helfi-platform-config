@@ -21,7 +21,7 @@ use Psr\Log\LoggerInterface;
  * then parses the reply into a short list of title candidates the editor can
  * pick from.
  */
-final class AiTitleSuggester {
+class AiTitleSuggester {
 
   /**
    * ID of the prompt entity that defines the SEO-title instructions.
@@ -32,6 +32,14 @@ final class AiTitleSuggester {
    * Maximum number of suggestions returned, regardless of the model's reply.
    */
   private const MAX_SUGGESTIONS = 3;
+
+  /**
+   * Maximum content size in bytes sent to the provider.
+   *
+   * Bounds the prompt payload to keep request cost and latency predictable;
+   * pages above this are not titled rather than sent in full.
+   */
+  private const MAX_CONTENT_BYTES = 256 * 1024;
 
   public function __construct(
     private readonly AiProviderPluginManager $aiProvider,
@@ -67,6 +75,17 @@ final class AiTitleSuggester {
       $this->logger->warning('helfi_ai: no text content for entity @type/@id.', [
         '@type' => $entity->getEntityTypeId(),
         '@id' => $entity->id(),
+      ]);
+      return [];
+    }
+
+    // Bound the payload sent to the provider. Oversized pages are skipped
+    // rather than sent in full, to keep request cost and latency predictable.
+    if (strlen($content) > self::MAX_CONTENT_BYTES) {
+      $this->logger->warning('helfi_ai: content for entity @type/@id is too large (@bytes bytes) to suggest a title.', [
+        '@type' => $entity->getEntityTypeId(),
+        '@id' => $entity->id(),
+        '@bytes' => strlen($content),
       ]);
       return [];
     }

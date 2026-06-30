@@ -34,7 +34,7 @@ use Drupal\node\NodeInterface;
  * `helfi_ai.settings:seo_title_bundles` config, so sites can adjust them
  * through configuration without a code change.
  */
-final class TitleSuggestionFormAlter {
+class TitleSuggestionFormAlter {
 
   use StringTranslationTrait;
 
