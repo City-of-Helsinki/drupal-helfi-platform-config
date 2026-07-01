@@ -49,3 +49,25 @@ function hook_text_conversion_alter(Document $document, EntityInterface $entity)
 function hook_entity_type_text_conversion_alter(Document $document, EntityInterface $entity) : void {
   assert($entity->getEntityTypeId(), 'entity_type');
 }
+
+/**
+ * Alter the schema.org JSON-LD graph before it is rendered on the page.
+ *
+ * @param array $graph
+ *   List of schema.org entity arrays that will be emitted as JSON-LD.
+ * @param \Drupal\Core\Entity\EntityInterface|null $entity
+ *   The main entity of the current page, or NULL when the page has none.
+ *
+ * @see \Drupal\helfi_platform_config\SchemaOrg\SchemaManager::build()
+ * @see \Drupal\helfi_platform_config\SchemaOrg\SchemaBuilderInterface
+ */
+function hook_schema_org_alter(array &$graph, ?EntityInterface $entity) : void {
+  foreach ($graph as &$item) {
+    if (($item['@type'] ?? NULL) === 'WebPage') {
+      $item['about'][] = [
+        '@type' => 'DefinedTerm',
+        '@id' => 'http://www.yso.fi/onto/yso/p1650',
+      ];
+    }
+  }
+}

@@ -1,4 +1,27 @@
 
+helfi_platform_config.schema_settings:
+  type: config_object
+  label: 'Schema.org settings'
+  mapping:
+    organization_id:
+      type: string
+      label: 'Organization @id'
+    organization_type:
+      type: string
+      label: 'Organization schema.org @type'
+    organization_name:
+      type: label
+      label: 'Organization name'
+    organization_url:
+      type: uri
+      label: 'Organization URL'
+    website_id:
+      type: string
+      label: 'WebSite @id'
+    website_name:
+      type: label
+      label: 'WebSite name'
+
 block.settings.telia_ace_widget:
   type: block_settings
   label: 'Block config translation for Telia ACE widget'

@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_tpr_config\Kernel\Entity;
+namespace Drupal\Tests\helfi_tpr_config\Kernel;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_tpr_config\Entity\UnitContactCard;
 use Drupal\helfi_tpr_config\Entity\Unit;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
@@ -26,43 +25,9 @@ class UnitContactCardTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'address',
-    'allowed_formats',
-    'breakpoint',
-    'content_translation',
-    'entity_reference_revisions',
-    'field',
-    'field_group',
-    'file',
-    'helfi_api_base',
-    'helfi_media',
-    'helfi_tpr',
-    'helfi_tpr_config',
-    'image',
-    'language',
-    'link',
-    'linkit',
-    'media',
-    'media_library',
-    'menu_link_content',
-    'metatag',
-    'metatag_open_graph',
-    'metatag_twitter_cards',
     'node',
-    'options',
-    'paragraphs',
-    'paragraphs_library',
-    'responsive_image',
-    'imagecache_external',
-    'readonly_field_widget',
-    'select2',
-    'system',
     'taxonomy',
-    'telephone',
-    'text',
-    'token',
-    'user',
-    'views',
+    'language',
   ];
 
   /**
@@ -148,7 +113,6 @@ class UnitContactCardTest extends KernelTestBase {
     $label = $paragraph->getAriaLabel();
     $this->assertInstanceOf(TranslatableMarkup::class, $label);
     $this->assertEquals('See details of Name Override fi', (string) $label);
-
   }
 
 }

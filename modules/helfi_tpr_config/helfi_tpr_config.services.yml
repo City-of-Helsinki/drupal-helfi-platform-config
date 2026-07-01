@@ -1,5 +1,16 @@
 services:
+  _defaults:
+    autowire: true
+
   helfi_tpr_config.og_image.tpr_entity:
     class: Drupal\helfi_tpr_config\Token\UnitImageBuilder
     tags:
       - { name: helfi_platform_config.og_image_builder }
+
+  Drupal\helfi_tpr_config\SchemaOrg\GovernmentServiceBuilder:
+    tags:
+      - { name: helfi_platform_config.schema_builder, priority: 40 }
+
+  Drupal\helfi_tpr_config\SchemaOrg\PlaceBuilder:
+    tags:
+      - { name: helfi_platform_config.schema_builder, priority: 40 }
