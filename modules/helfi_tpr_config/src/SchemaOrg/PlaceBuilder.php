@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_tpr_config\SchemaOrg;
 
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\helfi_platform_config\SchemaOrg\EntityIdTrait;
@@ -21,11 +20,6 @@ final class PlaceBuilder implements SchemaBuilderInterface {
   use EntityIdTrait;
   use PlainTextTrait;
 
-  public function __construct(
-    private readonly ConfigFactoryInterface $configFactory,
-  ) {
-  }
-
   /**
    * {@inheritdoc}
    */
@@ -39,13 +33,9 @@ final class PlaceBuilder implements SchemaBuilderInterface {
   public function build(?EntityInterface $entity, RefinableCacheableDependencyInterface $cacheability): array {
     assert($entity instanceof Unit);
 
-    $config = $this->configFactory->get('helfi_platform_config.schema_settings');
-    $organizationId = $config->get('organization_id') ?: self::DEFAULT_ORGANIZATION_ID;
-
-    // Output depends on this entity and config, and varies by content language.
+    // Output depends on this entity and varies by content language.
     $cacheability
       ->addCacheableDependency($entity)
-      ->addCacheableDependency($config)
       ->addCacheContexts(['languages:' . LanguageInterface::TYPE_CONTENT]);
 
     $place = [
@@ -62,8 +52,6 @@ final class PlaceBuilder implements SchemaBuilderInterface {
       'email' => $entity->get('email')->value,
       'address' => $this->buildAddress($entity),
       'geo' => $this->buildGeo($entity),
-      'parentOrganization' => ['@id' => $organizationId],
-      'knowsLanguage' => $this->buildLanguages($entity),
     ];
 
     return [$place];
@@ -137,25 +125,6 @@ final class PlaceBuilder implements SchemaBuilderInterface {
       'latitude' => (float) $latitude,
       'longitude' => (float) $longitude,
     ];
-  }
-
-  /**
-   * Builds the list of languages the unit serves customers in.
-   *
-   * @param \Drupal\helfi_tpr\Entity\Unit $unit
-   *   The unit entity.
-   *
-   * @return array<int, string>
-   *   The provided language codes.
-   */
-  private function buildLanguages(Unit $unit): array {
-    $languages = [];
-    foreach ($unit->get('provided_languages') as $item) {
-      if ($value = $item->getString()) {
-        $languages[] = $value;
-      }
-    }
-    return $languages;
   }
 
 }

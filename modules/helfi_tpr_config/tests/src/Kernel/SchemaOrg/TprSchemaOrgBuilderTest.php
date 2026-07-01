@@ -109,9 +109,6 @@ class TprSchemaOrgBuilderTest extends KernelTestBase {
     $this->assertSame(60.158, $node['geo']['latitude']);
     $this->assertSame(24.940, $node['geo']['longitude']);
 
-    $this->assertSame(['fi', 'sv'], $node['knowsLanguage']);
-    $this->assertSame('https://www.hel.fi/#organization', $node['parentOrganization']['@id']);
-
     // The place references the page it is the main entity of.
     $webpage = $this->graphItem($graph, 'WebPage');
     $this->assertSame($webpage['@id'], $node['mainEntityOfPage']['@id']);
