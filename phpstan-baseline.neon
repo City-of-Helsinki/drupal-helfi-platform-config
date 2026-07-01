@@ -4891,11 +4891,6 @@ parameters:
 			path: src/Entity/PublishableRedirect.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_platform_config\\\\EntityVersionMatcher\\:\\:getType\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/EntityVersionMatcher.php
-
-		-
 			message: "#^Parameter \\#1 \\$entity_type_id of method Drupal\\\\Core\\\\Entity\\\\EntityTypeManagerInterface\\:\\:getStorage\\(\\) expects string, int\\<min, \\-1\\>\\|int\\<1, max\\>\\|string\\|true given\\.$#"
 			count: 1
 			path: src/EntityVersionMatcher.php

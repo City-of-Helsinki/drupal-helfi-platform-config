@@ -88,6 +88,22 @@ services:
     tags:
       - { name: helfi_platform_config.og_image_builder, priority: -100 }
 
+  Drupal\helfi_platform_config\SchemaOrg\SchemaManager:
+    tags:
+      - { name: service_collector, call: add, tag: helfi_platform_config.schema_builder }
+
+  Drupal\helfi_platform_config\SchemaOrg\Builder\SiteIdentityBuilder:
+    tags:
+      - { name: helfi_platform_config.schema_builder, priority: 100 }
+
+  Drupal\helfi_platform_config\SchemaOrg\Builder\WebPageBuilder:
+    tags:
+      - { name: helfi_platform_config.schema_builder, priority: 50 }
+
+  Drupal\helfi_platform_config\SchemaOrg\Builder\BreadcrumbBuilder:
+    tags:
+      - { name: helfi_platform_config.schema_builder, priority: 10 }
+
   Drupal\helfi_platform_config\MultisiteSearch: ~
 
   Drupal\helfi_platform_config\RedirectCleaner: ~
