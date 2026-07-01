@@ -28,6 +28,7 @@ class TextfieldCharacterCounterWidget extends StringTextfieldWidget {
     return [
       'counter_step' => 0,
       'counter_total' => 55,
+      'counter_max' => 0,
     ] + parent::defaultSettings();
   }
 
