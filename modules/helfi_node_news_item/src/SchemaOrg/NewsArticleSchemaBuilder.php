@@ -82,24 +82,7 @@ class NewsArticleSchemaBuilder implements SchemaBuilderInterface {
       $schema['dateModified'] = $this->formatDate($entity->getChangedTime());
     }
 
-    return [$this->extendSchema($schema, $entity, $cacheability)];
-  }
-
-  /**
-   * Allows subclasses to add bundle-specific properties to the schema.
-   *
-   * @param array<string, mixed> $schema
-   *   The NewsArticle schema assembled from the shared fields.
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The news node.
-   * @param \Drupal\Core\Cache\RefinableCacheableDependencyInterface $cacheability
-   *   Cacheability for the page.
-   *
-   * @return array<string, mixed>
-   *   The (possibly modified) schema.
-   */
-  protected function extendSchema(array $schema, ContentEntityInterface $entity, RefinableCacheableDependencyInterface $cacheability): array {
-    return $schema;
+    return [$schema];
   }
 
   /**
@@ -114,13 +97,6 @@ class NewsArticleSchemaBuilder implements SchemaBuilderInterface {
 
   /**
    * Collects referenced taxonomy term labels and registers their cache tags.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity.
-   * @param string $fieldName
-   *   The entity reference field machine name.
-   * @param \Drupal\Core\Cache\RefinableCacheableDependencyInterface $cacheability
-   *   Cacheability refined with each referenced term.
    *
    * @return string[]
    *   The list of term labels.
