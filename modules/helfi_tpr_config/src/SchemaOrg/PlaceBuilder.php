@@ -80,7 +80,7 @@ final class PlaceBuilder implements SchemaBuilderInterface {
   }
 
   /**
-   * Builds a PostalAddress node from the unit address field.
+   * Builds a PostalAddress from the unit address field.
    *
    * @param \Drupal\helfi_tpr\Entity\Unit $unit
    *   The unit entity.
@@ -104,7 +104,7 @@ final class PlaceBuilder implements SchemaBuilderInterface {
   }
 
   /**
-   * Builds a GeoCoordinates node from the unit latitude/longitude.
+   * Builds a GeoCoordinates from the unit latitude/longitude.
    *
    * @param \Drupal\helfi_tpr\Entity\Unit $unit
    *   The unit entity.

@@ -46,6 +46,23 @@ class TprSchemaOrgBuilderTest extends KernelTestBase {
       ]);
     $service->save();
 
+    $unitStorage = $this->container->get(EntityTypeManagerInterface::class)
+      ->getStorage('tpr_unit');
+    $viiskulma = $unitStorage->create([
+      'id' => 10,
+      'name' => 'Kontula Health Station',
+      'content_translation_status' => 1,
+      'services' => [$service->id()],
+    ]);
+    $viiskulma->save();
+    $kallio = $unitStorage->create([
+      'id' => 11,
+      'name' => 'Myllypuro Health Station',
+      'content_translation_status' => 1,
+      'services' => [$service->id()],
+    ]);
+    $kallio->save();
+
     $graph = $this->buildGraph($service);
     $types = array_column($graph, '@type');
 
@@ -59,6 +76,17 @@ class TprSchemaOrgBuilderTest extends KernelTestBase {
     $this->assertSame('How to apply.', $node['description']);
     $this->assertSame('https://www.hel.fi/#organization', $node['provider']['@id']);
     $this->assertSame('Helsinki', $node['areaServed']['name']);
+
+    // The units are exposed as ServiceChannel locations.
+    $this->assertCount(2, $node['availableChannel']);
+    $locations = array_column($node['availableChannel'], 'serviceLocation');
+    $names = array_column($locations, 'name');
+    $this->assertContains('Kontula Health Station', $names);
+    $this->assertContains('Myllypuro Health Station', $names);
+    foreach ($locations as $location) {
+      $this->assertSame('Place', $location['@type']);
+      $this->assertStringEndsWith('#place', $location['@id']);
+    }
 
     // The service references the page it is the main entity of.
     $webpage = $this->graphItem($graph, 'WebPage');

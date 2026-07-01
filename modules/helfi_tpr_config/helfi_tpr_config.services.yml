@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    autowire: true
+
   helfi_tpr_config.og_image.tpr_entity:
     class: Drupal\helfi_tpr_config\Token\UnitImageBuilder
     tags:
