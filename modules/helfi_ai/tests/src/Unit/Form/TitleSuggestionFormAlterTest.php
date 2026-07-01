@@ -46,11 +46,13 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
    *   Whether the current user holds the suggestion permission.
    * @param string[] $bundles
    *   The configured seo_title_bundles value.
+   * @param \Drupal\helfi_ai\Service\AiTitleSuggester|null $suggester
+   *   The suggester to inject, or NULL for an unused stub.
    *
    * @return \Drupal\helfi_ai\Form\TitleSuggestionFormAlter
    *   The configured service.
    */
-  private function createAlter(bool $hasPermission, array $bundles): TitleSuggestionFormAlter {
+  private function createAlter(bool $hasPermission, array $bundles, ?AiTitleSuggester $suggester = NULL): TitleSuggestionFormAlter {
     $account = $this->prophesize(AccountInterface::class);
     $account->hasPermission('use helfi ai title suggestion')->willReturn($hasPermission);
 
@@ -62,6 +64,7 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
     return new TitleSuggestionFormAlter(
       $account->reveal(),
       $configFactory->reveal(),
+      $suggester ?? $this->prophesize(AiTitleSuggester::class)->reveal(),
       $this->getStringTranslationStub(),
     );
   }
@@ -153,22 +156,30 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
   }
 
   /**
-   * Wires \Drupal and a form state for the static ajax callback.
+   * Returns a suggester stub that yields the given candidates.
    *
    * @param string[] $suggestions
-   *   The candidates the mocked suggester returns.
-   * @param bool $contentForm
-   *   Whether the form object is a content entity form (so an entity builds).
+   *   The candidates to return.
+   *
+   * @return \Drupal\helfi_ai\Service\AiTitleSuggester
+   *   The stub.
+   */
+  private function suggesterReturning(array $suggestions): AiTitleSuggester {
+    $suggester = $this->prophesize(AiTitleSuggester::class);
+    $suggester->suggest(Argument::any())->willReturn($suggestions);
+    return $suggester->reveal();
+  }
+
+  /**
+   * Installs a container with a renderer that captures the rendered body.
+   *
+   * OpenModalDialogCommand renders its content through the renderer service;
+   * the captured render array lets tests assert on the modal body.
+   *
    * @param array<string, mixed> $captured
    *   Receives the render array passed to the renderer (by reference).
-   *
-   * @return \Drupal\Core\Form\FormStateInterface
-   *   The form state to pass to the callback.
    */
-  private function setUpAjax(array $suggestions, bool $contentForm, array &$captured): FormStateInterface {
-    $suggester = $this->prophesize(AiTitleSuggester::class);
-    $suggester->suggest(Argument::any(), Argument::any())->willReturn($suggestions);
-
+  private function setRenderer(array &$captured): void {
     $renderer = $this->createMock(RendererInterface::class);
     $renderer->method('renderRoot')->willReturnCallback(
       function (&$elements) use (&$captured): string {
@@ -178,46 +189,50 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
         return '<div>rendered</div>';
       }
     );
-
     $container = $this->createMock(ContainerInterface::class);
     $container->method('get')->willReturnCallback(
-      function (string $id) use ($suggester, $renderer): object {
-        return match ($id) {
-          AiTitleSuggester::class => $suggester->reveal(),
-          'renderer' => $renderer,
-          'string_translation' => $this->getStringTranslationStub(),
-          default => throw new \RuntimeException('Unexpected service: ' . $id),
-        };
+      fn(string $id): object => match ($id) {
+        'renderer' => $renderer,
+        default => throw new \RuntimeException('Unexpected service: ' . $id),
       }
     );
     \Drupal::setContainer($container);
+  }
 
+  /**
+   * A form state whose form object builds a content entity.
+   */
+  private function contentEntityFormState(): FormStateInterface {
+    $language = $this->prophesize(LanguageInterface::class);
+    $language->getId()->willReturn('fi');
+    $entity = $this->prophesize(ContentEntityInterface::class);
+    $entity->language()->willReturn($language->reveal());
+    $formObject = $this->prophesize(ContentEntityFormInterface::class);
+    $formObject->buildEntity(Argument::cetera())->willReturn($entity->reveal());
     $formState = $this->prophesize(FormStateInterface::class);
-    if ($contentForm) {
-      $language = $this->prophesize(LanguageInterface::class);
-      $language->getId()->willReturn('fi');
-      $entity = $this->prophesize(ContentEntityInterface::class);
-      $entity->language()->willReturn($language->reveal());
-      $formObject = $this->prophesize(ContentEntityFormInterface::class);
-      $formObject->buildEntity(Argument::cetera())->willReturn($entity->reveal());
-      $formState->getFormObject()->willReturn($formObject->reveal());
-    }
-    else {
-      $formState->getFormObject()->willReturn($this->prophesize(FormInterface::class)->reveal());
-    }
+    $formState->getFormObject()->willReturn($formObject->reveal());
+    return $formState->reveal();
+  }
 
+  /**
+   * A form state whose form object is not a content entity form.
+   */
+  private function nonContentEntityFormState(): FormStateInterface {
+    $formState = $this->prophesize(FormStateInterface::class);
+    $formState->getFormObject()->willReturn($this->prophesize(FormInterface::class)->reveal());
     return $formState->reveal();
   }
 
   /**
    * Suggestions open a modal with one radio option each and action buttons.
    */
-  public function testAjaxCallbackOpensModalWithSuggestions(): void {
+  public function testBuildSuggestionResponseOpensModalWithSuggestions(): void {
     $captured = [];
-    $formState = $this->setUpAjax(['Title A', 'Title B'], TRUE, $captured);
+    $this->setRenderer($captured);
+    $alter = $this->createAlter(TRUE, ['page'], $this->suggesterReturning(['Title A', 'Title B']));
 
     $form = [];
-    $response = TitleSuggestionFormAlter::ajaxCallback($form, $formState);
+    $response = $alter->buildSuggestionResponse($form, $this->contentEntityFormState());
 
     $this->assertInstanceOf(AjaxResponse::class, $response);
     $commands = $response->getCommands();
@@ -236,12 +251,13 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
   /**
    * An empty suggestion list opens a modal with an error message instead.
    */
-  public function testAjaxCallbackShowsErrorWhenNoSuggestions(): void {
+  public function testBuildSuggestionResponseShowsErrorWhenNoSuggestions(): void {
     $captured = [];
-    $formState = $this->setUpAjax([], TRUE, $captured);
+    $this->setRenderer($captured);
+    $alter = $this->createAlter(TRUE, ['page'], $this->suggesterReturning([]));
 
     $form = [];
-    $response = TitleSuggestionFormAlter::ajaxCallback($form, $formState);
+    $response = $alter->buildSuggestionResponse($form, $this->contentEntityFormState());
 
     $this->assertSame('openDialog', $response->getCommands()[0]['command']);
     // The body is a plain message paragraph, not the option box.
@@ -252,15 +268,40 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
   /**
    * A form whose entity cannot be built opens a modal with an error message.
    */
-  public function testAjaxCallbackShowsErrorWhenEntityCannotBeBuilt(): void {
+  public function testBuildSuggestionResponseShowsErrorWhenEntityCannotBeBuilt(): void {
     $captured = [];
-    $formState = $this->setUpAjax(['ignored'], FALSE, $captured);
+    $this->setRenderer($captured);
+    $alter = $this->createAlter(TRUE, ['page'], $this->suggesterReturning(['ignored']));
 
     $form = [];
-    $response = TitleSuggestionFormAlter::ajaxCallback($form, $formState);
+    $response = $alter->buildSuggestionResponse($form, $this->nonContentEntityFormState());
 
     $this->assertSame('openDialog', $response->getCommands()[0]['command']);
     $this->assertSame('p', $captured['#tag']);
+  }
+
+  /**
+   * The static AJAX callback delegates to the service instance.
+   */
+  public function testAjaxCallbackDelegatesToService(): void {
+    $expected = new AjaxResponse();
+    $alter = $this->prophesize(TitleSuggestionFormAlter::class);
+    $alter->buildSuggestionResponse(Argument::type('array'), Argument::any())
+      ->willReturn($expected)
+      ->shouldBeCalledOnce();
+
+    $container = $this->createMock(ContainerInterface::class);
+    $container->method('get')->willReturnCallback(
+      fn(string $id): object => match ($id) {
+        TitleSuggestionFormAlter::class => $alter->reveal(),
+        default => throw new \RuntimeException('Unexpected service: ' . $id),
+      }
+    );
+    \Drupal::setContainer($container);
+
+    $form = [];
+    $formState = $this->prophesize(FormStateInterface::class)->reveal();
+    $this->assertSame($expected, TitleSuggestionFormAlter::ajaxCallback($form, $formState));
   }
 
 }

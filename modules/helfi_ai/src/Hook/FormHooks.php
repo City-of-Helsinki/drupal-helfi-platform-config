@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_ai\Hook;
 
-use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\helfi_ai\Form\TitleSuggestionFormAlter;
@@ -13,8 +12,6 @@ use Drupal\helfi_ai\Form\TitleSuggestionFormAlter;
  * Form hook implementations for HELfi AI.
  */
 class FormHooks {
-
-  use AutowireTrait;
 
   public function __construct(
     private readonly TitleSuggestionFormAlter $titleSuggestionFormAlter,

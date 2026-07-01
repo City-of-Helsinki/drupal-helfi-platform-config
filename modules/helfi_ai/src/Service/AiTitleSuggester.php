@@ -49,25 +49,19 @@ class AiTitleSuggester {
   ) {}
 
   /**
-   * Suggests title candidates for the given entity translation.
+   * Suggests title candidates for the given entity.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity to title. May be unsaved (e.g. built from the current edit
-   *   form via {@see \Drupal\helfi_ai\PreviewEntityBuilder}); such callers
-   *   should set $entity->in_preview = TRUE.
-   * @param string $langcode
-   *   Language code of the translation to title.
+   *   The entity to title, in the language it should be titled in. May be
+   *   unsaved (e.g. built from the current edit form via
+   *   {@see \Drupal\helfi_ai\PreviewEntityBuilder}); such callers should set
+   *   $entity->in_preview = TRUE.
    *
    * @return string[]
    *   Up to self::MAX_SUGGESTIONS title candidates, or an empty array on
    *   failure (no content, missing prompt, provider error).
    */
-  public function suggest(ContentEntityInterface $entity, string $langcode): array {
-    // Title the requested translation rather than the default one.
-    if ($entity->hasTranslation($langcode)) {
-      $entity = $entity->getTranslation($langcode);
-    }
-
+  public function suggest(ContentEntityInterface $entity): array {
     // Render the entity to plain text. With no content there is nothing to
     // base a title on.
     $content = $this->textConverterManager->convert($entity);

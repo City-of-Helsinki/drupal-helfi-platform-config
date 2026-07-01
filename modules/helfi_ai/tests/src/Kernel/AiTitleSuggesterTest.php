@@ -109,7 +109,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
   public function testReturnsSuggestions(): void {
     $node = $this->createNode('Suggester kernel title ' . $this->randomMachineName());
 
-    $suggestions = $this->suggester->suggest($node, $node->language()->getId());
+    $suggestions = $this->suggester->suggest($node);
 
     // The echoai provider echoes the (multi-line) prompt, so the suggester
     // parses several lines and caps them at three non-empty candidates.
@@ -129,7 +129,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
     // rendered content, pushing the payload past the limit.
     $node = $this->createNode(str_repeat('A', 300 * 1024));
 
-    $this->assertSame([], $this->suggester->suggest($node, $node->language()->getId()));
+    $this->assertSame([], $this->suggester->suggest($node));
   }
 
   /**
@@ -143,7 +143,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
 
     $node = $this->createNode('Title ' . $this->randomMachineName());
 
-    $this->assertSame([], $this->suggester->suggest($node, $node->language()->getId()));
+    $this->assertSame([], $this->suggester->suggest($node));
   }
 
   /**
@@ -158,7 +158,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
 
     $node = $this->createNode('Title ' . $this->randomMachineName());
 
-    $this->assertSame([], $this->suggester->suggest($node, $node->language()->getId()));
+    $this->assertSame([], $this->suggester->suggest($node));
   }
 
 }

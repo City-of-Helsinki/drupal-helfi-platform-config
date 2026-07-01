@@ -46,6 +46,7 @@ class TitleSuggestionFormAlter {
   public function __construct(
     private readonly AccountInterface $currentUser,
     private readonly ConfigFactoryInterface $configFactory,
+    private readonly AiTitleSuggester $aiTitleSuggester,
     TranslationInterface $stringTranslation,
   ) {
     $this->setStringTranslation($stringTranslation);
@@ -105,12 +106,12 @@ class TitleSuggestionFormAlter {
   }
 
   /**
-   * AJAX callback: builds suggestions from live form state, shows them modally.
+   * AJAX callback for the suggest button.
    *
-   * This is a static method because Drupal serializes the form (and its #ajax
-   * callbacks) into the cache, so the callback must be a plain callable rather
-   * than a bound service instance. It therefore resolves its collaborators
-   * from the container, mirroring the AI summary widget.
+   * Kept static because Drupal serializes #ajax callbacks into the form cache,
+   * so the callback must be a plain callable rather than a bound instance. It
+   * immediately delegates to the service, where the work runs with injected
+   * dependencies.
    *
    * @param array<string, mixed> $form
    *   The (rebuilt) form structure.
@@ -121,42 +122,52 @@ class TitleSuggestionFormAlter {
    *   Response opening a modal with the suggestions or an error message.
    */
   public static function ajaxCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
-    $translation = \Drupal::translation();
-    $title = (string) $translation->translate('Suggested titles', [], ['context' => 'helfi_ai']);
+    return \Drupal::service(self::class)->buildSuggestionResponse($form, $form_state);
+  }
+
+  /**
+   * Builds the AJAX response: a suggestions modal or an error modal.
+   *
+   * @param array<string, mixed> $form
+   *   The (rebuilt) form structure.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   Response opening a modal with the suggestions or an error message.
+   */
+  public function buildSuggestionResponse(array &$form, FormStateInterface $form_state): AjaxResponse {
+    $title = (string) $this->t('Suggested titles', options: ['context' => 'helfi_ai']);
     $response = new AjaxResponse();
 
     $entity = PreviewEntityBuilder::fromFormState($form, $form_state);
     if (!$entity instanceof ContentEntityInterface) {
       return $response->addCommand(new OpenModalDialogCommand(
         $title,
-        self::message((string) $translation->translate('Could not read the page content. Please try again.', [], ['context' => 'helfi_ai'])),
+        self::message((string) $this->t('Could not read the page content. Please try again.', options: ['context' => 'helfi_ai'])),
         self::dialogOptions(),
       ));
     }
 
-    $suggestions = \Drupal::service(AiTitleSuggester::class)
-      ->suggest($entity, $entity->language()->getId());
+    $suggestions = $this->aiTitleSuggester->suggest($entity);
 
     if (!$suggestions) {
       return $response->addCommand(new OpenModalDialogCommand(
         $title,
-        self::message((string) $translation->translate('Could not generate title suggestions. Add some page content and make sure the AI provider is configured.', [], ['context' => 'helfi_ai'])),
+        self::message((string) $this->t('Could not generate title suggestions. Add some page content and make sure the AI provider is configured.', options: ['context' => 'helfi_ai'])),
         self::dialogOptions(),
       ));
     }
 
     return $response->addCommand(new OpenModalDialogCommand(
       $title,
-      self::suggestionsContent($suggestions),
+      $this->suggestionsContent($suggestions),
       self::dialogOptions(),
     ));
   }
 
   /**
    * Standard dialog options for the title suggester modals.
-   *
-   * Uses the Drupal 11 `classes` syntax (not the deprecated `dialogClass`) to
-   * add a styling hook on top of the admin theme's default dialog chrome.
    *
    * @return array<string, mixed>
    *   jQuery UI dialog options.
@@ -183,9 +194,7 @@ class TitleSuggestionFormAlter {
    * @return array<string, mixed>
    *   A render array for the modal body.
    */
-  private static function suggestionsContent(array $suggestions): array {
-    $translation = \Drupal::translation();
-
+  private function suggestionsContent(array $suggestions): array {
     $radios = [];
     foreach ($suggestions as $i => $suggestion) {
       $id = 'helfi-ai-title-option-' . $i;
@@ -236,7 +245,7 @@ class TitleSuggestionFormAlter {
           '#type' => 'html_tag',
           '#tag' => 'legend',
           '#attributes' => ['class' => ['visually-hidden']],
-          '#value' => $translation->translate('Suggested titles', [], ['context' => 'helfi_ai']),
+          '#value' => $this->t('Suggested titles', options: ['context' => 'helfi_ai']),
         ],
       ] + $radios,
       'actions' => [
@@ -246,7 +255,7 @@ class TitleSuggestionFormAlter {
         'apply' => [
           '#type' => 'html_tag',
           '#tag' => 'button',
-          '#value' => $translation->translate('Apply', [], ['context' => 'helfi_ai']),
+          '#value' => $this->t('Apply', options: ['context' => 'helfi_ai']),
           '#attributes' => [
             'type' => 'button',
             'class' => ['button', 'button--primary', 'helfi-ai-title-apply'],
@@ -255,7 +264,7 @@ class TitleSuggestionFormAlter {
         'cancel' => [
           '#type' => 'html_tag',
           '#tag' => 'button',
-          '#value' => $translation->translate('Cancel', [], ['context' => 'helfi_ai']),
+          '#value' => $this->t('Cancel', options: ['context' => 'helfi_ai']),
           '#attributes' => [
             'type' => 'button',
             'class' => ['button', 'button--secondary', 'helfi-ai-title-cancel'],

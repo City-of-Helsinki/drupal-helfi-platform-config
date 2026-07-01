@@ -21,4 +21,5 @@ services:
     arguments:
       $currentUser: '@current_user'
       $configFactory: '@config.factory'
+      $aiTitleSuggester: '@Drupal\helfi_ai\Service\AiTitleSuggester'
       $stringTranslation: '@string_translation'
