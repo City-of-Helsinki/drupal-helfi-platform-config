@@ -12,23 +12,18 @@ class EarlyChildhoodEducationFee {
       family_size_income_limits: {
         '2': {
           min: 3874,
-          max: 6626
         },
         '3': {
           min: 4998,
-          max: 7750
         },
         '4': {
           min: 5675,
-          max: 8427
         },
         '5': {
           min: 6353,
-          max: 9105
         },
         '6': {
           min: 7028,
-          max: 9780
         },
       },
       family_size_beyond_defined_multiplier_euro: 262,
@@ -184,7 +179,6 @@ class EarlyChildhoodEducationFee {
       if (limits) {
         return {
           min: Number(limits.min),
-          max: Number(limits.max),
         };
       }
       const maxDefinedLimitNum = Number(Object.keys(incomeSettings.family_size_income_limits).at(-1));
@@ -194,9 +188,6 @@ class EarlyChildhoodEducationFee {
           min:
             diff * incomeSettings.family_size_beyond_defined_multiplier_euro +
             incomeSettings.family_size_income_limits[`${maxDefinedLimitNum}`].min,
-          max:
-            diff * incomeSettings.family_size_beyond_defined_multiplier_euro +
-            incomeSettings.family_size_income_limits[`${maxDefinedLimitNum}`].max,
         };
       }
       throw new Error(`Income limits error for householdSize ${householdSize}`);
