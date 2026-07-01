@@ -4,3 +4,4 @@ services:
     autoconfigure: true
 
   Drupal\helfi_users\Routing\RouteSubscriber: ~
+  Drupal\helfi_users\TranslationOutdatedManager: ~
