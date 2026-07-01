@@ -29,7 +29,6 @@ class PermissionsHooks {
       'admin' => $permissions,
       'editor' => $permissions,
       'content_producer' => $permissions,
-      'news_producer' => $permissions,
     ];
   }
 

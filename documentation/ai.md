@@ -142,7 +142,7 @@ The `helfi_ai` module adds an AI **Suggest SEO title** button next to the node t
 | Aspect | Value |
 |---|---|
 | Prompt | `ai.ai_prompt.helfi_seo_title__helfi_seo_title_default` (type `helfi_seo_title`) |
-| Permission | `use helfi ai title suggestion` (granted to `admin`, `editor`, `content_producer`, `news_producer`) |
+| Permission | `use helfi ai title suggestion` (granted to `admin`, `editor`, `content_producer`) |
 | Content types | `helfi_ai.settings:seo_title_bundles` (defaults to `page`) |
 
 The content types offering the button are read from configuration, so an instance can adjust them by overriding `seo_title_bundles` — no code change required. The prompt is shipped as config and tuned there; it instructs the model to respond in the page's language, so no per-language prompt is needed.
