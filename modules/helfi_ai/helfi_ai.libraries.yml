@@ -5,3 +5,17 @@ ai_summary_confirm:
   dependencies:
     - core/drupal
     - core/once
+
+# Applies a chosen AI SEO-title suggestion to the node title field.
+title_suggest:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    js/ai-title-suggest.js: {}
+  css:
+    component:
+      css/ai-title-suggest.css: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - core/jquery
+    - core/drupal.dialog

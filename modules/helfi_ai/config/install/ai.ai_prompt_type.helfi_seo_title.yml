@@ -1,0 +1,19 @@
+uuid: 1754b850-297c-4f52-880d-3202e33b06a8
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - helfi_ai
+id: helfi_seo_title
+label: 'HELfi SEO title'
+variables:
+  -
+    name: content
+    help_text: 'The page content as plain text'
+    required: true
+  -
+    name: language
+    help_text: 'The target language name (e.g. Finnish, Swedish)'
+    required: true
+tokens: {  }

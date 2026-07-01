@@ -1,0 +1,149 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Drupal\helfi_ai\Service;
+
+use Drupal\ai\AiProviderPluginManager;
+use Drupal\ai\Entity\AiPromptInterface;
+use Drupal\ai\OperationType\Chat\ChatInput;
+use Drupal\ai\OperationType\Chat\ChatMessage;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
+use Psr\Log\LoggerInterface;
+
+/**
+ * Suggests GEO/SEO-optimized page titles using the configured chat provider.
+ *
+ * Mirrors {@see AiSummaryGenerator}: it strips the (possibly unsaved) entity to
+ * plain text, fills the configured SEO-title prompt and asks the chat provider,
+ * then parses the reply into a short list of title candidates the editor can
+ * pick from.
+ */
+class AiTitleSuggester {
+
+  /**
+   * ID of the prompt entity that defines the SEO-title instructions.
+   */
+  private const PROMPT_ID = 'helfi_seo_title__helfi_seo_title_default';
+
+  /**
+   * Maximum number of suggestions returned, regardless of the model's reply.
+   */
+  private const MAX_SUGGESTIONS = 3;
+
+  /**
+   * Maximum content size in bytes sent to the provider.
+   *
+   * Bounds the prompt payload to keep request cost and latency predictable;
+   * pages above this are not titled rather than sent in full.
+   */
+  private const MAX_CONTENT_BYTES = 256 * 1024;
+
+  public function __construct(
+    private readonly AiProviderPluginManager $aiProvider,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly TextConverterManager $textConverterManager,
+    private readonly LoggerInterface $logger,
+  ) {}
+
+  /**
+   * Suggests title candidates for the given entity.
+   *
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
+   *   The entity to title, in the language it should be titled in. May be
+   *   unsaved (e.g. built from the current edit form via
+   *   {@see \Drupal\helfi_ai\PreviewEntityBuilder}); such callers should set
+   *   $entity->in_preview = TRUE.
+   *
+   * @return string[]
+   *   Up to self::MAX_SUGGESTIONS title candidates, or an empty array on
+   *   failure (no content, missing prompt, provider error).
+   */
+  public function suggest(ContentEntityInterface $entity): array {
+    // Render the entity to plain text. With no content there is nothing to
+    // base a title on.
+    $content = $this->textConverterManager->convert($entity);
+    if (!$content) {
+      $this->logger->warning('helfi_ai: no text content for entity @type/@id.', [
+        '@type' => $entity->getEntityTypeId(),
+        '@id' => $entity->id(),
+      ]);
+      return [];
+    }
+
+    // Bound the payload sent to the provider. Oversized pages are skipped
+    // rather than sent in full, to keep request cost and latency predictable.
+    if (strlen($content) > self::MAX_CONTENT_BYTES) {
+      $this->logger->warning('helfi_ai: content for entity @type/@id is too large (@bytes bytes) to suggest a title.', [
+        '@type' => $entity->getEntityTypeId(),
+        '@id' => $entity->id(),
+        '@bytes' => strlen($content),
+      ]);
+      return [];
+    }
+
+    // Load the configured SEO-title prompt template.
+    /** @var \Drupal\ai\Entity\AiPromptInterface|null $prompt */
+    $prompt = $this->entityTypeManager
+      ->getStorage('ai_prompt')
+      ->load(self::PROMPT_ID);
+
+    if (!$prompt instanceof AiPromptInterface) {
+      $this->logger->error('helfi_ai: prompt @id not found.', ['@id' => self::PROMPT_ID]);
+      return [];
+    }
+
+    // Fill the prompt's {content} and {language} placeholders.
+    $text = str_replace(
+      ['{content}', '{language}'],
+      [$content, $entity->language()->getName()],
+      $prompt->getPrompt(),
+    );
+
+    try {
+      // Send the prompt to the configured chat provider and parse the reply
+      // into individual title candidates. A failed call (provider error,
+      // timeout) returns an empty array so the caller can show an error.
+      ['provider_id' => $provider, 'model_id' => $model] = $this->aiProvider->getSetProvider('chat');
+      $input = new ChatInput([new ChatMessage('user', $text)]);
+      $normalized = $provider->chat($input, $model)->getNormalized();
+      // A non-streaming chat reply is a single ChatMessage, not a stream.
+      assert($normalized instanceof ChatMessage);
+      return self::parseTitles($normalized->getText());
+    }
+    catch (\Throwable $e) {
+      $this->logger->error('helfi_ai: title suggestion failed: @message', ['@message' => $e->getMessage()]);
+      return [];
+    }
+  }
+
+  /**
+   * Parses the model reply into a clean list of title candidates.
+   *
+   * Treats each non-empty line as one candidate and strips any list markers,
+   * numbering or surrounding quotes the model may have added despite the prompt
+   * asking for none.
+   *
+   * @param string $plain
+   *   The raw chat reply.
+   *
+   * @return string[]
+   *   Up to self::MAX_SUGGESTIONS cleaned titles.
+   */
+  private static function parseTitles(string $plain): array {
+    $titles = [];
+    foreach (explode("\n", $plain) as $line) {
+      // Drop leading "1. ", "1) ", "- ", "* " or bullet markers, then trim
+      // surrounding whitespace and quotes.
+      $line = preg_replace('/^\s*(?:\d+[.)]|[-*•])\s*/u', '', $line) ?? $line;
+      $line = trim($line, " \t\"'");
+      if ($line !== '') {
+        $titles[] = $line;
+      }
+    }
+    return array_slice($titles, 0, self::MAX_SUGGESTIONS);
+  }
+
+}
