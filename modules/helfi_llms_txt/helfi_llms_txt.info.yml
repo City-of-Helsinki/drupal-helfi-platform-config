@@ -1,0 +1,6 @@
+name: 'HELfi llms.txt'
+description: 'Serves /llms.txt file describing the site for LLMs.'
+type: module
+core_version_requirement: ^11
+package: HELfi
+dependencies: []
