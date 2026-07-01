@@ -1,0 +1,18 @@
+helfi_llms_txt.content:
+  path: '/llms.txt'
+  defaults:
+    _controller: '\Drupal\helfi_llms_txt\Controller\LlmsTxtController'
+    # Serve from the unprefixed root path
+    _disable_route_normalizer: TRUE
+  requirements:
+    _access: 'TRUE'
+
+helfi_llms_txt.settings_form:
+  path: '/admin/tools/llms-txt'
+  defaults:
+    _form: '\Drupal\helfi_llms_txt\Form\SettingsForm'
+    _title: 'llms.txt settings'
+  requirements:
+    _permission: 'administer llms.txt'
+  options:
+    _admin_route: TRUE

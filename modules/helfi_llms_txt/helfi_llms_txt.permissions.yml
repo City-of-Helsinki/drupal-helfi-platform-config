@@ -1,0 +1,4 @@
+'administer llms.txt':
+  title: 'Administer llms.txt'
+  description: 'Edit the content served at /llms.txt.'
+  restrict access: true
