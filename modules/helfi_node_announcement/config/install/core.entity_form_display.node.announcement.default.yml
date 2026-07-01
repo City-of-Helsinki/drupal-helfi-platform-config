@@ -28,10 +28,11 @@ content:
     weight: 18
     region: content
     settings:
+      counter_max: 0
       counter_total: 250
+      counter_step: 0
       rows: 9
       placeholder: ''
-      counter_max: 0
     third_party_settings: {  }
   created:
     type: datetime_timestamp
