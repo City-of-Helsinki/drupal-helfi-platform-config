@@ -1,0 +1,15 @@
+name: "HELfi AI"
+type: module
+core_version_requirement: ^11
+description: "Base module for HELfi AI features."
+dependencies:
+  - drupal:ai
+  - drupal:ai_provider_azure
+  - drupal:key
+  - drupal:node
+  - drupal:field
+  - drupal:text
+  - drupal:language
+  - helfi_platform_config:helfi_platform_config
+"interface translation project": helfi_ai
+"interface translation server pattern": modules/contrib/helfi_platform_config/modules/helfi_ai/translations/%language.po

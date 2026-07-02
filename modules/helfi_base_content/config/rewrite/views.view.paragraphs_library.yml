@@ -1,0 +1,90 @@
+display:
+  default:
+    display_options:
+      fields:
+        label:
+          label: Title
+      filters:
+        label:
+          expose:
+            label: Title
+          group_info:
+            label: Title
+      pager:
+        type: full
+        options:
+          tags:
+            next: Next
+            previous: Previous
+            first: First
+            last: Last
+          quantity: 9
+      style:
+        type: table
+        options:
+          columns:
+            label: label
+            type: type
+            id: id
+            count: count
+            operations: operations
+            paragraphs__target_id: paragraphs__target_id
+            langcode: langcode
+            changed: changed
+          default: label
+          info:
+            label:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            type:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            id:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            count:
+              sortable: true
+              default_sort_order: asc
+              align: views-align-right
+              separator: ''
+              empty_column: false
+              responsive: ''
+            operations:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            paragraphs__target_id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            langcode:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            changed:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          class: ''

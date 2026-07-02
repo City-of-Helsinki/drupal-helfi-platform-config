@@ -1,0 +1,49 @@
+label: 'Uudelleenkäytettävät lohkot'
+display:
+  default:
+    display_title: Oletus
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Suodata
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      pager:
+        options:
+          tags:
+            previous: Edellinen
+            next: Seuraava
+            first: Ensimmäinen
+            last: Viimeinen
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+      fields:
+        label:
+          label: Otsikko
+        type:
+          label: Tyyppi
+        paragraphs__target_id:
+          label: Lohkot
+        langcode:
+          label: Kieli
+        id: {  }
+        changed:
+          label: Muuttunut
+        operations:
+          label: Toimenpiteet
+      filters:
+        label:
+          expose:
+            label: Otsikko
+          group_info:
+            label: Otsikko
+            description: ''
+        type:
+          expose:
+            label: Tyyppi
+      title: 'Uudelleenkäytettävät lohkot'
+  page_1:
+    display_title: Sivu

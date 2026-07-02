@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
+  Drupal\helfi_node_news_item\SchemaOrg\NewsArticleSchemaBuilder:
+    tags:
+      - { name: helfi_platform_config.schema_builder, priority: 60 }

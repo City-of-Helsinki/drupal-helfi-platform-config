@@ -1,0 +1,6 @@
+helfi_llms_txt.settings_form:
+  title: 'llms.txt settings'
+  description: 'Edit the content served at /llms.txt.'
+  parent: hdbt_admin_tools.site_information
+  route_name: helfi_llms_txt.settings_form
+  weight: 100

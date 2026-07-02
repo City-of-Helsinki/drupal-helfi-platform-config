@@ -1,0 +1,12 @@
+diff --git a/core/modules/telephone/src/Plugin/Field/FieldFormatter/TelephoneLinkFormatter.php b/core/modules/telephone/src/Plugin/Field/FieldFormatter/TelephoneLinkFormatter.php
+index e1fbcf3402b..15d1bd9dd65 100644
+--- a/core/modules/telephone/src/Plugin/Field/FieldFormatter/TelephoneLinkFormatter.php
++++ b/core/modules/telephone/src/Plugin/Field/FieldFormatter/TelephoneLinkFormatter.php
+@@ -90,7 +90,7 @@ public function viewElements(FieldItemListInterface $items, $langcode) {
+         // itself as title.
+         '#title' => $title_setting ?: $item->value,
+         // Prepend 'tel:' to the telephone number.
+-        '#url' => Url::fromUri('tel:' . rawurlencode($phone_number)),
++        '#url' => Url::fromUri('tel:' . $phone_number),
+         '#options' => ['external' => TRUE],
+       ];
