@@ -196,9 +196,6 @@ final class AiSummaryWidget extends WidgetBase {
       '#ajax' => [
         'callback' => [static::class, 'ajaxCallback'],
         'wrapper' => $wrapper_id,
-        // Buttons default to the 'mousedown' AJAX event; the confirm behavior
-        // listens on 'click', which fires later. Bind AJAX to 'click' too so a
-        // declined confirm can cancel the request before it starts.
         'event' => 'click',
         'progress' => [
           'type' => 'throbber',
@@ -207,12 +204,6 @@ final class AiSummaryWidget extends WidgetBase {
       ],
     ];
 
-    // A summary that already exists may have been reviewed or hand-edited;
-    // regenerating overwrites it. The confirm behavior loads on every instance
-    // but only acts when the button carries data-helfi-ai-summary-confirm. That marker
-    // is set whenever the button is a "regenerate": here when a saved value
-    // exists, and in self::ajaxCallback() after a fresh generation (covering a
-    // summary created earlier in this same unsaved session).
     $button['#attached']['library'][] = 'helfi_ai/ai_summary_confirm';
     if ($has_value) {
       $button['#attributes']['data-helfi-ai-summary-confirm'] = $this->t('Regenerating replaces the current AI summary, including any manual changes. Continue?', options: $ctx);
