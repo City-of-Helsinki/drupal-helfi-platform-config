@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_users\Plugin\Block;
 
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Menu\Plugin\Block\LocalTasksBlock as CoreLocalTasksBlock;
-use Drupal\Core\Session\AccountProxyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\user\UserInterface;
 
@@ -14,20 +12,6 @@ use Drupal\user\UserInterface;
  * Class to override core's LocalTaskBlock.
  */
 class LocalTasksBlock extends CoreLocalTasksBlock {
-
-  /**
-   * Language-manager interface.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected LanguageManagerInterface $languageManager;
-
-  /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected AccountProxyInterface $currentUser;
 
   /**
    * {@inheritdoc}
