@@ -1,33 +1,76 @@
 /**
- * Minimal layout for the tone-check dialog. Presentation is intentionally
- * basic for now; richer styling can be layered on later.
+ * Layout for the tone-check dialog.
+ *
+ * Uses CKEditor's own CSS custom properties (with fallbacks) so the dialog
+ * matches the editor chrome in the admin theme.
  */
+.helfi-ai-tone-check {
+  box-sizing: border-box;
+  padding: var(--ck-spacing-large, 1rem);
+}
+
+/* Loading / error state: a spinner next to the message. */
+.helfi-ai-tone-check__message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 18rem;
+  min-height: 2rem;
+}
+
+.helfi-ai-tone-check__message::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--ck-color-base-border, #ccced1);
+  border-top-color: var(--ck-color-focus-border, #0000bf);
+  border-radius: 50%;
+  animation: helfi-ai-tone-check-spin 0.8s linear infinite;
+}
+
+@keyframes helfi-ai-tone-check-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Comparison: two columns, width-constrained so content wraps instead of
+   forcing the dialog wide. */
 .helfi-ai-tone-check__comparison {
   display: flex;
   gap: 1rem;
-  max-width: 60rem;
+  width: min(60rem, 80vw);
 }
 
 .helfi-ai-tone-check__column {
-  flex: 1 1 0;
+  flex: 1 1 50%;
+  /* Allow the flex item to shrink below its content width so text wraps. */
   min-width: 0;
 }
 
 .helfi-ai-tone-check__heading {
   margin: 0 0 0.5rem;
   font-size: var(--ck-font-size-base, 1rem);
+  font-weight: bold;
 }
 
 .helfi-ai-tone-check__pane {
-  max-height: 20rem;
-  overflow: auto;
-  padding: 0.75rem;
+  max-height: 22rem;
+  /* Vertical scroll only; long content wraps rather than scrolling sideways. */
+  overflow-y: auto;
+  padding: 0.75rem 1rem;
   border: 1px solid var(--ck-color-base-border, #ccced1);
   border-radius: var(--ck-border-radius, 2px);
-  white-space: pre-wrap;
-  word-break: break-word;
+  background: var(--ck-color-base-background, #fff);
+  overflow-wrap: break-word;
 }
 
-.helfi-ai-tone-check__message {
-  padding: 1rem;
+/* The panes hold rendered content HTML; trim the outer block margins. */
+.helfi-ai-tone-check__pane > :first-child {
+  margin-top: 0;
+}
+
+.helfi-ai-tone-check__pane > :last-child {
+  margin-bottom: 0;
 }

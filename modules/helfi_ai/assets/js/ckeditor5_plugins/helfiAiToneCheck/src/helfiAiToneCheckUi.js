@@ -82,7 +82,7 @@ export default class HelfiAiToneCheckUi extends Plugin {
 			return;
 		}
 
-		this._show(Drupal.t('Check tone', {}, CONTEXT), this._comparisonView(original, suggestion), [
+		this._show(Drupal.t('Check tone', {}, CONTEXT), this._comparisonView(), [
 			{
 				label: Drupal.t('Cancel', {}, CONTEXT),
 				withText: true,
@@ -98,6 +98,18 @@ export default class HelfiAiToneCheckUi extends Plugin {
 				},
 			},
 		]);
+
+		// The dialog is now rendered in the DOM; fill the panes with sanitized
+		// HTML so the content shows as rendered markup. Setting innerHTML (rather
+		// than passing text through the template) is what renders it as HTML; the
+		// sanitizer is what keeps that safe.
+		const panes = editor.plugins.get('Dialog').view.element.querySelectorAll('.helfi-ai-tone-check__pane');
+		if (panes[0]) {
+			panes[0].innerHTML = this._previewHtml(original);
+		}
+		if (panes[1]) {
+			panes[1].innerHTML = this._previewHtml(suggestion);
+		}
 	}
 
 	/**
@@ -128,44 +140,47 @@ export default class HelfiAiToneCheckUi extends Plugin {
 	/**
 	 * Builds the original-vs-suggestion comparison dialog body.
 	 *
-	 * Both sides are shown as readable plain text (markup stripped) so editors
-	 * compare wording, not tags. A richer diff can be layered on later.
+	 * The panes are left empty here; _checkTone fills them with sanitized HTML
+	 * after the dialog renders, so the content shows as rendered markup.
 	 */
-	_comparisonView(original, suggestion) {
-		const column = (heading, body) => ({
+	_comparisonView() {
+		const column = (heading) => ({
 			tag: 'div',
 			attributes: { class: ['helfi-ai-tone-check__column'] },
 			children: [
 				{ tag: 'h3', attributes: { class: ['helfi-ai-tone-check__heading'] }, children: [heading] },
-				{ tag: 'div', attributes: { class: ['helfi-ai-tone-check__pane'] }, children: [body] },
+				{ tag: 'div', attributes: { class: ['helfi-ai-tone-check__pane'] } },
 			],
 		});
 		const view = new View(this.editor.locale);
 		view.setTemplate({
 			tag: 'div',
 			attributes: { class: ['helfi-ai-tone-check', 'helfi-ai-tone-check__comparison'] },
-			children: [
-				column(Drupal.t('Original', {}, CONTEXT), this._htmlToText(original)),
-				column(Drupal.t('Suggestion', {}, CONTEXT), this._htmlToText(suggestion)),
-			],
+			children: [column(Drupal.t('Original', {}, CONTEXT)), column(Drupal.t('Suggestion', {}, CONTEXT))],
 		});
 		return view;
 	}
 
 	/**
-	 * Converts an HTML string to readable plain text.
+	 * Returns HTML to preview, sanitized by the editor's own conversion.
 	 *
-	 * Parsing with DOMParser does not execute scripts, and only the resulting
-	 * textContent is used, so untrusted markup in the suggestion cannot run.
-	 * Block-level elements become line breaks so multi-paragraph content stays
-	 * readable (the pane renders with white-space: pre-wrap).
+	 * The panes render via innerHTML, which bypasses CKEditor — so raw suggestion
+	 * markup must not be injected as-is. Round-tripping through the editor's data
+	 * pipeline (view → model → data) drops anything the text format does not
+	 * allow (scripts, event handlers, unknown elements) using the *same* rules as
+	 * the editor, and makes the preview match what Replace will produce. On any
+	 * conversion error it falls back to escaped plain text (never raw HTML).
 	 */
-	_htmlToText(html) {
-		const doc = new DOMParser().parseFromString(html, 'text/html');
-		doc.body.querySelectorAll('p, br, li, h1, h2, h3, h4, h5, h6, div, tr').forEach((element) => {
-			element.insertAdjacentText('afterend', '\n');
-		});
-		return (doc.body.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
+	_previewHtml(html) {
+		const { data } = this.editor;
+		try {
+			return data.stringify(data.toModel(data.processor.toView(html)));
+		} catch {
+			const text = new DOMParser().parseFromString(html, 'text/html').body.textContent || '';
+			const div = document.createElement('div');
+			div.textContent = text;
+			return div.innerHTML;
+		}
 	}
 
 	/**
