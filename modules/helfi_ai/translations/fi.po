@@ -70,3 +70,7 @@ msgstr "Sivun sisältöä ei voitu lukea. Yritä uudelleen."
 msgctxt "helfi_ai"
 msgid "Could not generate title suggestions. Add some page content and make sure the AI provider is configured."
 msgstr "Otsikkoehdotuksia ei voitu luoda. Lisää sivulle sisältöä ja varmista, että tekoälypalvelu on määritetty."
+
+msgctxt "helfi_ai"
+msgid "characters"
+msgstr "merkkiä"

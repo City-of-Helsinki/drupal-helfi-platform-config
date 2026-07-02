@@ -34,3 +34,7 @@ msgstr "Det gick inte att läsa sidans innehåll. Försök igen."
 msgctxt "helfi_ai"
 msgid "Could not generate title suggestions. Add some page content and make sure the AI provider is configured."
 msgstr "Det gick inte att skapa rubrikförslag. Lägg till innehåll på sidan och kontrollera att AI-tjänsten är konfigurerad."
+
+msgctxt "helfi_ai"
+msgid "characters"
+msgstr "tecken"
