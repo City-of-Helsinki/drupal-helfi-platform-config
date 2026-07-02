@@ -17,7 +17,17 @@
 
   Drupal.behaviors.helfiAiTitleSuggest = {
     attach(context) {
-      once('helfi-ai-title-apply', '.helfi-ai-title-apply', context).forEach(
+      once('helfi-ai-title-reorder', '.helfi-ai-title', context).forEach(
+        (field) => {
+          const input = field.querySelector('input[name="title[0][value]"]');
+          const suggest = field.querySelector('.helfi-ai-suggest');
+          if (input && suggest) {
+            input.after(suggest);
+          }
+        },
+      );
+
+      once('helfi-ai-suggestions-apply', '.helfi-ai-suggestions__apply', context).forEach(
         (button) => {
           button.addEventListener('click', () => {
             const selected = document.querySelector(
