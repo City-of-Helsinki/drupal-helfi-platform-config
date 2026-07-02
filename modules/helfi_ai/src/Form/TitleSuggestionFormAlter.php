@@ -82,9 +82,11 @@ class TitleSuggestionFormAlter {
       return;
     }
 
+    $form['title']['#attributes']['class'][] = 'helfi-ai-title';
+
     $form['title']['helfi_ai_suggest'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['helfi-ai-title-suggest']],
+      '#attributes' => ['class' => ['helfi-ai-suggest']],
       // Render just below the title input.
       '#weight' => ($form['title']['widget'][0]['value']['#weight'] ?? 0) + 0.5,
       'button' => [
@@ -175,7 +177,7 @@ class TitleSuggestionFormAlter {
   private static function dialogOptions(): array {
     return [
       'width' => '40rem',
-      'classes' => ['ui-dialog' => 'helfi-ai-title-dialog'],
+      'classes' => ['ui-dialog' => 'helfi-ai-dialog'],
     ];
   }
 

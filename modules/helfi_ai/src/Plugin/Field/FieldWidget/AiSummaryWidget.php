@@ -209,13 +209,13 @@ final class AiSummaryWidget extends WidgetBase {
 
     // A summary that already exists may have been reviewed or hand-edited;
     // regenerating overwrites it. The confirm behavior loads on every instance
-    // but only acts when the button carries data-helfi-ai-confirm. That marker
+    // but only acts when the button carries data-helfi-ai-summary-confirm. That marker
     // is set whenever the button is a "regenerate": here when a saved value
     // exists, and in self::ajaxCallback() after a fresh generation (covering a
     // summary created earlier in this same unsaved session).
     $button['#attached']['library'][] = 'helfi_ai/ai_summary_confirm';
     if ($has_value) {
-      $button['#attributes']['data-helfi-ai-confirm'] = $this->t('Regenerating replaces the current AI summary, including any manual changes. Continue?', options: $ctx);
+      $button['#attributes']['data-helfi-ai-summary-confirm'] = $this->t('Regenerating replaces the current AI summary, including any manual changes. Continue?', options: $ctx);
     }
 
     return $button;
@@ -285,7 +285,7 @@ final class AiSummaryWidget extends WidgetBase {
         $translation = \Drupal::translation();
         $wrapper['generate']['#value'] = $translation
           ->translate('Regenerate AI summary', [], ['context' => 'helfi_ai']);
-        $wrapper['generate']['#attributes']['data-helfi-ai-confirm'] = (string) $translation
+        $wrapper['generate']['#attributes']['data-helfi-ai-summary-confirm'] = (string) $translation
           ->translate('Regenerating replaces the current AI summary, including any manual changes. Continue?', [], ['context' => 'helfi_ai']);
       }
       if (isset($wrapper['description'])) {

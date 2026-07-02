@@ -37,7 +37,7 @@
         },
       );
 
-      once('helfi-ai-title-cancel', '.helfi-ai-title-cancel', context).forEach(
+      once('helfi-ai-suggestions-cancel', '.helfi-ai-suggestions__cancel', context).forEach(
         (button) => {
           button.addEventListener('click', closeModal);
         },

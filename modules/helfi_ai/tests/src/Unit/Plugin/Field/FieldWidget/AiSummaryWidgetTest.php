@@ -112,7 +112,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     // The behavior always loads, but with nothing to overwrite there is no
     // confirm marker, so it stays inert.
     $this->assertContains('helfi_ai/ai_summary_confirm', $wrapper['generate']['#attached']['library']);
-    $this->assertArrayNotHasKey('data-helfi-ai-confirm', $wrapper['generate']['#attributes'] ?? []);
+    $this->assertArrayNotHasKey('data-helfi-ai-summary-confirm', $wrapper['generate']['#attributes'] ?? []);
     $this->assertArrayHasKey('description', $wrapper);
     $this->assertArrayNotHasKey('error', $wrapper);
   }
@@ -132,7 +132,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $this->assertNotContains('hidden', $wrapper['summary']['#attributes']['class']);
     $this->assertSame('<ul><li>Saved</li></ul>', $wrapper['summary']['value']['#default_value']);
     $this->assertSame('Regenerate AI summary', (string) $wrapper['generate']['#value']);
-    $this->assertArrayHasKey('data-helfi-ai-confirm', $wrapper['generate']['#attributes']);
+    $this->assertArrayHasKey('data-helfi-ai-summary-confirm', $wrapper['generate']['#attributes']);
     $this->assertContains('helfi_ai/ai_summary_confirm', $wrapper['generate']['#attached']['library']);
   }
 
@@ -309,7 +309,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $this->assertSame('Regenerate AI summary', (string) $captured['generate']['#value']);
     // The fresh summary is now guarded, so regenerating it in this same
     // session also confirms.
-    $this->assertArrayHasKey('data-helfi-ai-confirm', $captured['generate']['#attributes']);
+    $this->assertArrayHasKey('data-helfi-ai-summary-confirm', $captured['generate']['#attributes']);
     $this->assertArrayNotHasKey('error', $captured);
   }
 

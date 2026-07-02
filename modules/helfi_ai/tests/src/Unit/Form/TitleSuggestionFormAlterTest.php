@@ -105,6 +105,7 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
     $form = $this->formWithTitle();
     $this->createAlter(TRUE, ['page'])->alter($form, $this->nodeFormState('page'));
 
+    $this->assertContains('helfi-ai-title', $form['title']['#attributes']['class']);
     $this->assertArrayHasKey('helfi_ai_suggest', $form['title']);
     $button = $form['title']['helfi_ai_suggest']['button'];
     $this->assertSame('helfi_ai_suggest_title', $button['#name']);
@@ -239,13 +240,9 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
     $this->assertCount(1, $commands);
     $this->assertSame('openDialog', $commands[0]['command']);
     $this->assertSame('#drupal-modal', $commands[0]['selector']);
-    $this->assertSame('helfi-ai-title-dialog', $commands[0]['dialogOptions']['classes']['ui-dialog']);
-    // The rendered body is the radio option box, one option per suggestion,
-    // plus the action buttons.
-    $this->assertArrayHasKey('options', $captured);
-    $this->assertArrayHasKey('actions', $captured);
-    $this->assertArrayHasKey('option_0', $captured['options']);
-    $this->assertArrayHasKey('option_1', $captured['options']);
+    $this->assertSame('helfi-ai-dialog', $commands[0]['dialogOptions']['classes']['ui-dialog']);
+    $this->assertSame('helfi_ai_title_suggestions', $captured['#theme']);
+    $this->assertSame(['Title A', 'Title B'], $captured['#suggestions']);
   }
 
   /**
@@ -260,9 +257,8 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
     $response = $alter->buildSuggestionResponse($form, $this->contentEntityFormState());
 
     $this->assertSame('openDialog', $response->getCommands()[0]['command']);
-    // The body is a plain message paragraph, not the option box.
-    $this->assertSame('p', $captured['#tag']);
-    $this->assertArrayNotHasKey('options', $captured);
+    $this->assertSame('helfi_ai_message', $captured['#theme']);
+    $this->assertArrayNotHasKey('#suggestions', $captured);
   }
 
   /**
@@ -277,7 +273,7 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
     $response = $alter->buildSuggestionResponse($form, $this->nonContentEntityFormState());
 
     $this->assertSame('openDialog', $response->getCommands()[0]['command']);
-    $this->assertSame('p', $captured['#tag']);
+    $this->assertSame('helfi_ai_message', $captured['#theme']);
   }
 
   /**
