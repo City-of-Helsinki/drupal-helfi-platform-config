@@ -197,82 +197,10 @@ class TitleSuggestionFormAlter {
    *   A render array for the modal body.
    */
   private function suggestionsContent(array $suggestions): array {
-    $radios = [];
-    foreach ($suggestions as $i => $suggestion) {
-      $id = 'helfi-ai-title-option-' . $i;
-      $radios['option_' . $i] = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => ['class' => ['form-item', 'helfi-ai-title-option']],
-        'input' => [
-          '#type' => 'html_tag',
-          '#tag' => 'input',
-          '#attributes' => [
-            'type' => 'radio',
-            'name' => 'helfi_ai_title',
-            'id' => $id,
-            // Match Claro's radio classes so the admin theme styles these the
-            // same as real Form API radios (which can't expand in a detached
-            // modal render array).
-            'class' => ['form-radio', 'form-boolean', 'form-boolean--type-radio', 'helfi-ai-title-radio'],
-            'value' => $suggestion,
-          // Pre-select the first candidate so Apply always has a selection.
-          ] + ($i === 0 ? ['checked' => 'checked'] : []),
-        ],
-        'label' => [
-          '#type' => 'html_tag',
-          '#tag' => 'label',
-          '#attributes' => ['for' => $id, 'class' => ['form-item__label', 'option', 'helfi-ai-title-label']],
-          '#value' => $suggestion . ' ',
-          // Character count as a subtle length hint next to each candidate.
-          'count' => [
-            '#type' => 'html_tag',
-            '#tag' => 'span',
-            '#attributes' => ['class' => ['helfi-ai-title-count']],
-            '#value' => '(' . mb_strlen($suggestion) . ')',
-          ],
-        ],
-      ];
-    }
-
     return [
-      '#type' => 'container',
-      '#attributes' => ['class' => ['helfi-ai-title-suggestions']],
+      '#theme' => 'helfi_ai_title_suggestions',
+      '#suggestions' => array_values($suggestions),
       '#attached' => ['library' => ['helfi_ai/title_suggest']],
-      'options' => [
-        '#type' => 'html_tag',
-        '#tag' => 'fieldset',
-        '#attributes' => ['class' => ['helfi-ai-title-options']],
-        'legend' => [
-          '#type' => 'html_tag',
-          '#tag' => 'legend',
-          '#attributes' => ['class' => ['visually-hidden']],
-          '#value' => $this->t('Suggested titles', options: ['context' => 'helfi_ai']),
-        ],
-      ] + $radios,
-      'actions' => [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => ['class' => ['form-actions', 'helfi-ai-title-actions']],
-        'apply' => [
-          '#type' => 'html_tag',
-          '#tag' => 'button',
-          '#value' => $this->t('Apply', options: ['context' => 'helfi_ai']),
-          '#attributes' => [
-            'type' => 'button',
-            'class' => ['button', 'button--primary', 'helfi-ai-title-apply'],
-          ],
-        ],
-        'cancel' => [
-          '#type' => 'html_tag',
-          '#tag' => 'button',
-          '#value' => $this->t('Cancel', options: ['context' => 'helfi_ai']),
-          '#attributes' => [
-            'type' => 'button',
-            'class' => ['button', 'button--secondary', 'helfi-ai-title-cancel'],
-          ],
-        ],
-      ],
     ];
   }
 
@@ -287,9 +215,8 @@ class TitleSuggestionFormAlter {
    */
   private static function message(string $text): array {
     return [
-      '#type' => 'html_tag',
-      '#tag' => 'p',
-      '#value' => $text,
+      '#theme' => 'helfi_ai_message',
+      '#text' => $text,
     ];
   }
 
