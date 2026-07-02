@@ -19,10 +19,10 @@ final readonly class ConfigIgnoreHook {
    * those edits on deploy. (Module updates never touch them anyway, since
    * config/install is applied only at install time.)
    *
-   * The patterns carry no `collection|` prefix, so config_ignore applies them
-   * to every collection: this protects both the base prompts and their
-   * per-language translations (the `language.*` config overrides), which is
-   * important because tone prompts are authored natively per language.
+   * The pattern carries no `collection|` prefix, so config_ignore applies it to
+   * every collection: this protects the tone-check prompt and its per-language
+   * translations (the `language.*` config overrides), which matters because the
+   * prompt is authored natively per language.
    *
    * @param array<int, string> $settings
    *   List of config_ignore patterns to amend.

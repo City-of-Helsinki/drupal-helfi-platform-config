@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides the runtime configuration for the tone-check CKEditor 5 plugin.
  *
- * Injects the endpoint URL, a CSRF request-header token, and the current
+ * Injects the endpoint URL, a CSRF request-header token, and the content
  * language into the editor so the JavaScript plugin can call the tone-check
  * route. The token matches what the route's _csrf_request_header_token check
  * expects.

@@ -12,7 +12,7 @@ use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -23,12 +23,21 @@ use Symfony\Component\HttpFoundation\Request;
 class ToneCheckControllerTest extends UnitTestCase {
 
   /**
-   * {@inheritdoc}
+   * Builds the controller with a mocked checker and language manager.
+   *
+   * @param \Drupal\helfi_ai\Service\AiToneChecker $checker
+   *   The tone checker to inject.
+   * @param \Drupal\Core\Language\LanguageManagerInterface|null $languageManager
+   *   The language manager, or NULL for an unused stub.
+   *
+   * @return \Drupal\helfi_ai\Controller\ToneCheckController
+   *   The controller under test.
    */
-  protected function tearDown(): void {
-    parent::tearDown();
-    // Reset the container so it does not leak into other tests.
-    \Drupal::setContainer($this->createMock(ContainerInterface::class));
+  private function controller(AiToneChecker $checker, ?LanguageManagerInterface $languageManager = NULL): ToneCheckController {
+    return new ToneCheckController(
+      $checker,
+      $languageManager ?? $this->prophesize(LanguageManagerInterface::class)->reveal(),
+    );
   }
 
   /**
@@ -53,7 +62,7 @@ class ToneCheckControllerTest extends UnitTestCase {
    * @return array<string, mixed>
    *   The decoded payload.
    */
-  private function decode($response): array {
+  private function decode(JsonResponse $response): array {
     return json_decode((string) $response->getContent(), TRUE);
   }
 
@@ -64,7 +73,7 @@ class ToneCheckControllerTest extends UnitTestCase {
     $checker = $this->prophesize(AiToneChecker::class);
     $checker->check('<p>Hi</p>', 'en')->willReturn('<p>Hello</p>')->shouldBeCalledOnce();
 
-    $response = (new ToneCheckController($checker->reveal()))
+    $response = $this->controller($checker->reveal())
       ->check($this->request(['content' => '<p>Hi</p>', 'langcode' => 'en']));
 
     $this->assertSame(200, $response->getStatusCode());
@@ -78,7 +87,7 @@ class ToneCheckControllerTest extends UnitTestCase {
     $checker = $this->prophesize(AiToneChecker::class);
     $checker->check(Argument::cetera())->shouldNotBeCalled();
 
-    $response = (new ToneCheckController($checker->reveal()))
+    $response = $this->controller($checker->reveal())
       ->check($this->request(['content' => '   ', 'langcode' => 'en']));
 
     $this->assertSame(400, $response->getStatusCode());
@@ -93,7 +102,7 @@ class ToneCheckControllerTest extends UnitTestCase {
     $checker->check(Argument::cetera())->shouldNotBeCalled();
 
     $tooLarge = str_repeat('a', 256 * 1024 + 1);
-    $response = (new ToneCheckController($checker->reveal()))
+    $response = $this->controller($checker->reveal())
       ->check($this->request(['content' => $tooLarge, 'langcode' => 'en']));
 
     $this->assertSame(413, $response->getStatusCode());
@@ -106,7 +115,7 @@ class ToneCheckControllerTest extends UnitTestCase {
     $checker = $this->prophesize(AiToneChecker::class);
     $checker->check('<p>Hi</p>', 'en')->willReturn(NULL);
 
-    $response = (new ToneCheckController($checker->reveal()))
+    $response = $this->controller($checker->reveal())
       ->check($this->request(['content' => '<p>Hi</p>', 'langcode' => 'en']));
 
     $this->assertSame(502, $response->getStatusCode());
@@ -114,9 +123,9 @@ class ToneCheckControllerTest extends UnitTestCase {
   }
 
   /**
-   * A missing langcode falls back to the current UI language.
+   * A missing langcode falls back to the current content language.
    */
-  public function testFallsBackToCurrentLanguageWhenLangcodeMissing(): void {
+  public function testFallsBackToContentLanguageWhenLangcodeMissing(): void {
     $checker = $this->prophesize(AiToneChecker::class);
     $checker->check('<p>Hi</p>', 'sv')->willReturn('<p>Hej</p>')->shouldBeCalledOnce();
 
@@ -125,16 +134,7 @@ class ToneCheckControllerTest extends UnitTestCase {
     $languageManager = $this->prophesize(LanguageManagerInterface::class);
     $languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->willReturn($language->reveal());
 
-    $container = $this->createMock(ContainerInterface::class);
-    $container->method('get')->willReturnCallback(
-      fn(string $id): object => match ($id) {
-        'language_manager' => $languageManager->reveal(),
-        default => throw new \RuntimeException('Unexpected service: ' . $id),
-      }
-    );
-    \Drupal::setContainer($container);
-
-    $response = (new ToneCheckController($checker->reveal()))
+    $response = $this->controller($checker->reveal(), $languageManager->reveal())
       ->check($this->request(['content' => '<p>Hi</p>']));
 
     $this->assertSame(200, $response->getStatusCode());

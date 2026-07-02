@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_ai\Controller;
 
-use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_ai\Service\AiToneChecker;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Called by the CKEditor tone-check plugin. Access is gated by permission and a
  * CSRF request-header token (see helfi_ai.routing.yml).
  */
-final class ToneCheckController extends ControllerBase {
+final class ToneCheckController implements ContainerInjectionInterface {
 
   /**
    * Maximum accepted content size in bytes (256 KB).
@@ -28,13 +29,17 @@ final class ToneCheckController extends ControllerBase {
 
   public function __construct(
     private readonly AiToneChecker $toneChecker,
+    private readonly LanguageManagerInterface $languageManager,
   ) {}
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container): static {
-    return new static($container->get(AiToneChecker::class));
+    return new static(
+      $container->get(AiToneChecker::class),
+      $container->get('language_manager'),
+    );
   }
 
   /**
@@ -51,7 +56,7 @@ final class ToneCheckController extends ControllerBase {
     $content = is_array($data) && isset($data['content']) ? (string) $data['content'] : '';
     $langcode = is_array($data) && isset($data['langcode']) && $data['langcode'] !== ''
       ? (string) $data['langcode']
-      : $this->languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+      : $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
 
     if (trim($content) === '') {
       return new JsonResponse(['error' => 'No content to check.'], 400);
