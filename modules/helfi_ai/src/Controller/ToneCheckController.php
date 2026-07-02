@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_ai\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\helfi_ai\Service\AiToneChecker;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,7 +51,7 @@ final class ToneCheckController extends ControllerBase {
     $content = is_array($data) && isset($data['content']) ? (string) $data['content'] : '';
     $langcode = is_array($data) && isset($data['langcode']) && $data['langcode'] !== ''
       ? (string) $data['langcode']
-      : $this->languageManager()->getCurrentLanguage()->getId();
+      : $this->languageManager()->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
 
     if (trim($content) === '') {
       return new JsonResponse(['error' => 'No content to check.'], 400);

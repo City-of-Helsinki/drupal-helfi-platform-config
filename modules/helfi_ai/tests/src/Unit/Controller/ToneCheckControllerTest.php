@@ -123,7 +123,7 @@ class ToneCheckControllerTest extends UnitTestCase {
     $language = $this->prophesize(LanguageInterface::class);
     $language->getId()->willReturn('sv');
     $languageManager = $this->prophesize(LanguageManagerInterface::class);
-    $languageManager->getCurrentLanguage()->willReturn($language->reveal());
+    $languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->willReturn($language->reveal());
 
     $container = $this->createMock(ContainerInterface::class);
     $container->method('get')->willReturnCallback(

@@ -8,6 +8,7 @@ use Drupal\ckeditor5\Plugin\CKEditor5PluginDefault;
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 use Drupal\Core\Access\CsrfRequestHeaderAccessCheck;
 use Drupal\Core\Access\CsrfTokenGenerator;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
@@ -82,10 +83,16 @@ final class HelfiAiToneCheck extends CKEditor5PluginDefault implements Container
    *   The dynamic plugin configuration.
    */
   public function getDynamicPluginConfig(array $static_plugin_config, EditorInterface $editor): array {
+    // These are per-request values. Computing them here is safe because a text
+    // editor's JS settings are not cacheable (like forms) — the same reason
+    // core injects CSRF tokens in dynamic config.
+    // @see \Drupal\ckeditor5\Plugin\CKEditor5Plugin\DynamicPluginConfigWithCsrfTokenUrlTrait
     $static_plugin_config['helfiAiToneCheck'] = [
       'endpoint' => Url::fromRoute('helfi_ai.tone_check')->toString(TRUE)->getGeneratedUrl(),
       'csrfToken' => $this->csrfToken->get(CsrfRequestHeaderAccessCheck::TOKEN_KEY),
-      'langcode' => $this->languageManager->getCurrentLanguage()->getId(),
+      // Use the content language, not the UI language, so the tone prompt is
+      // read in the language the content is authored in.
+      'langcode' => $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
     ];
     return $static_plugin_config;
   }

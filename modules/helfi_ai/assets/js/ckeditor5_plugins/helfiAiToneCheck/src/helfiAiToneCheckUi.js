@@ -128,8 +128,8 @@ export default class HelfiAiToneCheckUi extends Plugin {
 	/**
 	 * Builds the original-vs-suggestion comparison dialog body.
 	 *
-	 * The original and suggestion are shown as text for now; richer presentation
-	 * (e.g. a diff) can be layered on later.
+	 * Both sides are shown as readable plain text (markup stripped) so editors
+	 * compare wording, not tags. A richer diff can be layered on later.
 	 */
 	_comparisonView(original, suggestion) {
 		const column = (heading, body) => ({
@@ -145,11 +145,27 @@ export default class HelfiAiToneCheckUi extends Plugin {
 			tag: 'div',
 			attributes: { class: ['helfi-ai-tone-check', 'helfi-ai-tone-check__comparison'] },
 			children: [
-				column(Drupal.t('Original', {}, CONTEXT), original),
-				column(Drupal.t('Suggestion', {}, CONTEXT), suggestion),
+				column(Drupal.t('Original', {}, CONTEXT), this._htmlToText(original)),
+				column(Drupal.t('Suggestion', {}, CONTEXT), this._htmlToText(suggestion)),
 			],
 		});
 		return view;
+	}
+
+	/**
+	 * Converts an HTML string to readable plain text.
+	 *
+	 * Parsing with DOMParser does not execute scripts, and only the resulting
+	 * textContent is used, so untrusted markup in the suggestion cannot run.
+	 * Block-level elements become line breaks so multi-paragraph content stays
+	 * readable (the pane renders with white-space: pre-wrap).
+	 */
+	_htmlToText(html) {
+		const doc = new DOMParser().parseFromString(html, 'text/html');
+		doc.body.querySelectorAll('p, br, li, h1, h2, h3, h4, h5, h6, div, tr').forEach((element) => {
+			element.insertAdjacentText('afterend', '\n');
+		});
+		return (doc.body.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
 	}
 
 	/**
