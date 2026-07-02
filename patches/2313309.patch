@@ -1485,6 +1485,19 @@ index 96a22070f49..d70e8639842 100644
      $expected = ['#plain_text' => $display_name];
      $this->assertSame($expected, $toolbar_link_builder->renderDisplayName());
    }
+diff --git a/core/modules/user/user.services.yml b/core/modules/user/user.services.yml
+index 78e4b281498..77f89d9faa6 100644
+--- a/core/modules/user/user.services.yml
++++ b/core/modules/user/user.services.yml
+@@ -61,7 +61,7 @@ services:
+       - { name: 'context_provider' }
+   user.toolbar_link_builder:
+     class: Drupal\user\ToolbarLinkBuilder
+-    arguments: ['@current_user']
++    arguments: ['@current_user', '@module_handler']
+   Drupal\user\ToolbarLinkBuilder: '@user.toolbar_link_builder'
+   user.flood_control:
+     class: Drupal\user\UserFloodControl
 diff --git a/core/modules/views/tests/src/Functional/Plugin/DisplayPageWebTest.php b/core/modules/views/tests/src/Functional/Plugin/DisplayPageWebTest.php
 index 74a34b84026..7ce613fd700 100644
 --- a/core/modules/views/tests/src/Functional/Plugin/DisplayPageWebTest.php
