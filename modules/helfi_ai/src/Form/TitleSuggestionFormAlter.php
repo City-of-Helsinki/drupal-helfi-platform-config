@@ -7,6 +7,7 @@ namespace Drupal\helfi_ai\Form;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Entity\ContentEntityFormInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -32,6 +33,7 @@ use Drupal\node\NodeInterface;
  */
 class TitleSuggestionFormAlter {
 
+  use DependencySerializationTrait;
   use StringTranslationTrait;
 
   /**
@@ -90,7 +92,7 @@ class TitleSuggestionFormAlter {
         '#name' => 'helfi_ai_suggest_title',
         '#attributes' => ['class' => ['button--small']],
         '#ajax' => [
-          'callback' => [self::class, 'ajaxCallback'],
+          'callback' => [$this, 'buildSuggestionResponse'],
           'event' => 'click',
           'progress' => [
             'type' => 'throbber',
@@ -103,27 +105,7 @@ class TitleSuggestionFormAlter {
   }
 
   /**
-   * AJAX callback for the suggest button.
-   *
-   * Kept static because Drupal serializes #ajax callbacks into the form cache,
-   * so the callback must be a plain callable rather than a bound instance. It
-   * immediately delegates to the service, where the work runs with injected
-   * dependencies.
-   *
-   * @param array<string, mixed> $form
-   *   The (rebuilt) form structure.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current form state.
-   *
-   * @return \Drupal\Core\Ajax\AjaxResponse
-   *   Response opening a modal with the suggestions or an error message.
-   */
-  public static function ajaxCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
-    return \Drupal::service(self::class)->buildSuggestionResponse($form, $form_state);
-  }
-
-  /**
-   * Builds the AJAX response: a suggestions modal or an error modal.
+   * AJAX callback for the suggest button: opens a suggestions or error modal.
    *
    * @param array<string, mixed> $form
    *   The (rebuilt) form structure.

@@ -109,7 +109,9 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
     $this->assertArrayHasKey('helfi_ai_suggest', $form['title']);
     $button = $form['title']['helfi_ai_suggest']['button'];
     $this->assertSame('helfi_ai_suggest_title', $button['#name']);
-    $this->assertSame([TitleSuggestionFormAlter::class, 'ajaxCallback'], $button['#ajax']['callback']);
+    $callback = $button['#ajax']['callback'];
+    $this->assertInstanceOf(TitleSuggestionFormAlter::class, $callback[0]);
+    $this->assertSame('buildSuggestionResponse', $callback[1]);
     $this->assertContains('helfi_ai/title_suggest', $button['#attached']['library']);
   }
 
@@ -274,30 +276,6 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
 
     $this->assertSame('openDialog', $response->getCommands()[0]['command']);
     $this->assertSame('helfi_ai_message', $captured['#theme']);
-  }
-
-  /**
-   * The static AJAX callback delegates to the service instance.
-   */
-  public function testAjaxCallbackDelegatesToService(): void {
-    $expected = new AjaxResponse();
-    $alter = $this->prophesize(TitleSuggestionFormAlter::class);
-    $alter->buildSuggestionResponse(Argument::type('array'), Argument::any())
-      ->willReturn($expected)
-      ->shouldBeCalledOnce();
-
-    $container = $this->createMock(ContainerInterface::class);
-    $container->method('get')->willReturnCallback(
-      fn(string $id): object => match ($id) {
-        TitleSuggestionFormAlter::class => $alter->reveal(),
-        default => throw new \RuntimeException('Unexpected service: ' . $id),
-      }
-    );
-    \Drupal::setContainer($container);
-
-    $form = [];
-    $formState = $this->prophesize(FormStateInterface::class)->reveal();
-    $this->assertSame($expected, TitleSuggestionFormAlter::ajaxCallback($form, $formState));
   }
 
 }
