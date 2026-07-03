@@ -1,11 +1,6 @@
 /**
  * @file
  * Applies a chosen AI title suggestion to the node title field.
- *
- * The suggestions are rendered in a modal dialog by TitleSuggestionFormAlter as
- * a radio option box with Apply / Cancel actions. Apply reads the selected
- * radio, writes its value into the title input and closes the dialog; Cancel
- * just closes it.
  */
 ((Drupal, once) => {
   const closeModal = () => {

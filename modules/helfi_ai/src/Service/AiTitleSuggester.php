@@ -62,8 +62,7 @@ class AiTitleSuggester {
    *   failure (no content, missing prompt, provider error).
    */
   public function suggest(ContentEntityInterface $entity): array {
-    // Render the entity to plain text. With no content there is nothing to
-    // base a title on.
+    // With no content there is nothing to base a title on.
     $content = $this->textConverterManager->convert($entity);
     if (!$content) {
       $this->logger->warning('helfi_ai: no text content for entity @type/@id.', [
@@ -73,8 +72,6 @@ class AiTitleSuggester {
       return [];
     }
 
-    // Bound the payload sent to the provider. Oversized pages are skipped
-    // rather than sent in full, to keep request cost and latency predictable.
     if (strlen($content) > self::MAX_CONTENT_BYTES) {
       $this->logger->warning('helfi_ai: content for entity @type/@id is too large (@bytes bytes) to suggest a title.', [
         '@type' => $entity->getEntityTypeId(),
@@ -84,7 +81,6 @@ class AiTitleSuggester {
       return [];
     }
 
-    // Load the configured SEO-title prompt template.
     /** @var \Drupal\ai\Entity\AiPromptInterface|null $prompt */
     $prompt = $this->entityTypeManager
       ->getStorage('ai_prompt')
@@ -95,7 +91,6 @@ class AiTitleSuggester {
       return [];
     }
 
-    // Fill the prompt's {content} and {language} placeholders.
     $text = str_replace(
       ['{content}', '{language}'],
       [$content, $entity->language()->getName()],
@@ -103,9 +98,6 @@ class AiTitleSuggester {
     );
 
     try {
-      // Send the prompt to the configured chat provider and parse the reply
-      // into individual title candidates. A failed call (provider error,
-      // timeout) returns an empty array so the caller can show an error.
       ['provider_id' => $provider, 'model_id' => $model] = $this->aiProvider->getSetProvider('chat');
       $input = new ChatInput([new ChatMessage('user', $text)]);
       $normalized = $provider->chat($input, $model)->getNormalized();

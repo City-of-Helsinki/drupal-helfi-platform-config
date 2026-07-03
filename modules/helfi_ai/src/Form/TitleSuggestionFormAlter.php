@@ -29,10 +29,6 @@ use Drupal\node\NodeInterface;
  * reason as the AI summary widget: its callback runs regardless of validation
  * and sees the full, un-pruned form values, so the unsaved entity (including
  * unsaved paragraphs) can be rebuilt in memory.
- *
- * The content types the button is offered on are read from the
- * `helfi_ai.settings:seo_title_bundles` config, so sites can adjust them
- * through configuration without a code change.
  */
 class TitleSuggestionFormAlter {
 
@@ -87,7 +83,6 @@ class TitleSuggestionFormAlter {
     $form['title']['helfi_ai_suggest'] = [
       '#type' => 'container',
       '#attributes' => ['class' => ['helfi-ai-suggest']],
-      // Render just below the title input.
       '#weight' => ($form['title']['widget'][0]['value']['#weight'] ?? 0) + 0.5,
       'button' => [
         '#type' => 'button',
@@ -183,12 +178,6 @@ class TitleSuggestionFormAlter {
 
   /**
    * Builds the modal body: a radio option box plus Apply / Cancel actions.
-   *
-   * Each radio carries a candidate title as its value. The title_suggest
-   * behavior reads the selected radio on Apply, fills the title field and
-   * closes the dialog; Cancel just closes it. Apply/Cancel are plain buttons
-   * handled client-side — applying a title is a pure DOM update, so no second
-   * server round-trip is needed.
    *
    * @param string[] $suggestions
    *   The title candidates.
