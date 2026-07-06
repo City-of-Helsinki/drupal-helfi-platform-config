@@ -108,62 +108,45 @@ final class AiSummaryWidget extends WidgetBase {
     $wrapper_id = 'ai-summary-' . str_replace('_', '-', $field_name) . '-' . $delta;
     $saved_value = (string) ($items[$delta]->value ?? '');
 
-    // All dynamic content lives inside this container. It is the sole AJAX
-    // replacement target.
     $element['ajax_wrapper'] = [
       '#type' => 'container',
       '#attributes' => ['id' => $wrapper_id],
       '#weight' => 0,
-    ];
-    $wrapper = &$element['ajax_wrapper'];
-
-    // Label and editor live inside a container that is hidden until a summary
-    // exists: an empty field shows only the Generate button. The container is
-    // revealed server-side once it holds a value (saved here, or freshly
-    // generated in self::ajaxCallback()). The editor stays in the DOM while
-    // hidden so the AJAX callback can inject into it and the value still
-    // submits. '.hidden' is core's system/base display:none utility.
-    $wrapper['summary'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => $saved_value === '' ? ['hidden'] : [],
+      'description' => [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => $saved_value === ''
+          ? $this->t('AI generates a summary of the page content as a short list of bullet points. Review the summary and edit it if needed. Keep the bullet points.', options: ['context' => 'helfi_ai'])
+          : $this->t('Generate a new AI summary. It will replace the previous summary.', options: ['context' => 'helfi_ai']),
+        '#attributes' => ['class' => ['description', 'form-item__description']],
+        '#weight' => 100,
       ],
-      '#weight' => 0,
-    ];
-    $summary = &$wrapper['summary'];
-
-    // Label lives outside the summary container so it is always visible, even
-    // before a summary has been generated.
-    $wrapper['field_label'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'label',
-      '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
-      '#attributes' => ['class' => ['form-item__label']],
-      '#weight' => -10,
-    ];
-
-    $summary['value'] = [
-      '#type' => 'text_format',
-      '#title' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
-      '#title_display' => 'invisible',
-      '#default_value' => $saved_value,
-      '#format' => self::TEXT_FORMAT,
-      '#allowed_formats' => [self::TEXT_FORMAT],
-      '#rows' => 6,
-      '#weight' => 0,
-      '#after_build' => [[static::class, 'removeFormatHelp']],
-    ];
-
-    $wrapper['generate'] = $this->generateButton($saved_value !== '', $field_name, $delta, $wrapper_id);
-
-    $wrapper['description'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'div',
-      '#value' => $saved_value === ''
-        ? $this->t('AI generates a summary of the page content as a short list of bullet points. Review the summary and edit it if needed. Keep the bullet points.', options: ['context' => 'helfi_ai'])
-        : $this->t('Generate a new AI summary. It will replace the previous summary.', options: ['context' => 'helfi_ai']),
-      '#attributes' => ['class' => ['description', 'form-item__description']],
-      '#weight' => 100,
+      'field_label' => [
+        '#type' => 'html_tag',
+        '#tag' => 'label',
+        '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
+        '#attributes' => ['class' => ['form-item__label']],
+        '#weight' => -10,
+      ],
+      'generate' => $this->generateButton($saved_value !== '', $field_name, $delta, $wrapper_id),
+      'summary' => [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => $saved_value === '' ? ['hidden'] : [],
+        ],
+        '#weight' => 0,
+        'value' => [
+          '#type' => 'text_format',
+          '#title' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
+          '#title_display' => 'invisible',
+          '#default_value' => $saved_value,
+          '#format' => self::TEXT_FORMAT,
+          '#allowed_formats' => [self::TEXT_FORMAT],
+          '#rows' => 6,
+          '#weight' => 0,
+          '#after_build' => [[static::class, 'removeFormatHelp']],
+        ],
+      ],
     ];
 
     return $element;
