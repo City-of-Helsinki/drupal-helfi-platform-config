@@ -22,6 +22,7 @@ class AnnouncementsBlockTest extends BlockTestBase {
    */
   protected static $modules = [
     'helfi_node_announcement',
+    'hdbt_admin_tools',
   ];
 
   /**

@@ -6,6 +6,7 @@ namespace Drupal\helfi_csp;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\Statement\FetchAs;
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\Component\Datetime\TimeInterface;
@@ -174,7 +175,7 @@ final class CspLogService extends BaseCspLogService {
     $query->having('amount >= :treshold', [':treshold' => $treshold]);
     $query->range(0, 100);
 
-    return $query->execute()->fetchAll(\PDO::FETCH_ASSOC);
+    return $query->execute()->fetchAll(FetchAs::Associative);
   }
 
   /**
