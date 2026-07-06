@@ -11,27 +11,28 @@ dependencies:
     - field.field.node.announcement.field_announcement_type
     - node.type.announcement
   module:
+    - allowed_formats
     - hdbt_admin_tools
     - link
     - path
     - publication_date
     - scheduler
     - select2
-    - text
 id: node.announcement.default
 targetEntityType: node
 bundle: announcement
 mode: default
 content:
   body:
-    type: text_textarea_with_summary
+    type: formatted_text_character_counter
     weight: 18
     region: content
     settings:
+      counter_max: 0
+      counter_total: 250
+      counter_step: 0
       rows: 9
-      summary_rows: 3
       placeholder: ''
-      show_summary: false
     third_party_settings: {  }
   created:
     type: datetime_timestamp
@@ -75,10 +76,13 @@ content:
       match_limit: 20
     third_party_settings: {  }
   field_announcement_title:
-    type: string_textfield
+    type: textfield_character_counter
     weight: 17
     region: content
     settings:
+      counter_step: 0
+      counter_max: 125
+      counter_total: 55
       size: 60
       placeholder: ''
     third_party_settings: {  }

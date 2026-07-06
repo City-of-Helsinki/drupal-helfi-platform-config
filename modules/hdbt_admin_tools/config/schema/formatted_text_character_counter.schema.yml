@@ -2,6 +2,9 @@ field.widget.settings.formatted_text_character_counter:
   type: mapping
   label: 'Character counter formatted text widget display format settings'
   mapping:
+    counter_max:
+      type: integer
+      label: 'Counter maximum'
     counter_step:
       type: integer
       label: 'Counter step'

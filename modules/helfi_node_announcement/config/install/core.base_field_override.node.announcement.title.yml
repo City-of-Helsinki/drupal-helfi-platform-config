@@ -9,7 +9,7 @@ field_name: title
 entity_type: node
 bundle: announcement
 label: 'Administrative title'
-description: ''
+description: 'This is only visible in the content creator view.'
 required: true
 translatable: true
 default_value: {  }
