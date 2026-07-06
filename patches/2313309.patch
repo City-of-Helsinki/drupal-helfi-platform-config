@@ -41,7 +41,7 @@ index 819136dd5ce..c6cf0011ede 100644
  	'message' => '#^Method Drupal\\\\datetime\\\\DateTimeComputed\\:\\:setValue\\(\\) has no return type specified\\.$#',
  	'identifier' => 'missingType.return',
 diff --git a/core/core.services.yml b/core/core.services.yml
-index da312112acd..9351f54b921 100644
+index da312112acd..dff854dde89 100644
 --- a/core/core.services.yml
 +++ b/core/core.services.yml
 @@ -203,6 +203,11 @@ services:
@@ -50,7 +50,7 @@ index da312112acd..9351f54b921 100644
        - { name: cache.context}
 +  cache_context.user.admin_language:
 +    class: Drupal\Core\Cache\Context\AccountAdminLanguageCacheContext
-+    arguments: [ '@current_user' ]
++    arguments: [ '@language_manager' ]
 +    tags:
 +      - { name: cache.context }
    cache_context.user.permissions:
@@ -58,16 +58,17 @@ index da312112acd..9351f54b921 100644
      arguments: ['@current_user', '@user_permissions_hash_generator']
 diff --git a/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php b/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php
 new file mode 100644
-index 00000000000..647257a0ae6
+index 00000000000..1e2bf0eba7f
 --- /dev/null
 +++ b/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php
-@@ -0,0 +1,44 @@
+@@ -0,0 +1,57 @@
 +<?php
 +
 +namespace Drupal\Core\Cache\Context;
 +
 +use Drupal\Core\Cache\CacheableMetadata;
-+use Drupal\Core\Session\AccountProxyInterface;
++use Drupal\Core\Language\LanguageManagerInterface;
++use Drupal\language\ConfigurableLanguageManagerInterface;
 +
 +/**
 + * Defines an AdminLanguageCacheContext service, for "admin language" caching.
@@ -79,10 +80,12 @@ index 00000000000..647257a0ae6
 +  /**
 +   * Constructs a new AccountAdminLanguageCacheContext service.
 +   *
-+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
-+   *   The current user.
++   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
++   *   The language manager.
 +   */
-+  public function __construct(protected AccountProxyInterface $currentUser) {}
++  public function __construct(
++    protected LanguageManagerInterface $languageManager,
++  ) {}
 +
 +  /**
 +   * {@inheritdoc}
@@ -95,14 +98,24 @@ index 00000000000..647257a0ae6
 +   * {@inheritdoc}
 +   */
 +  public function getContext(): string {
-+    return $this->currentUser->getPreferredAdminLangcode(FALSE);
++    // Resolve through language negotiation so this context stays consistent
++    // with the language the administration pages render in. The langcode is
++    // empty when no enabled negotiation method provides an administration
++    // language for the current user, so the context does not vary by an
++    // unused preference.
++    if (!$this->languageManager instanceof ConfigurableLanguageManagerInterface) {
++      return '';
++    }
++    return $this->languageManager->getAdminLangcode();
 +  }
 +
 +  /**
 +   * {@inheritdoc}
 +   */
 +  public function getCacheableMetadata(): CacheableMetadata {
-+    return new CacheableMetadata();
++    // The resolved value depends on which negotiation methods are enabled,
++    // which is stored in the language.types configuration.
++    return (new CacheableMetadata())->addCacheTags(['config:language.types']);
 +  }
 +
 +}
@@ -148,76 +161,18 @@ index 270e8920f5d..6339102c170 100644
 +
  }
 diff --git a/core/lib/Drupal/Core/Menu/Plugin/Block/LocalTasksBlock.php b/core/lib/Drupal/Core/Menu/Plugin/Block/LocalTasksBlock.php
-index 014f4419604..7712a63f116 100644
+index 014f4419604..334c7c74e11 100644
 --- a/core/lib/Drupal/Core/Menu/Plugin/Block/LocalTasksBlock.php
 +++ b/core/lib/Drupal/Core/Menu/Plugin/Block/LocalTasksBlock.php
-@@ -7,11 +7,15 @@
- use Drupal\Core\Cache\CacheableDependencyInterface;
- use Drupal\Core\Cache\CacheableMetadata;
- use Drupal\Core\Form\FormStateInterface;
-+use Drupal\Core\Language\LanguageManagerInterface;
- use Drupal\Core\Menu\LocalTaskManagerInterface;
- use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+@@ -12,6 +12,7 @@
  use Drupal\Core\Render\Element;
  use Drupal\Core\Routing\RouteMatchInterface;
-+use Drupal\Core\Session\AccountInterface;
-+use Drupal\Core\StringTranslation\TranslationManager;
  use Drupal\Core\StringTranslation\TranslatableMarkup;
-+use Symfony\Component\DependencyInjection\Attribute\Autowire;
++use Drupal\language\AdminLanguageRender;
  
  /**
   * Provides a "Tabs" block to display the local tasks.
-@@ -36,6 +40,27 @@ class LocalTasksBlock extends BlockBase implements ContainerFactoryPluginInterfa
-    */
-   protected $routeMatch;
- 
-+  /**
-+   * The language manager.
-+   *
-+   * @var \Drupal\Core\Language\LanguageManagerInterface
-+   */
-+  protected $languageManager;
-+
-+  /**
-+   * The translation manager.
-+   *
-+   * @var \Drupal\Core\StringTranslation\TranslationManager
-+   */
-+  protected $translationManager;
-+
-+  /**
-+   * The current_user service.
-+   *
-+   * @var \Drupal\Core\Session\AccountInterface
-+   */
-+  protected $currentUser;
-+
-   /**
-    * Creates a LocalTasksBlock instance.
-    *
-@@ -49,11 +74,20 @@ class LocalTasksBlock extends BlockBase implements ContainerFactoryPluginInterfa
-    *   The local task manager.
-    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-    *   The route match.
-+   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
-+   *   The language manager.
-+   * @param \Drupal\Core\StringTranslation\TranslationManager $translation_manager
-+   *   The translation manager.
-+   * @param \Drupal\Core\Session\AccountInterface $current_user
-+   *   The current user.
-    */
--  public function __construct(array $configuration, $plugin_id, $plugin_definition, LocalTaskManagerInterface $local_task_manager, RouteMatchInterface $route_match) {
-+  public function __construct(array $configuration, $plugin_id, $plugin_definition, LocalTaskManagerInterface $local_task_manager, RouteMatchInterface $route_match, LanguageManagerInterface $language_manager, #[Autowire(service: 'string_translation')] TranslationManager $translation_manager, AccountInterface $current_user) {
-     parent::__construct($configuration, $plugin_id, $plugin_definition);
-     $this->localTaskManager = $local_task_manager;
-     $this->routeMatch = $route_match;
-+    $this->languageManager = $language_manager;
-+    $this->translationManager = $translation_manager;
-+    $this->currentUser = $current_user;
-   }
- 
-   /**
-@@ -83,6 +117,20 @@ public function build() {
+@@ -83,6 +84,15 @@ public function build() {
        }
      }
  
@@ -226,28 +181,20 @@ index 014f4419604..7712a63f116 100644
 +    // string inside LocalTaskManager::getTasksBuild(), so the language must be
 +    // active at call time rather than deferred to a #pre_render callback.
 +    $originalLangcode = NULL;
-+    $userAdminLangcode = $this->currentUser->getPreferredAdminLangcode(FALSE);
-+    if ($userAdminLangcode && ($this->currentUser->hasPermission('access administration pages') || $this->currentUser->hasPermission('view the administration theme'))) {
-+      $originalLangcode = $this->languageManager->getCurrentLanguage()->getId();
-+      $adminLanguage = $this->languageManager->getLanguage($userAdminLangcode);
-+      $this->languageManager->setCurrentLanguage($adminLanguage);
-+      $this->translationManager->setDefaultLangcode($userAdminLangcode);
-+      $this->languageManager->setConfigOverrideLanguage($adminLanguage);
++    if (\Drupal::moduleHandler()->moduleExists('language')) {
++      $originalLangcode = \Drupal::service(AdminLanguageRender::class)->switchToAdminLanguage();
 +    }
 +
      $tabs = [
        '#theme' => 'menu_local_tasks',
      ];
-@@ -105,7 +153,16 @@ public function build() {
+@@ -105,7 +115,13 @@ public function build() {
        ];
      }
  
 +    // Restore the original language after resolving titles.
 +    if ($originalLangcode !== NULL) {
-+      $originalLanguage = $this->languageManager->getLanguage($originalLangcode);
-+      $this->languageManager->setCurrentLanguage($originalLanguage);
-+      $this->translationManager->setDefaultLangcode($originalLangcode);
-+      $this->languageManager->setConfigOverrideLanguage($originalLanguage);
++      \Drupal::service(AdminLanguageRender::class)->restoreAdminLanguage($originalLangcode);
 +    }
 +
      $build = [];
@@ -739,21 +686,53 @@ index 5258ceb0c8a..db4e0a2a031 100644
      ];
  
 diff --git a/core/modules/language/language.services.yml b/core/modules/language/language.services.yml
-index 98184c214fe..59f9b992b7e 100644
+index 98184c214fe..8a3e225b07f 100644
 --- a/core/modules/language/language.services.yml
 +++ b/core/modules/language/language.services.yml
-@@ -29,3 +29,5 @@ services:
+@@ -29,3 +29,4 @@ services:
      arguments: ['@language_manager']
      tags:
        - { name: paramconverter }
-+  Drupal\language\AdminLanguageRender:
-+    arguments: ['@language_manager', '@string_translation', '@current_user']
++  Drupal\language\AdminLanguageRender: ~
+diff --git a/core/modules/language/src/AdminLanguageNegotiationInterface.php b/core/modules/language/src/AdminLanguageNegotiationInterface.php
+new file mode 100644
+index 00000000000..5a8ea939df6
+--- /dev/null
++++ b/core/modules/language/src/AdminLanguageNegotiationInterface.php
+@@ -0,0 +1,27 @@
++<?php
++
++namespace Drupal\language;
++
++/**
++ * Interface for negotiation methods that provide an administration language.
++ *
++ * Language negotiation methods can implement this interface to provide the
++ * language the current user administers the site in, independent of the path
++ * of the current request. This is used to render administrative interface
++ * elements, such as the navigation, in the administration language even on
++ * non-administrative pages.
++ *
++ * @see \Drupal\language\ConfigurableLanguageManagerInterface::getAdminLangcode()
++ */
++interface AdminLanguageNegotiationInterface {
++
++  /**
++   * Gets the current user's administration language.
++   *
++   * @return string
++   *   The administration langcode, or an empty string when this method does
++   *   not provide an administration language for the current user.
++   */
++  public function getAdminLangcode(): string;
++
++}
 diff --git a/core/modules/language/src/AdminLanguageRender.php b/core/modules/language/src/AdminLanguageRender.php
 new file mode 100644
-index 00000000000..680863026c6
+index 00000000000..696bf1edd5b
 --- /dev/null
 +++ b/core/modules/language/src/AdminLanguageRender.php
-@@ -0,0 +1,109 @@
+@@ -0,0 +1,139 @@
 +<?php
 +
 +namespace Drupal\language;
@@ -762,8 +741,8 @@ index 00000000000..680863026c6
 +use Drupal\Core\Language\LanguageManagerInterface;
 +use Drupal\Core\Render\Markup;
 +use Drupal\Core\Security\Attribute\TrustedCallback;
-+use Drupal\Core\Session\AccountInterface;
 +use Drupal\Core\StringTranslation\TranslationManager;
++use Symfony\Component\DependencyInjection\Attribute\Autowire;
 +
 +/**
 + * Provides a render element in the user's preferred admin language.
@@ -777,13 +756,10 @@ index 00000000000..680863026c6
 +   *   The language manager.
 +   * @param \Drupal\Core\StringTranslation\TranslationManager $translationManager
 +   *   The translation manager.
-+   * @param \Drupal\Core\Session\AccountInterface $currentUser
-+   *   The current user.
 +   */
 +  public function __construct(
 +    protected LanguageManagerInterface $languageManager,
-+    protected TranslationManager $translationManager,
-+    protected AccountInterface $currentUser,
++    #[Autowire(service: 'string_translation')] protected TranslationManager $translationManager,
 +  ) {}
 +
 +  /**
@@ -821,13 +797,9 @@ index 00000000000..680863026c6
 +   */
 +  #[TrustedCallback]
 +  public function switchToUserAdminLanguage(array $element): array {
-+    $userAdminLangcode = $this->currentUser->getPreferredAdminLangcode(FALSE);
-+
-+    if ($userAdminLangcode && ($this->currentUser->hasPermission('access administration pages') || $this->currentUser->hasPermission('view the administration theme'))) {
-+      $element['#original_langcode'] = $this->languageManager->getCurrentLanguage()->getId();
-+      $this->languageManager->setCurrentLanguage($this->languageManager->getLanguage($userAdminLangcode));
-+      $this->translationManager->setDefaultLangcode($userAdminLangcode);
-+      $this->languageManager->setConfigOverrideLanguage($this->languageManager->getLanguage($userAdminLangcode));
++    $originalLangcode = $this->switchToAdminLanguage();
++    if ($originalLangcode !== NULL) {
++      $element['#original_langcode'] = $originalLangcode;
 +    }
 +
 +    // Add the correct cache contexts in.
@@ -852,22 +824,59 @@ index 00000000000..680863026c6
 +  #[TrustedCallback]
 +  public function restoreLanguage(Markup $content, array $element): Markup {
 +    if (isset($element['#original_langcode'])) {
-+      $langcode = $element['#original_langcode'];
-+      $language = $this->languageManager->getLanguage($langcode);
-+      $this->languageManager->setCurrentLanguage($language);
-+      $this->translationManager->setDefaultLangcode($langcode);
-+      $this->languageManager->setConfigOverrideLanguage($language);
++      $this->restoreAdminLanguage($element['#original_langcode']);
 +    }
 +
 +    return $content;
 +  }
 +
++  /**
++   * Switches to the current user's preferred admin language, if applicable.
++   *
++   * No switch happens if the admin language negotiation method is disabled,
++   * the user has no admin language preference, or the user does not have
++   * access to the administration pages.
++   *
++   * @return string|null
++   *   The langcode that was active before switching, or NULL if no switch
++   *   took place.
++   */
++  public function switchToAdminLanguage(): ?string {
++    if (!$this->languageManager instanceof ConfigurableLanguageManagerInterface) {
++      return NULL;
++    }
++    $userAdminLangcode = $this->languageManager->getAdminLangcode();
++    if ($userAdminLangcode === '') {
++      return NULL;
++    }
++
++    $originalLangcode = $this->languageManager->getCurrentLanguage()->getId();
++    $adminLanguage = $this->languageManager->getLanguage($userAdminLangcode);
++    $this->languageManager->setCurrentLanguage($adminLanguage);
++    $this->translationManager->setDefaultLangcode($userAdminLangcode);
++    $this->languageManager->setConfigOverrideLanguage($adminLanguage);
++    return $originalLangcode;
++  }
++
++  /**
++   * Restores the language that was active before switchToAdminLanguage().
++   *
++   * @param string $langcode
++   *   The langcode returned by switchToAdminLanguage().
++   */
++  public function restoreAdminLanguage(string $langcode): void {
++    $language = $this->languageManager->getLanguage($langcode);
++    $this->languageManager->setCurrentLanguage($language);
++    $this->translationManager->setDefaultLangcode($langcode);
++    $this->languageManager->setConfigOverrideLanguage($language);
++  }
++
 +}
 diff --git a/core/modules/language/src/ConfigurableLanguageManager.php b/core/modules/language/src/ConfigurableLanguageManager.php
-index b76b32ace4f..984dc2d01d8 100644
+index b76b32ace4f..879b738238a 100644
 --- a/core/modules/language/src/ConfigurableLanguageManager.php
 +++ b/core/modules/language/src/ConfigurableLanguageManager.php
-@@ -246,6 +246,13 @@ public function getCurrentLanguage($type = LanguageInterface::TYPE_INTERFACE) {
+@@ -246,6 +246,20 @@ public function getCurrentLanguage($type = LanguageInterface::TYPE_INTERFACE) {
      return $this->negotiatedLanguages[$type];
    }
  
@@ -878,9 +887,38 @@ index b76b32ace4f..984dc2d01d8 100644
 +    $this->negotiatedLanguages[$type] = $language;
 +  }
 +
++  /**
++   * {@inheritdoc}
++   */
++  public function getAdminLangcode(): string {
++    return $this->negotiator ? $this->negotiator->getAdminLangcode() : '';
++  }
++
    /**
     * {@inheritdoc}
     */
+diff --git a/core/modules/language/src/ConfigurableLanguageManagerInterface.php b/core/modules/language/src/ConfigurableLanguageManagerInterface.php
+index 41a1681f3f2..a2d6689e691 100644
+--- a/core/modules/language/src/ConfigurableLanguageManagerInterface.php
++++ b/core/modules/language/src/ConfigurableLanguageManagerInterface.php
+@@ -103,4 +103,17 @@ public function getStandardLanguageListWithoutConfigured();
+    */
+   public function getNegotiatedLanguageMethod($type = LanguageInterface::TYPE_INTERFACE);
+ 
++  /**
++   * Gets the langcode the current user administers the site in.
++   *
++   * The langcode is provided by the enabled interface language negotiation
++   * methods implementing \Drupal\language\AdminLanguageNegotiationInterface,
++   * asked in order of the method priority.
++   *
++   * @return string
++   *   The administration langcode, or an empty string when no enabled
++   *   negotiation method provides one for the current user.
++   */
++  public function getAdminLangcode(): string;
++
+ }
 diff --git a/core/modules/language/src/Hook/LanguageHooks.php b/core/modules/language/src/Hook/LanguageHooks.php
 index 9f521270194..074ddd23aed 100644
 --- a/core/modules/language/src/Hook/LanguageHooks.php
@@ -908,6 +946,73 @@ index 9f521270194..074ddd23aed 100644
      }
    }
  
+diff --git a/core/modules/language/src/LanguageNegotiator.php b/core/modules/language/src/LanguageNegotiator.php
+index ad2977a245a..13f9fddd67f 100644
+--- a/core/modules/language/src/LanguageNegotiator.php
++++ b/core/modules/language/src/LanguageNegotiator.php
+@@ -5,6 +5,7 @@
+ use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+ use Drupal\Component\Plugin\PluginManagerInterface;
+ use Drupal\Core\Config\ConfigFactoryInterface;
++use Drupal\Core\Language\LanguageInterface;
+ use Drupal\Core\Logger\LoggerChannelTrait;
+ use Drupal\Core\Session\AccountInterface;
+ use Drupal\Core\Site\Settings;
+@@ -239,6 +240,30 @@ public function getPrimaryNegotiationMethod($type) {
+     return empty($enabled_methods) ? LanguageNegotiatorInterface::METHOD_ID : key($enabled_methods);
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getAdminLangcode(): string {
++    // The current user is set when the request language is negotiated. When
++    // it is missing, for example because the site is not multilingual, there
++    // is no administration language to resolve.
++    if (!$this->currentUser) {
++      return '';
++    }
++    foreach ($this->getEnabledNegotiators(LanguageInterface::TYPE_INTERFACE) as $method_id => $info) {
++      try {
++        $method = $this->getNegotiationMethodInstance($method_id);
++      }
++      catch (PluginNotFoundException) {
++        continue;
++      }
++      if ($method instanceof AdminLanguageNegotiationInterface && ($langcode = $method->getAdminLangcode()) !== '') {
++        return $langcode;
++      }
++    }
++    return '';
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+diff --git a/core/modules/language/src/LanguageNegotiatorInterface.php b/core/modules/language/src/LanguageNegotiatorInterface.php
+index b0ca173d3db..d780e9bbcad 100644
+--- a/core/modules/language/src/LanguageNegotiatorInterface.php
++++ b/core/modules/language/src/LanguageNegotiatorInterface.php
+@@ -179,6 +179,19 @@ public function getPrimaryNegotiationMethod($type);
+    */
+   public function isNegotiationMethodEnabled($method_id, $type = NULL);
+ 
++  /**
++   * Gets the langcode the current user administers the site in.
++   *
++   * The enabled interface language negotiation methods implementing
++   * \Drupal\language\AdminLanguageNegotiationInterface are asked in order of
++   * their priority, mirroring interface language negotiation.
++   *
++   * @return string
++   *   The administration langcode, or an empty string when no enabled
++   *   negotiation method provides one for the current user.
++   */
++  public function getAdminLangcode(): string;
++
+   /**
+    * Saves a list of language negotiation methods for a language type.
+    *
 diff --git a/core/modules/navigation/src/NavigationRenderer.php b/core/modules/navigation/src/NavigationRenderer.php
 index 0d8b185fdae..0f9eb9dc522 100644
 --- a/core/modules/navigation/src/NavigationRenderer.php
@@ -1402,8 +1507,63 @@ index 7833619b031..3a8b13d9486 100644
    }
  
  }
+diff --git a/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php b/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php
+index f9640b39679..bca7ec85628 100644
+--- a/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php
++++ b/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php
+@@ -8,6 +8,7 @@
+ use Drupal\Core\Routing\AdminContext;
+ use Drupal\Core\Routing\StackedRouteMatchInterface;
+ use Drupal\Core\StringTranslation\TranslatableMarkup;
++use Drupal\language\AdminLanguageNegotiationInterface;
+ use Drupal\language\Attribute\LanguageNegotiation;
+ use Drupal\language\LanguageNegotiationMethodBase;
+ use Drupal\Core\Routing\RouteObjectInterface;
+@@ -27,7 +28,7 @@
+   weight: -10,
+   description: new TranslatableMarkup('Account administration pages language setting.')
+ )]
+-class LanguageNegotiationUserAdmin extends LanguageNegotiationMethodBase implements ContainerFactoryPluginInterface {
++class LanguageNegotiationUserAdmin extends LanguageNegotiationMethodBase implements ContainerFactoryPluginInterface, AdminLanguageNegotiationInterface {
+ 
+   /**
+    * The language negotiation method id.
+@@ -100,15 +101,26 @@ public static function create(ContainerInterface $container, array $configuratio
+    * {@inheritdoc}
+    */
+   public function getLangcode(?Request $request = NULL) {
+-    $langcode = NULL;
+-
+-    // User preference (only for administrators).
+-    if (($this->currentUser->hasPermission('access administration pages') || $this->currentUser->hasPermission('view the administration theme')) && ($preferred_admin_langcode = $this->currentUser->getPreferredAdminLangcode(FALSE)) && $this->isAdminPath($request)) {
+-      $langcode = $preferred_admin_langcode;
++    // The administration language only applies on administration paths.
++    // Resolve the langcode first: when the route is not available yet,
++    // isAdminPath() runs inbound path processing and routes the request,
++    // which is too expensive to do for users without an administration
++    // language.
++    if (($langcode = $this->getAdminLangcode()) !== '' && $this->isAdminPath($request)) {
++      return $langcode;
+     }
++    return NULL;
++  }
+ 
+-    // Not an admin, no admin language preference or not on an admin path.
+-    return $langcode;
++  /**
++   * {@inheritdoc}
++   */
++  public function getAdminLangcode(): string {
++    // Only administrators have an administration language.
++    if (!$this->currentUser->hasPermission('access administration pages') && !$this->currentUser->hasPermission('view the administration theme')) {
++      return '';
++    }
++    return $this->currentUser->getPreferredAdminLangcode(FALSE);
+   }
+ 
+   /**
 diff --git a/core/modules/user/src/ToolbarLinkBuilder.php b/core/modules/user/src/ToolbarLinkBuilder.php
-index 8d989b339e5..9166d96a03d 100644
+index 8d989b339e5..d964f7e633c 100644
 --- a/core/modules/user/src/ToolbarLinkBuilder.php
 +++ b/core/modules/user/src/ToolbarLinkBuilder.php
 @@ -2,10 +2,12 @@
@@ -1419,7 +1579,7 @@ index 8d989b339e5..9166d96a03d 100644
  
  /**
   * ToolbarLinkBuilder fills out the placeholders generated in user_toolbar().
-@@ -14,21 +16,22 @@ class ToolbarLinkBuilder implements TrustedCallbackInterface {
+@@ -14,22 +16,18 @@ class ToolbarLinkBuilder implements TrustedCallbackInterface {
  
    use StringTranslationTrait;
  
@@ -1440,18 +1600,15 @@ index 8d989b339e5..9166d96a03d 100644
     */
 -  public function __construct(AccountProxyInterface $account) {
 -    $this->account = $account;
+-  }
 +  public function __construct(
 +    protected AccountProxyInterface $account,
-+    protected ?ModuleHandlerInterface $moduleHandler = NULL,
-+  ) {
-+    if ($this->moduleHandler === NULL) {
-+      @trigger_error('Calling ' . __METHOD__ . ' without the $moduleHandler argument is deprecated in drupal:11.4.0 and it will be required in drupal:12.0.0. See https://www.drupal.org/node/3455774', E_USER_DEPRECATED);
-+      $this->moduleHandler = \Drupal::service('module_handler');
-+    }
-   }
++    protected ModuleHandlerInterface $moduleHandler,
++  ) {}
  
    /**
-@@ -69,6 +72,11 @@ public function renderToolbarLinks() {
+    * Lazy builder callback for rendering toolbar links.
+@@ -69,6 +67,11 @@ public function renderToolbarLinks() {
        ],
      ];
  
@@ -1486,7 +1643,7 @@ index 96a22070f49..d70e8639842 100644
      $this->assertSame($expected, $toolbar_link_builder->renderDisplayName());
    }
 diff --git a/core/modules/user/user.services.yml b/core/modules/user/user.services.yml
-index 78e4b281498..77f89d9faa6 100644
+index 78e4b281498..742893f94a5 100644
 --- a/core/modules/user/user.services.yml
 +++ b/core/modules/user/user.services.yml
 @@ -61,7 +61,7 @@ services:
@@ -1494,7 +1651,7 @@ index 78e4b281498..77f89d9faa6 100644
    user.toolbar_link_builder:
      class: Drupal\user\ToolbarLinkBuilder
 -    arguments: ['@current_user']
-+    arguments: ['@current_user', '@module_handler']
++    autowire: true
    Drupal\user\ToolbarLinkBuilder: '@user.toolbar_link_builder'
    user.flood_control:
      class: Drupal\user\UserFloodControl
@@ -1525,7 +1682,7 @@ index 838f4e46457..4e5e5ad18fc 100644
      $this->assertNotEmpty($contextual_container);
  
 diff --git a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
-index 0abe0777c36..11e38a83be0 100644
+index 03b3a93fa77..1c64b856dbf 100644
 --- a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
 +++ b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
 @@ -142,7 +142,7 @@ protected function doTestNodePageAdministrator(): void {
@@ -1538,137 +1695,90 @@ index 0abe0777c36..11e38a83be0 100644
        'CacheTagInvalidationCount' => 0,
        'CacheTagLookupQueryCount' => 28,
 diff --git a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php
-index b920f163e74..75ba84127e4 100644
+index dfd84006313..6981d45e0d4 100644
 --- a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php
 +++ b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php
-@@ -53,14 +53,14 @@ protected function testFrontPageColdCache(): void {
+@@ -53,8 +53,13 @@ protected function testFrontPageColdCache(): void {
  
      $expected = [
-       'QueryCount' => 184,
--      'CacheGetCount' => 237,
--      'CacheSetCount' => 241,
+       'QueryCount' => 190,
++<<<<<<< ours
+       'CacheGetCount' => 237,
+       'CacheSetCount' => 241,
++=======
 +      'CacheGetCount' => 232,
 +      'CacheSetCount' => 251,
++>>>>>>> theirs
        'CacheDeleteCount' => 0,
--      'CacheTagLookupQueryCount' => 24,
-+      'CacheTagLookupQueryCount' => 25,
+       'CacheTagLookupQueryCount' => 24,
        'CacheTagInvalidationCount' => 0,
--      'ScriptCount' => 1,
-+      'ScriptCount' => 3,
-       'ScriptBytes' => 12000,
--      'StylesheetCount' => 2,
-+      'StylesheetCount' => 6,
-       'StylesheetBytes' => 39150,
-     ];
-     $this->assertMetrics($expected, $performance_data);
-@@ -96,9 +96,9 @@ protected function testFrontPageHotCache(): void {
-       'CacheDeleteCount' => 0,
-       'CacheTagInvalidationCount' => 0,
-       'CacheTagLookupQueryCount' => 1,
--      'ScriptCount' => 1,
-+      'ScriptCount' => 3,
-       'ScriptBytes' => 11850,
--      'StylesheetCount' => 2,
-+      'StylesheetCount' => 6,
-       'StylesheetBytes' => 38850,
-     ];
-     $this->assertMetrics($expected, $performance_data);
-@@ -123,14 +123,14 @@ protected function testFrontPageCoolCache(): void {
+@@ -123,8 +128,13 @@ protected function testFrontPageCoolCache(): void {
  
      $expected = [
-       'QueryCount' => 59,
--      'CacheGetCount' => 174,
--      'CacheSetCount' => 75,
+       'QueryCount' => 65,
++<<<<<<< ours
+       'CacheGetCount' => 174,
+       'CacheSetCount' => 75,
++=======
 +      'CacheGetCount' => 171,
 +      'CacheSetCount' => 84,
++>>>>>>> theirs
        'CacheDeleteCount' => 0,
        'CacheTagInvalidationCount' => 0,
        'CacheTagLookupQueryCount' => 19,
--      'ScriptCount' => 1,
-+      'ScriptCount' => 3,
-       'ScriptBytes' => 12000,
--      'StylesheetCount' => 2,
-+      'StylesheetCount' => 6,
-       'StylesheetBytes' => 38850,
-     ];
-     $this->assertMetrics($expected, $performance_data);
 diff --git a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php
-index 3cc2924bec6..496b3c8bb6c 100644
+index 4023a8ec92e..6fbf89baca5 100644
 --- a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php
 +++ b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php
-@@ -56,14 +56,14 @@ protected function testNodePageColdCache(): void {
+@@ -56,8 +56,13 @@ protected function testNodePageColdCache(): void {
  
      $expected = [
-       'QueryCount' => 201,
--      'CacheGetCount' => 229,
--      'CacheSetCount' => 227,
+       'QueryCount' => 210,
++<<<<<<< ours
+       'CacheGetCount' => 229,
+       'CacheSetCount' => 227,
++=======
 +      'CacheGetCount' => 224,
 +      'CacheSetCount' => 234,
++>>>>>>> theirs
        'CacheDeleteCount' => 0,
--      'CacheTagLookupQueryCount' => 23,
-+      'CacheTagLookupQueryCount' => 24,
+       'CacheTagLookupQueryCount' => 23,
        'CacheTagInvalidationCount' => 0,
--      'ScriptCount' => 1,
-+      'ScriptCount' => 3,
-       'ScriptBytes' => 12000,
--      'StylesheetCount' => 2,
-+      'StylesheetCount' => 6,
-       'StylesheetBytes' => 40800,
-     ];
-     $this->assertMetrics($expected, $performance_data);
-@@ -92,9 +92,9 @@ protected function testNodePageHotCache(): void {
-       'CacheDeleteCount' => 0,
-       'CacheTagInvalidationCount' => 0,
-       'CacheTagLookupQueryCount' => 1,
--      'ScriptCount' => 1,
-+      'ScriptCount' => 3,
-       'ScriptBytes' => 12000,
--      'StylesheetCount' => 2,
-+      'StylesheetCount' => 6,
-       'StylesheetBytes' => 40800,
-     ];
-     $this->assertMetrics($expected, $performance_data);
-@@ -119,14 +119,14 @@ protected function testNodePageCoolCache(): void {
+@@ -119,8 +124,13 @@ protected function testNodePageCoolCache(): void {
  
      $expected = [
-       'QueryCount' => 71,
--      'CacheGetCount' => 172,
--      'CacheSetCount' => 59,
+       'QueryCount' => 80,
++<<<<<<< ours
+       'CacheGetCount' => 172,
+       'CacheSetCount' => 59,
++=======
 +      'CacheGetCount' => 169,
 +      'CacheSetCount' => 64,
++>>>>>>> theirs
        'CacheDeleteCount' => 0,
        'CacheTagInvalidationCount' => 0,
        'CacheTagLookupQueryCount' => 19,
--      'ScriptCount' => 1,
-+      'ScriptCount' => 3,
-       'ScriptBytes' => 12000,
--      'StylesheetCount' => 2,
-+      'StylesheetCount' => 6,
-       'StylesheetBytes' => 40800,
-     ];
-     $this->assertMetrics($expected, $performance_data);
-@@ -210,14 +210,13 @@ protected function testNodePageWarmCache(): void {
-       'SELECT "content_moderation_state_field_revision".*, "content_moderation_state_field_revision"."langcode" AS "content_moderation_state_field_revision__langcode" FROM "content_moderation_state_field_revision" "content_moderation_state_field_revision" WHERE "content_moderation_state_field_revision"."revision_id" IN ("76")',
-       'INSERT INTO "semaphore" ("name", "value", "expire") VALUES ("theme_registry:runtime:umami:Drupal\Core\Cache\CacheCollector", "LOCK_ID", "EXPIRE")',
-       'DELETE FROM "semaphore"  WHERE ("name" = "theme_registry:runtime:umami:Drupal\Core\Cache\CacheCollector") AND ("value" = "LOCK_ID")',
--
-     ];
-     $recorded_queries = $performance_data->getQueries();
-     $this->assertSame($expected_queries, $recorded_queries);
+@@ -227,7 +237,11 @@ protected function testNodePageWarmCache(): void {
  
      $expected = [
-       'QueryCount' => 56,
--      'CacheGetCount' => 167,
+       'QueryCount' => 65,
++<<<<<<< ours
+       'CacheGetCount' => 167,
++=======
 +      'CacheGetCount' => 164,
++>>>>>>> theirs
        'CacheGetCountByBin' => [
          'page' => 1,
          'config' => 34,
-@@ -227,10 +226,10 @@ protected function testNodePageWarmCache(): void {
+@@ -237,10 +251,14 @@ protected function testNodePageWarmCache(): void {
          'entity' => 21,
          'dynamic_page_cache' => 1,
          'routes' => 5,
--        'render' => 17,
++<<<<<<< ours
+         'render' => 17,
++=======
 +        'render' => 14,
++>>>>>>> theirs
          'default' => 3,
        ],
 -      'CacheSetCount' => 41,
@@ -1676,36 +1786,8 @@ index 3cc2924bec6..496b3c8bb6c 100644
        'CacheDeleteCount' => 0,
        'CacheTagInvalidationCount' => 0,
        'CacheTagLookupQueryCount' => 19,
-@@ -278,7 +277,6 @@ protected function testNodePageWarmCache(): void {
-         ],
-         [
-           'config:block_list',
--          'config:system.site',
-         ],
-         [
-           'block_content:1',
-@@ -288,6 +286,7 @@ protected function testNodePageWarmCache(): void {
-         ['config:system.menu.footer'],
-         [
-           'config:system.menu.account',
-+          'config:system.site',
-           'block_content_view',
-           'config:image.style.medium_8_7',
-           'file:37',
-@@ -316,9 +315,9 @@ protected function testNodePageWarmCache(): void {
-         ['config:workflows.workflow.editorial'],
-         ['config:user.role.anonymous'],
-       ],
--      'ScriptCount' => 1,
-+      'ScriptCount' => 3,
-       'ScriptBytes' => 12000,
--      'StylesheetCount' => 2,
-+      'StylesheetCount' => 6,
-       'StylesheetBytes' => 40500,
-     ];
-     $this->assertMetrics($expected, $performance_data);
 diff --git a/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php b/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php
-index 7ffa3a2e24f..57d979e3148 100644
+index 5935cec5c1b..0af08fb508f 100644
 --- a/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php
 +++ b/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php
 @@ -146,7 +146,7 @@ protected function testAnonymous(): void {
@@ -1717,33 +1799,34 @@ index 7ffa3a2e24f..57d979e3148 100644
        'CacheDeleteCount' => 0,
        'CacheTagInvalidationCount' => 0,
        'CacheTagLookupQueryCount' => 9,
-@@ -167,15 +167,12 @@ protected function testAnonymous(): void {
+@@ -167,11 +167,16 @@ protected function testAnonymous(): void {
          ['config:views.view.frontpage', 'node:1', 'node_list'],
          ['rendered', 'user:0', 'user_view'],
          ['config:filter.format.restricted_html', 'node_view'],
--        [
--          'config:block_list',
--          'config:system.site',
--        ],
--        ['config:system.menu.account'],
++<<<<<<< ours
+         [
+           'config:block_list',
+           'config:system.site',
+         ],
+         ['config:system.menu.account'],
++=======
 +        ['config:block_list'],
 +        ['config:system.menu.account', 'config:system.site'],
++>>>>>>> theirs
          ['config:system.menu.main'],
          ['config:user.role.anonymous'],
        ],
--      'StylesheetCount' => 1,
-+      'StylesheetCount' => 2,
-       'StylesheetBytes' => 1450,
-     ];
-     $this->assertMetrics($expected, $performance_data);
-@@ -208,11 +205,11 @@ protected function testAnonymous(): void {
+@@ -208,11 +213,16 @@ protected function testAnonymous(): void {
      $this->assertSame($expected_queries, $recorded_queries);
      $expected = [
        'QueryCount' => 8,
--      'CacheGetCount' => 69,
--      'CacheSetCount' => 17,
++<<<<<<< ours
+       'CacheGetCount' => 69,
+       'CacheSetCount' => 17,
++=======
 +      'CacheGetCount' => 70,
 +      'CacheSetCount' => 18,
++>>>>>>> theirs
        'CacheDeleteCount' => 0,
        'CacheTagInvalidationCount' => 0,
 -      'CacheTagLookupQueryCount' => 7,
@@ -1751,33 +1834,34 @@ index 7ffa3a2e24f..57d979e3148 100644
        'CacheTagGroupedLookups' => [
          [
            'route_match',
-@@ -228,16 +225,16 @@ protected function testAnonymous(): void {
-         ],
+@@ -229,11 +239,18 @@ protected function testAnonymous(): void {
          ['rendered', 'user:0', 'user_view'],
          ['config:filter.format.restricted_html', 'node:1', 'node_view'],
-+        ['config:block_list'],
          [
--          'config:block_list',
-+          'config:system.menu.account',
-+          'config:system.menu.main',
++<<<<<<< ours
+           'config:block_list',
            'config:system.site',
          ],
--        ['config:system.menu.main'],
--        ['config:system.menu.account'],
+         ['config:system.menu.main'],
+         ['config:system.menu.account'],
++=======
++          'config:system.menu.account',
++          'config:system.menu.main',
++          'config:system.site',
++        ],
++>>>>>>> theirs
          ['config:user.role.anonymous'],
        ],
        'StylesheetCount' => 1,
--      'StylesheetBytes' => 1500,
-+      'StylesheetBytes' => 1000,
-     ];
-     $this->assertMetrics($expected, $performance_data);
- 
-@@ -265,10 +262,10 @@ protected function testAnonymous(): void {
+@@ -265,10 +282,14 @@ protected function testAnonymous(): void {
      $expected = [
        'QueryCount' => 10,
        'CacheGetCount' => 58,
--      'CacheSetCount' => 17,
++<<<<<<< ours
+       'CacheSetCount' => 17,
++=======
 +      'CacheSetCount' => 19,
++>>>>>>> theirs
        'CacheDeleteCount' => 0,
        'CacheTagInvalidationCount' => 0,
 -      'CacheTagLookupQueryCount' => 6,
@@ -1785,54 +1869,19 @@ index 7ffa3a2e24f..57d979e3148 100644
        'StylesheetCount' => 1,
        'StylesheetBytes' => 1150,
      ];
-@@ -363,7 +360,7 @@ protected function testCacheInvalidation(): void {
-         ],
-         ['config:core.extension', 'views_data'],
-       ],
--      'StylesheetCount' => 1,
-+      'StylesheetCount' => 2,
-       'StylesheetBytes' => 1300,
-     ];
-     $this->assertMetrics($expected, $performance_data);
-@@ -417,15 +414,15 @@ protected function testLogin(): void {
-     $this->assertSame($expected_queries, $recorded_queries);
-     $expected = [
-       'ScriptBytes' => 6500,
--      'ScriptCount' => 1,
-+      'ScriptCount' => 2,
+@@ -421,7 +442,11 @@ protected function testLogin(): void {
        'StylesheetBytes' => 1429,
        'StylesheetCount' => 1,
        'QueryCount' => 15,
--      'CacheGetCount' => 73,
++<<<<<<< ours
+       'CacheGetCount' => 73,
++=======
 +      'CacheGetCount' => 74,
++>>>>>>> theirs
        'CacheSetCount' => 1,
        'CacheDeleteCount' => 1,
        'CacheTagInvalidationCount' => 0,
--      'CacheTagLookupQueryCount' => 6,
-+      'CacheTagLookupQueryCount' => 7,
-       'CacheTagGroupedLookups' => [
-         // Form submission and login.
-         [
-@@ -455,13 +452,12 @@ protected function testLogin(): void {
-         ],
-         ['rendered', 'user:2', 'user_view'],
-         [
--          'config:block_list',
--          'config:system.site',
--        ],
--        ['config:system.menu.account', 'config:system.menu.main'],
--        [
--          'config:user.role.authenticated',
-+          'config:system.menu.account',
-+          'config:system.menu.main',
-         ],
-+        ['config:block_list'],
-+        ['config:system.site'],
-+        ['config:user.role.authenticated'],
-       ],
-     ];
-     $this->assertMetrics($expected, $performance_data);
-@@ -511,11 +507,11 @@ protected function testLoginBlock(): void {
+@@ -511,7 +536,7 @@ protected function testLoginBlock(): void {
      $this->assertSame($expected_queries, $recorded_queries);
      $expected = [
        'QueryCount' => 15,
@@ -1841,22 +1890,17 @@ index 7ffa3a2e24f..57d979e3148 100644
        'CacheSetCount' => 1,
        'CacheDeleteCount' => 1,
        'CacheTagInvalidationCount' => 0,
--      'CacheTagLookupQueryCount' => 10,
-+      'CacheTagLookupQueryCount' => 11,
-     ];
-     $this->assertMetrics($expected, $performance_data);
-   }
-@@ -577,10 +573,10 @@ protected function testAdmin(): void {
+@@ -577,8 +602,13 @@ protected function testAdmin(): void {
        ],
        'CacheDeleteCount' => 0,
        'CacheTagInvalidationCount' => 0,
--      'CacheTagLookupQueryCount' => 6,
--      'ScriptCount' => 3,
++<<<<<<< ours
+       'CacheTagLookupQueryCount' => 6,
+       'ScriptCount' => 3,
++=======
 +      'CacheTagLookupQueryCount' => 7,
 +      'ScriptCount' => 9,
++>>>>>>> theirs
        'ScriptBytes' => 141352,
--      'StylesheetCount' => 2,
-+      'StylesheetCount' => 3,
+       'StylesheetCount' => 2,
        'StylesheetBytes' => 42533,
-     ];
-     $this->assertMetrics($expected, $performance_data);
