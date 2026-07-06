@@ -6,6 +6,7 @@ namespace Drupal\Tests\hdbt_admin_tools\Kernel\Controller;
 
 use Drupal\Core\Url;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\user\Entity\User;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 
@@ -55,6 +56,7 @@ class ListControllerTest extends KernelTestBase {
 
     // Test as user without proper permissions.
     $user = $this->createUser([]);
+    $this->assertInstanceOf(User::class, $user);
     $this->setCurrentUser($user);
 
     foreach ($routes as $route) {
@@ -68,6 +70,7 @@ class ListControllerTest extends KernelTestBase {
       'access administration pages',
       'access taxonomy overview',
     ]);
+    $this->assertInstanceOf(User::class, $user);
     $this->setCurrentUser($user);
 
     foreach ($routes as $route) {

@@ -32,6 +32,15 @@ final class LocalEntitiesTest extends BrowserTestBase {
 
   /**
    * {@inheritdoc}
+   *
+   * The default 'testing' profile ships an optional 'node.body' field storage
+   * of type 'text_long' (since Drupal 11.4), which collides with the
+   * 'text_with_summary' in field.body.storage shipped by Platform config.
+   */
+  protected $profile = 'minimal';
+
+  /**
+   * {@inheritdoc}
    */
   protected $defaultTheme = 'stark';
 

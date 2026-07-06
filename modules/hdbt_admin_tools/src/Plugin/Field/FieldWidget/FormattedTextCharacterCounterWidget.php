@@ -16,6 +16,7 @@ use Drupal\text\Plugin\Field\FieldWidget\TextareaWidget;
  *   label = @Translation("Text area (formatted text, character counter)"),
  *   field_types = {
  *     "text_long",
+ *     "text_with_summary",
  *   }
  * )
  */
@@ -31,6 +32,7 @@ class FormattedTextCharacterCounterWidget extends TextareaWidget {
     $element['#character_counter'] = TRUE;
     $element['#counter_step'] = $this->getSetting('counter_step');
     $element['#counter_total'] = $this->getSetting('counter_total');
+    $element['#counter_max'] = $this->getSetting('counter_max');
     return $element;
   }
 

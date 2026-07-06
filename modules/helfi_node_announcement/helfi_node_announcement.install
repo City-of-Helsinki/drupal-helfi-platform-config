@@ -8,24 +8,43 @@
 declare(strict_types=1);
 
 /**
- * Implements hook_update().
+ * UHF-13060 Update description texts for TPR related fields.
  */
-function helfi_node_announcement_update_9001() : void {
+function helfi_node_announcement_update_9005() : void {
   if (
-    Drupal::moduleHandler()->moduleExists('external_entities') &&
-    Drupal::moduleHandler()->moduleExists('helfi_node_announcement')
+    !Drupal::moduleHandler()->moduleExists('helfi_tpr_config') ||
+    !Drupal::moduleHandler()->moduleExists('helfi_tpr')
   ) {
-    Drupal::service('module_installer')->install([
-      'helfi_global_announcement',
-    ]);
+    return;
   }
-}
 
-/**
- * UHF-10159 Convert the announcement title field to a translatable field.
- */
-function helfi_node_announcement_update_9004() : void {
-  // Re-import configuration.
-  \Drupal::service('helfi_platform_config.config_update_helper')
-    ->update('helfi_node_announcement');
+  $configurations = [
+    'field.field.node.announcement.field_announcement_unit_pages' => [
+      'en' => 'Select the TPR-unit pages where the announcement will be displayed. Enter part of the page title and select the correct page from the suggestions.',
+      'fi' => 'Valitse toimipistesivut, joilla ilmoitus näytetään. Kirjoita osa sivun otsikosta ja valitse oikea sivu ehdotuksista.',
+      'sv' => 'Välj de verksamhetsställessidor där meddelandet ska visas. Skriv en del av sidans titel och välj rätt sida bland förslagen.',
+    ],
+    'field.field.node.announcement.field_announcement_service_pages' => [
+      'en' => 'Select the TPR-service pages where the announcement will be displayed. Enter part of the page title and select the correct page from the suggestions.',
+      'fi' => 'Valitse palvelusivut, joilla ilmoitus näytetään. Kirjoita osa sivun otsikosta ja valitse oikea sivu ehdotuksista.',
+      'sv' => 'Välj de tjänstesidor där meddelandet ska visas. Skriv en del av sidans titel och välj rätt sida bland förslagen.',
+    ],
+  ];
+
+  $config_factory = Drupal::configFactory();
+  /** @var \Drupal\language\ConfigurableLanguageManagerInterface $language_manager */
+  $language_manager = Drupal::languageManager();
+
+  foreach ($configurations as $config_name => $config_value) {
+    foreach ($config_value as $langcode => $text) {
+      if ($langcode === 'en') {
+        $original_config = $config_factory->getEditable($config_name);
+        $original_config->set('description', $text)->save();
+      }
+      else {
+        $config_translation = $language_manager->getLanguageConfigOverride($langcode, $config_name);
+        $config_translation->set('description', $text)->save();
+      }
+    }
+  }
 }

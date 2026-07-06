@@ -12,7 +12,7 @@ field_name: field_announcement_content_pages
 entity_type: node
 bundle: announcement
 label: 'Show on content pages'
-description: ''
+description: 'Select the content pages where the announcement will be displayed. Enter part of the page title and select the correct page from the suggestions.'
 required: false
 translatable: false
 default_value: {  }
