@@ -1259,11 +1259,6 @@ parameters:
 			path: modules/helfi_csp/src/CspLogService.php
 
 		-
-			message: "#^Parameter \\#1 \\$mode of method Drupal\\\\Core\\\\Database\\\\StatementInterface\\:\\:fetchAll\\(\\) expects Drupal\\\\Core\\\\Database\\\\Statement\\\\FetchAs\\|null, int given\\.$#"
-			count: 1
-			path: modules/helfi_csp/src/CspLogService.php
-
-		-
 			message: "#^Function helfi_etusivu_entities_install\\(\\) has parameter \\$is_syncing with no type specified\\.$#"
 			count: 1
 			path: modules/helfi_etusivu_entities/helfi_etusivu_entities.install
