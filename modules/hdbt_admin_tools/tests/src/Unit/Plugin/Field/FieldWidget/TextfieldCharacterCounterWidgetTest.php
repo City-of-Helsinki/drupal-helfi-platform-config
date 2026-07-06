@@ -21,7 +21,7 @@ class TextfieldCharacterCounterWidgetTest extends UnitTestCase {
   /**
    * Creates a widget instance with the given settings.
    *
-   * @param array $settings
+   * @param array<string, mixed> $settings
    *   The widget settings.
    *
    * @return \Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget\TextfieldCharacterCounterWidget
@@ -39,7 +39,7 @@ class TextfieldCharacterCounterWidgetTest extends UnitTestCase {
   /**
    * Builds a field item list with a single saved value.
    *
-   * @return \Drupal\Core\Field\FieldItemListInterface
+   * @return \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface>
    *   The field item list double.
    */
   private function makeItems(string $value = ''): FieldItemListInterface {
