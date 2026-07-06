@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_users\Plugin\Block;
 
 use Drupal\Core\Menu\Plugin\Block\LocalTasksBlock as CoreLocalTasksBlock;
+use Drupal\Core\Session\AccountProxyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\user\UserInterface;
 
@@ -16,9 +17,9 @@ class LocalTasksBlock extends CoreLocalTasksBlock {
   /**
    * The current user service.
    *
-   * @var \Drupal\user\UserInterface
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
-  protected UserInterface $currentUser;
+  protected AccountProxyInterface $currentUser;
 
   /**
    * {@inheritdoc}

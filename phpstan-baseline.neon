@@ -4773,11 +4773,6 @@ parameters:
 			path: modules/helfi_users/helfi_users.module
 
 		-
-			message: "#^Property Drupal\\\\helfi_users\\\\Plugin\\\\Block\\\\LocalTasksBlock\\:\\:\\$currentUser \\(Drupal\\\\user\\\\UserInterface\\) does not accept Drupal\\\\Core\\\\Session\\\\AccountProxy\\.$#"
-			count: 1
-			path: modules/helfi_users/src/Plugin/Block/LocalTasksBlock.php
-
-		-
 			message: "#^Property Drupal\\\\Tests\\\\helfi_users\\\\Functional\\\\UserCancelNodeRevisionsTest\\:\\:\\$defaultTheme has no type specified\\.$#"
 			count: 1
 			path: modules/helfi_users/tests/src/Kernel/UserCancelNodeRevisionsTest.php

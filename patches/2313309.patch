@@ -686,10 +686,18 @@ index 5258ceb0c8a..db4e0a2a031 100644
      ];
  
 diff --git a/core/modules/language/language.services.yml b/core/modules/language/language.services.yml
-index 98184c214fe..8a3e225b07f 100644
+index 98184c214fe..65e160237d0 100644
 --- a/core/modules/language/language.services.yml
 +++ b/core/modules/language/language.services.yml
-@@ -29,3 +29,4 @@ services:
+@@ -5,6 +5,7 @@ parameters:
+ services:
+   _defaults:
+     autoconfigure: true
++    autowire: true
+   plugin.manager.language_negotiation_method:
+     class: Drupal\language\LanguageNegotiationMethodManager
+     arguments: ['@container.namespaces', '@cache.discovery', '@module_handler']
+@@ -29,3 +30,4 @@ services:
      arguments: ['@language_manager']
      tags:
        - { name: paramconverter }
