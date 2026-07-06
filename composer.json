@@ -6,8 +6,8 @@
     "minimum-stability": "dev",
     "require": {
         "ext-curl": "*",
-        "drupal/core": "~11.3",
-        "drupal/core-composer-scaffold": "~11.3",
+        "drupal/core": "~11.4",
+        "drupal/core-composer-scaffold": "~11.4",
         "drupal/action": "^0.2",
         "drupal/admin_toolbar": "^3.0",
         "drupal/allowed_formats": "^3.0",
@@ -74,7 +74,7 @@
     },
     "conflict": {
         "drush/drush": "<12",
-        "drupal/core": "<11.3.8",
+        "drupal/core": "<11.4.0",
         "drupal/external_entities": "<3.0.0-beta7"
     },
     "extra": {

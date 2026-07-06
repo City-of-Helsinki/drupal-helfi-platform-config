@@ -9,6 +9,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\Core\Database\Statement\FetchAs;
 use Drupal\Core\Database\StatementInterface;
 use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\State\StateInterface;
@@ -101,7 +102,7 @@ class CronHookTest extends UnitTestCase {
   ): CspLogService {
     $aggregatedStatement = $this->createMock(StatementInterface::class);
     $aggregatedStatement->method('fetchAll')
-      ->with(\PDO::FETCH_ASSOC)
+      ->with(FetchAs::Associative)
       ->willReturn($aggregatedLogs);
 
     $statements = [$aggregatedStatement];
