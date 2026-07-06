@@ -14,13 +14,19 @@ use Drupal\user\UserInterface;
 class LocalTasksBlock extends CoreLocalTasksBlock {
 
   /**
+   * The current user service.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected UserInterface $currentUser;
+
+  /**
    * {@inheritdoc}
    *
    * @phpstan-param array<string, mixed> $configuration
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->languageManager = $container->get('language_manager');
     $instance->currentUser = $container->get('current_user');
     return $instance;
   }
