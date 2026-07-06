@@ -2953,11 +2953,6 @@ parameters:
 			path: modules/helfi_paragraphs_news_list/src/Entity/NewsFeedParagraph.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_paragraphs_news_list\\\\Entity\\\\NewsListLazyBuilder\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_news_list/src/Entity/NewsListLazyBuilder.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_paragraphs_news_list\\\\Plugin\\\\DebugDataItem\\\\NewsApiAvailability\\:\\:__construct\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_paragraphs_news_list/src/Plugin/DebugDataItem/NewsApiAvailability.php
@@ -2978,7 +2973,7 @@ parameters:
 			path: modules/helfi_paragraphs_news_list/src/Plugin/ExternalEntities/StorageClient/TermBase.php
 
 		-
-			message: "#^Parameter \\#1 \\$id of method Drupal\\\\helfi_paragraphs_news_list\\\\Entity\\\\NewsListLazyBuilder\\:\\:build\\(\\) expects string, int\\|string\\|null given\\.$#"
+			message: "#^Parameter \\#1 \\$id of method Drupal\\\\helfi_paragraphs_news_list\\\\Entity\\\\NewsListLazyBuilder\\:\\:build\\(\\) expects string\\|null, int\\|string\\|null given\\.$#"
 			count: 2
 			path: modules/helfi_paragraphs_news_list/tests/src/Kernel/Entity/NewsListLazyBuilderTest.php
 
