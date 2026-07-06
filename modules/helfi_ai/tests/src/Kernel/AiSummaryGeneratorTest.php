@@ -16,12 +16,6 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests AI summary generation through the real AI provider stack.
- *
- * Runs the generator against the AI module's echoai test provider, so the whole
- * chain is exercised for real (provider resolution, prompt building, the chat
- * call, and HTML bullet conversion) without any external service or API key.
- * The echoai provider echoes the prompt back, which the generator wraps as a
- * bullet list.
  */
 #[Group('helfi_ai')]
 #[RunTestsInSeparateProcesses]
@@ -114,17 +108,13 @@ class AiSummaryGeneratorTest extends EntityKernelTestBase {
     $summary = $this->generator->generate($node, $node->language()->getId());
 
     $this->assertNotNull($summary);
-    // Output is a bullet list built from the provider reply.
     $this->assertStringStartsWith('<ul><li>', $summary);
     $this->assertStringEndsWith('</li></ul>', $summary);
-    // The echoai provider echoes the prompt back, so the node content has
-    // travelled the full chain (prompt build → chat call → bullet conversion)
-    // into the summary.
     $this->assertStringContainsString($title, $summary);
   }
 
   /**
-   * A missing prompt entity makes generation fail gracefully (NULL).
+   * A missing prompt entity makes generation fail gracefully.
    */
   public function testReturnsNullWhenPromptMissing(): void {
     $this->container->get('entity_type.manager')
@@ -138,7 +128,7 @@ class AiSummaryGeneratorTest extends EntityKernelTestBase {
   }
 
   /**
-   * An unresolvable provider makes generation fail gracefully (NULL).
+   * An unresolvable provider makes generation fail gracefully.
    */
   public function testReturnsNullWhenProviderUnavailable(): void {
     $this->config('ai.settings')

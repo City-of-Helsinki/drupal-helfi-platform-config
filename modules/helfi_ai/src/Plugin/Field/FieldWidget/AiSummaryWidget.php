@@ -19,24 +19,6 @@ use Drupal\helfi_ai\Service\AiSummaryGenerator;
 
 /**
  * Widget for the AI summary field.
- *
- * Renders an editable WYSIWYG field plus a single "Generate" button. Clicking
- * Generate builds the entity from the *current* (unsaved) form values, asks the
- * AI provider for a summary of that live content, and fills the editable field
- * with the result. The editor can then freely edit the text and saves it with
- * the node like any other field.
- *
- * The editor is hidden until a summary exists: an empty field shows only the
- * button. Regenerating a summary that already has content first asks the editor
- * to confirm, so reviewed or hand-edited text is not overwritten by accident.
- *
- * The button is a plain (non-submit) AJAX button on purpose:
- *   - Its AJAX callback runs regardless of validation and sees the full,
- *     un-pruned form values, so
- *     {@see \Drupal\Core\Entity\ContentEntityForm::buildEntity()} reconstructs
- *     the unsaved entity (including unsaved paragraphs) in memory.
- *   - It carries no `#limit_validation_errors`, which would otherwise prune the
- *     submitted values to nothing and hide the editor's unsaved changes.
  */
 #[FieldWidget(
   id: 'ai_summary',
@@ -46,7 +28,7 @@ use Drupal\helfi_ai\Service\AiSummaryGenerator;
 final class AiSummaryWidget extends WidgetBase {
 
   /**
-   * Text format used for AI summary content. Allows <ul>, <li>, links.
+   * Text format used for AI summary content.
    */
   private const TEXT_FORMAT = 'minimal';
 
@@ -60,11 +42,6 @@ final class AiSummaryWidget extends WidgetBase {
   /**
    * Reads the submitted summary value and sets it on the field.
    *
-   * The editable element is nested under the AJAX wrapper's summary container,
-   * so its submitted value lives at field[delta][ajax_wrapper][summary][value]
-   * rather than the path the parent WidgetBase expects. Read it explicitly
-   * here.
-   *
    * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
    *   The field values.
    * @param array<string, mixed> $form
@@ -75,7 +52,7 @@ final class AiSummaryWidget extends WidgetBase {
   public function extractFormValues(FieldItemListInterface $items, array $form, FormStateInterface $form_state): void {
     $field_name = $this->fieldDefinition->getName();
     $value = $form_state->getValue([$field_name, 0, 'ajax_wrapper', 'summary', 'value']);
-    // A text_format element submits as ['value' => ..., 'format' => ...].
+    // Set the value only when submitted.
     if (is_array($value) && array_key_exists('value', $value)) {
       $items->setValue([
         [
@@ -156,7 +133,7 @@ final class AiSummaryWidget extends WidgetBase {
    * Builds the Generate / Regenerate AJAX button.
    *
    * @param bool $has_value
-   *   Whether the field already holds a summary (controls the label).
+   *   Whether the field already holds a summary.
    * @param string $field_name
    *   Machine name of the field.
    * @param int $delta
@@ -196,16 +173,12 @@ final class AiSummaryWidget extends WidgetBase {
   }
 
   /**
-   * After-build callback: strips the "About text formats" help link.
-   *
-   * Filter_process_format() always appends a format[help] child containing a
-   * "More information about text formats" link. It cannot be removed through
-   * the UI or field settings, so we unset it here after the element is built.
+   * Strips the text format help link from the element.
    *
    * @param array<string, mixed> $element
    *   The processed text_format element.
    * @param \Drupal\Core\Form\FormStateInterface $_form_state
-   *   The current form state (unused, required by after_build signature).
+   *   The current form state.
    *
    * @return array<string, mixed>
    *   The element with the help link removed.
@@ -216,15 +189,10 @@ final class AiSummaryWidget extends WidgetBase {
   }
 
   /**
-   * AJAX callback: summarizes live form state and fills the field.
-   *
-   * Runs as the callback of a plain button, so it executes regardless of
-   * validation and sees the full submitted values. Builds the unsaved entity,
-   * asks the generator for a summary, and replaces the wrapper with the value
-   * injected into the editable element.
+   * Summarizes the live form state and fills the field.
    *
    * @param array<string, mixed> $form
-   *   The (rebuilt, processed) form structure.
+   *   The form structure.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current form state.
    *
@@ -233,7 +201,7 @@ final class AiSummaryWidget extends WidgetBase {
    */
   public static function ajaxCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
     $trigger = $form_state->getTriggeringElement();
-    // The button is a child of ajax_wrapper; slice off the button key.
+    // Slice off the button key to reach the wrapper.
     $parents = array_slice($trigger['#array_parents'] ?? [], 0, -1);
     $wrapper = NestedArray::getValue($form, $parents);
     $wrapper_id = $wrapper['#attributes']['id'] ?? '';
@@ -241,8 +209,7 @@ final class AiSummaryWidget extends WidgetBase {
     $summary = self::generateSummary($form, $form_state);
 
     if ($summary !== NULL && $summary !== '') {
-      // Inject the generated value into the processed text_format textarea
-      // (text_format expands to a 'value' textarea child after processing).
+      // Inject the generated value into the editor textarea.
       if (isset($wrapper['summary']['value']['value'])) {
         $wrapper['summary']['value']['value']['#value'] = $summary;
       }
@@ -252,9 +219,7 @@ final class AiSummaryWidget extends WidgetBase {
           array_diff($wrapper['summary']['#attributes']['class'], ['hidden']),
         );
       }
-      // Once there is a value, the action becomes a regenerate. Relabel it and
-      // add the confirm marker so a later click in this same session does not
-      // silently overwrite the summary just generated.
+
       if (isset($wrapper['generate'])) {
         $translation = \Drupal::translation();
         $wrapper['generate']['#value'] = $translation
@@ -268,8 +233,7 @@ final class AiSummaryWidget extends WidgetBase {
       }
     }
     else {
-      // Generation produced nothing: show an inline error and leave the field
-      // unchanged.
+      // Show an inline error when generation produced nothing.
       $wrapper['error'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
@@ -305,11 +269,7 @@ final class AiSummaryWidget extends WidgetBase {
     if (!$entity instanceof ContentEntityInterface) {
       return NULL;
     }
-    // This is a throwaway clone holding the editor's unsaved changes. Mark it
-    // as a preview so the view builder renders the in-memory state and skips
-    // the render cache — otherwise an existing node would render its saved
-    // (cached) content instead of the current edits. in_preview is an
-    // untyped dynamic property that core's NodeViewBuilder reads.
+    // Flag the throwaway entity so the view builder renders unsaved state.
     // @phpstan-ignore-next-line
     $entity->in_preview = TRUE;
     return \Drupal::service(AiSummaryGenerator::class)

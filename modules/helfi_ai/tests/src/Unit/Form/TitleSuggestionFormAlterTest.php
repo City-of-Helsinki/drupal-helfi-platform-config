@@ -176,18 +176,14 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
   /**
    * Installs a container with a renderer that captures the rendered body.
    *
-   * OpenModalDialogCommand renders its content through the renderer service;
-   * the captured render array lets tests assert on the modal body.
-   *
    * @param array<string, mixed> $captured
-   *   Receives the render array passed to the renderer (by reference).
+   *   Receives the render array passed to the renderer.
    */
   private function setRenderer(array &$captured): void {
     $renderer = $this->createMock(RendererInterface::class);
     $renderer->method('renderRoot')->willReturnCallback(
       function (&$elements) use (&$captured): string {
         $captured = $elements;
-        // The real renderer populates #attached; the dialog command reads it.
         $elements['#attached'] = $elements['#attached'] ?? [];
         return '<div>rendered</div>';
       }

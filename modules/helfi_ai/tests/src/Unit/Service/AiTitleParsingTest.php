@@ -9,13 +9,7 @@ use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * Tests the chat-reply-to-title-candidates parsing in isolation.
- *
- * The parsing is pure string logic with no service dependencies, so it is unit
- * tested directly. The full suggestion path is covered by the kernel test; this
- * pins the line splitting, marker/quote stripping and the cap that protect the
- * candidates shown to the editor. A reflection call reaches the private helper
- * without widening its visibility.
+ * Tests the chat-reply to title candidates parsing.
  */
 #[Group('helfi_ai')]
 class AiTitleParsingTest extends UnitTestCase {
@@ -55,7 +49,7 @@ class AiTitleParsingTest extends UnitTestCase {
   }
 
   /**
-   * Leading list markers (numbers, bullets, dashes) are stripped.
+   * Leading list markers are stripped.
    */
   public function testListMarkersAreStripped(): void {
     $this->assertSame(

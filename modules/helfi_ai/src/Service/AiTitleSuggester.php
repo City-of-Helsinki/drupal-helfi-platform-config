@@ -15,11 +15,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Suggests GEO/SEO-optimized page titles using the configured chat provider.
- *
- * Mirrors {@see AiSummaryGenerator}: it strips the (possibly unsaved) entity to
- * plain text, fills the configured SEO-title prompt and asks the chat provider,
- * then parses the reply into a short list of title candidates the editor can
- * pick from.
  */
 class AiTitleSuggester {
 
@@ -35,9 +30,6 @@ class AiTitleSuggester {
 
   /**
    * Maximum content size in bytes sent to the provider.
-   *
-   * Bounds the prompt payload to keep request cost and latency predictable;
-   * pages above this are not titled rather than sent in full.
    */
   private const MAX_CONTENT_BYTES = 256 * 1024;
 
@@ -53,16 +45,14 @@ class AiTitleSuggester {
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity to title, in the language it should be titled in. May be
-   *   unsaved (e.g. built from the current edit form via
-   *   {@see \Drupal\helfi_ai\PreviewEntityBuilder}); such callers should set
-   *   $entity->in_preview = TRUE.
+   *   unsaved.
    *
    * @return string[]
    *   Up to self::MAX_SUGGESTIONS title candidates, or an empty array on
-   *   failure (no content, missing prompt, provider error).
+   *   failure.
    */
   public function suggest(ContentEntityInterface $entity): array {
-    // With no content there is nothing to base a title on.
+    // Skip when the entity has no content.
     $content = $this->textConverterManager->convert($entity);
     if (!$content) {
       $this->logger->warning('helfi_ai: no text content for entity @type/@id.', [
@@ -114,10 +104,6 @@ class AiTitleSuggester {
   /**
    * Parses the model reply into a clean list of title candidates.
    *
-   * Treats each non-empty line as one candidate and strips any list markers,
-   * numbering or surrounding quotes the model may have added despite the prompt
-   * asking for none.
-   *
    * @param string $plain
    *   The raw chat reply.
    *
@@ -127,8 +113,7 @@ class AiTitleSuggester {
   private static function parseTitles(string $plain): array {
     $titles = [];
     foreach (explode("\n", $plain) as $line) {
-      // Drop leading "1. ", "1) ", "- ", "* " or bullet markers, then trim
-      // surrounding whitespace and quotes.
+      // Strip list markers then trim whitespace and quotes.
       $line = preg_replace('/^\s*(?:\d+[.)]|[-*•])\s*/u', '', $line) ?? $line;
       $line = trim($line, " \t\"'");
       if ($line !== '') {

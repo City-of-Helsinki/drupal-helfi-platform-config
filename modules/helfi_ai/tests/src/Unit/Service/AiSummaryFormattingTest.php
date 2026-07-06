@@ -9,13 +9,7 @@ use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * Tests the plain-text-to-HTML-bullet-list conversion in isolation.
- *
- * The conversion is pure string logic with no service dependencies, so it is
- * unit tested directly. The full generation path is covered by the kernel test;
- * this pins the line splitting and HTML escaping that protect the rendered
- * output. A reflection call reaches the private helper without widening its
- * visibility.
+ * Tests the plain text to HTML bullet-list conversion.
  */
 #[Group('helfi_ai')]
 class AiSummaryFormattingTest extends UnitTestCase {

@@ -29,10 +29,7 @@ class AiSummaryGenerator {
    * Generates an HTML bullet-list summary for the given entity translation.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The entity to summarise. May be unsaved (e.g. built from the current
-   *   edit form via ContentEntityForm::buildEntity()); callers should set
-   *   $entity->in_preview = TRUE so the renderer uses the in-memory (unsaved)
-   *   values instead of cached or saved content.
+   *   The entity to summarize, it may be unsaved.
    * @param string $langcode
    *   Language code of the translation to summarise.
    *
@@ -45,8 +42,7 @@ class AiSummaryGenerator {
       $entity = $entity->getTranslation($langcode);
     }
 
-    // Render the entity to plain text. With no content there is nothing to
-    // summarise.
+    // Render the entity to plain text.
     $content = $this->textConverterManager->convert($entity);
     if (!$content) {
       $this->logger->warning('helfi_ai: no text content for entity @type/@id.', [
@@ -67,7 +63,7 @@ class AiSummaryGenerator {
       return NULL;
     }
 
-    // Fill the prompt's {content} and {language} placeholders.
+    // Fill the prompt placeholders.
     $text = str_replace(
       ['{content}', '{language}'],
       [$content, $entity->language()->getName()],
@@ -75,9 +71,7 @@ class AiSummaryGenerator {
     );
 
     try {
-      // Send the prompt to the configured chat provider and turn its reply
-      // into the HTML bullet list. A failed call (provider error, timeout)
-      // returns NULL so the caller can show an error.
+      // Send the prompt to the chat provider and convert the reply.
       ['provider_id' => $provider, 'model_id' => $model] = $this->aiProvider->getSetProvider('chat');
       $input = new ChatInput([new ChatMessage('user', $text)]);
       $normalized = $provider->chat($input, $model)->getNormalized();
@@ -104,8 +98,7 @@ class AiSummaryGenerator {
     if (empty($lines)) {
       return '';
     }
-    // Escape each line so the model output is treated as plain text, never as
-    // markup, then wrap the lines as list items.
+    // Escape each line and wrap it as a list item.
     $items = array_map(
       fn(string $line) => '<li>' . htmlspecialchars($line, ENT_QUOTES | ENT_HTML5, 'UTF-8') . '</li>',
       $lines,

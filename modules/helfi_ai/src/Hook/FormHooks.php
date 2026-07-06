@@ -21,9 +21,6 @@ class FormHooks {
   /**
    * Implements hook_form_BASE_FORM_ID_alter() for node forms.
    *
-   * Adds the AI "Suggest SEO title" button next to the title field on the
-   * configured content types.
-   *
    * @param array<string, mixed> $form
    *   The node form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state

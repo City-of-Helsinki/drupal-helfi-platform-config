@@ -16,11 +16,6 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests AI SEO-title suggestion through the real AI provider stack.
- *
- * Runs the suggester against the AI module's echoai test provider, so the whole
- * chain is exercised for real (provider resolution, prompt building, the chat
- * call, and reply parsing) without any external service or API key. The echoai
- * provider echoes the prompt back, which the suggester splits into candidates.
  */
 #[Group('helfi_ai')]
 #[RunTestsInSeparateProcesses]
@@ -111,8 +106,6 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
 
     $suggestions = $this->suggester->suggest($node);
 
-    // The echoai provider echoes the (multi-line) prompt, so the suggester
-    // parses several lines and caps them at three non-empty candidates.
     $this->assertNotEmpty($suggestions);
     $this->assertLessThanOrEqual(3, count($suggestions));
     foreach ($suggestions as $suggestion) {
@@ -122,18 +115,15 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
   }
 
   /**
-   * Content larger than the byte cap is skipped (empty array, no AI call).
+   * Content larger than the byte cap is skipped.
    */
   public function testReturnsEmptyWhenContentTooLarge(): void {
-    // A title well over the 256 KB cap; the text converter includes it in the
-    // rendered content, pushing the payload past the limit.
     $node = $this->createNode(str_repeat('A', 300 * 1024));
-
     $this->assertSame([], $this->suggester->suggest($node));
   }
 
   /**
-   * A missing prompt entity makes suggestion fail gracefully (empty array).
+   * A missing prompt entity makes suggestion fail gracefully.
    */
   public function testReturnsEmptyWhenPromptMissing(): void {
     $this->container->get('entity_type.manager')
@@ -147,7 +137,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
   }
 
   /**
-   * An unresolvable provider makes suggestion fail gracefully (empty array).
+   * An unresolvable provider makes suggestion fail gracefully.
    */
   public function testReturnsEmptyWhenProviderUnavailable(): void {
     $this->config('ai.settings')

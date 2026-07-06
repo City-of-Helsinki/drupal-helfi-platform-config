@@ -99,8 +99,6 @@ class AiSummaryWidgetTest extends UnitTestCase {
     // Empty field: the editor container is hidden, only the button shows.
     $this->assertArrayHasKey('summary', $wrapper);
     $this->assertContains('hidden', $wrapper['summary']['#attributes']['class']);
-    // The label lives outside the summary container so it stays visible even
-    // before a summary exists.
     $this->assertArrayHasKey('field_label', $wrapper);
     $this->assertArrayHasKey('value', $wrapper['summary']);
     $this->assertSame('text_format', $wrapper['summary']['value']['#type']);
@@ -109,8 +107,6 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $this->assertArrayHasKey('generate', $wrapper);
     $this->assertSame('ai_summary_generate_ai_summary_0', $wrapper['generate']['#name']);
     $this->assertSame('Generate AI summary', (string) $wrapper['generate']['#value']);
-    // The behavior always loads, but with nothing to overwrite there is no
-    // confirm marker, so it stays inert.
     $this->assertContains('helfi_ai/ai_summary_confirm', $wrapper['generate']['#attached']['library']);
     $this->assertArrayNotHasKey('data-helfi-ai-summary-confirm', $wrapper['generate']['#attributes'] ?? []);
     $this->assertArrayHasKey('description', $wrapper);
@@ -128,7 +124,6 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $result = $widget->formElement($this->makeItems('<ul><li>Saved</li></ul>'), 0, [], $form, $formState);
 
     $wrapper = $result['ajax_wrapper'];
-    // Saved value: editor visible (not hidden), regenerate guarded by confirm.
     $this->assertNotContains('hidden', $wrapper['summary']['#attributes']['class']);
     $this->assertSame('<ul><li>Saved</li></ul>', $wrapper['summary']['value']['#default_value']);
     $this->assertSame('Regenerate AI summary', (string) $wrapper['generate']['#value']);
@@ -161,13 +156,9 @@ class AiSummaryWidgetTest extends UnitTestCase {
 
     $button = $result['ajax_wrapper']['generate'];
     $this->assertSame('button', $button['#type']);
-    // No submit gating / value pruning.
     $this->assertArrayNotHasKey('#submit', $button);
     $this->assertArrayNotHasKey('#executes_submit_callback', $button);
     $this->assertArrayNotHasKey('#limit_validation_errors', $button);
-    // Wired as an AJAX button, bound to 'click' so the confirm interceptor
-    // (also on 'click') can cancel before the request, unlike the default
-    // button 'mousedown' event.
     $this->assertSame([AiSummaryWidget::class, 'ajaxCallback'], $button['#ajax']['callback']);
     $this->assertSame('ai-summary-ai-summary-0', $button['#ajax']['wrapper']);
     $this->assertSame('click', $button['#ajax']['event']);
@@ -211,7 +202,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
    * @param string|null $summary
    *   The summary the mocked generator returns.
    * @param array<string, mixed> $captured
-   *   Receives the render array passed to the renderer (by reference).
+   *   Receives the render array passed to the renderer.
    *
    * @return array{0: array<string, mixed>, 1: \Drupal\Core\Form\FormState}
    *   The form structure and form state.
@@ -234,7 +225,6 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $renderer->method('renderRoot')->willReturnCallback(
       function (&$elements) use (&$captured): string {
         $captured = $elements;
-        // The real renderer populates #attached; ReplaceCommand reads it.
         $elements['#attached'] = $elements['#attached'] ?? [];
         return '<div>rendered</div>';
       }
@@ -262,11 +252,9 @@ class AiSummaryWidgetTest extends UnitTestCase {
             '#attributes' => ['id' => $wrapperId],
             'summary' => [
               '#type' => 'container',
-              // Starts hidden (empty field); the callback should reveal it.
               '#attributes' => ['class' => ['hidden']],
               'value' => [
                 '#type' => 'text_format',
-                // Processed text_format exposes the textarea at value.value.
                 'value' => ['#type' => 'textarea', '#value' => ''],
                 'format' => ['#type' => 'select'],
               ],
@@ -300,15 +288,9 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $this->assertCount(1, $commands);
     $this->assertSame('#ai-summary-ai-summary-0', $commands[0]['selector']);
     $this->assertSame('replaceWith', $commands[0]['method']);
-
-    // The generated value was injected into the processed textarea, the editor
-    // container was revealed, and the button relabelled to regenerate. No
-    // error element.
     $this->assertSame('<ul><li>Generated</li></ul>', $captured['summary']['value']['value']['#value']);
     $this->assertNotContains('hidden', $captured['summary']['#attributes']['class']);
     $this->assertSame('Regenerate AI summary', (string) $captured['generate']['#value']);
-    // The fresh summary is now guarded, so regenerating it in this same
-    // session also confirms.
     $this->assertArrayHasKey('data-helfi-ai-summary-confirm', $captured['generate']['#attributes']);
     $this->assertArrayNotHasKey('error', $captured);
   }
@@ -323,8 +305,6 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $response = AiSummaryWidget::ajaxCallback($form, $formState);
 
     $this->assertInstanceOf(AjaxResponse::class, $response);
-    // An error element is rendered; the textarea value is left untouched and
-    // the editor container stays hidden.
     $this->assertArrayHasKey('error', $captured);
     $this->assertSame('', $captured['summary']['value']['value']['#value']);
     $this->assertContains('hidden', $captured['summary']['#attributes']['class']);

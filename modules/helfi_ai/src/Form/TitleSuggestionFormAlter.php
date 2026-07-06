@@ -20,16 +20,6 @@ use Drupal\node\NodeInterface;
 
 /**
  * Adds an AI "Suggest SEO title" button next to the node title field.
- *
- * An AJAX button beside the title builds the unsaved node from the current form
- * values, asks {@see AiTitleSuggester} for a few GEO/SEO-optimized title
- * candidates and shows them in a modal. Picking one fills the title field
- * client-side (see js/ai-title-suggest.js); the editor can still edit it.
- *
- * The button is a plain (non-submit) AJAX button on purpose, for the same
- * reason as the AI summary widget: its callback runs regardless of validation
- * and sees the full, un-pruned form values, so the unsaved entity (including
- * unsaved paragraphs) can be rebuilt in memory.
  */
 class TitleSuggestionFormAlter {
 
@@ -71,8 +61,6 @@ class TitleSuggestionFormAlter {
     if (!in_array($entity->bundle(), $bundles, TRUE)) {
       return;
     }
-    // The title base field uses the standard string widget; bail if it is not
-    // present (e.g. removed from the form display).
     if (!isset($form['title']['widget'][0]['value'])) {
       return;
     }
@@ -108,7 +96,7 @@ class TitleSuggestionFormAlter {
    * AJAX callback for the suggest button: opens a suggestions or error modal.
    *
    * @param array<string, mixed> $form
-   *   The (rebuilt) form structure.
+   *   The form structure.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current form state.
    *
