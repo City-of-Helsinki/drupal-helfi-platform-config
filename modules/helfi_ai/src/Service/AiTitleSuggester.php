@@ -12,6 +12,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Suggests GEO/SEO-optimized page titles using the configured chat provider.
@@ -34,10 +35,10 @@ class AiTitleSuggester {
   private const MAX_CONTENT_BYTES = 256 * 1024;
 
   public function __construct(
-    private readonly AiProviderPluginManager $aiProvider,
+    #[Autowire(service: 'ai.provider')] private readonly AiProviderPluginManager $aiProvider,
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly TextConverterManager $textConverterManager,
-    private readonly LoggerInterface $logger,
+    #[Autowire(service: 'logger.channel.helfi_ai')] private readonly LoggerInterface $logger,
   ) {}
 
   /**

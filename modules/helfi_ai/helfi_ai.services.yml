@@ -7,19 +7,5 @@ services:
     parent: logger.channel_base
     arguments: ['helfi_ai']
 
-  Drupal\helfi_ai\Service\AiSummaryGenerator:
-    arguments:
-      $aiProvider: '@ai.provider'
-      $logger: '@logger.channel.helfi_ai'
-
-  Drupal\helfi_ai\Service\AiTitleSuggester:
-    arguments:
-      $aiProvider: '@ai.provider'
-      $logger: '@logger.channel.helfi_ai'
-
-  Drupal\helfi_ai\Form\TitleSuggestionFormAlter:
-    arguments:
-      $currentUser: '@current_user'
-      $configFactory: '@config.factory'
-      $aiTitleSuggester: '@Drupal\helfi_ai\Service\AiTitleSuggester'
-      $stringTranslation: '@string_translation'
+  Drupal\helfi_ai\Service\AiSummaryGenerator: ~
+  Drupal\helfi_ai\Service\AiTitleSuggester: ~

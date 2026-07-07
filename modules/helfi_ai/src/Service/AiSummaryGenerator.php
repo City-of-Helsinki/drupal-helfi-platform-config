@@ -12,6 +12,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Generates AI-powered content summaries using the configured chat provider.
@@ -19,10 +20,10 @@ use Psr\Log\LoggerInterface;
 class AiSummaryGenerator {
 
   public function __construct(
-    private readonly AiProviderPluginManager $aiProvider,
+    #[Autowire(service: 'ai.provider')] private readonly AiProviderPluginManager $aiProvider,
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly TextConverterManager $textConverterManager,
-    private readonly LoggerInterface $logger,
+    #[Autowire(service: 'logger.channel.helfi_ai')] private readonly LoggerInterface $logger,
   ) {}
 
   /**

@@ -4,18 +4,188 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_ai\Hook;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
+use Drupal\Core\Entity\ContentEntityFormInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_ai\Form\TitleSuggestionFormAlter;
+use Drupal\helfi_ai\PreviewEntityBuilder;
+use Drupal\helfi_ai\Service\AiTitleSuggester;
+use Drupal\node\NodeInterface;
 
 /**
- * Form hook implementations for HELfi AI.
+ * Adds an AI "Suggest SEO title" button next to the node title field.
  */
-class FormHooks {
+final class FormHooks {
+
+  use DependencySerializationTrait;
+
+  /**
+   * Permission required to use the title suggester.
+   */
+  private const string PERMISSION = 'use helfi ai title suggestion';
 
   public function __construct(
-    private readonly TitleSuggestionFormAlter $titleSuggestionFormAlter,
+    private readonly AccountInterface $currentUser,
+    private readonly ConfigFactoryInterface $configFactory,
+    private readonly AiTitleSuggester $aiTitleSuggester,
   ) {
+  }
+
+  private function isValidForm(array $form, FormStateInterface $formState): bool {
+    $form_object = $formState->getFormObject();
+
+    if (!$form_object instanceof ContentEntityFormInterface) {
+      return FALSE;
+    }
+    $entity = $form_object->getEntity();
+
+    if (!$entity instanceof NodeInterface) {
+      return FALSE;
+    }
+    $bundles = $this->configFactory->get('helfi_ai.settings')->get('seo_title_bundles') ?? [];
+
+    if (!in_array($entity->bundle(), $bundles, TRUE)) {
+      return FALSE;
+    }
+    if (!isset($form['title']['widget'][0]['value'])) {
+      return FALSE;
+    }
+
+    if (!$this->currentUser->hasPermission(self::PERMISSION)) {
+      return FALSE;
+    }
+    return TRUE;
+  }
+
+  /**
+   * Alters a node form to add the title suggestion button.
+   *
+   * @param array<string, mixed> $form
+   *   The node form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   */
+  public function alter(array &$form, FormStateInterface $form_state): void {
+    if (!$this->isValidForm($form, $form_state)) {
+      return;
+    }
+
+    $form['title']['#attributes']['class'][] = 'helfi-ai-title';
+
+    $form['title']['helfi_ai_suggest'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['helfi-ai-suggest']],
+      '#weight' => ($form['title']['widget'][0]['value']['#weight'] ?? 0) + 0.5,
+      'button' => [
+        '#type' => 'button',
+        '#value' => new TranslatableMarkup('Suggest SEO title', options: ['context' => 'helfi_ai']),
+        '#name' => 'helfi_ai_suggest_title',
+        '#attributes' => ['class' => ['button--small']],
+        '#ajax' => [
+          'callback' => [$this, 'buildSuggestionResponse'],
+          'event' => 'click',
+          'progress' => [
+            'type' => 'throbber',
+            'message' => new TranslatableMarkup('Generating title suggestions…', options: ['context' => 'helfi_ai']),
+          ],
+        ],
+        '#attached' => ['library' => ['helfi_ai/title_suggest']],
+      ],
+    ];
+  }
+
+  /**
+   * AJAX callback for the suggest button: opens a suggestions or error modal.
+   *
+   * @param array<string, mixed> $form
+   *   The form structure.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   Response opening a modal with the suggestions or an error message.
+   */
+  public function buildSuggestionResponse(array &$form, FormStateInterface $form_state): AjaxResponse {
+    $title = (string) new TranslatableMarkup('Suggested titles', options: ['context' => 'helfi_ai']);
+    $response = new AjaxResponse();
+
+    $entity = PreviewEntityBuilder::fromFormState($form, $form_state);
+    if (!$entity instanceof ContentEntityInterface) {
+      return $response->addCommand(new OpenModalDialogCommand(
+        $title,
+        self::message((string) new TranslatableMarkup('Could not read the page content. Please try again.', options: ['context' => 'helfi_ai'])),
+        self::dialogOptions(),
+      ));
+    }
+
+    $suggestions = $this->aiTitleSuggester->suggest($entity);
+
+    if (!$suggestions) {
+      return $response->addCommand(new OpenModalDialogCommand(
+        $title,
+        self::message((string) new TranslatableMarkup('Could not generate title suggestions. Add some page content and make sure the AI provider is configured.', options: ['context' => 'helfi_ai'])),
+        self::dialogOptions(),
+      ));
+    }
+
+    return $response->addCommand(new OpenModalDialogCommand(
+      $title,
+      $this->suggestionsContent($suggestions),
+      self::dialogOptions(),
+    ));
+  }
+
+  /**
+   * Standard dialog options for the title suggester modals.
+   *
+   * @return array<string, mixed>
+   *   jQuery UI dialog options.
+   */
+  private static function dialogOptions(): array {
+    return [
+      'width' => '40rem',
+      'classes' => ['ui-dialog' => 'helfi-ai-dialog'],
+    ];
+  }
+
+  /**
+   * Builds the modal body: a radio option box plus Apply / Cancel actions.
+   *
+   * @param string[] $suggestions
+   *   The title candidates.
+   *
+   * @return array<string, mixed>
+   *   A render array for the modal body.
+   */
+  private function suggestionsContent(array $suggestions): array {
+    return [
+      '#theme' => 'helfi_ai_title_suggestions',
+      '#suggestions' => array_values($suggestions),
+      '#attached' => ['library' => ['helfi_ai/title_suggest']],
+    ];
+  }
+
+  /**
+   * Wraps a plain message string in a render array for a modal body.
+   *
+   * @param string $text
+   *   The message text.
+   *
+   * @return array<string, mixed>
+   *   A render array.
+   */
+  private static function message(string $text): array {
+    return [
+      '#theme' => 'helfi_ai_message',
+      '#text' => $text,
+    ];
   }
 
   /**
@@ -30,7 +200,7 @@ class FormHooks {
    */
   #[Hook('form_node_form_alter')]
   public function nodeFormAlter(array &$form, FormStateInterface $form_state, string $form_id): void {
-    $this->titleSuggestionFormAlter->alter($form, $form_state);
+    $this->alter($form, $form_state);
   }
 
 }
