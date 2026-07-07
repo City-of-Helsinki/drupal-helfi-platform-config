@@ -6,13 +6,10 @@ ai_summary_confirm:
     - core/drupal
     - core/once
 
-# Tone-check CKEditor 5 plugin JavaScript and CSS.
+# Tone-check CKEditor 5 plugin.
 tone_check:
   version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     assets/js/build/helfiAiToneCheck.js: { preprocess: false, minified: true }
-  css:
-    theme:
-      assets/css/helfi_ai_tone_check.css: { }
   dependencies:
     - core/ckeditor5
