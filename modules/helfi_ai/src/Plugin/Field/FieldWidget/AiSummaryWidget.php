@@ -7,15 +7,14 @@ namespace Drupal\helfi_ai\Plugin\Field\FieldWidget;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
-use Drupal\Core\Entity\ContentEntityFormInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_ai\Service\AiSummaryGenerator;
+use Drupal\helfi_ai\PreviewEntityBuilder;
+use Drupal\helfi_ai\Service\AiGenerator;
 
 /**
  * Widget for the AI summary field.
@@ -30,7 +29,7 @@ final class AiSummaryWidget extends WidgetBase {
   /**
    * Text format used for AI summary content.
    */
-  private const TEXT_FORMAT = 'minimal';
+  private const string TEXT_FORMAT = 'minimal';
 
   /**
    * {@inheritdoc}
@@ -121,7 +120,7 @@ final class AiSummaryWidget extends WidgetBase {
           '#allowed_formats' => [self::TEXT_FORMAT],
           '#rows' => 6,
           '#weight' => 0,
-          '#after_build' => [[static::class, 'removeFormatHelp']],
+          '#after_build' => [[self::class, 'removeFormatHelp']],
         ],
       ],
     ];
@@ -154,7 +153,7 @@ final class AiSummaryWidget extends WidgetBase {
       '#name' => 'ai_summary_generate_' . $field_name . '_' . $delta,
       '#weight' => 50,
       '#ajax' => [
-        'callback' => [static::class, 'ajaxCallback'],
+        'callback' => [self::class, 'ajaxCallback'],
         'wrapper' => $wrapper_id,
         'event' => 'click',
         'progress' => [
@@ -206,7 +205,10 @@ final class AiSummaryWidget extends WidgetBase {
     $wrapper = NestedArray::getValue($form, $parents);
     $wrapper_id = $wrapper['#attributes']['id'] ?? '';
 
-    $summary = self::generateSummary($form, $form_state);
+    $entity = PreviewEntityBuilder::fromFormState($form, $form_state);
+
+    $summary = \Drupal::service(AiGenerator::class)
+      ->generateSummary($entity);
 
     if ($summary !== NULL && $summary !== '') {
       // Inject the generated value into the editor textarea.
@@ -221,15 +223,11 @@ final class AiSummaryWidget extends WidgetBase {
       }
 
       if (isset($wrapper['generate'])) {
-        $translation = \Drupal::translation();
-        $wrapper['generate']['#value'] = $translation
-          ->translate('Regenerate AI summary', [], ['context' => 'helfi_ai']);
-        $wrapper['generate']['#attributes']['data-helfi-ai-summary-confirm'] = (string) $translation
-          ->translate('Regenerating replaces the current AI summary, including any manual changes. Continue?', [], ['context' => 'helfi_ai']);
+        $wrapper['generate']['#value'] = new TranslatableMarkup('Regenerate AI summary', [], ['context' => 'helfi_ai']);
+        $wrapper['generate']['#attributes']['data-helfi-ai-summary-confirm'] = (string) new TranslatableMarkup('Regenerating replaces the current AI summary, including any manual changes. Continue?', [], ['context' => 'helfi_ai']);
       }
       if (isset($wrapper['description'])) {
-        $wrapper['description']['#value'] = \Drupal::translation()
-          ->translate('Generate a new AI summary. It will replace the previous summary.', [], ['context' => 'helfi_ai']);
+        $wrapper['description']['#value'] = new TranslatableMarkup('Generate a new AI summary. It will replace the previous summary.', [], ['context' => 'helfi_ai']);
       }
     }
     else {
@@ -237,8 +235,7 @@ final class AiSummaryWidget extends WidgetBase {
       $wrapper['error'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => \Drupal::translation()
-          ->translate('Could not generate a summary. Add some page content and make sure the AI provider is configured.', [], ['context' => 'helfi_ai']),
+        '#value' => new TranslatableMarkup('Could not generate a summary. Add some page content and make sure the AI provider is configured.', [], ['context' => 'helfi_ai']),
         '#attributes' => ['class' => ['messages', 'messages--error']],
         '#weight' => -20,
       ];
@@ -247,33 +244,6 @@ final class AiSummaryWidget extends WidgetBase {
     return (new AjaxResponse())->addCommand(
       new ReplaceCommand('#' . $wrapper_id, $wrapper),
     );
-  }
-
-  /**
-   * Builds the unsaved entity from current form state and generates a summary.
-   *
-   * @param array<string, mixed> $form
-   *   The form structure.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current form state.
-   *
-   * @return string|null
-   *   The generated summary HTML, or NULL on failure.
-   */
-  private static function generateSummary(array &$form, FormStateInterface $form_state): ?string {
-    $form_object = $form_state->getFormObject();
-    if (!$form_object instanceof ContentEntityFormInterface) {
-      return NULL;
-    }
-    $entity = $form_object->buildEntity($form, $form_state);
-    if (!$entity instanceof ContentEntityInterface) {
-      return NULL;
-    }
-    // Flag the throwaway entity so the view builder renders unsaved state.
-    // @phpstan-ignore-next-line
-    $entity->in_preview = TRUE;
-    return \Drupal::service(AiSummaryGenerator::class)
-      ->generate($entity, $entity->language()->getId());
   }
 
 }

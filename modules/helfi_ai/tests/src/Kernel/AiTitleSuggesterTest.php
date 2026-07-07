@@ -7,7 +7,7 @@ namespace Drupal\Tests\helfi_ai\Kernel;
 use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\Entity\EntityViewMode;
-use Drupal\helfi_ai\Service\AiTitleSuggester;
+use Drupal\helfi_ai\Service\AiGenerator;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -39,7 +39,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
   /**
    * The title suggester under test.
    */
-  private AiTitleSuggester $suggester;
+  private AiGenerator $suggester;
 
   /**
    * {@inheritdoc}
@@ -83,7 +83,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
       ])
       ->save();
 
-    $this->suggester = $this->container->get(AiTitleSuggester::class);
+    $this->suggester = $this->container->get(AiGenerator::class);
   }
 
   /**
@@ -104,7 +104,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
   public function testReturnsSuggestions(): void {
     $node = $this->createNode('Suggester kernel title ' . $this->randomMachineName());
 
-    $suggestions = $this->suggester->suggest($node);
+    $suggestions = $this->suggester->suggestTitles($node);
 
     $this->assertNotEmpty($suggestions);
     $this->assertLessThanOrEqual(3, count($suggestions));
@@ -119,7 +119,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
    */
   public function testReturnsEmptyWhenContentTooLarge(): void {
     $node = $this->createNode(str_repeat('A', 300 * 1024));
-    $this->assertSame([], $this->suggester->suggest($node));
+    $this->assertSame([], $this->suggester->suggestTitles($node));
   }
 
   /**
@@ -133,7 +133,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
 
     $node = $this->createNode('Title ' . $this->randomMachineName());
 
-    $this->assertSame([], $this->suggester->suggest($node));
+    $this->assertSame([], $this->suggester->suggestTitles($node));
   }
 
   /**
@@ -148,7 +148,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
 
     $node = $this->createNode('Title ' . $this->randomMachineName());
 
-    $this->assertSame([], $this->suggester->suggest($node));
+    $this->assertSame([], $this->suggester->suggestTitles($node));
   }
 
 }

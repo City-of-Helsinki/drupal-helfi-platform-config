@@ -16,7 +16,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_ai\Form\TitleSuggestionFormAlter;
 use Drupal\helfi_ai\PreviewEntityBuilder;
-use Drupal\helfi_ai\Service\AiTitleSuggester;
+use Drupal\helfi_ai\Service\AiGenerator;
 use Drupal\node\NodeInterface;
 
 /**
@@ -34,10 +34,21 @@ final class FormHooks {
   public function __construct(
     private readonly AccountInterface $currentUser,
     private readonly ConfigFactoryInterface $configFactory,
-    private readonly AiTitleSuggester $aiTitleSuggester,
+    private readonly AiGenerator $generator,
   ) {
   }
 
+  /**
+   * Checks if the widget should be shown for this form.
+   *
+   * @param array<mixed> $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $formState
+   *   The form state.
+   *
+   * @return bool
+   *   TRUE if form is valid.
+   */
   private function isValidForm(array $form, FormStateInterface $formState): bool {
     $form_object = $formState->getFormObject();
 
@@ -65,14 +76,84 @@ final class FormHooks {
   }
 
   /**
-   * Alters a node form to add the title suggestion button.
+   * AJAX callback for the suggest button: opens a suggestions or error modal.
+   *
+   * @param array<string, mixed> $form
+   *   The form structure.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current form state.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   Response opening a modal with the suggestions or an error message.
+   */
+  public function buildSuggestionResponse(array &$form, FormStateInterface $form_state): AjaxResponse {
+    $title = (string) new TranslatableMarkup('Suggested titles', options: ['context' => 'helfi_ai']);
+    $response = new AjaxResponse();
+
+    $dialogOptions = [
+      'width' => '40rem',
+      'classes' => ['ui-dialog' => 'helfi-ai-dialog'],
+    ];
+
+    $entity = PreviewEntityBuilder::fromFormState($form, $form_state);
+
+    if (!$entity instanceof ContentEntityInterface) {
+      return $response->addCommand(new OpenModalDialogCommand(
+        $title,
+        $this->message((string) new TranslatableMarkup('Could not read the page content. Please try again.', options: ['context' => 'helfi_ai'])),
+        $dialogOptions,
+      ));
+    }
+
+    $suggestions = $this->generator->suggestTitles($entity);
+
+    if (!$suggestions) {
+      return $response->addCommand(new OpenModalDialogCommand(
+        $title,
+        $this->message((string) new TranslatableMarkup('Could not generate title suggestions. Add some page content and make sure the AI provider is configured.', options: ['context' => 'helfi_ai'])),
+        $dialogOptions,
+      ));
+    }
+
+    return $response->addCommand(new OpenModalDialogCommand(
+      $title,
+      [
+        '#theme' => 'helfi_ai_title_suggestions',
+        '#suggestions' => array_values($suggestions),
+        '#attached' => ['library' => ['helfi_ai/title_suggest']],
+      ],
+      $dialogOptions,
+    ));
+  }
+
+  /**
+   * Wraps a plain message string in a render array for a modal body.
+   *
+   * @param string $text
+   *   The message text.
+   *
+   * @return array<string, mixed>
+   *   A render array.
+   */
+  private function message(string $text): array {
+    return [
+      '#theme' => 'helfi_ai_message',
+      '#text' => $text,
+    ];
+  }
+
+  /**
+   * Implements hook_form_BASE_FORM_ID_alter() for node forms.
    *
    * @param array<string, mixed> $form
    *   The node form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current form state.
+   * @param string $form_id
+   *   The id of the node form being altered.
    */
-  public function alter(array &$form, FormStateInterface $form_state): void {
+  #[Hook('form_node_form_alter')]
+  public function nodeFormAlter(array &$form, FormStateInterface $form_state, string $form_id): void {
     if (!$this->isValidForm($form, $form_state)) {
       return;
     }
@@ -99,108 +180,6 @@ final class FormHooks {
         '#attached' => ['library' => ['helfi_ai/title_suggest']],
       ],
     ];
-  }
-
-  /**
-   * AJAX callback for the suggest button: opens a suggestions or error modal.
-   *
-   * @param array<string, mixed> $form
-   *   The form structure.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current form state.
-   *
-   * @return \Drupal\Core\Ajax\AjaxResponse
-   *   Response opening a modal with the suggestions or an error message.
-   */
-  public function buildSuggestionResponse(array &$form, FormStateInterface $form_state): AjaxResponse {
-    $title = (string) new TranslatableMarkup('Suggested titles', options: ['context' => 'helfi_ai']);
-    $response = new AjaxResponse();
-
-    $entity = PreviewEntityBuilder::fromFormState($form, $form_state);
-    if (!$entity instanceof ContentEntityInterface) {
-      return $response->addCommand(new OpenModalDialogCommand(
-        $title,
-        self::message((string) new TranslatableMarkup('Could not read the page content. Please try again.', options: ['context' => 'helfi_ai'])),
-        self::dialogOptions(),
-      ));
-    }
-
-    $suggestions = $this->aiTitleSuggester->suggest($entity);
-
-    if (!$suggestions) {
-      return $response->addCommand(new OpenModalDialogCommand(
-        $title,
-        self::message((string) new TranslatableMarkup('Could not generate title suggestions. Add some page content and make sure the AI provider is configured.', options: ['context' => 'helfi_ai'])),
-        self::dialogOptions(),
-      ));
-    }
-
-    return $response->addCommand(new OpenModalDialogCommand(
-      $title,
-      $this->suggestionsContent($suggestions),
-      self::dialogOptions(),
-    ));
-  }
-
-  /**
-   * Standard dialog options for the title suggester modals.
-   *
-   * @return array<string, mixed>
-   *   jQuery UI dialog options.
-   */
-  private static function dialogOptions(): array {
-    return [
-      'width' => '40rem',
-      'classes' => ['ui-dialog' => 'helfi-ai-dialog'],
-    ];
-  }
-
-  /**
-   * Builds the modal body: a radio option box plus Apply / Cancel actions.
-   *
-   * @param string[] $suggestions
-   *   The title candidates.
-   *
-   * @return array<string, mixed>
-   *   A render array for the modal body.
-   */
-  private function suggestionsContent(array $suggestions): array {
-    return [
-      '#theme' => 'helfi_ai_title_suggestions',
-      '#suggestions' => array_values($suggestions),
-      '#attached' => ['library' => ['helfi_ai/title_suggest']],
-    ];
-  }
-
-  /**
-   * Wraps a plain message string in a render array for a modal body.
-   *
-   * @param string $text
-   *   The message text.
-   *
-   * @return array<string, mixed>
-   *   A render array.
-   */
-  private static function message(string $text): array {
-    return [
-      '#theme' => 'helfi_ai_message',
-      '#text' => $text,
-    ];
-  }
-
-  /**
-   * Implements hook_form_BASE_FORM_ID_alter() for node forms.
-   *
-   * @param array<string, mixed> $form
-   *   The node form.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The current form state.
-   * @param string $form_id
-   *   The id of the node form being altered.
-   */
-  #[Hook('form_node_form_alter')]
-  public function nodeFormAlter(array &$form, FormStateInterface $form_state, string $form_id): void {
-    $this->alter($form, $form_state);
   }
 
 }

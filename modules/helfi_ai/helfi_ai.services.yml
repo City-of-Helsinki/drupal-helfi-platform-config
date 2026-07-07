@@ -7,5 +7,4 @@ services:
     parent: logger.channel_base
     arguments: ['helfi_ai']
 
-  Drupal\helfi_ai\Service\AiSummaryGenerator: ~
-  Drupal\helfi_ai\Service\AiTitleSuggester: ~
+  Drupal\helfi_ai\Service\AiGenerator: ~

@@ -15,7 +15,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_ai\Form\TitleSuggestionFormAlter;
-use Drupal\helfi_ai\Service\AiTitleSuggester;
+use Drupal\helfi_ai\Service\AiGenerator;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -46,13 +46,13 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
    *   Whether the current user holds the suggestion permission.
    * @param string[] $bundles
    *   The configured seo_title_bundles value.
-   * @param \Drupal\helfi_ai\Service\AiTitleSuggester|null $suggester
+   * @param \Drupal\helfi_ai\Service\AiGenerator|null $suggester
    *   The suggester to inject, or NULL for an unused stub.
    *
    * @return \Drupal\helfi_ai\Form\TitleSuggestionFormAlter
    *   The configured service.
    */
-  private function createAlter(bool $hasPermission, array $bundles, ?AiTitleSuggester $suggester = NULL): TitleSuggestionFormAlter {
+  private function createAlter(bool $hasPermission, array $bundles, ?AiGenerator $suggester = NULL): TitleSuggestionFormAlter {
     $account = $this->prophesize(AccountInterface::class);
     $account->hasPermission('use helfi ai title suggestion')->willReturn($hasPermission);
 
@@ -64,7 +64,7 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
     return new TitleSuggestionFormAlter(
       $account->reveal(),
       $configFactory->reveal(),
-      $suggester ?? $this->prophesize(AiTitleSuggester::class)->reveal(),
+      $suggester ?? $this->prophesize(AiGenerator::class)->reveal(),
       $this->getStringTranslationStub(),
     );
   }
@@ -164,12 +164,12 @@ class TitleSuggestionFormAlterTest extends UnitTestCase {
    * @param string[] $suggestions
    *   The candidates to return.
    *
-   * @return \Drupal\helfi_ai\Service\AiTitleSuggester
+   * @return \Drupal\helfi_ai\Service\AiGenerator
    *   The stub.
    */
-  private function suggesterReturning(array $suggestions): AiTitleSuggester {
-    $suggester = $this->prophesize(AiTitleSuggester::class);
-    $suggester->suggest(Argument::any())->willReturn($suggestions);
+  private function suggesterReturning(array $suggestions): AiGenerator {
+    $suggester = $this->prophesize(AiGenerator::class);
+    $suggester->suggestTitles(Argument::any())->willReturn($suggestions);
     return $suggester->reveal();
   }
 

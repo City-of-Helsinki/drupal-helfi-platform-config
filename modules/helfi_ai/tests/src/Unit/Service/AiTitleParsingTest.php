@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ai\Unit\Service;
 
-use Drupal\helfi_ai\Service\AiTitleSuggester;
+use Drupal\helfi_ai\Service\AiGenerator;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -24,7 +24,7 @@ class AiTitleParsingTest extends UnitTestCase {
    *   The parsed title candidates.
    */
   private static function parse(string $plain): array {
-    $method = new \ReflectionMethod(AiTitleSuggester::class, 'parseTitles');
+    $method = new \ReflectionMethod(AiGenerator::class, 'parseTitles');
     return $method->invoke(NULL, $plain);
   }
 
