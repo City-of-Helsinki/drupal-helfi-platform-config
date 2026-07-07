@@ -6,12 +6,18 @@
  * side. Confirming replaces the whole editor content with the suggestion.
  */
 
+import { diffArrays } from 'diff';
 import { Plugin } from 'ckeditor5/src/core';
 import { ButtonView, Dialog, View } from 'ckeditor5/src/ui';
 import icon from '../../../../icons/helfiAiToneCheck.svg';
 
 // Translation context shared by all user-facing strings in this plugin.
 const CONTEXT = { context: 'CKEditor5 Helfi AI tone check plugin' };
+
+// Split HTML into atomic tokens: whole tags, whitespace runs, and words.
+function tokenizeHtml(html) {
+	return html.match(/<[^>]+>|\s+|[^<\s]+/g) ?? [];
+}
 
 export default class HelfiAiToneCheckUi extends Plugin {
 	static get requires() {
@@ -82,7 +88,7 @@ export default class HelfiAiToneCheckUi extends Plugin {
 			return;
 		}
 
-		this._show(Drupal.t('Check tone', {}, CONTEXT), this._comparisonView(), [
+		this._show(Drupal.t('Check tone', {}, CONTEXT), this._tabbedView(), [
 			{
 				label: Drupal.t('Cancel', {}, CONTEXT),
 				withText: true,
@@ -103,24 +109,72 @@ export default class HelfiAiToneCheckUi extends Plugin {
 		// HTML so the content shows as rendered markup. Setting innerHTML (rather
 		// than passing text through the template) is what renders it as HTML; the
 		// sanitizer is what keeps that safe.
-		const panes = editor.plugins.get('Dialog').view.element.querySelectorAll('.helfi-ai-tone-check__pane');
-		if (panes[0]) {
-			panes[0].innerHTML = this._previewHtml(original);
-		}
-		if (panes[1]) {
-			panes[1].innerHTML = this._previewHtml(suggestion);
-		}
+		const root = editor.plugins.get('Dialog').view.element;
+		const originalHtml = this._previewHtml(original);
+		const suggestionHtml = this._previewHtml(suggestion);
+		const diffHtml = this._diffHtml(originalHtml, suggestionHtml);
+
+		const fill = (name, html) => {
+			const pane = root.querySelector(`.helfi-ai-tone__pane[data-pane="${name}"]`);
+			if (pane) {
+				pane.innerHTML = html;
+			}
+		};
+		fill('comparison-original', originalHtml);
+		fill('comparison-suggestion', diffHtml);
+		fill('original', originalHtml);
+		fill('suggestion', suggestionHtml);
+		fill('diff', diffHtml);
+
+		// Wire tab switching and open the default tab.
+		root.querySelectorAll('.helfi-ai-tone__tab').forEach((tab) => {
+			tab.addEventListener('click', () => this._activateTab(root, tab.dataset.tab));
+		});
+		this._activateTab(root, 'comparison');
+	}
+
+	/**
+	 * Highlights insertions and deletions between the original and suggestion.
+	 *
+	 * Tags are emitted as-is; only text tokens are wrapped so the preview markup
+	 * stays valid.
+	 */
+	_diffHtml(original, suggestion) {
+		const parts = diffArrays(tokenizeHtml(original), tokenizeHtml(suggestion));
+		const wrap = (tokens, tag, className) =>
+			tokens
+				.map((token) => (token.startsWith('<') ? token : `<${tag} class="${className}">${token}</${tag}>`))
+				.join('');
+		return parts
+			.map((part) => {
+				if (part.added) {
+					return wrap(part.value, 'ins', 'helfi-ai-tone__ins');
+				}
+				if (part.removed) {
+					return wrap(part.value, 'del', 'helfi-ai-tone__del');
+				}
+				return part.value.join('');
+			})
+			.join('');
 	}
 
 	/**
 	 * Shows (or re-renders) the tone-check dialog.
 	 */
 	_show(title, content, actionButtons) {
-		this.editor.plugins.get('Dialog').show({
+		const dialog = this.editor.plugins.get('Dialog');
+		dialog.show({
 			id: 'helfiAiToneCheck',
 			title,
 			content,
 			actionButtons,
+			// Mark the overlay and content so the theme can scope the dialog styles.
+			// ck-reset_all-excluded opts the content subtree out of CKEditor's reset.
+			onShow: () => {
+				dialog.view.element.classList.add('helfi-ai-tone__dialog');
+				dialog.view.contentView.element.classList.add('helfi-ai-tone__wrapper', 'ck-reset_all-excluded');
+			},
+			onHide: () => dialog.view.element.classList.remove('helfi-ai-tone__dialog'),
 		});
 	}
 
@@ -131,34 +185,92 @@ export default class HelfiAiToneCheckUi extends Plugin {
 		const view = new View(this.editor.locale);
 		view.setTemplate({
 			tag: 'div',
-			attributes: { class: ['helfi-ai-tone-check', 'helfi-ai-tone-check__message'] },
+			attributes: { class: ['helfi-ai-tone', 'helfi-ai-tone--message'] },
 			children: [message],
 		});
 		return view;
 	}
 
 	/**
-	 * Builds the original-vs-suggestion comparison dialog body.
+	 * Builds the tabbed comparison dialog body.
 	 *
 	 * The panes are left empty here; _checkTone fills them with sanitized HTML
 	 * after the dialog renders, so the content shows as rendered markup.
 	 */
-	_comparisonView() {
-		const column = (heading) => ({
-			tag: 'div',
-			attributes: { class: ['helfi-ai-tone-check__column'] },
-			children: [
-				{ tag: 'h3', attributes: { class: ['helfi-ai-tone-check__heading'] }, children: [heading] },
-				{ tag: 'div', attributes: { class: ['helfi-ai-tone-check__pane'] } },
-			],
+	_tabbedView() {
+		// A tab button in the tablist.
+		const tab = (id, label) => ({
+			tag: 'button',
+			attributes: { type: 'button', class: ['helfi-ai-tone__tab'], 'data-tab': id },
+			children: [label],
 		});
+		// An empty pane to fill after render.
+		const pane = (name) => ({
+			tag: 'div',
+			attributes: { class: ['helfi-ai-tone__pane'], 'data-pane': name },
+		});
+		// A headed column inside the comparison panel.
+		const column = (heading, name) => ({
+			tag: 'div',
+			attributes: { class: ['helfi-ai-tone__column'] },
+			children: [{ tag: 'h3', attributes: { class: ['helfi-ai-tone__heading'] }, children: [heading] }, pane(name)],
+		});
+		// A tab panel wrapping its content.
+		const panel = (id, children) => ({
+			tag: 'div',
+			attributes: { class: ['helfi-ai-tone__panel'], 'data-panel': id },
+			children,
+		});
+
 		const view = new View(this.editor.locale);
 		view.setTemplate({
 			tag: 'div',
-			attributes: { class: ['helfi-ai-tone-check', 'helfi-ai-tone-check__comparison'] },
-			children: [column(Drupal.t('Original', {}, CONTEXT)), column(Drupal.t('Suggestion', {}, CONTEXT))],
+			attributes: { class: ['helfi-ai-tone__content'] },
+			children: [
+				{
+					tag: 'div',
+					attributes: { class: ['helfi-ai-tone__tabs'] },
+					children: [
+						tab('comparison', Drupal.t('Comparison', {}, CONTEXT)),
+						tab('original', Drupal.t('Original text', {}, CONTEXT)),
+						tab('suggestion', Drupal.t('Suggested text', {}, CONTEXT)),
+						tab('diff', Drupal.t('Differences', {}, CONTEXT)),
+					],
+				},
+				{
+					tag: 'div',
+					attributes: { class: ['helfi-ai-tone__panels'] },
+					children: [
+						panel('comparison', [
+							{
+								tag: 'div',
+								attributes: { class: ['helfi-ai-tone__comparison'] },
+								children: [
+									column(Drupal.t('Original', {}, CONTEXT), 'comparison-original'),
+									column(Drupal.t('Suggestion', {}, CONTEXT), 'comparison-suggestion'),
+								],
+							},
+						]),
+						panel('original', [pane('original')]),
+						panel('suggestion', [pane('suggestion')]),
+						panel('diff', [pane('diff')]),
+					],
+				},
+			],
 		});
 		return view;
+	}
+
+	/**
+	 * Shows the panel for the given tab and marks its tab active.
+	 */
+	_activateTab(root, id) {
+		root.querySelectorAll('.helfi-ai-tone__tab').forEach((tab) => {
+			tab.classList.toggle('helfi-ai-tone__tab--active', tab.dataset.tab === id);
+		});
+		root.querySelectorAll('.helfi-ai-tone__panel').forEach((panel) => {
+			panel.classList.toggle('helfi-ai-tone__panel--active', panel.dataset.panel === id);
+		});
 	}
 
 	/**
