@@ -19,6 +19,7 @@ trait CharacterCounterFieldWidgetTrait {
     return [
       'counter_step' => 160,
       'counter_total' => 200,
+      'counter_max' => 0,
     ] + parent::defaultSettings();
   }
 
@@ -39,6 +40,14 @@ trait CharacterCounterFieldWidgetTrait {
       '#default_value' => $this->getSetting('counter_total'),
       '#required' => TRUE,
     ];
+    $element['counter_max'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Maximum text character count'),
+      '#description' => $this->t('Blocks input once reached. Set to 0 to disable.'),
+      '#default_value' => $this->getSetting('counter_max'),
+      '#min' => 0,
+      '#required' => TRUE,
+    ];
     return $element;
   }
 
@@ -49,6 +58,7 @@ trait CharacterCounterFieldWidgetTrait {
     $summary = parent::settingsSummary();
     $summary[] = $this->t('Suggestion text character count: @count', ['@count' => $this->getSetting('counter_step')]);
     $summary[] = $this->t('Warning text character count: @count', ['@count' => $this->getSetting('counter_total')]);
+    $summary[] = $this->t('Maximum text character count: @count', ['@count' => $this->getSetting('counter_max')]);
     return $summary;
   }
 
@@ -60,6 +70,7 @@ trait CharacterCounterFieldWidgetTrait {
     $element['value']['#character_counter'] = TRUE;
     $element['value']['#counter_step'] = $this->getSetting('counter_step');
     $element['value']['#counter_total'] = $this->getSetting('counter_total');
+    $element['value']['#counter_max'] = $this->getSetting('counter_max');
     return $element;
   }
 

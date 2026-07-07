@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\RevisionableStorageInterface;
 use Drupal\Core\Entity\TranslatableRevisionableInterface;
@@ -76,7 +77,7 @@ class EntityVersionMatcher {
    * Check whether the current entity is viewed as full entity,
    * entity preview or entity revision.
    *
-   * @return array
+   * @return array{'entity_version': 'canonical' | 'revision' | 'preview', 'entity': \Drupal\Core\Entity\EntityInterface|FALSE}
    *   Returns array with entity version and entity object.
    */
   public function getType() : array {
@@ -89,6 +90,7 @@ class EntityVersionMatcher {
         // Canonical.
         case "entity.$entity_type.canonical":
           $entity = $this->routeMatch->getParameter($entity_type);
+          assert($entity instanceof EntityInterface);
           break;
 
         // Revision.
