@@ -10,6 +10,7 @@ use Drupal\ai\OperationType\Chat\ChatMessage;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Rewrites editor content to conform to the standard tone of voice.
@@ -17,18 +18,18 @@ use Psr\Log\LoggerInterface;
  * Uses one prompt whose text is translated per language: the prompt is read in
  * the content's language so the language-specific tone guidance is applied.
  */
-class AiToneChecker {
+final readonly class AiToneChecker {
 
   /**
    * Config name of the tone-check prompt entity.
    */
-  private const PROMPT = 'ai.ai_prompt.helfi_tone_check__helfi_tone_check_default';
+  private const string PROMPT = 'ai.ai_prompt.helfi_tone_check__helfi_tone_check_default';
 
   public function __construct(
-    private readonly AiProviderPluginManager $aiProvider,
-    private readonly ConfigurableLanguageManagerInterface $languageManager,
-    private readonly ConfigFactoryInterface $configFactory,
-    private readonly LoggerInterface $logger,
+    #[Autowire(service: 'ai.provider')] private AiProviderPluginManager $aiProvider,
+    #[Autowire(service: 'language_manager')] private ConfigurableLanguageManagerInterface $languageManager,
+    private ConfigFactoryInterface $configFactory,
+    #[Autowire(service: 'logger.channel.helfi_ai')] private LoggerInterface $logger,
   ) {}
 
   /**
