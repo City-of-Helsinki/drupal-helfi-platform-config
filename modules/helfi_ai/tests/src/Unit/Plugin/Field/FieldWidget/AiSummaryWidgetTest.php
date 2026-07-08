@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ai\Unit\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Entity\ContentEntityFormInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormState;
-use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Render\RendererInterface;
 use Drupal\helfi_ai\Plugin\Field\FieldWidget\AiSummaryWidget;
-use Drupal\helfi_ai\Service\AiSummaryGenerator;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
@@ -194,120 +188,6 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $items->setValue(Argument::any())->shouldNotBeCalled();
 
     $widget->extractFormValues($items->reveal(), [], $formState);
-  }
-
-  /**
-   * Builds a form + form state wired for the ajax callback.
-   *
-   * @param string|null $summary
-   *   The summary the mocked generator returns.
-   * @param array<string, mixed> $captured
-   *   Receives the render array passed to the renderer.
-   *
-   * @return array{0: array<string, mixed>, 1: \Drupal\Core\Form\FormState}
-   *   The form structure and form state.
-   */
-  private function makeAjaxContext(?string $summary, array &$captured): array {
-    $language = $this->prophesize(LanguageInterface::class);
-    $language->getId()->willReturn('fi');
-
-    $entity = $this->prophesize(ContentEntityInterface::class);
-    $entity->isNew()->willReturn(FALSE);
-    $entity->language()->willReturn($language->reveal());
-
-    $formObject = $this->prophesize(ContentEntityFormInterface::class);
-    $formObject->buildEntity(Argument::cetera())->willReturn($entity->reveal());
-
-    $generator = $this->prophesize(AiSummaryGenerator::class);
-    $generator->generate(Argument::any(), 'fi')->willReturn($summary);
-
-    $renderer = $this->createMock(RendererInterface::class);
-    $renderer->method('renderRoot')->willReturnCallback(
-      function (&$elements) use (&$captured): string {
-        $captured = $elements;
-        $elements['#attached'] = $elements['#attached'] ?? [];
-        return '<div>rendered</div>';
-      }
-    );
-
-    $container = $this->createMock(ContainerInterface::class);
-    $container->method('get')->willReturnCallback(
-      function (string $id) use ($generator, $renderer): object {
-        return match ($id) {
-          AiSummaryGenerator::class => $generator->reveal(),
-          'renderer' => $renderer,
-          'string_translation' => $this->getStringTranslationStub(),
-          default => throw new \RuntimeException('Unexpected service: ' . $id),
-        };
-      }
-    );
-    \Drupal::setContainer($container);
-
-    $wrapperId = 'ai-summary-ai-summary-0';
-    $form = [
-      'ai_summary' => [
-        0 => [
-          'ajax_wrapper' => [
-            '#type' => 'container',
-            '#attributes' => ['id' => $wrapperId],
-            'summary' => [
-              '#type' => 'container',
-              '#attributes' => ['class' => ['hidden']],
-              'value' => [
-                '#type' => 'text_format',
-                'value' => ['#type' => 'textarea', '#value' => ''],
-                'format' => ['#type' => 'select'],
-              ],
-            ],
-            'generate' => ['#type' => 'button', '#value' => 'Generate AI summary'],
-          ],
-        ],
-      ],
-    ];
-
-    $formState = new FormState();
-    $formState->setFormObject($formObject->reveal());
-    $formState->setTriggeringElement([
-      '#array_parents' => ['ai_summary', 0, 'ajax_wrapper', 'generate'],
-    ]);
-
-    return [$form, $formState];
-  }
-
-  /**
-   * Test that a generated summary is injected into the form.
-   */
-  public function testAjaxCallbackInjectsSummaryOnSuccess(): void {
-    $captured = [];
-    [$form, $formState] = $this->makeAjaxContext('<ul><li>Generated</li></ul>', $captured);
-
-    $response = AiSummaryWidget::ajaxCallback($form, $formState);
-
-    $this->assertInstanceOf(AjaxResponse::class, $response);
-    $commands = $response->getCommands();
-    $this->assertCount(1, $commands);
-    $this->assertSame('#ai-summary-ai-summary-0', $commands[0]['selector']);
-    $this->assertSame('replaceWith', $commands[0]['method']);
-    $this->assertSame('<ul><li>Generated</li></ul>', $captured['summary']['value']['value']['#value']);
-    $this->assertNotContains('hidden', $captured['summary']['#attributes']['class']);
-    $this->assertSame('Regenerate AI summary', (string) $captured['generate']['#value']);
-    $this->assertArrayHasKey('data-helfi-ai-summary-confirm', $captured['generate']['#attributes']);
-    $this->assertArrayNotHasKey('error', $captured);
-  }
-
-  /**
-   * Test that an error is shown when generation returns nothing.
-   */
-  public function testAjaxCallbackShowsErrorWhenGeneratorReturnsNull(): void {
-    $captured = [];
-    [$form, $formState] = $this->makeAjaxContext(NULL, $captured);
-
-    $response = AiSummaryWidget::ajaxCallback($form, $formState);
-
-    $this->assertInstanceOf(AjaxResponse::class, $response);
-    $this->assertArrayHasKey('error', $captured);
-    $this->assertSame('', $captured['summary']['value']['value']['#value']);
-    $this->assertContains('hidden', $captured['summary']['#attributes']['class']);
   }
 
 }

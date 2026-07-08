@@ -15,11 +15,11 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
- * Tests AI SEO-title suggestion through the real AI provider stack.
+ * Tests AI title suggestion and summary generation through the AI provider.
  */
 #[Group('helfi_ai')]
 #[RunTestsInSeparateProcesses]
-class AiTitleSuggesterTest extends EntityKernelTestBase {
+class AiGeneratorTest extends EntityKernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -37,9 +37,9 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
   ];
 
   /**
-   * The title suggester under test.
+   * The generator under test.
    */
-  private AiGenerator $suggester;
+  private AiGenerator $generator;
 
   /**
    * {@inheritdoc}
@@ -83,7 +83,7 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
       ])
       ->save();
 
-    $this->suggester = $this->container->get(AiGenerator::class);
+    $this->generator = $this->container->get(AiGenerator::class);
   }
 
   /**
@@ -101,10 +101,10 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
   /**
    * A configured provider yields a non-empty, capped list of title candidates.
    */
-  public function testReturnsSuggestions(): void {
-    $node = $this->createNode('Suggester kernel title ' . $this->randomMachineName());
+  public function testSuggestTitlesReturnsSuggestions(): void {
+    $node = $this->createNode('Generator kernel title ' . $this->randomMachineName());
 
-    $suggestions = $this->suggester->suggestTitles($node);
+    $suggestions = $this->generator->suggestTitles($node);
 
     $this->assertNotEmpty($suggestions);
     $this->assertLessThanOrEqual(3, count($suggestions));
@@ -117,15 +117,15 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
   /**
    * Content larger than the byte cap is skipped.
    */
-  public function testReturnsEmptyWhenContentTooLarge(): void {
+  public function testSuggestTitlesReturnsEmptyWhenContentTooLarge(): void {
     $node = $this->createNode(str_repeat('A', 300 * 1024));
-    $this->assertSame([], $this->suggester->suggestTitles($node));
+    $this->assertSame([], $this->generator->suggestTitles($node));
   }
 
   /**
    * A missing prompt entity makes suggestion fail gracefully.
    */
-  public function testReturnsEmptyWhenPromptMissing(): void {
+  public function testSuggestTitlesReturnsEmptyWhenPromptMissing(): void {
     $this->container->get('entity_type.manager')
       ->getStorage('ai_prompt')
       ->load('helfi_seo_title__helfi_seo_title_default')
@@ -133,13 +133,13 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
 
     $node = $this->createNode('Title ' . $this->randomMachineName());
 
-    $this->assertSame([], $this->suggester->suggestTitles($node));
+    $this->assertSame([], $this->generator->suggestTitles($node));
   }
 
   /**
    * An unresolvable provider makes suggestion fail gracefully.
    */
-  public function testReturnsEmptyWhenProviderUnavailable(): void {
+  public function testSuggestTitlesReturnsEmptyWhenProviderUnavailable(): void {
     $this->config('ai.settings')
       ->set('default_providers', [
         'chat' => ['provider_id' => 'no_such_provider', 'model_id' => 'test'],
@@ -148,7 +148,51 @@ class AiTitleSuggesterTest extends EntityKernelTestBase {
 
     $node = $this->createNode('Title ' . $this->randomMachineName());
 
-    $this->assertSame([], $this->suggester->suggestTitles($node));
+    $this->assertSame([], $this->generator->suggestTitles($node));
+  }
+
+  /**
+   * A configured provider yields an HTML bullet-list summary of the content.
+   */
+  public function testGenerateSummaryReturnsSummary(): void {
+    $title = 'Generator kernel title ' . $this->randomMachineName();
+    $node = $this->createNode($title);
+
+    $summary = $this->generator->generateSummary($node);
+
+    $this->assertNotNull($summary);
+    $this->assertStringStartsWith('<ul><li>', $summary);
+    $this->assertStringEndsWith('</li></ul>', $summary);
+    $this->assertStringContainsString($title, $summary);
+  }
+
+  /**
+   * A missing prompt entity makes generation fail gracefully.
+   */
+  public function testGenerateSummaryReturnsNullWhenPromptMissing(): void {
+    $this->container->get('entity_type.manager')
+      ->getStorage('ai_prompt')
+      ->load('helfi_content_summary__helfi_content_summary_default')
+      ->delete();
+
+    $node = $this->createNode('Title ' . $this->randomMachineName());
+
+    $this->assertNull($this->generator->generateSummary($node));
+  }
+
+  /**
+   * An unresolvable provider makes generation fail gracefully.
+   */
+  public function testGenerateSummaryReturnsNullWhenProviderUnavailable(): void {
+    $this->config('ai.settings')
+      ->set('default_providers', [
+        'chat' => ['provider_id' => 'no_such_provider', 'model_id' => 'test'],
+      ])
+      ->save();
+
+    $node = $this->createNode('Title ' . $this->randomMachineName());
+
+    $this->assertNull($this->generator->generateSummary($node));
   }
 
 }

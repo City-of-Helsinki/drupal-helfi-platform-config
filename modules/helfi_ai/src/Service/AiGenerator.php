@@ -50,6 +50,10 @@ final readonly class AiGenerator {
     $message = $this
       ->getChatMessage($content, $entity->language()->getName(), 'helfi_seo_title__helfi_seo_title_default');
 
+    if (!$message) {
+      return [];
+    }
+
     $titles = [];
     foreach (explode("\n", $message->getText()) as $line) {
       // Strip list markers then trim whitespace and quotes.
@@ -79,6 +83,10 @@ final readonly class AiGenerator {
     }
     $message = $this
       ->getChatMessage($content, $entity->language()->getName(), 'helfi_content_summary__helfi_content_summary_default');
+
+    if (!$message) {
+      return NULL;
+    }
 
     // Treat each non-empty line of the reply as one bullet.
     $lines = array_filter(
