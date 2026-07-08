@@ -1,7 +1,30 @@
-# Append the tone-check button to the Full HTML CKEditor 5 toolbar.
-# config_rewrite merges sequential lists by appending, so this adds the button
-# to the end of the existing toolbar without redefining it.
+config_rewrite:
+  replace: [
+    'settings.toolbar.items',
+  ]
 settings:
   toolbar:
     items:
+      - bold
+      - italic
+      - strikethrough
+      - superscript
+      - subscript
+      - removeFormat
+      - heading
+      - '|'
+      - bulletedList
+      - numberedList
+      - '|'
+      - link
+      - helfiQuote
+      - insertTable
+      - helfiLanguageSelector
+      - specialCharacters
+      - '|'
+      - undo
+      - redo
+      - '|'
       - helfiAiToneCheck
+      - '|'
+      - sourceEditing
