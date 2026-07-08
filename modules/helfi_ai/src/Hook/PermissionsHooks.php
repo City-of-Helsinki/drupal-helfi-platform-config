@@ -27,6 +27,8 @@ class PermissionsHooks {
       'admin' => $permissions,
       'editor' => $permissions,
       'content_producer' => $permissions,
+      // @todo This needs a proper permission after the PoC period.
+      'survey_editor' => ['manage ai prompts'],
     ];
   }
 
