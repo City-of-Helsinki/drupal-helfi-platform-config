@@ -8,8 +8,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgctxt "helfi_ai"
-msgid "Suggest SEO title"
-msgstr "Föreslå SEO-rubrik"
+msgid "Generate SEO title with AI"
+msgstr "Skapa SEO-titel med AI"
 
 msgctxt "helfi_ai"
 msgid "Generating title suggestions…"

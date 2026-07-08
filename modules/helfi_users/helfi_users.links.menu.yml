@@ -1,0 +1,5 @@
+helfi_users.my_pages:
+  title: 'My pages'
+  parent: system.admin_content
+  route_name: user.page
+  weight: -100

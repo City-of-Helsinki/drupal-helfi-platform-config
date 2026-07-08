@@ -1,6 +1,9 @@
 msgid ""
 msgstr ""
 
+msgid "My pages"
+msgstr "Omat sivut"
+
 msgid "Ban the account and keep their content."
 msgstr "Estä käyttäjä ja säilytä luotu sisältö."
 

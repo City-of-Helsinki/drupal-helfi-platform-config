@@ -19,7 +19,7 @@ use Drupal\helfi_ai\Service\AiGenerator;
 use Drupal\node\NodeInterface;
 
 /**
- * Adds an AI "Suggest SEO title" button next to the node title field.
+ * Adds an AI "Generate SEO title with AI" button next to the node title field.
  */
 final class FormHooks {
 
@@ -160,7 +160,7 @@ final class FormHooks {
       '#weight' => ($form['title']['widget'][0]['value']['#weight'] ?? 0) + 0.5,
       'button' => [
         '#type' => 'button',
-        '#value' => new TranslatableMarkup('Suggest SEO title', options: ['context' => 'helfi_ai']),
+        '#value' => new TranslatableMarkup('Generate SEO title with AI', options: ['context' => 'helfi_ai']),
         '#name' => 'helfi_ai_suggest_title',
         '#attributes' => ['class' => ['button--small']],
         '#ajax' => [
