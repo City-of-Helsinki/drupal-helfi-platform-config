@@ -14,7 +14,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\helfi_ai\Form\TitleSuggestionFormAlter;
 use Drupal\helfi_ai\PreviewEntityBuilder;
 use Drupal\helfi_ai\Service\AiGenerator;
 use Drupal\node\NodeInterface;
@@ -25,11 +24,6 @@ use Drupal\node\NodeInterface;
 final class FormHooks {
 
   use DependencySerializationTrait;
-
-  /**
-   * Permission required to use the title suggester.
-   */
-  private const string PERMISSION = 'use helfi ai title suggestion';
 
   public function __construct(
     private readonly AccountInterface $currentUser,
@@ -69,7 +63,7 @@ final class FormHooks {
       return FALSE;
     }
 
-    if (!$this->currentUser->hasPermission(self::PERMISSION)) {
+    if (!$this->currentUser->hasPermission('use helfi ai title suggestion')) {
       return FALSE;
     }
     return TRUE;
