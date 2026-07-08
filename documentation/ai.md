@@ -134,3 +134,15 @@ $ai = \Drupal::service('ai.provider');
 $input = new ChatInput([new ChatMessage('user', $text)]);
 $answer = $provider->chat($input, $model)->getNormalized()->getText();
 ```
+
+## SEO title suggestions
+
+The `helfi_ai` module adds an AI **Generate SEO title with AI** button next to the node title field. It builds the unsaved node from the current form values, strips it to plain text, and asks the chat provider for a few GEO/SEO-optimized title candidates, shown in a modal for the editor to pick from. The chosen title fills the title field and can still be edited before saving.
+
+| Aspect | Value |
+|---|---|
+| Prompt | `ai.ai_prompt.helfi_seo_title__helfi_seo_title_default` (type `helfi_seo_title`) |
+| Permission | `use helfi ai title suggestion` (granted to `admin`, `editor`, `content_producer`) |
+| Content types | `helfi_ai.settings:seo_title_bundles` (defaults to `page`) |
+
+The content types offering the button are read from configuration, so an instance can adjust them by overriding `seo_title_bundles` — no code change required. The prompt is shipped as config and tuned there; it instructs the model to respond in the page's language, so no per-language prompt is needed.

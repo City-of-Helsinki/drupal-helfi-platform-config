@@ -1,0 +1,5 @@
+helfi_ai.prompts:
+  title: 'AI prompts'
+  parent: hdbt_admin_tools.overview
+  route_name: entity.ai_prompt.collection
+  weight: 10

@@ -6,6 +6,17 @@ ai_summary_confirm:
     - core/drupal
     - core/once
 
+# Applies a chosen AI SEO-title suggestion to the node title field.
+title_suggest:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    js/ai-title-suggest.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - core/jquery
+    - core/drupal.dialog
+
 # Tone-check CKEditor 5 plugin.
 tone_check:
   version: HELFI_DEPLOYMENT_IDENTIFIER

@@ -4,7 +4,7 @@ display:
   default:
     display_title: Oletus
     display_options:
-      title: 'Omat sisällöt'
+      title: 'Omat sivut'
       fields:
         content_translation_outdated:
           label: 'Käännös vanhentunut'

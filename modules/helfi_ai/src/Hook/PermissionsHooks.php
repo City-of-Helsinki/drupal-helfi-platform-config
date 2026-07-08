@@ -14,19 +14,15 @@ class PermissionsHooks {
   /**
    * Implements hook_platform_config_grant_permissions().
    *
-   * Grants the AI tone check permission to the editorial roles that edit
-   * content. helfi_platform_config applies these on install and on every config
-   * update, so existing sites pick the grant up on the next release without a
-   * manual step. Only guaranteed base roles are listed — instance-specific
-   * roles (e.g. news_producer) are not present everywhere and would fail the
-   * grant on a fresh install.
-   *
    * @return array<string, string[]>
    *   Permissions to grant, keyed by role ID.
    */
   #[Hook('platform_config_grant_permissions')]
   public function grantPermissions(): array {
-    $permissions = ['use helfi ai tone check'];
+    $permissions = [
+      'use helfi ai title suggestion',
+      'use helfi ai tone check',
+    ];
     return [
       'admin' => $permissions,
       'editor' => $permissions,

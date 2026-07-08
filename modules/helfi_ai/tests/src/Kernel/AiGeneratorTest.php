@@ -7,7 +7,7 @@ namespace Drupal\Tests\helfi_ai\Kernel;
 use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\Entity\EntityViewMode;
-use Drupal\helfi_ai\Service\AiSummaryGenerator;
+use Drupal\helfi_ai\Service\AiGenerator;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -15,17 +15,11 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
- * Tests AI summary generation through the real AI provider stack.
- *
- * Runs the generator against the AI module's echoai test provider, so the whole
- * chain is exercised for real (provider resolution, prompt building, the chat
- * call, and HTML bullet conversion) without any external service or API key.
- * The echoai provider echoes the prompt back, which the generator wraps as a
- * bullet list.
+ * Tests AI title suggestion and summary generation through the AI provider.
  */
 #[Group('helfi_ai')]
 #[RunTestsInSeparateProcesses]
-class AiSummaryGeneratorTest extends EntityKernelTestBase {
+class AiGeneratorTest extends EntityKernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -43,9 +37,9 @@ class AiSummaryGeneratorTest extends EntityKernelTestBase {
   ];
 
   /**
-   * The summary generator under test.
+   * The generator under test.
    */
-  private AiSummaryGenerator $generator;
+  private AiGenerator $generator;
 
   /**
    * {@inheritdoc}
@@ -89,7 +83,7 @@ class AiSummaryGeneratorTest extends EntityKernelTestBase {
       ])
       ->save();
 
-    $this->generator = $this->container->get(AiSummaryGenerator::class);
+    $this->generator = $this->container->get(AiGenerator::class);
   }
 
   /**
@@ -105,42 +99,47 @@ class AiSummaryGeneratorTest extends EntityKernelTestBase {
   }
 
   /**
-   * A configured provider yields an HTML bullet-list summary of the content.
+   * A configured provider yields a non-empty, capped list of title candidates.
    */
-  public function testGeneratesSummary(): void {
-    $title = 'Generator kernel title ' . $this->randomMachineName();
-    $node = $this->createNode($title);
+  public function testSuggestTitlesReturnsSuggestions(): void {
+    $node = $this->createNode('Generator kernel title ' . $this->randomMachineName());
 
-    $summary = $this->generator->generate($node, $node->language()->getId());
+    $suggestions = $this->generator->suggestTitles($node);
 
-    $this->assertNotNull($summary);
-    // Output is a bullet list built from the provider reply.
-    $this->assertStringStartsWith('<ul><li>', $summary);
-    $this->assertStringEndsWith('</li></ul>', $summary);
-    // The echoai provider echoes the prompt back, so the node content has
-    // travelled the full chain (prompt build → chat call → bullet conversion)
-    // into the summary.
-    $this->assertStringContainsString($title, $summary);
+    $this->assertNotEmpty($suggestions);
+    $this->assertLessThanOrEqual(3, count($suggestions));
+    foreach ($suggestions as $suggestion) {
+      $this->assertIsString($suggestion);
+      $this->assertNotSame('', trim($suggestion));
+    }
   }
 
   /**
-   * A missing prompt entity makes generation fail gracefully (NULL).
+   * Content larger than the byte cap is skipped.
    */
-  public function testReturnsNullWhenPromptMissing(): void {
+  public function testSuggestTitlesReturnsEmptyWhenContentTooLarge(): void {
+    $node = $this->createNode(str_repeat('A', 300 * 1024));
+    $this->assertSame([], $this->generator->suggestTitles($node));
+  }
+
+  /**
+   * A missing prompt entity makes suggestion fail gracefully.
+   */
+  public function testSuggestTitlesReturnsEmptyWhenPromptMissing(): void {
     $this->container->get('entity_type.manager')
       ->getStorage('ai_prompt')
-      ->load('helfi_content_summary__helfi_content_summary_default')
+      ->load('helfi_seo_title__helfi_seo_title_default')
       ->delete();
 
     $node = $this->createNode('Title ' . $this->randomMachineName());
 
-    $this->assertNull($this->generator->generate($node, $node->language()->getId()));
+    $this->assertSame([], $this->generator->suggestTitles($node));
   }
 
   /**
-   * An unresolvable provider makes generation fail gracefully (NULL).
+   * An unresolvable provider makes suggestion fail gracefully.
    */
-  public function testReturnsNullWhenProviderUnavailable(): void {
+  public function testSuggestTitlesReturnsEmptyWhenProviderUnavailable(): void {
     $this->config('ai.settings')
       ->set('default_providers', [
         'chat' => ['provider_id' => 'no_such_provider', 'model_id' => 'test'],
@@ -149,7 +148,51 @@ class AiSummaryGeneratorTest extends EntityKernelTestBase {
 
     $node = $this->createNode('Title ' . $this->randomMachineName());
 
-    $this->assertNull($this->generator->generate($node, $node->language()->getId()));
+    $this->assertSame([], $this->generator->suggestTitles($node));
+  }
+
+  /**
+   * A configured provider yields an HTML bullet-list summary of the content.
+   */
+  public function testGenerateSummaryReturnsSummary(): void {
+    $title = 'Generator kernel title ' . $this->randomMachineName();
+    $node = $this->createNode($title);
+
+    $summary = $this->generator->generateSummary($node);
+
+    $this->assertNotNull($summary);
+    $this->assertStringStartsWith('<ul><li>', $summary);
+    $this->assertStringEndsWith('</li></ul>', $summary);
+    $this->assertStringContainsString($title, $summary);
+  }
+
+  /**
+   * A missing prompt entity makes generation fail gracefully.
+   */
+  public function testGenerateSummaryReturnsNullWhenPromptMissing(): void {
+    $this->container->get('entity_type.manager')
+      ->getStorage('ai_prompt')
+      ->load('helfi_content_summary__helfi_content_summary_default')
+      ->delete();
+
+    $node = $this->createNode('Title ' . $this->randomMachineName());
+
+    $this->assertNull($this->generator->generateSummary($node));
+  }
+
+  /**
+   * An unresolvable provider makes generation fail gracefully.
+   */
+  public function testGenerateSummaryReturnsNullWhenProviderUnavailable(): void {
+    $this->config('ai.settings')
+      ->set('default_providers', [
+        'chat' => ['provider_id' => 'no_such_provider', 'model_id' => 'test'],
+      ])
+      ->save();
+
+    $node = $this->createNode('Title ' . $this->randomMachineName());
+
+    $this->assertNull($this->generator->generateSummary($node));
   }
 
 }
