@@ -19,11 +19,6 @@ use Prophecy\Argument;
 
 /**
  * Tests the AI summary field widget's AJAX callback.
- *
- * AiSummaryWidget::ajaxCallback() fetches AiGenerator via the service
- * locator. AiGenerator is final (and depends on the also-final
- * AiProviderPluginManager), so it cannot be mocked; this exercises the
- * callback with the real service, backed by the echoai test provider.
  */
 #[Group('helfi_ai')]
 #[RunTestsInSeparateProcesses]

@@ -24,13 +24,6 @@ use Prophecy\Argument;
 
 /**
  * Tests the suggest-title AJAX callback through the real AI provider stack.
- *
- * AiGenerator is final (and depends on the also-final
- * AiProviderPluginManager), so it cannot be mocked. This exercises
- * FormHooks::buildSuggestionResponse() with the real service, backed by the
- * echoai test provider, only doubling the FormStateInterface/
- * ContentEntityFormInterface plumbing that a real form submission would
- * otherwise supply.
  */
 #[Group('helfi_ai')]
 #[RunTestsInSeparateProcesses]
@@ -146,7 +139,7 @@ class FormHooksTest extends EntityKernelTestBase {
    * @return array<string, mixed>
    *   The command's rendered attributes.
    */
-  private static function dialogCommand(AjaxResponse $response): array {
+  private function dialogCommand(AjaxResponse $response): array {
     $commands = $response->getCommands();
     return $commands[0];
   }
@@ -160,7 +153,7 @@ class FormHooksTest extends EntityKernelTestBase {
 
     $response = $this->hooks->buildSuggestionResponse($form, $this->formStateFor($node));
 
-    $command = self::dialogCommand($response);
+    $command = $this->dialogCommand($response);
     $this->assertSame('openDialog', $command['command']);
     $this->assertSame('#drupal-modal', $command['selector']);
     $this->assertSame('helfi-ai-dialog', $command['dialogOptions']['classes']['ui-dialog']);
@@ -175,7 +168,7 @@ class FormHooksTest extends EntityKernelTestBase {
 
     $response = $this->hooks->buildSuggestionResponse($form, $this->nonContentEntityFormState());
 
-    $command = self::dialogCommand($response);
+    $command = $this->dialogCommand($response);
     $this->assertSame('openDialog', $command['command']);
     $this->assertStringContainsString('Could not read the page content.', (string) $command['data']);
   }
@@ -195,7 +188,7 @@ class FormHooksTest extends EntityKernelTestBase {
 
     $response = $this->hooks->buildSuggestionResponse($form, $this->formStateFor($node));
 
-    $command = self::dialogCommand($response);
+    $command = $this->dialogCommand($response);
     $this->assertSame('openDialog', $command['command']);
     $this->assertStringContainsString('Could not generate title suggestions.', (string) $command['data']);
   }
