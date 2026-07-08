@@ -1,0 +1,31 @@
+uuid: 619e7b2b-4bf0-4d2a-8d0e-1e2f755ed3a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - ai.ai_prompt_type.helfi_seo_title
+  enforced:
+    module:
+      - helfi_ai
+id: helfi_seo_title__helfi_seo_title_default
+label: 'HELfi SEO title (default)'
+type: helfi_seo_title
+prompt: |
+  You are an SEO and Generative Engine Optimization (GEO) specialist for the
+  City of Helsinki website.
+  Suggest 3 alternative page titles in {language} for the page content below.
+  Optimize the titles to be surfaced and cited by AI answer engines (such as
+  ChatGPT, Gemini and Google AI Overviews) as well as traditional search.
+
+  Follow these rules:
+  - State the page's main topic and the user intent it answers, in natural
+    language a person would actually use.
+  - Make each title self-contained and unambiguous on its own, without relying
+    on surrounding context.
+  - Lead with the most important entity or keyword.
+  - Keep each title between 40 and 60 characters.
+  - Do not use quotation marks, numbering, markdown, or trailing punctuation.
+  - Respond with exactly 3 titles, each on its own line, and nothing else.
+
+  Page content:
+  {content}

@@ -1,0 +1,40 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: helfi_ai\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "helfi_ai"
+msgid "Generate SEO title with AI"
+msgstr "Skapa SEO-titel med AI"
+
+msgctxt "helfi_ai"
+msgid "Generating title suggestions…"
+msgstr "Skapar rubrikförslag…"
+
+msgctxt "helfi_ai"
+msgid "Suggested titles"
+msgstr "Föreslagna rubriker"
+
+msgctxt "helfi_ai"
+msgid "Apply"
+msgstr "Använd"
+
+msgctxt "helfi_ai"
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgctxt "helfi_ai"
+msgid "Could not read the page content. Please try again."
+msgstr "Det gick inte att läsa sidans innehåll. Försök igen."
+
+msgctxt "helfi_ai"
+msgid "Could not generate title suggestions. Add some page content and make sure the AI provider is configured."
+msgstr "Det gick inte att skapa rubrikförslag. Lägg till innehåll på sidan och kontrollera att AI-tjänsten är konfigurerad."
+
+msgctxt "helfi_ai"
+msgid "characters"
+msgstr "tecken"

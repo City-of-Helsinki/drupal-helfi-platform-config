@@ -7,6 +7,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgid "AI prompts"
+msgstr "Tekoälykehotteet"
+
+msgctxt "helfi_ai"
+msgid "Generate SEO title with AI"
+msgstr "Luo SEO-otsikko tekoälyllä"
+
+msgctxt "helfi_ai"
+msgid "Generating title suggestions…"
+msgstr "Luodaan otsikkoehdotuksia…"
+
+msgctxt "helfi_ai"
+msgid "Suggested titles"
+msgstr "Ehdotetut otsikot"
+
+msgctxt "helfi_ai"
+msgid "Apply"
+msgstr "Käytä"
+
+msgctxt "helfi_ai"
+msgid "Cancel"
+msgstr "Peruuta"
+
+msgctxt "helfi_ai"
+msgid "Could not read the page content. Please try again."
+msgstr "Sivun sisältöä ei voitu lukea. Yritä uudelleen."
+
+msgctxt "helfi_ai"
+msgid "Could not generate title suggestions. Add some page content and make sure the AI provider is configured."
+msgstr "Otsikkoehdotuksia ei voitu luoda. Lisää sivulle sisältöä ja varmista, että tekoälypalvelu on määritetty."
+
 msgctxt "helfi_ai"
 msgid "AI summary"
 msgstr "Tekoälytiivistelmä"
