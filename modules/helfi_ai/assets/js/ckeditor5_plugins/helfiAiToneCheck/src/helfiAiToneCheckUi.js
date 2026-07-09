@@ -1,9 +1,5 @@
 /**
- * @file Adds the "Check tone" toolbar button.
- *
- * Clicking it sends the full editor content to the helfi_ai tone-check endpoint
- * and opens a dialog showing the original and the suggested rewrite side by
- * side. Confirming replaces the whole editor content with the suggestion.
+ * @file Add the Check tone toolbar button and comparison dialog.
  */
 
 import { Plugin } from 'ckeditor5/src/core';
@@ -11,7 +7,7 @@ import { ButtonView, Dialog, View } from 'ckeditor5/src/ui';
 import { diffArrays } from 'diff';
 import icon from '../../../../icons/helfiAiToneCheck.svg';
 
-// Split HTML into atomic tokens: whole tags, whitespace runs, and words.
+// Split HTML into tag, whitespace, and word tokens.
 const tokenizeHtml = (html) => {
 	return html.match(/<[^>]+>|\s+|[^<\s]+/g) ?? [];
 };
@@ -41,7 +37,7 @@ export default class HelfiAiToneCheckUi extends Plugin {
 	}
 
 	/**
-	 * Requests a tone-conforming rewrite and shows the comparison dialog.
+	 * Check the tone and show the dialog.
 	 */
 	async _checkTone() {
 		const { editor } = this;
@@ -92,14 +88,7 @@ export default class HelfiAiToneCheckUi extends Plugin {
 				label: Drupal.t('Replace the content with an AI-generated version', {}, { context: 'Helfi AI' }),
 				withText: true,
 				class: 'ck-reset_all-excluded helfi-ai-tone__reset',
-				onCreate: (button) => {
-					const classes = button.labelView.template.attributes.class;
-					const i = classes.indexOf('ck-button__label');
-					if (i !== -1) {
-						classes.splice(i, 1);
-					}
-					classes.push('button', 'button--small', 'button--primary');
-				},
+				onCreate: this._styleActionButton('primary'),
 				onExecute: () => {
 					editor.setData(suggestion);
 					editor.plugins.get('Dialog').hide();
@@ -109,22 +98,12 @@ export default class HelfiAiToneCheckUi extends Plugin {
 				label: Drupal.t('Cancel'),
 				withText: true,
 				class: 'ck-reset_all-excluded helfi-ai-tone__reset',
-				onCreate: (button) => {
-					const classes = button.labelView.template.attributes.class;
-					const i = classes.indexOf('ck-button__label');
-					if (i !== -1) {
-						classes.splice(i, 1);
-					}
-					classes.push('button', 'button--small', 'button--secondary');
-				},
+				onCreate: this._styleActionButton('secondary'),
 				onExecute: () => editor.plugins.get('Dialog').hide(),
 			},
 		]);
 
-		// The dialog is now rendered in the DOM; fill the panes with sanitized
-		// HTML so the content shows as rendered markup. Setting innerHTML (rather
-		// than passing text through the template) is what renders it as HTML; the
-		// sanitizer is what keeps that safe.
+		// Fill the panes with sanitized HTML after the dialog renders.
 		const root = editor.plugins.get('Dialog').view.element;
 		const originalHtml = this._previewHtml(original);
 		const suggestionHtml = this._previewHtml(suggestion);
@@ -141,7 +120,6 @@ export default class HelfiAiToneCheckUi extends Plugin {
 		fill('original', originalHtml);
 		fill('suggestion', suggestionHtml);
 
-		// Wire tab switching and open the default tab.
 		root.querySelectorAll('.helfi-ai-tone__tab').forEach((tab) => {
 			tab.addEventListener('click', () => this._activateTab(root, tab.dataset.tab));
 		});
@@ -149,32 +127,7 @@ export default class HelfiAiToneCheckUi extends Plugin {
 	}
 
 	/**
-	 * Highlights insertions and deletions between the original and suggestion.
-	 *
-	 * Tags are emitted as-is; only text tokens are wrapped so the preview markup
-	 * stays valid.
-	 */
-	_diffHtml(original, suggestion) {
-		const parts = diffArrays(tokenizeHtml(original), tokenizeHtml(suggestion));
-		const wrap = (tokens, tag, className) =>
-			tokens
-				.map((token) => (token.startsWith('<') ? token : `<${tag} class="${className}">${token}</${tag}>`))
-				.join('');
-		return parts
-			.map((part) => {
-				if (part.added) {
-					return wrap(part.value, 'ins', 'helfi-ai-tone__ins');
-				}
-				if (part.removed) {
-					return wrap(part.value, 'del', 'helfi-ai-tone__del');
-				}
-				return part.value.join('');
-			})
-			.join('');
-	}
-
-	/**
-	 * Shows (or re-renders) the tone-check dialog.
+	 * Show or re-render the tone-check dialog.
 	 */
 	_show(title, content, actionButtons, variant = 'default') {
 		const dialog = this.editor.plugins.get('Dialog');
@@ -183,8 +136,6 @@ export default class HelfiAiToneCheckUi extends Plugin {
 			title,
 			content,
 			actionButtons,
-			// Mark the overlay and content so the theme can scope the dialog styles.
-			// ck-reset_all-excluded opts the content subtree out of CKEditor's reset.
 			onShow: () => {
 				const { element } = dialog.view;
 				element.classList.add('helfi-ai-tone__dialog', 'ck-reset_all-excluded');
@@ -202,7 +153,7 @@ export default class HelfiAiToneCheckUi extends Plugin {
 	}
 
 	/**
-	 * Builds a single-message dialog body (loading or error states).
+	 * Build the loading or error dialog body.
 	 */
 	_messageView(message) {
 		const view = new View(this.editor.locale);
@@ -215,30 +166,23 @@ export default class HelfiAiToneCheckUi extends Plugin {
 	}
 
 	/**
-	 * Builds the tabbed comparison dialog body.
-	 *
-	 * The panes are left empty here; _checkTone fills them with sanitized HTML
-	 * after the dialog renders, so the content shows as rendered markup.
+	 * Build the tabbed comparison dialog body.
 	 */
 	_tabbedView() {
-		// A tab button in the tablist.
 		const tab = (id, label) => ({
 			tag: 'button',
 			attributes: { type: 'button', class: ['helfi-ai-tone__tab'], 'data-tab': id },
 			children: [label],
 		});
-		// An empty pane to fill after render.
 		const pane = (name) => ({
 			tag: 'div',
 			attributes: { class: ['helfi-ai-tone__pane', 'ck-content'], 'data-pane': name },
 		});
-		// A headed column inside the comparison panel.
 		const column = (heading, name) => ({
 			tag: 'div',
 			attributes: { class: ['helfi-ai-tone__column'] },
 			children: [{ tag: 'h3', attributes: { class: ['helfi-ai-tone__heading'] }, children: [heading] }, pane(name)],
 		});
-		// A tab panel wrapping its content.
 		const panel = (id, children) => ({
 			tag: 'div',
 			attributes: { class: ['helfi-ai-tone__panel'], 'data-panel': id },
@@ -283,7 +227,7 @@ export default class HelfiAiToneCheckUi extends Plugin {
 	}
 
 	/**
-	 * Shows the panel for the given tab and marks its tab active.
+	 * Show the panel for the given tab and mark its tab active.
 	 */
 	_activateTab(root, id) {
 		root.querySelectorAll('.helfi-ai-tone__tab').forEach((tab) => {
@@ -295,14 +239,29 @@ export default class HelfiAiToneCheckUi extends Plugin {
 	}
 
 	/**
-	 * Returns HTML to preview, sanitized by the editor's own conversion.
-	 *
-	 * The panes render via innerHTML, which bypasses CKEditor — so raw suggestion
-	 * markup must not be injected as-is. Round-tripping through the editor's data
-	 * pipeline (view → model → data) drops anything the text format does not
-	 * allow (scripts, event handlers, unknown elements) using the *same* rules as
-	 * the editor, and makes the preview match what Replace will produce. On any
-	 * conversion error it falls back to escaped plain text (never raw HTML).
+	 * Highlight insertions and deletions between original and suggested content.
+	 */
+	_diffHtml(original, suggestion) {
+		const parts = diffArrays(tokenizeHtml(original), tokenizeHtml(suggestion));
+		const wrap = (tokens, tag, className) =>
+			tokens
+				.map((token) => (token.startsWith('<') ? token : `<${tag} class="${className}">${token}</${tag}>`))
+				.join('');
+		return parts
+			.map((part) => {
+				if (part.added) {
+					return wrap(part.value, 'ins', 'helfi-ai-tone__ins');
+				}
+				if (part.removed) {
+					return wrap(part.value, 'del', 'helfi-ai-tone__del');
+				}
+				return part.value.join('');
+			})
+			.join('');
+	}
+
+	/**
+	 * Return the HTML through the editor's own conversion.
 	 */
 	_previewHtml(html) {
 		const { data } = this.editor;
@@ -317,22 +276,29 @@ export default class HelfiAiToneCheckUi extends Plugin {
 	}
 
 	/**
-	 * A single "Cancel" action button that hides the dialog.
+	 * Swap CKEditor's default label class for Gin button classes.
+	 */
+	_styleActionButton(modifier) {
+		return (button) => {
+			const classes = button.labelView.template.attributes.class;
+			const i = classes.indexOf('ck-button__label');
+			if (i !== -1) {
+				classes.splice(i, 1);
+			}
+			classes.push('button', 'button--small', `button--${modifier}`);
+		};
+	}
+
+	/**
+	 * Build the Close action button that hides the dialog.
 	 */
 	_closeButton() {
 		return {
 			label: Drupal.t('Close', {}, { context: 'Helfi AI' }),
 			withText: true,
 			class: 'ck-reset_all-excluded helfi-ai-tone__reset',
+			onCreate: this._styleActionButton('secondary'),
 			onExecute: () => this.editor.plugins.get('Dialog').hide(),
-			onCreate: (button) => {
-				const classes = button.labelView.template.attributes.class;
-				const i = classes.indexOf('ck-button__label');
-				if (i !== -1) {
-					classes.splice(i, 1);
-				}
-				classes.push('button', 'button--small', 'button--secondary');
-			},
 		};
 	}
 }
