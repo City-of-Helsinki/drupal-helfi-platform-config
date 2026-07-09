@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\config_rewrite\ConfigRewriterInterface;
 use Drupal\Core\Template\Attribute;
+use Drupal\helfi_base_content\Entity\ParagraphFromLibrary;
 
 /**
  * Implements hook_platform_config_grant_permissions().
@@ -671,5 +672,14 @@ function helfi_base_content_preprocess_social_media_links(&$variables): void {
           ->__toString();
       }
     }
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function helfi_base_content_entity_bundle_info_alter(array &$bundles): void {
+  if (isset($bundles['paragraph']['from_library'])) {
+    $bundles['paragraph']['from_library']['class'] = ParagraphFromLibrary::class;
   }
 }
