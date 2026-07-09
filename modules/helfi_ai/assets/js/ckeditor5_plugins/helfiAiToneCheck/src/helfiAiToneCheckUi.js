@@ -6,18 +6,15 @@
  * side. Confirming replaces the whole editor content with the suggestion.
  */
 
-import { diffArrays } from 'diff';
 import { Plugin } from 'ckeditor5/src/core';
 import { ButtonView, Dialog, View } from 'ckeditor5/src/ui';
+import { diffArrays } from 'diff';
 import icon from '../../../../icons/helfiAiToneCheck.svg';
 
-// Translation context shared by all user-facing strings in this plugin.
-const CONTEXT = { context: 'CKEditor5 Helfi AI tone check plugin' };
-
 // Split HTML into atomic tokens: whole tags, whitespace runs, and words.
-function tokenizeHtml(html) {
+const tokenizeHtml = (html) => {
 	return html.match(/<[^>]+>|\s+|[^<\s]+/g) ?? [];
-}
+};
 
 export default class HelfiAiToneCheckUi extends Plugin {
 	static get requires() {
@@ -34,7 +31,7 @@ export default class HelfiAiToneCheckUi extends Plugin {
 		editor.ui.componentFactory.add('helfiAiToneCheck', (locale) => {
 			const button = new ButtonView(locale);
 			button.set({
-				label: Drupal.t('Check tone', {}, CONTEXT),
+				label: Drupal.t('Check tone', {}, { context: 'Helfi AI' }),
 				icon,
 				tooltip: true,
 			});
@@ -56,9 +53,10 @@ export default class HelfiAiToneCheckUi extends Plugin {
 		}
 
 		this._show(
-			Drupal.t('Checking tone…', {}, CONTEXT),
-			this._messageView(Drupal.t('Checking the tone of the content…', {}, CONTEXT)),
+			Drupal.t('Checking tone…', {}, { context: 'Helfi AI' }),
+			this._messageView(Drupal.t('Checking the tone of the content…', {}, { context: 'Helfi AI' })),
 			[],
+			'loading',
 		);
 
 		let suggestion;
@@ -81,27 +79,45 @@ export default class HelfiAiToneCheckUi extends Plugin {
 			suggestion = data.suggestion;
 		} catch {
 			this._show(
-				Drupal.t('Check tone', {}, CONTEXT),
-				this._messageView(Drupal.t('Could not check the tone. Please try again.', {}, CONTEXT)),
+				Drupal.t('Check tone', {}, { context: 'Helfi AI' }),
+				this._messageView(Drupal.t('Could not check the tone. Please try again.', {}, { context: 'Helfi AI' })),
 				[this._closeButton()],
+				'error',
 			);
 			return;
 		}
 
-		this._show(Drupal.t('Check tone', {}, CONTEXT), this._tabbedView(), [
+		this._show(Drupal.t('Check tone', {}, { context: 'Helfi AI' }), this._tabbedView(), [
 			{
-				label: Drupal.t('Cancel', {}, CONTEXT),
+				label: Drupal.t('Replace the content with an AI-generated version', {}, { context: 'Helfi AI' }),
 				withText: true,
-				onExecute: () => editor.plugins.get('Dialog').hide(),
-			},
-			{
-				label: Drupal.t('Replace', {}, CONTEXT),
-				withText: true,
-				class: 'ck-button-action',
+				class: 'ck-reset_all-excluded helfi-ai-tone__reset',
+				onCreate: (button) => {
+					const classes = button.labelView.template.attributes.class;
+					const i = classes.indexOf('ck-button__label');
+					if (i !== -1) {
+						classes.splice(i, 1);
+					}
+					classes.push('button', 'button--small', 'button--primary');
+				},
 				onExecute: () => {
 					editor.setData(suggestion);
 					editor.plugins.get('Dialog').hide();
 				},
+			},
+			{
+				label: Drupal.t('Cancel'),
+				withText: true,
+				class: 'ck-reset_all-excluded helfi-ai-tone__reset',
+				onCreate: (button) => {
+					const classes = button.labelView.template.attributes.class;
+					const i = classes.indexOf('ck-button__label');
+					if (i !== -1) {
+						classes.splice(i, 1);
+					}
+					classes.push('button', 'button--small', 'button--secondary');
+				},
+				onExecute: () => editor.plugins.get('Dialog').hide(),
 			},
 		]);
 
@@ -120,11 +136,10 @@ export default class HelfiAiToneCheckUi extends Plugin {
 				pane.innerHTML = html;
 			}
 		};
-		fill('comparison-original', originalHtml);
+		fill('comparison-original', diffHtml);
 		fill('comparison-suggestion', diffHtml);
 		fill('original', originalHtml);
 		fill('suggestion', suggestionHtml);
-		fill('diff', diffHtml);
 
 		// Wire tab switching and open the default tab.
 		root.querySelectorAll('.helfi-ai-tone__tab').forEach((tab) => {
@@ -161,7 +176,7 @@ export default class HelfiAiToneCheckUi extends Plugin {
 	/**
 	 * Shows (or re-renders) the tone-check dialog.
 	 */
-	_show(title, content, actionButtons) {
+	_show(title, content, actionButtons, variant = 'default') {
 		const dialog = this.editor.plugins.get('Dialog');
 		dialog.show({
 			id: 'helfiAiToneCheck',
@@ -171,10 +186,18 @@ export default class HelfiAiToneCheckUi extends Plugin {
 			// Mark the overlay and content so the theme can scope the dialog styles.
 			// ck-reset_all-excluded opts the content subtree out of CKEditor's reset.
 			onShow: () => {
-				dialog.view.element.classList.add('helfi-ai-tone__dialog');
-				dialog.view.contentView.element.classList.add('helfi-ai-tone__wrapper', 'ck-reset_all-excluded');
+				const { element } = dialog.view;
+				element.classList.add('helfi-ai-tone__dialog', 'ck-reset_all-excluded');
+				element.classList.toggle('helfi-ai-tone__dialog--loading', variant === 'loading');
+				element.classList.toggle('helfi-ai-tone__dialog--error', variant === 'error');
+				dialog.view.contentView.element.classList.add('helfi-ai-tone__wrapper');
 			},
-			onHide: () => dialog.view.element.classList.remove('helfi-ai-tone__dialog'),
+			onHide: () =>
+				dialog.view.element.classList.remove(
+					'helfi-ai-tone__dialog',
+					'helfi-ai-tone__dialog--loading',
+					'helfi-ai-tone__dialog--error',
+				),
 		});
 	}
 
@@ -207,7 +230,7 @@ export default class HelfiAiToneCheckUi extends Plugin {
 		// An empty pane to fill after render.
 		const pane = (name) => ({
 			tag: 'div',
-			attributes: { class: ['helfi-ai-tone__pane'], 'data-pane': name },
+			attributes: { class: ['helfi-ai-tone__pane', 'ck-content'], 'data-pane': name },
 		});
 		// A headed column inside the comparison panel.
 		const column = (heading, name) => ({
@@ -231,10 +254,9 @@ export default class HelfiAiToneCheckUi extends Plugin {
 					tag: 'div',
 					attributes: { class: ['helfi-ai-tone__tabs'] },
 					children: [
-						tab('comparison', Drupal.t('Comparison', {}, CONTEXT)),
-						tab('original', Drupal.t('Original text', {}, CONTEXT)),
-						tab('suggestion', Drupal.t('Suggested text', {}, CONTEXT)),
-						tab('diff', Drupal.t('Differences', {}, CONTEXT)),
+						tab('comparison', Drupal.t('Comparison', {}, { context: 'Helfi AI' })),
+						tab('original', Drupal.t('Original content', {}, { context: 'Helfi AI' })),
+						tab('suggestion', Drupal.t('Suggested content', {}, { context: 'Helfi AI' })),
 					],
 				},
 				{
@@ -246,14 +268,13 @@ export default class HelfiAiToneCheckUi extends Plugin {
 								tag: 'div',
 								attributes: { class: ['helfi-ai-tone__comparison'] },
 								children: [
-									column(Drupal.t('Original', {}, CONTEXT), 'comparison-original'),
-									column(Drupal.t('Suggestion', {}, CONTEXT), 'comparison-suggestion'),
+									column(Drupal.t('Original content', {}, { context: 'Helfi AI' }), 'comparison-original'),
+									column(Drupal.t('Suggested content', {}, { context: 'Helfi AI' }), 'comparison-suggestion'),
 								],
 							},
 						]),
 						panel('original', [pane('original')]),
 						panel('suggestion', [pane('suggestion')]),
-						panel('diff', [pane('diff')]),
 					],
 				},
 			],
@@ -296,13 +317,22 @@ export default class HelfiAiToneCheckUi extends Plugin {
 	}
 
 	/**
-	 * A single "Close" action button that hides the dialog.
+	 * A single "Cancel" action button that hides the dialog.
 	 */
 	_closeButton() {
 		return {
-			label: Drupal.t('Close', {}, CONTEXT),
+			label: Drupal.t('Close', {}, { context: 'Helfi AI' }),
 			withText: true,
+			class: 'ck-reset_all-excluded helfi-ai-tone__reset',
 			onExecute: () => this.editor.plugins.get('Dialog').hide(),
+			onCreate: (button) => {
+				const classes = button.labelView.template.attributes.class;
+				const i = classes.indexOf('ck-button__label');
+				if (i !== -1) {
+					classes.splice(i, 1);
+				}
+				classes.push('button', 'button--small', 'button--secondary');
+			},
 		};
 	}
 }
