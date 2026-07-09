@@ -1,4 +1,4 @@
-name: "HELfi AI"
+name: "Helfi AI"
 type: module
 core_version_requirement: ^11
 container_rebuild_required: true
