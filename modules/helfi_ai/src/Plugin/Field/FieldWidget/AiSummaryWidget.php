@@ -165,7 +165,7 @@ final class AiSummaryWidget extends WidgetBase {
 
     $button['#attached']['library'][] = 'helfi_ai/ai_summary_confirm';
     if ($has_value) {
-      $button['#attributes']['data-helfi-ai-summary-confirm'] = $this->t('Regenerating replaces the current AI summary, including any manual changes. Continue?', options: $ctx);
+      $button['#attributes']['data-ai-summary-confirm'] = $this->t('Regenerating replaces the current AI summary, including any manual changes. Continue?', options: $ctx);
     }
 
     return $button;
@@ -224,7 +224,7 @@ final class AiSummaryWidget extends WidgetBase {
 
       if (isset($wrapper['generate'])) {
         $wrapper['generate']['#value'] = new TranslatableMarkup('Regenerate AI summary', [], ['context' => 'helfi_ai']);
-        $wrapper['generate']['#attributes']['data-helfi-ai-summary-confirm'] = (string) new TranslatableMarkup('Regenerating replaces the current AI summary, including any manual changes. Continue?', [], ['context' => 'helfi_ai']);
+        $wrapper['generate']['#attributes']['data-ai-summary-confirm'] = (string) new TranslatableMarkup('Regenerating replaces the current AI summary, including any manual changes. Continue?', [], ['context' => 'helfi_ai']);
       }
       if (isset($wrapper['description'])) {
         $wrapper['description']['#value'] = new TranslatableMarkup('Generate a new AI summary. It will replace the previous summary.', [], ['context' => 'helfi_ai']);

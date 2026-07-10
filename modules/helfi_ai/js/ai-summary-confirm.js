@@ -5,12 +5,12 @@
 ((Drupal, once) => {
   Drupal.behaviors.helfiAiSummaryConfirm = {
     attach(context) {
-      once('helfi-ai-summary-confirm', '[data-helfi-ai-summary-confirm]', context).forEach(
+      once('ai-summary-confirm', '[data-ai-summary-confirm]', context).forEach(
         (button) => {
           button.addEventListener(
             'click',
             (event) => {
-              const message = button.getAttribute('data-helfi-ai-summary-confirm');
+              const message = button.getAttribute('data-ai-summary-confirm');
               if (message && !window.confirm(message)) {
                 event.preventDefault();
                 event.stopImmediatePropagation();
