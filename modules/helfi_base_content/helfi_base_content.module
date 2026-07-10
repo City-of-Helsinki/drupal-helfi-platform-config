@@ -677,6 +677,8 @@ function helfi_base_content_preprocess_social_media_links(&$variables): void {
 
 /**
  * Implements hook_entity_bundle_info_alter().
+ *
+ * @param array<mixed> $bundles
  */
 function helfi_base_content_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['paragraph']['from_library'])) {
