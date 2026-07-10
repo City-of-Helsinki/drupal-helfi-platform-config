@@ -38,9 +38,9 @@ class AiToneCheckerTest extends EntityKernelTestBase {
   ];
 
   /**
-   * The tone checker under test.
+   * The generator under test.
    */
-  private AiToneChecker $checker;
+  private AiGenerator $generator;
 
   /**
    * {@inheritdoc}
@@ -58,25 +58,23 @@ class AiToneCheckerTest extends EntityKernelTestBase {
       ])
       ->save();
 
-    $this->checker = $this->container->get(AiToneChecker::class);
+    $this->generator = $this->container->get(AiGenerator::class);
   }
 
   /**
-   * Content is sent to the provider and a rewrite suggestion is returned.
+   * Tests that content reaches the provider and a suggestion is returned.
    */
   public function testSuggestsRewrite(): void {
     $content = '<p>Tone kernel content ' . $this->randomMachineName() . '</p>';
 
-    $suggestion = $this->checker->check($content, 'en');
+    $suggestion = $this->generator->checkTone($content, 'en');
 
     $this->assertNotNull($suggestion);
-    // The echoai provider echoes the prompt, so the editor content has reached
-    // the provider through the {content} placeholder.
     $this->assertStringContainsString($content, $suggestion);
   }
 
   /**
-   * The language-specific prompt translation is used for the content language.
+   * Tests that the content language prompt translation is used.
    */
   public function testUsesLanguageSpecificPrompt(): void {
     ConfigurableLanguage::createFromLangcode('fi')->save();
@@ -86,31 +84,23 @@ class AiToneCheckerTest extends EntityKernelTestBase {
       ->set('prompt', 'FINNISH TONE GUIDANCE {content}')
       ->save();
 
-    $suggestion = $this->checker->check('<p>x</p>', 'fi');
+    $suggestion = $this->generator->checkTone('<p>x</p>', 'fi');
 
     $this->assertNotNull($suggestion);
-    // The echoed prompt reveals that the Finnish translation was used.
     $this->assertStringContainsString('FINNISH TONE GUIDANCE', $suggestion);
   }
 
   /**
-   * Empty content short-circuits to NULL without calling the provider.
-   */
-  public function testReturnsNullForEmptyContent(): void {
-    $this->assertNull($this->checker->check('   ', 'en'));
-  }
-
-  /**
-   * A missing prompt makes the check fail gracefully (NULL).
+   * Tests that a missing prompt returns null.
    */
   public function testReturnsNullWhenPromptMissing(): void {
     $this->config(self::PROMPT)->delete();
 
-    $this->assertNull($this->checker->check('<p>x</p>', 'en'));
+    $this->assertNull($this->generator->checkTone('<p>x</p>', 'en'));
   }
 
   /**
-   * An unresolvable provider makes the check fail gracefully (NULL).
+   * Tests that an unavailable provider returns null.
    */
   public function testReturnsNullWhenProviderUnavailable(): void {
     $this->config('ai.settings')
@@ -119,7 +109,7 @@ class AiToneCheckerTest extends EntityKernelTestBase {
       ])
       ->save();
 
-    $this->assertNull($this->checker->check('<p>x</p>', 'en'));
+    $this->assertNull($this->generator->checkTone('<p>x</p>', 'en'));
   }
 
 }

@@ -4,39 +4,48 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ai\Unit\Hook;
 
+use Drupal\config_ignore\ConfigIgnoreConfig;
 use Drupal\helfi_ai\Hook\ConfigIgnoreHook;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * Tests that the tone check prompt is protected from config reverts.
+ * Tests that the AI prompt configs are protected from config reverts.
  */
 #[Group('helfi_ai')]
 #[CoversClass(ConfigIgnoreHook::class)]
 class ConfigIgnoreHookTest extends UnitTestCase {
 
   /**
-   * The tone check prompt is added to the config_ignore patterns.
+   * The AI prompt pattern the hook adds.
    */
-  public function testAddsToneCheckPromptToIgnoredSettings(): void {
-    $settings = [];
-    (new ConfigIgnoreHook())->configIgnoreSettingsAlter($settings);
+  private const PATTERN = 'ai.ai_prompt.helfi_*';
 
-    $this->assertContains('ai.ai_prompt.helfi_tone_check__helfi_tone_check_default', $settings);
+  /**
+   * The pattern is ignored for every operation except import create.
+   */
+  public function testAddsPromptPatternExceptImportCreate(): void {
+    $ignored = new ConfigIgnoreConfig('simple', []);
+    (new ConfigIgnoreHook())->configIgnoreIgnoredAlter($ignored);
+
+    $this->assertNotContains(self::PATTERN, $ignored->getList('import', 'create'));
+    $this->assertContains(self::PATTERN, $ignored->getList('import', 'update'));
+    $this->assertContains(self::PATTERN, $ignored->getList('import', 'delete'));
+    $this->assertContains(self::PATTERN, $ignored->getList('export', 'create'));
+    $this->assertContains(self::PATTERN, $ignored->getList('export', 'update'));
+    $this->assertContains(self::PATTERN, $ignored->getList('export', 'delete'));
   }
 
   /**
-   * An already-present pattern is not duplicated.
+   * Existing ignored patterns are kept alongside the added pattern.
    */
-  public function testDoesNotDuplicateExistingPattern(): void {
-    $settings = ['ai.ai_prompt.helfi_tone_check__helfi_tone_check_default'];
-    (new ConfigIgnoreHook())->configIgnoreSettingsAlter($settings);
+  public function testPreservesExistingPatterns(): void {
+    $ignored = new ConfigIgnoreConfig('simple', ['some.other.setting']);
+    (new ConfigIgnoreHook())->configIgnoreIgnoredAlter($ignored);
 
-    $this->assertSame(
-      ['ai.ai_prompt.helfi_tone_check__helfi_tone_check_default'],
-      $settings,
-    );
+    $this->assertContains('some.other.setting', $ignored->getList('import', 'update'));
+    $this->assertContains(self::PATTERN, $ignored->getList('import', 'update'));
   }
 
 }

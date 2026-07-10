@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 #[Group('helfi_ai')]
 #[CoversClass(AiToneCheck::class)]
-class aiToneCheckTest extends UnitTestCase {
+class AiToneCheckTest extends UnitTestCase {
 
   /**
    * {@inheritdoc}
@@ -47,7 +47,7 @@ class aiToneCheckTest extends UnitTestCase {
    *   The plugin under test.
    */
   private function createPlugin(string $endpoint, string $langcode): AiToneCheck {
-    // Url::fromRoute(...)->toString(TRUE) resolves through the url_generator.
+    // The plugin resolves the route through the url_generator service.
     $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
     $urlGenerator->generateFromRoute('helfi_ai.tone_check', Argument::cetera())
       ->willReturn((new GeneratedUrl())->setGeneratedUrl($endpoint));
