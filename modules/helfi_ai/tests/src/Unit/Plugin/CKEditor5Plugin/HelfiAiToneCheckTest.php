@@ -12,7 +12,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\editor\EditorInterface;
-use Drupal\helfi_ai\Plugin\CKEditor5Plugin\HelfiAiToneCheck;
+use Drupal\helfi_ai\Plugin\CKEditor5Plugin\AiToneCheck;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Tests the tone-check CKEditor 5 plugin dynamic configuration.
  */
 #[Group('helfi_ai')]
-#[CoversClass(HelfiAiToneCheck::class)]
+#[CoversClass(AiToneCheck::class)]
 class HelfiAiToneCheckTest extends UnitTestCase {
 
   /**
@@ -43,10 +43,10 @@ class HelfiAiToneCheckTest extends UnitTestCase {
    * @param string $langcode
    *   The current language id the plugin should read.
    *
-   * @return \Drupal\helfi_ai\Plugin\CKEditor5Plugin\HelfiAiToneCheck
+   * @return \Drupal\helfi_ai\Plugin\CKEditor5Plugin\AiToneCheck
    *   The plugin under test.
    */
-  private function createPlugin(string $endpoint, string $langcode): HelfiAiToneCheck {
+  private function createPlugin(string $endpoint, string $langcode): AiToneCheck {
     // Url::fromRoute(...)->toString(TRUE) resolves through the url_generator.
     $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
     $urlGenerator->generateFromRoute('helfi_ai.tone_check', Argument::cetera())
@@ -68,7 +68,7 @@ class HelfiAiToneCheckTest extends UnitTestCase {
     $languageManager = $this->prophesize(LanguageManagerInterface::class);
     $languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->willReturn($language->reveal());
 
-    return new HelfiAiToneCheck(
+    return new AiToneCheck(
       [],
       'helfi_ai_tone_check',
       new CKEditor5PluginDefinition([]),

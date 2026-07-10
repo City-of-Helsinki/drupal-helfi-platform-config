@@ -4,43 +4,26 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_ai\Controller;
 
+use _PHPStan_8c66d8255\Symfony\Contracts\Service\;
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\helfi_ai\Service\AiToneChecker;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\helfi_ai\Service\AiGenerator;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Returns a tone-conforming rewrite of submitted editor content.
- *
- * Called by the CKEditor tone-check plugin. Access is gated by permission and a
- * CSRF request-header token (see helfi_ai.routing.yml).
  */
 final class ToneCheckController implements ContainerInjectionInterface {
 
-  /**
-   * Maximum accepted content size in bytes (256 KB).
-   *
-   * Bounds the payload sent to the AI provider to avoid runaway cost/latency.
-   */
-  private const MAX_CONTENT_BYTES = 256 * 1024;
+  use AutowireTrait;
 
   public function __construct(
-    private readonly AiToneChecker $toneChecker,
+    private readonly AiGenerator $generator,
     private readonly LanguageManagerInterface $languageManager,
   ) {}
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container): static {
-    return new static(
-      $container->get(AiToneChecker::class),
-      $container->get('language_manager'),
-    );
-  }
 
   /**
    * Checks the tone of the posted content and returns a suggested rewrite.
@@ -53,19 +36,21 @@ final class ToneCheckController implements ContainerInjectionInterface {
    */
   public function check(Request $request): JsonResponse {
     $data = json_decode($request->getContent(), TRUE);
-    $content = is_array($data) && isset($data['content']) ? (string) $data['content'] : '';
-    $langcode = is_array($data) && isset($data['langcode']) && $data['langcode'] !== ''
-      ? (string) $data['langcode']
-      : $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
+
+    if (!isset($data['content'], $data['langcode'])) {
+      throw new BadRequestException('Missing "content" or "langcode" parameter.');
+    }
+    ['content' => $content, 'langcode' => $langcode] = $data;
 
     if (trim($content) === '') {
       return new JsonResponse(['error' => 'No content to check.'], 400);
     }
-    if (strlen($content) > self::MAX_CONTENT_BYTES) {
+    if (strlen($content) > AiGenerator::MAX_CONTENT_BYTES) {
       return new JsonResponse(['error' => 'Content is too large to check.'], 413);
     }
 
-    $suggestion = $this->toneChecker->check($content, $langcode);
+    $suggestion = $this->generator->checkTone($content, $langcode);
+
     if ($suggestion === NULL) {
       return new JsonResponse(['error' => 'Could not check the tone. Make sure the AI provider is configured.'], 502);
     }

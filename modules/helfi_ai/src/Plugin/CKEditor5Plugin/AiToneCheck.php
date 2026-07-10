@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * route. The token matches what the route's _csrf_request_header_token check
  * expects.
  */
-final class HelfiAiToneCheck extends CKEditor5PluginDefault implements ContainerFactoryPluginInterface {
+final class AiToneCheck extends CKEditor5PluginDefault implements ContainerFactoryPluginInterface {
 
   /**
    * Constructs a HelfiAiToneCheck plugin.

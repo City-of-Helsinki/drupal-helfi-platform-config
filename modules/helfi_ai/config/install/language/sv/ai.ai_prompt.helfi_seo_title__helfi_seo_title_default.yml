@@ -1,19 +1,7 @@
-uuid: 619e7b2b-4bf0-4d2a-8d0e-1e2f755ed3a0
-langcode: en
-status: true
-dependencies:
-  config:
-    - ai.ai_prompt_type.helfi_seo_title
-  enforced:
-    module:
-      - helfi_ai
-id: helfi_seo_title__helfi_seo_title_default
-label: 'HELfi SEO title (default)'
-type: helfi_seo_title
 prompt: |
   You are an SEO and Generative Engine Optimization (GEO) specialist for the
   City of Helsinki website.
-  Suggest 3 alternative page titles in English for the page content below.
+  Suggest 3 alternative page titles in Swedish for the page content below.
   Optimize the titles to be surfaced and cited by AI answer engines (such as
   ChatGPT, Gemini and Google AI Overviews) as well as traditional search.
 
