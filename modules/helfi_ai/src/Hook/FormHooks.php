@@ -81,7 +81,7 @@ final class FormHooks {
    *   Response opening a modal with the suggestions or an error message.
    */
   public function buildSuggestionResponse(array &$form, FormStateInterface $form_state): AjaxResponse {
-    $title = (string) new TranslatableMarkup('Suggested titles', options: ['context' => 'helfi_ai']);
+    $title = (string) new TranslatableMarkup('Suggested titles', options: ['context' => 'Helfi AI']);
     $response = new AjaxResponse();
 
     $dialogOptions = [
@@ -94,7 +94,7 @@ final class FormHooks {
     if (!$entity instanceof ContentEntityInterface) {
       return $response->addCommand(new OpenModalDialogCommand(
         $title,
-        $this->message((string) new TranslatableMarkup('Could not read the page content. Please try again.', options: ['context' => 'helfi_ai'])),
+        $this->message((string) new TranslatableMarkup('Could not read the page content. Please try again.', options: ['context' => 'Helfi AI'])),
         $dialogOptions,
       ));
     }
@@ -104,7 +104,7 @@ final class FormHooks {
     if (!$suggestions) {
       return $response->addCommand(new OpenModalDialogCommand(
         $title,
-        $this->message((string) new TranslatableMarkup('Could not generate title suggestions. Add some page content and make sure the AI provider is configured.', options: ['context' => 'helfi_ai'])),
+        $this->message((string) new TranslatableMarkup('Could not generate title suggestions. Add some page content and make sure the AI provider is configured.', options: ['context' => 'Helfi AI'])),
         $dialogOptions,
       ));
     }
@@ -160,7 +160,7 @@ final class FormHooks {
       '#weight' => ($form['title']['widget'][0]['value']['#weight'] ?? 0) + 0.5,
       'button' => [
         '#type' => 'button',
-        '#value' => new TranslatableMarkup('Generate SEO title with AI', options: ['context' => 'helfi_ai']),
+        '#value' => new TranslatableMarkup('Generate SEO title with AI', options: ['context' => 'Helfi AI']),
         '#name' => 'helfi_ai_suggest_title',
         '#attributes' => ['class' => ['button--small']],
         '#ajax' => [
@@ -168,7 +168,7 @@ final class FormHooks {
           'event' => 'click',
           'progress' => [
             'type' => 'throbber',
-            'message' => new TranslatableMarkup('Generating title suggestions…', options: ['context' => 'helfi_ai']),
+            'message' => new TranslatableMarkup('Generating title suggestions…', options: ['context' => 'Helfi AI']),
           ],
         ],
         '#attached' => ['library' => ['helfi_ai/title_suggest']],

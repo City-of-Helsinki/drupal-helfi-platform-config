@@ -28,8 +28,8 @@ class EntityHooks {
     }
 
     $fields['ai_summary'] = BaseFieldDefinition::create('text_long')
-      ->setLabel($this->t('AI summary', options: ['context' => 'helfi_ai']))
-      ->setDescription($this->t('AI-generated content summary as a bullet list. Edit before accepting.', options: ['context' => 'helfi_ai']))
+      ->setLabel($this->t('AI summary', options: ['context' => 'Helfi AI']))
+      ->setDescription($this->t('AI-generated content summary as a bullet list. Edit before accepting.', options: ['context' => 'Helfi AI']))
       ->setRevisionable(TRUE)
       ->setTranslatable(TRUE)
       ->setDisplayConfigurable('form', TRUE)
