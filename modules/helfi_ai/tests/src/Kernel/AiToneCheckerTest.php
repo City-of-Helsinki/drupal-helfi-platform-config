@@ -5,18 +5,13 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_ai\Kernel;
 
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
-use Drupal\helfi_ai\Service\AiToneChecker;
+use Drupal\helfi_ai\Service\AiGenerator;
 use Drupal\language\Entity\ConfigurableLanguage;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
- * Tests tone checking through the real AI provider stack.
- *
- * Runs the checker against the AI module's echoai test provider, so the chain
- * is exercised for real (per-language prompt loading, provider resolution, the
- * chat call) without any external service or API key. The echoai provider
- * echoes the prompt back, which lets the test assert what reached the provider.
+ * Tests tone checking through the echoai test provider.
  */
 #[Group('helfi_ai')]
 #[RunTestsInSeparateProcesses]

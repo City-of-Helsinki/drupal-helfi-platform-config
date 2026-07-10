@@ -7,6 +7,7 @@ namespace Drupal\helfi_ai\Service;
 use Drupal\ai\AiProviderPluginManager;
 use Drupal\ai\OperationType\Chat\ChatInput;
 use Drupal\ai\OperationType\Chat\ChatMessage;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\RendererInterface;
@@ -34,6 +35,7 @@ final readonly class AiGenerator {
     private RendererInterface $renderer,
     #[Autowire(service: 'logger.channel.helfi_ai')] private LoggerInterface $logger,
     private LanguageManagerInterface $languageManager,
+    private ConfigFactoryInterface $configFactory,
   ) {}
 
   /**
@@ -191,13 +193,16 @@ final readonly class AiGenerator {
   private function loadPrompt(string $promptId, string $langcode): string {
     assert($this->languageManager instanceof ConfigurableLanguageManagerInterface);
 
-    $promptId = sprintf('ai.ai_prompt.%s', $promptId);
+    $name = sprintf('ai.ai_prompt.%s', $promptId);
 
-    $prompt = $this->languageManager
-      ->getLanguageConfigOverride($langcode, $promptId)
-      ->get('prompt');
+    // Read the prompt with the language override applied, falling back to the
+    // untranslated value when no translation exists.
+    $original = $this->languageManager->getConfigOverrideLanguage();
+    $this->languageManager->setConfigOverrideLanguage($this->languageManager->getLanguage($langcode) ?? $original);
+    $prompt = (string) $this->configFactory->get($name)->get('prompt');
+    $this->languageManager->setConfigOverrideLanguage($original);
 
-    return (string) $prompt;
+    return $prompt;
   }
 
 }
