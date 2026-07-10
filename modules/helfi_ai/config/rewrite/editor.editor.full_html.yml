@@ -25,6 +25,6 @@ settings:
       - undo
       - redo
       - '|'
-      - helfiAiToneCheck
+      - aiToneCheck
       - '|'
       - sourceEditing

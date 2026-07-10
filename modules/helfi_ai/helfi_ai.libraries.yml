@@ -21,6 +21,6 @@ title_suggest:
 tone_check:
   version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
-    assets/js/build/helfiAiToneCheck.js: { preprocess: false, minified: true }
+    assets/js/build/aiToneCheck.js: { preprocess: false, minified: true }
   dependencies:
     - core/ckeditor5

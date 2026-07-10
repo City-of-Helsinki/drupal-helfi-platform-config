@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class AiToneCheck extends CKEditor5PluginDefault implements ContainerFactoryPluginInterface {
 
   /**
-   * Constructs a HelfiAiToneCheck plugin.
+   * Constructs a aiToneCheck plugin.
    *
    * @param array<string, mixed> $configuration
    *   The plugin configuration.
@@ -87,7 +87,7 @@ final class AiToneCheck extends CKEditor5PluginDefault implements ContainerFacto
     // editor's JS settings are not cacheable (like forms) — the same reason
     // core injects CSRF tokens in dynamic config.
     // @see \Drupal\ckeditor5\Plugin\CKEditor5Plugin\DynamicPluginConfigWithCsrfTokenUrlTrait
-    $static_plugin_config['helfiAiToneCheck'] = [
+    $static_plugin_config['aiToneCheck'] = [
       'endpoint' => Url::fromRoute('helfi_ai.tone_check')->toString(TRUE)->getGeneratedUrl(),
       'csrfToken' => $this->csrfToken->get(CsrfRequestHeaderAccessCheck::TOKEN_KEY),
       // Use the content language, not the UI language, so the tone prompt is

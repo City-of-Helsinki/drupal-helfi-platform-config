@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 #[Group('helfi_ai')]
 #[CoversClass(AiToneCheck::class)]
-class HelfiAiToneCheckTest extends UnitTestCase {
+class aiToneCheckTest extends UnitTestCase {
 
   /**
    * {@inheritdoc}
@@ -70,7 +70,7 @@ class HelfiAiToneCheckTest extends UnitTestCase {
 
     return new AiToneCheck(
       [],
-      'helfi_ai_tone_check',
+      'ai_tone_check',
       new CKEditor5PluginDefinition([]),
       $csrf->reveal(),
       $languageManager->reveal(),
@@ -85,10 +85,10 @@ class HelfiAiToneCheckTest extends UnitTestCase {
 
     $config = $plugin->getDynamicPluginConfig([], $this->createMock(EditorInterface::class));
 
-    $this->assertArrayHasKey('helfiAiToneCheck', $config);
-    $this->assertSame('/en/helfi-ai/tone-check', $config['helfiAiToneCheck']['endpoint']);
-    $this->assertSame('test-token', $config['helfiAiToneCheck']['csrfToken']);
-    $this->assertSame('en', $config['helfiAiToneCheck']['langcode']);
+    $this->assertArrayHasKey('aiToneCheck', $config);
+    $this->assertSame('/en/helfi-ai/tone-check', $config['aiToneCheck']['endpoint']);
+    $this->assertSame('test-token', $config['aiToneCheck']['csrfToken']);
+    $this->assertSame('en', $config['aiToneCheck']['langcode']);
   }
 
   /**
@@ -103,7 +103,7 @@ class HelfiAiToneCheckTest extends UnitTestCase {
     );
 
     $this->assertSame(['keep' => TRUE], $config['existing']);
-    $this->assertSame('sv', $config['helfiAiToneCheck']['langcode']);
+    $this->assertSame('sv', $config['aiToneCheck']['langcode']);
   }
 
 }

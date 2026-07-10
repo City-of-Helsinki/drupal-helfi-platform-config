@@ -4,14 +4,14 @@
  */
 
 import { Plugin } from 'ckeditor5/src/core';
-import HelfiAiToneCheckUi from './helfiAiToneCheckUi';
+import aiToneCheckUi from './aiToneCheckUi';
 
-export default class HelfiAiToneCheck extends Plugin {
+export default class AiToneCheck extends Plugin {
 	static get requires() {
-		return [HelfiAiToneCheckUi];
+		return [aiToneCheckUi];
 	}
 
 	static get pluginName() {
-		return 'HelfiAiToneCheck';
+		return 'aiToneCheck';
 	}
 }
