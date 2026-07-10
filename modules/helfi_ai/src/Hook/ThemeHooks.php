@@ -20,13 +20,13 @@ class ThemeHooks {
   #[Hook('theme')]
   public function theme(): array {
     return [
-      'helfi_ai_title_suggestions' => [
+      'ai_title_suggestions' => [
         'variables' => ['suggestions' => []],
-        'template' => 'helfi-ai-title-suggestions',
+        'template' => 'ai-title-suggestions',
       ],
-      'helfi_ai_message' => [
+      'ai_message' => [
         'variables' => ['text' => NULL],
-        'template' => 'helfi-ai-message',
+        'template' => 'ai-message',
       ],
     ];
   }

@@ -112,7 +112,7 @@ final class FormHooks {
     return $response->addCommand(new OpenModalDialogCommand(
       $title,
       [
-        '#theme' => 'helfi_ai_title_suggestions',
+        '#theme' => 'ai_title_suggestions',
         '#suggestions' => array_values($suggestions),
         '#attached' => ['library' => ['helfi_ai/title_suggest']],
       ],
@@ -131,7 +131,7 @@ final class FormHooks {
    */
   private function message(string $text): array {
     return [
-      '#theme' => 'helfi_ai_message',
+      '#theme' => 'ai_message',
       '#text' => $text,
     ];
   }
@@ -152,11 +152,11 @@ final class FormHooks {
       return;
     }
 
-    $form['title']['#attributes']['class'][] = 'helfi-ai-title';
+    $form['title']['#attributes']['class'][] = 'ai-title';
 
     $form['title']['helfi_ai_suggest'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['helfi-ai-suggest']],
+      '#attributes' => ['class' => ['ai-suggest']],
       '#weight' => ($form['title']['widget'][0]['value']['#weight'] ?? 0) + 0.5,
       'button' => [
         '#type' => 'button',

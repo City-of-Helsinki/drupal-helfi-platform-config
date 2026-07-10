@@ -102,7 +102,7 @@ class FormHooksTest extends UnitTestCase {
     $hooks = $this->createHooks(TRUE, ['page']);
     $hooks->nodeFormAlter($form, $this->nodeFormState('page'), 'node_page_form');
 
-    $this->assertContains('helfi-ai-title', $form['title']['#attributes']['class']);
+    $this->assertContains('ai-title', $form['title']['#attributes']['class']);
     $this->assertArrayHasKey('helfi_ai_suggest', $form['title']);
     $button = $form['title']['helfi_ai_suggest']['button'];
     $this->assertSame('helfi_ai_suggest_title', $button['#name']);
