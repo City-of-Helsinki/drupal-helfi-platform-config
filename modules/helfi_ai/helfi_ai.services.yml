@@ -8,4 +8,3 @@ services:
     arguments: ['helfi_ai']
 
   Drupal\helfi_ai\Service\AiGenerator: ~
-  Drupal\helfi_ai\Service\AiToneChecker: ~
