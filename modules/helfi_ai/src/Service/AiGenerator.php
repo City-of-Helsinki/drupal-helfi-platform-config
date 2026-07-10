@@ -92,7 +92,7 @@ final readonly class AiGenerator {
     if (!$message) {
       return NULL;
     }
-    return $message->getText() ?? NULL;
+    return $message->getText();
   }
 
   /**
@@ -185,10 +185,10 @@ final readonly class AiGenerator {
    * @param string $langcode
    *   The language to read the prompt in.
    *
-   * @return string|null
-   *   The prompt text, or NULL if it is missing or empty.
+   * @return string
+   *   The prompt text, or an empty string if it is missing or empty.
    */
-  private function loadPrompt(string $promptId, string $langcode): ?string {
+  private function loadPrompt(string $promptId, string $langcode): string {
     assert($this->languageManager instanceof ConfigurableLanguageManagerInterface);
 
     $promptId = sprintf('ai.ai_prompt.%s', $promptId);
@@ -197,7 +197,7 @@ final readonly class AiGenerator {
       ->getLanguageConfigOverride($langcode, $promptId)
       ->get('prompt');
 
-    return (string) $prompt ?? NULL;
+    return (string) $prompt;
   }
 
 }

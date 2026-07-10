@@ -6,7 +6,6 @@ namespace Drupal\helfi_ai\Controller;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_ai\Service\AiGenerator;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +20,6 @@ final class ToneCheckController implements ContainerInjectionInterface {
 
   public function __construct(
     private readonly AiGenerator $generator,
-    private readonly LanguageManagerInterface $languageManager,
   ) {}
 
   /**
