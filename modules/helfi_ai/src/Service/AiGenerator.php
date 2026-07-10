@@ -8,6 +8,7 @@ use Drupal\ai\AiProviderPluginManager;
 use Drupal\ai\OperationType\Chat\ChatInput;
 use Drupal\ai\OperationType\Chat\ChatMessage;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
@@ -32,7 +33,7 @@ final readonly class AiGenerator {
     private TextConverterManager $textConverterManager,
     private RendererInterface $renderer,
     #[Autowire(service: 'logger.channel.helfi_ai')] private LoggerInterface $logger,
-    private ConfigurableLanguageManagerInterface $languageManager,
+    private LanguageManagerInterface $languageManager,
   ) {}
 
   /**
@@ -188,6 +189,8 @@ final readonly class AiGenerator {
    *   The prompt text, or NULL if it is missing or empty.
    */
   private function loadPrompt(string $promptId, string $langcode): ?string {
+    assert($this->languageManager instanceof ConfigurableLanguageManagerInterface);
+
     $promptId = sprintf('ai.ai_prompt.%s', $promptId);
 
     $prompt = $this->languageManager

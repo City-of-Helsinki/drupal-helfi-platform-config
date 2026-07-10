@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_ai\Controller;
 
-use _PHPStan_8c66d8255\Symfony\Contracts\Service\;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
