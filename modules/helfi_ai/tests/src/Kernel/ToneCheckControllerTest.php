@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_ai\Kernel;
 use Drupal\helfi_ai\Controller\ToneCheckController;
 use Drupal\helfi_ai\Service\AiGenerator;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -22,6 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
 #[RunTestsInSeparateProcesses]
 class ToneCheckControllerTest extends EntityKernelTestBase {
 
+  use ApiTestTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -35,6 +38,7 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
     'ai',
     'ai_test',
     'helfi_ai',
+    'system',
   ];
 
   /**
@@ -71,7 +75,7 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
    *   The request.
    */
   private function request(array $body): Request {
-    return new Request([], [], [], [], [], [], (string) json_encode($body));
+    return $this->getMockedRequest('/helfi-ai/tone-check?_format=json', 'POST', document: $body);
   }
 
   /**
@@ -85,6 +89,59 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
    */
   private function decode(JsonResponse $response): array {
     return json_decode((string) $response->getContent(), TRUE);
+  }
+
+  /**
+   * A request without permissions CSRF token should fail with 403.
+   */
+  public function testNoPermissionNoCsrfToken(): void {
+    $response = $this->processRequest($this->request([
+      'content' => '123',
+      'langcode' => 'en',
+    ]));
+    $this->assertSame(403, $response->getStatusCode());
+  }
+
+  /**
+   * A request with a logged-in user without permissions should fail with 403.
+   */
+  public function testWithAccountNoPermission(): void {
+    $user = $this->drupalSetUpCurrentUser();
+    $this->assertFalse($user->hasPermission('use helfi ai tone check'));
+
+    $response = $this->processRequest($this->request([
+      'content' => '123',
+      'langcode' => 'en',
+    ]));
+    $this->assertInstanceOf(JsonResponse::class, $response);
+
+    $content = $this->decode($response);
+    $this->assertSame("The 'use helfi ai tone check' permission is required.", $content['message']);
+    $this->assertSame(403, $response->getStatusCode());
+  }
+
+  /**
+   * A request with a logged-in user without csrf-token should fail with 403.
+   */
+  public function testNoCsrfToken(): void {
+    $request = $this->request([
+      'content' => '123',
+      'langcode' => 'en',
+    ]);
+    /** @var \Drupal\Core\Session\SessionConfigurationInterface $sessionConfiguration */
+    $sessionConfiguration = $this->container->get('session_configuration');
+    $options = $sessionConfiguration->getOptions($request);
+    // CsrfRequestHeaderAccessCheck requires session cookie.
+    $request->cookies->set($options['name'], 'arbitrary-session-id-value');
+
+    $this->drupalSetUpCurrentUser(permissions: ['use helfi ai tone check']);
+
+    $response = $this->processRequest($request);
+    $this->assertInstanceOf(JsonResponse::class, $response);
+
+    $content = $this->decode($response);
+    $this->assertSame('X-CSRF-Token request header is missing', $content['message']);
+    $this->assertSame(403, $response->getStatusCode());
   }
 
   /**
