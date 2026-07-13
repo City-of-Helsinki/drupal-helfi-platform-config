@@ -30,10 +30,14 @@ display:
         langcode:
           label: Kieli
         id: {  }
+        count:
+          label: Käytössä
         changed:
           label: Muuttunut
         operations:
           label: Toimenpiteet
+        status:
+          label: Julkaistu
       filters:
         label:
           expose:
