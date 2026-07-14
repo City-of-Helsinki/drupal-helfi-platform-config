@@ -1,0 +1,28 @@
+uuid: 03886aa6-0a46-4b52-9d48-6d5f5b320785
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_announcement_unit_pages
+    - node.type.announcement
+_core:
+  default_config_hash: w6FBQhJSmSmfIIb6e7488sIc4kfj8DmR5cp8H-bJDl4
+id: node.announcement.field_announcement_unit_pages
+field_name: field_announcement_unit_pages
+entity_type: node
+bundle: announcement
+label: 'Show on unit pages'
+description: 'Select the TPR-unit pages where the announcement will be displayed. Enter part of the page title and select the correct page from the suggestions.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:tpr_unit'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: name
+      direction: ASC
+    auto_create: false
+field_type: entity_reference

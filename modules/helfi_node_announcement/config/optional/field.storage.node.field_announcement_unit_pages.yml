@@ -1,0 +1,22 @@
+uuid: 88ea0962-62c1-45d3-80cb-f5eb419c2a36
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_tpr
+    - node
+_core:
+  default_config_hash: '-V2H9HKEMv21JahmzEorULGyJWEdvb-LgJGwRaefGi0'
+id: node.field_announcement_unit_pages
+field_name: field_announcement_unit_pages
+entity_type: node
+type: entity_reference
+settings:
+  target_type: tpr_unit
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
