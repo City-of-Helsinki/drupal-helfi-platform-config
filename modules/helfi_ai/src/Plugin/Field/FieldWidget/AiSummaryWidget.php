@@ -7,14 +7,17 @@ namespace Drupal\helfi_ai\Plugin\Field\FieldWidget;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_ai\PreviewEntityBuilder;
 use Drupal\helfi_ai\Service\AiGenerator;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Widget for the AI summary field.
@@ -24,7 +27,7 @@ use Drupal\helfi_ai\Service\AiGenerator;
   label: new TranslatableMarkup('AI Summary'),
   field_types: ['text_long'],
 )]
-final class AiSummaryWidget extends WidgetBase {
+final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPluginInterface {
 
   /**
    * Text format used for AI summary content.
@@ -80,6 +83,12 @@ final class AiSummaryWidget extends WidgetBase {
    *   The rendered form element.
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
+    // Hide the widget when the AI summary feature is disabled.
+    if (!$this->configFactory->get('helfi_ai.settings')->get('enable_ai_summary')) {
+      $element['#access'] = FALSE;
+      return $element;
+    }
+
     $field_name = $items->getFieldDefinition()->getName();
     $wrapper_id = 'ai-summary-' . str_replace('_', '-', $field_name) . '-' . $delta;
     $saved_value = (string) ($items[$delta]->value ?? '');

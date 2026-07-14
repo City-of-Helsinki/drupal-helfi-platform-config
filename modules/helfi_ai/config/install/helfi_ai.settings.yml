@@ -1,2 +1,5 @@
+enable_seo_title: false
+enable_tone_check: false
+enable_ai_summary: false
 seo_title_bundles:
   - page

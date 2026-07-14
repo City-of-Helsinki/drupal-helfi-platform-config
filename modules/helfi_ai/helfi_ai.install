@@ -21,3 +21,16 @@ function helfi_ai_install(bool $is_syncing): void {
     $manager->installFieldStorageDefinition('ai_summary', 'node', 'helfi_ai', $definition);
   }
 }
+
+/**
+ * By default, disable the AI functionalities for existing installations.
+ */
+function helfi_ai_update_11001(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_ai.settings');
+  foreach (['enable_seo_title', 'enable_tone_check', 'enable_ai_summary'] as $key) {
+    if ($config->get($key) === NULL) {
+      $config->set($key, FALSE);
+    }
+  }
+  $config->save();
+}

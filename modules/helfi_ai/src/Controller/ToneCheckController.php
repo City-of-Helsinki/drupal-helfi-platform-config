@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_ai\Controller;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\helfi_ai\Service\AiGenerator;
@@ -20,6 +21,7 @@ final class ToneCheckController implements ContainerInjectionInterface {
 
   public function __construct(
     private readonly AiGenerator $generator,
+    private readonly ConfigFactoryInterface $configFactory,
   ) {}
 
   /**
@@ -32,6 +34,9 @@ final class ToneCheckController implements ContainerInjectionInterface {
    *   {suggestion: string} on success, or {error: string} with a 4xx/5xx code.
    */
   public function check(Request $request): JsonResponse {
+    if (!$this->configFactory->get('helfi_ai.settings')->get('enable_tone_check')) {
+      return new JsonResponse(['error' => 'Tone check is disabled.'], 403);
+    }
     $data = json_decode($request->getContent(), TRUE);
 
     if (!isset($data['content'], $data['langcode'])) {

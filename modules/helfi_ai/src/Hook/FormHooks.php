@@ -19,7 +19,7 @@ use Drupal\helfi_ai\Service\AiGenerator;
 use Drupal\node\NodeInterface;
 
 /**
- * Adds an AI "Generate SEO title with AI" button next to the node title field.
+ * Form hooks for AI features.
  */
 final class FormHooks {
 
@@ -30,6 +30,19 @@ final class FormHooks {
     private readonly ConfigFactoryInterface $configFactory,
     private readonly AiGenerator $generator,
   ) {
+  }
+
+  /**
+   * Check if a feature is enabled.
+   *
+   * @param string $feature
+   *   The feature name as a string.
+   *
+   * @return bool
+   *   Returns true or false.
+   */
+  private function featureEnabled(string $feature): bool {
+    return (bool) $this->configFactory->get('helfi_ai.settings')->get($feature);
   }
 
   /**
@@ -49,6 +62,11 @@ final class FormHooks {
     if (!$form_object instanceof ContentEntityFormInterface) {
       return FALSE;
     }
+
+    if (!$this->featureEnabled('enable_seo_title')) {
+      return FALSE;
+    }
+
     $entity = $form_object->getEntity();
 
     if (!$entity instanceof NodeInterface) {
@@ -174,6 +192,41 @@ final class FormHooks {
         '#attached' => ['library' => ['helfi_ai/title_suggest']],
       ],
     ];
+  }
+
+  /**
+   * Implements hook_ckeditor5_plugin_info_alter().
+   *
+   * @param array<string, \Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition> $plugin_definitions
+   *   The plugin definitions.
+   */
+  #[Hook('ckeditor5_plugin_info_alter')]
+  public function ckeditor5PluginInfoAlter(array &$plugin_definitions): void {
+    if ($this->featureEnabled('enable_tone_check')) {
+      return;
+    }
+    // Remove the AI tone check plugin definition.
+    unset($plugin_definitions['helfi_ai_tone_check']);
+  }
+
+  /**
+   * Implements hook_editor_js_settings_alter().
+   *
+   * @param array<string, mixed> $settings
+   *   The editor JS settings.
+   */
+  #[Hook('editor_js_settings_alter')]
+  public function editorJsSettingsAlter(array &$settings): void {
+    if ($this->featureEnabled('enable_tone_check')) {
+      return;
+    }
+    // Remove the CKEditor toolbar item for AI tone check plugin.
+    foreach ($settings['editor']['formats'] ?? [] as &$format) {
+      $items = &$format['editorSettings']['toolbar']['items'];
+      if (is_array($items)) {
+        $items = array_values(array_filter($items, fn($item) => $item !== 'aiToneCheck'));
+      }
+    }
   }
 
 }
