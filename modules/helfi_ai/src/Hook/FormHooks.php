@@ -220,12 +220,22 @@ final class FormHooks {
     if ($this->featureEnabled('enable_tone_check')) {
       return;
     }
-    // Remove the CKEditor toolbar item for AI tone check plugin.
-    foreach ($settings['editor']['formats'] ?? [] as &$format) {
-      $items = &$format['editorSettings']['toolbar']['items'];
-      if (is_array($items)) {
-        $items = array_values(array_filter($items, fn($item) => $item !== 'aiToneCheck'));
+
+    // Remove the AI tone check item from CKEditor toolbar.
+    foreach ($settings['editor']['formats'] ?? [] as $formatId => $format) {
+      $items = $format['editorSettings']['toolbar']['items'] ?? NULL;
+
+      if (!is_array($items)) {
+        continue;
       }
+
+      foreach ($items as $key => $item) {
+        if ($item === 'aiToneCheck') {
+          unset($items[$key]);
+        }
+      }
+
+      $settings['editor']['formats'][$formatId]['editorSettings']['toolbar']['items'] = array_values($items);
     }
   }
 
