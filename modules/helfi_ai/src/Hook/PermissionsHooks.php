@@ -19,11 +19,16 @@ class PermissionsHooks {
    */
   #[Hook('platform_config_grant_permissions')]
   public function grantPermissions(): array {
-    $permissions = ['use helfi ai title suggestion'];
+    $permissions = [
+      'use helfi ai title suggestion',
+      'use helfi ai tone check',
+    ];
     return [
       'admin' => $permissions,
       'editor' => $permissions,
       'content_producer' => $permissions,
+      // @todo This needs a proper permission after the PoC period.
+      'survey_editor' => ['manage ai prompts'],
     ];
   }
 

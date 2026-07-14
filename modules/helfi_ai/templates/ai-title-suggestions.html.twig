@@ -1,0 +1,25 @@
+<div class="ai-suggestions">
+  <fieldset class="ai-suggestions__options">
+    <legend class="visually-hidden">{{ 'Suggested titles'|t({}, {'context': 'Helfi AI'}) }}</legend>
+    {% for suggestion in suggestions %}
+      {% set id = 'ai-suggestions__option-' ~ loop.index0 %}
+      <div class="form-item form-type--radio form-type--boolean ai-suggestions__option">
+        <input
+          type="radio"
+          name="helfi_ai_title"
+          id="{{ id }}"
+          class="form-radio form-boolean form-boolean--type-radio ai-suggestions__radio"
+          value="{{ suggestion }}"
+          {{ loop.first ? 'checked' }}
+        />
+        <label for="{{ id }}" class="form-item__label option ai-suggestions__label">
+          {{ suggestion }} <span class="ai-suggestions__count">({{ suggestion|length }} {{ 'characters'|t({}, {'context': 'Helfi AI'}) }})</span>
+        </label>
+      </div>
+    {% endfor %}
+  </fieldset>
+  <div class="form-actions ai-suggestions__actions">
+    <button type="button" class="button button--primary ai-suggestions__apply">{{ 'Apply'|t({}, {'context': 'Helfi AI'}) }}</button>
+    <button type="button" class="button button--secondary ai-suggestions__cancel">{{ 'Cancel'|t({}, {'context': 'Helfi AI'}) }}</button>
+  </div>
+</div>

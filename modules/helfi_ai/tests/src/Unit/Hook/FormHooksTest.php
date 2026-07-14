@@ -45,15 +45,21 @@ class FormHooksTest extends UnitTestCase {
    *   Whether the current user holds the suggestion permission.
    * @param string[] $bundles
    *   The configured seo_title_bundles value.
+   * @param bool $seoEnabled
+   *   Whether the SEO title feature is enabled.
+   * @param bool $toneCheckEnabled
+   *   Whether the AI tone check feature is enabled.
    *
    * @return \Drupal\helfi_ai\Hook\FormHooks
    *   The configured hooks object.
    */
-  private function createHooks(bool $hasPermission, array $bundles): FormHooks {
+  private function createHooks(bool $hasPermission, array $bundles, bool $seoEnabled = TRUE, bool $toneCheckEnabled = TRUE): FormHooks {
     $account = $this->prophesize(AccountInterface::class);
     $account->hasPermission('use helfi ai title suggestion')->willReturn($hasPermission);
 
     $config = $this->prophesize(ImmutableConfig::class);
+    $config->get('enable_seo_title')->willReturn($seoEnabled);
+    $config->get('enable_tone_check')->willReturn($toneCheckEnabled);
     $config->get('seo_title_bundles')->willReturn($bundles);
     $configFactory = $this->prophesize(ConfigFactoryInterface::class);
     $configFactory->get('helfi_ai.settings')->willReturn($config->reveal());
@@ -102,7 +108,7 @@ class FormHooksTest extends UnitTestCase {
     $hooks = $this->createHooks(TRUE, ['page']);
     $hooks->nodeFormAlter($form, $this->nodeFormState('page'), 'node_page_form');
 
-    $this->assertContains('helfi-ai-title', $form['title']['#attributes']['class']);
+    $this->assertContains('ai-title', $form['title']['#attributes']['class']);
     $this->assertArrayHasKey('helfi_ai_suggest', $form['title']);
     $button = $form['title']['helfi_ai_suggest']['button'];
     $this->assertSame('helfi_ai_suggest_title', $button['#name']);
@@ -110,6 +116,17 @@ class FormHooksTest extends UnitTestCase {
     $this->assertSame($hooks, $callback[0]);
     $this->assertSame('buildSuggestionResponse', $callback[1]);
     $this->assertContains('helfi_ai/title_suggest', $button['#attached']['library']);
+  }
+
+  /**
+   * Test that no button is added when the SEO title feature is disabled.
+   */
+  public function testNoButtonWhenFeatureDisabled(): void {
+    $form = $this->formWithTitle();
+    $this->createHooks(TRUE, ['page'], FALSE)
+      ->nodeFormAlter($form, $this->nodeFormState('page'), 'node_page_form');
+
+    $this->assertArrayNotHasKey('helfi_ai_suggest', $form['title']);
   }
 
   /**
@@ -153,6 +170,31 @@ class FormHooksTest extends UnitTestCase {
     $this->createHooks(TRUE, ['page'])->nodeFormAlter($form, $formState->reveal(), 'some_other_form');
 
     $this->assertArrayNotHasKey('helfi_ai_suggest', $form['title']);
+  }
+
+  /**
+   * Test that the tone-check plugin is removed when the feature is disabled.
+   */
+  public function testTonePluginRemovedWhenDisabled(): void {
+    $definitions = ['helfi_ai_tone_check' => 'definition'];
+    $this->createHooks(TRUE, [], toneCheckEnabled: FALSE)->ckeditor5PluginInfoAlter($definitions);
+    $this->assertArrayNotHasKey('helfi_ai_tone_check', $definitions);
+
+    $jsSettings = [
+      'editor' => [
+        'formats' => [
+          'full_html' => [
+            'editorSettings' => [
+              'toolbar' => [
+                'items' => ['bold', 'aiToneCheck', 'italic'],
+              ],
+            ],
+          ],
+        ],
+      ],
+    ];
+    $this->createHooks(TRUE, [], toneCheckEnabled: FALSE)->editorJsSettingsAlter($jsSettings);
+    $this->assertSame(['bold', 'italic'], $jsSettings['editor']['formats']['full_html']['editorSettings']['toolbar']['items']);
   }
 
 }

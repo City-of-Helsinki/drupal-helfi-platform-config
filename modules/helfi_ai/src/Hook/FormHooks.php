@@ -19,7 +19,7 @@ use Drupal\helfi_ai\Service\AiGenerator;
 use Drupal\node\NodeInterface;
 
 /**
- * Adds an AI "Generate SEO title with AI" button next to the node title field.
+ * Form hooks for AI features.
  */
 final class FormHooks {
 
@@ -30,6 +30,19 @@ final class FormHooks {
     private readonly ConfigFactoryInterface $configFactory,
     private readonly AiGenerator $generator,
   ) {
+  }
+
+  /**
+   * Check if a feature is enabled.
+   *
+   * @param string $feature
+   *   The feature name as a string.
+   *
+   * @return bool
+   *   Returns true or false.
+   */
+  private function featureEnabled(string $feature): bool {
+    return (bool) $this->configFactory->get('helfi_ai.settings')->get($feature);
   }
 
   /**
@@ -49,6 +62,11 @@ final class FormHooks {
     if (!$form_object instanceof ContentEntityFormInterface) {
       return FALSE;
     }
+
+    if (!$this->featureEnabled('enable_seo_title')) {
+      return FALSE;
+    }
+
     $entity = $form_object->getEntity();
 
     if (!$entity instanceof NodeInterface) {
@@ -81,7 +99,7 @@ final class FormHooks {
    *   Response opening a modal with the suggestions or an error message.
    */
   public function buildSuggestionResponse(array &$form, FormStateInterface $form_state): AjaxResponse {
-    $title = (string) new TranslatableMarkup('Suggested titles', options: ['context' => 'helfi_ai']);
+    $title = (string) new TranslatableMarkup('Suggested titles', options: ['context' => 'Helfi AI']);
     $response = new AjaxResponse();
 
     $dialogOptions = [
@@ -94,7 +112,7 @@ final class FormHooks {
     if (!$entity instanceof ContentEntityInterface) {
       return $response->addCommand(new OpenModalDialogCommand(
         $title,
-        $this->message((string) new TranslatableMarkup('Could not read the page content. Please try again.', options: ['context' => 'helfi_ai'])),
+        $this->message((string) new TranslatableMarkup('Could not read the page content. Please try again.', options: ['context' => 'Helfi AI'])),
         $dialogOptions,
       ));
     }
@@ -104,7 +122,7 @@ final class FormHooks {
     if (!$suggestions) {
       return $response->addCommand(new OpenModalDialogCommand(
         $title,
-        $this->message((string) new TranslatableMarkup('Could not generate title suggestions. Add some page content and make sure the AI provider is configured.', options: ['context' => 'helfi_ai'])),
+        $this->message((string) new TranslatableMarkup('Could not generate title suggestions. Add some page content and make sure the AI provider is configured.', options: ['context' => 'Helfi AI'])),
         $dialogOptions,
       ));
     }
@@ -112,7 +130,7 @@ final class FormHooks {
     return $response->addCommand(new OpenModalDialogCommand(
       $title,
       [
-        '#theme' => 'helfi_ai_title_suggestions',
+        '#theme' => 'ai_title_suggestions',
         '#suggestions' => array_values($suggestions),
         '#attached' => ['library' => ['helfi_ai/title_suggest']],
       ],
@@ -131,7 +149,7 @@ final class FormHooks {
    */
   private function message(string $text): array {
     return [
-      '#theme' => 'helfi_ai_message',
+      '#theme' => 'ai_message',
       '#text' => $text,
     ];
   }
@@ -152,15 +170,15 @@ final class FormHooks {
       return;
     }
 
-    $form['title']['#attributes']['class'][] = 'helfi-ai-title';
+    $form['title']['#attributes']['class'][] = 'ai-title';
 
     $form['title']['helfi_ai_suggest'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['helfi-ai-suggest']],
+      '#attributes' => ['class' => ['ai-suggest']],
       '#weight' => ($form['title']['widget'][0]['value']['#weight'] ?? 0) + 0.5,
       'button' => [
         '#type' => 'button',
-        '#value' => new TranslatableMarkup('Generate SEO title with AI', options: ['context' => 'helfi_ai']),
+        '#value' => new TranslatableMarkup('Generate SEO title with AI', options: ['context' => 'Helfi AI']),
         '#name' => 'helfi_ai_suggest_title',
         '#attributes' => ['class' => ['button--small']],
         '#ajax' => [
@@ -168,12 +186,57 @@ final class FormHooks {
           'event' => 'click',
           'progress' => [
             'type' => 'throbber',
-            'message' => new TranslatableMarkup('Generating title suggestions…', options: ['context' => 'helfi_ai']),
+            'message' => new TranslatableMarkup('Generating title suggestions…', options: ['context' => 'Helfi AI']),
           ],
         ],
         '#attached' => ['library' => ['helfi_ai/title_suggest']],
       ],
     ];
+  }
+
+  /**
+   * Implements hook_ckeditor5_plugin_info_alter().
+   *
+   * @param array<string, \Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition> $plugin_definitions
+   *   The plugin definitions.
+   */
+  #[Hook('ckeditor5_plugin_info_alter')]
+  public function ckeditor5PluginInfoAlter(array &$plugin_definitions): void {
+    if ($this->featureEnabled('enable_tone_check')) {
+      return;
+    }
+    // Remove the AI tone check plugin definition.
+    unset($plugin_definitions['helfi_ai_tone_check']);
+  }
+
+  /**
+   * Implements hook_editor_js_settings_alter().
+   *
+   * @param array<string, mixed> $settings
+   *   The editor JS settings.
+   */
+  #[Hook('editor_js_settings_alter')]
+  public function editorJsSettingsAlter(array &$settings): void {
+    if ($this->featureEnabled('enable_tone_check')) {
+      return;
+    }
+
+    // Remove the AI tone check item from CKEditor toolbar.
+    foreach ($settings['editor']['formats'] ?? [] as $formatId => $format) {
+      $items = $format['editorSettings']['toolbar']['items'] ?? NULL;
+
+      if (!is_array($items)) {
+        continue;
+      }
+
+      foreach ($items as $key => $item) {
+        if ($item === 'aiToneCheck') {
+          unset($items[$key]);
+        }
+      }
+
+      $settings['editor']['formats'][$formatId]['editorSettings']['toolbar']['items'] = array_values($items);
+    }
   }
 
 }

@@ -13,7 +13,7 @@ type: helfi_seo_title
 prompt: |
   You are an SEO and Generative Engine Optimization (GEO) specialist for the
   City of Helsinki website.
-  Suggest 3 alternative page titles in {language} for the page content below.
+  Suggest 3 alternative page titles in English for the page content below.
   Optimize the titles to be surfaced and cited by AI answer engines (such as
   ChatGPT, Gemini and Google AI Overviews) as well as traditional search.
 

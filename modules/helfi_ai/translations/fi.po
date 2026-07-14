@@ -1,75 +1,113 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: helfi_ai\n"
-"Language: fi\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "AI prompts"
 msgstr "Tekoälykehotteet"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Generate SEO title with AI"
 msgstr "Luo SEO-otsikko tekoälyllä"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Generating title suggestions…"
 msgstr "Luodaan otsikkoehdotuksia…"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Suggested titles"
 msgstr "Ehdotetut otsikot"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Apply"
 msgstr "Käytä"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Cancel"
 msgstr "Peruuta"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Could not read the page content. Please try again."
 msgstr "Sivun sisältöä ei voitu lukea. Yritä uudelleen."
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Could not generate title suggestions. Add some page content and make sure the AI provider is configured."
 msgstr "Otsikkoehdotuksia ei voitu luoda. Lisää sivulle sisältöä ja varmista, että tekoälypalvelu on määritetty."
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "AI summary"
 msgstr "Tekoälytiivistelmä"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "AI-generated content summary as a bullet list. Edit before accepting."
 msgstr "Tekoälyn luoma tiivistelmä bullet-listana. Voit muokata ennen hyväksymistä."
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Generate AI summary"
 msgstr "Luo tekoälytiivistelmä"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Regenerate AI summary"
 msgstr "Luo tekoälytiivistelmä uudelleen"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Generating summary…"
 msgstr "Luodaan tiivistelmää…"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Regenerating replaces the current AI summary, including any manual changes. Continue?"
 msgstr "Uudelleenluonti korvaa nykyisen tekoälytiivistelmän, mukaan lukien mahdolliset käsin tehdyt muutokset. Haluatko jatkaa?"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "AI generates a summary of the page content as a short list of bullet points. Review the summary and edit it if needed. Keep the bullet points."
 msgstr "Tekoäly tiivistää sivun sisällön muutaman kohdan listaksi. Tarkista tiivistelmä ja muokkaa sitä tarvittaessa. Säilytä listamuotoilu."
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Generate a new AI summary. It will replace the previous summary."
 msgstr "Luo uuden tekoälytiivistelmän, joka korvaa aiemman tiivistelmän."
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Could not generate a summary. Add some page content and make sure the AI provider is configured."
 msgstr "Tiivistelmän luominen epäonnistui. Lisää sivulle sisältöä ja varmista, että tekoälypalvelu on määritetty."
+
+msgctxt "Helfi AI"
+msgid "Check tone"
+msgstr "Tarkista äänensävy"
+
+msgctxt "Helfi AI"
+msgid "Checking tone…"
+msgstr "Tarkistetaan äänensävyä…"
+
+msgctxt "Helfi AI"
+msgid "Checking the tone of the content…"
+msgstr "Tarkistetaan sisällön äänensävyä…"
+
+msgctxt "Helfi AI"
+msgid "Could not check the tone. Please try again."
+msgstr "Äänensävyn tarkistus epäonnistui. Yritä myöhemmin uudelleen."
+
+msgctxt "Helfi AI"
+msgid "Replace the content with an AI-generated version"
+msgstr "Korvaa sisältö tekoälyn luomalla versiolla"
+
+msgctxt "Helfi AI"
+msgid "Cancel"
+msgstr "Peruuta"
+
+msgctxt "Helfi AI"
+msgid "Close"
+msgstr "Sulje"
+
+msgctxt "Helfi AI"
+msgid "Comparison"
+msgstr "Vertaile"
+
+msgctxt "Helfi AI"
+msgid "Original content"
+msgstr "Alkuperäinen sisältö"
+
+msgctxt "Helfi AI"
+msgid "Suggested content"
+msgstr "Ehdotettu sisältö"
+
+msgctxt "Helfi AI"
+msgid "Differences"
+msgstr "Erot"

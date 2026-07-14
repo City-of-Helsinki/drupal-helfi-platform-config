@@ -14,15 +14,15 @@
 
   Drupal.behaviors.helfiAiTitleSuggest = {
     attach(context) {
-      once('helfi-ai-title-reorder', '.helfi-ai-title', context).forEach((field) => {
+      once('ai-title-reorder', '.ai-title', context).forEach((field) => {
         const input = field.querySelector('input[name="title[0][value]"]');
-        const suggest = field.querySelector('.helfi-ai-suggest');
+        const suggest = field.querySelector('.ai-suggest');
         if (input && suggest) {
           input.after(suggest);
         }
       });
 
-      once('helfi-ai-suggestions-apply', '.helfi-ai-suggestions__apply', context).forEach((button) => {
+      once('ai-suggestions-apply', '.ai-suggestions__apply', context).forEach((button) => {
         button.addEventListener('click', () => {
           const selected = document.querySelector('input[name="helfi_ai_title"]:checked');
           const input = document.querySelector('input[name="title[0][value]"]');
@@ -35,7 +35,7 @@
         });
       });
 
-      once('helfi-ai-suggestions-cancel', '.helfi-ai-suggestions__cancel', context).forEach((button) => {
+      once('ai-suggestions-cancel', '.ai-suggestions__cancel', context).forEach((button) => {
         button.addEventListener('click', closeModal);
       });
     },

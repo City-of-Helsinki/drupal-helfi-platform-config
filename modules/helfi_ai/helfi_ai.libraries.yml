@@ -16,3 +16,11 @@ title_suggest:
     - core/once
     - core/jquery
     - core/drupal.dialog
+
+# Tone-check CKEditor 5 plugin.
+tone_check:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    assets/js/build/aiToneCheck.js: { preprocess: false, minified: true }
+  dependencies:
+    - core/ckeditor5

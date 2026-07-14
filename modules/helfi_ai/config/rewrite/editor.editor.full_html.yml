@@ -1,0 +1,30 @@
+config_rewrite:
+  replace: [
+    'settings.toolbar.items',
+  ]
+settings:
+  toolbar:
+    items:
+      - bold
+      - italic
+      - strikethrough
+      - superscript
+      - subscript
+      - removeFormat
+      - heading
+      - '|'
+      - bulletedList
+      - numberedList
+      - '|'
+      - link
+      - helfiQuote
+      - insertTable
+      - helfiLanguageSelector
+      - specialCharacters
+      - '|'
+      - undo
+      - redo
+      - '|'
+      - aiToneCheck
+      - '|'
+      - sourceEditing

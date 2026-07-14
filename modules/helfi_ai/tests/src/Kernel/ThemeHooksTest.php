@@ -60,18 +60,18 @@ class ThemeHooksTest extends KernelTestBase {
    */
   public function testTitleSuggestionsRender(): void {
     $markup = $this->renderBuild([
-      '#theme' => 'helfi_ai_title_suggestions',
+      '#theme' => 'ai_title_suggestions',
       '#suggestions' => ['First title', 'Second title'],
     ]);
 
-    $this->assertStringContainsString('helfi-ai-suggestions', $markup);
+    $this->assertStringContainsString('ai-suggestions', $markup);
     $this->assertStringContainsString('value="First title"', $markup);
     $this->assertStringContainsString('value="Second title"', $markup);
     $this->assertStringContainsString('checked', $markup);
     $this->assertStringContainsString('(11 ', $markup);
 
     $markup = $this->renderBuild([
-      '#theme' => 'helfi_ai_message',
+      '#theme' => 'ai_message',
       '#text' => 'Summary generated.',
     ]);
 

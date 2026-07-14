@@ -147,7 +147,7 @@ class AiSummaryWidgetTest extends EntityKernelTestBase {
     $this->assertStringContainsString('&lt;ul&gt;&lt;li&gt;', $rendered);
     $this->assertStringContainsString($title, $rendered);
     $this->assertStringContainsString('Regenerate AI summary', $rendered);
-    $this->assertStringContainsString('data-helfi-ai-summary-confirm', $rendered);
+    $this->assertStringContainsString('data-ai-summary-confirm', $rendered);
   }
 
   /**

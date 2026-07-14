@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Drupal\helfi_ai\Service;
 
 use Drupal\ai\AiProviderPluginManager;
-use Drupal\ai\Entity\AiPromptInterface;
 use Drupal\ai\OperationType\Chat\ChatInput;
 use Drupal\ai\OperationType\Chat\ChatMessage;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
+use Drupal\language\ConfigurableLanguageManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -21,12 +22,20 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  */
 final readonly class AiGenerator {
 
+  /**
+   * Maximum accepted content size in bytes (256 KB).
+   *
+   * Bounds the payload sent to the AI provider to avoid runaway cost/latency.
+   */
+  public const int MAX_CONTENT_BYTES = 256 * 1024;
+
   public function __construct(
     #[Autowire(service: 'ai.provider')] private AiProviderPluginManager $aiProvider,
-    private EntityTypeManagerInterface $entityTypeManager,
     private TextConverterManager $textConverterManager,
     private RendererInterface $renderer,
     #[Autowire(service: 'logger.channel.helfi_ai')] private LoggerInterface $logger,
+    private LanguageManagerInterface $languageManager,
+    private ConfigFactoryInterface $configFactory,
   ) {}
 
   /**
@@ -44,11 +53,11 @@ final readonly class AiGenerator {
     // Skip when the entity has no content.
     $content = $this->textConverterManager->convert($entity);
 
-    if (!$content || strlen($content) > 256 * 1024) {
+    if (!$content || strlen($content) > self::MAX_CONTENT_BYTES) {
       return [];
     }
     $message = $this
-      ->getChatMessage($content, $entity->language()->getName(), 'helfi_seo_title__helfi_seo_title_default');
+      ->getChatMessage($content, $entity->language()->getId(), 'helfi_seo_title__helfi_seo_title_default');
 
     if (!$message) {
       return [];
@@ -67,6 +76,28 @@ final readonly class AiGenerator {
   }
 
   /**
+   * Suggests a tone-conforming rewrite of the given editor content.
+   *
+   * @param string $content
+   *   The editor content (HTML) to check.
+   * @param string $langcode
+   *   Language of the content; selects the prompt translation to apply.
+   *
+   * @return string|null
+   *   The rewritten content, or NULL when there is nothing to check or the
+   *   request fails.
+   */
+  public function checkTone(string $content, string $langcode): ?string {
+    $message = $this
+      ->getChatMessage($content, $langcode, 'helfi_tone_check__helfi_tone_check_default');
+
+    if (!$message) {
+      return NULL;
+    }
+    return $message->getText();
+  }
+
+  /**
    * Generates an AI summary for the given entity.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
@@ -78,11 +109,8 @@ final readonly class AiGenerator {
   public function generateSummary(ContentEntityInterface $entity): ?string {
     $content = $this->textConverterManager->convert($entity);
 
-    if (!$content) {
-      return NULL;
-    }
     $message = $this
-      ->getChatMessage($content, $entity->language()->getName(), 'helfi_content_summary__helfi_content_summary_default');
+      ->getChatMessage($content, $entity->language()->getId(), 'helfi_content_summary__helfi_content_summary_default');
 
     if (!$message) {
       return NULL;
@@ -111,7 +139,7 @@ final readonly class AiGenerator {
    *
    * @param string $content
    *   The content.
-   * @param string $language
+   * @param string $langcode
    *   The language name.
    * @param string $promptId
    *   The prompt id.
@@ -119,22 +147,18 @@ final readonly class AiGenerator {
    * @return \Drupal\ai\OperationType\Chat\ChatMessage|null
    *   The chat message or NULL.
    */
-  private function getChatMessage(string $content, string $language, string $promptId): ?ChatMessage {
-    /** @var \Drupal\ai\Entity\AiPromptInterface|null $prompt */
-    $prompt = $this->entityTypeManager
-      ->getStorage('ai_prompt')
-      ->load($promptId);
-
-    if (!$prompt instanceof AiPromptInterface) {
+  private function getChatMessage(string $content, string $langcode, string $promptId): ?ChatMessage {
+    if (!$prompt = $this->loadPrompt($promptId, $langcode)) {
       return NULL;
     }
+    $content = trim($content);
 
     // Fill the prompt placeholders.
-    $text = str_replace(
-      ['{content}', '{language}'],
-      [$content, $language],
-      $prompt->getPrompt(),
-    );
+    $text = str_replace('{content}', $content, $prompt);
+
+    if ($text === '') {
+      return NULL;
+    }
 
     try {
       ['provider_id' => $provider, 'model_id' => $model] = $this->aiProvider->getSetProvider('chat');
@@ -149,6 +173,36 @@ final readonly class AiGenerator {
       Error::logException($this->logger, $e);
     }
     return NULL;
+  }
+
+  /**
+   * Reads the prompt text for the given language.
+   *
+   * Switches the config override language so the language-specific translation
+   * of the prompt is returned, falling back to the untranslated value when no
+   * translation exists.
+   *
+   * @param string $promptId
+   *   The prompt.
+   * @param string $langcode
+   *   The language to read the prompt in.
+   *
+   * @return string
+   *   The prompt text, or an empty string if it is missing or empty.
+   */
+  private function loadPrompt(string $promptId, string $langcode): string {
+    assert($this->languageManager instanceof ConfigurableLanguageManagerInterface);
+
+    $name = sprintf('ai.ai_prompt.%s', $promptId);
+
+    // Read the prompt with the language override applied, falling back to the
+    // untranslated value when no translation exists.
+    $original = $this->languageManager->getConfigOverrideLanguage();
+    $this->languageManager->setConfigOverrideLanguage($this->languageManager->getLanguage($langcode) ?? $original);
+    $prompt = (string) $this->configFactory->get($name)->get('prompt');
+    $this->languageManager->setConfigOverrideLanguage($original);
+
+    return $prompt;
   }
 
 }

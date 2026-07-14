@@ -157,7 +157,7 @@ class FormHooksTest extends EntityKernelTestBase {
     $this->assertSame('openDialog', $command['command']);
     $this->assertSame('#drupal-modal', $command['selector']);
     $this->assertSame('helfi-ai-dialog', $command['dialogOptions']['classes']['ui-dialog']);
-    $this->assertStringContainsString('helfi-ai-suggestions', (string) $command['data']);
+    $this->assertStringContainsString('ai-suggestions', (string) $command['data']);
   }
 
   /**

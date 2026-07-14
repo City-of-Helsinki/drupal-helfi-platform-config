@@ -12,8 +12,4 @@ variables:
     name: content
     help_text: 'The page content as plain text'
     required: true
-  -
-    name: language
-    help_text: 'The target language name (e.g. Finnish, Swedish)'
-    required: true
 tokens: {  }

@@ -10,21 +10,24 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * Tests the editorial-role grants for the title suggestion permission.
+ * Tests the AI functionality permissions.
  */
 #[Group('helfi_ai')]
 #[CoversClass(PermissionsHooks::class)]
 class PermissionsHooksTest extends UnitTestCase {
 
   /**
-   * The grant hook returns the permission for each editorial role.
+   * Test the permissions hook.
    */
-  public function testGrantsSuggestionPermissionToEditorialRoles(): void {
+  public function testPermissions(): void {
     $permissions = (new PermissionsHooks())->grantPermissions();
 
     foreach (['admin', 'editor', 'content_producer'] as $role) {
       $this->assertArrayHasKey($role, $permissions);
-      $this->assertSame(['use helfi ai title suggestion'], $permissions[$role]);
+      $this->assertSame([
+        'use helfi ai title suggestion',
+        'use helfi ai tone check',
+      ], $permissions[$role]);
     }
   }
 

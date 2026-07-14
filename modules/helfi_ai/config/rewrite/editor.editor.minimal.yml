@@ -1,0 +1,19 @@
+config_rewrite:
+  replace: [
+    'settings.toolbar.items',
+  ]
+settings:
+  toolbar:
+    items:
+      - bold
+      - italic
+      - '|'
+      - bulletedList
+      - numberedList
+      - '|'
+      - link
+      - helfiLanguageSelector
+      - '|'
+      - aiToneCheck
+      - '|'
+      - sourceEditing

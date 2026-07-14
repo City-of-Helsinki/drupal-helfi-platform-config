@@ -1,40 +1,113 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: helfi_ai\n"
-"Language: sv\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgctxt "helfi_ai"
+msgid "AI prompts"
+msgstr "AI-instruktioner"
+
+msgctxt "Helfi AI"
 msgid "Generate SEO title with AI"
-msgstr "Skapa SEO-titel med AI"
+msgstr "Skapa SEO-rubrik med AI"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Generating title suggestions…"
 msgstr "Skapar rubrikförslag…"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Suggested titles"
 msgstr "Föreslagna rubriker"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Apply"
 msgstr "Använd"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Cancel"
 msgstr "Avbryt"
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Could not read the page content. Please try again."
-msgstr "Det gick inte att läsa sidans innehåll. Försök igen."
+msgstr "Sidans innehåll kunde inte läsas. Försök igen."
 
-msgctxt "helfi_ai"
+msgctxt "Helfi AI"
 msgid "Could not generate title suggestions. Add some page content and make sure the AI provider is configured."
-msgstr "Det gick inte att skapa rubrikförslag. Lägg till innehåll på sidan och kontrollera att AI-tjänsten är konfigurerad."
+msgstr "Rubrikförslag kunde inte skapas. Lägg till innehåll på sidan och kontrollera att AI-tjänsten är konfigurerad."
 
-msgctxt "helfi_ai"
-msgid "characters"
-msgstr "tecken"
+msgctxt "Helfi AI"
+msgid "AI summary"
+msgstr "AI-sammanfattning"
+
+msgctxt "Helfi AI"
+msgid "AI-generated content summary as a bullet list. Edit before accepting."
+msgstr "AI-genererad sammanfattning av innehållet som en punktlista. Redigera innan du godkänner."
+
+msgctxt "Helfi AI"
+msgid "Generate AI summary"
+msgstr "Skapa AI-sammanfattning"
+
+msgctxt "Helfi AI"
+msgid "Regenerate AI summary"
+msgstr "Skapa AI-sammanfattning på nytt"
+
+msgctxt "Helfi AI"
+msgid "Generating summary…"
+msgstr "Skapar sammanfattning…"
+
+msgctxt "Helfi AI"
+msgid "Regenerating replaces the current AI summary, including any manual changes. Continue?"
+msgstr "Att skapa på nytt ersätter den nuvarande AI-sammanfattningen, inklusive eventuella manuella ändringar. Vill du fortsätta?"
+
+msgctxt "Helfi AI"
+msgid "AI generates a summary of the page content as a short list of bullet points. Review the summary and edit it if needed. Keep the bullet points."
+msgstr "AI skapar en sammanfattning av sidans innehåll som en kort punktlista. Granska sammanfattningen och redigera den vid behov. Behåll punktlistan."
+
+msgctxt "Helfi AI"
+msgid "Generate a new AI summary. It will replace the previous summary."
+msgstr "Skapa en ny AI-sammanfattning. Den ersätter den tidigare sammanfattningen."
+
+msgctxt "Helfi AI"
+msgid "Could not generate a summary. Add some page content and make sure the AI provider is configured."
+msgstr "Sammanfattningen kunde inte skapas. Lägg till innehåll på sidan och kontrollera att AI-tjänsten är konfigurerad."
+
+msgctxt "Helfi AI"
+msgid "Check tone"
+msgstr "Kontrollera ton"
+
+msgctxt "Helfi AI"
+msgid "Checking tone…"
+msgstr "Kontrollerar tonen…"
+
+msgctxt "Helfi AI"
+msgid "Checking the tone of the content…"
+msgstr "Kontrollerar innehållets ton…"
+
+msgctxt "Helfi AI"
+msgid "Could not check the tone. Please try again."
+msgstr "Tonen kunde inte kontrolleras. Försök igen senare."
+
+msgctxt "Helfi AI"
+msgid "Replace the content with an AI-generated version"
+msgstr "Ersätt innehållet med en AI-genererad version"
+
+msgctxt "Helfi AI"
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgctxt "Helfi AI"
+msgid "Close"
+msgstr "Stäng"
+
+msgctxt "Helfi AI"
+msgid "Comparison"
+msgstr "Jämförelse"
+
+msgctxt "Helfi AI"
+msgid "Original content"
+msgstr "Ursprunglig innehåll"
+
+msgctxt "Helfi AI"
+msgid "Suggested content"
+msgstr "Föreslagen innehåll"
+
+msgctxt "Helfi AI"
+msgid "Differences"
+msgstr "Skillnader"

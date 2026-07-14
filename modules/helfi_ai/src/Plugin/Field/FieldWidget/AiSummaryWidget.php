@@ -7,14 +7,17 @@ namespace Drupal\helfi_ai\Plugin\Field\FieldWidget;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_ai\PreviewEntityBuilder;
 use Drupal\helfi_ai\Service\AiGenerator;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Widget for the AI summary field.
@@ -24,12 +27,45 @@ use Drupal\helfi_ai\Service\AiGenerator;
   label: new TranslatableMarkup('AI Summary'),
   field_types: ['text_long'],
 )]
-final class AiSummaryWidget extends WidgetBase {
+final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPluginInterface {
 
   /**
    * Text format used for AI summary content.
    */
   private const string TEXT_FORMAT = 'minimal';
+
+  /**
+   * The constructor.
+   *
+   * @phpstan-param array<mixed> $settings
+   * @phpstan-param array<mixed> $third_party_settings
+   */
+  public function __construct(
+    string $plugin_id,
+    mixed $plugin_definition,
+    FieldDefinitionInterface $field_definition,
+    array $settings,
+    array $third_party_settings,
+    private readonly ConfigFactoryInterface $configFactory,
+  ) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $configuration
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('config.factory'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -80,6 +116,12 @@ final class AiSummaryWidget extends WidgetBase {
    *   The rendered form element.
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
+    // Hide the widget when the AI summary feature is disabled.
+    if (!$this->configFactory->get('helfi_ai.settings')->get('enable_ai_summary')) {
+      $element['#access'] = FALSE;
+      return $element;
+    }
+
     $field_name = $items->getFieldDefinition()->getName();
     $wrapper_id = 'ai-summary-' . str_replace('_', '-', $field_name) . '-' . $delta;
     $saved_value = (string) ($items[$delta]->value ?? '');
@@ -92,15 +134,15 @@ final class AiSummaryWidget extends WidgetBase {
         '#type' => 'html_tag',
         '#tag' => 'div',
         '#value' => $saved_value === ''
-          ? $this->t('AI generates a summary of the page content as a short list of bullet points. Review the summary and edit it if needed. Keep the bullet points.', options: ['context' => 'helfi_ai'])
-          : $this->t('Generate a new AI summary. It will replace the previous summary.', options: ['context' => 'helfi_ai']),
+          ? $this->t('AI generates a summary of the page content as a short list of bullet points. Review the summary and edit it if needed. Keep the bullet points.', options: ['context' => 'Helfi AI'])
+          : $this->t('Generate a new AI summary. It will replace the previous summary.', options: ['context' => 'Helfi AI']),
         '#attributes' => ['class' => ['description', 'form-item__description']],
         '#weight' => 100,
       ],
       'field_label' => [
         '#type' => 'html_tag',
         '#tag' => 'label',
-        '#value' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
+        '#value' => $this->t('AI summary', options: ['context' => 'Helfi AI']),
         '#attributes' => ['class' => ['form-item__label']],
         '#weight' => -10,
       ],
@@ -113,7 +155,7 @@ final class AiSummaryWidget extends WidgetBase {
         '#weight' => 0,
         'value' => [
           '#type' => 'text_format',
-          '#title' => $this->t('AI summary', options: ['context' => 'helfi_ai']),
+          '#title' => $this->t('AI summary', options: ['context' => 'Helfi AI']),
           '#title_display' => 'invisible',
           '#default_value' => $saved_value,
           '#format' => self::TEXT_FORMAT,
@@ -144,7 +186,7 @@ final class AiSummaryWidget extends WidgetBase {
    *   Render array for the button.
    */
   private function generateButton(bool $has_value, string $field_name, int $delta, string $wrapper_id): array {
-    $ctx = ['context' => 'helfi_ai'];
+    $ctx = ['context' => 'Helfi AI'];
     $button = [
       '#type' => 'button',
       '#value' => $has_value
@@ -165,7 +207,7 @@ final class AiSummaryWidget extends WidgetBase {
 
     $button['#attached']['library'][] = 'helfi_ai/ai_summary_confirm';
     if ($has_value) {
-      $button['#attributes']['data-helfi-ai-summary-confirm'] = $this->t('Regenerating replaces the current AI summary, including any manual changes. Continue?', options: $ctx);
+      $button['#attributes']['data-ai-summary-confirm'] = $this->t('Regenerating replaces the current AI summary, including any manual changes. Continue?', options: $ctx);
     }
 
     return $button;
@@ -223,11 +265,11 @@ final class AiSummaryWidget extends WidgetBase {
       }
 
       if (isset($wrapper['generate'])) {
-        $wrapper['generate']['#value'] = new TranslatableMarkup('Regenerate AI summary', [], ['context' => 'helfi_ai']);
-        $wrapper['generate']['#attributes']['data-helfi-ai-summary-confirm'] = (string) new TranslatableMarkup('Regenerating replaces the current AI summary, including any manual changes. Continue?', [], ['context' => 'helfi_ai']);
+        $wrapper['generate']['#value'] = new TranslatableMarkup('Regenerate AI summary', [], ['context' => 'Helfi AI']);
+        $wrapper['generate']['#attributes']['data-ai-summary-confirm'] = (string) new TranslatableMarkup('Regenerating replaces the current AI summary, including any manual changes. Continue?', [], ['context' => 'Helfi AI']);
       }
       if (isset($wrapper['description'])) {
-        $wrapper['description']['#value'] = new TranslatableMarkup('Generate a new AI summary. It will replace the previous summary.', [], ['context' => 'helfi_ai']);
+        $wrapper['description']['#value'] = new TranslatableMarkup('Generate a new AI summary. It will replace the previous summary.', [], ['context' => 'Helfi AI']);
       }
     }
     else {
@@ -235,7 +277,7 @@ final class AiSummaryWidget extends WidgetBase {
       $wrapper['error'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => new TranslatableMarkup('Could not generate a summary. Add some page content and make sure the AI provider is configured.', [], ['context' => 'helfi_ai']),
+        '#value' => new TranslatableMarkup('Could not generate a summary. Add some page content and make sure the AI provider is configured.', [], ['context' => 'Helfi AI']),
         '#attributes' => ['class' => ['messages', 'messages--error']],
         '#weight' => -20,
       ];
