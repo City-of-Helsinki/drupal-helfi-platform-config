@@ -5,8 +5,6 @@ dependencies:
   module:
     - helfi_tpr
     - node
-_core:
-  default_config_hash: hLN50C0AsMlELJOJBl2abC1Uhm7Yi1594Ru5iFQowMs
 id: node.field_announcement_service_pages
 field_name: field_announcement_service_pages
 entity_type: node

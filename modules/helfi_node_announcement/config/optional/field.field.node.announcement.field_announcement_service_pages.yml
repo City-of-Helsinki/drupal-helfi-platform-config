@@ -5,8 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_announcement_service_pages
     - node.type.announcement
-_core:
-  default_config_hash: hMWoYl2xD_blUqFe8ptytGeuVK4wiBOtV9f-Q3WQjmU
 id: node.announcement.field_announcement_service_pages
 field_name: field_announcement_service_pages
 entity_type: node

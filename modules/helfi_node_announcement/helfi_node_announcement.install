@@ -42,12 +42,12 @@ function helfi_node_announcement_update_11001(): void {
       throw new RuntimeException("Missing config $configuration in optional config.");
     }
 
-    // Remove the old configuration before installing the new one.
-    // The update hook helfi_node_announcement_update_9005() created incomplete
-    // configuration to some drupal installations.
+    // Delete only the incomplete config left by update 9005.
+    // A valid field instance always defines field_name.
     if (
+      str_contains($configuration, 'field.field.node') &&
       $activeStorage->exists($configuration) &&
-      str_contains($configuration, 'field.field.node')
+      empty($activeStorage->read($configuration)['field_name'])
     ) {
       Drupal::configFactory()->getEditable($configuration)->delete();
     }
