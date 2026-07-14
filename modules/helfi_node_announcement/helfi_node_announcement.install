@@ -7,10 +7,13 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
+use Drupal\Core\Config\FileStorage;
+
 /**
- * UHF-13060 Update description texts for TPR related fields.
+ * UHF-13060 Install missing announcement TPR unit/service fields.
  */
-function helfi_node_announcement_update_9005() : void {
+function helfi_node_announcement_update_11001(): void {
   if (
     !Drupal::moduleHandler()->moduleExists('helfi_tpr_config') ||
     !Drupal::moduleHandler()->moduleExists('helfi_tpr')
@@ -18,33 +21,69 @@ function helfi_node_announcement_update_9005() : void {
     return;
   }
 
+  $modulePath = Drupal::service('extension.list.module')->getPath('helfi_node_announcement');
+  $optionalStorage = new FileStorage("$modulePath/config/optional");
+  $activeStorage = Drupal::service('config.storage');
+  $configManager = Drupal::service('config.manager');
+  $entityTypeManager = Drupal::entityTypeManager();
+  /** @var \Drupal\language\ConfigurableLanguageManagerInterface $languageManager */
+  $languageManager = Drupal::languageManager();
+
   $configurations = [
-    'field.field.node.announcement.field_announcement_unit_pages' => [
-      'en' => 'Select the TPR-unit pages where the announcement will be displayed. Enter part of the page title and select the correct page from the suggestions.',
-      'fi' => 'Valitse toimipistesivut, joilla ilmoitus näytetään. Kirjoita osa sivun otsikosta ja valitse oikea sivu ehdotuksista.',
-      'sv' => 'Välj de verksamhetsställessidor där meddelandet ska visas. Skriv en del av sidans titel och välj rätt sida bland förslagen.',
-    ],
-    'field.field.node.announcement.field_announcement_service_pages' => [
-      'en' => 'Select the TPR-service pages where the announcement will be displayed. Enter part of the page title and select the correct page from the suggestions.',
-      'fi' => 'Valitse palvelusivut, joilla ilmoitus näytetään. Kirjoita osa sivun otsikosta ja valitse oikea sivu ehdotuksista.',
-      'sv' => 'Välj de tjänstesidor där meddelandet ska visas. Skriv en del av sidans titel och välj rätt sida bland förslagen.',
-    ],
+    'field.storage.node.field_announcement_service_pages',
+    'field.storage.node.field_announcement_unit_pages',
+    'field.field.node.announcement.field_announcement_service_pages',
+    'field.field.node.announcement.field_announcement_unit_pages',
   ];
 
-  $config_factory = Drupal::configFactory();
-  /** @var \Drupal\language\ConfigurableLanguageManagerInterface $language_manager */
-  $language_manager = Drupal::languageManager();
+  foreach ($configurations as $configuration) {
+    $data = $optionalStorage->read($configuration);
+    if (!$data) {
+      throw new RuntimeException("Missing config $configuration in optional config.");
+    }
 
-  foreach ($configurations as $config_name => $config_value) {
-    foreach ($config_value as $langcode => $text) {
-      if ($langcode === 'en') {
-        $original_config = $config_factory->getEditable($config_name);
-        $original_config->set('description', $text)->save();
+    // Delete only the incomplete config left by update 9005.
+    // A valid field instance always defines field_name.
+    if (
+      str_contains($configuration, 'field.field.node') &&
+      $activeStorage->exists($configuration) &&
+      empty($activeStorage->read($configuration)['field_name'])
+    ) {
+      Drupal::configFactory()->getEditable($configuration)->delete();
+    }
+
+    // Make sure there won't be any possible uuid mismatches.
+    if ($activeStorage->exists($configuration)) {
+      Drupal::configFactory()
+        ->getEditable($configuration)
+        ->set('uuid', $data['uuid'])
+        ->save();
+      continue;
+    }
+
+    $entityTypeId = $configManager->getEntityTypeIdByName($configuration);
+    $storage = $entityTypeManager->getStorage($entityTypeId);
+    assert($storage instanceof ConfigEntityStorageInterface);
+    $storage->createFromStorageRecord($data)->save();
+  }
+
+  $translations = [
+    'field.field.node.announcement.field_announcement_service_pages',
+    'field.field.node.announcement.field_announcement_unit_pages',
+  ];
+
+  foreach (['fi', 'sv'] as $langcode) {
+    $collection = $optionalStorage->createCollection("language.$langcode");
+
+    foreach ($translations as $translation) {
+      $data = $collection->read($translation);
+      if (!$data) {
+        throw new RuntimeException("Missing translation $translation for $langcode in optional config.");
       }
-      else {
-        $config_translation = $language_manager->getLanguageConfigOverride($langcode, $config_name);
-        $config_translation->set('description', $text)->save();
-      }
+
+      $languageManager->getLanguageConfigOverride($langcode, $translation)
+        ->setData($data)
+        ->save();
     }
   }
 }

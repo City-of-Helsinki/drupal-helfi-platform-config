@@ -1,0 +1,26 @@
+uuid: 3060f43c-7521-468a-9308-439b9397d92c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_announcement_service_pages
+    - node.type.announcement
+id: node.announcement.field_announcement_service_pages
+field_name: field_announcement_service_pages
+entity_type: node
+bundle: announcement
+label: 'Show on service pages'
+description: 'Select the TPR-service pages where the announcement will be displayed. Enter part of the page title and select the correct page from the suggestions.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:tpr_service'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: name
+      direction: ASC
+    auto_create: false
+field_type: entity_reference
