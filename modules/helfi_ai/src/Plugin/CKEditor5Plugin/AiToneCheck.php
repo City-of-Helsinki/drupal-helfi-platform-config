@@ -52,14 +52,7 @@ final class AiToneCheck extends CKEditor5PluginDefault implements ContainerFacto
   /**
    * {@inheritdoc}
    *
-   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-   *   The service container.
-   * @param array<string, mixed> $configuration
-   *   The plugin configuration.
-   * @param string $plugin_id
-   *   The plugin ID.
-   * @param \Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition $plugin_definition
-   *   The plugin definition.
+   * @phpstan-param array<string, mixed> $configuration
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     return new static(
