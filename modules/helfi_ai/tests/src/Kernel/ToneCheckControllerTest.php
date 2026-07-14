@@ -62,7 +62,15 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
       ])
       ->save();
 
-    $this->controller = new ToneCheckController($this->container->get(AiGenerator::class));
+    // Enable the AI tone check functionality.
+    $this->config('helfi_ai.settings')
+      ->set('enable_tone_check', TRUE)
+      ->save();
+
+    $this->controller = new ToneCheckController(
+      $this->container->get(AiGenerator::class),
+      $this->container->get('config.factory'),
+    );
   }
 
   /**
@@ -160,6 +168,21 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
     $this->assertArrayHasKey('suggestion', $payload);
     // The echoed prompt proves the content reached the provider.
     $this->assertStringContainsString($content, $payload['suggestion']);
+  }
+
+  /**
+   * Test that a disabled feature rejects the request with 403.
+   */
+  public function testRejectsWhenFeatureDisabled(): void {
+    $this->config('helfi_ai.settings')->set('enable_tone_check', FALSE)->save();
+
+    $response = $this->controller->check($this->request([
+      'content' => '<p>Test</p>',
+      'langcode' => 'en',
+    ]));
+
+    $this->assertSame(403, $response->getStatusCode());
+    $this->assertArrayHasKey('error', $this->decode($response));
   }
 
   /**

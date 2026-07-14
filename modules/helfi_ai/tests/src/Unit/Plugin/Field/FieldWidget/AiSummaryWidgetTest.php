@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ai\Unit\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormState;
@@ -32,10 +34,16 @@ class AiSummaryWidgetTest extends UnitTestCase {
   /**
    * Creates a widget instance for the given field name.
    */
-  private function createWidget(string $fieldName = 'ai_summary'): AiSummaryWidget {
+  private function createWidget(string $fieldName = 'ai_summary', bool $enabled = TRUE): AiSummaryWidget {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
     $fieldDef->getName()->willReturn($fieldName);
-    $widget = new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], []);
+
+    $config = $this->prophesize(ImmutableConfig::class);
+    $config->get('enable_ai_summary')->willReturn($enabled);
+    $configFactory = $this->prophesize(ConfigFactoryInterface::class);
+    $configFactory->get('helfi_ai.settings')->willReturn($config->reveal());
+
+    $widget = new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], [], $configFactory->reveal());
     $widget->setStringTranslation($this->getStringTranslationStub());
     return $widget;
   }
@@ -105,6 +113,20 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $this->assertArrayNotHasKey('data-ai-summary-confirm', $wrapper['generate']['#attributes'] ?? []);
     $this->assertArrayHasKey('description', $wrapper);
     $this->assertArrayNotHasKey('error', $wrapper);
+  }
+
+  /**
+   * Test that the widget is hidden when the feature is disabled.
+   */
+  public function testFormElementHiddenWhenFeatureDisabled(): void {
+    $widget = $this->createWidget('ai_summary', FALSE);
+
+    $form = [];
+    $formState = new FormState();
+    $result = $widget->formElement($this->makeItems('<ul><li>Saved</li></ul>'), 0, [], $form, $formState);
+
+    $this->assertFalse($result['#access']);
+    $this->assertArrayNotHasKey('ajax_wrapper', $result);
   }
 
   /**
