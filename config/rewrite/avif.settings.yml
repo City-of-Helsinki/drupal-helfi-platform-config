@@ -1,2 +1,3 @@
+config_rewrite: 'replace'
 quality: 60
 processor: imagemagick
