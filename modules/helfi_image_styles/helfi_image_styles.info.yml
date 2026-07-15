@@ -8,3 +8,4 @@ dependencies:
   - focal_point:focal_point
   - helfi_platform_config:helfi_platform_config
   - image_style_quality:image_style_quality
+  - avif:avif

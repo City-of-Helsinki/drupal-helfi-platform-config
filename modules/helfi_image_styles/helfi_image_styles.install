@@ -198,11 +198,15 @@ function helfi_image_styles_update_11001(): void {
 }
 
 /**
- * UHF-12710 Flush all cached media for all image styles.
+ * UHF-12710 Enable avif-module and flush cached image styles.
  */
 function helfi_image_styles_update_11002(): void {
-  $imageStyles = ImageStyle::loadMultiple();
-  foreach ($imageStyles as $imageStyle) {
-    $imageStyle->flush();
+  if (!\Drupal::moduleHandler()->moduleExists('avif')) {
+    \Drupal::service('module_installer')->install(['avif']);
+
+    $imageStyles = ImageStyle::loadMultiple();
+    foreach ($imageStyles as $imageStyle) {
+      $imageStyle->flush();
+    }
   }
 }
