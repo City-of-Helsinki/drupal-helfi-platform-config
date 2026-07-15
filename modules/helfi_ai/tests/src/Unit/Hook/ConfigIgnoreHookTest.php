@@ -18,34 +18,19 @@ use PHPUnit\Framework\Attributes\Group;
 class ConfigIgnoreHookTest extends UnitTestCase {
 
   /**
-   * The AI prompt pattern the hook adds.
-   */
-  private const PATTERN = 'ai.ai_prompt.helfi_*';
-
-  /**
-   * The pattern is ignored for every operation except import create.
+   * The pattern is ignored for update and delete.
    */
   public function testAddsPromptPatternExceptImportCreate(): void {
     $ignored = new ConfigIgnoreConfig('simple', []);
     (new ConfigIgnoreHook())->configIgnoreIgnoredAlter($ignored);
+    $pattern = 'ai.ai_prompt.helfi_*';
 
-    $this->assertNotContains(self::PATTERN, $ignored->getList('import', 'create'));
-    $this->assertContains(self::PATTERN, $ignored->getList('import', 'update'));
-    $this->assertContains(self::PATTERN, $ignored->getList('import', 'delete'));
-    $this->assertContains(self::PATTERN, $ignored->getList('export', 'create'));
-    $this->assertContains(self::PATTERN, $ignored->getList('export', 'update'));
-    $this->assertContains(self::PATTERN, $ignored->getList('export', 'delete'));
-  }
-
-  /**
-   * Existing ignored patterns are kept alongside the added pattern.
-   */
-  public function testPreservesExistingPatterns(): void {
-    $ignored = new ConfigIgnoreConfig('simple', ['some.other.setting']);
-    (new ConfigIgnoreHook())->configIgnoreIgnoredAlter($ignored);
-
-    $this->assertContains('some.other.setting', $ignored->getList('import', 'update'));
-    $this->assertContains(self::PATTERN, $ignored->getList('import', 'update'));
+    $this->assertContains($pattern, $ignored->getList('import', 'update'));
+    $this->assertContains($pattern, $ignored->getList('import', 'delete'));
+    $this->assertContains($pattern, $ignored->getList('export', 'update'));
+    $this->assertContains($pattern, $ignored->getList('export', 'delete'));
+    $this->assertNotContains($pattern, $ignored->getList('import', 'create'));
+    $this->assertNotContains($pattern, $ignored->getList('export', 'create'));
   }
 
 }

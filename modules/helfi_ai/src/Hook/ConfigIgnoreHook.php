@@ -24,11 +24,8 @@ final readonly class ConfigIgnoreHook {
 
     // Let Drupal create the AI prompt configurations during import, but prevent
     // updating and deleting the configurations during import and export.
-    foreach (['create', 'update', 'delete'] as $operation) {
+    foreach (['update', 'delete'] as $operation) {
       foreach (['import', 'export'] as $direction) {
-        if ($direction === 'import' && $operation === 'create') {
-          continue;
-        }
         $list = $ignored->getList($direction, $operation);
         $list[] = $ignoredConfiguration;
         $ignored->setList($direction, $operation, $list);
