@@ -47,10 +47,10 @@ final readonly class ParagraphHooks {
    */
   #[Hook(hook: 'paragraph_presave')]
   public function preSave(EntityInterface $entity): void {
+    /** @var \Drupal\paragraphs\ParagraphInterface $entity */
     if (!$this->isValidEntity($entity)) {
       return;
     }
-
     $field = $entity->get('field_events');
     assert($field instanceof EntityReferenceFieldItemListInterface);
 

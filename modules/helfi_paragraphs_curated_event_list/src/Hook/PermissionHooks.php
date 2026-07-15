@@ -13,6 +13,9 @@ final class PermissionHooks {
 
   /**
    * Implements hook_platform_config_grant_permissions().
+   *
+   * @return array<string, array<int, string>>
+   *   The permissions.
    */
   #[Hook(hook: 'platform_config_grant_permissions')]
   public function permissions(): array {
