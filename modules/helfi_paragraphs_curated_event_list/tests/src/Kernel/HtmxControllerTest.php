@@ -337,7 +337,7 @@ class HtmxControllerTest extends KernelTestBase {
       $this->assertEquals(200, $response->getStatusCode());
 
       // Make sure all translations are cached, but running tests can take some
-      // time so give it some leeway.
+      // time, so give it some leeway.
       $this->assertTrue($cache->getCacheMaxAge() > 86390);
     }
   }

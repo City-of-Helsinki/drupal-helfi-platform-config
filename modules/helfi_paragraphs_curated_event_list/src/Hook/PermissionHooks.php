@@ -9,7 +9,19 @@ use Drupal\Core\Hook\Attribute\Hook;
 /**
  * Permission hooks.
  */
-final class PermissionHooks {
+final readonly class PermissionHooks {
+
+  /**
+   * The permissions required for the Curated Events paragraph widget.
+   *
+   * Without them, the entity reference field displays a "Restricted access"
+   * message.
+   */
+  public const array PERMISSIONS = [
+    'update linkedevents_event external entity',
+    'view linkedevents_event external entity',
+    'view linkedevents_event external entity collection',
+  ];
 
   /**
    * Implements hook_platform_config_grant_permissions().
@@ -19,18 +31,10 @@ final class PermissionHooks {
    */
   #[Hook(hook: 'platform_config_grant_permissions')]
   public function permissions(): array {
-    $permissions = [
-      // These permissions are required for the Curated Events paragraph widget.
-      // Without them, the entity reference field displays a "Restricted access"
-      // message.
-      'update linkedevents_event external entity',
-      'view linkedevents_event external entity',
-      'view linkedevents_event external entity collection',
-    ];
     return [
-      'admin' => $permissions,
-      'content_producer' => $permissions,
-      'editor' => $permissions,
+      'admin' => self::PERMISSIONS,
+      'content_producer' => self::PERMISSIONS,
+      'editor' => self::PERMISSIONS,
     ];
   }
 
