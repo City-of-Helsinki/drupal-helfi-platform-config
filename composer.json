@@ -6,6 +6,7 @@
     "minimum-stability": "dev",
     "require": {
         "ext-curl": "*",
+        "drupal/avif": "^1.0",
         "drupal/core": "~11.4",
         "drupal/core-composer-scaffold": "~11.4",
         "drupal/action": "^0.2",
