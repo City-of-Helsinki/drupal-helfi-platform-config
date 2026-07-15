@@ -54,7 +54,7 @@ final class ToneCheckController implements ContainerInjectionInterface {
     $suggestion = $this->generator->checkTone($content, $langcode);
 
     if ($suggestion === NULL) {
-      return new JsonResponse(['error' => 'Could not check the tone. Make sure the AI provider is configured.'], 502);
+      return new JsonResponse(['error' => 'Could not check the tone. Make sure the AI provider is configured.'], 400);
     }
 
     return new JsonResponse(['suggestion' => $suggestion]);

@@ -219,9 +219,9 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
   }
 
   /**
-   * An unresolvable provider yields a 502.
+   * An unresolvable provider yields a 400.
    */
-  public function testReturns502WhenProviderUnavailable(): void {
+  public function testReturns400WhenProviderUnavailable(): void {
     $this->config('ai.settings')
       ->set('default_providers', [
         'chat' => ['provider_id' => 'no_such_provider', 'model_id' => 'test'],
@@ -233,7 +233,7 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
       'langcode' => 'en',
     ]));
 
-    $this->assertSame(502, $response->getStatusCode());
+    $this->assertSame(400, $response->getStatusCode());
     $this->assertArrayHasKey('error', $this->decode($response));
   }
 
