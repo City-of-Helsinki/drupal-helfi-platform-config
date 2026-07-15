@@ -111,3 +111,7 @@ msgstr "Ehdotettu sisältö"
 msgctxt "Helfi AI"
 msgid "Differences"
 msgstr "Erot"
+
+msgctxt "Helfi AI"
+msgid "characters"
+msgstr "merkkiä"

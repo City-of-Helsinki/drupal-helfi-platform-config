@@ -111,3 +111,7 @@ msgstr "Föreslagen innehåll"
 msgctxt "Helfi AI"
 msgid "Differences"
 msgstr "Skillnader"
+
+msgctxt "Helfi AI"
+msgid "characters"
+msgstr "tecken"
