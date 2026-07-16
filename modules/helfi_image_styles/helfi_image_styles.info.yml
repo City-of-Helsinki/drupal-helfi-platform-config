@@ -5,7 +5,8 @@ dependencies:
   - drupal:image
   - drupal:responsive_image
   - imagemagick:imagemagick
-  - avif:avif
+  - webp:webp
+  - wpf:wpf
   - focal_point:focal_point
   - helfi_platform_config:helfi_platform_config
   - image_style_quality:image_style_quality

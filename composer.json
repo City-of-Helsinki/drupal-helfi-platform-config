@@ -6,7 +6,6 @@
     "minimum-stability": "dev",
     "require": {
         "ext-curl": "*",
-        "drupal/avif": "^1.0",
         "drupal/core": "~11.4",
         "drupal/core-composer-scaffold": "~11.4",
         "drupal/action": "^0.2",
@@ -66,6 +65,8 @@
         "drupal/view_unpublished": "^1.0",
         "drupal/views_bulk_edit": "^3.0",
         "drupal/views_bulk_operations": "^4.1",
+        "drupal/webp": "^1.0@RC",
+        "drupal/wpf": "^1.0",
         "drupal/stage_file_proxy": "^3.1",
         "ruflin/elastica": "^8.0",
         "symfony/property-access": "^7.3",

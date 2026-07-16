@@ -1,5 +1,0 @@
-config_rewrite:
-  replace: ['image_formats.AVIF']
-image_formats:
-  AVIF:
-    mime_type: image/avif
