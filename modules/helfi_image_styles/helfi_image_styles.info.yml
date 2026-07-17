@@ -3,8 +3,10 @@ type: module
 core_version_requirement: '^10 || ^11'
 dependencies:
   - drupal:image
-  - imagemagick:imagemagick
   - drupal:responsive_image
+  - imagemagick:imagemagick
+  - webp:webp
+  - wpf:wpf
   - focal_point:focal_point
   - helfi_platform_config:helfi_platform_config
   - image_style_quality:image_style_quality

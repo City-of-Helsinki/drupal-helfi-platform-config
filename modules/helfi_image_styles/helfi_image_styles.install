@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\image\Entity\ImageStyle;
+
 /**
  * UHF-10239 Adds new image styles used by image gallery.
  */
@@ -193,4 +195,22 @@ function helfi_image_styles_update_11000(): void {
 function helfi_image_styles_update_11001(): void {
   $config_factory = Drupal::configFactory();
   $config_factory->getEditable('responsive_image.styles.contact_card')->delete();
+}
+
+/**
+ * UHF-12710 Enable webp and wpf modules and flush cached image styles.
+ */
+function helfi_image_styles_update_11002(): void {
+  if (
+    !\Drupal::moduleHandler()->moduleExists('webp') &&
+    !\Drupal::moduleHandler()->moduleExists('wpf')
+  ) {
+    \Drupal::service('module_installer')->install(['webp']);
+    \Drupal::service('module_installer')->install(['wpf']);
+
+    $imageStyles = ImageStyle::loadMultiple();
+    foreach ($imageStyles as $imageStyle) {
+      $imageStyle->flush();
+    }
+  }
 }
