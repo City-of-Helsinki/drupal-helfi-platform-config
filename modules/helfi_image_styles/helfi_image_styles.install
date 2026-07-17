@@ -198,11 +198,15 @@ function helfi_image_styles_update_11001(): void {
 }
 
 /**
- * UHF-12710 Enable avif-module and flush cached image styles.
+ * UHF-12710 Enable webp and wpf modules and flush cached image styles.
  */
 function helfi_image_styles_update_11002(): void {
-  if (!\Drupal::moduleHandler()->moduleExists('avif')) {
-    \Drupal::service('module_installer')->install(['avif']);
+  if (
+    !\Drupal::moduleHandler()->moduleExists('webp') &&
+    !\Drupal::moduleHandler()->moduleExists('wpf')
+  ) {
+    \Drupal::service('module_installer')->install(['webp']);
+    \Drupal::service('module_installer')->install(['wpf']);
 
     $imageStyles = ImageStyle::loadMultiple();
     foreach ($imageStyles as $imageStyle) {
