@@ -114,6 +114,9 @@
             },
             "drupal/view_unpublished": {
                 "[#UHF-9256] Fix missing dynamic permission dependencies.": "./public/modules/contrib/helfi_platform_config/patches/view_unpublished_permissions_missing_dependencies.patch"
+            },
+            "drupal/wpf": {
+                "[#UHF-12710] Module schema": "./public/modules/contrib/helfi_platform_config/patches/wpf-schema.patch"
             }
         }
     }
