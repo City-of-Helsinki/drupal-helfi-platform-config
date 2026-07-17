@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.org_chart.field_org_chart_depth
     - field.field.paragraph.org_chart.field_org_chart_desc
     - field.field.paragraph.org_chart.field_org_chart_title
     - paragraphs.paragraphs_type.org_chart
