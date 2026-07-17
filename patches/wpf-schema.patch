@@ -1,8 +1,8 @@
 diff --git a/config/schema/wpf.schema.yml b/config/schema/wpf.schema.yml
-index d6e1d31..92259c3 100644
+index d6e1d31..1750b5c 100644
 --- a/config/schema/wpf.schema.yml
 +++ b/config/schema/wpf.schema.yml
-@@ -4,3 +4,11 @@ wpf.settings:
+@@ -4,3 +4,12 @@ wpf.settings:
      quality:
        type: integer
        label: 'Image quality'
@@ -11,6 +11,7 @@ index d6e1d31..92259c3 100644
 +      label: 'Styles'
 +      mapping:
 +        disabled:
-+          label: 'Is disabled'
-+          type: boolean
-+
++          type: sequence
++          label: 'Disabled'
++          sequence:
++            type: string
