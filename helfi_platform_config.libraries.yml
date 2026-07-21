@@ -59,7 +59,7 @@ location_autocomplete:
     - core/once
 
 heading_id_injector:
-  version: 1.0.1
+  version: 1.0.2
   js:
     dist/js/headingIdInjector.min.js: { minified: true }
   dependencies:

@@ -6,6 +6,11 @@
  * all except admin routes.
  *
  * See HeadingFragmentExtractor.php before modifying this file.
+ *
+ * Etusivu instance subtheme library hdbt_subtheme/search-fragment-highlight
+ * has a dependency on this library. Search result highlighting is triggered
+ * from the event helfiHeadingIdsInjected dispatched here when id generation
+ * is complete.
  */
 
 ((Drupal, once, drupalSettings) => {
@@ -198,6 +203,15 @@
 
       // Mark as initialized so it won't re-run unnecessarily.
       window.headingIdInjectorInitialized = true;
+
+      // Notify listeners (e.g. search fragment highlight) that heading IDs are ready.
+      document.dispatchEvent(
+        new CustomEvent('helfiHeadingIdsInjected', {
+          detail: {
+            headings: Drupal.HeadingIdInjector.injectedHeadings,
+          },
+        }),
+      );
     },
   };
 })(Drupal, once, drupalSettings);
