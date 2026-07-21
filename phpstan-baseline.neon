@@ -1409,16 +1409,6 @@ parameters:
 			path: modules/helfi_etusivu_entities/src/Plugin/ExternalEntities/StorageClient/EtusivuJsonApiEntityBase.php
 
 		-
-			message: "#^Cannot access offset 'data' on array\\|bool\\|float\\|int\\|object\\|string\\.$#"
-			count: 1
-			path: modules/helfi_etusivu_entities/src/Plugin/ExternalEntities/StorageClient/EtusivuJsonApiEntityBase.php
-
-		-
-			message: "#^Cannot access offset 'meta' on array\\|bool\\|float\\|int\\|object\\|string\\.$#"
-			count: 1
-			path: modules/helfi_etusivu_entities/src/Plugin/ExternalEntities/StorageClient/EtusivuJsonApiEntityBase.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_etusivu_entities\\\\Plugin\\\\ExternalEntities\\\\StorageClient\\\\EtusivuJsonApiEntityBase\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_etusivu_entities/src/Plugin/ExternalEntities/StorageClient/EtusivuJsonApiEntityBase.php
@@ -2504,11 +2494,6 @@ parameters:
 			path: modules/helfi_paragraphs_curated_event_list/helfi_paragraphs_curated_event_list.module
 
 		-
-			message: "#^Cannot access offset 'data' on array\\|bool\\|float\\|int\\|object\\|string\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_curated_event_list/src/Plugin/ExternalEntities/StorageClient/Events.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_paragraphs_curated_event_list\\\\Plugin\\\\ExternalEntities\\\\StorageClient\\\\Events\\:\\:buildConfigurationForm\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_paragraphs_curated_event_list/src/Plugin/ExternalEntities/StorageClient/Events.php
@@ -2617,11 +2602,6 @@ parameters:
 			message: "#^Method Drupal\\\\helfi_paragraphs_hearings\\\\Hook\\\\HearingsParagraphHooks\\:\\:view\\(\\) has parameter \\$build with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_paragraphs_hearings/src/Hook/HearingsParagraphHooks.php
-
-		-
-			message: "#^Cannot access offset 'results' on array\\|bool\\|float\\|int\\|object\\|string\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_hearings/src/Plugin/ExternalEntities/StorageClient/Hearings.php
 
 		-
 			message: "#^Method Drupal\\\\helfi_paragraphs_hearings\\\\Plugin\\\\ExternalEntities\\\\StorageClient\\\\Hearings\\:\\:create\\(\\) has parameter \\$configuration with no value type specified in iterable type array\\.$#"
@@ -3118,13 +3098,13 @@ parameters:
 			path: modules/helfi_paragraphs_org_chart/src/OrgChartImporter.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_paragraphs_org_chart\\\\OrgChartImporter\\:\\:fetch\\(\\) should return array but returns array\\|bool\\|float\\|int\\|object\\|string\\|null\\.$#"
-			count: 2
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 1
 			path: modules/helfi_paragraphs_org_chart/src/OrgChartImporter.php
 
 		-
-			message: "#^Parameter \\#1 \\$json of static method GuzzleHttp\\\\Utils\\:\\:jsonDecode\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
+			message: "#^Unknown parameter \\$assoc in call to function json_decode\\.$#"
+			count: 2
 			path: modules/helfi_paragraphs_org_chart/src/OrgChartImporter.php
 
 		-
@@ -3778,11 +3758,6 @@ parameters:
 			path: modules/helfi_recommendations/src/Client/ApiClient.php
 
 		-
-			message: "#^Parameter \\#1 \\$array of function array_reduce expects array, array\\|bool\\|float\\|int\\|object\\|string\\|null given\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/Client/ApiClient.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\Drush\\\\Commands\\\\Commands\\:\\:batchFixEntityReferences\\(\\) has parameter \\$context with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/src/Drush/Commands/Commands.php
@@ -4311,11 +4286,6 @@ parameters:
 			message: "#^Parameter \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/tests/src/Kernel/TopicsManagerTest.php
-
-		-
-			message: "#^Cannot access offset 'documents' on array\\|bool\\|float\\|int\\|object\\|string\\.$#"
-			count: 2
-			path: modules/helfi_recommendations/tests/src/Unit/Client/ApiClientTest.php
 
 		-
 			message: "#^Method Drupal\\\\Tests\\\\helfi_recommendations\\\\Unit\\\\Client\\\\ApiClientTest\\:\\:getFixture\\(\\) should return string but returns string\\|false\\.$#"
