@@ -79,14 +79,14 @@ class OrgChartImporter {
     // Return mock response if the use mock feature is enabled.
     if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
       $data = file_get_contents(__DIR__ . "/../tests/fixtures/org-chart-$depth.json");
-      return json_decode($data, assoc: TRUE);
+      return json_decode($data, TRUE);
     }
 
     try {
       $data = $this->client->request('GET', $this->getUri($langcode, $start, $depth))
         ->getBody()
         ->getContents();
-      $chart = json_decode($data, assoc: TRUE);
+      $chart = json_decode($data,TRUE);
     }
     catch (GuzzleException | InvalidArgumentException) {
       return [];
