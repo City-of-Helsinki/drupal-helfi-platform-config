@@ -3103,11 +3103,6 @@ parameters:
 			path: modules/helfi_paragraphs_org_chart/src/OrgChartImporter.php
 
 		-
-			message: "#^Unknown parameter \\$assoc in call to function json_decode\\.$#"
-			count: 2
-			path: modules/helfi_paragraphs_org_chart/src/OrgChartImporter.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_paragraphs_org_chart\\\\OrgChartLazyBuilder\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_paragraphs_org_chart/src/OrgChartLazyBuilder.php
