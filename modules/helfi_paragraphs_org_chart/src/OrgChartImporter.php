@@ -86,7 +86,7 @@ class OrgChartImporter {
       $data = $this->client->request('GET', $this->getUri($langcode, $start, $depth))
         ->getBody()
         ->getContents();
-      $chart = json_decode($data,TRUE);
+      $chart = json_decode($data, TRUE);
     }
     catch (GuzzleException | InvalidArgumentException) {
       return [];
