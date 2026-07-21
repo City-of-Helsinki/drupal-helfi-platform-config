@@ -14,7 +14,6 @@ use Drupal\helfi_search\OpenAI\DTO\Response;
 use Drupal\helfi_search\TokenUsageTracker;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Utils;
 
 /**
  * OpenAI Embeddings API.
@@ -76,7 +75,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
         ],
       ]);
 
-      $body = Utils::jsonDecode($response->getBody()->getContents());
+      $body = json_decode($response->getBody()->getContents());
 
       if (!isset($body->data) || !is_array($body->data)) {
         throw new EmbeddingsModelException('Invalid response format from OpenAI API');

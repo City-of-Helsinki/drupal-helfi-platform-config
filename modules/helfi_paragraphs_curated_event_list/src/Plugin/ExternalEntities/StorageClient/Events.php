@@ -10,7 +10,6 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\StorageClientBase;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -149,7 +148,7 @@ class Events extends StorageClientBase {
 
     try {
       $content = $this->client->request('GET', $this->getUri($parameters, $langcode));
-      $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
+      $json = json_decode($content->getBody()->getContents(), TRUE);
 
       if (empty($json['data'])) {
         return [];

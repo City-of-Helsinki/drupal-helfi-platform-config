@@ -18,7 +18,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Utils;
 use Prophecy\Argument;
 
 /**
@@ -133,7 +132,7 @@ class ApiClientTest extends UnitTestCase {
 
     $httpClient = new Client([
       'handler' => function (Request $request) use ($entities) {
-        $body = Utils::jsonDecode($request->getBody()->getContents(), TRUE);
+        $body = json_decode($request->getBody()->getContents(), TRUE);
 
         // Client uses document ids.
         $this->assertEquals(
@@ -142,7 +141,7 @@ class ApiClientTest extends UnitTestCase {
         );
 
         $response = [];
-        $fixture = Utils::jsonDecode($this->getFixture('suggest.json'), TRUE);
+        $fixture = json_decode($this->getFixture('suggest.json'), TRUE);
         foreach ($body['documents'] as $document) {
           $response[] = $fixture + [
             'document_id' => $document['document_id'],

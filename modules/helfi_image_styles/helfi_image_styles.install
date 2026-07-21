@@ -7,8 +7,6 @@
 
 declare(strict_types=1);
 
-use Drupal\image\Entity\ImageStyle;
-
 /**
  * UHF-10239 Adds new image styles used by image gallery.
  */
@@ -207,10 +205,5 @@ function helfi_image_styles_update_11002(): void {
   ) {
     \Drupal::service('module_installer')->install(['webp']);
     \Drupal::service('module_installer')->install(['wpf']);
-
-    $imageStyles = ImageStyle::loadMultiple();
-    foreach ($imageStyles as $imageStyle) {
-      $imageStyle->flush();
-    }
   }
 }

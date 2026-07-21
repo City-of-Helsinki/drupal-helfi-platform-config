@@ -11,7 +11,6 @@ use Drupal\Core\Site\Settings;
 use Drupal\helfi_react_search\DTO\LinkedEventsItem;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Utils;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +69,7 @@ final class LinkedEventsAutocompleteController extends ControllerBase {
         'query' => $this->buildSearchQuery($input, $settings),
       ]);
 
-      $response = Utils::jsonDecode($response->getBody()->getContents());
+      $response = json_decode($response->getBody()->getContents());
 
       $results = array_map(fn (object $item) => [
         // Ids are JSON serialized LinkedEventsItems.

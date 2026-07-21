@@ -8,7 +8,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Utils;
 
 /**
  * The keyword generator.
@@ -90,7 +89,7 @@ final class ApiClient {
         ],
       ]);
 
-      return $this->mapResults(Utils::jsonDecode($response->getBody()->getContents()));
+      return $this->mapResults(json_decode($response->getBody()->getContents()));
     }
     catch (GuzzleException $e) {
       throw new ApiClientException($e->getMessage(), previous: $e);
@@ -162,7 +161,7 @@ final class ApiClient {
       ]);
 
       return array_reduce(
-        Utils::jsonDecode($response->getBody()->getContents()),
+        json_decode($response->getBody()->getContents()),
         function ($carry, $item) {
           $carry[$item->document_id] = $this->mapResults($item);
           return $carry;
