@@ -7,8 +7,6 @@
 
 declare(strict_types=1);
 
-use Drupal\image\Entity\ImageStyle;
-
 /**
  * UHF-10239 Adds new image styles used by image gallery.
  */
