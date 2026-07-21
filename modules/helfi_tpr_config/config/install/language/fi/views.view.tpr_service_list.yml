@@ -1,8 +1,12 @@
 label: 'TPR Palvelut'
 display:
   default:
-    display_title: Oletus
     display_options:
+      empty:
+        area:
+          content:
+            value: 'Ei tuloksia.'
+            format: plain_text
       exposed_form:
         options:
           submit_button: Käytä
@@ -24,6 +28,7 @@ display:
         tpr_service_bulk_form:
           label: Massapäivitys
           action_title: Toiminto
+        id: {  }
         name:
           label: Nimi
         langcode:
@@ -37,7 +42,6 @@ display:
           label: Päivitetty
         operations:
           label: Toimenpiteet
-        id: {  }
       filters:
         combine:
           expose:
@@ -49,10 +53,6 @@ display:
       header:
         result:
           content: 'Näytetään @start - @end / @total'
-      empty:
-        area:
-          content:
-            value: 'Ei tuloksia.'
-            format: plain_text
+    display_title: Oletus
   page_1:
     display_title: Sivu

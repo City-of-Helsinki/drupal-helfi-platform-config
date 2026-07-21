@@ -1,13 +1,17 @@
+label: Toimipistehaku
 display:
   default:
     display_options:
-      filters:
-        combine:
-          group_info:
-            label: 'Kentät yhdistävä suodatin'
-          expose:
-            label: Etsi
-            placeholder: 'Syötä toimipisteen nimi tai osoite'
+      empty:
+        area:
+          content:
+            value: '<p>Ei tuloksia</p>'
+            format: full_html
+      fields:
+        name: {  }
+        address__postal_code: {  }
+        address__address_line1: {  }
+        address__address_line2: {  }
       pager:
         options:
           tags:
@@ -18,26 +22,32 @@ display:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
-            offset_label: Offset
       exposed_form:
         options:
           submit_button: Etsi
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Nouseva
-          sort_desc_label: Laskeva
-      empty:
-        area:
-          content:
-            value: '<p>Ei tuloksia</p>'
-            format: full_html
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
       arguments:
         id:
           exception:
             title: Kaikki
+      filters:
+        combine:
+          expose:
+            label: Etsi
+            placeholder: 'Syötä toimipisteen nimi tai osoite'
+          group_info:
+            label: 'Kentät yhdistävä suodatin'
+            description: ''
     display_title: Oletus
   block:
     display_title: Lohko
   entity_reference:
     display_title: Entiteettiviittaus
-label: Toimipistehaku
+    display_options:
+      fields:
+        name_override: {  }
+        id: {  }
+        name: {  }

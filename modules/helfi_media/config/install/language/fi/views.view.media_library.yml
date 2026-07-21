@@ -65,6 +65,7 @@ display:
       fields:
         media_bulk_form:
           action_title: Toiminto
+        name: {  }
         edit_media:
           alter:
             text: 'Muokkaa {{ name }}'
@@ -75,7 +76,6 @@ display:
             text: 'Poista {{ name }}'
             alt: 'Poista {{ name }}'
           text: Poista
-        name: {  }
   widget:
     display_title: Widgetti
     display_options:

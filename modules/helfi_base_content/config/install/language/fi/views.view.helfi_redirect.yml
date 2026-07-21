@@ -1,9 +1,53 @@
+label: Uudelleenohjaukset
+description: Uudelleenohjaukset
 display:
   default:
+    display_title: Oletus
     display_options:
+      title: Uudelleenohjaukset
+      fields:
+        redirect_bulk_form:
+          action_title: Valinnalla
+        redirect_source__path:
+          label: Lähettäjä
+        is_custom:
+          label: 'Käyttäjän luoma'
+        enabled:
+          label: Käytössä
+        created:
+          label: Luotu
+      pager:
+        options:
+          tags:
+            next: Seuraava
+            previous: Edellinen
+            first: Ensimmäinen
+            last: Viimeinen
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+      exposed_form:
+        options:
+          submit_button: Suodata
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Nousevasti
+          sort_desc_label: Laskevasti
+      empty:
+        area_text_custom:
+          content: 'Ei ole vielä uudelleenohjaksia.'
       filters:
+        redirect_source__path:
+          expose:
+            label: Lähettäjä
+        redirect_redirect__uri:
+          expose:
+            label: Osoitteeseen
         status_code:
+          expose:
+            label: Tilakoodi
           group_info:
+            label: Tilakoodi
             group_items:
               1:
                 title: '300 Useita valintoja'
@@ -19,15 +63,6 @@ display:
                 title: '305 Käytä proxyä'
               7:
                 title: '307 Tilapäinen uudelleenohjaus'
-            label: Tilakoodi
-          expose:
-            label: Tilakoodi
-        redirect_source__path:
-          expose:
-            label: Lähettäjä
-        redirect_redirect__uri:
-          expose:
-            label: Osoitteeseen
         language:
           expose:
             label: 'Alkuperäinen kieli'
@@ -37,43 +72,8 @@ display:
         enabled:
           expose:
             label: Käytössä
-      exposed_form:
-        options:
-          submit_button: Suodata
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
-      pager:
-        options:
-          expose:
-            items_per_page_label: 'Merkintöjä sivua kohti'
-            items_per_page_options_all_label: '- Kaikki -'
-          tags:
-            previous: Edellinen
-            next: Seuraava
-            first: Ensimmäinen
-            last: Viimeinen
-      fields:
-        redirect_bulk_form:
-          action_title: Valinnalla
-        redirect_source__path:
-          label: Lähettäjä
-        created:
-          label: Luotu
-        is_custom:
-          label: 'Käyttäjän luoma'
-        enabled:
-          label: Käytössä
-      empty:
-        area_text_custom:
-          content: 'Ei ole vielä uudelleenohjaksia.'
-      title: Uudelleenohjaukset
-    display_title: Oletus
   page_1:
     display_title: Sivu
     display_options:
       menu:
         title: Uudelleenohjaukset
-label: Uudelleenohjaukset
-description: Uudelleenohjaukset
