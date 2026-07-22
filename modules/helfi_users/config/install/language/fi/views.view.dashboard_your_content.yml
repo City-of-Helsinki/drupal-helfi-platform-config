@@ -6,35 +6,28 @@ display:
     display_options:
       title: 'Omat sivut'
       fields:
+        views_bulk_operations_bulk_form:
+          action_title: Toiminto
         content_translation_outdated:
           label: 'Käännös vanhentunut'
-          settings:
-            format_custom_true: outdated
-          separator: ', '
+          settings: {  }
         title:
           label: Otsikko
-          separator: ', '
         type:
           label: Sisältötyyppi
-          separator: ', '
         uid:
           label: Kirjoittaja
-          separator: ', '
         revision_uid:
           label: 'Viimeisin päivittäjä'
-          separator: ', '
         langcode:
           label: Kieli
-          separator: ', '
         status:
           label: Tila
           settings:
             format_custom_false: Julkaisematon
             format_custom_true: Julkaistu
-          separator: ', '
         changed:
           label: Muuttunut
-          separator: ', '
         operations:
           label: Toimenpiteet
       pager:
@@ -47,7 +40,6 @@ display:
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
-            offset_label: Offset
       exposed_form:
         options:
           submit_button: Suodata
@@ -58,7 +50,8 @@ display:
       empty:
         area:
           content:
-            value: "Ei näytettäviä sivuja."
+            value: '<p>Ei näytettäviä sivuja.</p>'
+            format: full_html
       filters:
         title:
           expose:
