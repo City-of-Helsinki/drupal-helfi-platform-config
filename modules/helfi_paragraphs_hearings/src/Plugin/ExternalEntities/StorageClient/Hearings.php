@@ -14,7 +14,6 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\InvalidArgumentException;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Utils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -107,7 +106,7 @@ final class Hearings extends RestClient {
     $url = sprintf('%s%s', self::API_URL, $query);
     try {
       $content = $this->client->request('GET', $url);
-      $json = Utils::jsonDecode($content->getBody()->getContents(), TRUE);
+      $json = json_decode($content->getBody()->getContents(), TRUE);
       if (empty($json['results'])) {
         return [];
       }

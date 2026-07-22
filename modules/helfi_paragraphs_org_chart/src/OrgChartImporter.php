@@ -11,7 +11,6 @@ use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\InvalidArgumentException;
-use GuzzleHttp\Utils;
 
 /**
  * Imports org chart from päätökset instance.
@@ -80,14 +79,14 @@ class OrgChartImporter {
     // Return mock response if the use mock feature is enabled.
     if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
       $data = file_get_contents(__DIR__ . "/../tests/fixtures/org-chart-$depth.json");
-      return Utils::jsonDecode($data, assoc: TRUE);
+      return json_decode($data, TRUE);
     }
 
     try {
       $data = $this->client->request('GET', $this->getUri($langcode, $start, $depth))
         ->getBody()
         ->getContents();
-      $chart = Utils::jsonDecode($data, assoc: TRUE);
+      $chart = json_decode($data, TRUE);
     }
     catch (GuzzleException | InvalidArgumentException) {
       return [];

@@ -65,6 +65,8 @@
         "drupal/view_unpublished": "^1.0",
         "drupal/views_bulk_edit": "^3.0",
         "drupal/views_bulk_operations": "^4.1",
+        "drupal/webp": "^1.0@RC",
+        "drupal/wpf": "^1.0",
         "drupal/stage_file_proxy": "^3.1",
         "ruflin/elastica": "^8.0",
         "symfony/property-access": "^7.3",
@@ -112,6 +114,9 @@
             },
             "drupal/view_unpublished": {
                 "[#UHF-9256] Fix missing dynamic permission dependencies.": "./public/modules/contrib/helfi_platform_config/patches/view_unpublished_permissions_missing_dependencies.patch"
+            },
+            "drupal/wpf": {
+                "[#UHF-12710] Module schema": "./public/modules/contrib/helfi_platform_config/patches/wpf-schema.patch"
             }
         }
     }
