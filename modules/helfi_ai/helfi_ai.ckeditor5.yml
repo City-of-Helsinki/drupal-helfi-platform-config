@@ -6,6 +6,7 @@ helfi_ai_tone_check:
       - aiToneCheck.aiToneCheck
 
   # Configuration used directly by Drupal.
+  # The aiToneCheck CKEditor buttons are added via ToneCheckToolbarOverride.
   drupal:
     label: 'AI tone check'
     library: helfi_ai/tone_check
