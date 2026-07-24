@@ -68,7 +68,7 @@ final class LinkedEventsAutocompleteController extends ControllerBase {
       $response = $this->client->request('GET', "https://api.hel.fi/linkedevents/v1/$target_type/", [
         'query' => $this->buildSearchQuery($input, $settings),
       ]);
-      $response =  json_decode(
+      $response = json_decode(
         json: $response->getBody()->getContents(),
         flags: JSON_THROW_ON_ERROR,
       );
