@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_toc\Hook;
 
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 
@@ -11,6 +12,8 @@ use Drupal\Core\Hook\Attribute\Hook;
  * Form hooks for HELfi Table of contents.
  */
 class FormHooks {
+
+  use AutowireTrait;
 
   public function __construct(
     private readonly ModuleHandlerInterface $moduleHandler,

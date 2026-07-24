@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_toc\Hook;
 
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Hook\Attribute\Hook;
@@ -14,6 +15,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  */
 class ThemeHooks {
 
+  use AutowireTrait;
   use StringTranslationTrait;
 
   public function __construct(
