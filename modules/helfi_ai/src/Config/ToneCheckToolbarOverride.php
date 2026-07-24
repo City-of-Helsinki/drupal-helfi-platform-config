@@ -6,6 +6,7 @@ namespace Drupal\helfi_ai\Config;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
+use Drupal\Core\Config\StorableConfigBase;
 use Drupal\Core\Config\StorageInterface;
 
 /**
@@ -20,6 +21,11 @@ final class ToneCheckToolbarOverride implements ConfigFactoryOverrideInterface {
     'editor.editor.full_html',
     'editor.editor.minimal',
   ];
+
+  /**
+   * A state for the tone check feature.
+   */
+  private ?bool $toneCheckEnabled = NULL;
 
   public function __construct(
     private readonly StorageInterface $configStorage,
@@ -62,11 +68,14 @@ final class ToneCheckToolbarOverride implements ConfigFactoryOverrideInterface {
    *   TRUE if enabled.
    */
   private function toneCheckEnabled() : bool {
-    return (bool) ($this->configStorage->read('helfi_ai.settings')['enable_tone_check'] ?? FALSE);
+    if ($this->toneCheckEnabled === NULL) {
+      $this->toneCheckEnabled = (bool) ($this->configStorage->read('helfi_ai.settings')['enable_tone_check'] ?? FALSE);
+    }
+    return $this->toneCheckEnabled;
   }
 
   /**
-   * Insert the tone check button before source editing.
+   * Insert the tone check button to the CKEditor toolbar.
    *
    * @param string[] $items
    *   The current toolbar items.
@@ -80,6 +89,7 @@ final class ToneCheckToolbarOverride implements ConfigFactoryOverrideInterface {
     if ($position === FALSE) {
       return [...$items, '|', 'aiToneCheck'];
     }
+    // Place the button and separator before source editing.
     array_splice($items, (int) $position, 0, ['aiToneCheck', '|']);
     return $items;
   }
@@ -106,7 +116,7 @@ final class ToneCheckToolbarOverride implements ConfigFactoryOverrideInterface {
   /**
    * {@inheritdoc}
    */
-  public function createConfigObject($name, $collection = StorageInterface::DEFAULT_COLLECTION) {
+  public function createConfigObject($name, $collection = StorageInterface::DEFAULT_COLLECTION) : ?StorableConfigBase {
     return NULL;
   }
 
