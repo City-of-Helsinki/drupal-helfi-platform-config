@@ -4478,51 +4478,6 @@ parameters:
 			path: modules/helfi_toc/helfi_toc.install
 
 		-
-			message: "#^Function helfi_toc_apply_form_theme\\(\\) has parameter \\$form with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_toc/helfi_toc.module
-
-		-
-			message: "#^Function helfi_toc_entity_base_field_info\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_toc/helfi_toc.module
-
-		-
-			message: "#^Function helfi_toc_form_node_form_alter\\(\\) has parameter \\$form with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_toc/helfi_toc.module
-
-		-
-			message: "#^Function helfi_toc_form_tpr_service_form_alter\\(\\) has parameter \\$form with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_toc/helfi_toc.module
-
-		-
-			message: "#^Function helfi_toc_form_tpr_unit_form_alter\\(\\) has parameter \\$form with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_toc/helfi_toc.module
-
-		-
-			message: "#^Function helfi_toc_preprocess_field__toc_enabled\\(\\) has parameter \\$variables with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_toc/helfi_toc.module
-
-		-
-			message: "#^Function helfi_toc_theme\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_toc/helfi_toc.module
-
-		-
-			message: "#^Function helfi_toc_theme_suggestions_field_alter\\(\\) has parameter \\$suggestions with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_toc/helfi_toc.module
-
-		-
-			message: "#^Function helfi_toc_theme_suggestions_field_alter\\(\\) has parameter \\$variables with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_toc/helfi_toc.module
-
-		-
 			message: "#^Method Drupal\\\\Tests\\\\helfi_toc\\\\FunctionalJavascript\\\\TableOfContentsTest\\:\\:generateContent\\(\\) has parameter \\$headings with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_toc/tests/src/FunctionalJavascript/TableOfContentsTest.php
