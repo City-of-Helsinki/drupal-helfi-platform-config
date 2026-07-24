@@ -145,6 +145,10 @@ final class ApiClient {
       ];
     }
 
+    if (!$language) {
+      return [];
+    }
+
     $project = $this->getProject($language);
 
     if (!$documents || !$project) {
