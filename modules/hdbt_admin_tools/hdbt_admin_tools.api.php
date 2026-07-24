@@ -22,3 +22,12 @@ declare(strict_types=1);
  */
 function hook_design_selection_images_alter(array &$images, string $field_name) {
 }
+
+/**
+ * Alter the node form ids that show the hero visibility states.
+ *
+ * @param array $form_ids
+ *   The hero form ids.
+ */
+function hook_hero_visibility_alter(array &$form_ids) {
+}
