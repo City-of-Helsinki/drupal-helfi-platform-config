@@ -124,14 +124,6 @@ function helfi_paragraphs_curated_event_list_entity_bundle_field_info_alter(
       ->setTranslatable(TRUE)
       ->setDisplayConfigurable('view', TRUE);
   }
-
-  if (
-    $entity_type->id() === 'paragraph' &&
-    $bundle === 'curated_event_list' &&
-    array_key_exists('field_events', $fields)
-  ) {
-    $fields['field_events']->addConstraint('CuratedEvent', []);
-  }
 }
 
 /**

@@ -179,7 +179,7 @@ class HtmxControllerTest extends KernelTestBase {
               'fi' => 'Title fi',
             ],
             'start_time' => 'now',
-            'end_time' => '-1 second',
+            'end_time' => '+2 second',
           ],
         ],
       ])),
@@ -200,6 +200,11 @@ class HtmxControllerTest extends KernelTestBase {
     ]);
     $node->setPublished();
     $node->save();
+
+    // Sleep for a few seconds because we added an event two seconds into
+    // the future, so it's not immediately removed when the paragraph
+    // is saved.
+    sleep(3);
 
     $response = $this->createHtmxRequest($paragraph);
     $cache = $response->getCacheableMetadata();
@@ -271,23 +276,29 @@ class HtmxControllerTest extends KernelTestBase {
   public function testTranslation(): void {
     $paragraphs = $responses = [];
 
-    foreach (['sv', 'fi', 'en'] as $langcode) {
-      // Each language is queried three times.
-      for ($i = 0; $i < 3; $i++) {
-        $responses[] = new Response(body: (string) json_encode([
+    // Each language is queried three times.
+    for ($i = 0; $i < 9; $i++) {
+      $responses[] = new Response(
+        body: (string) json_encode([
           'data' => [
             [
               'id' => 'helsinki:123',
               'name' => [
-                $langcode => 'Title ' . $langcode,
+                'fi' => 'Title fi',
+                'en' => 'Title en',
+                'sv' => 'Title sv',
               ],
               'start_time' => 'now',
               'end_time' => '+1 day',
             ],
           ],
-        ]));
-      }
+        ])
+      );
+    }
+    $client = $this->setupMockHttpClient($responses);
+    $this->container->set('http_client', $client);
 
+    foreach (['sv', 'fi', 'en'] as $langcode) {
       $paragraphs[$langcode] = Paragraph::create([
         'type' => 'curated_event_list',
         'langcode' => $langcode,
@@ -297,6 +308,7 @@ class HtmxControllerTest extends KernelTestBase {
       ]);
       $paragraphs[$langcode]->save();
     }
+
     $node = Node::create([
       'title' => 'Events list en',
       'langcode' => 'en',
@@ -316,9 +328,6 @@ class HtmxControllerTest extends KernelTestBase {
     ]);
     $node->save();
 
-    $client = $this->setupMockHttpClient($responses);
-    $this->container->set('http_client', $client);
-
     foreach (['sv', 'fi', 'en'] as $langcode) {
       $this->setOverrideLanguageCode($langcode);
       $response = $this->createHtmxRequest($paragraphs[$langcode]);
@@ -328,7 +337,7 @@ class HtmxControllerTest extends KernelTestBase {
       $this->assertEquals(200, $response->getStatusCode());
 
       // Make sure all translations are cached, but running tests can take some
-      // time so give it some leeway.
+      // time, so give it some leeway.
       $this->assertTrue($cache->getCacheMaxAge() > 86390);
     }
   }
