@@ -10,13 +10,6 @@ declare(strict_types=1);
 use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function helfi_toc_form_tpr_service_form_alter(&$form) : void {
-  helfi_toc_apply_form_theme($form);
-}
-
-/**
  * Implements hook_theme().
  */
 function helfi_toc_theme(): array {
@@ -39,51 +32,6 @@ function helfi_toc_theme(): array {
 function helfi_toc_theme_suggestions_field_alter(array &$suggestions, array $variables): void {
   if (($variables['element']['#field_name'] ?? NULL) === 'toc_enabled') {
     $suggestions[] = 'field__toc_enabled';
-  }
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function helfi_toc_form_tpr_unit_form_alter(&$form) : void {
-  helfi_toc_apply_form_theme($form);
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function helfi_toc_form_node_form_alter(&$form) : void {
-  helfi_toc_apply_form_theme($form);
-}
-
-/**
- * Handle Table of contents fields visibility and access.
- *
- * @param array $form
- *   Form.
- */
-function helfi_toc_apply_form_theme(array &$form) : void {
-  $whitelisted_forms = [
-    'node_page_edit_form',
-    'node_page_form',
-    'tpr_service_form',
-    'tpr_unit_form',
-    'node_district_edit_form',
-    'node_district_form',
-  ];
-
-  $form['toc_enabled']['#access'] = FALSE;
-  $form['toc_title']['#access'] = FALSE;
-
-  // Control Table of contents title field visibility via checkbox states.
-  if (in_array($form['#form_id'], $whitelisted_forms)) {
-    $form['toc_enabled']['#access'] = TRUE;
-    $form['toc_title']['#access'] = FALSE;
-    $form['toc_title']['#states'] = [
-      'visible' => [
-        ':input[name="toc_enabled[value]"]' => ['checked' => FALSE],
-      ],
-    ];
   }
 }
 
