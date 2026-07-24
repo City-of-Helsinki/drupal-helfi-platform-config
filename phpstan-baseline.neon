@@ -270,21 +270,6 @@ parameters:
 			path: modules/hdbt_admin_tools/hdbt_admin_tools.module
 
 		-
-			message: "#^Function hdbt_admin_tools_form_node_form_alter\\(\\) has parameter \\$form with no type specified\\.$#"
-			count: 1
-			path: modules/hdbt_admin_tools/hdbt_admin_tools.module
-
-		-
-			message: "#^Function hdbt_admin_tools_form_node_form_alter\\(\\) has parameter \\$form_id with no type specified\\.$#"
-			count: 1
-			path: modules/hdbt_admin_tools/hdbt_admin_tools.module
-
-		-
-			message: "#^Function hdbt_admin_tools_form_node_form_alter\\(\\) has parameter \\$form_state with no type specified\\.$#"
-			count: 1
-			path: modules/hdbt_admin_tools/hdbt_admin_tools.module
-
-		-
 			message: "#^Function hdbt_admin_tools_form_openid_connect_login_form_alter\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: modules/hdbt_admin_tools/hdbt_admin_tools.module
@@ -331,11 +316,6 @@ parameters:
 
 		-
 			message: "#^Function hdbt_admin_tools_menu_links_discovered_alter\\(\\) has parameter \\$links with no type specified\\.$#"
-			count: 1
-			path: modules/hdbt_admin_tools/hdbt_admin_tools.module
-
-		-
-			message: "#^Function hdbt_admin_tools_node_form_submit_callback\\(\\) has parameter \\$form with no type specified\\.$#"
 			count: 1
 			path: modules/hdbt_admin_tools/hdbt_admin_tools.module
 
