@@ -23,14 +23,6 @@ final class ApiClient {
    */
   public const MAX_BATCH_SIZE = 32;
 
-  /**
-   * Constructs a new instance.
-   *
-   * @param \GuzzleHttp\ClientInterface $client
-   *   The HTTP client.
-   * @param \Drupal\helfi_platform_config\TextConverter\TextConverterManager $textConverter
-   *   The text converter.
-   */
   public function __construct(
     private readonly ClientInterface $client,
     private readonly TextConverterManager $textConverter,
@@ -89,15 +81,13 @@ final class ApiClient {
         ],
       ]);
 
-      return $this->mapResults(
-        json_decode(
-          json: $response->getBody()->getContents(),
-          associative: FALSE,
-          flags: JSON_THROW_ON_ERROR,
-        )
+      $data = json_decode(
+        json: $response->getBody()->getContents(),
+        flags: JSON_THROW_ON_ERROR,
       );
+      return $this->mapResults($data);
     }
-    catch (GuzzleException $e) {
+    catch (GuzzleException | \Exception $e) {
       throw new ApiClientException($e->getMessage(), previous: $e);
     }
   }
@@ -198,6 +188,9 @@ final class ApiClient {
    * Get Annif project.
    *
    * For list of available projects, see https://ai.finto.fi/v1/projects.
+   *
+   * @param string $language
+   *   The language code.
    *
    * @return string|null
    *   Annif project id or NULL.
