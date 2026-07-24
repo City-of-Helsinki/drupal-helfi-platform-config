@@ -23,14 +23,6 @@ final class ApiClient {
    */
   public const MAX_BATCH_SIZE = 32;
 
-  /**
-   * Constructs a new instance.
-   *
-   * @param \GuzzleHttp\ClientInterface $client
-   *   The HTTP client.
-   * @param \Drupal\helfi_platform_config\TextConverter\TextConverterManager $textConverter
-   *   The text converter.
-   */
   public function __construct(
     private readonly ClientInterface $client,
     private readonly TextConverterManager $textConverter,
@@ -40,7 +32,7 @@ final class ApiClient {
   /**
    * Get default options for the API.
    *
-   * @return array
+   * @return array<string, int>
    *   Finto API configuration.
    */
   private function getDefaultOptions() : array {
@@ -89,9 +81,13 @@ final class ApiClient {
         ],
       ]);
 
-      return $this->mapResults(json_decode($response->getBody()->getContents()));
+      $data = json_decode(
+        json: $response->getBody()->getContents(),
+        flags: JSON_THROW_ON_ERROR,
+      );
+      return $this->mapResults($data);
     }
-    catch (GuzzleException $e) {
+    catch (GuzzleException | \JsonException $e) {
       throw new ApiClientException($e->getMessage(), previous: $e);
     }
   }
@@ -139,9 +135,13 @@ final class ApiClient {
       ];
     }
 
+    if (!$language) {
+      return [];
+    }
+
     $project = $this->getProject($language);
 
-    if (!$documents || !$project || !$language) {
+    if (!$documents || !$project) {
       return [];
     }
 
@@ -160,8 +160,18 @@ final class ApiClient {
         ],
       ]);
 
+      try {
+        $data = json_decode(
+          json: $response->getBody()->getContents(),
+          flags: JSON_THROW_ON_ERROR,
+        );
+      }
+      catch (\Exception $e) {
+        $data = [];
+      }
+
       return array_reduce(
-        json_decode($response->getBody()->getContents()),
+        $data,
         function ($carry, $item) {
           $carry[$item->document_id] = $this->mapResults($item);
           return $carry;
@@ -178,6 +188,9 @@ final class ApiClient {
    * Get Annif project.
    *
    * For list of available projects, see https://ai.finto.fi/v1/projects.
+   *
+   * @param string $language
+   *   The language code.
    *
    * @return string|null
    *   Annif project id or NULL.

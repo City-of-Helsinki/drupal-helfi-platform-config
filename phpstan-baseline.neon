@@ -1444,11 +1444,6 @@ parameters:
 			path: modules/helfi_etusivu_entities/src/Plugin/ExternalEntities/StorageClient/EtusivuJsonApiEntityBase.php
 
 		-
-			message: "#^Method Drupal\\\\helfi_etusivu_entities\\\\Plugin\\\\ExternalEntities\\\\StorageClient\\\\EtusivuJsonApiEntityBase\\:\\:request\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_etusivu_entities/src/Plugin/ExternalEntities/StorageClient/EtusivuJsonApiEntityBase.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_etusivu_entities\\\\Plugin\\\\ExternalEntities\\\\StorageClient\\\\Surveys\\:\\:query\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_etusivu_entities/src/Plugin/ExternalEntities/StorageClient/Surveys.php
@@ -3093,16 +3088,6 @@ parameters:
 			path: modules/helfi_paragraphs_org_chart/helfi_paragraphs_org_chart.module
 
 		-
-			message: "#^Method Drupal\\\\helfi_paragraphs_org_chart\\\\OrgChartImporter\\:\\:fetch\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_org_chart/src/OrgChartImporter.php
-
-		-
-			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
-			count: 1
-			path: modules/helfi_paragraphs_org_chart/src/OrgChartImporter.php
-
-		-
 			message: "#^Method Drupal\\\\helfi_paragraphs_org_chart\\\\OrgChartLazyBuilder\\:\\:build\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_paragraphs_org_chart/src/OrgChartLazyBuilder.php
@@ -3244,16 +3229,6 @@ parameters:
 
 		-
 			message: "#^Method Drupal\\\\helfi_react_search\\\\Controller\\\\LinkedEventsAutocompleteController\\:\\:buildSearchQuery\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_react_search/src/Controller/LinkedEventsAutocompleteController.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_react_search\\\\Controller\\\\LinkedEventsAutocompleteController\\:\\:buildSearchQuery\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_react_search/src/Controller/LinkedEventsAutocompleteController.php
-
-		-
-			message: "#^Method Drupal\\\\helfi_react_search\\\\Controller\\\\LinkedEventsAutocompleteController\\:\\:getSelectionSettings\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_react_search/src/Controller/LinkedEventsAutocompleteController.php
 
@@ -3741,11 +3716,6 @@ parameters:
 			message: "#^Function helfi_recommendations_theme\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_recommendations/helfi_recommendations.module
-
-		-
-			message: "#^Method Drupal\\\\helfi_recommendations\\\\Client\\\\ApiClient\\:\\:getDefaultOptions\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_recommendations/src/Client/ApiClient.php
 
 		-
 			message: "#^Method Drupal\\\\helfi_recommendations\\\\Client\\\\ApiClient\\:\\:mapResults\\(\\) has parameter \\$results with no type specified\\.$#"

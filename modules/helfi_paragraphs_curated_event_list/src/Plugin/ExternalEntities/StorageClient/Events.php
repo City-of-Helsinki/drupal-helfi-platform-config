@@ -148,7 +148,11 @@ class Events extends StorageClientBase {
 
     try {
       $content = $this->client->request('GET', $this->getUri($parameters, $langcode));
-      $json = json_decode($content->getBody()->getContents(), TRUE);
+      $json = json_decode(
+        json: $content->getBody()->getContents(),
+        associative: TRUE,
+        flags: JSON_THROW_ON_ERROR
+      );
 
       if (empty($json['data'])) {
         return [];

@@ -105,9 +105,13 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
 
     try {
       $content = $this->client->request('GET', $uri);
-      $json = json_decode($content->getBody()->getContents(), TRUE);
+      $json = json_decode(
+        json: $content->getBody()->getContents(),
+        associative: TRUE,
+        flags: JSON_THROW_ON_ERROR
+      );
     }
-    catch (GuzzleException) {
+    catch (GuzzleException | \JsonException) {
       return FALSE;
     }
     return !empty($json['meta']);
@@ -191,7 +195,7 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
    * @param string $langcode
    *   The langcode.
    *
-   * @return array
+   * @return array<mixed>
    *   An array of entities.
    *
    * @see \helfi_etusivu_invalidate_external_caches()
@@ -215,14 +219,18 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
       $content = $this->client->request('GET', $uri, [
         RequestOptions::TIMEOUT => 5,
       ]);
-      $json = json_decode($content->getBody()->getContents(), TRUE);
+      $json = json_decode(
+        json: $content->getBody()->getContents(),
+        associative: TRUE,
+        flags: JSON_THROW_ON_ERROR
+      );
       $data = $json['data'];
 
       $this->cache->set($uri, $data, tags: [static::$customCacheTag]);
 
       return $data;
     }
-    catch (RequestException | GuzzleException $e) {
+    catch (RequestException | GuzzleException | \JsonException $e) {
       Error::logException($this->logger, $e);
     }
 
