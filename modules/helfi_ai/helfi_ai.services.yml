@@ -8,3 +8,9 @@ services:
     arguments: ['helfi_ai']
 
   Drupal\helfi_ai\Service\AiGenerator: ~
+
+  Drupal\helfi_ai\Config\ToneCheckToolbarOverride:
+    arguments:
+      - '@config.storage'
+    tags:
+      - { name: config.factory.override }
