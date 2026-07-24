@@ -71,7 +71,7 @@ class HooksTest extends KernelTestBase {
    */
   #[DataProvider('whitelistedFormProvider')]
   public function testFormAlterWhitelistedForm(string $method, string $form_id): void {
-    $hooks = new FormHooks();
+    $hooks = $this->formHooks();
 
     /** @var array<string, mixed> $form */
     $form = [
@@ -104,7 +104,7 @@ class HooksTest extends KernelTestBase {
    * Test that non whitelisted forms deny access to TOC fields.
    */
   public function testFormAlterOtherForm(): void {
-    $hooks = new FormHooks();
+    $hooks = $this->formHooks();
 
     /** @var array<string, mixed> $form */
     $form = [
@@ -117,6 +117,31 @@ class HooksTest extends KernelTestBase {
     $this->assertFalse($form['toc_enabled']['#access']);
     $this->assertFalse($form['toc_title']['#access']);
     $this->assertArrayNotHasKey('#states', $form['toc_title']);
+  }
+
+  /**
+   * Test that a module can whitelist a form via the alter hook.
+   */
+  public function testFormAlterHook(): void {
+    $hooks = $this->formHooks();
+
+    /** @var array<string, mixed> $form */
+    $form = [
+      '#form_id' => 'custom_toc_form',
+      'toc_enabled' => [],
+      'toc_title' => [],
+    ];
+
+    // The form is denied until the test module whitelists it.
+    $hooks->nodeFormAlter($form);
+    $this->assertFalse($form['toc_enabled']['#access']);
+
+    \Drupal::service('module_installer')->install(['helfi_toc_test']);
+    $hooks = $this->formHooks();
+
+    $hooks->nodeFormAlter($form);
+    $this->assertTrue($form['toc_enabled']['#access']);
+    $this->assertArrayHasKey('#states', $form['toc_title']);
   }
 
   /**
@@ -176,6 +201,16 @@ class HooksTest extends KernelTestBase {
     $hooks->preprocessFieldTocEnabled($variables);
 
     $this->assertArrayNotHasKey('toc_enabled', $variables);
+  }
+
+  /**
+   * Builds the form hooks with the current module handler.
+   *
+   * @return \Drupal\helfi_toc\Hook\FormHooks
+   *   The form hooks.
+   */
+  private function formHooks(): FormHooks {
+    return new FormHooks(\Drupal::service('module_handler'));
   }
 
   /**

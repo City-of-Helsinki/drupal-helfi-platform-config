@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_toc\Hook;
 
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 
 /**
  * Form hooks for HELfi Table of contents.
  */
 class FormHooks {
+
+  public function __construct(
+    private readonly ModuleHandlerInterface $moduleHandler,
+  ) {
+  }
 
   /**
    * Implements hook_form_FORM_ID_alter() for tpr_service_form.
@@ -59,6 +65,9 @@ class FormHooks {
       'node_district_edit_form',
       'node_district_form',
     ];
+
+    // Allow other modules to alter the whitelisted forms.
+    $this->moduleHandler->alter('helfi_toc_forms', $whitelisted_forms);
 
     $form['toc_enabled']['#access'] = FALSE;
     $form['toc_title']['#access'] = FALSE;
