@@ -40,7 +40,7 @@ final class ApiClient {
   /**
    * Get default options for the API.
    *
-   * @return array
+   * @return array<string, int>
    *   Finto API configuration.
    */
   private function getDefaultOptions() : array {
@@ -89,7 +89,13 @@ final class ApiClient {
         ],
       ]);
 
-      return $this->mapResults(json_decode($response->getBody()->getContents()));
+      return $this->mapResults(
+        json_decode(
+          json: $response->getBody()->getContents(),
+          associative: FALSE,
+          flags: JSON_THROW_ON_ERROR,
+        )
+      );
     }
     catch (GuzzleException $e) {
       throw new ApiClientException($e->getMessage(), previous: $e);
@@ -141,7 +147,7 @@ final class ApiClient {
 
     $project = $this->getProject($language);
 
-    if (!$documents || !$project || !$language) {
+    if (!$documents || !$project) {
       return [];
     }
 
@@ -160,8 +166,18 @@ final class ApiClient {
         ],
       ]);
 
+      try {
+        $data = json_decode(
+          json: $response->getBody()->getContents(),
+          flags: JSON_THROW_ON_ERROR,
+        );
+      }
+      catch (\Exception $e) {
+        $data = [];
+      }
+
       return array_reduce(
-        json_decode($response->getBody()->getContents()),
+        $data,
         function ($carry, $item) {
           $carry[$item->document_id] = $this->mapResults($item);
           return $carry;

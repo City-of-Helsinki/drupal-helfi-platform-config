@@ -106,12 +106,17 @@ final class Hearings extends RestClient {
     $url = sprintf('%s%s', self::API_URL, $query);
     try {
       $content = $this->client->request('GET', $url);
-      $json = json_decode($content->getBody()->getContents(), TRUE);
+      $json = json_decode(
+        json: $content->getBody()->getContents(),
+        associative:TRUE,
+        flags: JSON_THROW_ON_ERROR
+      );
+
       if (empty($json['results'])) {
         return [];
       }
     }
-    catch (RequestException | GuzzleException | InvalidArgumentException $e) {
+    catch (RequestException | GuzzleException | InvalidArgumentException | \Exception $e) {
       $this->logger->error('Hearings request failed with error: ' . $e->getMessage());
       return [];
     }

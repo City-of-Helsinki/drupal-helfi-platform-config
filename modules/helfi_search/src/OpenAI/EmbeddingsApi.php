@@ -75,7 +75,10 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
         ],
       ]);
 
-      $body = json_decode($response->getBody()->getContents());
+      $body = json_decode(
+        json: $response->getBody()->getContents(),
+        flags: JSON_THROW_ON_ERROR,
+      );
 
       if (!isset($body->data) || !is_array($body->data)) {
         throw new EmbeddingsModelException('Invalid response format from OpenAI API');

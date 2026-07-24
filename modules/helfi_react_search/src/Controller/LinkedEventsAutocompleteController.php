@@ -68,8 +68,10 @@ final class LinkedEventsAutocompleteController extends ControllerBase {
       $response = $this->client->request('GET', "https://api.hel.fi/linkedevents/v1/$target_type/", [
         'query' => $this->buildSearchQuery($input, $settings),
       ]);
-
-      $response = json_decode($response->getBody()->getContents());
+      $response =  json_decode(
+        json: $response->getBody()->getContents(),
+        flags: JSON_THROW_ON_ERROR,
+      );
 
       $results = array_map(fn (object $item) => [
         // Ids are JSON serialized LinkedEventsItems.
@@ -77,7 +79,7 @@ final class LinkedEventsAutocompleteController extends ControllerBase {
         'text' => $item->name?->{$langcode} ?: $item->name?->en ?: 'Unknown',
       ], $response->data ?? []);
     }
-    catch (GuzzleException) {
+    catch (GuzzleException | \Exception) {
       return new Response(status: 503);
     }
 
@@ -94,7 +96,7 @@ final class LinkedEventsAutocompleteController extends ControllerBase {
    * @param array $settings
    *   Autocomplete settings.
    *
-   * @return array
+   * @return array<mixed>
    *   Search query.
    */
   private function buildSearchQuery(string $input, array $settings): array {
@@ -112,7 +114,7 @@ final class LinkedEventsAutocompleteController extends ControllerBase {
    * This mimics select2 autocomplete functionality.
    * The hash set by select2 widget is validated here.
    *
-   * @return array
+   * @return array<mixed>
    *   Selection settings set by the widget.
    *
    * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException

@@ -72,27 +72,39 @@ class OrgChartImporter {
    * @param int $depth
    *   The chart depth.
    *
-   * @return array
+   * @return array<mixed>
    *   The data.
    */
   public function fetch(string $langcode, string $start, int $depth) : array {
     // Return mock response if the use mock feature is enabled.
     if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
       $data = file_get_contents(__DIR__ . "/../tests/fixtures/org-chart-$depth.json");
-      return json_decode($data, TRUE);
+      try {
+        return json_decode(
+          json: $data,
+          associative:TRUE,
+          flags: JSON_THROW_ON_ERROR
+        );
+      }
+      catch (\Exception) {
+        return [];
+      }
     }
 
     try {
       $data = $this->client->request('GET', $this->getUri($langcode, $start, $depth))
         ->getBody()
         ->getContents();
-      $chart = json_decode($data, TRUE);
+
+      return json_decode(
+        json: $data,
+        associative:TRUE,
+        flags: JSON_THROW_ON_ERROR
+      );
     }
-    catch (GuzzleException | InvalidArgumentException) {
+    catch (GuzzleException | InvalidArgumentException | \Exception) {
       return [];
     }
-
-    return $chart;
   }
 
 }
