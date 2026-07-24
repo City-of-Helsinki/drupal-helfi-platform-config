@@ -106,7 +106,7 @@ class OrgChartImporter {
         flags: JSON_THROW_ON_ERROR
       );
     }
-    catch (GuzzleException | InvalidArgumentException | \Exception) {
+    catch (GuzzleException | InvalidArgumentException | \JsonException) {
       return [];
     }
   }

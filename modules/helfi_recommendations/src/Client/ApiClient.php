@@ -87,7 +87,7 @@ final class ApiClient {
       );
       return $this->mapResults($data);
     }
-    catch (GuzzleException | \Exception $e) {
+    catch (GuzzleException | \JsonException $e) {
       throw new ApiClientException($e->getMessage(), previous: $e);
     }
   }

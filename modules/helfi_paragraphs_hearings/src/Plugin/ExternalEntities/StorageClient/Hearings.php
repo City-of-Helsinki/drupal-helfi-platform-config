@@ -116,7 +116,7 @@ final class Hearings extends RestClient {
         return [];
       }
     }
-    catch (RequestException | GuzzleException | InvalidArgumentException | \Exception $e) {
+    catch (RequestException | GuzzleException | InvalidArgumentException | \JsonException $e) {
       $this->logger->error('Hearings request failed with error: ' . $e->getMessage());
       return [];
     }

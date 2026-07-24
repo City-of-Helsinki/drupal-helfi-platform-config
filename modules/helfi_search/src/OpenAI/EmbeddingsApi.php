@@ -97,7 +97,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
 
       return $response;
     }
-    catch (GuzzleException $e) {
+    catch (GuzzleException | \JsonException $e) {
       throw new EmbeddingsModelException($e->getMessage(), previous: $e);
     }
   }

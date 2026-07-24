@@ -79,7 +79,7 @@ final class LinkedEventsAutocompleteController extends ControllerBase {
         'text' => $item->name?->{$langcode} ?: $item->name?->en ?: 'Unknown',
       ], $response->data ?? []);
     }
-    catch (GuzzleException | \Exception) {
+    catch (GuzzleException | \JsonException) {
       return new Response(status: 503);
     }
 

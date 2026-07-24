@@ -111,7 +111,7 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
         flags: JSON_THROW_ON_ERROR
       );
     }
-    catch (GuzzleException | \Exception) {
+    catch (GuzzleException | \JsonException) {
       return FALSE;
     }
     return !empty($json['meta']);
@@ -230,7 +230,7 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
 
       return $data;
     }
-    catch (RequestException | GuzzleException | \Exception $e) {
+    catch (RequestException | GuzzleException | \JsonException $e) {
       Error::logException($this->logger, $e);
     }
 
