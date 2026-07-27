@@ -51,6 +51,9 @@ class CspCommonSubscriber extends CspSubscriberBase {
     'https://reittiopas.hsl.fi',
   ];
   const IMG_SRC = [
+    'https://stplattadevtest.blob.core.windows.net',
+    'https://stplattastaging.blob.core.windows.net',
+    'https://stplattaprod.blob.core.windows.net',
     'data:',
   ];
   const MEDIA_SRC = [
