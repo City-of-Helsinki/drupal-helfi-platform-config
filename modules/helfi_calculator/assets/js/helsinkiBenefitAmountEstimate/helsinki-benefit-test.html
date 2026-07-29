@@ -33,7 +33,7 @@
           <a class="lang-select" href="?lang=sv">Sv</a>
           <a class="lang-select" href="?lang=en">En</a>
           <script>
-          let langClick = (e) => {
+          const langClick = (e) => {
             e.preventDefault();
             console.log(e)
             window.sessionStorage.setItem('testLang', e.target.href.split('?lang=')[1]);
