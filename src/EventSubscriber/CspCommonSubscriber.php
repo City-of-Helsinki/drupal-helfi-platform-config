@@ -20,9 +20,12 @@ class CspCommonSubscriber extends CspSubscriberBase {
   const CONNECT_SRC = [
     'https://*.hel.fi',
     'https://*.hel.ninja',
+    'https://fonts.googleapis.com',
+    'https://translate-pa.googleapis.com',
   ];
   const FONT_SRC = [
     'https://*.hel.fi',
+    'https://fonts.gstatic.com',
   ];
   const FRAME_SRC = [
     'https://*.hel.fi',
@@ -51,6 +54,9 @@ class CspCommonSubscriber extends CspSubscriberBase {
     'https://reittiopas.hsl.fi',
   ];
   const IMG_SRC = [
+    'https://stplattadevtest.blob.core.windows.net',
+    'https://stplattastaging.blob.core.windows.net',
+    'https://stplattaprod.blob.core.windows.net',
     'data:',
   ];
   const MEDIA_SRC = [
@@ -59,9 +65,11 @@ class CspCommonSubscriber extends CspSubscriberBase {
   const SCRIPT_SRC = [
     'blob:',
     'https://*.hel.fi',
+    'https://translate.google.com',
   ];
   const STYLE_SRC = [
     'https://*.hel.fi',
+    'https://fonts.googleapis.com',
   ];
 
   /**
