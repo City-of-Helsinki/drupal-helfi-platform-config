@@ -1,0 +1,7 @@
+name: 'HELfi Table of contents test'
+type: module
+description: 'Provides hook implementations for testing helfi_toc.'
+package: Testing
+core_version_requirement: ^11
+dependencies:
+  - helfi_toc
