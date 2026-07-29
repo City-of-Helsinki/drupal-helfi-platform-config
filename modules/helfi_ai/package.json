@@ -23,11 +23,11 @@
     "serialize-javascript": "^7.0.3"
   },
   "dependencies": {
-    "@biomejs/biome": "^2.3.4",
-    "@ckeditor/ckeditor5-core": "^47.6.1",
+    "@biomejs/biome": "^2.5.6",
+    "@ckeditor/ckeditor5-core": "^47.6.2",
     "@ckeditor/ckeditor5-dev-utils": "^53.2.0",
     "@nuxt/friendly-errors-webpack-plugin": "^2.5.1",
-    "ckeditor5": "^47.6.1",
+    "ckeditor5": "^47.6.2",
     "raw-loader": "^4.0.2",
     "terser-webpack-plugin": "^5.3.3",
     "webpack": "^5.51.1",
