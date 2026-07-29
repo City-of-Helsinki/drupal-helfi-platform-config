@@ -14,7 +14,7 @@
     "lint": "npm-run-all --parallel lint:js -s"
   },
   "dependencies": {
-    "@biomejs/biome": "^2.2.4",
+    "@biomejs/biome": "^2.5.6",
     "@hdbt/theme-builder": "file:../../../../../themes/contrib/hdbt/theme-builder",
     "glob": "^11.0.0",
     "mustache": "^4.2.0",
