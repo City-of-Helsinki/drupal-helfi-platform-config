@@ -75,46 +75,6 @@ function hdbt_admin_tools_theme(): array {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function hdbt_admin_tools_form_node_form_alter(&$form, &$form_state, $form_id): void {
-  switch ($form_id) {
-    case 'node_landing_page_edit_form':
-    case 'node_landing_page_form':
-    case 'node_page_edit_form':
-    case 'node_page_form':
-      // Control Hero paragraph visibility via checkbox states.
-      $form['field_hero']['#states'] = [
-        'visible' => [
-          ':input[name="field_has_hero[value]"]' => ['checked' => TRUE],
-        ],
-      ];
-      break;
-  }
-  // Custom submit callback.
-  $form['actions']['submit']['#submit'][] = 'hdbt_admin_tools_node_form_submit_callback';
-}
-
-/**
- * Form submit callback for node forms.
- *
- * Redirect content editor to correct translation after saving the node.
- */
-function hdbt_admin_tools_node_form_submit_callback($form, FormStateInterface $form_state): void {
-  if ($lang_code = $form_state->get('langcode')) {
-    $language = [
-      'language' => \Drupal::languageManager()->getLanguage($lang_code),
-    ];
-    if ($nid = $form_state->get('nid')) {
-      $node = [
-        'node' => $nid,
-      ];
-      $form_state->setRedirect('entity.node.canonical', $node, $language);
-    }
-  }
-}
-
-/**
  * Implements hook_language_switch_links_alter().
  */
 function hdbt_admin_tools_language_switch_links_alter(array &$links): void {
