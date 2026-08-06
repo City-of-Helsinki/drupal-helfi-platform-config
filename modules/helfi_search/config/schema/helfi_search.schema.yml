@@ -36,7 +36,3 @@ helfi_search.settings:
       label: 'Canonical terms applied to the query before embedding'
       sequence:
         type: string
-    ai_register_url:
-      type: label
-      label: 'AI register URL'
-      translatable: true

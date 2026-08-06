@@ -110,12 +110,6 @@ final class SearchSettingsForm extends ConfigFormBase {
       '#config_target' => 'helfi_search.settings:min_score',
     ];
 
-    $form['ai_register_url'] = [
-      '#type' => 'url',
-      '#title' => $this->t('AI register URL'),
-      '#config_target' => 'helfi_search.settings:ai_register_url',
-    ];
-
     $form['query_preprocessing'] = [
       '#type' => 'details',
       '#title' => $this->t('Query preprocessing'),
