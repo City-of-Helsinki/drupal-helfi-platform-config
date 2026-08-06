@@ -110,28 +110,6 @@ final class SearchSettingsForm extends ConfigFormBase {
       '#config_target' => 'helfi_search.settings:min_score',
     ];
 
-    $form['external_links'] = [
-      '#type' => 'details',
-      '#title' => $this->t('External links'),
-      '#open' => TRUE,
-    ];
-
-    $external_link_labels = [
-      'jobs' => $this->t('Open jobs URL'),
-      'events' => $this->t('Events URL'),
-      'decisions' => $this->t('Decisions URL'),
-      'contact' => $this->t('Contact URL'),
-      'helsinki_near_you' => $this->t('Helsinki near you URL'),
-    ];
-
-    foreach ($external_link_labels as $key => $label) {
-      $form['external_links'][$key] = [
-        '#type' => 'url',
-        '#title' => $label,
-        '#config_target' => "helfi_search.settings:external_links.$key",
-      ];
-    }
-
     $form['ai_register_url'] = [
       '#type' => 'url',
       '#title' => $this->t('AI register URL'),

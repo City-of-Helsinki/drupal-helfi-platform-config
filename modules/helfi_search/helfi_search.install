@@ -239,3 +239,20 @@ function helfi_search_update_11017(): void {
     $index->save();
   }
 }
+
+/**
+ * Remove external_links from config and all language overrides.
+ */
+function helfi_search_update_11018(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+  $config->clear('external_links')->save();
+
+  $languageManager = \Drupal::languageManager();
+  assert($languageManager instanceof ConfigurableLanguageManagerInterface);
+  foreach (array_keys($languageManager->getLanguages()) as $langcode) {
+    $override = $languageManager->getLanguageConfigOverride($langcode, 'helfi_search.settings');
+    if (!$override->isNew()) {
+      $override->clear('external_links')->save();
+    }
+  }
+}
