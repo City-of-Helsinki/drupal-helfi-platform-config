@@ -95,15 +95,23 @@ function helfi_react_search_field_widget_complete_form_alter(
     return;
   }
 
+  // The lifts layout renders a fixed set of cards without the search form, so
+  // nothing under "Search filters" has any effect while it is selected.
+  $lifts_selected = [':input[name$="[field_event_list_layout]"]' => ['value' => 'lifts']];
+
   switch ($items->getFieldDefinition()->getName()) {
     case 'field_search_term':
       // The paragraph's `field_event_list_free_text` is sent to the Linked
       // Events API as `full_text`; so is the user-facing search bar. Letting
       // both be set would mean the user's input overrides the editor's
       // pre-filter. Disable the toggle whenever the pre-filter is already in
-      // use.
+      // use, or when the lifts layout hides the search form altogether.
       $checkbox = &$field_widget_complete_form['widget']['value'];
-      $checkbox['#states']['disabled'][':input[name$="[field_event_list_free_text][0][value]"]'] = ['filled' => TRUE];
+      $checkbox['#states']['disabled'] = [
+        [':input[name$="[field_event_list_free_text][0][value]"]' => ['filled' => TRUE]],
+        'or',
+        $lifts_selected,
+      ];
       $checkbox['#description'] = new TranslatableMarkup(
         'This filter does not work if you have applied filters in "Filter events and hobbies".',
         [],
@@ -111,10 +119,18 @@ function helfi_react_search_field_widget_complete_form_alter(
       );
       break;
 
+    case 'field_event_location':
+    case 'field_event_time':
+    case 'field_language':
+    case 'field_remote_events':
+    case 'field_free_events':
+      $field_widget_complete_form['widget']['value']['#states']['disabled'] = $lifts_selected;
+      break;
+
     case 'field_event_count':
       // The lifts layout always renders the three latest events, so the count
       // is fixed. Disable the widget while that layout is selected.
-      $field_widget_complete_form['widget']['#states']['disabled'][':input[name$="[field_event_list_layout]"]'] = ['value' => 'lifts'];
+      $field_widget_complete_form['widget']['#states']['disabled'] = $lifts_selected;
       break;
   }
 }
