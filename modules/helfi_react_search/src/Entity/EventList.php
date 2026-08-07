@@ -196,7 +196,7 @@ class EventList extends Paragraph implements ParagraphInterface {
         default => 'General',
       },
       'format' => 'json',
-      'include' => 'keywords,location',
+      'include' => 'keywords,location,registration,super_event',
       'page' => 1,
       'page_size' => $this->getCount(),
       'sort' => 'end_time',
