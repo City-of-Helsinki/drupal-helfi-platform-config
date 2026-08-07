@@ -49,7 +49,7 @@ class HelMap extends MediaEntityBundle implements MediaInterface {
     /** @var \Drupal\link\LinkItemInterface $media */
     $media = $this->get('field_media_hel_map')->first();
     $link = $media->getUrl()->getUri();
-    return $link ? str_contains($link, 'palvelukartta.hel.fi') : FALSE;
+    return $link ? str_contains($link, 'palvelukartta.hel.fi') || str_contains($link, 'palvelukartta.dev.hel.ninja') : FALSE;
   }
 
 }

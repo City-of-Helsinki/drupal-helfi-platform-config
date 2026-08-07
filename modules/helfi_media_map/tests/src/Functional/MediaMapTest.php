@@ -88,7 +88,7 @@ class MediaMapTest extends BrowserTestBase {
     ], 'Save');
 
     // Make sure we only allow valid domains.
-    $this->assertSession()->pageTextContainsOnce('Given host (google.com) is not valid, must be one of: palvelukartta.hel.fi, kartta.hel.fi');
+    $this->assertSession()->pageTextContainsOnce('Given host (google.com) is not valid, must be one of: palvelukartta.hel.fi, palvelukartta.dev.hel.ninja, kartta.hel.fi');
 
     // Make sure we can add valid maps.
     $urls = [
