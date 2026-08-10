@@ -107,29 +107,53 @@ final class ReactSearchHooks {
     }
 
     $select = fn (string $prefix) => ':input[name="' . $context['items']->getName() . '[' . $element['#delta'] . '][subform]' . $prefix . '"]';
+
+    $lifts = [$select('[field_event_list_layout]') => ['value' => 'lifts']];
+
     $states = [
       'field_event_list_category_event' => [
-        'state' => 'invisible',
-        'condition' => [$select('[field_event_list_type]') => ['value' => 'hobbies']],
+        'invisible' => [$select('[field_event_list_type]') => ['value' => 'hobbies']],
       ],
       'field_event_list_category_hobby' => [
-        'state' => 'invisible',
-        'condition' => [$select('[field_event_list_type]') => ['value' => 'events']],
+        'invisible' => [$select('[field_event_list_type]') => ['value' => 'events']],
+      ],
+      'field_event_count' => [
+        'disabled' => $lifts,
       ],
       'field_event_location' => [
-        'state' => 'disabled',
-        'condition' => [$select('[field_remote_events][value]') => ['checked' => TRUE]],
+        'disabled' => [
+          [$select('[field_remote_events][value]') => ['checked' => TRUE]],
+          'or',
+          $lifts,
+        ],
+      ],
+      'field_event_time' => [
+        'disabled' => $lifts,
+      ],
+      'field_language' => [
+        'disabled' => $lifts,
       ],
       'field_remote_events' => [
-        'state' => 'disabled',
-        'condition' => [$select('[field_event_location][value]') => ['checked' => TRUE]],
+        'disabled' => [
+          [$select('[field_event_location][value]') => ['checked' => TRUE]],
+          'or',
+          $lifts,
+        ],
+      ],
+      'field_free_events' => [
+        'disabled' => $lifts,
+      ],
+      'field_search_term' => [
+        'disabled' => [
+          [$select('[field_event_list_free_text][0][value]') => ['filled' => TRUE]],
+          'or',
+          $lifts,
+        ],
       ],
     ];
 
-    foreach ($states as $field => ['state' => $state, 'condition' => $condition]) {
-      $element['subform'][$field]['#states'] = [
-        $state => [$condition],
-      ];
+    foreach ($states as $field => $field_states) {
+      $element['subform'][$field]['#states'] = $field_states;
     }
   }
 
