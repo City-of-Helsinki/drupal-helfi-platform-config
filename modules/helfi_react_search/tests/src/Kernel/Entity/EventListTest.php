@@ -217,7 +217,7 @@ class EventListTest extends KernelTestBase {
     // UrlHelper::buildQuery encodes commas in include/super_event_type and
     // colons in division; empty keyword/location still appear as
     // keyword=&location= in the query string.
-    $emptyQuery = 'keyword=&location=&event_type=General&format=json&include=keywords%2Clocation&page=1&page_size=3&sort=end_time&start=now&super_event_type=umbrella%2Cnone&language=en&ongoing=true&division=kunta%3Ahelsinki';
+    $emptyQuery = 'keyword=&location=&event_type=General&format=json&include=keywords%2Clocation%2Cregistration%2Csuper_event&page=1&page_size=3&sort=end_time&start=now&super_event_type=umbrella%2Cnone&language=en&ongoing=true&division=kunta%3Ahelsinki';
     $this->assertSame($base . '?' . $emptyQuery, $paragraph->getApiUrl());
 
     $paragraph->set('field_event_list_keywords', [
@@ -228,7 +228,7 @@ class EventListTest extends KernelTestBase {
     ]);
     $paragraph->set('field_event_list_type', 'events');
 
-    $eventsQuery = 'keyword=yso%3Ap23&location=tprek%3A28473&event_type=General&format=json&include=keywords%2Clocation&page=1&page_size=3&sort=end_time&start=now&super_event_type=umbrella%2Cnone&language=en&ongoing=true&division=kunta%3Ahelsinki';
+    $eventsQuery = 'keyword=yso%3Ap23&location=tprek%3A28473&event_type=General&format=json&include=keywords%2Clocation%2Cregistration%2Csuper_event&page=1&page_size=3&sort=end_time&start=now&super_event_type=umbrella%2Cnone&language=en&ongoing=true&division=kunta%3Ahelsinki';
     $this->assertSame($base . '?' . $eventsQuery, $paragraph->getApiUrl());
 
     $paragraph->set('field_event_list_type', 'hobbies');
