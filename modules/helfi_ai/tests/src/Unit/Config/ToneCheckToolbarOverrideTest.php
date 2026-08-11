@@ -26,6 +26,8 @@ class ToneCheckToolbarOverrideTest extends UnitTestCase {
    *
    * @param bool $enabled
    *   Whether the tone check feature is enabled.
+   * @param bool $hasPermission
+   *   Whether user has permission to view tone check button.
    * @param array<string, array<mixed>> $stored
    *   Stored editor config keyed by config name.
    *
