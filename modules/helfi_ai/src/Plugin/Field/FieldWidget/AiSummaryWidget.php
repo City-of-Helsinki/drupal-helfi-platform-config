@@ -14,10 +14,10 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_ai\PreviewEntityBuilder;
 use Drupal\helfi_ai\Service\AiGenerator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Widget for the AI summary field.
@@ -47,24 +47,9 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
     array $settings,
     array $third_party_settings,
     private readonly ConfigFactoryInterface $configFactory,
+    private readonly AccountProxyInterface $accountProxy,
   ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * @phpstan-param array<string, mixed> $configuration
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
-    return new static(
-      $plugin_id,
-      $plugin_definition,
-      $configuration['field_definition'],
-      $configuration['settings'],
-      $configuration['third_party_settings'],
-      $container->get('config.factory'),
-    );
   }
 
   /**
@@ -99,6 +84,19 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
   }
 
   /**
+   * Checks if the widget should be visible.
+   *
+   * @return bool
+   *   TRUE if the widget should be shown.
+   */
+  private function isVisible(): bool {
+    if (!$this->configFactory->get('helfi_ai.settings')->get('enable_ai_summary')) {
+      return FALSE;
+    }
+    return $this->accountProxy->hasPermission('use helfi ai title suggestion');
+  }
+
+  /**
    * Builds the widget form element for a single field delta.
    *
    * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
@@ -117,7 +115,7 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
     // Hide the widget when the AI summary feature is disabled.
-    if (!$this->configFactory->get('helfi_ai.settings')->get('enable_ai_summary')) {
+    if (!$this->isVisible()) {
       $element['#access'] = FALSE;
       return $element;
     }
