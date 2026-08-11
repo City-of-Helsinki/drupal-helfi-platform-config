@@ -388,7 +388,12 @@ final class QueryBuilder {
         'metatag_title' => array_first($hit['_source']['metatag_title'] ?? []),
         'published_at' => array_first($hit['_source']['published_at'] ?? []),
         'content' => $innerFields['content'][0] ?? '',
-        'fragment' => $innerFields['fragment'][0] ?? NULL,
+        // @todo Fragment is disabled for now. Plan is to enable it later
+        // in follow-up tickets for UHF-13376.
+        // @code
+        //   'fragment' => $innerFields['fragment'][0] ?? NULL,
+        // @endcode
+        'fragment' => NULL,
       ];
       // Debug: when more than one inner hit was requested, surface every
       // matching chunk with its individual similarity score.
