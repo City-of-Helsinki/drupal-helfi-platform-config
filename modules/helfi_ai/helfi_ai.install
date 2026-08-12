@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\user\Entity\Role;
+
 /**
  * Implements hook_install().
  */
@@ -33,4 +35,35 @@ function helfi_ai_update_11001(): void {
     }
   }
   $config->save();
+}
+
+/**
+ * Remove AI permissions from all roles. Grant permission to 'admin' role.
+ */
+function helfi_ai_update_11002(): void {
+  /** @var \Drupal\user\RoleInterface[] $roles */
+  $roles = Role::loadMultiple();
+
+  $permissions = [
+    'use helfi ai title suggestion',
+    'use helfi ai tone check',
+    'use helfi ai summary',
+  ];
+
+  foreach ($roles as $role) {
+    foreach ($permissions as $permission) {
+      if (!$role->hasPermission($permission)) {
+        continue;
+      }
+      $role->revokePermission($permission);
+    }
+    $role->save();
+  }
+
+  if ($role = Role::load('admin')) {
+    foreach ($permissions as $permission) {
+      $role->grantPermission($permission);
+    }
+    $role->save();
+  }
 }
