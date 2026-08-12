@@ -45,7 +45,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $configFactory->get('helfi_ai.settings')->willReturn($config->reveal());
 
     $accountProxy = $this->prophesize(AccountProxyInterface::class);
-    $accountProxy->hasPermission('use helfi ai title suggestion')->willReturn($access);
+    $accountProxy->hasPermission('use helfi ai summary')->willReturn($access);
 
     $widget = new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], [], $configFactory->reveal(), $accountProxy->reveal());
     $widget->setStringTranslation($this->getStringTranslationStub());

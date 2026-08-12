@@ -47,7 +47,7 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
     array $settings,
     array $third_party_settings,
     private readonly ConfigFactoryInterface $configFactory,
-    private readonly AccountProxyInterface $accountProxy,
+    private readonly AccountProxyInterface $currentUser,
   ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
   }
@@ -93,7 +93,7 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
     if (!$this->configFactory->get('helfi_ai.settings')->get('enable_ai_summary')) {
       return FALSE;
     }
-    return $this->accountProxy->hasPermission('use helfi ai title suggestion');
+    return $this->currentUser->hasPermission('use helfi ai summary');
   }
 
   /**

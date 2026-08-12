@@ -44,7 +44,11 @@ function helfi_ai_update_11002(): void {
   /** @var \Drupal\user\RoleInterface[] $roles */
   $roles = Role::loadMultiple();
 
-  $permissions = ['use helfi ai title suggestion', 'use helfi ai tone check'];
+  $permissions = [
+    'use helfi ai title suggestion',
+    'use helfi ai tone check',
+    'use helfi ai summary',
+  ];
 
   foreach ($roles as $role) {
     foreach ($permissions as $permission) {

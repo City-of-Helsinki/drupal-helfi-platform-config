@@ -7,3 +7,8 @@
   title: 'Use HELfi AI tone check'
   description: 'Run the AI tone check on editor content.'
   restrict_access: true
+
+'use helfi ai summary':
+  title: 'Use HELfi AI summary'
+  description: 'Run the AI summary on editor content.'
+  restrict_access: true
