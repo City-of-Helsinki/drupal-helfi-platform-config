@@ -96,6 +96,9 @@
                 "[#UHF-13252] ...account administration pages causes RouteMatch to be Null in some cases (https://www.drupal.org/i/3265213)": "./public/modules/contrib/helfi_platform_config/patches/3265213.patch",
                 "[#UHF-12901] TODO remove on D12 once telephone field is moved to contrib module: Prevent accessibility issue due to difference in tel href encoding between ckeditor and telephone field formatter": "./public/modules/contrib/helfi_platform_config/patches/non-encoded-tel-link-href.patch"
             },
+            "drupal/diff": {
+                "Revision overview form problem (https://www.drupal.org/i/3390329)": "./public/modules/contrib/helfi_platform_config/patches/2882334.patch"
+            },
             "drupal/csp": {
                 "[#UHF-11973] Allow installing csp in an install hook": "./public/modules/contrib/helfi_platform_config/patches/csp-uhf-11973.patch"
             },
