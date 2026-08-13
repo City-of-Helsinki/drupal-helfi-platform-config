@@ -21,7 +21,7 @@
         "drupal/csp": "^2.2",
         "drupal/csp_log": "^1.0",
         "drupal/default_content": "^2.0.0",
-        "drupal/diff": "^1.0",
+        "drupal/diff": "^2.0",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/editoria11y": "^2.0",
         "drupal/elasticsearch_connector": "^8.0@alpha",
@@ -97,7 +97,7 @@
                 "[#UHF-12901] TODO remove on D12 once telephone field is moved to contrib module: Prevent accessibility issue due to difference in tel href encoding between ckeditor and telephone field formatter": "./public/modules/contrib/helfi_platform_config/patches/non-encoded-tel-link-href.patch"
             },
             "drupal/diff": {
-                "Revision overview form problem (https://www.drupal.org/i/3390329)": "./public/modules/contrib/helfi_platform_config/patches/diff_8.x_1.3_revision_overview_form.patch"
+                "Revision overview form problem (https://www.drupal.org/i/3390329)": "./public/modules/contrib/helfi_platform_config/patches/2882334.patch"
             },
             "drupal/csp": {
                 "[#UHF-11973] Allow installing csp in an install hook": "./public/modules/contrib/helfi_platform_config/patches/csp-uhf-11973.patch"
