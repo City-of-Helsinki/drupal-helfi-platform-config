@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\language\ConfigurableLanguageManagerInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * UHF-9754: Unset '_info_file_ctime' for helfi_react_search module.
@@ -230,4 +231,51 @@ function helfi_react_search_update_9020(): void {
     $override->set('description', 'Valitse listalla näytettävien sisältöjen lukumäärä. Jos olet valinnut esitystavaksi nostot, näytetään aina enintään kolme sisältöä.')
       ->save();
   }
+}
+
+/**
+ * Remove the "3" option from the event count field, defaulting it to 5. 
+ * Using $sandbox to avoid possible timeout or running out of memory.
+ */
+function helfi_react_search_update_9021(&$sandbox): void {
+  $query = \Drupal::entityQuery('paragraph')
+    ->condition('type', 'event_list')
+    ->condition('field_event_count', 3)
+    ->accessCheck(FALSE);
+
+  if (!isset($sandbox['total'])) {
+    $config = \Drupal::configFactory()
+      ->getEditable('field.field.paragraph.event_list.field_event_count');
+    if (!$config->isNew()) {
+      $config->set('default_value', [['value' => 5]])->save();
+    }
+
+    $sandbox['total'] = $query->count()->execute();
+    $sandbox['current'] = 0;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  // Existing matches are updated to 5 on each pass, so they drop out of this
+  // condition and the next range() picks up the remaining ones.
+  $ids = $query
+    ->range(0, 25)
+    ->execute();
+
+  if (empty($ids)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($ids as $id) {
+    $entity = Paragraph::load($id);
+    $entity->set('field_event_count', 5);
+    $entity->save();
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = $sandbox['current'] >= $sandbox['total'] ? 1 : ($sandbox['current'] / $sandbox['total']);
 }
