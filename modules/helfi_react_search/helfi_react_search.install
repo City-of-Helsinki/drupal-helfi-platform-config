@@ -234,7 +234,8 @@ function helfi_react_search_update_9020(): void {
 }
 
 /**
- * Remove the "3" option from the event count field, defaulting it to 5. 
+ * Remove the "3" option from the event count field, defaulting it to 5.
+ *
  * Using $sandbox to avoid possible timeout or running out of memory.
  */
 function helfi_react_search_update_9021(&$sandbox): void {
@@ -261,6 +262,7 @@ function helfi_react_search_update_9021(&$sandbox): void {
 
   // Existing matches are updated to 5 on each pass, so they drop out of this
   // condition and the next range() picks up the remaining ones.
+  /** @var array<int|string> $ids */
   $ids = $query
     ->range(0, 25)
     ->execute();

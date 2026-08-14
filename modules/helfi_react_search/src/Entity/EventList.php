@@ -37,7 +37,7 @@ class EventList extends Paragraph implements ParagraphInterface {
 
     $count = (int) ($this->get('field_event_count')->value ?? 5);
 
-    // 3 is no longer a selectable option. 
+    // 3 is no longer a selectable option.
     // If some legacy value is 3 treat it as 5.
     return $count === 3 ? 5 : $count;
   }
