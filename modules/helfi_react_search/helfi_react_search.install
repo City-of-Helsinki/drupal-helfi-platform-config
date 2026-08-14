@@ -237,8 +237,11 @@ function helfi_react_search_update_9020(): void {
  * Remove the "3" option from the event count field, defaulting it to 5.
  *
  * Using $sandbox to avoid possible timeout or running out of memory.
+ *
+ * @param array<string, mixed> $sandbox
+ *   The sandbox.
  */
-function helfi_react_search_update_9021(&$sandbox): void {
+function helfi_react_search_update_9021(array &$sandbox): void {
   $query = \Drupal::entityQuery('paragraph')
     ->condition('type', 'event_list')
     ->condition('field_event_count', 3)
