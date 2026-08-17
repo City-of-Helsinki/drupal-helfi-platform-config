@@ -1,0 +1,166 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_group
+    - user
+third_party_settings:
+  field_group:
+    group_my_content:
+      children:
+        - group_my_pages
+        - group_my_tpr_content
+      label: 'My content'
+      parent_name: ''
+      region: content
+      weight: 0
+      format_type: tabs
+      format_settings:
+        classes: dashboard__tabs
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        direction: horizontal
+        width_breakpoint: 640
+    group_my_pages:
+      children:
+        - user_content
+      label: 'My Pages'
+      parent_name: group_my_content
+      region: content
+      weight: 3
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        formatter: open
+        description: ''
+    group_my_tpr_errand_services:
+      children:
+        - user_tpr_errand_services
+      label: 'My TPR Errand Services'
+      parent_name: group_my_tpr_content_tabs
+      region: content
+      weight: 7
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
+    group_my_tpr_services:
+      children:
+        - user_tpr_services
+      label: 'My TPR Services'
+      parent_name: group_my_tpr_content_tabs
+      region: content
+      weight: 6
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
+    group_my_tpr_units:
+      children:
+        - user_tpr_units
+      label: 'My TPR Units'
+      parent_name: group_my_tpr_content_tabs
+      region: content
+      weight: 5
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
+    group_my_tpr_service_channels:
+      children:
+        - tpr_service_channels
+      label: 'My TPR Service Channels'
+      parent_name: group_my_tpr_content_tabs
+      region: content
+      weight: 8
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
+    group_my_tpr_content:
+      children:
+        - group_my_tpr_content_tabs
+      label: 'My TPR Content'
+      parent_name: group_my_content
+      region: content
+      weight: 4
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
+    group_my_tpr_content_tabs:
+      children:
+        - group_my_tpr_units
+        - group_my_tpr_services
+        - group_my_tpr_errand_services
+        - group_my_tpr_service_channels
+      label: 'My TPR Content Tabs'
+      parent_name: group_my_tpr_content
+      region: content
+      weight: 1
+      format_type: tabs
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        direction: horizontal
+        width_breakpoint: 640
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  tpr_service_channels:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  user_content:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  user_tpr_errand_services:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  user_tpr_services:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  user_tpr_units:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+hidden:
+  langcode: true
+  member_for: true
+  search_api_excerpt: true

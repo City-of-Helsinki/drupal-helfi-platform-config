@@ -23,6 +23,66 @@ class UserDashboardHooks {
   ) {}
 
   /**
+   * Extra field definitions for the user dashboard display.
+   *
+   * @return array<string, array{label: \Drupal\Core\StringTranslation\TranslatableMarkup, description: \Drupal\Core\StringTranslation\TranslatableMarkup}>
+   */
+  private function userContentExtraFields(): array {
+    return [
+      'user_content' => [
+        'info' => [
+          'label' => $this->t('User content'),
+          'description' => $this->t('Lists all content authored by this user.'),
+        ],
+        'view' => [
+          'name' => 'dashboard_your_content',
+          'display' => 'your_content_block',
+        ],
+      ],
+      'user_tpr_units' => [
+        'info' => [
+          'label' => $this->t('User TPR units'),
+          'description' => $this->t('Lists all TPR units edited by this user.'),
+        ],
+        'view' => [
+          'name' => 'tpr_unit_list',
+          'display' => 'your_content_block',
+        ],
+      ],
+      'user_tpr_services' => [
+        'info' => [
+          'label' => $this->t('User TPR services'),
+          'description' => $this->t('Lists all TPR services edited by this user.'),
+        ],
+        'view' => [
+          'name' => 'tpr_service_list',
+          'display' => 'your_content_block',
+        ],
+      ],
+      'user_tpr_errand_services' => [
+        'info' => [
+          'label' => $this->t('User TPR errand services'),
+          'description' => $this->t('Lists all TPR errand services edited by this user.'),
+        ],
+        'view' => [
+          'name' => 'tpr_errand_service_list',
+          'display' => 'your_content_block',
+        ],
+      ],
+      'tpr_service_channels' => [
+        'info' => [
+          'label' => $this->t('User TPR service channels'),
+          'description' => $this->t('Lists all TPR errand services edited by this user.'),
+        ],
+        'view' => [
+          'name' => 'tpr_service_channel_list',
+          'display' => 'your_content_block',
+        ],
+      ],
+    ];
+  }
+
+  /**
    * Implements hook_views_data_alter().
    *
    * @phpstan-param array<string, mixed> $data
@@ -46,14 +106,14 @@ class UserDashboardHooks {
    */
   #[Hook('entity_extra_field_info')]
   public function userContentExtraFieldInfo(): array {
-    // Create an extra field to inject the dashboard view for the user display.
+    // Create an extra fields to inject the dashboard views for the user display.
     $extra = [];
-    $extra['user']['user']['display']['user_content'] = [
-      'label' => $this->t('User content'),
-      'description' => $this->t('Lists all content authored by this user.'),
-      'weight' => 10,
-      'visible' => TRUE,
-    ];
+    foreach ($this->userContentExtraFields() as $name => $field) {
+      $extra['user']['user']['display'][$name] = $field['info'] + [
+        'weight' => 10,
+        'visible' => TRUE,
+      ];
+    }
     return $extra;
   }
 
@@ -67,19 +127,21 @@ class UserDashboardHooks {
     if ($this->currentUser->id() !== $account->id()) {
       return;
     }
-    if (!$display->getComponent('user_content')) {
-      return;
+    foreach ($this->userContentExtraFields() as $name => $field) {
+      if (!$display->getComponent($name)) {
+        return;
+      }
+      $view = Views::getView($field['view']['name']);
+      if (!$view || !$view->access($field['view']['display'])) {
+        return;
+      }
+      $build[$name] = [
+        '#type' => 'view',
+        '#name' => $field['view']['name'],
+        '#display_id' => $field['view']['display'],
+        '#arguments' => [$account->id()],
+      ];
     }
-    $view = Views::getView('dashboard_your_content');
-    if (!$view || !$view->access('your_content_block')) {
-      return;
-    }
-    $build['user_content'] = [
-      '#type' => 'view',
-      '#name' => 'dashboard_your_content',
-      '#display_id' => 'your_content_block',
-      '#arguments' => [$account->id()],
-    ];
   }
 
 }

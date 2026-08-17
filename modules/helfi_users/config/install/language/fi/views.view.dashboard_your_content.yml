@@ -1,16 +1,17 @@
-label: 'Dashboard - Omat sisällöt'
-description: 'Kaikki käyttäjän luoma/viimeisenä päivittämä sisältö.'
 display:
   default:
-    display_title: Oletus
     display_options:
+      empty:
+        area:
+          content:
+            value: '<p>Ei näytettäviä sivuja.</p>'
+            format: full_html
       title: 'Omat sivut'
       fields:
         views_bulk_operations_bulk_form:
           action_title: Toiminto
         content_translation_outdated:
           label: 'Käännös vanhentunut'
-          settings: {  }
         title:
           label: Otsikko
         type:
@@ -27,7 +28,7 @@ display:
             format_custom_false: Julkaisematon
             format_custom_true: Julkaistu
         changed:
-          label: Muuttunut
+          label: Päivitetty
         operations:
           label: Toimenpiteet
       pager:
@@ -47,11 +48,6 @@ display:
           exposed_sorts_label: Lajittele
           sort_asc_label: Nousevasti
           sort_desc_label: Laskevasti
-      empty:
-        area:
-          content:
-            value: '<p>Ei näytettäviä sivuja.</p>'
-            format: full_html
       filters:
         title:
           expose:
@@ -75,5 +71,8 @@ display:
         helfi_node_authorship:
           expose:
             label: 'Kirjoittaja & päivittäjä'
+    display_title: Oletus
   your_content_block:
     display_title: Lohko
+label: 'Dashboard - Omat sisällöt'
+description: 'Kaikki käyttäjän luoma/viimeisenä päivittämä sisältö.'
