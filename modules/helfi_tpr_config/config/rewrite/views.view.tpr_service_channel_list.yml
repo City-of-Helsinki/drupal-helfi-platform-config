@@ -775,10 +775,7 @@ display:
     display_plugin: page
     position: 1
     display_options:
-      display_extenders:
-        metatag_display_extender:
-          metatags: {  }
-          tokenize: false
+      display_extenders: {  }
       path: admin/content/integrations/tpr-service-channel
     cache_metadata:
       max-age: 0
@@ -910,10 +907,7 @@ display:
         header: false
       use_ajax: true
       header: {  }
-      display_extenders:
-        metatag_display_extender:
-          metatags: {  }
-          tokenize: false
+      display_extenders: {  }
     cache_metadata:
       max-age: 0
       contexts:

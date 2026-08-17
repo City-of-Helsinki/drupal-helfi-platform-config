@@ -19,6 +19,7 @@ class UserCancelFormTest extends BrowserTestBase {
   protected static $modules = [
     'user',
     'helfi_users',
+    'field_group',
   ];
 
   /**

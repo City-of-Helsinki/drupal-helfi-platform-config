@@ -25,7 +25,7 @@ class UserDashboardHooks {
   /**
    * Extra field definitions for the user dashboard display.
    *
-   * @return array<string, array{label: \Drupal\Core\StringTranslation\TranslatableMarkup, description: \Drupal\Core\StringTranslation\TranslatableMarkup}>
+   * @phpstan-return array<string, array{info: array{label: \Drupal\Core\StringTranslation\TranslatableMarkup, description: \Drupal\Core\StringTranslation\TranslatableMarkup}, view: array{name: string, display: string}}>
    */
   private function userContentExtraFields(): array {
     return [
@@ -106,7 +106,8 @@ class UserDashboardHooks {
    */
   #[Hook('entity_extra_field_info')]
   public function userContentExtraFieldInfo(): array {
-    // Create an extra fields to inject the dashboard views for the user display.
+    // Create an extra fields to inject the dashboard views for the user
+    // display.
     $extra = [];
     foreach ($this->userContentExtraFields() as $name => $field) {
       $extra['user']['user']['display'][$name] = $field['info'] + [
