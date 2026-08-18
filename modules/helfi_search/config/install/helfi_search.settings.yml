@@ -5,7 +5,7 @@ deboost_bundles:
   - news_article
   - news_item
 deboost_factor: 0.95
-min_score: 0.32
+min_score: 0.2
 ignored_classes:
   - is-hidden
   - visually-hidden
