@@ -258,12 +258,13 @@ function helfi_search_update_11018(): void {
 }
 
 /**
- * UHF-13342: Modify the search deboost factor and min_score.
+ * UHF-13342: Modify the search deboost factor and similarity floor.
  */
 function helfi_search_update_11019(): void {
   \Drupal::configFactory()
     ->getEditable('helfi_search.settings')
     ->set('deboost_factor', 0.95)
-    ->set('min_score', 0.2)
+    ->set('similarity', 0.2)
+    ->clear('min_score')
     ->save();
 }

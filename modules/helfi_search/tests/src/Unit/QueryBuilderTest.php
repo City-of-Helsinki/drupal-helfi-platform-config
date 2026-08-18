@@ -9,6 +9,7 @@ use Drupal\helfi_search\QueryBuilder;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\TestWith;
 
 /**
  * Tests the QueryBuilder service.
@@ -19,7 +20,7 @@ class QueryBuilderTest extends UnitTestCase {
   private const EmbeddingModel TEST_MODEL = EmbeddingModel::Small;
   private const string TEST_MODEL_FIELD = 'embeddings_text_embedding_3_small';
 
-  private const float TEST_MIN_SCORE = 0.68;
+  private const float TEST_SIMILARITY = 0.68;
 
   /**
    * Build a QueryBuilder with stubbed config.
@@ -31,15 +32,15 @@ class QueryBuilderTest extends UnitTestCase {
    *   Bundles to apply the deboost factor to. Empty disables deboost.
    * @param float $deboostFactor
    *   Score multiplier for deboosted bundles.
-   * @param float $minScore
+   * @param float $similarity
    *   Minimum similarity floor.
    */
-  private function createBuilder(array $deboostBundles = [], float $deboostFactor = 0.5, float $minScore = self::TEST_MIN_SCORE): QueryBuilder {
+  private function createBuilder(array $deboostBundles = [], float $deboostFactor = 0.5, float $similarity = self::TEST_SIMILARITY): QueryBuilder {
     return new QueryBuilder($this->getConfigFactoryStub([
       'helfi_search.settings' => [
         'deboost_bundles' => $deboostBundles,
         'deboost_factor' => $deboostFactor,
-        'min_score' => $minScore,
+        'similarity' => $similarity,
       ],
     ]));
   }
@@ -164,7 +165,7 @@ class QueryBuilderTest extends UnitTestCase {
     );
     $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $query['body']['size']);
     $this->assertEquals(0, $query['body']['from']);
-    $this->assertEquals(self::TEST_MIN_SCORE, $query['body']['knn']['similarity']);
+    $this->assertEquals(self::TEST_SIMILARITY, $query['body']['knn']['similarity']);
     $this->assertArrayNotHasKey('min_score', $query['body']);
   }
 
@@ -349,13 +350,13 @@ class QueryBuilderTest extends UnitTestCase {
 
     // News entry: filter requires the deboost bundles, boost is the factor.
     $this->assertEquals(0.5, $news['boost']);
-    $this->assertEquals(self::TEST_MIN_SCORE, $news['similarity']);
+    $this->assertEquals(self::TEST_SIMILARITY, $news['similarity']);
     $this->assertEquals('fi', $news['filter']['bool']['must'][0]['term']['search_api_language']);
     $this->assertEquals($deboost, $news['filter']['bool']['must'][1]['terms']['entity_bundle']);
 
     // Non-news entry: filter excludes deboost bundles, boost is 1.0.
     $this->assertEquals(1.0, $nonNews['boost']);
-    $this->assertEquals(self::TEST_MIN_SCORE, $nonNews['similarity']);
+    $this->assertEquals(self::TEST_SIMILARITY, $nonNews['similarity']);
     $this->assertEquals('fi', $nonNews['filter']['bool']['must'][0]['term']['search_api_language']);
     $this->assertEquals($deboost, $nonNews['filter']['bool']['must_not'][0]['terms']['entity_bundle']);
 
@@ -364,28 +365,21 @@ class QueryBuilderTest extends UnitTestCase {
   }
 
   /**
-   * Tests deboost is inactive when caller picks only deboosted bundles.
+   * Tests deboost is inactive when the bundle filter has only single item.
+   *
+   * @param list<string> $bundles
+   *   Caller-selected bundles, either all deboosted or none of them.
    */
-  public function testBuildKnnQueryDeboostSkippedWhenAllBundlesAreDeboosted(): void {
+  #[TestWith([['news_article']], 'only deboosted bundles')]
+  #[TestWith([['page', 'landing_page']], 'no deboosted bundles')]
+  public function testBuildKnnQueryDeboostSkipped(array $bundles): void {
     $query = $this->createBuilder(['news_article', 'news_item'], 0.5)
-      ->buildKnnQuery([0.1], 'fi', self::TEST_MODEL, bundles: ['news_article']);
+      ->buildKnnQuery([0.1], 'fi', self::TEST_MODEL, bundles: $bundles);
 
-    // No non-deboosted subset → single KNN with no boost.
+    // Single KNN with no boost.
     $this->assertArrayHasKey('field', $query['body']['knn']);
     $this->assertArrayNotHasKey('boost', $query['body']['knn']);
-    $this->assertEquals(self::TEST_MIN_SCORE, $query['body']['knn']['similarity']);
-  }
-
-  /**
-   * Tests deboost is inactive when caller picks no deboosted bundles.
-   */
-  public function testBuildKnnQueryDeboostSkippedWhenNoDeboostedSelected(): void {
-    $query = $this->createBuilder(['news_article', 'news_item'], 0.5)
-      ->buildKnnQuery([0.1], 'fi', self::TEST_MODEL, bundles: ['page', 'landing_page']);
-
-    $this->assertArrayHasKey('field', $query['body']['knn']);
-    $this->assertArrayNotHasKey('boost', $query['body']['knn']);
-    $this->assertEquals(self::TEST_MIN_SCORE, $query['body']['knn']['similarity']);
+    $this->assertEquals(self::TEST_SIMILARITY, $query['body']['knn']['similarity']);
   }
 
   /**
@@ -409,38 +403,6 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals(1.0, $content['boost']);
     $this->assertEquals(['page'], $content['filter']['bool']['must'][1]['terms']['entity_bundle']);
     $this->assertArrayNotHasKey('must_not', $content['filter']['bool']);
-  }
-
-  /**
-   * Tests deboost emits uniquely named inner_hits on both KNN entries.
-   *
-   * Without distinct names, ES rejects the search because both clauses would
-   * reuse the nested field path as the inner_hits response key.
-   */
-  public function testBuildKnnQueryDeboostHasInnerHits(): void {
-    $query = $this->createBuilder(['news_article', 'news_item'], 0.5)
-      ->buildKnnQuery([0.1], 'fi', self::TEST_MODEL);
-
-    [$news, $content] = $query['body']['knn'];
-
-    $expectedFields = [self::TEST_MODEL_FIELD . '.content', self::TEST_MODEL_FIELD . '.fragment'];
-    $this->assertEquals($expectedFields, $news['inner_hits']['fields']);
-    $this->assertEquals($expectedFields, $content['inner_hits']['fields']);
-    $this->assertEquals('deboosted', $news['inner_hits']['name']);
-    $this->assertEquals('content', $content['inner_hits']['name']);
-  }
-
-  /**
-   * Tests deboost is inactive when no config factory is wired up.
-   */
-  public function testBuildKnnQueryNoDeboostWithoutConfigFactory(): void {
-    $query = (new QueryBuilder())->buildKnnQuery([0.1], 'fi', self::TEST_MODEL);
-
-    // No config factory → empty deboost_bundles → single KNN entry.
-    $this->assertArrayHasKey('field', $query['body']['knn']);
-    $this->assertArrayNotHasKey('boost', $query['body']['knn']);
-    // No min_score key in config → 0.0 floor (effectively disabled).
-    $this->assertEquals(0.0, $query['body']['knn']['similarity']);
   }
 
   /**

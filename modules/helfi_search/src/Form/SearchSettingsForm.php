@@ -100,14 +100,14 @@ final class SearchSettingsForm extends ConfigFormBase {
       '#config_target' => 'helfi_search.settings:deboost_factor',
     ];
 
-    $form['ranking']['min_score'] = [
+    $form['ranking']['similarity'] = [
       '#type' => 'number',
       '#title' => $this->t('Minimum similarity'),
-      '#description' => $this->t('Raw cosine-similarity floor between query and document embeddings (0.0–1.0). Hits below this threshold are dropped. Higher values return fewer but more relevant results. Calculate similarity value from desired minimum score value with: similarity = desired_min_score * 2 - 1.'),
+      '#description' => $this->t('Cosine-similarity between query and document embeddings. Hits below this threshold are dropped. Elasticsearch derives the hit score from the similarity as <code>score = (similarity + 1) / 2</code>.'),
       '#min' => 0,
       '#max' => 1,
       '#step' => 0.01,
-      '#config_target' => 'helfi_search.settings:min_score',
+      '#config_target' => 'helfi_search.settings:similarity',
     ];
 
     $form['query_preprocessing'] = [

@@ -148,7 +148,7 @@ final class QueryBuilder {
     int $innerHitsSize = 1,
     bool $includeAggregations = FALSE,
   ): array {
-    $minScore = (float) ($this->getSetting('min_score') ?? 0.0);
+    $similarity = (float) ($this->getSetting('similarity') ?? 0.0);
     $language = match($language) {
       "fi", "sv", "en" => $language,
       default => "en",
@@ -196,7 +196,7 @@ final class QueryBuilder {
           $fieldPrefix,
           $embeddings,
           ['bool' => ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $deboostedSubset]]]]],
-          $minScore,
+          $similarity,
           ['name' => 'deboosted'] + $innerHits,
           (float) ($this->getSetting('deboost_factor') ?? 1.0),
         ),
@@ -204,7 +204,7 @@ final class QueryBuilder {
           $fieldPrefix,
           $embeddings,
           ['bool' => $contentBool],
-          $minScore,
+          $similarity,
           ['name' => 'content'] + $innerHits,
           1.0,
         ),
@@ -212,7 +212,7 @@ final class QueryBuilder {
     }
     else {
       $filter = $this->buildBundleFilter($languageFilter, $bundles, $excludeBundles);
-      $knn = $this->buildKnnEntry($fieldPrefix, $embeddings, $filter, $minScore, $innerHits, NULL);
+      $knn = $this->buildKnnEntry($fieldPrefix, $embeddings, $filter, $similarity, $innerHits, NULL);
     }
 
     $body = [
@@ -343,7 +343,7 @@ final class QueryBuilder {
     // in a way that ensures that a larger score corresponds to a higher
     // ranking. We use cosine similarity metric.
     if ($similarity !== NULL) {
-      // min_score = (2 * _score) - 1.
+      // The resulting _score is (similarity + 1) / 2.
       $entry['similarity'] = $similarity;
     }
     // https://www.elastic.co/docs/solutions/search/vector/knn#_search_multiple_knn_fields.
