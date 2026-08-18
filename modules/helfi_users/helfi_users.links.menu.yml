@@ -1,5 +1,6 @@
 helfi_users.my_pages:
   title: 'My content'
+  title_context: 'Dashboard'
   parent: system.admin_content
   route_name: user.page
   weight: -100

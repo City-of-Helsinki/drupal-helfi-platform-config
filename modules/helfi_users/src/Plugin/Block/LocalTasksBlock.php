@@ -61,7 +61,7 @@ class LocalTasksBlock extends CoreLocalTasksBlock {
       unset($build['#primary'][$scheduleRoute]);
     }
 
-    // Change the link title to "My Content" when viewing the user entity
+    // Change the link title to "My content" when viewing the user entity
     // routes.
     if (isset($build['#primary']['entity.user.canonical'])) {
       $adminLanguage = $this->currentUser->getPreferredAdminLangcode();
