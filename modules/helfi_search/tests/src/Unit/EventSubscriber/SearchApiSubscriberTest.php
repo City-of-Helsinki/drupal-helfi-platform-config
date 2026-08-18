@@ -4,18 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Unit\EventSubscriber;
 
-use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
 use Drupal\elasticsearch_connector\Event\IndexPreCreateEvent;
-use Drupal\elasticsearch_connector\Event\SupportsDataTypeEvent;
 use Drupal\helfi_search\EventSubscriber\SearchApiSubscriber;
-use Drupal\search_api\Event\MappingFieldTypesEvent;
-use Drupal\search_api\Event\SearchApiEvents;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\Field;
 use Drupal\Tests\UnitTestCase;
-use Prophecy\Argument;
 use PHPUnit\Framework\Attributes\Group;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Unit tests for the helfi_search search api event subscriber.
