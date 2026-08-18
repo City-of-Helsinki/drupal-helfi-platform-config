@@ -209,7 +209,7 @@ function helfi_image_styles_update_11002(): void {
 }
 
 /**
- * UHF-12710 Enable webp and wpf modules and flush cached image styles.
+ * UHF-13509 Disable the fallback image module.
  */
 function helfi_image_styles_update_11003(): void {
   if (
