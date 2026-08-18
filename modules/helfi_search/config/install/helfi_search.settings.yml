@@ -4,7 +4,7 @@ openai_model_pricing:
 deboost_bundles:
   - news_article
   - news_item
-deboost_factor: 0.9
+deboost_factor: 0.95
 min_score: 0.32
 ignored_classes:
   - is-hidden
