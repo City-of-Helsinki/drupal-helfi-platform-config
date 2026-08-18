@@ -3,4 +3,5 @@ type: module
 core_version_requirement: '^10 || ^11'
 dependencies:
   - external_entities:external_entities
+  - helfi_image_styles:helfi_image_styles
   - imagecache_external:imagecache_external

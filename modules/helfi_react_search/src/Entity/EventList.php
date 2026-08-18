@@ -30,14 +30,16 @@ class EventList extends Paragraph implements ParagraphInterface {
    * Get number of items to show.
    */
   public function getCount(): int {
-    $default_value = 3;
-
     // The lifts layout always renders the three latest events.
     if ($this->getEventListLayout() === 'lifts') {
-      return $default_value;
+      return 3;
     }
 
-    return (int) ($this->get('field_event_count')->value ?? $default_value);
+    $count = (int) ($this->get('field_event_count')->value ?? 5);
+
+    // 3 is no longer a selectable option.
+    // If some legacy value is 3 treat it as 5.
+    return $count === 3 ? 5 : $count;
   }
 
   /**
