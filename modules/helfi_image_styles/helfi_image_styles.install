@@ -207,3 +207,14 @@ function helfi_image_styles_update_11002(): void {
     \Drupal::service('module_installer')->install(['wpf']);
   }
 }
+
+/**
+ * UHF-12710 Enable webp and wpf modules and flush cached image styles.
+ */
+function helfi_image_styles_update_11003(): void {
+  if (
+    \Drupal::moduleHandler()->moduleExists('wpf')
+  ) {
+    \Drupal::service('module_installer')->uninstall(['wpf']);
+  }
+}
