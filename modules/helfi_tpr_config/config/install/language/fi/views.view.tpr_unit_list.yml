@@ -40,7 +40,7 @@ display:
       filters:
         combine:
           expose:
-            label: Etsi
+            label: 'Nimi tai ID'
         langcode:
           expose:
             label: Kieli
