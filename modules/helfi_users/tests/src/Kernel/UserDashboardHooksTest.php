@@ -152,9 +152,8 @@ class UserDashboardHooksTest extends KernelTestBase {
 
     $element = [];
     $group = (object) ['group_name' => 'group_my_tpr_content'];
-    $rendering_object = [];
 
-    $this->hooks->fieldGroupPreRender($element, $group, $rendering_object);
+    $this->hooks->fieldGroupPreRender($element, $group);
 
     $this->assertFalse($element['#access']);
   }
@@ -170,9 +169,8 @@ class UserDashboardHooksTest extends KernelTestBase {
 
     $element = [];
     $group = (object) ['group_name' => 'group_my_tpr_content'];
-    $rendering_object = [];
 
-    $this->hooks->fieldGroupPreRender($element, $group, $rendering_object);
+    $this->hooks->fieldGroupPreRender($element, $group);
 
     $this->assertArrayNotHasKey('#access', $element);
   }
@@ -185,9 +183,8 @@ class UserDashboardHooksTest extends KernelTestBase {
 
     $element = [];
     $group = (object) ['group_name' => 'group_my_pages'];
-    $rendering_object = [];
 
-    $this->hooks->fieldGroupPreRender($element, $group, $rendering_object);
+    $this->hooks->fieldGroupPreRender($element, $group);
 
     $this->assertArrayNotHasKey('#access', $element);
   }

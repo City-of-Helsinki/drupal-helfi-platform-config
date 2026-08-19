@@ -27,7 +27,13 @@ class UserDashboardHooks {
   /**
    * Extra field definitions for the user dashboard display.
    *
-   * @phpstan-return array<string, array{info: array{label: \Drupal\Core\StringTranslation\TranslatableMarkup, description: \Drupal\Core\StringTranslation\TranslatableMarkup}, view: array{name: string, display: string}}>
+   * @phpstan-return array<string, array{
+   *   info: array{
+   *     label: \Drupal\Core\StringTranslation\TranslatableMarkup,
+   *     description: \Drupal\Core\StringTranslation\TranslatableMarkup,
+   *   },
+   *   view: array{name: string, display: string},
+   * }>
    */
   private function userContentExtraFields(): array {
     $definitions = [
@@ -142,15 +148,15 @@ class UserDashboardHooks {
    *
    * @phpstan-param array<string, mixed> $element
    * @phpstan-param \stdClass $group
-   * @phpstan-param array<string, mixed> $rendering_object
    */
   #[Hook('field_group_pre_render')]
-  public function fieldGroupPreRender(array &$element, &$group, &$rendering_object): void {
+  public function fieldGroupPreRender(array &$element, &$group): void {
     // Hide user dashboard TPR content tab, if TPR integration isn't enabled.
-    if ($group->group_name === 'group_my_tpr_content') {
-      if (!$this->moduleHandler->moduleExists('helfi_tpr')) {
-        $element['#access'] = FALSE;
-      }
+    if (
+      $group->group_name === 'group_my_tpr_content'
+      && !$this->moduleHandler->moduleExists('helfi_tpr')
+    ) {
+      $element['#access'] = FALSE;
     }
   }
 
