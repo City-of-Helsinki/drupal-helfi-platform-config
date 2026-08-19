@@ -48,7 +48,7 @@ class SearchSettingsFormTest extends KernelTestBase {
   public function testSubmitSavesConfig(): void {
     $form_state = $this->submit([
       'deboost_factor' => 0.5,
-      'min_score' => 0.4,
+      'similarity' => 0.4,
       'canonical_terms' => "OmaStadi\nMyHelsinki",
       'ignored_classes' => "is-hidden\nannouncement",
     ]);
@@ -57,7 +57,7 @@ class SearchSettingsFormTest extends KernelTestBase {
 
     $config = $this->config('helfi_search.settings');
     $this->assertEquals(0.5, $config->get('deboost_factor'));
-    $this->assertEquals(0.4, $config->get('min_score'));
+    $this->assertEquals(0.4, $config->get('similarity'));
     // Textareas are stored as lists, one item per line.
     $this->assertSame(['OmaStadi', 'MyHelsinki'], $config->get('canonical_terms'));
     $this->assertSame(['is-hidden', 'announcement'], $config->get('ignored_classes'));
