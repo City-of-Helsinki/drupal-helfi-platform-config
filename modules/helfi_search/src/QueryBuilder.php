@@ -333,8 +333,8 @@ final class QueryBuilder {
     $entry = [
       'field' => $fieldPrefix . '.vector',
       'query_vector' => $embeddings,
-      'k' => 50,
-      'num_candidates' => 500,
+      'k' => 150,
+      'num_candidates' => 200,
       'filter' => $filter,
       'inner_hits' => $innerHits,
     ];
