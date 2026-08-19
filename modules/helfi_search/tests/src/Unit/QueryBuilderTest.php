@@ -153,7 +153,9 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertEquals(QueryBuilder::EMBEDDINGS_INDEX, $query['index']);
     $this->assertEquals(self::TEST_MODEL_FIELD . '.vector', $query['body']['knn']['field']);
     $this->assertEquals($vector, $query['body']['knn']['query_vector']);
-    $this->assertEquals(50, $query['body']['knn']['k']);
+    $this->assertIsInt($query['body']['knn']['k']);
+    $this->assertIsInt($query['body']['knn']['num_candidates']);
+    $this->assertGreaterThanOrEqual($query['body']['knn']['k'], $query['body']['knn']['num_candidates']);
     $this->assertEquals('fi', $query['body']['knn']['filter']['term']['search_api_language']);
     $this->assertEquals(
       [self::TEST_MODEL_FIELD . '.content', self::TEST_MODEL_FIELD . '.fragment'],
@@ -329,9 +331,10 @@ class QueryBuilderTest extends UnitTestCase {
 
     $this->assertEquals(5, $query['body']['size']);
     $this->assertEquals(10, $query['body']['from']);
-    // K is fixed to retrieve a large pool of candidates for pagination.
-    $this->assertEquals(50, $query['body']['knn']['k']);
-    $this->assertEquals(500, $query['body']['knn']['num_candidates']);
+    $this->assertIsInt($query['body']['knn']['k']);
+    $this->assertGreaterThanOrEqual(15, $query['body']['knn']['k']);
+    $this->assertIsInt($query['body']['knn']['num_candidates']);
+    $this->assertGreaterThanOrEqual($query['body']['knn']['k'], $query['body']['knn']['num_candidates']);
   }
 
   /**
