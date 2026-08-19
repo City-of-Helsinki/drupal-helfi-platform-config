@@ -26,6 +26,9 @@ helfi_search.settings:
     min_score:
       type: float
       label: 'KNN minimum similarity floor (0.0–1.0)'
+    low_relevance_threshold:
+      type: float
+      label: 'Best-hit score below which a search is tagged as low relevancy'
     ignored_classes:
       type: sequence
       label: 'CSS classes whose elements are stripped from indexed HTML'

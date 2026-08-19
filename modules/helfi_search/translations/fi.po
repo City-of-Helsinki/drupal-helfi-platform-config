@@ -24,3 +24,9 @@ msgstr "Ota yhteyttä -URL"
 
 msgid "AI register URL"
 msgstr "Tekoälyrekisterin URL"
+
+msgid "Low relevancy threshold"
+msgstr "Matalan relevanssin raja-arvo"
+
+msgid "Every result gets a score between 0 and 1. When the best result of a search scores below this value, the search is reported as low relevancy."
+msgstr "Jokainen hakutulos saa pistemäärän väliltä 0–1. Jos haun paras tulos jää tämän arvon alle, haku raportoidaan matalan relevanssin hakuna."

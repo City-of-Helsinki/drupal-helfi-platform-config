@@ -256,3 +256,18 @@ function helfi_search_update_11018(): void {
     }
   }
 }
+
+/**
+ * Seed the low relevancy threshold config.
+ */
+function helfi_search_update_11019(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+  // Superseded by the single low_relevance_threshold value.
+  $config->clear('search_relevance_thresholds');
+
+  if ($config->get('low_relevance_threshold') === NULL) {
+    $config->set('low_relevance_threshold', 0.7);
+  }
+
+  $config->save();
+}
