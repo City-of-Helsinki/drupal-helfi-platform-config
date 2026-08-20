@@ -40,6 +40,13 @@ final class HeadingIdInjector implements LoggerAwareInterface {
   private const array HIDDEN_SUBTREES = ['noscript'];
 
   /**
+   * Marks an id as generated here, so the JS fallback can verify it.
+   *
+   * @todo Remove along with the headingIdInjector.js fallback.
+   */
+  private const string GENERATED_ATTRIBUTE = 'data-helfi-heading-id';
+
+  /**
    * Injects ids and tabindex into the headings inside the main wrapper.
    *
    * @param string $html
@@ -189,6 +196,7 @@ final class HeadingIdInjector implements LoggerAwareInterface {
 
       if ($record->newId !== NULL) {
         $element->setAttribute('id', $record->newId);
+        $element->setAttribute(self::GENERATED_ATTRIBUTE, '');
       }
       // Make the heading focusable without adding it to the tab order, so
       // screen readers announce it.

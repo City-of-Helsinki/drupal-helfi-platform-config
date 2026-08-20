@@ -114,13 +114,13 @@ final class HeadingIdResponseSubscriberTest extends KernelTestBase {
     $content = (string) $response->getContent();
 
     $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-    $this->assertStringContainsString('<h2 id="how-to-apply" tabindex="-1">How to Apply</h2>', $content);
-    $this->assertStringContainsString('<h3 id="paatos" tabindex="-1">Päätös</h3>', $content);
+    $this->assertStringContainsString('<h2 id="how-to-apply" data-helfi-heading-id="" tabindex="-1">How to Apply</h2>', $content);
+    $this->assertStringContainsString('<h3 id="paatos" data-helfi-heading-id="" tabindex="-1">Päätös</h3>', $content);
     // Existing id is kept as is.
     $this->assertStringContainsString('<h2 id="custom-anchor" tabindex="-1">Pretty Title</h2>', $content);
     // Hidden regions are left alone.
     $this->assertStringContainsString('<h2>Internal widget</h2>', $content);
-    $this->assertStringContainsString('<h2 id="how-to-apply-2" tabindex="-1">How to Apply</h2>', $content);
+    $this->assertStringContainsString('<h2 id="how-to-apply-2" data-helfi-heading-id="" tabindex="-1">How to Apply</h2>', $content);
   }
 
 }
