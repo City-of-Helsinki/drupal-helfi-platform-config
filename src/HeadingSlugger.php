@@ -17,7 +17,7 @@ final class HeadingSlugger {
   private const array MAIN_LANGUAGES = ['en', 'fi', 'sv'];
 
   /**
-   * Character classes ported from headingIdInjector.js.
+   * Character classes.
    */
   private const array LOCALE_CONVERSIONS = [
     '0' => '[°₀۰０]',

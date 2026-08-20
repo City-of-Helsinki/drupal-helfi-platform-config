@@ -2,12 +2,19 @@
  * Heading anchor buttons
  *
  * Anchor buttons are small buttons next to selected headings that you can click
- * and get an anchor link copied to your clipboard. The functionality depends on the
- * headingIdInjector.js.
+ * and get an anchor link copied to your clipboard.
+ *
+ * The anchor ids are written server-side by HeadingIdInjector.php.
  */
 
 ((Drupal, once) => {
   Drupal.HeadingAnchorButtons = {
+    // Content headings that have an anchor id to link to. Headings inside a
+    // .hide-from-table-of-contents element are not part of the content.
+    headingSelector: ['h2', 'h3', 'h4', 'h5', 'h6']
+      .map((tag) => `${tag}[id]:not(.hide-from-table-of-contents *)`)
+      .join(','),
+
     rgbToHex: (rgbColor) => {
       const result = rgbColor.match(/\d+/g);
       return result
@@ -100,13 +107,17 @@
     },
   };
 
-  // Attach table of contents.
+  // Attach the anchor buttons.
   Drupal.behaviors.headingAnchorButtons = {
     attach: function attach() {
-      Drupal.HeadingIdInjector.injectedHeadings.forEach(({ content }) => {
-        once('heading-anchor-button', content).forEach(() => {
-          Drupal.HeadingAnchorButtons.injectHeadingAnchorButtons(content);
-        });
+      const mainContent = document.querySelector('main.layout-main-wrapper');
+
+      if (!mainContent) {
+        return;
+      }
+
+      once('heading-anchor-button', Drupal.HeadingAnchorButtons.headingSelector, mainContent).forEach((content) => {
+        Drupal.HeadingAnchorButtons.injectHeadingAnchorButtons(content);
       });
     },
   };
