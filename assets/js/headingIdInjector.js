@@ -5,12 +5,14 @@
  * built from the heading-elements text. This library should be active on
  * all except admin routes.
  *
- * See HeadingFragmentExtractor.php before modifying this file.
- *
  * Etusivu instance subtheme library hdbt_subtheme/search-fragment-highlight
  * has a dependency on this library. Search result highlighting is triggered
  * from the event helfiHeadingIdsInjected dispatched here when id generation
  * is complete.
+ *
+ * @deprecated
+ *   The ids are written server-side by HeadingIdInjector.php. This is
+ *   scheduled for removal once the implementation is verified.
  */
 
 ((Drupal, once, drupalSettings) => {
