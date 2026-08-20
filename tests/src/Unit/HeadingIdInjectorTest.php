@@ -180,6 +180,19 @@ class HeadingIdInjectorTest extends UnitTestCase {
         HTML,
       ],
 
+      // A '</main' in raw text does not end the rewritten region.
+      'closing main inside script does not truncate' => [
+        'en',
+        <<<HTML
+        <script>var markup = '</main>';</script>
+        <h2>Real</h2>
+        HTML,
+        <<<HTML
+        <script>var markup = '</main>';</script>
+        <h2 id="real" data-helfi-heading-id="" tabindex="-1">Real</h2>
+        HTML,
+      ],
+
       // The langcode is threaded through to the slugger: main languages use
       // the simple 'ä' to 'a' mapping.
       'main language transliteration' => [

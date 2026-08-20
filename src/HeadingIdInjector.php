@@ -63,8 +63,8 @@ final class HeadingIdInjector implements LoggerAwareInterface {
       return $html;
     }
 
-    $region = $this->findMainRegion($html);
-    if (!$region) {
+    $start = $this->findMainStart($html);
+    if ($start === NULL) {
       return $html;
     }
 
@@ -73,8 +73,7 @@ final class HeadingIdInjector implements LoggerAwareInterface {
       return $html;
     }
 
-    [$start, $length] = $region;
-    $patched = $this->applyPlan(substr($html, $start, $length), $plan);
+    $patched = $this->applyPlan(substr($html, $start), $plan);
 
     if ($patched === NULL) {
       // The source tag sequence did not match the parsed one.
@@ -82,7 +81,7 @@ final class HeadingIdInjector implements LoggerAwareInterface {
       return $html;
     }
 
-    return substr_replace($html, $patched, $start, $length);
+    return substr($html, 0, $start) . $patched;
   }
 
   /**
@@ -148,14 +147,14 @@ final class HeadingIdInjector implements LoggerAwareInterface {
   }
 
   /**
-   * Rewrites the heading open tags of the main region.
+   * Rewrites the heading open tags.
    *
    * @phpstan-param \Drupal\helfi_platform_config\DTO\HeadingRecord[] $plan
    *
    * @return string|null
-   *   The rewritten region, or NULL when the source disagrees with the plan.
+   *   The rewritten content, or NULL when the source disagrees with the plan.
    */
-  private function applyPlan(string $region, array $plan): ?string {
+  private function applyPlan(string $tail, array $plan): ?string {
     // Regex for finding heading open tags in HTML. The regex contains
     // two branches:
     // - skip group: a literal '<h2' inside a script, comment, <noscript>
@@ -170,11 +169,13 @@ final class HeadingIdInjector implements LoggerAwareInterface {
       . '|<!--.*?-->)'
       . '|<h[2-6](?:\s(?:[^>"\']|"[^"]*"|\'[^\']*\')*)?>#is';
 
+    $count = count($plan);
     $index = 0;
     $failed = FALSE;
 
-    $patched = preg_replace_callback($pattern, function (array $match) use ($plan, &$index, &$failed): string {
-      if ($failed || ($match['skip'] ?? '') !== '') {
+    $patched = preg_replace_callback($pattern, function (array $match) use ($plan, $count, &$index, &$failed): string {
+      // Everything past the last planned heading is outside the main wrapper.
+      if ($failed || $index === $count || ($match['skip'] ?? '') !== '') {
         return $match[0];
       }
 
@@ -215,9 +216,9 @@ final class HeadingIdInjector implements LoggerAwareInterface {
 
       // HTML5 parsing rules adds closing tag to open tags that we must strip.
       return substr($tag, 0, -strlen($end));
-    }, $region);
+    }, $tail);
 
-    if ($failed || $patched === NULL || $index !== count($plan)) {
+    if ($failed || $patched === NULL || $index !== $count) {
       return NULL;
     }
 
@@ -225,24 +226,21 @@ final class HeadingIdInjector implements LoggerAwareInterface {
   }
 
   /**
-   * Gets byte offsets of the main wrapper's contents.
+   * Gets the byte offset where the main wrapper's contents begin.
    *
-   * @return array{0: int, 1: int}|null
-   *   Tuple containing offset and length of the main tag.
+   * @return int|null
+   *   Offset of the first byte after the <main> open tag.
    */
-  private function findMainRegion(string $html): ?array {
+  private function findMainStart(string $html): ?int {
     $offset = 0;
 
     while (preg_match('/<main\b[^>]*>/i', $html, $match, PREG_OFFSET_CAPTURE, $offset)) {
       $tag = $match[0][0];
-      $tagEnd = $match[0][1] + strlen($tag);
+      $offset = $match[0][1] + strlen($tag);
 
       if ($this->parseTag($tag)?->classList->contains(self::MAIN_CLASS)) {
-        $close = stripos($html, '</main', $tagEnd);
-        return $close === FALSE ? NULL : [$tagEnd, $close - $tagEnd];
+        return $offset;
       }
-
-      $offset = $tagEnd;
     }
 
     return NULL;
