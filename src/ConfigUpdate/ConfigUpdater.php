@@ -7,6 +7,8 @@ namespace Drupal\helfi_platform_config\ConfigUpdate;
 use Drupal\Core\Config\ConfigInstallerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Recipe\Recipe;
+use Drupal\Core\Recipe\RecipeRunner;
 use Drupal\Core\Site\Settings;
 use Drupal\config_rewrite\ConfigRewriterInterface;
 
@@ -70,6 +72,7 @@ final class ConfigUpdater implements ConfigUpdaterInterface {
     }
     $this->configInstaller->installDefaultConfig('module', $module);
     $this->configRewriter->rewriteModuleConfig($module);
+    $this->applyRecipes($module);
 
     // Collect module permissions and update them.
     $permissions = $this->moduleHandler->invokeAll('platform_config_grant_permissions');
@@ -77,6 +80,29 @@ final class ConfigUpdater implements ConfigUpdaterInterface {
 
     // Update all paragraph field handlers.
     $this->paragraphTypeUpdater->updateParagraphTargetTypes();
+  }
+
+  /**
+   * Applies every recipe shipped under the module's recipes/ directory.
+   *
+   * @param string $module
+   *   The module to scan.
+   */
+  private function applyRecipes(string $module) : void {
+    $path = $this->moduleHandler->getModule($module)->getPath() . '/recipes';
+
+    if (!is_dir($path)) {
+      return;
+    }
+    foreach (new \DirectoryIterator($path) as $entry) {
+      if (!$entry->isDir() || $entry->isDot()) {
+        continue;
+      }
+      if (!file_exists($entry->getPathname() . '/recipe.yml')) {
+        continue;
+      }
+      RecipeRunner::processRecipe(Recipe::createFromDirectory($entry->getPathname()));
+    }
   }
 
 }

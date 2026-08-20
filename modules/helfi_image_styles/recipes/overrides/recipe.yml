@@ -1,0 +1,11 @@
+name: 'Helfi image styles overrides'
+description: 'Overrides core image toolkit to use ImageMagick.'
+type: 'Site override'
+install:
+  - system
+config:
+  strict: false
+  actions:
+    system.image:
+      simpleConfigUpdate:
+        toolkit: imagemagick
