@@ -38,13 +38,6 @@ final readonly class HeadingRecord {
   /**
    * Checks whether this record was planned for the given heading.
    *
-   * The plan is built from a parse of the whole response, and applied to a
-   * parse of each heading open tag on its own. The two have to agree, or the
-   * ids would land on the wrong headings.
-   *
-   * @param \Dom\Element $element
-   *   A heading parsed from the response.
-   *
    * @return bool
    *   TRUE when the record belongs to the heading.
    */
