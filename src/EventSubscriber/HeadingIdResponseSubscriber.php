@@ -32,6 +32,8 @@ final class HeadingIdResponseSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents(): array {
     return [
+      // Runs before BigPipe HtmlResponseBigPipeSubscriber at -1000
+      // and after other core subscribers at around 0 priority.
       KernelEvents::RESPONSE => ['onResponse', -600],
     ];
   }
