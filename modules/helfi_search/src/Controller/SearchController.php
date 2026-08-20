@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Semantic search API controller.
  *
- * @phpstan-type SearchResult array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
+ * @phpstan-type SearchResult array{promoted: list<mixed>, results: list<mixed>, total_hits: int, max_score: float|null, debug?: array<string, mixed>}
  */
 final class SearchController extends ControllerBase {
 
@@ -201,6 +201,7 @@ final class SearchController extends ControllerBase {
       'promoted' => [],
       'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
       'total_hits' => $knnResponse['hits']['total']['value'] ?? 0,
+      'max_score' => $knnResponse['hits']['max_score'] ?? NULL,
     ];
     if ($debug) {
       $result['debug'] = ['bundles' => $this->queryBuilder->parseBundleAggregations($knnResponse)];
@@ -252,11 +253,28 @@ final class SearchController extends ControllerBase {
       'promoted' => $promoted,
       'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
       'total_hits' => ($knnResponse['hits']['total']['value'] ?? 0) + count($promoted),
+      'max_score' => $knnResponse['hits']['max_score'] ?? NULL,
     ];
     if ($debug && !isset($responses[1]['error'])) {
       $result['debug'] = ['bundles' => $this->queryBuilder->parseBundleAggregations($knnResponse)];
     }
     return $result;
+  }
+
+  /**
+   * Tells whether the best hit of this page misses the relevancy threshold.
+   *
+   * @param SearchResult $result
+   *   The search result payload from one of the execute*() helpers.
+   */
+  private function isLowRelevance(array $result): bool {
+    if ($result['promoted']) {
+      return FALSE;
+    }
+
+    $threshold = (float) ($this->config('helfi_search.settings')->get('low_relevance_threshold') ?? 0);
+
+    return $result['max_score'] === NULL || $result['max_score'] < $threshold;
   }
 
   /**
@@ -276,6 +294,7 @@ final class SearchController extends ControllerBase {
       'page' => $page,
       'size' => $size,
       'total_hits' => $result['total_hits'],
+      'low_relevance' => $this->isLowRelevance($result),
     ];
     if (isset($result['debug'])) {
       $payload['debug'] = $result['debug'];
