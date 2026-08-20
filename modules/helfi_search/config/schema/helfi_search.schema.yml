@@ -23,7 +23,7 @@ helfi_search.settings:
     deboost_factor:
       type: float
       label: 'Multiplier applied to de-boosted bundle scores (0.0–1.0)'
-    min_score:
+    similarity:
       type: float
       label: 'KNN minimum similarity floor (0.0–1.0)'
     low_relevance_threshold:

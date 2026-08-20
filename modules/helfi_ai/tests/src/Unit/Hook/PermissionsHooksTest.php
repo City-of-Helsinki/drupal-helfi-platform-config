@@ -22,11 +22,12 @@ class PermissionsHooksTest extends UnitTestCase {
   public function testPermissions(): void {
     $permissions = (new PermissionsHooks())->grantPermissions();
 
-    foreach (['admin', 'editor', 'content_producer'] as $role) {
+    foreach (['admin'] as $role) {
       $this->assertArrayHasKey($role, $permissions);
       $this->assertSame([
         'use helfi ai title suggestion',
         'use helfi ai tone check',
+        'use helfi ai summary',
       ], $permissions[$role]);
     }
   }

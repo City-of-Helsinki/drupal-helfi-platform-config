@@ -257,10 +257,22 @@ function helfi_search_update_11018(): void {
   }
 }
 
+ /*
+ * UHF-13342: Modify the search deboost factor and similarity floor.
+ */
+function helfi_search_update_11019(): void {
+  \Drupal::configFactory()
+    ->getEditable('helfi_search.settings')
+    ->set('deboost_factor', 0.95)
+    ->set('similarity', 0.2)
+    ->clear('min_score')
+    ->save();
+}
+
 /**
  * Seed the low relevancy threshold config.
  */
-function helfi_search_update_11019(): void {
+function helfi_search_update_11020(): void {
   $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
 
   if ($config->get('low_relevance_threshold') === NULL) {

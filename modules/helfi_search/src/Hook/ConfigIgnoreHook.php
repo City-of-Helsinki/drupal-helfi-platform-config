@@ -25,9 +25,9 @@ final readonly class ConfigIgnoreHook {
     $ignored = [
       'helfi_search.settings:deboost_bundles',
       'helfi_search.settings:deboost_factor',
-      'helfi_search.settings:min_score',
-      'helfi_search.settings:low_relevance_threshold',
+      'helfi_search.settings:similarity',
       'helfi_search.settings:canonical_terms',
+      'helfi_search.settings:low_relevance_threshold',
     ];
     foreach ($ignored as $entry) {
       if (!in_array($entry, $settings, TRUE)) {
