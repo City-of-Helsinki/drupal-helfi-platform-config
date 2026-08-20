@@ -21,7 +21,7 @@ final class PlatformConfigHooks {
   public function grantPermissions(): array {
     return [
       'admin' => [
-        'administer helfi_search'
+        'administer helfi_search',
       ],
     ];
   }
