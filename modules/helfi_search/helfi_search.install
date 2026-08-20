@@ -257,7 +257,7 @@ function helfi_search_update_11018(): void {
   }
 }
 
- /*
+/**
  * UHF-13342: Modify the search deboost factor and similarity floor.
  */
 function helfi_search_update_11019(): void {
