@@ -5,12 +5,14 @@
  * built from the heading-elements text. This library should be active on
  * all except admin routes.
  *
- * See HeadingFragmentExtractor.php before modifying this file.
- *
  * Etusivu instance subtheme library hdbt_subtheme/search-fragment-highlight
  * has a dependency on this library. Search result highlighting is triggered
  * from the event helfiHeadingIdsInjected dispatched here when id generation
  * is complete.
+ *
+ * @deprecated
+ *   The ids are written server-side by HeadingIdInjector.php. This is
+ *   scheduled for removal once the implementation is verified.
  */
 
 ((Drupal, once, drupalSettings) => {
@@ -23,6 +25,12 @@
 
     // Injected headings for the use of TOC.
     injectedHeadings: [],
+
+    // Attribute set by HeadingIdInjector.php on the ids it generated.
+    generatedAttribute: 'data-helfi-heading-id',
+
+    // Attribute recording a server-generated id this script disagrees with.
+    mismatchAttribute: 'data-helfi-heading-id-mismatch',
 
     // Exclude elements from the injector that are not content:
     // e.g. TOC, sidebar, cookie compliance banner etc.
@@ -159,9 +167,18 @@
         nodeName = content.parentElement.nodeName.toLowerCase();
       }
 
-      const anchorName = content.id ? content.id : Drupal.HeadingIdInjector.findAvailableId(name, 0);
+      // Server-generated ids are re-derived so the two implementations can be
+      // compared.
+      const serverId = content.hasAttribute(Drupal.HeadingIdInjector.generatedAttribute) ? content.id : null;
+      const existingId = serverId === null ? content.id : '';
+      const anchorName = existingId ? existingId : Drupal.HeadingIdInjector.findAvailableId(name, 0);
 
       Drupal.HeadingIdInjector.anchors.push(anchorName);
+
+      // Flag the headings the server-side implementation got wrong.
+      if (serverId !== null && serverId !== anchorName) {
+        content.setAttribute(Drupal.HeadingIdInjector.mismatchAttribute, serverId);
+      }
 
       // Create anchor links.
       content.setAttribute('id', anchorName);
@@ -190,6 +207,11 @@
       // Collect all elements that already have an ID to avoid conflicts.
       const reservedElems = context.querySelectorAll('[id]');
       reservedElems.forEach((elem) => {
+        // Server-generated ids are re-derived below. Reserving them would make
+        // every heading collide with itself and pick up a '-1' suffix.
+        if (elem.hasAttribute(Drupal.HeadingIdInjector.generatedAttribute)) {
+          return;
+        }
         Drupal.HeadingIdInjector.reservedIds.push(elem.id);
       });
 

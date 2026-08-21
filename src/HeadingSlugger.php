@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config;
 
 /**
- * Generates heading anchor slugs that attempts to match headingIdInjector.js.
+ * Generates heading anchor slugs.
+ *
+ * @see \Drupal\helfi_platform_config\HeadingIdInjector
  */
 final class HeadingSlugger {
 
@@ -97,7 +99,7 @@ final class HeadingSlugger {
   /**
    * IDs already present on the page.
    *
-   * @var array<string, true>
+   * @phpstan-var array<string, true>
    */
   private array $reserved;
 
