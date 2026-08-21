@@ -25,11 +25,6 @@ final class HeadingIdInjector implements LoggerAwareInterface {
   use LoggerAwareTrait;
 
   /**
-   * The class marking the main content wrapper.
-   */
-  private const string MAIN_CLASS = 'layout-main-wrapper';
-
-  /**
    * Headings under an element with this class are left alone.
    */
   private const string EXCLUDE_CLASS = 'hide-from-table-of-contents';
@@ -47,7 +42,7 @@ final class HeadingIdInjector implements LoggerAwareInterface {
   private const string GENERATED_ATTRIBUTE = 'data-helfi-heading-id';
 
   /**
-   * Injects ids and tabindex into the headings inside the main wrapper.
+   * Injects ids and tabindex into the headings of the element.
    *
    * @param string $html
    *   The rendered page.
@@ -59,11 +54,11 @@ final class HeadingIdInjector implements LoggerAwareInterface {
    */
   public function inject(string $html, string $langcode): string {
     // Bail before parsing anything if response has no headings.
-    if (!str_contains($html, self::MAIN_CLASS) || !preg_match('/<h[2-6][\s>]/i', $html)) {
+    if (!preg_match('/<h[2-6][\s>]/i', $html)) {
       return $html;
     }
 
-    $start = $this->findMainStart($html);
+    $start = $this->findStart($html);
     if ($start === NULL) {
       return $html;
     }
@@ -103,8 +98,8 @@ final class HeadingIdInjector implements LoggerAwareInterface {
       $node->parentNode?->removeChild($node);
     }
 
-    $main = $document->querySelector(sprintf('main.%s', self::MAIN_CLASS));
-    if (!$main) {
+    $root = $document->querySelector('main') ?? $document->body;
+    if (!$root) {
       return NULL;
     }
 
@@ -118,7 +113,7 @@ final class HeadingIdInjector implements LoggerAwareInterface {
 
     $slugger = new HeadingSlugger($langcode, $reserved);
 
-    $headings = $main->querySelectorAll('h2, h3, h4, h5, h6');
+    $headings = $root->querySelectorAll('h2, h3, h4, h5, h6');
     if ($headings->length === 0) {
       return NULL;
     }
@@ -226,20 +221,15 @@ final class HeadingIdInjector implements LoggerAwareInterface {
   }
 
   /**
-   * Gets the byte offset where the main wrapper's contents begin.
+   * Gets the byte offset where the element's contents begin.
    *
    * @return int|null
-   *   Offset of the first byte after the <main> open tag.
+   *   Offset of the first byte after the open tag.
    */
-  private function findMainStart(string $html): ?int {
-    $offset = 0;
-
-    while (preg_match('/<main\b[^>]*>/i', $html, $match, PREG_OFFSET_CAPTURE, $offset)) {
-      $tag = $match[0][0];
-      $offset = $match[0][1] + strlen($tag);
-
-      if ($this->parseTag($tag)?->classList->contains(self::MAIN_CLASS)) {
-        return $offset;
+  private function findStart(string $html): ?int {
+    foreach (['/<main\b[^>]*>/i', '/<body\b[^>]*>/i'] as $pattern) {
+      if (preg_match($pattern, $html, $match, PREG_OFFSET_CAPTURE)) {
+        return $match[0][1] + strlen($match[0][0]);
       }
     }
 
