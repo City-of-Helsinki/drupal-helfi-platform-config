@@ -50,6 +50,7 @@ class ServiceProcessorTestBase extends EntityKernelTestBase {
     'config_rewrite',
     'search_api',
     'elasticsearch_connector',
+    'diff',
     'helfi_api_base',
     'helfi_tpr',
     'helfi_tpr_config',

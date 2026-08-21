@@ -32,6 +32,7 @@ class HooksTest extends KernelTestBase {
     'entity_reference_revisions',
     'helfi_platform_config',
     'config_rewrite',
+    'diff',
     'helfi_api_base',
     'field',
     'file',

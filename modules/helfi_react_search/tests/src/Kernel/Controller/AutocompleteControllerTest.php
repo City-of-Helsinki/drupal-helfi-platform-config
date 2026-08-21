@@ -31,6 +31,7 @@ final class AutocompleteControllerTest extends KernelTestBase {
   protected static $modules = [
     'system',
     'user',
+    'diff',
     'helfi_api_base',
     'helfi_react_search',
   ];
