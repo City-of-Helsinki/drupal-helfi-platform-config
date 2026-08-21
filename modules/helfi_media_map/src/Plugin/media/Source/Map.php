@@ -23,7 +23,6 @@ use Drupal\media\MediaTypeInterface;
 final class Map extends MediaSourceBase {
 
   public const PALVELUKARTTA_URL = 'palvelukartta.hel.fi';
-  public const PALVELUKARTTA_DEV_URL = 'palvelukartta.dev.hel.ninja';
   public const KARTTA_URL = 'kartta.hel.fi';
 
   /**
@@ -31,7 +30,6 @@ final class Map extends MediaSourceBase {
    */
   public const VALID_URLS = [
     'palvelukartta' => self::PALVELUKARTTA_URL,
-    'palvelukartta_dev' => self::PALVELUKARTTA_DEV_URL,
     'kartta' => self::KARTTA_URL,
   ];
 
