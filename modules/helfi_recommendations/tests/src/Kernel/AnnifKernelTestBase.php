@@ -25,6 +25,7 @@ abstract class AnnifKernelTestBase extends EntityKernelTestBase {
   protected static $modules = [
     'taxonomy',
     'language',
+    'diff',
     'helfi_api_base',
     'helfi_language_negotiator_test',
     'helfi_recommendations',

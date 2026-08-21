@@ -39,6 +39,7 @@ class MultisiteSearchTest extends EntityKernelTestBase {
   protected static $modules = [
     'config_rewrite',
     'elasticsearch_connector',
+    'diff',
     'helfi_api_base',
     'helfi_platform_config',
     'search_api',
