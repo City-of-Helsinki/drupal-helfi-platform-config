@@ -489,15 +489,14 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
    */
   protected function getValue(Media $media): object {
     return new class ($media) {
-      // phpcs:ignore
-      private $entity;
 
-      public function __construct($entity) {
-        $this->entity = $entity;
+      public function __construct(private readonly Media $entity) {
       }
 
-      // phpcs:ignore
-      public function getEntity() {
+      /**
+       * Gets the wrapped media entity.
+       */
+      public function getEntity(): Media {
         return $this->entity;
       }
 
