@@ -95,6 +95,9 @@ function hdbt_cookie_banner_page_attachments(array &$attachments) : void {
   // Attach HDBT cookie banner initialization JS file.
   $attachments['#attached']['library'][] = 'hdbt_cookie_banner/hdbt_cookie_banner';
 
+  // Attach HDBT cookie banner embedded content cookie compliance.
+  $attachments['#attached']['library'][] = 'hdbt_cookie_banner/embedded_content_cookie_compliance';
+
   // Attach HDBT cookie banner settings.
   $attachments['#attached']['drupalSettings']['hdbt_cookie_banner'] = [
     'apiUrl' => $cookie_settings_service->getCookieBannerApiUrl(),

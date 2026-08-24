@@ -58,3 +58,13 @@ hds_cookie_consent:
   header: true
   js:
     assets/js/hds-cookie-consent.min.js: { weight: -17, minified: true, preprocess: false }
+
+embedded_content_cookie_compliance:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    assets/js/embedded-content-cookie-compliance.js: { weight: -14, preprocess: false }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+
