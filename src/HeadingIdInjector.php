@@ -41,9 +41,6 @@ final class HeadingIdInjector implements LoggerAwareInterface {
    */
   private const string GENERATED_ATTRIBUTE = 'data-helfi-heading-id';
 
-  /**
-   * Constructs a new instance.
-   */
   public function __construct(
     private readonly HeadingSlugger $slugger,
   ) {}
