@@ -129,5 +129,6 @@ services:
 
   Drupal\helfi_platform_config\EventSubscriber\ClearSiteDataSubscriber: ~
 
+  Drupal\helfi_platform_config\HeadingSlugger: ~
   Drupal\helfi_platform_config\HeadingIdInjector: ~
   Drupal\helfi_platform_config\EventSubscriber\HeadingIdResponseSubscriber: ~

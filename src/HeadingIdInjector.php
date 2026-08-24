@@ -42,17 +42,22 @@ final class HeadingIdInjector implements LoggerAwareInterface {
   private const string GENERATED_ATTRIBUTE = 'data-helfi-heading-id';
 
   /**
+   * Constructs a new instance.
+   */
+  public function __construct(
+    private readonly HeadingSlugger $slugger,
+  ) {}
+
+  /**
    * Injects ids and tabindex into the headings of the element.
    *
    * @param string $html
    *   The rendered page.
-   * @param string $langcode
-   *   Language code used for transliteration.
    *
    * @return string
    *   The page, with heading tags rewritten. Returned if anything looks off.
    */
-  public function inject(string $html, string $langcode): string {
+  public function inject(string $html): string {
     // Bail before parsing anything if response has no headings.
     if (!preg_match('/<h[2-6][\s>]/i', $html)) {
       return $html;
@@ -63,7 +68,7 @@ final class HeadingIdInjector implements LoggerAwareInterface {
       return $html;
     }
 
-    $plan = $this->plan($html, $langcode);
+    $plan = $this->plan($html);
     if (!$plan) {
       return $html;
     }
@@ -86,7 +91,7 @@ final class HeadingIdInjector implements LoggerAwareInterface {
    *   One record per heading, in document order. NULL when there is nothing
    *   to inject.
    */
-  private function plan(string $html, string $langcode): ?array {
+  private function plan(string $html): ?array {
     try {
       $document = HTMLDocument::createFromString($html, LIBXML_NOERROR, 'UTF-8');
     }
@@ -111,7 +116,7 @@ final class HeadingIdInjector implements LoggerAwareInterface {
       }
     }
 
-    $slugger = new HeadingSlugger($langcode, $reserved);
+    $slugger = $this->slugger->withReservedIds($reserved);
 
     $headings = $root->querySelectorAll('h2, h3, h4, h5, h6');
     if ($headings->length === 0) {

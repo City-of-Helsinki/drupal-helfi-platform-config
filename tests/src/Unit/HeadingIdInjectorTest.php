@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit;
 
+use Drupal\Component\Transliteration\PhpTransliteration;
+use Drupal\Core\Language\Language;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_platform_config\HeadingIdInjector;
+use Drupal\helfi_platform_config\HeadingSlugger;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -22,7 +26,7 @@ class HeadingIdInjectorTest extends UnitTestCase {
   public function testInject(string $langcode, string $body, string $expected): void {
     $this->assertSame(
       $this->page($expected),
-      $this->sut()->inject($this->page($body), $langcode),
+      $this->sut($langcode)->inject($this->page($body)),
     );
   }
 
@@ -193,15 +197,12 @@ class HeadingIdInjectorTest extends UnitTestCase {
         HTML,
       ],
 
-      // The langcode is threaded through to the slugger: main languages use
-      // the simple 'ä' to 'a' mapping.
       'main language transliteration' => [
         'fi',
         '<h2>Otsikko täällä</h2>',
         '<h2 id="otsikko-taalla" data-helfi-heading-id="" tabindex="-1">Otsikko täällä</h2>',
       ],
 
-      // Other languages run the full transliteration table.
       'other language transliteration' => [
         'ru',
         '<h2>Привет</h2>',
@@ -231,14 +232,18 @@ class HeadingIdInjectorTest extends UnitTestCase {
       $html,
     );
 
-    $this->assertSame($expected, $this->sut()->inject($html, 'en'));
+    $this->assertSame($expected, $this->sut()->inject($html));
   }
 
   /**
    * Constructs the system under test.
    */
-  private function sut(): HeadingIdInjector {
-    return new HeadingIdInjector();
+  private function sut(string $langcode = 'en'): HeadingIdInjector {
+    $languageManager = $this->createMock(LanguageManagerInterface::class);
+    $languageManager->method('getCurrentLanguage')
+      ->willReturn(new Language(['id' => $langcode]));
+
+    return new HeadingIdInjector(new HeadingSlugger(new PhpTransliteration(), $languageManager));
   }
 
   /**

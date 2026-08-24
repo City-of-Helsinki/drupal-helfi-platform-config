@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\EventSubscriber;
 
-use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\HtmlResponse;
 use Drupal\Core\Routing\AdminContext;
 use Drupal\helfi_platform_config\HeadingIdInjector;
@@ -23,7 +21,6 @@ final class HeadingIdResponseSubscriber implements EventSubscriberInterface {
   public function __construct(
     private readonly HeadingIdInjector $injector,
     private readonly AdminContext $adminContext,
-    private readonly LanguageManagerInterface $languageManager,
   ) {
   }
 
@@ -70,11 +67,7 @@ final class HeadingIdResponseSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $langcode = $this->languageManager
-      ->getCurrentLanguage(LanguageInterface::TYPE_URL)
-      ->getId();
-
-    $injected = $this->injector->inject($content, $langcode);
+    $injected = $this->injector->inject($content);
 
     // Replace response HTML.
     if ($injected !== $content) {
