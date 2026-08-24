@@ -2054,22 +2054,7 @@ parameters:
 			path: modules/helfi_media_remote_video/tests/src/Kernel/Entity/RemoteVideoTest.php
 
 		-
-			message: "#^Method class@anonymous/modules/helfi_media_remote_video/tests/src/Kernel/Entity/RemoteVideoTest\\.php\\:490\\:\\:__construct\\(\\) has parameter \\$entity with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_media_remote_video/tests/src/Kernel/Entity/RemoteVideoTest.php
-
-		-
-			message: "#^Method class@anonymous/modules/helfi_media_remote_video/tests/src/Kernel/Entity/RemoteVideoTest\\.php\\:490\\:\\:getEntity\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: modules/helfi_media_remote_video/tests/src/Kernel/Entity/RemoteVideoTest.php
-
-		-
 			message: "#^Parameter \\$width of static method Drupal\\\\media\\\\OEmbed\\\\Resource\\:\\:video\\(\\) expects int, string given\\.$#"
-			count: 1
-			path: modules/helfi_media_remote_video/tests/src/Kernel/Entity/RemoteVideoTest.php
-
-		-
-			message: "#^Property class@anonymous/modules/helfi_media_remote_video/tests/src/Kernel/Entity/RemoteVideoTest\\.php\\:490\\:\\:\\$entity has no type specified\\.$#"
 			count: 1
 			path: modules/helfi_media_remote_video/tests/src/Kernel/Entity/RemoteVideoTest.php
 

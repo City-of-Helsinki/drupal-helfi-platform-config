@@ -28,6 +28,7 @@ class ApiAvailabilityTest extends KernelTestBase {
    */
   protected static $modules = [
     'user',
+    'diff',
     'helfi_api_base',
     'external_entities',
     'helfi_etusivu_entities',

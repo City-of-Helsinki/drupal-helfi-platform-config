@@ -25,6 +25,7 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
     'system',
     'user',
     'field',
+    'diff',
     'helfi_api_base',
     'helfi_react_search',
     'entity_test',

@@ -34,6 +34,7 @@ class FormHooksTest extends EntityKernelTestBase {
    */
   protected static $modules = [
     'helfi_platform_config',
+    'diff',
     'helfi_api_base',
     'config_rewrite',
     'node',

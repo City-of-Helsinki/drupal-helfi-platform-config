@@ -28,6 +28,7 @@ class EventEntityTest extends KernelTestBase {
    */
   protected static $modules = [
     'system',
+    'diff',
     'helfi_api_base',
     'config_rewrite',
     'language',
