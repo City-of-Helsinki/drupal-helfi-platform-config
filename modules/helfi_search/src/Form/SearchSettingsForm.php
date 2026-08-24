@@ -110,6 +110,16 @@ final class SearchSettingsForm extends ConfigFormBase {
       '#config_target' => 'helfi_search.settings:similarity',
     ];
 
+    $form['ranking']['low_relevance_threshold'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Low relevancy threshold'),
+      '#description' => $this->t('Every result gets a score between 0 and 1. When the best result of a search scores below this value, the search is reported as low relevancy.'),
+      '#min' => 0,
+      '#max' => 1,
+      '#step' => 0.01,
+      '#config_target' => 'helfi_search.settings:low_relevance_threshold',
+    ];
+
     $form['query_preprocessing'] = [
       '#type' => 'details',
       '#title' => $this->t('Query preprocessing'),

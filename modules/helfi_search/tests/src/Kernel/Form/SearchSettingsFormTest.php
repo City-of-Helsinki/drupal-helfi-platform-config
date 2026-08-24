@@ -51,6 +51,7 @@ class SearchSettingsFormTest extends KernelTestBase {
       'similarity' => 0.4,
       'canonical_terms' => "OmaStadi\nMyHelsinki",
       'ignored_classes' => "is-hidden\nannouncement",
+      'low_relevance_threshold' => 0.6,
     ]);
 
     $this->assertEmpty($form_state->getErrors());
@@ -58,6 +59,7 @@ class SearchSettingsFormTest extends KernelTestBase {
     $config = $this->config('helfi_search.settings');
     $this->assertEquals(0.5, $config->get('deboost_factor'));
     $this->assertEquals(0.4, $config->get('similarity'));
+    $this->assertEquals(0.6, $config->get('low_relevance_threshold'));
     // Textareas are stored as lists, one item per line.
     $this->assertSame(['OmaStadi', 'MyHelsinki'], $config->get('canonical_terms'));
     $this->assertSame(['is-hidden', 'announcement'], $config->get('ignored_classes'));

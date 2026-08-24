@@ -268,3 +268,16 @@ function helfi_search_update_11019(): void {
     ->clear('min_score')
     ->save();
 }
+
+/**
+ * Seed the low relevancy threshold config.
+ */
+function helfi_search_update_11020(): void {
+  $config = \Drupal::configFactory()->getEditable('helfi_search.settings');
+
+  if ($config->get('low_relevance_threshold') === NULL) {
+    $config->set('low_relevance_threshold', 0.7);
+  }
+
+  $config->save();
+}

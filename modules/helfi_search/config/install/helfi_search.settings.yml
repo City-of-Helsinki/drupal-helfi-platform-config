@@ -6,6 +6,7 @@ deboost_bundles:
   - news_item
 deboost_factor: 0.95
 similarity: 0.2
+low_relevance_threshold: 0.7
 ignored_classes:
   - is-hidden
   - visually-hidden

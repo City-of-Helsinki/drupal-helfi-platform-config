@@ -31,6 +31,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   protected static $modules = [
     'helfi_platform_config',
     'config_rewrite',
+    'diff',
     'helfi_api_base',
     'helfi_search',
   ];
