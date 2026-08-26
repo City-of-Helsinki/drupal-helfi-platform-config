@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\DTO;
 
 /**
- * Provides a DTO class to opt an entity type/bundle into the 'changed_at' field.
+ * Provides a DTO class for the 'changed_at' field.
  *
  * This is used to figure out which entity type and bundle combinations
  * should get the reusable 'changed_at' field, populated with the time the

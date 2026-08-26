@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel\Hooks;
 
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\helfi_platform_config\Hook\ChangedAtFieldHooks;
 use Drupal\node\Entity\Node;
@@ -51,6 +52,7 @@ final class ChangedAtFieldHooksTest extends KernelTestBase {
     $this->assertArrayHasKey('changed_at', $fields);
 
     $field = $fields['changed_at'];
+    $this->assertInstanceOf(FieldStorageDefinitionInterface::class, $field);
     $this->assertSame('timestamp', $field->getType());
     $this->assertTrue($field->isRevisionable());
     $this->assertTrue($field->isTranslatable());
@@ -109,7 +111,7 @@ final class ChangedAtFieldHooksTest extends KernelTestBase {
   }
 
   /**
-   * Tests that the submit handler is not attached for a bundle that did not opt in.
+   * Tests the submit handler for a bundle that did not opt in.
    */
   public function testSubmitHandlerNotAttachedForUnconfiguredBundle(): void {
     $node = Node::create(['type' => 'article', 'title' => 'test']);
