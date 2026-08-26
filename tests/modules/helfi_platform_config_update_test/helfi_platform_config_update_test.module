@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
@@ -17,6 +18,15 @@ function helfi_platform_config_update_test_platform_config_grant_permissions() :
     'authenticated' => [
       'access content',
     ],
+  ];
+}
+
+/**
+ * Implements hook_helfi_changed_at_field_bundles().
+ */
+function helfi_platform_config_update_test_helfi_changed_at_field_bundles(): array {
+  return [
+    new ChangedAtFieldBundle('node', 'page'),
   ];
 }
 
