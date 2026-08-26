@@ -6,6 +6,7 @@ namespace Drupal\helfi_platform_config\Hook;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -32,6 +33,7 @@ class ChangedAtFieldHooks {
 
   public function __construct(
     private readonly ModuleHandlerInterface $moduleHandler,
+    private readonly EntityDefinitionUpdateManagerInterface $entityDefinitionUpdateManager,
   ) {
   }
 
@@ -135,6 +137,34 @@ class ChangedAtFieldHooks {
       }
     }
     return [];
+  }
+
+  /**
+   * Implements hook_entity_bundle_create().
+   *
+   * Installs the 'changed_at' field.
+   *
+   * @param string $entityTypeId
+   *   The entity type id.
+   * @param string $bundle
+   *   The bundle.
+   */
+  #[Hook('entity_bundle_create')]
+  public function entityBundleCreate(string $entityTypeId, string $bundle): void {
+    if (!$this->isConfigured($entityTypeId, $bundle)) {
+      return;
+    }
+    if ($this->entityDefinitionUpdateManager->getFieldStorageDefinition('changed_at', $entityTypeId)) {
+      // The storage already exists, either from an earlier bundle or from
+      // the historical update hook on pre-existing sites.
+      return;
+    }
+    $this->entityDefinitionUpdateManager->installFieldStorageDefinition(
+      'changed_at',
+      $entityTypeId,
+      'helfi_platform_config',
+      $this->fieldDefinition($entityTypeId, $bundle),
+    );
   }
 
   /**
