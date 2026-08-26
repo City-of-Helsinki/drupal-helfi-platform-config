@@ -7,7 +7,6 @@
 
 declare(strict_types=1);
 
-use Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
@@ -89,16 +88,4 @@ function helfi_node_news_item_helfi_paragraph_types() : array {
     }
   }
   return $enabled;
-}
-
-/**
- * Implements hook_helfi_changed_at_field_bundles().
- *
- * Opts news_item nodes into the reusable 'changed_at' field provided by
- * helfi_platform_config.
- */
-function helfi_node_news_item_helfi_changed_at_field_bundles() : array {
-  return [
-    new ChangedAtFieldBundle('node', 'news_item'),
-  ];
 }

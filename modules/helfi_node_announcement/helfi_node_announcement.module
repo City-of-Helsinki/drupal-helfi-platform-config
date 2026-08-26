@@ -10,19 +10,6 @@ declare(strict_types=1);
 use Drupal\helfi_node_announcement\Entity\Announcement;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle;
-
-/**
- * Implements hook_helfi_changed_at_field_bundles().
- *
- * Opts announcement nodes into the reusable 'changed_at' field provided by
- * helfi_platform_config.
- */
-function helfi_node_announcement_helfi_changed_at_field_bundles() : array {
-  return [
-    new ChangedAtFieldBundle('node', 'announcement'),
-  ];
-}
 
 /**
  * Implements hook_platform_config_grant_permissions().
