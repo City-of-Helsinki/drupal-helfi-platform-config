@@ -766,9 +766,6 @@ function helfi_platform_config_update_11007(array &$sandbox): void {
       continue;
     }
 
-    // 'changed_at' is translatable, so every translation needs its own
-    // value; only setting it on the node's default translation would leave
-    // other languages without a row.
     $changed = FALSE;
 
     foreach ($node->getTranslationLanguages() as $langcode => $language) {
