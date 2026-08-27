@@ -14,7 +14,9 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\UpdateException;
+use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
@@ -652,4 +654,94 @@ function helfi_platform_config_update_11005(): void {
 
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_platform_config');
+}
+
+/**
+ * UHF-13368: Install the 'changed_at' field storage for existing sites.
+ *
+ * @see \Drupal\helfi_platform_config\Hook\ChangedAtFieldHooks
+ */
+function helfi_platform_config_update_11006(): void {
+  $entityDefinitionUpdateManager = \Drupal::entityDefinitionUpdateManager();
+
+  if ($entityDefinitionUpdateManager->getFieldStorageDefinition('changed_at', 'node')) {
+    // Already installed, e.g. by helfi_node_news_item_update_9007() on
+    // sites where news_item was already using the field.
+    return;
+  }
+
+  $storageDefinition = BundleFieldDefinition::create('timestamp')
+    ->setName('changed_at')
+    ->setLabel(new TranslatableMarkup('Content changed on'))
+    ->setDescription(new TranslatableMarkup('Timestamp of when content was last changed via form.'))
+    ->setTargetEntityTypeId('node')
+    ->setTargetBundle('page')
+    ->setRevisionable(TRUE)
+    ->setTranslatable(TRUE)
+    ->setDisplayConfigurable('view', TRUE)
+    ->setDisplayConfigurable('form', FALSE);
+
+  $entityDefinitionUpdateManager->installFieldStorageDefinition(
+    'changed_at',
+    'node',
+    'helfi_platform_config',
+    $storageDefinition,
+  );
+}
+
+/**
+ * UHF-13368: Populate 'changed_at' from 'changed' for existing nodes.
+ *
+ * @param array<string, mixed> $sandbox
+ *   The sandbox.
+ */
+function helfi_platform_config_update_11007(array &$sandbox): void {
+  $bundles = ['news_item', 'announcement', 'landing_page', 'page', 'survey'];
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  if (!isset($sandbox['total'])) {
+    $sandbox['total'] = $storage->getQuery()
+      ->condition('type', $bundles, 'IN')
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['last_id'] = 0;
+
+    if ($sandbox['total'] === 0) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  $nids = $storage->getQuery()
+    ->condition('type', $bundles, 'IN')
+    ->condition('nid', $sandbox['last_id'], '>')
+    ->accessCheck(FALSE)
+    ->sort('nid')
+    ->range(0, 50)
+    ->execute();
+
+  if (empty($nids)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  $nodes = $storage->loadMultiple($nids);
+
+  foreach ($nodes as $node) {
+    $sandbox['current']++;
+    $sandbox['last_id'] = $node->id();
+
+    if (!$node->hasField('changed_at') || !$node->get('changed_at')->isEmpty()) {
+      continue;
+    }
+
+    $node->set('changed_at', $node->getChangedTime());
+    $node->save();
+  }
+
+  $sandbox['#finished'] = $sandbox['total'] > 0
+    ? $sandbox['current'] / $sandbox['total']
+    : 1;
 }
