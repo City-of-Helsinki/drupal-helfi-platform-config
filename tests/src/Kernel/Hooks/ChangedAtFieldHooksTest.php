@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_platform_config\Kernel\Hooks;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\helfi_platform_config\Hook\ChangedAtFieldHooks;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
@@ -22,6 +23,7 @@ final class ChangedAtFieldHooksTest extends KernelTestBase {
   protected static $modules = [
     'field',
     'helfi_platform_config_update_test',
+    'language',
     'node',
     'system',
     'user',
@@ -144,6 +146,38 @@ final class ChangedAtFieldHooksTest extends KernelTestBase {
       $this->container->get('datetime.time')->getRequestTime(),
       (int) $node->get('changed_at')->value,
     );
+  }
+
+  /**
+   * Tests that each translation's 'changed_at' is updated independently.
+   *
+   * Submitting the form for one translation must not touch 'changed_at' on
+   * other translations of the same node.
+   */
+  public function testChangedAtUpdatedIndependentlyPerTranslation(): void {
+    ConfigurableLanguage::createFromLangcode('fi')->save();
+
+    $node = Node::create(['type' => 'page', 'title' => 'test', 'langcode' => 'en']);
+    $node->addTranslation('fi', ['title' => 'testi']);
+    $node->save();
+
+    $this->assertTrue($node->getTranslation('en')->get('changed_at')->isEmpty());
+    $this->assertTrue($node->getTranslation('fi')->get('changed_at')->isEmpty());
+
+    // Simulate submitting the form for the 'fi' translation only.
+    $formObject = $this->container->get('entity_type.manager')->getFormObject('node', 'default');
+    $formObject->setEntity($node->getTranslation('fi'));
+    $formState = new FormState();
+    $formState->setFormObject($formObject);
+
+    ChangedAtFieldHooks::updateChangedAt([], $formState);
+
+    $this->assertSame(
+      $this->container->get('datetime.time')->getRequestTime(),
+      (int) $node->getTranslation('fi')->get('changed_at')->value,
+    );
+    // The 'en' translation must remain untouched.
+    $this->assertTrue($node->getTranslation('en')->get('changed_at')->isEmpty());
   }
 
 }
