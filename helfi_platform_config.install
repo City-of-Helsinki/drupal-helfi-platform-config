@@ -733,12 +733,29 @@ function helfi_platform_config_update_11007(array &$sandbox): void {
     $sandbox['current']++;
     $sandbox['last_id'] = $node->id();
 
-    if (!$node->hasField('changed_at') || !$node->get('changed_at')->isEmpty()) {
+    if (!$node->hasField('changed_at')) {
       continue;
     }
 
-    $node->set('changed_at', $node->getChangedTime());
-    $node->save();
+    // 'changed_at' is translatable, so every translation needs its own
+    // value; only setting it on the node's default translation would leave
+    // other languages without a row.
+    $changed = FALSE;
+
+    foreach ($node->getTranslationLanguages() as $langcode => $language) {
+      $translation = $node->getTranslation($langcode);
+
+      if (!$translation->get('changed_at')->isEmpty()) {
+        continue;
+      }
+
+      $translation->set('changed_at', $translation->getChangedTime());
+      $changed = TRUE;
+    }
+
+    if ($changed) {
+      $node->save();
+    }
   }
 
   $sandbox['#finished'] = $sandbox['total'] > 0
