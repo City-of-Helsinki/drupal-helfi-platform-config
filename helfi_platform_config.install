@@ -20,6 +20,7 @@ use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
+use Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\user\Entity\User;
 
@@ -659,44 +660,77 @@ function helfi_platform_config_update_11005(): void {
 /**
  * UHF-13368: Install the 'changed_at' field storage for existing sites.
  *
+ * The field storage is entity-type-wide, so it only needs one representative
+ * bundle per entity type to build the definition from. Entity types are
+ * collected dynamically from hook_helfi_changed_at_field_bundles()
+ * implementations rather than hardcoded, so this keeps working for any
+ * entity type that opts in, not just 'node'.
+ *
  * @see \Drupal\helfi_platform_config\Hook\ChangedAtFieldHooks
+ * @see \Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle
  */
 function helfi_platform_config_update_11006(): void {
   $entityDefinitionUpdateManager = \Drupal::entityDefinitionUpdateManager();
 
-  if ($entityDefinitionUpdateManager->getFieldStorageDefinition('changed_at', 'node')) {
-    // Already installed, e.g. by helfi_node_news_item_update_9007() on
-    // sites where news_item was already using the field.
-    return;
+  // Collect one representative bundle per entity type that opted into the
+  // 'changed_at' field.
+  $entityTypes = [];
+
+  foreach (\Drupal::moduleHandler()->invokeAll('helfi_changed_at_field_bundles') as $bundle) {
+    if (!$bundle instanceof ChangedAtFieldBundle) {
+      continue;
+    }
+    $entityTypes[$bundle->entityType] ??= $bundle->bundle;
   }
 
-  $storageDefinition = BundleFieldDefinition::create('timestamp')
-    ->setName('changed_at')
-    ->setLabel(new TranslatableMarkup('Content changed on'))
-    ->setDescription(new TranslatableMarkup('Timestamp of when content was last changed via form.'))
-    ->setTargetEntityTypeId('node')
-    ->setTargetBundle('page')
-    ->setRevisionable(TRUE)
-    ->setTranslatable(TRUE)
-    ->setDisplayConfigurable('view', TRUE)
-    ->setDisplayConfigurable('form', FALSE);
+  foreach ($entityTypes as $entityTypeId => $bundle) {
+    if ($entityDefinitionUpdateManager->getFieldStorageDefinition('changed_at', $entityTypeId)) {
+      // Already installed, e.g. by helfi_node_news_item_update_9007() on
+      // sites where news_item was already using the field.
+      continue;
+    }
 
-  $entityDefinitionUpdateManager->installFieldStorageDefinition(
-    'changed_at',
-    'node',
-    'helfi_platform_config',
-    $storageDefinition,
-  );
+    $storageDefinition = BundleFieldDefinition::create('timestamp')
+      ->setName('changed_at')
+      ->setLabel(new TranslatableMarkup('Content changed on'))
+      ->setDescription(new TranslatableMarkup('Timestamp of when content was last changed via form.'))
+      ->setTargetEntityTypeId($entityTypeId)
+      ->setTargetBundle($bundle)
+      ->setRevisionable(TRUE)
+      ->setTranslatable(TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', FALSE);
+
+    $entityDefinitionUpdateManager->installFieldStorageDefinition(
+      'changed_at',
+      $entityTypeId,
+      'helfi_platform_config',
+      $storageDefinition,
+    );
+  }
 }
 
 /**
  * UHF-13368: Populate 'changed_at' from 'changed' for existing nodes.
  *
+ * Node bundles are collected dynamically from
+ * hook_helfi_changed_at_field_bundles() implementations, so this covers any
+ * module that opts a node bundle in, not just the ones known when this hook
+ * was written.
+ *
  * @param array<string, mixed> $sandbox
  *   The sandbox.
+ *
+ * @see \Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle
  */
 function helfi_platform_config_update_11007(array &$sandbox): void {
-  $bundles = ['news_item', 'announcement', 'landing_page', 'page', 'survey'];
+  $bundles = array_values(array_unique(array_map(
+    static fn (ChangedAtFieldBundle $bundle) => $bundle->bundle,
+    array_filter(
+      \Drupal::moduleHandler()->invokeAll('helfi_changed_at_field_bundles'),
+      static fn ($bundle) => $bundle instanceof ChangedAtFieldBundle && $bundle->entityType === 'node',
+    ),
+  )));
   $storage = \Drupal::entityTypeManager()->getStorage('node');
 
   if (!isset($sandbox['total'])) {
