@@ -713,11 +713,6 @@ function helfi_platform_config_update_11006(): void {
 /**
  * UHF-13368: Populate 'changed_at' from 'changed' for existing nodes.
  *
- * Node bundles are collected dynamically from
- * hook_helfi_changed_at_field_bundles() implementations, so this covers any
- * module that opts a node bundle in, not just the ones known when this hook
- * was written.
- *
  * @param array<string, mixed> $sandbox
  *   The sandbox.
  *
