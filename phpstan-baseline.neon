@@ -2149,36 +2149,6 @@ parameters:
 			path: modules/helfi_node_news_item/helfi_node_news_item.install
 
 		-
-			message: "#^Function _helfi_node_news_item_update_changed_at\\(\\) has parameter \\$form with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_node_news_item/helfi_node_news_item.module
-
-		-
-			message: "#^Function helfi_node_news_item_entity_bundle_field_info_alter\\(\\) has parameter \\$bundle with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_node_news_item/helfi_node_news_item.module
-
-		-
-			message: "#^Function helfi_node_news_item_entity_bundle_field_info_alter\\(\\) has parameter \\$fields with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_node_news_item/helfi_node_news_item.module
-
-		-
-			message: "#^Function helfi_node_news_item_entity_field_storage_info\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: modules/helfi_node_news_item/helfi_node_news_item.module
-
-		-
-			message: "#^Function helfi_node_news_item_form_node_form_alter\\(\\) has parameter \\$form with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_node_news_item/helfi_node_news_item.module
-
-		-
-			message: "#^Function helfi_node_news_item_form_node_form_alter\\(\\) has parameter \\$form_id with no type specified\\.$#"
-			count: 1
-			path: modules/helfi_node_news_item/helfi_node_news_item.module
-
-		-
 			message: "#^Function helfi_node_news_item_helfi_paragraph_types\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: modules/helfi_node_news_item/helfi_node_news_item.module
