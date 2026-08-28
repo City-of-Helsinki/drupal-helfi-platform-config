@@ -284,3 +284,53 @@ function helfi_react_search_update_9021(array &$sandbox): void {
 
   $sandbox['#finished'] = $sandbox['current'] >= $sandbox['total'] ? 1 : ($sandbox['current'] / $sandbox['total']);
 }
+
+/**
+ * UHF-13422: Install the "show only super events" toggle for event_list.
+ */
+function helfi_react_search_update_9022(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+
+  $form_display = \Drupal::configFactory()
+    ->getEditable('core.entity_form_display.paragraph.event_list.default');
+
+  if ($form_display->isNew()) {
+    return;
+  }
+
+  $config_deps = $form_display->get('dependencies.config') ?? [];
+  $only_super_dep = 'field.field.paragraph.event_list.field_event_list_only_super';
+  if (!in_array($only_super_dep, $config_deps, TRUE)) {
+    $config_deps[] = $only_super_dep;
+    sort($config_deps);
+    $form_display->set('dependencies.config', $config_deps);
+  }
+
+  $reweight = [
+    'content.field_event_count.weight' => 5,
+    'content.field_event_list_free_text.weight' => 6,
+    'content.field_event_list_category_event.weight' => 7,
+    'content.field_event_list_category_hobby.weight' => 8,
+    'content.field_event_list_keywords.weight' => 9,
+    'content.field_event_list_place.weight' => 9,
+    'third_party_settings.field_group.group_search_filters.weight' => 10,
+  ];
+  foreach ($reweight as $key => $weight) {
+    if ($form_display->get($key) !== NULL) {
+      $form_display->set($key, $weight);
+    }
+  }
+
+  if (!$form_display->get('content.field_event_list_only_super')) {
+    $form_display->set('content.field_event_list_only_super', [
+      'type' => 'boolean_checkbox',
+      'weight' => 4,
+      'region' => 'content',
+      'settings' => ['display_label' => TRUE],
+      'third_party_settings' => [],
+    ]);
+  }
+
+  $form_display->save();
+}
