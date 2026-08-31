@@ -606,6 +606,10 @@ function helfi_tpr_config_form_views_exposed_form_alter(&$form, $form_state) : v
       ->get('field_unit_search_meta_desc')
       ->value;
   }
+
+  if ($paragraph->hasField('field_unit_search_title') && !$paragraph->get('field_unit_search_title')->isEmpty()) {
+    $form['#attributes']['aria-label'] = $paragraph->get('field_unit_search_title')->value;
+  }
 }
 
 /**
