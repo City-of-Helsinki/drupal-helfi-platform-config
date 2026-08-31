@@ -8,13 +8,6 @@ parameters:
   paths:
     - ./
   excludePaths:
-    - vendor
+    - vendor (?)
   level: 7
   treatPhpDocTypesAsCertain: false
-  ignoreErrors:
-    # PHPStan 1.x ships php-src stubs that predate the PHP 8.4 \Dom API.
-    -
-      message: '#^(Call to an undefined (static )?method|Access to an undefined property) Dom\\(HTMLDocument|Element)::#'
-      paths:
-        - src/HeadingIdInjector.php
-        - src/DTO/HeadingRecord.php
