@@ -1,0 +1,11 @@
+name: 'Use admin theme when editing nodes'
+description: 'Enables the admin theme on node edit forms.'
+type: 'Site override'
+install:
+  - node
+config:
+  strict: false
+  actions:
+    node.settings:
+      simpleConfigUpdate:
+        use_admin_theme: true
