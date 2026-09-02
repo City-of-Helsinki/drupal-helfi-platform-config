@@ -71,6 +71,14 @@ function helfi_paragraphs_curated_event_list_preprocess_external_entity__linkede
   catch (\Exception) {
   }
 
+  if ($start && !$end) {
+    // The event date is only rendered when 'card_published_at' is set or
+    // 'card_has_start_and_end' is TRUE (see card-teaser.twig). Events with
+    // no end time have neither, so set 'card_published_at' to the start
+    // time to make sure the date is still shown.
+    $variables['card_published_at'] = $start;
+  }
+
   $variables['start_timestamp'] = $start;
   $variables['end_timestamp'] = $end;
 }
