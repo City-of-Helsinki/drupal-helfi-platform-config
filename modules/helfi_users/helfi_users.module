@@ -11,26 +11,8 @@
 declare(strict_types=1);
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Hook\Attribute\LegacyModuleImplementsAlter;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
-
-/**
- * Implements hook_module_implements_alter().
- */
-#[LegacyModuleImplementsAlter]
-function helfi_users_module_implements_alter(&$implementations, $hook) : void {
-  // Move helfi_users_user_cancel() implementation to the top of the
-  // list, so this is always run first before any other alter hooks, more
-  // specifically before 'node_user_cancel()' which causes issues when mass
-  // reassigning node revisions.
-  if ($hook === 'user_cancel') {
-    $group = $implementations['helfi_users'];
-    $implementations = ['helfi_users' => $group] + $implementations;
-  }
-}
 
 /**
  * Implements hook_form_alter().
@@ -70,75 +52,5 @@ function helfi_users_user_cancel_methods_alter(array &$methods): void {
     foreach ($methods as $name => &$method) {
       $method['access'] = array_key_exists($name, $allowed_methods);
     }
-  }
-}
-
-/**
- * Implements hook_user_cancel().
- *
- * We have encountered crashes/timeout issues with reassign batch api
- * implementation from node module. This Optimizes hook_user_cancel by
- * reassigning nodes with direct database query.
- *
- * This has to run before node module's user_cancel hook.
- */
-function helfi_users_user_cancel($edit, UserInterface $account, $method): void {
-  // Reassign nodes for the old account.
-  if ($method === 'user_cancel_reassign') {
-    _helfi_users_reassign_nodes($account, User::load(1));
-  }
-}
-
-/**
- * Reassigns all node revisions from $source to $target.
- *
- * Prevents crashes and timeouts when revisions are handled by node_mass_update.
- *
- * @param \Drupal\Core\Session\AccountInterface $source
- *   Source user.
- * @param \Drupal\Core\Session\AccountInterface $target
- *   Target user.
- */
-function _helfi_users_reassign_nodes(AccountInterface $source, AccountInterface $target): void {
-  $database = \Drupal::database();
-  $tables = [
-    'node_field_data' => 'uid',
-    'node_field_revision' => 'uid',
-    'node_revision' => 'revision_uid',
-  ];
-
-  foreach ($tables as $table => $uid_field) {
-    $matches = $database->select($table)
-      ->condition($uid_field, $source->id())
-      ->countQuery()
-      ->execute()
-      ->fetchField();
-
-    if ((int) $matches < 1) {
-      continue;
-    }
-
-    $database->update($table)
-      ->fields([$uid_field => $target->id()])
-      ->condition($uid_field, $source->id())
-      ->execute();
-
-    \Drupal::logger('helfi_users')->notice(t('Set @count rows from @table to @target from @source', [
-      '@count' => $matches,
-      '@table' => $table,
-      '@target' => $target->id(),
-      '@source' => $source->id(),
-    ]));
-  }
-
-  // Invalidate cache for these nodes.
-  $affected_node_ids = $database->select('node_field_data')
-    ->fields('node_field_data', ['nid'])
-    ->condition('uid', $target->id())
-    ->execute()
-    ->fetchCol();
-
-  if (!empty($affected_node_ids)) {
-    \Drupal::entityTypeManager()->getStorage('node')->resetCache($affected_node_ids);
   }
 }
