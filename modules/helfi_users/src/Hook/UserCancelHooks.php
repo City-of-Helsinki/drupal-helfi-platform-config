@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_users\Hook;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -17,7 +18,7 @@ use Drupal\user\UserInterface;
 /**
  * Hook implementations for cancelling user accounts.
  */
-class UserCancelHooks {
+final class UserCancelHooks {
 
   use AutowireTrait;
 
@@ -80,7 +81,7 @@ class UserCancelHooks {
         ->condition($uid_field, $source->id())
         ->execute();
 
-      $this->loggerFactory->get('helfi_users')->notice(t('Set @count rows from @table to @target from @source', [
+      $this->loggerFactory->get('helfi_users')->notice(new FormattableMarkup('Set @count rows from @table to @target from @source', [
         '@count' => $matches,
         '@table' => $table,
         '@target' => $target->id(),
