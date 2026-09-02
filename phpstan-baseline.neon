@@ -89,18 +89,6 @@ parameters:
 			path: helfi_platform_config.module
 
 		-
-			message: '#^Function helfi_platform_config_module_implements_alter\(\) has parameter \$hook with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: helfi_platform_config.module
-
-		-
-			message: '#^Function helfi_platform_config_module_implements_alter\(\) has parameter \$implementations with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: helfi_platform_config.module
-
-		-
 			message: '#^Function helfi_platform_config_page_attachments_alter\(\) has parameter \$attachments with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -5741,30 +5729,6 @@ parameters:
 			path: modules/helfi_users/helfi_users.module
 
 		-
-			message: '#^Function helfi_users_module_implements_alter\(\) has parameter \$hook with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: modules/helfi_users/helfi_users.module
-
-		-
-			message: '#^Function helfi_users_module_implements_alter\(\) has parameter \$implementations with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: modules/helfi_users/helfi_users.module
-
-		-
-			message: '#^Function helfi_users_user_cancel\(\) has parameter \$edit with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: modules/helfi_users/helfi_users.module
-
-		-
-			message: '#^Function helfi_users_user_cancel\(\) has parameter \$method with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: modules/helfi_users/helfi_users.module
-
-		-
 			message: '#^Function helfi_users_user_cancel_methods_alter\(\) has parameter \$methods with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -5775,12 +5739,6 @@ parameters:
 			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
 			count: 2
 			path: modules/helfi_users/src/Plugin/views/filter/NodeAuthorshipFilter.php
-
-		-
-			message: '#^Property Drupal\\Tests\\helfi_users\\Functional\\UserCancelNodeRevisionsTest\:\:\$defaultTheme has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: modules/helfi_users/tests/src/Kernel/UserCancelNodeRevisionsTest.php
 
 		-
 			message: '#^Method Drupal\\helfi_platform_config\\ClearSiteData\:\:enable\(\) has parameter \$directives with no value type specified in iterable type array\.$#'

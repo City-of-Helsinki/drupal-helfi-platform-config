@@ -32,6 +32,8 @@ final class UserCancelHooks {
   /**
    * Implements hook_user_cancel().
    *
+   * @phpstan-param array<mixed> $edit
+   *
    * We have encountered crashes/timeout issues with reassign batch api
    * implementation from node module. This Optimizes hook_user_cancel by
    * reassigning nodes with direct database query.
@@ -40,7 +42,7 @@ final class UserCancelHooks {
    * when mass reassigning node revisions.
    */
   #[Hook('user_cancel', order: Order::First)]
-  public function userCancel($edit, UserInterface $account, $method): void {
+  public function userCancel(array $edit, UserInterface $account, string $method): void {
     // Reassign nodes for the old account.
     if ($method === 'user_cancel_reassign') {
       $this->reassignNodes($account, User::load(1));
