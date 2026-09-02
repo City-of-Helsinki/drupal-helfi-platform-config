@@ -16,9 +16,9 @@ use Drupal\locale\Hook\LocaleHooks;
 /**
  * Hook implementations for platform config module.
  *
- * The locale module's own 'modules_installed' hook is removed: it triggers
+ * Remove locale module's modules_installed hook because it triggers
  * translation updates whenever modules are installed, which we don't want
- * to happen automatically, e.g. during automated deployments.
+ * to happen automatically.
  */
 #[RemoveHook('modules_installed', class: LocaleHooks::class, method: 'modulesInstalled')]
 class PlatformConfigHooks {
