@@ -57,6 +57,13 @@ class EventList extends Paragraph implements ParagraphInterface {
   }
 
   /**
+   * Whether the list should be limited to super events.
+   */
+  public function showOnlySuperEvents(): bool {
+    return (bool) $this->get('field_event_list_only_super')->value;
+  }
+
+  /**
    * Get event categories.
    *
    * Caller must check if courses should be enabled with getEventListType().
@@ -203,7 +210,7 @@ class EventList extends Paragraph implements ParagraphInterface {
       'page_size' => $this->getCount(),
       'sort' => 'end_time',
       'start' => 'now',
-      'super_event_type' => 'umbrella,none',
+      'super_event_type' => $this->showOnlySuperEvents() ? 'umbrella,recurring' : 'umbrella,none',
       'language' => $this->language()->getId(),
     ];
 
