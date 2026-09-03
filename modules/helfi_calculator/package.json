@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "node theme-builder.mjs --watch --dev",
     "build": "biome check --fix assets/js/ && node theme-builder.mjs",
-    "preinstall": "npx update-browserslist-db@latest",
     "postinstall": "npm --prefix ../../../../../themes/contrib/hdbt install --no-audit --progress=false",
     "lint:js": "biome lint --fix assets/js/",
     "format:js": "biome format --fix assets/js/",

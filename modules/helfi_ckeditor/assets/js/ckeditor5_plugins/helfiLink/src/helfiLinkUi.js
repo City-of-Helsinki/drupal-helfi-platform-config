@@ -507,10 +507,8 @@ export default class HelfiLinkUi extends Plugin {
     if (
       !this.formElements.linkNewWindowConfirm ||
       !this.formElements.linkNewWindow ||
-      !this.linkFormView ||
-      !this.linkFormView.linkNewWindow ||
-      !this.linkFormView.linkNewWindowConfirm ||
-      !this.linkFormView.linkNewWindowConfirm.element
+      !this.linkFormView?.linkNewWindow ||
+      !this.linkFormView?.linkNewWindowConfirm?.element
     ) {
       return;
     }
@@ -605,7 +603,7 @@ export default class HelfiLinkUi extends Plugin {
     const linkCommand = this.editor.commands.get('link');
     return models.some((model) => {
       const opts = this.formElements[model];
-      if (!opts || opts.group !== 'advanced') return false;
+      if (opts?.group !== 'advanced') return false;
 
       // Decide "non-default" per field type.
       switch (opts.type) {
@@ -820,7 +818,7 @@ export default class HelfiLinkUi extends Plugin {
   _moveSubmitButtonToBottom() {
     const { urlInputView } = this.linkFormView;
 
-    if (!urlInputView || !urlInputView.children) {
+    if (!urlInputView?.children) {
       return;
     }
 
