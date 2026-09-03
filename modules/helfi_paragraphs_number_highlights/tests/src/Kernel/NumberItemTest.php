@@ -54,9 +54,7 @@ class NumberItemTest extends FieldKernelTestBase {
 
     $this->assertTrue($entity->field_test->isEmpty());
 
-    // @phpstan-ignore property.notFound
     $entity->field_test->number = '50';
-    // @phpstan-ignore property.notFound
     $entity->field_test->text = 'Half';
 
     $this->assertFalse($entity->field_test->isEmpty());
@@ -70,9 +68,7 @@ class NumberItemTest extends FieldKernelTestBase {
     $this->assertInstanceOf(NumbersItem::class, $entity->field_test[0]);
     $this->assertEquals('50', $entity->field_test[0]->number);
     $this->assertEquals('Half', $entity->field_test[0]->text);
-    // @phpstan-ignore property.notFound
     $this->assertEquals('50', $entity->field_test->number);
-    // @phpstan-ignore property.notFound
     $this->assertEquals('Half', $entity->field_test->text);
 
     // Update only the entity name property to check if the link field data will
@@ -81,9 +77,7 @@ class NumberItemTest extends FieldKernelTestBase {
     $entity->save();
     $id = $entity->id();
     $entity = EntityTest::load($id);
-    // @phpstan-ignore property.notFound
     $this->assertEquals('50', $entity->field_test->number);
-    // @phpstan-ignore property.notFound
     $this->assertEquals('Half', $entity->field_test->text);
 
     // Verify changing the field value.
