@@ -70,6 +70,11 @@
             break;
         }
 
+        // Use iframe title if paragraph (or video) doesn't have a title
+        if(!mediaName || mediaName === '') {
+          mediaName = attributes.skipLinkDefaultTitle;
+        }
+
         // Initialize skip links elements.
         const skipLinkBefore = document.createElement('a');
         const skipLinkAfter = document.createElement('a');
