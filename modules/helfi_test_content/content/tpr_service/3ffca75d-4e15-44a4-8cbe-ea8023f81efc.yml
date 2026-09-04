@@ -1,0 +1,91 @@
+_meta:
+  version: '1.0'
+  entity_type: tpr_service
+  uuid: 3ffca75d-4e15-44a4-8cbe-ea8023f81efc
+  default_langcode: en
+default:
+  id:
+    -
+      value: 1007
+  sync_attempts:
+    -
+      value: 0
+  revision_user:
+    -
+      target_id: 1
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  name:
+    -
+      value: 'Service 1007'
+  name_override:
+    -
+      value: 'DC: TPR Service - banner - long description only'
+  description:
+    -
+      value: "<p>Praesent adipiscing. Fusce egestas elit eget lorem. In ut quam vitae odio lacinia tincidunt.</p>\r\n\r\n<p>Donec sollicitudin molestie malesuada. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n"
+      format: full_html
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: true
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-layouts/dc-tpr-service/dc-tpr-service-banner-long-description-only
+      langcode: en
+      pathauto: 0
+  field_banner:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 11d6da88-e3e0-4e2f-b922-a7c4d0262dce
+          bundle: banner
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1756944000
+          behavior_settings:
+            -
+              value: {  }
+          field_banner_desc:
+            -
+              value: '<p>Ut leo. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>'
+              format: full_html
+          field_banner_design:
+            -
+              value: align-left
+          field_banner_link:
+            -
+              uri: 'https://hel.fi'
+              title: 'Phasellus volutpat metus eget'
+              options:
+                target_new: 0
+                target_check: 0
+                icon: eye
+          field_banner_link_design:
+            -
+              value: primary
+          field_banner_title:
+            -
+              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus'
+          field_icon:
+            -
+              icon: check-circle

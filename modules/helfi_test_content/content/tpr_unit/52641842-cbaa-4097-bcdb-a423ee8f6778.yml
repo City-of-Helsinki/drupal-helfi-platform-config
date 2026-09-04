@@ -1,0 +1,97 @@
+_meta:
+  version: '1.0'
+  entity_type: tpr_unit
+  uuid: 52641842-cbaa-4097-bcdb-a423ee8f6778
+  default_langcode: en
+  depends:
+    608c45ab-90c5-466b-bcac-c87649f2ec10: media
+default:
+  id:
+    -
+      value: 1004
+  sync_attempts:
+    -
+      value: 0
+  revision_user:
+    -
+      target_id: 1
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  name:
+    -
+      value: 'Unit 1004'
+  name_override:
+    -
+      value: 'DC: TPR Unit - banner - main image - no toc'
+  picture_url_override:
+    -
+      entity: 608c45ab-90c5-466b-bcac-c87649f2ec10
+  description:
+    -
+      value: "<p>Praesent adipiscing. Fusce egestas elit eget lorem. In ut quam vitae odio lacinia tincidunt.</p>\r\n\r\n<p>Donec sollicitudin molestie malesuada. Nulla quis lorem ut libero malesuada feugiat.</p>\r\n"
+      summary: 'Ut leo. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.'
+      format: full_html
+  revision_translation_affected:
+    -
+      value: true
+  hide_sidebar_navigation:
+    -
+      value: true
+  toc_enabled:
+    -
+      value: false
+  toc_title:
+    -
+      value: 'Table of contents'
+  path:
+    -
+      alias: /dc-layouts/dc-tpr-unit/dc-tpr-unit-banner-main-image-no-toc
+      langcode: en
+      pathauto: 0
+  field_banner:
+    -
+      entity:
+        _meta:
+          version: '1.0'
+          entity_type: paragraph
+          uuid: 87d201bd-cbea-4573-9526-0880432fdcb5
+          bundle: banner
+          default_langcode: en
+        default:
+          status:
+            -
+              value: true
+          created:
+            -
+              value: 1756944000
+          behavior_settings:
+            -
+              value: {  }
+          field_banner_desc:
+            -
+              value: '<p>Ut leo. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>'
+              format: full_html
+          field_banner_design:
+            -
+              value: align-left
+          field_banner_link:
+            -
+              uri: 'https://hel.fi'
+              title: 'Phasellus volutpat metus eget'
+              options:
+                target_new: 0
+                target_check: 0
+                icon: eye
+          field_banner_link_design:
+            -
+              value: primary
+          field_banner_title:
+            -
+              value: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus'
+          field_icon:
+            -
+              icon: check-circle
