@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_users\Functional;
+namespace Drupal\Tests\helfi_users\Kernel;
 
 use Drupal\Core\Database\Database;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use Drupal\helfi_users\Hook\UserCancelHooks;
 use Drupal\user\UserInterface;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests for reassigning node revisions when canceling users.
- *
- * @group helfi_users
  */
+#[Group('helfi_users')]
 class UserCancelNodeRevisionsTest extends KernelTestBase {
 
   use NodeCreationTrait;
@@ -24,11 +25,6 @@ class UserCancelNodeRevisionsTest extends KernelTestBase {
    * Uid 1 user.
    */
   protected UserInterface $admin;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $defaultTheme = 'stark';
 
   /**
    * {@inheritdoc}
@@ -75,8 +71,9 @@ class UserCancelNodeRevisionsTest extends KernelTestBase {
         ->save();
     }
 
-    // Run function for test user, assign content to .
-    _helfi_users_reassign_nodes($testUser, $this->admin);
+    // Run the hook for the test user; content is reassigned to uid 1.
+    $userCancelHooks = \Drupal::service(UserCancelHooks::class);
+    $userCancelHooks->userCancel([], $testUser, 'user_cancel_reassign');
 
     // Test that revisions for this user were anonymized correctly.
     $connection = Database::getConnection();
