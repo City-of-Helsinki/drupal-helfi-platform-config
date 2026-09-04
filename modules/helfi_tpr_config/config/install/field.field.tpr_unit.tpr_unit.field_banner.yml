@@ -1,0 +1,26 @@
+uuid: 3853db16-7881-4f2a-90bd-76ec09d9d39a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.tpr_unit.field_banner
+  module:
+    - entity_reference_revisions
+    - helfi_tpr
+id: tpr_unit.tpr_unit.field_banner
+field_name: field_banner
+entity_type: tpr_unit
+bundle: tpr_unit
+label: Banner
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles: {  }
+    negate: 0
+    target_bundles_drag_drop: {  }
+field_type: entity_reference_revisions

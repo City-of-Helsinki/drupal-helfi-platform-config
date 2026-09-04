@@ -1,0 +1,21 @@
+uuid: 486bc220-2542-4342-871b-a398ba6a995d
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_reference_revisions
+    - helfi_tpr
+    - paragraphs
+id: tpr_unit.field_banner
+field_name: field_banner
+entity_type: tpr_unit
+type: entity_reference_revisions
+settings:
+  target_type: paragraph
+module: entity_reference_revisions
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
