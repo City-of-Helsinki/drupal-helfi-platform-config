@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.tpr_service.tpr_service.field_banner
     - field.field.tpr_service.tpr_service.field_content
     - field.field.tpr_service.tpr_service.field_lower_content
     - field.field.tpr_service.tpr_service.field_metatags
@@ -34,6 +35,15 @@ content:
       link: true
     third_party_settings: {  }
     weight: 6
+    region: content
+  field_banner:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 3
     region: content
   field_content:
     type: entity_reference_revisions_entity_view
