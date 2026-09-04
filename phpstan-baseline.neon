@@ -5609,12 +5609,6 @@ parameters:
 			path: modules/helfi_tpr_config/helfi_tpr_config.module
 
 		-
-			message: '#^Function helfi_tpr_config_helfi_paragraph_types\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/helfi_tpr_config/helfi_tpr_config.module
-
-		-
 			message: '#^Function helfi_tpr_config_platform_config_grant_permissions\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1

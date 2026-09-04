@@ -14,6 +14,9 @@ class TprParagraphHooks {
 
   /**
    * Implements hook_helfi_paragraph_types().
+   *
+   * @return \Drupal\helfi_platform_config\DTO\ParagraphTypeCollection[]
+   *   The enabled paragraph types.
    */
   #[Hook('helfi_paragraph_types')]
   public static function helfiParagraphTypes() : array {
