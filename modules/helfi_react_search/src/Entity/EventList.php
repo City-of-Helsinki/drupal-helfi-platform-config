@@ -304,7 +304,7 @@ class EventList extends Paragraph implements ParagraphInterface {
         continue;
       }
       if (!$this->get($filter->value)->isEmpty()) {
-        $filters[$filter->value] = (boolean) $this->get($filter->value)->value;
+        $filters[$filter->value] = (bool) $this->get($filter->value)->value;
       }
     }
 

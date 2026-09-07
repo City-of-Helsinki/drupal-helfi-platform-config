@@ -192,7 +192,9 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
    */
   private function sortEntities(array $local, array $remote): array {
     $currentEntity = $this->getCurrentPageEntity(array_keys(AnnouncementsBlock::ENTITY_TYPE_FIELDS));
-    $referenceField = AnnouncementsBlock::ENTITY_TYPE_FIELDS[$currentEntity?->getEntityTypeId()] ?? NULL;
+
+    $entityTypeId = $currentEntity?->getEntityTypeId();
+    $referenceField = $entityTypeId ? AnnouncementsBlock::ENTITY_TYPE_FIELDS[$entityTypeId] : NULL;
 
     $localAnnouncements = [];
     $globalAnnouncements = $remote;
