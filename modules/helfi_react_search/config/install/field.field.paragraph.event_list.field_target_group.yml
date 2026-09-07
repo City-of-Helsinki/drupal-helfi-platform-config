@@ -1,0 +1,23 @@
+uuid: 8bbada9c-7e04-49ec-ac63-9e793e5aa7cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_target_group
+    - paragraphs.paragraphs_type.event_list
+id: paragraph.event_list.field_target_group
+field_name: field_target_group
+entity_type: paragraph
+bundle: event_list
+label: 'Age group'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean
