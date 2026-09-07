@@ -14,13 +14,13 @@ enum Filters: string {
   case RemoteEvents = 'field_remote_events';
   case Language = 'field_language';
   case SearchTerm = 'field_search_term';
-  case TargetGroups = 'field_target_groups';
+  case TargetGroup = 'field_target_group';
 
   // Return the Drupal setting name for the filter. Defaults to the field name,
   // but allows overrides where needed.
   public function drupalSettingName(): string {
     return match ($this) {
-      self::TargetGroups => 'useTargetGroupFilter',
+      self::TargetGroup => 'useTargetGroupFilter',
       default => $this->value,
     };
   }
