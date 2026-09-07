@@ -112,6 +112,9 @@
             "drupal/default_content": {
                 "https://www.drupal.org/project/default_content/issues/2640734#comment-14638943": "./public/modules/contrib/helfi_platform_config/patches/default_content_2.0.0-alpha3-2640734_manual_imports.patch"
             },
+            "drupal/elasticsearch_connector": {
+                "deprecation causes tests to fail": "./public/modules/contrib/helfi_platform_config/patches/elasticsearch_connector_deprecation.patch"
+            },
             "drupal/metatag": {
                 "Fix deprecation error which breaks everything https://www.drupal.org/project/metatag/issues/3563261": "./public/modules/contrib/helfi_platform_config/patches/3563261-14.patch"
             },
