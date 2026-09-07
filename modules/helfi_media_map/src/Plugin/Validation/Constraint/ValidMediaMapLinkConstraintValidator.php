@@ -22,7 +22,7 @@ final class ValidMediaMapLinkConstraintValidator extends ConstraintValidator {
     foreach ($item->getValue() as $value) {
       ['uri' => $uri] = $value;
 
-      $uri = Http::createFromString($uri);
+      $uri = Http::new($uri);
 
       if (!in_array($uri->getHost(), Map::VALID_URLS)) {
         $this->context->addViolation($constraint->errorMessage, [
