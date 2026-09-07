@@ -334,3 +334,64 @@ function helfi_react_search_update_9022(): void {
 
   $form_display->save();
 }
+
+/**
+ * UHF-13388: Install the "Age group"-filter toggle field for event_list.
+ */
+function helfi_react_search_update_9023(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+
+  $form_display = \Drupal::configFactory()
+    ->getEditable('core.entity_form_display.paragraph.event_list.default');
+
+  if ($form_display->isNew()) {
+    return;
+  }
+
+  $config_deps = $form_display->get('dependencies.config') ?? [];
+  $target_group_dep = 'field.field.paragraph.event_list.field_target_group';
+  if (!in_array($target_group_dep, $config_deps, TRUE)) {
+    $config_deps[] = $target_group_dep;
+    sort($config_deps);
+    $form_display->set('dependencies.config', $config_deps);
+  }
+
+  $reweight = [
+    'content.field_event_location.weight' => 10,
+    'content.field_event_time.weight' => 11,
+    'content.field_language.weight' => 12,
+    'content.field_remote_events.weight' => 13,
+    'content.field_free_events.weight' => 14,
+  ];
+  foreach ($reweight as $key => $weight) {
+    if ($form_display->get($key) !== NULL) {
+      $form_display->set($key, $weight);
+    }
+  }
+
+  $search_filters = $form_display->get('third_party_settings.field_group.group_search_filters');
+  if ($search_filters && !in_array('field_target_group', $search_filters['children'], TRUE)) {
+    $search_filters['children'][] = 'field_target_group';
+    sort($search_filters['children']);
+    $form_display->set('third_party_settings.field_group.group_search_filters', $search_filters);
+  }
+
+  if (!$form_display->get('content.field_target_group')) {
+    $form_display->set('content.field_target_group', [
+      'type' => 'boolean_checkbox',
+      'weight' => 9,
+      'region' => 'content',
+      'settings' => ['display_label' => TRUE],
+      'third_party_settings' => [],
+    ]);
+  }
+
+  $hidden_fields = $form_display->get('hidden');
+  if ($hidden_fields && isset($hidden_fields['field_target_group'])) {
+    unset($hidden_fields['field_target_group']);
+    $form_display->set('hidden', $hidden_fields);
+  }
+
+  $form_display->save();
+}
