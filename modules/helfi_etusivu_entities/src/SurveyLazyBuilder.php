@@ -184,9 +184,7 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
     });
 
     $entityTypeId = $currentEntity?->getEntityTypeId();
-    if ($entityTypeId) {
-      $referenceField = SurveyBlock::ENTITY_TYPE_FIELDS[$entityTypeId] ?? NULL;
-    }
+    $referenceField = $entityTypeId ? SurveyBlock::ENTITY_TYPE_FIELDS[$entityTypeId] : NULL;
 
     // Pick which survey to show.
     foreach ($surveys as $node) {
@@ -197,7 +195,7 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
 
       // Show survey if current page's entity is found
       // from the list of referenced entities.
-      if ($entityTypeId && !empty($referenceField) && $this->hasReference($referenceField, $node, $currentEntity)) {
+      if (!empty($referenceField) && $this->hasReference($referenceField, $node, $currentEntity)) {
         return [$node];
       }
     }
