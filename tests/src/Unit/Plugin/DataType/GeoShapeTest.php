@@ -59,7 +59,6 @@ class GeoShapeTest extends UnitTestCase {
 
     $reflection = new \ReflectionClass($geoShape);
     $parentProperty = $reflection->getProperty('parent');
-    $parentProperty->setAccessible(TRUE);
     $parentProperty->setValue($geoShape, $parent);
 
     return $geoShape;
