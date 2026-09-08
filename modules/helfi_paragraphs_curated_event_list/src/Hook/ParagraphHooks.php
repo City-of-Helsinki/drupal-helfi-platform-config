@@ -57,8 +57,12 @@ final readonly class ParagraphHooks {
 
     // Remove expired items.
     $field->filter(function (EntityReferenceItemInterface $item) {
-      if (!(isset($item->entity)) || !$item->entity instanceof LinkedEventsEvent) {
-        return FALSE;
+      // The entity can fail to load here, for example because the active
+      // content language during presave does not match the language the
+      // reference was created for. Keep such items instead of removing
+      // them, since a failed load is not proof the reference is invalid.
+      if (!isset($item->entity) || !$item->entity instanceof LinkedEventsEvent) {
+        return TRUE;
       }
       if ($item->entity->hasEnded()) {
         $this->messenger
