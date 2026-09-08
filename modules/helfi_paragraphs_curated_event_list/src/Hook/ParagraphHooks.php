@@ -6,6 +6,8 @@ namespace Drupal\helfi_paragraphs_curated_event_list\Hook;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\Core\Field\FieldItemInterface;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItemInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -54,21 +56,23 @@ final readonly class ParagraphHooks {
     $field = $entity->get('field_events');
     assert($field instanceof EntityReferenceFieldItemListInterface);
 
-    foreach ($field->referencedEntities() as $delta => $event) {
-      assert($event instanceof LinkedEventsEvent);
+    // Remove expired items.
+    $field->filter(function (EntityReferenceItemInterface $item) {
+      $event = $item->entity;
 
-      if (!$event->hasEnded()) {
-        continue;
+      if (!$event instanceof LinkedEventsEvent) {
+        return FALSE;
       }
-      // Remove ended events.
-      $field->removeItem($delta);
-
-      $this->messenger
-        ->addStatus(new TranslatableMarkup('Removed "@label" because the event has ended.', [
-          '@label' => $event->label(),
-        ]));
-    }
-
+      if ($event->hasEnded()) {
+        $this->messenger
+          ->addStatus(new TranslatableMarkup('Removed "@label" because the event has ended.', [
+            '@label' => $event->label(),
+          ]));
+        // Returning false removes the item.
+        return FALSE;
+      }
+      return TRUE;
+    });
   }
 
 }
