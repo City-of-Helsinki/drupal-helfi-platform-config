@@ -361,7 +361,7 @@ final class QueryBuilder {
    * @param \Drupal\helfi_search\EmbeddingModel $model
    *   The embedding model to use.
    *
-   * @return array<mixed>
+   * @return list<mixed>
    *   Parsed search results.
    */
   public function parseKnnHits(array $response, EmbeddingModel $model): array {
@@ -439,7 +439,7 @@ final class QueryBuilder {
    * @param array<mixed> $response
    *   The Elasticsearch response array.
    *
-   * @return array<mixed>
+   * @return list<mixed>
    *   Parsed promotion results.
    */
   public function parsePromotionHits(array $response): array {

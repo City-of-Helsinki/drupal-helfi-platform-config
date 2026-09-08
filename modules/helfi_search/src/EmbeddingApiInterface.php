@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Drupal\helfi_search;
 
 /**
- * Embedding model interface.
- *
- * @todo Better name for this interface would be e.g. EmbeddingApiInterface.
+ * Embedding API interface.
  */
-interface EmbeddingsModelInterface {
+interface EmbeddingApiInterface {
 
   /**
    * Get vector embedding for text.
@@ -22,7 +20,7 @@ interface EmbeddingsModelInterface {
    * @return float[]
    *   Vector.
    *
-   * @throws \Drupal\helfi_search\EmbeddingsModelException
+   * @throws \Drupal\helfi_search\EmbeddingApiException
    */
   public function getEmbedding(string $text, EmbeddingModel $model): array;
 
@@ -37,7 +35,7 @@ interface EmbeddingsModelInterface {
    * @return array<float[]>
    *   Vectors keyed by input keys.
    *
-   * @throws \Drupal\helfi_search\EmbeddingsModelException
+   * @throws \Drupal\helfi_search\EmbeddingApiException
    */
   public function batchGetEmbedding(array $batch, EmbeddingModel $model): array;
 

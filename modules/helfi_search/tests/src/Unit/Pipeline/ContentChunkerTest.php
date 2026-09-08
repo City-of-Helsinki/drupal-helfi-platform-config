@@ -25,15 +25,10 @@ class ContentChunkerTest extends UnitTestCase {
   }
 
   /**
-   * Tests that empty input returns a single empty chunk.
+   * Tests that empty input produces no chunks.
    */
   public function testEmptyInput(): void {
-    $chunks = $this->getSut()->chunk('');
-
-    $this->assertCount(1, $chunks);
-    $this->assertInstanceOf(Chunk::class, $chunks[0]);
-    $this->assertSame('', $chunks[0]->text);
-    $this->assertNull($chunks[0]->parent);
+    $this->assertSame([], $this->getSut()->chunk(''));
   }
 
   /**

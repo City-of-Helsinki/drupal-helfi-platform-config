@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_search\OpenAI;
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\helfi_search\EmbeddingModel;
-use Drupal\helfi_search\EmbeddingsModelException;
-use Drupal\helfi_search\EmbeddingsModelInterface;
+use Drupal\helfi_search\EmbeddingApiException;
+use Drupal\helfi_search\EmbeddingApiInterface;
 use Drupal\helfi_search\MissingConfigurationException;
 use Drupal\helfi_search\OpenAI\DTO\Response;
 use Drupal\helfi_search\TokenUsageTracker;
@@ -18,7 +17,7 @@ use GuzzleHttp\Exception\GuzzleException;
 /**
  * OpenAI Embeddings API.
  */
-class EmbeddingsApi implements EmbeddingsModelInterface {
+class EmbeddingsApi implements EmbeddingApiInterface {
 
   /**
    * API version.
@@ -42,7 +41,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
    *
    * @phpstan-param string|array<string> $input
    *
-   * @throws \Drupal\helfi_search\EmbeddingsModelException
+   * @throws \Drupal\helfi_search\EmbeddingApiException
    */
   private function makeRequest(string|array $input, EmbeddingModel $model): Response {
     $config = $this->configFactory->get('helfi_search.settings');
@@ -56,9 +55,6 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
     if (!is_array($input)) {
       $input = [$input];
     }
-
-    // Truncate long strings.
-    $input = array_map(static fn ($item) => Unicode::truncate($item, self::MAX_INPUT_LENGTH, TRUE), $input);
 
     try {
       $response = $this->client->request('POST', str_replace('{model}', $model->value, $baseUrl) . '/embeddings', [
@@ -81,7 +77,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
       );
 
       if (!isset($body->data) || !is_array($body->data)) {
-        throw new EmbeddingsModelException('Invalid response format from OpenAI API');
+        throw new EmbeddingApiException('Invalid response format from OpenAI API');
       }
 
       $response = new Response(
@@ -98,7 +94,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
       return $response;
     }
     catch (GuzzleException | \JsonException $e) {
-      throw new EmbeddingsModelException($e->getMessage(), previous: $e);
+      throw new EmbeddingApiException($e->getMessage(), previous: $e);
     }
   }
 
@@ -106,7 +102,7 @@ class EmbeddingsApi implements EmbeddingsModelInterface {
    * {@inheritdoc}
    */
   public function getEmbedding(string $text, EmbeddingModel $model): array {
-    return array_first($this->makeRequest($text, $model)->embedding) ?? throw new EmbeddingsModelException('No embedding found');
+    return array_first($this->makeRequest($text, $model)->embedding) ?? throw new EmbeddingApiException('No embedding found');
   }
 
   /**
