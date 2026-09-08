@@ -1,0 +1,13 @@
+diff --git a/src/Plugin/Field/FieldWidget/ReadonlyFieldWidget.php b/src/Plugin/Field/FieldWidget/ReadonlyFieldWidget.php
+index ff2e0b1..c7498f0 100644
+--- a/src/Plugin/Field/FieldWidget/ReadonlyFieldWidget.php
++++ b/src/Plugin/Field/FieldWidget/ReadonlyFieldWidget.php
+@@ -115,7 +115,7 @@ class ReadonlyFieldWidget extends WidgetBase implements ContainerFactoryPluginIn
+     $options = [
+       'type' => $formatter_type,
+       'label' => $this->getSetting('label'),
+-      'settings' => $formatter_settings[$formatter_type] ?? [],
++      'settings' => $formatter_type ? $formatter_settings[$formatter_type] ?? [] : [],
+     ];
+
+     $element['readonly_field'] = $view_builder->viewField($items, $options);
