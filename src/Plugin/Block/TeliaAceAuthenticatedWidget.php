@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
-use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
@@ -16,7 +15,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   id: "telia_ace_authenticated_widget",
   admin_label: new TranslatableMarkup("Telia ACE Authenticated Widget"),
 )]
-class TeliaAceAuthenticatedWidget extends BlockBase {
+class TeliaAceAuthenticatedWidget extends ChatBlockBase {
 
   /**
    * {@inheritdoc}

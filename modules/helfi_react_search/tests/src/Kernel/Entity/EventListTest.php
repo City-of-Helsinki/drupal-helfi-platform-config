@@ -155,6 +155,12 @@ class EventListTest extends KernelTestBase {
     $this->assertEmpty($paragraph->getTitle());
     $paragraph->set('field_event_list_title', 'Test title');
     $this->assertEquals('Test title', $paragraph->getTitle());
+
+    // Test super events toggle. It is off unless the editor enables it.
+    $this->assertFalse($paragraph->showOnlySuperEvents());
+    $paragraph->set('field_event_list_only_super', TRUE);
+    $this->assertTrue($paragraph->showOnlySuperEvents());
+    $paragraph->set('field_event_list_only_super', FALSE);
   }
 
   /**
@@ -278,6 +284,20 @@ class EventListTest extends KernelTestBase {
     $paragraph->set('field_event_list_free_text', 'jooga');
     $url = $paragraph->getApiUrl(['all_ongoing_AND' => 'swimming']);
     $this->assertStringContainsString('full_text=jooga%20swimming', $url);
+
+    $paragraph->set('field_event_list_free_text', NULL);
+    $this->assertStringContainsString('super_event_type=umbrella%2Cnone', $paragraph->getApiUrl());
+
+    $paragraph->set('field_event_list_only_super', TRUE);
+    $url = $paragraph->getApiUrl();
+    $this->assertStringContainsString('super_event_type=umbrella%2Crecurring', $url);
+    $this->assertStringNotContainsString('super_event_type=umbrella%2Cnone', $url);
+
+    $paragraph->set('field_event_list_free_text', '?super_event_type=umbrella');
+    $this->assertStringContainsString('super_event_type=umbrella&', $paragraph->getApiUrl());
+
+    $paragraph->set('field_event_list_free_text', 'jooga');
+    $paragraph->set('field_event_list_only_super', FALSE);
   }
 
 }
