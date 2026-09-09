@@ -89,7 +89,7 @@ class BreadcrumbTest extends ExistingSiteBase {
   }
 
   /**
-   * Make sure we flush caches once we're done installing modules.
+   * Test the breadcrumb.
    */
   #[Test]
   public function testBreadcrumb(): void {
