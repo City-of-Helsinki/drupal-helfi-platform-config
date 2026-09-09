@@ -78,8 +78,7 @@
     "conflict": {
         "drush/drush": "<12",
         "drupal/core": "<11.4.0",
-        "drupal/external_entities": "<3.0.0-beta7",
-        "drupal/easy_breadcrumb": ">2.0.9"
+        "drupal/external_entities": "<3.0.0-beta7"
     },
     "extra": {
         "patches": {
