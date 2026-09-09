@@ -8,3 +8,6 @@ tags:
   shortlink: '[site:url]'
   og_image: '[node:shareable-image]'
   twitter_cards_image: '[node:shareable-image]'
+  article_modified_time: '[node:changed:html_datetime]'
+  article_published_time: '[node:created:html_datetime]'
+  og_updated_time: '[node:changed:html_datetime]'
