@@ -30,18 +30,37 @@ class BreadcrumbTest extends ExistingSiteBase {
   private array $nodes = [];
 
   /**
+   * The label of the project.
+   *
+   * @var string|NULL
+   */
+  private string|NULL $label = NULL;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() : void {
     parent::setUp();
 
+    try {
+      $this->environmentResolver = $this->container->get('helfi_api_base.environment_resolver');
+      $env = $this->environmentResolver->getActiveProject();
+
+      $this->label = (string) $this->container
+        ->get('string_translation')
+        ->translate($env->label()->getUntranslatedString(), [], ['langcode' => 'fi', 'context' => 'Project label']);
+    }
+    catch (\Exception) {
+    }
+
     $menulinkParent = NULL;
     foreach([1,2] as $key => $value) {
-      $title = "Level $value page - en";
+      $title = "Level $value page - fi";
 
       $this->nodes[$key] = Node::create([
         'type' => 'page',
         'title' => $title,
+        'langcode' => 'fi',
         'status' => 1,
       ]);
       $this->nodes[$key]->save();
@@ -57,10 +76,13 @@ class BreadcrumbTest extends ExistingSiteBase {
 
       // Add nesting to the menu tree.
       if ($menulinkParent) {
-        $linkSettings['parent'] = $menulinkParent;
+        $menulinkSettings['parent'] = $menulinkParent;
       }
       $link = MenuLinkContent::create($menulinkSettings);
       $link->save();
+
+      // Update the breadcrumb after creating menu item.
+      $this->nodes[$key]->save();
 
       $menulinkParent = $link->getPluginId();
     }
@@ -71,19 +93,21 @@ class BreadcrumbTest extends ExistingSiteBase {
    */
   #[Test]
   public function testBreadcrumb(): void {
-    $this->drupalGet($this->nodes[1]->toUrl());
+    $this->drupalGet($this->nodes[1]->getTranslation('fi')->toUrl());
     $this->assertSession()->statusCodeEquals(200);
     $elements = $this->getSession()->getPage()->findAll('css', '.hds-breadcrumb ol li');
 
     $titles = array_map(function (NodeElement $el): string { return $el->getText();}, $elements) ?? [];
-    $uniqueTitles = array_unique($titles, SORT_STRING);
+    $uniqueTitles = array_unique($titles);
 
     // Test for duplicates.
     $this->assertCount(count($uniqueTitles), $titles);
 
     // Assert the breadcrumb items.
-    $this->assertTrue(in_array('Level 1 page - en', $titles));
-    $this->assertTrue(in_array('Level 2 page - en', $titles));
+
+    $this->assertTrue(in_array($this->label ?? '', $titles));
+    $this->assertTrue(in_array('Level 1 page - fi', $titles), 'Level 1 page found from breadcrumb');
+    $this->assertTrue(in_array('Level 2 page - fi', $titles), 'Level 2 page found from breadcrumb');
   }
 
 }
