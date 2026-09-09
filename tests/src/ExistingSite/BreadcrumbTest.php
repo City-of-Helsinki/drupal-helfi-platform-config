@@ -25,7 +25,7 @@ class BreadcrumbTest extends ExistingSiteBase {
   /**
    * Nodes for breadcrumb test.
    *
-   * @var Node[]
+   * @var \Drupal\node\Entity\Node[]
    */
   private array $nodes = [];
 
@@ -34,7 +34,7 @@ class BreadcrumbTest extends ExistingSiteBase {
    *
    * @var string|NULL
    */
-  private string|NULL $label = NULL;
+  private string|null $label = NULL;
 
   /**
    * {@inheritdoc}
@@ -54,7 +54,7 @@ class BreadcrumbTest extends ExistingSiteBase {
     }
 
     $menulinkParent = NULL;
-    foreach([1,2] as $key => $value) {
+    foreach ([1, 2] as $key => $value) {
       $title = "Level $value page - fi";
 
       $this->nodes[$key] = Node::create([
@@ -97,14 +97,13 @@ class BreadcrumbTest extends ExistingSiteBase {
     $this->assertSession()->statusCodeEquals(200);
     $elements = $this->getSession()->getPage()->findAll('css', '.hds-breadcrumb ol li');
 
-    $titles = array_map(function (NodeElement $el): string { return $el->getText();}, $elements) ?? [];
+    $titles = array_map(fn (NodeElement $el): string => $el->getText(), $elements);
     $uniqueTitles = array_unique($titles);
 
     // Test for duplicates.
     $this->assertCount(count($uniqueTitles), $titles);
 
     // Assert the breadcrumb items.
-
     $this->assertTrue(in_array($this->label ?? '', $titles));
     $this->assertTrue(in_array('Level 1 page - fi', $titles), 'Level 1 page found from breadcrumb');
     $this->assertTrue(in_array('Level 2 page - fi', $titles), 'Level 2 page found from breadcrumb');
