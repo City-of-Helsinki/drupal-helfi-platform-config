@@ -32,7 +32,7 @@ class BreadcrumbTest extends ExistingSiteBase {
   /**
    * The label of the project.
    *
-   * @var string|NULL
+   * @var string|null
    */
   private string|null $label = NULL;
 
