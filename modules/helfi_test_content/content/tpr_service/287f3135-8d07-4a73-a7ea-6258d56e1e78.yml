@@ -47,7 +47,7 @@ default:
       alias: /dc-layouts/dc-tpr-service/dc-tpr-service-banner-no-toc
       langcode: en
       pathauto: 0
-  field_banner:
+  field_upper_content:
     -
       entity:
         _meta:

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.tpr_unit.tpr_unit.field_banner
+    - field.field.tpr_unit.tpr_unit.field_upper_content
     - field.field.tpr_unit.tpr_unit.field_content
     - field.field.tpr_unit.tpr_unit.field_lower_content
     - field.field.tpr_unit.tpr_unit.field_metatags
@@ -127,7 +127,7 @@ content:
       allowed_formats:
         hide_help: '1'
         hide_guidelines: '1'
-  field_banner:
+  field_upper_content:
     type: paragraphs
     weight: 10
     region: content

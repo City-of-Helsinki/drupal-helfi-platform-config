@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.tpr_service.tpr_service.field_banner
+    - field.field.tpr_service.tpr_service.field_upper_content
     - field.field.tpr_service.tpr_service.field_content
     - field.field.tpr_service.tpr_service.field_lower_content
     - field.field.tpr_service.tpr_service.field_metatags
@@ -41,7 +41,7 @@ content:
       formatter_settings: {  }
       show_description: false
     third_party_settings: {  }
-  field_banner:
+  field_upper_content:
     type: paragraphs
     weight: 11
     region: content

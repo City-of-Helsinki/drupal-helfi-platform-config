@@ -50,7 +50,7 @@ default:
       alias: /dc-layouts/dc-tpr-unit/dc-tpr-unit-banner-lead-in-only
       langcode: en
       pathauto: 0
-  field_banner:
+  field_upper_content:
     -
       entity:
         _meta:

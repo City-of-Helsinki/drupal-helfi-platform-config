@@ -44,12 +44,12 @@ class TprParagraphHooksTest extends KernelTestBase {
     }
 
     $expected = [
-      'tpr_unit:tpr_unit:field_banner:banner' => 0,
+      'tpr_unit:tpr_unit:field_upper_content:banner' => 0,
       'tpr_unit:tpr_unit:field_content:text' => 0,
       'tpr_unit:tpr_unit:field_content:image_gallery' => 10,
       'tpr_unit:tpr_unit:field_lower_content:list_of_links' => 0,
       'tpr_unit:tpr_unit:field_lower_content:image_gallery' => 14,
-      'tpr_service:tpr_service:field_banner:banner' => 0,
+      'tpr_service:tpr_service:field_upper_content:banner' => 0,
       'tpr_service:tpr_service:field_content:unit_contact_card' => 14,
       'tpr_service:tpr_service:field_sidebar_content:sidebar_text' => 1,
       'tpr_service:tpr_service:field_lower_content:image_gallery' => 17,

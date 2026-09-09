@@ -23,7 +23,7 @@ class TprParagraphHooks {
     $entities = [
       'tpr_unit' => [
         'tpr_unit' => [
-          'field_banner' => [
+          'field_upper_content' => [
             'banner' => 0,
           ],
           'field_content' => [
@@ -60,7 +60,7 @@ class TprParagraphHooks {
       ],
       'tpr_service' => [
         'tpr_service' => [
-          'field_banner' => [
+          'field_upper_content' => [
             'banner' => 0,
           ],
           'field_content' => [
