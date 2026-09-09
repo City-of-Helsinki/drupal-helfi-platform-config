@@ -10,6 +10,7 @@ dependencies:
     - field.field.tpr_service.tpr_service.field_sidebar_content
   module:
     - hdbt_admin_tools
+    - helfi_ai
     - helfi_tpr
     - metatag
     - paragraphs
@@ -20,6 +21,12 @@ targetEntityType: tpr_service
 bundle: tpr_service
 mode: default
 content:
+  ai_summary:
+    type: ai_summary
+    weight: 20
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   description:
     type: readonly_field_widget
     weight: 6
