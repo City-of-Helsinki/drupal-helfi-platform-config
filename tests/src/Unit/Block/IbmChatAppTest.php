@@ -30,7 +30,8 @@ class IbmChatAppTest extends BlockUnitTestBase {
     $this->ibmChatApp = new class (
       [],
       'ibm_chat_app',
-      ['provider' => 'helfi_platform_config']
+      ['provider' => 'helfi_platform_config'],
+      $this->routeMatch
     ) extends IbmChatApp {
     };
 
