@@ -43,12 +43,11 @@ class BreadcrumbTest extends ExistingSiteBase {
     parent::setUp();
 
     try {
-      $this->environmentResolver = $this->container->get('helfi_api_base.environment_resolver');
-      $env = $this->environmentResolver->getActiveProject();
+      $project = $this->container->get('helfi_api_base.environment_resolver')->getActiveProject();
 
       $this->label = (string) $this->container
         ->get('string_translation')
-        ->translate($env->label()->getUntranslatedString(), [], ['langcode' => 'fi', 'context' => 'Project label']);
+        ->translate($project->label()->getUntranslatedString(), [], ['langcode' => 'fi', 'context' => 'Project label']);
     }
     catch (\Exception) {
     }
