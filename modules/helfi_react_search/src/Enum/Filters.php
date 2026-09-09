@@ -16,12 +16,16 @@ enum Filters: string {
   case SearchTerm = 'field_search_term';
   case TargetGroup = 'field_target_group';
 
-  // Return the Drupal setting name for the filter. Defaults to the field name,
-  // but allows overrides where needed.
+  /**
+   * Return the Drupal setting name for the filter.
+   *
+   * Defaults to the field name, allowing overrides where needed.
+   */
   public function drupalSettingName(): string {
     return match ($this) {
       self::TargetGroup => 'useTargetGroupFilter',
       default => $this->value,
     };
   }
+
 }
