@@ -8,11 +8,15 @@
 declare(strict_types=1);
 
 use Drupal\block\Entity\Block;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\Entity\EntityViewMode;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\node\NodeInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface;
+use Drupal\helfi_recommendations\TopicsManagerInterface;
 use Drupal\helfi_tpr\Entity\Service;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_install().
@@ -354,4 +358,76 @@ function helfi_recommendations_update_11001() : void {
   Block::load('helfirecommendationsblock')
     ->setWeight(10)
     ->save();
+}
+
+/**
+ * UHF-13599: Requeue keyword generation for entities that have zero keywords.
+ *
+ * @phpstan-param array{mixed} $sandbox
+ */
+function helfi_recommendations_update_11002(array &$sandbox): TranslatableMarkup|null {
+  $storage = \Drupal::entityTypeManager()->getStorage('suggested_topics');
+
+  if (!isset($sandbox['total'])) {
+    $sandbox['total'] = (int) $storage->getQuery()
+      ->notExists('keywords')
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['queued'] = 0;
+    $sandbox['last_id'] = '';
+
+    if ($sandbox['total'] === 0) {
+      $sandbox['#finished'] = 1;
+      return t('No entities with zero keywords found.');
+    }
+  }
+
+  $ids = $storage->getQuery()
+    ->notExists('keywords')
+    ->condition('uuid', $sandbox['last_id'], '>')
+    ->sort('uuid')
+    ->range(0, 50)
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if (!$ids) {
+    // We are done.
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    /** @var \Drupal\helfi_recommendations\TopicsManagerInterface $topics_manager */
+    $topics_manager = \Drupal::service(TopicsManagerInterface::class);
+
+    foreach ($storage->loadMultiple($ids) as $id => $topic) {
+      $sandbox['current']++;
+      $sandbox['last_id'] = $id;
+      assert($topic instanceof SuggestedTopicsInterface);
+
+      $parent = $topic->getParentEntity();
+      if (!$parent instanceof ContentEntityInterface) {
+        continue;
+      }
+
+      // Keywords are generated from the Finnish translation only.
+      if (!$parent->hasTranslation('fi')) {
+        continue;
+      }
+      $parent = $parent->getTranslation('fi');
+
+      $topics_manager->queueEntity($parent);
+      $sandbox['queued']++;
+    }
+
+    $sandbox['#finished'] = $sandbox['current'] / $sandbox['total'];
+  }
+
+  if ($sandbox['#finished'] === 1) {
+    return t('Queued keyword generation for @count entities with zero keywords.', [
+      '@count' => $sandbox['queued'],
+    ]);
+  }
+
+  return NULL;
 }
