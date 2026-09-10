@@ -15,9 +15,6 @@ final class AiSummaryFieldDefinition {
   /**
    * Builds a new 'ai_summary' base field definition.
    *
-   * A fresh instance is required per entity type/bundle since
-   * BaseFieldDefinition is mutable and gets bound to its target.
-   *
    * @return array<string, \Drupal\Core\Field\BaseFieldDefinition>
    *   The field definition, keyed by field name.
    */
