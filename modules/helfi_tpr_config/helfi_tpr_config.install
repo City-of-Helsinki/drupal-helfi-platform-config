@@ -295,5 +295,5 @@ function helfi_tpr_config_update_11001(&$sandbox): ?FormattableMarkup {
  */
 function helfi_tpr_config_update_11002(): void {
   \Drupal::entityDefinitionUpdateManager()
-    ->installFieldStorageDefinition($name, 'tpr_service', 'helfi_tpr_config', AiSummaryFieldDefinition::create());
+    ->installFieldStorageDefinition('ai_summary', 'tpr_service', 'helfi_tpr_config', AiSummaryFieldDefinition::create()['ai_summary']);
 }
