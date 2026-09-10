@@ -7,18 +7,18 @@ namespace Drupal\Tests\helfi_platform_config\ExistingSite;
 use Behat\Mink\Element\NodeElement;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
+use Drupal\Tests\helfi_api_base\Functional\ExistingSiteTestBase;
 use Drush\TestTraits\DrushTestTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Test;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
 
 /**
  * Scans bundled configuration.
  */
 #[Group('helfi_platform_config')]
 #[RunTestsInSeparateProcesses]
-class BreadcrumbTest extends ExistingSiteBase {
+class BreadcrumbTest extends ExistingSiteTestBase {
 
   use DrushTestTrait;
 
