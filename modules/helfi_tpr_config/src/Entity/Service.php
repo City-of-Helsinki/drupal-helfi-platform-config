@@ -7,6 +7,7 @@ namespace Drupal\helfi_tpr_config\Entity;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_ai\Field\AiSummaryFieldDefinition;
 use Drupal\helfi_tpr\Entity\Service as BaseService;
 
 /**
@@ -26,6 +27,8 @@ class Service extends BaseService {
       ->setTranslatable(TRUE)
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
+
+    $fields += AiSummaryFieldDefinition::create();
 
     return $fields;
   }

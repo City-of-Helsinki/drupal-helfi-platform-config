@@ -7,6 +7,7 @@ dependencies:
   - 'allowed_formats:allowed_formats'
   - 'field_group:field_group'
   - 'hdbt_admin_tools:hdbt_admin_tools'
+  - 'helfi_ai:helfi_ai'
   - 'helfi_base_content:helfi_base_content'
   - 'helfi_media:helfi_media'
   - 'helfi_image_styles:helfi_image_styles'

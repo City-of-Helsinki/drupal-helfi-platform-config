@@ -35,7 +35,6 @@ class HookTest extends UnitTestCase {
     $entityType->id()->willReturn('user');
 
     $hooks = new EntityHooks();
-    $hooks->setStringTranslation($this->getStringTranslationStub());
 
     $result = $hooks->entityBaseFieldInfo($entityType->reveal());
     $this->assertSame([], $result);
@@ -67,7 +66,6 @@ class HookTest extends UnitTestCase {
     $entityType->id()->willReturn('node');
 
     $hooks = new EntityHooks();
-    $hooks->setStringTranslation($this->getStringTranslationStub());
 
     $result = $hooks->entityBaseFieldInfo($entityType->reveal());
 

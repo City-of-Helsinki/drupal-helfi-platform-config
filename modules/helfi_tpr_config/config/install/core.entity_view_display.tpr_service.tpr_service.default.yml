@@ -19,6 +19,13 @@ targetEntityType: tpr_service
 bundle: tpr_service
 mode: default
 content:
+  ai_summary:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
   description:
     type: text_default
     label: hidden
@@ -33,7 +40,7 @@ content:
       view_mode: default
       link: true
     third_party_settings: {  }
-    weight: 6
+    weight: 7
     region: content
   field_content:
     type: entity_reference_revisions_entity_view
@@ -42,7 +49,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 4
+    weight: 5
     region: content
   field_lower_content:
     type: entity_reference_revisions_entity_view
@@ -51,7 +58,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
   field_metatags:
     type: metatag_empty_formatter
@@ -68,7 +75,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 9
+    weight: 10
     region: content
   field_sidebar_content:
     type: entity_reference_revisions_entity_view
@@ -77,7 +84,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 8
+    weight: 9
     region: content
   links:
     type: link
@@ -89,7 +96,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 7
+    weight: 8
     region: content
   name:
     type: string

@@ -10,6 +10,7 @@ dependencies:
     - field.field.tpr_service.tpr_service.field_sidebar_content
   module:
     - hdbt_admin_tools
+    - helfi_ai
     - helfi_tpr
     - metatag
     - paragraphs
@@ -20,6 +21,12 @@ targetEntityType: tpr_service
 bundle: tpr_service
 mode: default
 content:
+  ai_summary:
+    type: ai_summary
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   description:
     type: readonly_field_widget
     weight: 6
@@ -32,7 +39,7 @@ content:
     third_party_settings: {  }
   errand_services:
     type: readonly_field_widget
-    weight: 8
+    weight: 9
     region: content
     settings:
       label: above
@@ -42,7 +49,7 @@ content:
     third_party_settings: {  }
   field_content:
     type: paragraphs
-    weight: 11
+    weight: 12
     region: content
     settings:
       title: Paragraph
@@ -61,7 +68,7 @@ content:
     third_party_settings: {  }
   field_lower_content:
     type: paragraphs
-    weight: 15
+    weight: 16
     region: content
     settings:
       title: Paragraph
@@ -80,7 +87,7 @@ content:
     third_party_settings: {  }
   field_metatags:
     type: metatag_firehose
-    weight: 10
+    weight: 11
     region: content
     settings:
       sidebar: false
@@ -94,7 +101,7 @@ content:
     third_party_settings: {  }
   field_sidebar_content:
     type: paragraphs
-    weight: 12
+    weight: 13
     region: content
     settings:
       title: Paragraph
@@ -113,7 +120,7 @@ content:
     third_party_settings: {  }
   has_unit:
     type: readonly_field_widget
-    weight: 18
+    weight: 19
     region: content
     settings:
       label: above
@@ -123,14 +130,14 @@ content:
     third_party_settings: {  }
   hide_service_points:
     type: boolean_checkbox
-    weight: 14
+    weight: 15
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   hide_sidebar_navigation:
     type: boolean_checkbox
-    weight: 16
+    weight: 17
     region: content
     settings:
       display_label: true
@@ -144,7 +151,7 @@ content:
     third_party_settings: {  }
   links:
     type: readonly_field_widget
-    weight: 7
+    weight: 8
     region: content
     settings:
       label: above
@@ -172,7 +179,7 @@ content:
     third_party_settings: {  }
   name_synonyms:
     type: readonly_field_widget
-    weight: 17
+    weight: 18
     region: content
     settings:
       label: above
@@ -182,13 +189,13 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 9
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   service_id:
     type: readonly_field_widget
-    weight: 19
+    weight: 20
     region: content
     settings:
       label: above
@@ -197,7 +204,7 @@ content:
       show_description: false
     third_party_settings: {  }
   simple_sitemap:
-    weight: 13
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
