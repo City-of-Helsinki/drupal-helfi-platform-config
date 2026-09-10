@@ -1,0 +1,5 @@
+label: 'Näytä vain kattotapahtumat'
+description: ''
+settings:
+  on_label: Kyllä
+  off_label: Ei

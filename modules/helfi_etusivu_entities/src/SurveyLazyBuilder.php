@@ -183,7 +183,8 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
       return $weightA < $weightB ? 1 : -1;
     });
 
-    $referenceField = SurveyBlock::ENTITY_TYPE_FIELDS[$currentEntity?->getEntityTypeId()] ?? NULL;
+    $entityTypeId = $currentEntity?->getEntityTypeId();
+    $referenceField = $entityTypeId ? SurveyBlock::ENTITY_TYPE_FIELDS[$entityTypeId] : NULL;
 
     // Pick which survey to show.
     foreach ($surveys as $node) {
