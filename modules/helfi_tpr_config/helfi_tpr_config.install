@@ -15,7 +15,7 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\linkit\Entity\Profile;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\helfi_ai\AiSummaryFieldDefinition;
+use Drupal\helfi_ai\Field\AiSummaryFieldDefinition;
 
 /**
  * Install metatag configurations manually.
@@ -294,10 +294,6 @@ function helfi_tpr_config_update_11001(&$sandbox): ?FormattableMarkup {
  * Add an AI summary field to tpr_service.
  */
 function helfi_tpr_config_update_11002(): void {
-  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition(
-    'ai_summary',
-    'tpr_service',
-    'helfi_tpr_config',
-    AiSummaryFieldDefinition::create(),
-  );
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition($name, 'tpr_service', 'helfi_tpr_config', AiSummaryFieldDefinition::create());
 }

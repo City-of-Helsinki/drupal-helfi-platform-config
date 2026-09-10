@@ -6,7 +6,7 @@ namespace Drupal\helfi_ai\Hook;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Hook\Attribute\Hook;
-use Drupal\helfi_ai\AiSummaryFieldDefinition;
+use Drupal\helfi_ai\Field\AiSummaryFieldDefinition;
 
 /**
  * Hook implementations for Helfi AI module related entities.
@@ -23,10 +23,7 @@ class EntityHooks {
     if ($entity_type->id() !== 'node') {
       return [];
     }
-
-    return [
-      'ai_summary' => AiSummaryFieldDefinition::create(),
-    ];
+    return AiSummaryFieldDefinition::create();
   }
 
 }
