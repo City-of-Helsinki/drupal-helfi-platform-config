@@ -47,19 +47,19 @@ class BreadcrumbTest extends ExistingSiteTestBase {
 
       $this->label = (string) $this->container
         ->get('string_translation')
-        ->translate($project->label()->getUntranslatedString(), [], ['langcode' => 'fi', 'context' => 'Project label']);
+        ->translate($project->label()->getUntranslatedString(), [], ['langcode' => 'en', 'context' => 'Project label']);
     }
     catch (\Exception) {
     }
 
     $menulinkParent = NULL;
     foreach ([1, 2] as $key => $value) {
-      $title = "Level $value page - fi";
+      $title = "Level $value page - en";
 
       $this->nodes[$key] = Node::create([
         'type' => 'page',
         'title' => $title,
-        'langcode' => 'fi',
+        'langcode' => 'en',
         'status' => 1,
       ]);
       $this->nodes[$key]->save();
@@ -92,7 +92,7 @@ class BreadcrumbTest extends ExistingSiteTestBase {
    */
   #[Test]
   public function testBreadcrumb(): void {
-    $this->drupalGet($this->nodes[1]->getTranslation('fi')->toUrl());
+    $this->drupalGet($this->nodes[1]->getTranslation('en')->toUrl());
     $this->assertSession()->statusCodeEquals(200);
     $elements = $this->getSession()->getPage()->findAll('css', '.hds-breadcrumb ol li');
 
@@ -104,8 +104,8 @@ class BreadcrumbTest extends ExistingSiteTestBase {
 
     // Assert the breadcrumb items.
     $this->assertTrue(in_array($this->label ?? '', $titles));
-    $this->assertTrue(in_array('Level 1 page - fi', $titles), 'Level 1 page found from breadcrumb');
-    $this->assertTrue(in_array('Level 2 page - fi', $titles), 'Level 2 page found from breadcrumb');
+    $this->assertTrue(in_array('Level 1 page - en', $titles), 'Level 1 page found from breadcrumb');
+    $this->assertTrue(in_array('Level 2 page - en', $titles), 'Level 2 page found from breadcrumb');
   }
 
 }
