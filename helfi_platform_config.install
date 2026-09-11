@@ -792,25 +792,19 @@ function helfi_platform_config_update_11007(array &$sandbox): void {
 /**
  * UHF-13390: Fix breadcrumb - updating to 2.0.10 from 2.0.9 added duplicate.
  */
-function helfi_platform_config_update_11008(): void {
-  if (!\Drupal::moduleHandler()->moduleExists('easy_breadcrumb')) {
-    return;
+function helfi_platform_config_update_11009(): void {
+  if (\Drupal::moduleHandler()->moduleExists('easy_breadcrumb')) {
+    // Use menu title on breadcrumb when possible.
+    $config = \Drupal::configFactory()->getEditable('easy_breadcrumb.settings');
+    $config->set('title_from_page_when_available', FALSE)
+      ->set('use_menu_title_as_fallback', TRUE)
+      ->save();
   }
-
-  // Include home segment to false: 2.0.10 caused duplicate home segment,
-  // and using menu title on breadcrumb when possible.
-  $config = \Drupal::configFactory()->getEditable('easy_breadcrumb.settings');
-  $config->set('include_home_segment', FALSE)
-    ->set('title_from_page_when_available', FALSE)
-    ->set('use_menu_title_as_fallback', TRUE)
-    ->save();
 
   if (!\Drupal::moduleHandler()->moduleExists('pathauto')) {
-    return;
+    // Always use menu link on url.
+    $config = \Drupal::configFactory()->getEditable('pathauto.pattern.page_content_pattern');
+    $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
+      ->save();
   }
-
-  // Always use menu link on url.
-  $config = \Drupal::configFactory()->getEditable('pathauto.pattern.page_content_pattern');
-  $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
-    ->save();
 }
