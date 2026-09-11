@@ -801,3 +801,16 @@ function helfi_platform_config_update_11008(): void {
   $config->set('include_home_segment', FALSE)
     ->save();
 }
+
+/**
+ * UHF-13390: Update pathauto pattern.
+ */
+function helfi_platform_config_update_11009(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('pathauto')) {
+    return;
+  }
+
+  $config = \Drupal::configFactory()->getEditable('pathauto.pattern.page_content_pattern');
+  $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
+    ->save();
+}
