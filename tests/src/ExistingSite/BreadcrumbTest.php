@@ -102,7 +102,7 @@ class BreadcrumbTest extends ExistingSiteTestBase {
     $this->assertCount(count($uniqueTitles), $titles);
 
     // Assert the breadcrumb items.
-    $this->assertTrue(in_array(strtolower($this->label) ?? '', $titles), 'Site name found from breadcrumb');
+    $this->assertTrue(in_array(strtolower($this->label), $titles), 'Site name found from breadcrumb');
     $this->assertTrue(in_array('level 1 page - en edited', $titles), 'Level 1 node menu title found from breadcrumb');
     $this->assertTrue(in_array('level 2 page - en edited', $titles), 'Level 2 node menu title found from breadcrumb');
   }
