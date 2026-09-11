@@ -70,7 +70,7 @@ class QueueManager {
   /**
    * How long a document waits after its first failed attempt.
    */
-  private const int RETRY_DELAY = 3600;
+  public const int RETRY_DELAY = 3600;
 
   public function __construct(
     private readonly Connection $database,
@@ -215,7 +215,7 @@ class QueueManager {
     // remove the document correctly. Otherwise, orphan documents are
     // re-processed in every stale window forever.
     if (!$entity instanceof ContentEntityInterface || !$entity->hasTranslation($document->langcode)) {
-      $key = self::key($entity);
+      $key = $document->key();
       $transaction = $this->database->startTransaction();
 
       try {

@@ -75,7 +75,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     $this->assertEmpty($item->getField(EmbeddingModel::DEFAULT->fieldPrefix())?->getValues() ?? []);
 
     // An unknown document is created so that cron picks it up.
-    $this->assertSame(DocumentState::Pending, $this->getState($entity));
+    $this->assertDocumentState($entity, DocumentState::Pending);
   }
 
   /**
@@ -92,7 +92,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
 
     $item = $this->createItem();
     $entity = $item->getOriginalObject()->getValue();
-    $this->fillChunks($entity, EmbeddingModel::DEFAULT, [$first, $second]);
+    $this->fillChunks($entity, [$first, $second]);
 
     $this->processor->addFieldValues($item);
 

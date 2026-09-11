@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Traits;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\helfi_search\DocumentKeyTrait;
@@ -13,9 +14,9 @@ use Drupal\helfi_search\Plugin\search_api\processor\DTO\StoredChunk;
 use Drupal\helfi_search\Vector;
 
 /**
- * Provides a trait for seeding and reading the embedding store's tables.
+ * Helpers for the embedding store's tables.
  *
- * @see \Drupal\helfi_search\Queue\QueueManager
+ * @phpstan-import-type DocumentKey from \Drupal\helfi_search\DocumentKeyTrait
  */
 trait EmbeddingStoreTrait {
 
@@ -23,17 +24,33 @@ trait EmbeddingStoreTrait {
 
   /**
    * Writes a document's state.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface|array $entity
+   *   The entity, in the translation to write, or the document's key columns.
+   * @param \Drupal\helfi_search\DocumentState $state
+   *   The state to write.
+   * @param int|null $attempts
+   *   The failed attempt count, or NULL to leave it alone.
+   * @param int|null $changed
+   *   The timestamp to stamp the row with, or NULL for the request time.
+   *
+   * @phpstan-param \Drupal\Core\Entity\EntityInterface|DocumentKey $entity
    */
   private function setDocumentState(
-    EntityInterface $entity,
+    EntityInterface|array $entity,
     DocumentState $state,
     ?int $attempts = NULL,
+    ?int $changed = NULL,
   ): void {
+    if ($entity instanceof EntityInterface) {
+      $entity = self::key($entity);
+    }
+
     $fields = [
       'state' => $state->value,
       // Documents are queued oldest first, and the back-off is measured from
       // here, so a seeded row has to look as fresh as a written one.
-      'changed' => $this->container->get('datetime.time')->getRequestTime(),
+      'changed' => $changed ?? $this->container->get(TimeInterface::class)->getRequestTime(),
     ];
 
     if ($attempts !== NULL) {
@@ -42,33 +59,46 @@ trait EmbeddingStoreTrait {
 
     $this->container->get(Connection::class)
       ->merge(self::DOCUMENT_TABLE)
-      ->keys(self::key($entity))
+      ->keys($entity)
       ->fields($fields)
       ->execute();
   }
 
   /**
-   * Reads a document's state.
-   *
-   * @return \Drupal\helfi_search\DocumentState|null
-   *   The state, or NULL when the document is unknown to the store.
-   */
-  private function getState(EntityInterface $entity): ?DocumentState {
-    $state = $this->documentField($entity, 'state');
-    return is_string($state) ? DocumentState::tryFrom($state) : NULL;
-  }
-
-  /**
-   * Reads a document's failed attempt count.
+   * Asserts the document's row in the store.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity, in the translation to read.
-   *
-   * @return int
-   *   The number of consecutive failed attempts.
+   * @param \Drupal\helfi_search\DocumentState $state
+   *   The expected state.
+   * @param int|null $attempts
+   *   The expected failed attempt count, or NULL to skip the assertion.
+   * @param int|null $changed
+   *   The expected timestamp of the last state change, or NULL to skip the
+   *   assertion.
    */
-  private function getAttempts(EntityInterface $entity): int {
-    return (int) $this->documentField($entity, 'attempts');
+  private function assertDocumentState(
+    EntityInterface $entity,
+    DocumentState $state,
+    ?int $attempts = NULL,
+    ?int $changed = NULL,
+  ): void {
+    $query = $this->container->get(Connection::class)
+      ->select(self::DOCUMENT_TABLE, 'd')
+      ->fields('d', ['state', 'attempts', 'changed']);
+
+    $row = self::keyCondition($query, $entity)->execute()->fetchAssoc();
+
+    $this->assertIsArray($row, 'The store has no row for the document.');
+    $this->assertSame($state, DocumentState::tryFrom($row['state']));
+
+    if ($attempts !== NULL) {
+      $this->assertSame($attempts, (int) $row['attempts']);
+    }
+
+    if ($changed !== NULL) {
+      $this->assertSame($changed, (int) $row['changed']);
+    }
   }
 
   /**
@@ -91,33 +121,22 @@ trait EmbeddingStoreTrait {
   }
 
   /**
-   * Reads one column of a document's row.
-   *
-   * @return mixed
-   *   The column's value, or FALSE when the store has no such row.
-   */
-  private function documentField(EntityInterface $entity, string $column): mixed {
-    $query = $this->container->get(Connection::class)
-      ->select(self::DOCUMENT_TABLE, 'd')
-      ->fields('d', [$column]);
-
-    return self::keyCondition($query, $entity)
-      ->execute()
-      ->fetchField();
-  }
-
-  /**
    * Writes a document's chunk rows.
    *
+   * @phpstan-param \Drupal\Core\Entity\EntityInterface|DocumentKey $entity
    * @phpstan-param \Drupal\helfi_search\Pipeline\Chunk[] $chunks
    * @phpstan-param float[] $vector
    */
   private function fillChunks(
-    EntityInterface $entity,
-    EmbeddingModel $model,
+    EntityInterface|array $entity,
     array $chunks,
+    EmbeddingModel $model = EmbeddingModel::DEFAULT,
     array $vector = [0.25, 0.5],
   ): void {
+    if ($entity instanceof EntityInterface) {
+      $entity = self::key($entity);
+    }
+
     $insert = $this->container->get(Connection::class)
       ->insert(self::CHUNK_TABLE)
       ->fields([
@@ -135,9 +154,9 @@ trait EmbeddingStoreTrait {
 
     foreach (array_values($chunks) as $delta => $chunk) {
       $insert->values([
-        'entity_type' => $entity->getEntityTypeId(),
-        'entity_id' => (string) $entity->id(),
-        'langcode' => $entity->language()->getId(),
+        'entity_type' => $entity['entity_type'],
+        'entity_id' => (string) $entity['entity_id'],
+        'langcode' => $entity['langcode'],
         'delta' => $delta,
         'model' => $model->value,
         'content_hash' => $chunk->contentHash(),
@@ -157,7 +176,7 @@ trait EmbeddingStoreTrait {
    * @return \Drupal\helfi_search\Plugin\search_api\processor\DTO\StoredChunk[]
    *   The document's chunks.
    */
-  private function readChunks(EntityInterface $entity, EmbeddingModel $model): array {
+  private function readChunks(EntityInterface $entity, EmbeddingModel $model = EmbeddingModel::DEFAULT): array {
     $query = $this->container->get(Connection::class)
       ->select(self::CHUNK_TABLE, 'c')
       ->fields('c', ['vector', 'snippet', 'fragment']);
@@ -181,28 +200,30 @@ trait EmbeddingStoreTrait {
   }
 
   /**
+   * Reads one column of every chunk row, in delta order.
+   *
+   * @return array<int, string>
+   *   The column's values.
+   */
+  private function chunkColumn(string $column): array {
+    return array_values($this->container->get(Connection::class)
+      ->select(self::CHUNK_TABLE, 'c')
+      ->fields('c', [$column])
+      ->orderBy('delta')
+      ->execute()
+      ->fetchCol());
+  }
+
+  /**
    * Counts every chunk row in the table.
    *
    * @return int
    *   The number of chunk rows.
    */
   private function countChunks(): int {
-    return $this->chunkExpression('COUNT(*)');
-  }
-
-  /**
-   * Runs one aggregate over the whole chunk table.
-   *
-   * @param string $expression
-   *   The aggregate expression.
-   *
-   * @return int
-   *   The aggregate's value.
-   */
-  private function chunkExpression(string $expression): int {
     $query = $this->container->get(Connection::class)
       ->select(self::CHUNK_TABLE, 'c');
-    $query->addExpression($expression, 'value');
+    $query->addExpression('COUNT(*)', 'total');
 
     return (int) $query->execute()->fetchField();
   }
