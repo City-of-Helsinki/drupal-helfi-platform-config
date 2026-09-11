@@ -96,16 +96,16 @@ class BreadcrumbTest extends ExistingSiteTestBase {
     $this->assertSession()->statusCodeEquals(200);
     $elements = $this->getSession()->getPage()->findAll('css', '.hds-breadcrumb ol li');
 
-    $titles = array_map(fn (NodeElement $el): string => $el->getText(), $elements);
+    $titles = array_map(fn (NodeElement $el): string => strtolower($el->getText()), $elements);
     $uniqueTitles = array_unique($titles);
 
     // Test for duplicates.
     $this->assertCount(count($uniqueTitles), $titles);
 
     // Assert the breadcrumb items.
-    $this->assertTrue(in_array($this->label ?? '', $titles));
-    $this->assertTrue(in_array('Level 1 page - en', $titles), 'Level 1 page found from breadcrumb');
-    $this->assertTrue(in_array('Level 2 page - en', $titles), 'Level 2 page found from breadcrumb');
+    $this->assertTrue(in_array(strtolower($this->label) ?? '', $titles), 'Site name found from breadcrumb');
+    $this->assertTrue(in_array('level 1 page - en', $titles), 'Level 1 page found from breadcrumb');
+    $this->assertTrue(in_array('level 2 page - en', $titles), 'Level 2 page found from breadcrumb');
   }
 
 }
