@@ -65,7 +65,7 @@ class BreadcrumbTest extends ExistingSiteTestBase {
       $this->nodes[$key]->save();
 
       $menulinkSettings = [
-        'title' => $title,
+        'title' => "$title edited",
         'link' => [
           'uri' => 'entity:node/' . $this->nodes[$key]->id(),
         ],
@@ -80,7 +80,6 @@ class BreadcrumbTest extends ExistingSiteTestBase {
       $link = MenuLinkContent::create($menulinkSettings);
       $link->save();
 
-      // Update the breadcrumb after creating menu item.
       $this->nodes[$key]->save();
 
       $menulinkParent = $link->getPluginId();
@@ -104,8 +103,8 @@ class BreadcrumbTest extends ExistingSiteTestBase {
 
     // Assert the breadcrumb items.
     $this->assertTrue(in_array(strtolower($this->label) ?? '', $titles), 'Site name found from breadcrumb');
-    $this->assertTrue(in_array('level 1 page - en', $titles), 'Level 1 page found from breadcrumb');
-    $this->assertTrue(in_array('level 2 page - en', $titles), 'Level 2 page found from breadcrumb');
+    $this->assertTrue(in_array('level 1 page - en edited', $titles), 'Level 1 node menu title found from breadcrumb');
+    $this->assertTrue(in_array('level 2 page - en edited', $titles), 'Level 2 node menu title found from breadcrumb');
   }
 
 }
