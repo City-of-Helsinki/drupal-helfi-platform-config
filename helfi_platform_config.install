@@ -788,3 +788,25 @@ function helfi_platform_config_update_11007(array &$sandbox): void {
     ? $sandbox['current'] / $sandbox['total']
     : 1;
 }
+
+/**
+ * UHF-13390: Fix breadcrumb - updating to 2.0.10 from 2.0.9 added duplicate.
+ */
+function helfi_platform_config_update_11008(): void {
+  if (\Drupal::moduleHandler()->moduleExists('easy_breadcrumb')) {
+    // Use menu title on breadcrumb when possible.
+    $config = \Drupal::configFactory()->getEditable('easy_breadcrumb.settings');
+    $config->set('title_from_page_when_available', FALSE)
+      ->set('use_menu_title_as_fallback', TRUE)
+      ->set('include_title_segment', TRUE)
+      ->set('remove_repeated_segments', TRUE)
+      ->save();
+  }
+
+  if (\Drupal::moduleHandler()->moduleExists('pathauto')) {
+    // Always use menu link on url.
+    $config = \Drupal::configFactory()->getEditable('pathauto.pattern.page_content_pattern');
+    $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
+      ->save();
+  }
+}
