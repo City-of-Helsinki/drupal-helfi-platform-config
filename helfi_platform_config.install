@@ -798,6 +798,8 @@ function helfi_platform_config_update_11009(): void {
     $config = \Drupal::configFactory()->getEditable('easy_breadcrumb.settings');
     $config->set('title_from_page_when_available', FALSE)
       ->set('use_menu_title_as_fallback', TRUE)
+      ->set('include_title_segment', TRUE)
+      ->set('remove_repeated_segments', TRUE)
       ->save();
   }
 
