@@ -797,19 +797,19 @@ function helfi_platform_config_update_11008(): void {
     return;
   }
 
+  // Include home segment to false: 2.0.10 caused duplicate home segment,
+  // and using menu title on breadcrumb when possible.
   $config = \Drupal::configFactory()->getEditable('easy_breadcrumb.settings');
   $config->set('include_home_segment', FALSE)
+    ->set('title_from_page_when_available', FALSE)
+    ->set('use_menu_title_as_fallback', TRUE)
     ->save();
-}
 
-/**
- * UHF-13390: Update pathauto pattern.
- */
-function helfi_platform_config_update_11009(): void {
   if (!\Drupal::moduleHandler()->moduleExists('pathauto')) {
     return;
   }
 
+  // Always use menu link on url.
   $config = \Drupal::configFactory()->getEditable('pathauto.pattern.page_content_pattern');
   $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
     ->save();
