@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Kernel\Plugin\search_api;
 
+use Drupal\helfi_search\DocumentState;
 use Drupal\helfi_search\EmbeddingModel;
-use Drupal\helfi_search\EmbeddingsModelInterface;
 use Drupal\helfi_search\Pipeline\Chunk;
-use Drupal\helfi_search\Pipeline\PipelineException;
-use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\search_api\Item\Field;
+use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Utility\Utility;
+use Drupal\Tests\helfi_search\Traits\EmbeddingStoreTrait;
+use Drupal\Tests\helfi_search\Traits\AllowEmbeddingTrait;
 use Drupal\Tests\search_api\Kernel\Processor\ProcessorTestBase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
-use Prophecy\Argument;
 
 /**
  * Tests for search api plugin.
@@ -24,6 +24,9 @@ use Prophecy\Argument;
 #[Group('helfi_search')]
 #[RunTestsInSeparateProcesses]
 class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
+
+  use EmbeddingStoreTrait;
+  use AllowEmbeddingTrait;
 
   /**
    * {@inheritdoc}
@@ -42,12 +45,13 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   public function setUp($processor = NULL): void {
     parent::setUp('helfi_search_embeddings');
 
-    NodeType::create([
-      'type' => 'test_node_bundle_1',
-    ])->save();
+    $this->installSchema('helfi_search', [
+      'helfi_search_document',
+      'helfi_search_chunk',
+    ]);
 
     NodeType::create([
-      'type' => 'test_node_bundle_2',
+      'type' => 'test_node_bundle_1',
     ])->save();
 
     $embeddings = new Field($this->index, EmbeddingModel::DEFAULT->fieldPrefix());
@@ -59,130 +63,75 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   }
 
   /**
-   * Tests that extraction failure halts processing.
+   * Tests an empty database.
    */
-  public function testExtractionFailureThrows(): void {
-    $textPipeline = $this->prophesize(TextPipeline::class);
-    $textPipeline
-      ->process(Argument::any())
-      ->willThrow(new PipelineException('Extraction failed'));
-    $this->container->set(TextPipeline::class, $textPipeline->reveal());
+  public function testEmptyRun(): void {
+    $item = $this->createItem();
+    $entity = $item->getOriginalObject()->getValue();
 
-    $this->processor = $this->container
-      ->get('search_api.plugin_helper')
-      ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
-
-    $items = $this->createNodeItems([
-      ['title' => 'Test', 'type' => 'test_node_bundle_1'],
-    ]);
-
-    $this->expectException(PipelineException::class);
-
-    $item = array_first($items);
     $this->processor->addFieldValues($item);
+
+    // No vectors are generated.
+    $this->assertEmpty($item->getField(EmbeddingModel::DEFAULT->fieldPrefix())?->getValues() ?? []);
+
+    // An unknown document is created so that cron picks it up.
+    $this->assertDocumentState($entity, DocumentState::Pending);
   }
 
   /**
-   * Tests that items have no embeddings when the pipeline returns no chunks.
+   * Tests addFieldValues.
    */
-  public function testNoEmbeddingsWhenNoChunks(): void {
-    $textPipeline = $this->prophesize(TextPipeline::class);
-    $textPipeline
-      ->process(Argument::any())
-      ->willReturn([]);
-    $this->container->set(TextPipeline::class, $textPipeline->reveal());
+  public function testAddFieldValues(): void {
+    $first = new Chunk('Body text');
+    $first->snippet = 'Body';
+    $first->fragment = 'how-to-apply';
 
-    $this->processor = $this->container
-      ->get('search_api.plugin_helper')
-      ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
-    $this->index->addProcessor($this->processor);
+    $second = new Chunk('More body text');
+    $second->snippet = 'More';
+    $second->fragment = 'requirements';
 
-    $items = $this->createNodeItems([
-      ['title' => 'Test', 'type' => 'test_node_bundle_1'],
-    ]);
+    $item = $this->createItem();
+    $entity = $item->getOriginalObject()->getValue();
+    $this->fillChunks($entity, [$first, $second]);
 
-    $item = array_first($items);
     $this->processor->addFieldValues($item);
 
-    // Item still exists, just has no embedding field values.
-    $field = $item->getField(EmbeddingModel::DEFAULT->fieldPrefix());
-    $this->assertEmpty($field?->getValues() ?? []);
+    $values = $item->getField(EmbeddingModel::DEFAULT->fieldPrefix())->getValues();
+
+    $this->assertCount(2, $values);
+    $this->assertEqualsWithDelta([0.25, 0.5], $values[0]['vector'], 1e-6);
+    $this->assertSame('Body', $values[0]['content']);
+    $this->assertSame('how-to-apply', $values[0]['fragment']);
+    $this->assertSame('requirements', $values[1]['fragment']);
   }
 
   /**
-   * Tests embedding plugin.
+   * Creates a search api item for a node, with the embeddings field attached.
+   *
+   * @return \Drupal\search_api\Item\ItemInterface<mixed>
+   *   The item.
    */
-  public function testPipeline(): void {
-    $chunk = new Chunk('Body text');
-    $chunk->snippet = 'Text';
-    $chunk->fragment = 'how-to-apply';
-
-    $textPipeline = $this->prophesize(TextPipeline::class);
-    $textPipeline->process(Argument::any())->willReturn([$chunk]);
-    $this->container->set(TextPipeline::class, $textPipeline->reveal());
-
-    $this->container->set(EmbeddingsModelInterface::class, new class implements EmbeddingsModelInterface {
-
-      /**
-       * {@inheritdoc}
-       */
-      public function getEmbedding(string $text, EmbeddingModel $model): array {
-        return [0.1, 0.2, 0.3];
-      }
-
-      /**
-       * {@inheritdoc}
-       */
-      public function batchGetEmbedding(array $batch, EmbeddingModel $model): array {
-        return array_map(static fn () => [0.1, 0.2, 0.3], $batch);
-      }
-
-    });
-
-    $this->processor = $this->container
-      ->get('search_api.plugin_helper')
-      ->createProcessorPlugin($this->index, 'helfi_search_embeddings');
-
-    $items = $this->createNodeItems([
-      ['title' => 'Test', 'type' => 'test_node_bundle_1'],
+  private function createItem(): ItemInterface {
+    $node = Node::create([
+      'title' => 'Test',
+      'type' => 'test_node_bundle_1',
     ]);
+    $node->save();
 
-    $item = array_first($items);
+    $item = $this->container
+      ->get('search_api.fields_helper')
+      ->createItemFromObject(
+        $this->index,
+        $node->getTypedData(),
+        Utility::createCombinedId('entity:node', $node->id() . ':en'),
+      );
 
-    // Attach the embedings field to the item so that getFields(FALSE) inside
-    // the processor returns it.
-    $field = $this->index->getField(EmbeddingModel::DEFAULT->fieldPrefix());
+    // Attach the embeddings field.
+    $field = clone $this->index->getField(EmbeddingModel::DEFAULT->fieldPrefix());
     $field->setType('embeddings');
     $item->setField(EmbeddingModel::DEFAULT->fieldPrefix(), $field);
-    $this->processor->addFieldValues($item);
 
-    $field = $item->getField(EmbeddingModel::DEFAULT->fieldPrefix());
-    $values = $field->getValues();
-    $this->assertCount(1, $values);
-    $this->assertSame([0.1, 0.2, 0.3], $values[0]['vector']);
-    $this->assertSame($chunk->snippet, $values[0]['content']);
-    $this->assertSame('how-to-apply', $values[0]['fragment']);
-  }
-
-  /**
-   * Create search api items for testing.
-   *
-   * @phpstan-param array<array<string, mixed>> $values
-   * @phpstan-return \Drupal\search_api\Item\ItemInterface<mixed>[]
-   */
-  private function createNodeItems(array $values): array {
-    $items = [];
-    foreach ($values as $node) {
-      $node = Node::create($node);
-      $node->save();
-
-      $id = Utility::createCombinedId('entity:node', $node->id() . ':en');
-      $items[] = $this->container
-        ->get('search_api.fields_helper')
-        ->createItemFromObject($this->index, $node->getTypedData(), $id);
-    }
-
-    return $items;
+    return $item;
   }
 
 }

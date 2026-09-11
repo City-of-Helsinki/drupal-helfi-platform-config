@@ -39,6 +39,126 @@ function helfi_search_schema(): array {
     'primary key' => ['model_name'],
   ];
 
+  $schema['helfi_search_document'] = [
+    'description' => 'Embedding state for one entity translation.',
+    'fields' => [
+      'entity_type' => [
+        'type' => 'varchar_ascii',
+        'length' => 32,
+        'not null' => TRUE,
+        'description' => 'The entity type ID.',
+      ],
+      'entity_id' => [
+        'type' => 'varchar_ascii',
+        'length' => 64,
+        'not null' => TRUE,
+        'description' => 'The entity ID.',
+      ],
+      'langcode' => [
+        'type' => 'varchar_ascii',
+        'length' => 12,
+        'not null' => TRUE,
+        'description' => 'The translation language code.',
+      ],
+      'state' => [
+        'type' => 'varchar_ascii',
+        'length' => 16,
+        'not null' => TRUE,
+        'default' => 'pending',
+        'description' => 'One of pending, embedding, ready, failed or skipped.',
+      ],
+      'attempts' => [
+        'type' => 'int',
+        'size' => 'tiny',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Failed processing attempts.',
+      ],
+      'changed' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Timestamp of the last state change.',
+      ],
+    ],
+    'primary key' => ['entity_type', 'entity_id', 'langcode'],
+    'indexes' => [
+      'state_changed' => ['state', 'changed'],
+    ],
+  ];
+
+  $schema['helfi_search_chunk'] = [
+    'description' => 'Chunks and their vector embeddings.',
+    'fields' => [
+      'entity_type' => [
+        'type' => 'varchar_ascii',
+        'length' => 32,
+        'not null' => TRUE,
+        'description' => 'The entity type ID.',
+      ],
+      'entity_id' => [
+        'type' => 'varchar_ascii',
+        'length' => 64,
+        'not null' => TRUE,
+        'description' => 'The entity ID.',
+      ],
+      'langcode' => [
+        'type' => 'varchar_ascii',
+        'length' => 12,
+        'not null' => TRUE,
+        'description' => 'The translation language code.',
+      ],
+      'delta' => [
+        'type' => 'int',
+        'size' => 'small',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'The chunk index within the document.',
+      ],
+      'model' => [
+        'type' => 'varchar_ascii',
+        'length' => 64,
+        'not null' => TRUE,
+        'description' => 'The embedding model name.',
+      ],
+      'content_hash' => [
+        'type' => 'varchar_ascii',
+        'length' => 64,
+        'not null' => TRUE,
+        'description' => 'Hash of the embedded text.',
+      ],
+      'vector' => [
+        'type' => 'blob',
+        'size' => 'big',
+        'not null' => TRUE,
+        'description' => 'The embedding.',
+      ],
+      'snippet' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => 'Human readable excerpt.',
+      ],
+      'fragment' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'description' => 'Heading anchor for linking.',
+      ],
+      'changed' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Timestamp of the last write to this row.',
+      ],
+    ],
+    'primary key' => ['entity_type', 'entity_id', 'langcode', 'delta', 'model'],
+    'indexes' => [
+      'content_hash' => ['content_hash', 'model'],
+    ],
+  ];
+
   return $schema;
 }
 
@@ -280,4 +400,18 @@ function helfi_search_update_11020(): void {
   }
 
   $config->save();
+}
+
+/**
+ * UHF-13067: Add the embedding store tables.
+ */
+function helfi_search_update_11021(): void {
+  $schema = \Drupal::database()->schema();
+  $tables = helfi_search_schema();
+
+  foreach (['helfi_search_document', 'helfi_search_chunk'] as $table) {
+    if (!$schema->tableExists($table)) {
+      $schema->createTable($table, $tables[$table]);
+    }
+  }
 }

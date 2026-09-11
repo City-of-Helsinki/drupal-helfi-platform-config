@@ -25,7 +25,7 @@ final class SearchSettingsForm extends ConfigFormBase {
   public function __construct(
     ConfigFactoryInterface $config_factory,
     TypedConfigManagerInterface $typedConfigManager,
-    private readonly EnvironmentResolverInterface $environmentResolver,
+    protected readonly EnvironmentResolverInterface $environmentResolver,
   ) {
     parent::__construct($config_factory, $typedConfigManager);
   }
