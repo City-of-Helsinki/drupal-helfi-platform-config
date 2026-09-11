@@ -801,7 +801,7 @@ function helfi_platform_config_update_11009(): void {
       ->save();
   }
 
-  if (!\Drupal::moduleHandler()->moduleExists('pathauto')) {
+  if (\Drupal::moduleHandler()->moduleExists('pathauto')) {
     // Always use menu link on url.
     $config = \Drupal::configFactory()->getEditable('pathauto.pattern.page_content_pattern');
     $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
