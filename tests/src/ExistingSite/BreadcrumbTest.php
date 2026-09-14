@@ -91,7 +91,7 @@ class BreadcrumbTest extends ExistingSiteTestBase {
    */
   #[Test]
   public function testBreadcrumb(): void {
-    $this->drupalGet($this->nodes[1]->getTranslation('en')->toUrl());
+    $this->drupalGet('/node/' . $this->nodes[1]->id());
     $this->assertSession()->statusCodeEquals(200);
     $elements = $this->getSession()->getPage()->findAll('css', '.hds-breadcrumb ol li');
 
