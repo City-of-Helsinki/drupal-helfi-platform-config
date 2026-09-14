@@ -22,6 +22,7 @@ use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
+use Drupal\pathauto\Drush\Commands\PathautoCommands;
 use Drupal\user\Entity\User;
 
 /**
@@ -809,4 +810,56 @@ function helfi_platform_config_update_11008(): void {
     $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
       ->save();
   }
+}
+
+/**
+ * Run the path updates for all nodes.
+ *
+ * @param array $sandbox
+ *   The sandbox.
+ */
+function helfi_platform_config_update_11009(array &$sandbox): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  if (!isset($sandbox['total'])) {
+    $sandbox['total'] = $storage->getQuery()
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['last_id'] = 0;
+
+    if ($sandbox['total'] === 0) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  $nids = $storage->getQuery()
+    ->condition('nid', $sandbox['last_id'], '>')
+    ->accessCheck(FALSE)
+    ->sort('nid')
+    ->range(0, 50)
+    ->execute();
+
+  if (empty($nids)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $generator */
+  $generator = \Drupal::service('pathauto.generator');
+  $nodes = $storage->loadMultiple($nids);
+  foreach ($nodes as $node) {
+    $sandbox['current']++;
+    $sandbox['last_id'] = $node->id();
+
+    foreach ($node->getTranslationLanguages() as $langcode => $language) {
+      $generator->updateEntityAlias($node, 'update', ['language' => $langcode]);
+    }
+  }
+
+  $sandbox['#finished'] = $sandbox['total'] > 0
+    ? $sandbox['current'] / $sandbox['total']
+    : 1;
 }
