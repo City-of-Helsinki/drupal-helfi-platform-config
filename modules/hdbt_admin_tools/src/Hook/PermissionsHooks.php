@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_ai\Hook;
+namespace Drupal\hdbt_admin_tools\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
 
 /**
- * Permission hook implementations for HELfi AI.
+ * Permission hook implementations for HDBT Admin tools.
  */
 class PermissionsHooks {
 
@@ -19,14 +19,10 @@ class PermissionsHooks {
    */
   #[Hook('platform_config_grant_permissions')]
   public function grantPermissions(): array {
-    $permissions = [
-      'use helfi ai title suggestion',
-      'use helfi ai tone check',
-      'use helfi ai summary',
-      'manage ai prompts',
-    ];
     return [
-      'admin' => $permissions,
+      'admin' => [
+        'administer site configuration',
+      ],
     ];
   }
 

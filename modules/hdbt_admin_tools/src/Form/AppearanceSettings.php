@@ -18,20 +18,20 @@ use Drupal\language\ConfigurableLanguageManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
- * Site settings.
+ * Appearance settings.
  */
-class SiteSettings extends ConfigFormBase {
+class AppearanceSettings extends ConfigFormBase {
 
   use AutowireTrait;
 
-  const SITE_SETTINGS_CONFIGURATION = 'hdbt_admin_tools.site_settings';
+  const string APPEARANCE_CONFIGURATION = 'hdbt_admin_tools.site_settings';
 
   /**
    * The configuration name.
    *
    * @var string
    */
-  protected string $configName = self::SITE_SETTINGS_CONFIGURATION;
+  protected string $configName = self::APPEARANCE_CONFIGURATION;
 
   public function __construct(
     ConfigFactoryInterface $config_factory,
@@ -46,7 +46,7 @@ class SiteSettings extends ConfigFormBase {
    */
   protected function getEditableConfigNames(): array {
     return [
-      self::SITE_SETTINGS_CONFIGURATION,
+      self::APPEARANCE_CONFIGURATION,
     ];
   }
 
@@ -70,7 +70,7 @@ class SiteSettings extends ConfigFormBase {
     $form['site_settings'] = [
       '#type' => 'fieldset',
       '#open' => TRUE,
-      '#title' => $this->t('Site wide settings'),
+      '#title' => $this->t('Appearance settings'),
     ];
 
     $form['site_settings']['theme_color'] = [
@@ -212,7 +212,7 @@ class SiteSettings extends ConfigFormBase {
    * @see options_allowed_values()
    */
   public static function getColorPaletteDefaultValue(): string {
-    $settings = \Drupal::config(self::SITE_SETTINGS_CONFIGURATION);
+    $settings = \Drupal::config(self::APPEARANCE_CONFIGURATION);
     if ($value = $settings?->getOriginal('site_settings.theme_color', FALSE)) {
       return $value;
     }

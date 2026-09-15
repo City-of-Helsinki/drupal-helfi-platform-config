@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\hdbt_admin_tools\Kernel\Controller;
+namespace Drupal\Tests\hdbt_admin_tools\Kernel;
 
 use Drupal\Core\Url;
 use Drupal\KernelTests\KernelTestBase;
@@ -15,7 +15,7 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
  *
  * @group hdbt_admin_tools
  */
-class ListControllerTest extends KernelTestBase {
+class AdminToolsRoutesTest extends KernelTestBase {
 
   use ApiTestTrait;
   use UserCreationTrait;
@@ -39,8 +39,6 @@ class ListControllerTest extends KernelTestBase {
     parent::setUp();
 
     $this->installEntitySchema('user');
-    // Create an empty user to make sure we don't accidentally get
-    // uid 1 user with all permissions.
     $this->createUser();
   }
 
@@ -50,12 +48,12 @@ class ListControllerTest extends KernelTestBase {
   public function testAdminToolsRoutes(): void {
     $routes = [
       'hdbt_admin_tools.list_all',
-      'hdbt_admin_tools.site_settings_form',
+      'hdbt_admin_tools.appearance_settings',
       'hdbt_admin_tools.taxonomy',
     ];
 
     // Test as user without proper permissions.
-    $user = $this->createUser([]);
+    $user = $this->createUser();
     $this->assertInstanceOf(User::class, $user);
     $this->setCurrentUser($user);
 
