@@ -14,7 +14,7 @@ enum Filters: string {
   case RemoteEvents = 'field_remote_events';
   case Language = 'field_language';
   case SearchTerm = 'field_search_term';
-  case TargetGroup = 'field_target_group';
+  case TargetGroup = 'field_event_list_target_group';
 
   /**
    * Return the Drupal setting name for the filter.

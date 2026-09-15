@@ -21,7 +21,7 @@ dependencies:
     - field.field.paragraph.event_list.field_language
     - field.field.paragraph.event_list.field_remote_events
     - field.field.paragraph.event_list.field_search_term
-    - field.field.paragraph.event_list.field_target_group
+    - field.field.paragraph.event_list.field_event_list_target_group
     - paragraphs.paragraphs_type.event_list
   module:
     - field_group
@@ -33,7 +33,7 @@ third_party_settings:
     group_search_filters:
       children:
         - field_search_term
-        - field_target_group
+        - field_event_list_target_group
         - field_event_location
         - field_event_time
         - field_language
@@ -132,6 +132,13 @@ content:
       endpoint: place
       query: sort=name
     third_party_settings: {  }
+  field_event_list_target_group:
+    type: boolean_checkbox
+    weight: 9
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   field_event_list_title:
     type: string_textfield
     weight: 0
@@ -184,13 +191,6 @@ content:
   field_search_term:
     type: boolean_checkbox
     weight: 8
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  field_target_group:
-    type: boolean_checkbox
-    weight: 9
     region: content
     settings:
       display_label: true
