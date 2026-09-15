@@ -11,3 +11,4 @@ title_from_page_when_available: false
 use_menu_title_as_fallback: true
 include_title_segment: true
 remove_repeated_segments: true
+include_home_segment: false
