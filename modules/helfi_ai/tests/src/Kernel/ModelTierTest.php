@@ -122,6 +122,11 @@ class ModelTierTest extends EntityKernelTestBase {
     return $node;
   }
 
+  /**
+   * Every scenario is asserted in a single test because a kernel test
+   * reinstalls Drupal for each test method, and this suite runs on every pull
+   * request.
+   */
   public function testModelTierRouting(): void {
     $this->setTiers([
       'default' => 'echoai__default-model',
