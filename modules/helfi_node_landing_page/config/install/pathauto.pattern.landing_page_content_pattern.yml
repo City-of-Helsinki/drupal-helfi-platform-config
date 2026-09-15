@@ -2,12 +2,14 @@ uuid: fb30245d-dda0-433e-829c-2e5906726b6d
 langcode: en
 status: true
 dependencies:
+  config:
+    - node.type.landing_page
   module:
     - node
 id: landing_page_content_pattern
 label: 'Landing page content pattern'
 type: 'canonical_entities:node'
-pattern: '[node:menu-link:parents:join-path]/[node:title]'
+pattern: '/[node:menu-link:parents:join-path]/[node:menu-link]'
 selection_criteria:
   bbac8406-a5b0-41da-b72f-b79434db6b98:
     id: 'entity_bundle:node'

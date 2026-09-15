@@ -808,6 +808,10 @@ function helfi_platform_config_update_11008(): void {
     $config = \Drupal::configFactory()->getEditable('pathauto.pattern.page_content_pattern');
     $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
       ->save();
+
+    $config = \Drupal::configFactory()->getEditable('pathauto.pattern.landing_page_content_pattern');
+    $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
+      ->save();
   }
 }
 
