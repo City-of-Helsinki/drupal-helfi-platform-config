@@ -815,7 +815,7 @@ function helfi_platform_config_update_11008(): void {
  * Run the path updates for all nodes.
  *
  * @param array<string, mixed> $sandbox
- *    The sandbox.
+ *   The sandbox.
  */
 function helfi_platform_config_update_11009(array &$sandbox): void {
   $storage = \Drupal::entityTypeManager()->getStorage('node');
