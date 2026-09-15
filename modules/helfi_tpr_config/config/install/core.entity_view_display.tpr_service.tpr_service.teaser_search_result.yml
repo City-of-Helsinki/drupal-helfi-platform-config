@@ -86,6 +86,7 @@ content:
     weight: 0
     region: content
 hidden:
+  ai_summary: true
   created: true
   field_content: true
   field_lower_content: true

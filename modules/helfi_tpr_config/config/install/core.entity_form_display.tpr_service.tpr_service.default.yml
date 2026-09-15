@@ -11,6 +11,7 @@ dependencies:
     - field.field.tpr_service.tpr_service.field_sidebar_content
   module:
     - hdbt_admin_tools
+    - helfi_ai
     - helfi_tpr
     - metatag
     - paragraphs
@@ -21,6 +22,12 @@ targetEntityType: tpr_service
 bundle: tpr_service
 mode: default
 content:
+  ai_summary:
+    type: ai_summary
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   description:
     type: readonly_field_widget
     weight: 6
@@ -33,7 +40,7 @@ content:
     third_party_settings: {  }
   errand_services:
     type: readonly_field_widget
-    weight: 8
+    weight: 9
     region: content
     settings:
       label: above
@@ -43,7 +50,7 @@ content:
     third_party_settings: {  }
   field_upper_content:
     type: paragraphs
-    weight: 11
+    weight: 12
     region: content
     settings:
       title: Paragraph
@@ -100,7 +107,7 @@ content:
     third_party_settings: {  }
   field_metatags:
     type: metatag_firehose
-    weight: 10
+    weight: 11
     region: content
     settings:
       sidebar: false
@@ -164,7 +171,7 @@ content:
     third_party_settings: {  }
   links:
     type: readonly_field_widget
-    weight: 7
+    weight: 8
     region: content
     settings:
       label: above
@@ -202,7 +209,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 9
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
