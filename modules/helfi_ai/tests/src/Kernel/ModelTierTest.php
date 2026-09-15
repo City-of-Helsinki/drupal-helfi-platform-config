@@ -123,6 +123,8 @@ class ModelTierTest extends EntityKernelTestBase {
   }
 
   /**
+   * Each feature runs on its own tier, and unconfigured tiers fall back.
+   *
    * Every scenario is asserted in a single test because a kernel test
    * reinstalls Drupal for each test method, and this suite runs on every pull
    * request.
