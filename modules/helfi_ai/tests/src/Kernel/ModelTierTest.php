@@ -111,20 +111,6 @@ class ModelTierTest extends EntityKernelTestBase {
   }
 
   /**
-   * All three tiers configured.
-   *
-   * @return array<string, string>
-   *   The tier mapping.
-   */
-  private function allTiers(): array {
-    return [
-      'default' => 'echoai__default-model',
-      'low' => 'echoai__low-model',
-      'high' => 'echoai__high-model',
-    ];
-  }
-
-  /**
    * Builds an unsaved test node carrying the given title.
    */
   private function createNode(string $title): Node {
@@ -136,59 +122,33 @@ class ModelTierTest extends EntityKernelTestBase {
     return $node;
   }
 
-  /**
-   * Tone check asks for the high tier.
-   */
-  public function testToneCheckUsesHighTier(): void {
-    $this->setTiers($this->allTiers());
+  public function testModelTierRouting(): void {
+    $this->setTiers([
+      'default' => 'echoai__default-model',
+      'low' => 'echoai__low-model',
+      'high' => 'echoai__high-model',
+    ]);
 
     $this->generator->checkTone('<p>Some content to check.</p>', 'en');
-
-    $this->assertSame('high-model', $this->requestedModel);
-  }
-
-  /**
-   * Summary generation asks for the low tier.
-   */
-  public function testSummaryUsesLowTier(): void {
-    $this->setTiers($this->allTiers());
+    $this->assertSame('high-model', $this->requestedModel, 'Tone check asks for the high tier.');
 
     $this->generator->generateSummary($this->createNode('Summary tier node'));
-
-    $this->assertSame('low-model', $this->requestedModel);
-  }
-
-  /**
-   * Title suggestion asks for the low tier.
-   */
-  public function testTitleSuggestionUsesLowTier(): void {
-    $this->setTiers($this->allTiers());
+    $this->assertSame('low-model', $this->requestedModel, 'Summary asks for the low tier.');
 
     $this->generator->suggestTitles($this->createNode('Title tier node'));
+    $this->assertSame('low-model', $this->requestedModel, 'Title suggestion asks for the low tier.');
 
-    $this->assertSame('low-model', $this->requestedModel);
-  }
-
-  /**
-   * A tier that is not configured falls back to the default tier.
-   */
-  public function testUnconfiguredTierFallsBackToDefaultTier(): void {
+    // Only the default tier configured: the high tier falls back to it.
     $this->setTiers(['default' => 'echoai__default-model']);
 
     $this->generator->checkTone('<p>Some content to check.</p>', 'en');
+    $this->assertSame('default-model', $this->requestedModel, 'An unconfigured tier falls back to the default tier.');
 
-    $this->assertSame('default-model', $this->requestedModel);
-  }
+    // No tiers at all, as in an environment that sets no tier variables.
+    $this->config('helfi_ai.settings')->clear('model_tiers')->save();
 
-  /**
-   * With no tiers at all the site-wide provider is used.
-   *
-   * This is the behaviour for environments that configure no tier variables.
-   */
-  public function testNoTiersFallBackToSiteWideProvider(): void {
     $this->generator->checkTone('<p>Some content to check.</p>', 'en');
-
-    $this->assertSame('site-wide-model', $this->requestedModel);
+    $this->assertSame('site-wide-model', $this->requestedModel, 'Without tiers the site-wide provider is used.');
   }
 
 }
