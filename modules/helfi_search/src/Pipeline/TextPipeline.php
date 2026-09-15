@@ -17,18 +17,13 @@ use Drupal\Core\Entity\EntityInterface;
  *  5) chunking,
  *  6) field composition and
  *  7) embedding.
- *
- * Each pipeline stage is a separate service that can be independently replaced
- * This allows experimenting with different strategies for individual stages.
- *
- * - HtmlExtractor: How raw HTML is obtained from an entity.
- * - HtmlCleaner: Which HTML elements are considered non-content noise.
- * - MarkdownConverter: How HTML structure maps to Markdown.
- * - TextNormalizer: What normalization is applied to the text.
- * - ContentChunker: How long content is split into chunks.
- * - ChunkAnnotator: How chunks are annotated.
  */
 class TextPipeline {
+
+  /**
+   * The version of this pipeline's output.
+   */
+  public const int VERSION = 1;
 
   public function __construct(
     private readonly HtmlExtractor $htmlExtractor,

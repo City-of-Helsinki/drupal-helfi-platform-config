@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_search\Kernel\Form;
 use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_search\Form\SearchSettingsForm;
@@ -30,6 +31,7 @@ class SearchSettingsFormTest extends KernelTestBase {
    */
   protected static $modules = [
     'system',
+    'search_api',
     'helfi_search',
   ];
 
@@ -127,7 +129,7 @@ class SearchSettingsFormTest extends KernelTestBase {
    *
    * @phpstan-param array<string, mixed> $values
    */
-  private function submit(array $values): FormState {
+  private function submit(array $values): FormStateInterface {
     $form_state = new FormState();
     $form_state->setValues($values);
     $this->container->get(FormBuilderInterface::class)
