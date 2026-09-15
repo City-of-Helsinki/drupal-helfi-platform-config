@@ -5,15 +5,17 @@ hdbt_admin_tools.overview:
   parent: system.admin
   weight: -9
 
+hdbt_admin_tools.site_settings:
+  title: 'Site settings'
+  description: 'Site information and appearance settings.'
+  parent: hdbt_admin_tools.overview
+  route_name: hdbt_admin_tools.site_settings
+  weight: -10
+
 hdbt_admin_tools.site_information:
   title: 'Site information'
-  parent: hdbt_admin_tools.overview
-  route_name: system.site_information_settings
-  weight: 0
-
-hdbt_admin_tools.site_information_child:
-  title: 'Site information'
-  parent: hdbt_admin_tools.site_information
+  description: 'Edit site name, slogan and email.'
+  parent: hdbt_admin_tools.site_settings
   route_name: system.site_information_settings
   weight: 0
 
@@ -26,9 +28,10 @@ hdbt_admin_tools.appearance_settings:
 
 hdbt_admin_tools.menus:
   title: 'Menus'
+  description: 'Edit site navigation menus.'
   parent: hdbt_admin_tools.overview
   route_name: entity.menu.collection
-  weight: 0
+  weight: -7
 
 hdbt_admin_tools.header_top_menu:
   title: 'Header top navigation menu links'
@@ -60,10 +63,7 @@ hdbt_admin_tools.footer_bottom_menu:
 
 hdbt_admin_tools.taxonomy:
   title: 'Taxonomy'
+  description: 'Edit taxonomy terms.'
   parent: hdbt_admin_tools.overview
   route_name: hdbt_admin_tools.taxonomy
-
-hdbt_admin_tools.user_interface_translations:
-  title: 'User interface translations'
-  parent: hdbt_admin_tools.overview
-  route_name: locale.translate_page
+  weight: 0
