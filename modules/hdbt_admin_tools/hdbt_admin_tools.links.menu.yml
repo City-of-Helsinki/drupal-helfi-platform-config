@@ -17,10 +17,11 @@ hdbt_admin_tools.site_information_child:
   route_name: system.site_information_settings
   weight: 0
 
-hdbt_admin_tools.site_settings_form:
-  title: 'Site settings'
-  parent: hdbt_admin_tools.site_information
-  route_name: hdbt_admin_tools.site_settings_form
+hdbt_admin_tools.appearance_settings:
+  title: 'Appearance settings'
+  description: 'Edit appearance settings.'
+  parent: hdbt_admin_tools.site_settings
+  route_name: hdbt_admin_tools.appearance_settings
   weight: -8
 
 hdbt_admin_tools.menus:

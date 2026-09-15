@@ -6,15 +6,15 @@ namespace Drupal\Tests\hdbt_admin_tools\Kernel\Form;
 
 use Drupal\Core\Form\FormState;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\hdbt_admin_tools\Form\SiteSettings;
+use Drupal\hdbt_admin_tools\Form\AppearanceSettings;
 use Drupal\language\Entity\ConfigurableLanguage;
 
 /**
- * Tests the SiteSettings form.
+ * Tests the AppearanceSettings form.
  *
  * @group hdbt_admin_tools
  */
-class SiteSettingsFormTest extends KernelTestBase {
+class AppearanceSettingsFormTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -51,7 +51,7 @@ class SiteSettingsFormTest extends KernelTestBase {
     $this->container->get('language_manager')->setConfigOverrideLanguage($swedish);
 
     // Build and process the form.
-    $form_object = SiteSettings::create($this->container);
+    $form_object = AppearanceSettings::create($this->container);
     $form_state = new FormState();
 
     /** @var \Drupal\Core\Form\FormBuilderInterface $form_builder */
@@ -79,7 +79,7 @@ class SiteSettingsFormTest extends KernelTestBase {
 
     // Config names / helpers.
     $config_factory = $this->container->get('config.factory');
-    $config_name = SiteSettings::SITE_SETTINGS_CONFIGURATION;
+    $config_name = AppearanceSettings::APPEARANCE_CONFIGURATION;
 
     // Default language config (site default, typically 'en').
     $default_config = $config_factory->getEditable($config_name);

@@ -16,7 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\hdbt_admin_tools\DesignSelectionManager;
-use Drupal\hdbt_admin_tools\Form\SiteSettings;
+use Drupal\hdbt_admin_tools\Form\AppearanceSettings;
 use Drupal\node\NodeInterface;
 use Drupal\user\UserInterface;
 
@@ -357,7 +357,7 @@ function hdbt_admin_tools_form_config_translation_form_alter(&$form, &$form_stat
  * @see options_allowed_values()
  */
 function hdbt_admin_tools_color_palette_allowed_values(): array {
-  return SiteSettings::getColorPalettes();
+  return AppearanceSettings::getColorPalettes();
 }
 
 /**
@@ -707,7 +707,7 @@ function hdbt_admin_tools_entity_presave($entity): void {
   // Do not save the color palette override value if chosen color palette is
   // same as global color palette value. This will prevent possible false
   // overrides if global color palette is changed.
-  if ($entity->get('color_palette')->value == SiteSettings::getColorPaletteDefaultValue()) {
+  if ($entity->get('color_palette')->value == AppearanceSettings::getColorPaletteDefaultValue()) {
     $entity->set('color_palette', NULL);
   }
 }

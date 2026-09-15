@@ -21,8 +21,8 @@ hdbt_admin_tools.site_settings:
 hdbt_admin_tools.appearance_settings:
   path: '/admin/tools/appearance-settings'
   defaults:
-    _form: '\Drupal\hdbt_admin_tools\Form\SiteSettings'
-    _title: 'Site settings'
+    _form: '\Drupal\hdbt_admin_tools\Form\AppearanceSettings'
+    _title: 'Appearance settings'
   requirements:
     _permission: 'access administration pages'
   options:
