@@ -13,13 +13,6 @@ This module integrates the [Drupal AI module](https://www.drupal.org/project/ai)
 Add the following block to the instance `settings.php`. The API key is managed separately via the Key module (see below) and does not go here.
 
 ```php
-// Azure OpenAI for Drupal AI module (ai_provider_azure).
-// See: https://helsinkisolutionoffice.atlassian.net/browse/UHF-13110.
-//
-// Each tier is a self-contained endpoint + deployment pair, so tiers may live
-// on different Azure resources and carry their own api-version. A tier is
-// registered only when both halves resolve; unconfigured tiers fall back to
-// 'default' in \Drupal\helfi_ai\Service\AiGenerator::resolveModel().
 $azure_openai_tiers = [
   'default' => ['AZURE_OPENAI_ENDPOINT', 'AZURE_OPENAI_DEPLOYMENT_NAME'],
   'low' => ['AZURE_OPENAI_ENDPOINT_LOW', 'AZURE_OPENAI_DEPLOYMENT_LOW'],
@@ -27,15 +20,10 @@ $azure_openai_tiers = [
 ];
 
 foreach ($azure_openai_tiers as $azure_tier => [$azure_endpoint_var, $azure_deployment_var]) {
-  if (!$azure_endpoint = getenv($azure_endpoint_var)) {
-    continue;
-  }
-  // Classic Azure endpoints carry the deployment name in the URL path, the
-  // newer ones do not, so an explicit variable always wins.
-  $azure_deployment = getenv($azure_deployment_var) ?:
-    (preg_match('#/deployments/([^/?]+)#', $azure_endpoint, $azure_matches) ? $azure_matches[1] : NULL);
+  $azure_endpoint = getenv($azure_endpoint_var);
+  $azure_deployment = getenv($azure_deployment_var);
 
-  if (!$azure_deployment) {
+  if (!$azure_endpoint || !$azure_deployment) {
     continue;
   }
 
@@ -53,17 +41,15 @@ foreach ($azure_openai_tiers as $azure_tier => [$azure_endpoint_var, $azure_depl
 }
 ```
 
-Only the first two variables are required. The rest are opt-in, and an instance that sets none of them behaves exactly as it did before model tiers existed.
-
 | Variable | Required | Description |
 |---|---|---|
 | `AZURE_OPENAI_API_KEY` | yes | Azure OpenAI API key. Shared by every tier |
-| `AZURE_OPENAI_ENDPOINT` | yes | Full Azure Chat Completions URL for the default tier, including deployment name and `api-version` query parameter |
-| `AZURE_OPENAI_DEPLOYMENT_NAME` | no | Deployment name for the default tier. Parsed from the endpoint URL when omitted |
-| `AZURE_OPENAI_ENDPOINT_LOW` | no | Chat Completions URL for the low tier |
-| `AZURE_OPENAI_DEPLOYMENT_LOW` | no | Deployment name for the low tier |
-| `AZURE_OPENAI_ENDPOINT_HIGH` | no | Chat Completions URL for the high tier |
-| `AZURE_OPENAI_DEPLOYMENT_HIGH` | no | Deployment name for the high tier |
+| `AZURE_OPENAI_ENDPOINT` | yes | Chat Completions URL for the default tier, including the `api-version` query parameter |
+| `AZURE_OPENAI_DEPLOYMENT_NAME` | yes | Deployment name for the default tier. Sent as the `model` field in the request body |
+| `AZURE_OPENAI_ENDPOINT_LOW` | low tier | Chat Completions URL for the low tier |
+| `AZURE_OPENAI_DEPLOYMENT_LOW` | low tier | Deployment name for the low tier |
+| `AZURE_OPENAI_ENDPOINT_HIGH` | high tier | Chat Completions URL for the high tier |
+| `AZURE_OPENAI_DEPLOYMENT_HIGH` | high tier | Deployment name for the high tier |
 
 In production these are provisioned via Azure Keyvault through the CI pipeline.
 
