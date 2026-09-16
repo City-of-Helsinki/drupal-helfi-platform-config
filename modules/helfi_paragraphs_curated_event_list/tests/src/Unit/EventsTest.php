@@ -276,10 +276,15 @@ class EventsTest extends UnitTestCase {
    *   Langcode, parameters for query(), and substrings expected in the URI.
    */
   public static function queryRequestUriCases(): \Generator {
-    yield 'search plain text' => [
+    yield 'full text search' => [
       'sv',
       [['value' => 'jazz evening']],
-      ['/search?', 'input=jazz+evening', 'language=sv', 'type=event'],
+      [
+        '/event?',
+        'full_text=jazz+evening',
+        'full_text_language=sv',
+        'language=sv',
+      ],
     ];
 
     yield 'id field filter' => [
