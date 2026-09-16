@@ -1,58 +1,68 @@
-uuid: 2ddab9e5-00ea-43d3-9f86-2b1b98203b4f
+uuid: f5a46264-48fe-46d9-88ab-1bbb9cbb949f
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.tpr_service.teaser
+    - core.entity_view_mode.tpr_service.text_converter
     - field.field.tpr_service.tpr_service.field_content
+    - field.field.tpr_service.tpr_service.field_hide_errand_services
     - field.field.tpr_service.tpr_service.field_lower_content
     - field.field.tpr_service.tpr_service.field_metatags
-    - field.field.tpr_service.tpr_service.field_hide_errand_services
     - field.field.tpr_service.tpr_service.field_sidebar_content
   module:
+    - entity_reference_revisions
     - helfi_tpr
     - text
-id: tpr_service.tpr_service.teaser
+id: tpr_service.tpr_service.text_converter
 targetEntityType: tpr_service
 bundle: tpr_service
-mode: teaser
+mode: text_converter
 content:
   description:
     type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
-    region: content
-  name:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
     weight: 0
     region: content
-  name_override:
-    type: string
+  field_content:
+    type: entity_reference_revisions_entity_view
     label: hidden
     settings:
-      link_to_entity: false
+      view_mode: default
+      link: ''
     third_party_settings: {  }
-    weight: 1
+    weight: 4
+    region: content
+  field_lower_content:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_sidebar_content:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 8
     region: content
 hidden:
   ai_summary: true
-  created: true
   errand_services: true
-  field_content: true
-  field_lower_content: true
-  field_metatags: true
   field_hide_errand_services: true
-  field_sidebar_content: true
+  field_metatags: true
   has_unit: true
   hide_service_points: true
   langcode: true
   links: true
+  name: true
+  name_override: true
   name_synonyms: true
   search_api_excerpt: true
   service_id: true
