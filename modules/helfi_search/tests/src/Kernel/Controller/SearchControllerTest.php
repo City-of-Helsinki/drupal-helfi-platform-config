@@ -6,7 +6,7 @@ namespace Drupal\Tests\helfi_search\Kernel\Controller;
 
 use Drupal\helfi_search\Controller\SearchController;
 use Drupal\helfi_search\EmbeddingModel;
-use Drupal\helfi_search\EmbeddingsModelInterface;
+use Drupal\helfi_search\EmbeddingApiInterface;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
@@ -40,6 +40,7 @@ class SearchControllerTest extends KernelTestBase {
   protected static $modules = [
     'system',
     'user',
+    'search_api',
     'helfi_search',
   ];
 
@@ -74,11 +75,11 @@ class SearchControllerTest extends KernelTestBase {
    * Tests search endpoint.
    */
   public function testSearch(): void {
-    $embeddingsModel = $this->prophesize(EmbeddingsModelInterface::class);
+    $embeddingsModel = $this->prophesize(EmbeddingApiInterface::class);
     $embeddingsModel->getEmbedding(Argument::type('string'), Argument::type(EmbeddingModel::class))
       ->willReturn(array_fill(0, 3, 0.1));
 
-    $this->container->set(EmbeddingsModelInterface::class, $embeddingsModel->reveal());
+    $this->container->set(EmbeddingApiInterface::class, $embeddingsModel->reveal());
 
     $client = ClientBuilder::create()
       ->setHttpClient($this->createMockHttpClient([
@@ -201,10 +202,10 @@ class SearchControllerTest extends KernelTestBase {
    * single search() (not msearch). The debug param surfaces per-bundle aggs.
    */
   public function testOthersBundleAndDebugAggregations(): void {
-    $embeddingsModel = $this->prophesize(EmbeddingsModelInterface::class);
+    $embeddingsModel = $this->prophesize(EmbeddingApiInterface::class);
     $embeddingsModel->getEmbedding(Argument::type('string'), Argument::type(EmbeddingModel::class))
       ->willReturn([0.1, 0.2, 0.3]);
-    $this->container->set(EmbeddingsModelInterface::class, $embeddingsModel->reveal());
+    $this->container->set(EmbeddingApiInterface::class, $embeddingsModel->reveal());
 
     // Two single-search responses; both carry an aggs section so we can
     // assert downstream handling regardless of whether debug is honoured.
@@ -264,10 +265,10 @@ class SearchControllerTest extends KernelTestBase {
    * the React form (news_item) reached the filter.
    */
   public function testNewsSentinelExpandsToAllNewsBundles(): void {
-    $embeddingsModel = $this->prophesize(EmbeddingsModelInterface::class);
+    $embeddingsModel = $this->prophesize(EmbeddingApiInterface::class);
     $embeddingsModel->getEmbedding(Argument::type('string'), Argument::type(EmbeddingModel::class))
       ->willReturn([0.1, 0.2, 0.3]);
-    $this->container->set(EmbeddingsModelInterface::class, $embeddingsModel->reveal());
+    $this->container->set(EmbeddingApiInterface::class, $embeddingsModel->reveal());
 
     $transactions = [];
     $mock = new MockHandler([
@@ -289,6 +290,7 @@ class SearchControllerTest extends KernelTestBase {
     $response = $this->processRequest($request);
     $this->assertEquals(200, $response->getStatusCode());
 
+    /** @var array<int, array{request: \Psr\Http\Message\RequestInterface}> $transactions */
     $this->assertCount(1, $transactions);
     $body = json_decode((string) $transactions[0]['request']->getBody(), TRUE);
 

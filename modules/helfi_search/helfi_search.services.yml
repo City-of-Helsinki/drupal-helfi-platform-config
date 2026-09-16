@@ -1,3 +1,10 @@
+parameters:
+  # Content that is allowed to produce vector embeddings.
+  helfi_search.vectorized_entity_types:
+    - { entity_type: 'node', bundles: ['page', 'landing_page'] }
+    - { entity_type: 'tpr_service' }
+    - { entity_type: 'tpr_unit' }
+
 services:
   _defaults:
     autowire: true
@@ -9,8 +16,10 @@ services:
 
   Drupal\helfi_search\TokenUsageTracker: ~
 
-  Drupal\helfi_search\EmbeddingsModelInterface:
+  Drupal\helfi_search\EmbeddingApiInterface:
     class: Drupal\helfi_search\OpenAI\EmbeddingsApi
+
+  Drupal\helfi_search\Queue\QueueManager: ~
 
   Drupal\helfi_search\Pipeline\HtmlExtractor: ~
   Drupal\helfi_search\Pipeline\HtmlCleaner: ~

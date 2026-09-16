@@ -788,3 +788,81 @@ function helfi_platform_config_update_11007(array &$sandbox): void {
     ? $sandbox['current'] / $sandbox['total']
     : 1;
 }
+
+/**
+ * UHF-13390: Fix breadcrumb - updating to 2.0.10 from 2.0.9 added duplicate.
+ */
+function helfi_platform_config_update_11008(): void {
+  if (\Drupal::moduleHandler()->moduleExists('easy_breadcrumb')) {
+    // Use menu title on breadcrumb when possible.
+    $config = \Drupal::configFactory()->getEditable('easy_breadcrumb.settings');
+    $config->set('title_from_page_when_available', FALSE)
+      ->set('use_menu_title_as_fallback', TRUE)
+      ->set('include_title_segment', TRUE)
+      ->set('remove_repeated_segments', TRUE)
+      ->save();
+  }
+
+  if (\Drupal::moduleHandler()->moduleExists('pathauto')) {
+    // Always use menu link on url.
+    $config = \Drupal::configFactory()->getEditable('pathauto.pattern.page_content_pattern');
+    $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
+      ->save();
+
+    $config = \Drupal::configFactory()->getEditable('pathauto.pattern.landing_page_content_pattern');
+    $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
+      ->save();
+  }
+}
+
+/**
+ * Run the path updates for all nodes.
+ *
+ * @param array<string, mixed> $sandbox
+ *   The sandbox.
+ */
+function helfi_platform_config_update_11009(array &$sandbox): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  if (!isset($sandbox['total'])) {
+    $sandbox['total'] = $storage->getQuery()
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['last_id'] = 0;
+
+    if ($sandbox['total'] === 0) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  $nids = $storage->getQuery()
+    ->condition('nid', $sandbox['last_id'], '>')
+    ->accessCheck(FALSE)
+    ->sort('nid')
+    ->range(0, 50)
+    ->execute();
+
+  if (empty($nids)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $generator */
+  $generator = \Drupal::service('pathauto.generator');
+  $nodes = $storage->loadMultiple($nids);
+  foreach ($nodes as $node) {
+    $sandbox['current']++;
+    $sandbox['last_id'] = $node->id();
+
+    foreach ($node->getTranslationLanguages() as $langcode => $language) {
+      $generator->updateEntityAlias($node, 'update', ['language' => $langcode]);
+    }
+  }
+
+  $sandbox['#finished'] = $sandbox['total'] > 0
+    ? $sandbox['current'] / $sandbox['total']
+    : 1;
+}

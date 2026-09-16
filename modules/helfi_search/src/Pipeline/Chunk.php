@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace Drupal\helfi_search\Pipeline;
 
 use Drupal\Component\Utility\Unicode;
+use Drupal\helfi_search\OpenAI\EmbeddingsApi;
 
 /**
  * A single chunk of text produced by the content chunker.
  */
 final class Chunk {
+
+  /**
+   * Maximum length of a stored snippet, in characters.
+   */
+  public const int MAX_SNIPPET_LENGTH = 200;
 
   /**
    * Constructs a new chunk.
@@ -37,10 +43,24 @@ final class Chunk {
   }
 
   /**
+   * Gets truncated snippet.
+   *
+   * @return string|null
+   *   The truncated snippet, or NULL when the chunk has none.
+   */
+  public function getTruncatedSnippet(): ?string {
+    if ($this->snippet === NULL) {
+      return NULL;
+    }
+    return Unicode::truncate($this->snippet, self::MAX_SNIPPET_LENGTH, TRUE, TRUE);
+  }
+
+  /**
    * Fold another chunk into this one, returning the merged chunk.
    *
-   * The merged chunk keeps this chunk's structural identity (parent, heading,
-   * metadata, fragment). $other's content is appended after a blank line.
+   * The merged chunk keeps this chunk's parent, heading,
+   * metadata, fragment. $other's content is appended after
+   * a blank line.
    */
   public function merge(self $other): self {
     $text = $this->text . "\n\n";
@@ -99,7 +119,14 @@ final class Chunk {
 
     $parts[] = $this->text;
 
-    return implode("\n", $parts);
+    return Unicode::truncate(trim(implode("\n", $parts)), EmbeddingsApi::MAX_INPUT_LENGTH, TRUE);
+  }
+
+  /**
+   * Hash of the chunk's embedding input.
+   */
+  public function contentHash(): string {
+    return hash('sha256', TextPipeline::VERSION . "\0" . $this);
   }
 
 }

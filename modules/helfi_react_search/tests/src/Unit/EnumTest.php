@@ -8,6 +8,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_react_search\Enum\CourseCategory;
 use Drupal\helfi_react_search\Enum\EventCategory;
 use Drupal\helfi_react_search\Enum\EventListCategoryInterface;
+use Drupal\helfi_react_search\Enum\Filters;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -24,7 +25,7 @@ class EnumTest extends UnitTestCase {
    * @param class-string $class
    *   Enum class.
    */
-  #[DataProvider('dataProvider')]
+  #[DataProvider('enumDataProvider')]
   public function testEnum(string $class) {
     $this->assertTrue(enum_exists($class));
 
@@ -36,12 +37,39 @@ class EnumTest extends UnitTestCase {
   }
 
   /**
-   * Data provider for the test.
+   * Data provider for the enum test.
+   *
+   * @phpstan-return array<array<class-string>>
    */
-  public static function dataProvider(): array {
+  public static function enumDataProvider(): array {
     return [
       [EventCategory::class],
       [CourseCategory::class],
+    ];
+  }
+
+  /**
+   * Tests Drupal setting name for each filter.
+   */
+  #[DataProvider('drupalSettingNameProvider')]
+  public function testDrupalSettingName(Filters $filter, string $expected): void {
+    $this->assertSame($expected, $filter->drupalSettingName());
+  }
+
+  /**
+   * Data provider for Drupal setting names.
+   *
+   * @phpstan-return array<int, list<Filters|string>>
+   */
+  public static function drupalSettingNameProvider(): array {
+    return [
+      [Filters::Locations, 'field_event_location'],
+      [Filters::EventTime, 'field_event_time'],
+      [Filters::FreeEvents, 'field_free_events'],
+      [Filters::RemoteEvents, 'field_remote_events'],
+      [Filters::Language, 'field_language'],
+      [Filters::SearchTerm, 'field_search_term'],
+      [Filters::TargetGroup, 'useTargetGroupFilter'],
     ];
   }
 

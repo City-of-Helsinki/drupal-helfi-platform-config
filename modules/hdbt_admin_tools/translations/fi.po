@@ -89,6 +89,12 @@ msgstr ""
 "Jätä kenttä tyhjäksi, jos julkaiset sivun heti.<br>"
 "Esim. %format."
 
+msgid "Edit site navigation menus."
+msgstr "Hallinnoi sivuston valikkolinkkejä."
+
+msgid "Edit taxonomy terms."
+msgstr "Hallinnoi sivuston luokittelutermejä."
+
 msgctxt "HDBT Admin tools"
 msgid "Version notes"
 msgstr "Miten muutit sivua?"

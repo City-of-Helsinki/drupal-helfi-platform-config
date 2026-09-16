@@ -6,7 +6,7 @@ namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\hdbt_admin_tools\Form\SiteSettings;
+use Drupal\hdbt_admin_tools\Form\AppearanceSettings;
 use Drupal\hdbt_admin_tools\SelectWidgetBase;
 
 /**
@@ -38,7 +38,7 @@ class SelectColorPaletteWidget extends SelectWidgetBase {
 
     $element['#default_value'] = !empty($this->getSelectedOptions($items))
       ? $this->getSelectedOptions($items)
-      : SiteSettings::getColorPaletteDefaultValue();
+      : AppearanceSettings::getColorPaletteDefaultValue();
     $element['#attached']['library'][] = 'hdbt_admin_tools/select_color_palette';
     $element['#attributes']['class'][] = 'select-color-palette';
 

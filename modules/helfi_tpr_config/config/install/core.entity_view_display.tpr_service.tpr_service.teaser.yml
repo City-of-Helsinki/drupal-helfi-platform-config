@@ -41,6 +41,7 @@ content:
     weight: 1
     region: content
 hidden:
+  ai_summary: true
   created: true
   errand_services: true
   field_content: true

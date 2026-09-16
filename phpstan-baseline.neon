@@ -425,12 +425,6 @@ parameters:
 			path: modules/hdbt_admin_tools/hdbt_admin_tools.module
 
 		-
-			message: '#^Method Drupal\\hdbt_admin_tools\\Controller\\ListController\:\:build\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/hdbt_admin_tools/src/Controller/ListController.php
-
-		-
 			message: '#^Method Drupal\\hdbt_admin_tools\\DesignSelectionManager\:\:getImages\(\) has parameter \$selections with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -476,37 +470,37 @@ parameters:
 			message: '#^Expression on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.expr
 			count: 1
-			path: modules/hdbt_admin_tools/src/Form/SiteSettings.php
+			path: modules/hdbt_admin_tools/src/Form/AppearanceSettings.php
 
 		-
-			message: '#^Method Drupal\\hdbt_admin_tools\\Form\\SiteSettings\:\:buildForm\(\) has parameter \$form with no value type specified in iterable type array\.$#'
+			message: '#^Method Drupal\\hdbt_admin_tools\\Form\\AppearanceSettings\:\:buildForm\(\) has parameter \$form with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: modules/hdbt_admin_tools/src/Form/SiteSettings.php
+			path: modules/hdbt_admin_tools/src/Form/AppearanceSettings.php
 
 		-
-			message: '#^Method Drupal\\hdbt_admin_tools\\Form\\SiteSettings\:\:buildForm\(\) return type has no value type specified in iterable type array\.$#'
+			message: '#^Method Drupal\\hdbt_admin_tools\\Form\\AppearanceSettings\:\:buildForm\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: modules/hdbt_admin_tools/src/Form/SiteSettings.php
+			path: modules/hdbt_admin_tools/src/Form/AppearanceSettings.php
 
 		-
-			message: '#^Method Drupal\\hdbt_admin_tools\\Form\\SiteSettings\:\:getColorPalettes\(\) return type has no value type specified in iterable type array\.$#'
+			message: '#^Method Drupal\\hdbt_admin_tools\\Form\\AppearanceSettings\:\:getColorPalettes\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: modules/hdbt_admin_tools/src/Form/SiteSettings.php
+			path: modules/hdbt_admin_tools/src/Form/AppearanceSettings.php
 
 		-
-			message: '#^Method Drupal\\hdbt_admin_tools\\Form\\SiteSettings\:\:getEditableConfigNames\(\) return type has no value type specified in iterable type array\.$#'
+			message: '#^Method Drupal\\hdbt_admin_tools\\Form\\AppearanceSettings\:\:getEditableConfigNames\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: modules/hdbt_admin_tools/src/Form/SiteSettings.php
+			path: modules/hdbt_admin_tools/src/Form/AppearanceSettings.php
 
 		-
-			message: '#^Method Drupal\\hdbt_admin_tools\\Form\\SiteSettings\:\:submitForm\(\) has parameter \$form with no value type specified in iterable type array\.$#'
+			message: '#^Method Drupal\\hdbt_admin_tools\\Form\\AppearanceSettings\:\:submitForm\(\) has parameter \$form with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: modules/hdbt_admin_tools/src/Form/SiteSettings.php
+			path: modules/hdbt_admin_tools/src/Form/AppearanceSettings.php
 
 		-
 			message: '''
@@ -1018,12 +1012,6 @@ parameters:
 
 		-
 			message: '#^Function hdbt_cookie_banner_page_attachments\(\) has parameter \$attachments with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/hdbt_cookie_banner/hdbt_cookie_banner.module
-
-		-
-			message: '#^Function hdbt_cookie_banner_platform_config_grant_permissions\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: modules/hdbt_cookie_banner/hdbt_cookie_banner.module
@@ -4295,12 +4283,6 @@ parameters:
 			path: modules/helfi_react_search/tests/src/Unit/EnumTest.php
 
 		-
-			message: '#^Method Drupal\\Tests\\helfi_react_search\\Unit\\EnumTest\:\:dataProvider\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/helfi_react_search/tests/src/Unit/EnumTest.php
-
-		-
 			message: '#^Method Drupal\\Tests\\helfi_react_search\\Unit\\EnumTest\:\:testEnum\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -5289,66 +5271,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: modules/helfi_recommendations/tests/src/Unit/RecommendationManagerTest.php
-
-		-
-			message: '#^Method Drupal\\helfi_search\\Controller\\SearchController\:\:executeBlendedSearch\(\) should return array\{promoted\: list\<mixed\>, results\: list\<mixed\>, total_hits\: int, max_score\: float\|null, debug\?\: array\<string, mixed\>\} but returns array\{promoted\: array\<mixed\>, results\: array\<mixed\>, total_hits\: \(float\|int\), max_score\: mixed, debug\?\: array\{bundles\: array\<string, int\>\}\}\.$#'
-			identifier: return.type
-			count: 1
-			path: modules/helfi_search/src/Controller/SearchController.php
-
-		-
-			message: '#^Method Drupal\\helfi_search\\Controller\\SearchController\:\:executeFilteredSearch\(\) should return array\{promoted\: list\<mixed\>, results\: list\<mixed\>, total_hits\: int, max_score\: float\|null, debug\?\: array\<string, mixed\>\} but returns array\{promoted\: array\{\}, results\: array\<mixed\>, total_hits\: mixed, max_score\: mixed, debug\?\: array\{bundles\: array\<string, int\>\}\}\.$#'
-			identifier: return.type
-			count: 1
-			path: modules/helfi_search/src/Controller/SearchController.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>title" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: modules/helfi_search/src/Drush/Commands/TextPipelineCommands.php
-
-		-
-			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
-			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
-			count: 1
-			path: modules/helfi_search/src/Form/SearchSettingsForm.php
-
-		-
-			message: '#^Offset 1\|int\<4, max\> on non\-empty\-list\<string\> on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: modules/helfi_search/src/Pipeline/ContentChunker.php
-
-		-
-			message: '#^Parameter \#1 \$child of method DOMNode\:\:removeChild\(\) expects DOMNode, DOMNameSpaceNode\|DOMNode given\.$#'
-			identifier: argument.type
-			count: 1
-			path: modules/helfi_search/src/Pipeline/HtmlCleaner.php
-
-		-
-			message: '#^Parameter \#1 \$nodes of method Drupal\\helfi_search\\Pipeline\\HtmlCleaner\:\:removeNodeList\(\) expects DOMNodeList\<DOMNode\>, DOMNodeList\<DOMNameSpaceNode\|DOMNode\> given\.$#'
-			identifier: argument.type
-			count: 3
-			path: modules/helfi_search/src/Pipeline/HtmlCleaner.php
-
-		-
-			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
-			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
-			count: 2
-			path: modules/helfi_search/src/Plugin/search_api/processor/VectorEmbeddingsProcessor.php
-
-		-
-			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, array\|ArrayAccess\<int, array\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Controller/SearchControllerTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\helfi_search\\Kernel\\Form\\SearchSettingsFormTest\:\:submit\(\) should return Drupal\\Core\\Form\\FormState but returns Drupal\\Core\\Form\\FormStateInterface\.$#'
-			identifier: return.type
-			count: 1
-			path: modules/helfi_search/tests/src/Kernel/Form/SearchSettingsFormTest.php
 
 		-
 			message: '#^Function helfi_test_content_install\(\) has parameter \$is_syncing with no type specified\.$#'

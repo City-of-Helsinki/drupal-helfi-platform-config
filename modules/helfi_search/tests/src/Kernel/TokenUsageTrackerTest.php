@@ -22,7 +22,10 @@ class TokenUsageTrackerTest extends KernelTestBase {
   protected static $modules = [
     'system',
     'diff',
+    'config_rewrite',
     'helfi_api_base',
+    'helfi_platform_config',
+    'search_api',
     'helfi_search',
   ];
 

@@ -2,8 +2,13 @@ applies_admin_routes: false
 alternative_title_field: ''
 hide_single_home_item: true
 add_structured_data_json_ld: false
-capitalizator_mode: none
+capitalizator_mode: ucfirst
 capitalizator_ignored_words: {  }
 follow_redirects: false
 limit_segment_display: false
 segment_display_limit: ''
+title_from_page_when_available: false
+use_menu_title_as_fallback: true
+include_title_segment: true
+remove_repeated_segments: true
+include_home_segment: false

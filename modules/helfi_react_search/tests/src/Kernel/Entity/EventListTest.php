@@ -203,7 +203,7 @@ class EventListTest extends KernelTestBase {
     // Field values are not set.
     $settings = $paragraph->getFilterSettings();
     foreach (Filters::cases() as $case) {
-      $this->assertFalse($settings[$case->value]);
+      $this->assertFalse($settings[$case->drupalSettingName()]);
 
       // Enable the settings.
       $paragraph->set($case->value, TRUE);
@@ -212,7 +212,7 @@ class EventListTest extends KernelTestBase {
     // Field values should be enabled.
     $settings = $paragraph->getFilterSettings();
     foreach (Filters::cases() as $case) {
-      $this->assertTrue($settings[$case->value]);
+      $this->assertTrue($settings[$case->drupalSettingName()]);
     }
   }
 
