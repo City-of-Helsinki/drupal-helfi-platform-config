@@ -2,7 +2,7 @@ applies_admin_routes: false
 alternative_title_field: ''
 hide_single_home_item: true
 add_structured_data_json_ld: false
-capitalizator_mode: none
+capitalizator_mode: ucfirst
 capitalizator_ignored_words: {  }
 follow_redirects: false
 limit_segment_display: false
