@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\Plugin\ExternalEntities\StorageClient;
 
 use Drupal\external_entities\Entity\ExternalEntityInterface;
-use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\RestClient;
+use Drupal\external_entities\StorageClient\StorageClientBase;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * External entity storage client for shared index.
@@ -16,7 +17,7 @@ use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\RestClient;
  *   description = @Translation("Retrieves content from shared index")
  * )
  */
-final class SharedIndex extends RestClient {
+final class SharedIndex extends StorageClientBase {
 
   /**
    * {@inheritdoc}
@@ -142,8 +143,9 @@ final class SharedIndex extends RestClient {
   public function query(
     array $parameters = [],
     array $sorts = [],
-    $start = NULL,
-    $length = NULL,
+    ?int $start = NULL,
+    ?int $length = NULL,
+    array &$unhandled_filters = [],
   ) : array {
     $uuids = [];
     if (!empty($parameters[0]['field']) && $parameters[0]['field'] === 'uuid') {
@@ -151,6 +153,35 @@ final class SharedIndex extends RestClient {
     }
     $data = $this->request($uuids);
     return $data ?? [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function querySource(
+    array $parameters = [],
+    array $sorts = [],
+    ?int $start = NULL,
+    ?int $length = NULL,
+  ): array {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function transliterateDrupalFilters(
+    array $parameters,
+    array $context = [],
+  ): array {
+    return [];
   }
 
 }
