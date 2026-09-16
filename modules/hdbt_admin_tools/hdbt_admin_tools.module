@@ -675,7 +675,7 @@ function hdbt_admin_tools_entity_base_field_info(EntityTypeInterface $entity_typ
       ->setTranslatable(FALSE)
       ->setLabel(t('Color palette'))
       ->setSettings([
-        'allowed_values_function' => 'Drupal\hdbt_admin_tools\Form\SiteSettings::getColorPalettes',
+        'allowed_values_function' => 'Drupal\hdbt_admin_tools\Form\AppearanceSettings::getColorPalettes',
       ])
       ->setDisplayOptions('form', [
         'type' => 'color_palette_field_widget',
