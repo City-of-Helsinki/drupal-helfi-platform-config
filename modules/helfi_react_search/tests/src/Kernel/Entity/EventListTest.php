@@ -286,12 +286,14 @@ class EventListTest extends KernelTestBase {
     $this->assertStringContainsString('full_text=jooga%20swimming', $url);
 
     $paragraph->set('field_event_list_free_text', NULL);
-    $this->assertStringContainsString('super_event_type=umbrella%2Cnone', $paragraph->getApiUrl());
+    $url = $paragraph->getApiUrl();
+    $this->assertStringContainsString('super_event_type=umbrella%2Cnone', $url);
+    $this->assertStringNotContainsString('hide_recurring_children', $url);
 
     $paragraph->set('field_event_list_only_super', TRUE);
     $url = $paragraph->getApiUrl();
-    $this->assertStringContainsString('super_event_type=umbrella%2Crecurring', $url);
-    $this->assertStringNotContainsString('super_event_type=umbrella%2Cnone', $url);
+    $this->assertStringContainsString('hide_recurring_children=true', $url);
+    $this->assertStringNotContainsString('super_event_type=', $url);
 
     $paragraph->set('field_event_list_free_text', '?super_event_type=umbrella');
     $this->assertStringContainsString('super_event_type=umbrella&', $paragraph->getApiUrl());
