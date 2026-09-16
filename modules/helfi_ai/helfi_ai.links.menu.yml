@@ -1,5 +1,13 @@
+helfi_ai.overview:
+  title: 'AI'
+  description: 'AI prompts and related settings.'
+  parent: hdbt_admin_tools.overview
+  route_name: helfi_ai.overview
+  weight: -9
+
 helfi_ai.prompts:
   title: 'AI prompts'
-  parent: hdbt_admin_tools.overview
+  description: 'Create and manage reusable AI prompts.'
+  parent: helfi_ai.overview
   route_name: entity.ai_prompt.collection
   weight: 10

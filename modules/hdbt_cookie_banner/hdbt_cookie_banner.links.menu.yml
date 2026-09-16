@@ -7,6 +7,7 @@ hdbt_cookie_banner.form:
 
 hdbt_cookie_banner.form_alias:
   title: 'Cookie banner settings'
-  parent: hdbt_admin_tools.overview
+  description: 'Configure HDBT Cookie Banner.'
+  parent: hdbt_admin_tools.site_settings
   route_name: hdbt_cookie_banner.form
   weight: 2

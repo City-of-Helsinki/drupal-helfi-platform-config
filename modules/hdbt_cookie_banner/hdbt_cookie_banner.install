@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\user\Entity\Role;
+
 /**
  * Implements hook_uninstall().
  */
@@ -22,4 +24,15 @@ function hdbt_cookie_banner_uninstall(): void {
   foreach ($configurations as $config) {
     $config_factory->getEditable($config)->delete();
   }
+}
+
+/**
+ * Remove 'administer hdbt_cookie_banner' permission from 'admin' role.
+ */
+function hdbt_cookie_banner_update_11000(): void {
+  if (!$role = Role::load('admin')) {
+    return;
+  }
+  $role->revokePermission('administer hdbt_cookie_banner');
+  $role->save();
 }

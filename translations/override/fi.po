@@ -14,6 +14,9 @@ msgid ""
 "Menu links with lower weights are displayed before links with higher weights."
 msgstr "Mitä pienempi luku, sitä ylempänä järjestyksessä."
 
+msgid "Appearance settings"
+msgstr "Ulkoasun asetukset"
+
 msgid "Block"
 msgstr "Lohko"
 
