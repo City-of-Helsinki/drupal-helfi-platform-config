@@ -68,7 +68,6 @@ class HookTest extends UnitTestCase {
     $display->id()->willReturn($id);
     $display->isSyncing()->willReturn(FALSE);
     $display->getComponent('ai_summary')->willReturn(NULL);
-    $display->get('hidden')->willReturn([]);
 
     return $display;
   }
@@ -87,7 +86,6 @@ class HookTest extends UnitTestCase {
     $display->id()->willReturn($id);
     $display->isSyncing()->willReturn(FALSE);
     $display->getComponent('ai_summary')->willReturn(NULL);
-    $display->get('hidden')->willReturn([]);
 
     return $display;
   }
@@ -202,17 +200,6 @@ class HookTest extends UnitTestCase {
   public function testKeepsExistingComponent(): void {
     $display = $this->prophesizeFormDisplay('tpr_service.tpr_service.default');
     $display->getComponent('ai_summary')->willReturn(['type' => 'string_textarea']);
-    $display->setComponent(Argument::cetera())->shouldNotBeCalled();
-
-    (new EntityHooks())->entityFormDisplayPresave($display->reveal());
-  }
-
-  /**
-   * Test that a field hidden by an editor stays hidden.
-   */
-  public function testKeepsFieldHiddenByEditor(): void {
-    $display = $this->prophesizeFormDisplay('tpr_service.tpr_service.default');
-    $display->get('hidden')->willReturn(['ai_summary' => TRUE]);
     $display->setComponent(Argument::cetera())->shouldNotBeCalled();
 
     (new EntityHooks())->entityFormDisplayPresave($display->reveal());
