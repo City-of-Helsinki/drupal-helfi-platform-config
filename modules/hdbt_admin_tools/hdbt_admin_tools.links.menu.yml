@@ -23,6 +23,13 @@ hdbt_admin_tools.site_settings_form:
   route_name: hdbt_admin_tools.site_settings_form
   weight: -8
 
+hdbt_admin_tools.koro_overrides:
+  title: 'Koro overrides'
+  description: 'Set the wave motif for a path and its subpaths.'
+  parent: hdbt_admin_tools.site_settings
+  route_name: hdbt_admin_tools.koro_overrides
+  weight: -7
+
 hdbt_admin_tools.menus:
   title: 'Menus'
   parent: hdbt_admin_tools.overview

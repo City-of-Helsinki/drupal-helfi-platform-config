@@ -18,6 +18,16 @@ hdbt_admin_tools.site_settings_form:
   options:
     _admin_route: TRUE
 
+hdbt_admin_tools.koro_overrides:
+  path: '/admin/tools/appearance-settings/koro-overrides'
+  defaults:
+    _form: '\Drupal\hdbt_admin_tools\Form\KoroOverrides'
+    _title: 'Koro overrides'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
 hdbt_admin_tools.taxonomy:
   path: '/admin/structure/taxonomy'
   requirements:

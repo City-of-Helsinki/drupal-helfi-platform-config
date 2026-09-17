@@ -100,19 +100,10 @@ class SiteSettings extends ConfigFormBase {
       '#default_value' => $this->getConfig('site_settings', 'default_icon'),
     ];
 
-    $wave_motifs = [
-      'wave' => $this->t('Wave'),
-      'vibration' => $this->t('Vibration'),
-      'beat' => $this->t('Beat'),
-      'pulse' => $this->t('Pulse'),
-      'basic' => $this->t('Basic motif'),
-      'calm' => $this->t('Calm'),
-    ];
-
     $form['site_settings']['koro'] = [
       '#type' => 'radios',
       '#title' => $this->t('Select wave motif'),
-      '#options' => $wave_motifs,
+      '#options' => self::getWaveMotifs(),
       '#required' => TRUE,
       '#description' => $this->t(
         'See wave motifs from <a href=":vig" target="_blank">Visual Identity Guidelines</a>.',
@@ -179,6 +170,23 @@ class SiteSettings extends ConfigFormBase {
     }
 
     return $this->config($this->configName);
+  }
+
+  /**
+   * Get wave motifs.
+   *
+   * @return array
+   *   Returns wave motifs.
+   */
+  public static function getWaveMotifs(): array {
+    return [
+      'wave' => t('Wave'),
+      'vibration' => t('Vibration'),
+      'beat' => t('Beat'),
+      'pulse' => t('Pulse'),
+      'basic' => t('Basic motif'),
+      'calm' => t('Calm'),
+    ];
   }
 
   /**
