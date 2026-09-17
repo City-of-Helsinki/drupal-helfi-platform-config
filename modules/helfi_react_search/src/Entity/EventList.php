@@ -210,7 +210,9 @@ class EventList extends Paragraph implements ParagraphInterface {
       'page_size' => $this->getCount(),
       'sort' => 'end_time',
       'start' => 'now',
-      'super_event_type' => $this->showOnlySuperEvents() ? 'umbrella,recurring' : 'umbrella,none',
+      ...($this->showOnlySuperEvents()
+        ? ['hide_recurring_children' => 'true']
+        : ['super_event_type' => 'umbrella,none']),
       'language' => $this->language()->getId(),
     ];
 
