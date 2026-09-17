@@ -61,7 +61,7 @@ function helfi_media_chart_field_widget_single_element_link_default_form_alter(a
   ) {
     // Core wraps the user-entered field description together with its own
     // "This must be an external URL..." text in an item list. We want to keep
-    // only the first item in the list since that one is added by us for the field.
+    // only the first item in the list since that one is added by us.
     if (isset($element['uri']['#description']['#items'][0])) {
       $element['uri']['#description'] = $element['uri']['#description']['#items'][0];
     }
