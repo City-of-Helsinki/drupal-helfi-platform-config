@@ -294,6 +294,11 @@ function helfi_tpr_config_update_11001(&$sandbox): ?FormattableMarkup {
  * Add an AI summary field to tpr_service.
  */
 function helfi_tpr_config_update_11002(): void {
+  // The field is only defined when helfi_ai is installed.
+  if (!\Drupal::moduleHandler()->moduleExists('helfi_ai')) {
+    return;
+  }
+
   \Drupal::entityDefinitionUpdateManager()
     ->installFieldStorageDefinition('ai_summary', 'tpr_service', 'helfi_tpr_config', AiSummaryFieldDefinition::create()['ai_summary']);
 }

@@ -28,7 +28,9 @@ class Service extends BaseService {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields += AiSummaryFieldDefinition::create();
+    if (\Drupal::moduleHandler()->moduleExists('helfi_ai')) {
+      $fields += AiSummaryFieldDefinition::create();
+    }
 
     return $fields;
   }

@@ -17,10 +17,24 @@ function helfi_ai_install(bool $is_syncing): void {
     return;
   }
   $manager = \Drupal::entityDefinitionUpdateManager();
-  $definition = \Drupal::service('entity_field.manager')
-    ->getFieldStorageDefinitions('node')['ai_summary'] ?? NULL;
-  if ($definition && !$manager->getFieldStorageDefinition('ai_summary', 'node')) {
-    $manager->installFieldStorageDefinition('ai_summary', 'node', 'helfi_ai', $definition);
+  $entityTypeManager = \Drupal::entityTypeManager();
+  $fieldManager = \Drupal::service('entity_field.manager');
+
+  // Map each entity type to the module that defines its ai_summary field.
+  $providers = [
+    'node' => 'helfi_ai',
+    'tpr_service' => 'helfi_tpr_config',
+  ];
+
+  foreach ($providers as $entityTypeId => $provider) {
+    if (!$entityTypeManager->hasDefinition($entityTypeId)) {
+      continue;
+    }
+    $definition = $fieldManager->getFieldStorageDefinitions($entityTypeId)['ai_summary'] ?? NULL;
+
+    if ($definition && !$manager->getFieldStorageDefinition('ai_summary', $entityTypeId)) {
+      $manager->installFieldStorageDefinition('ai_summary', $entityTypeId, $provider, $definition);
+    }
   }
 }
 
