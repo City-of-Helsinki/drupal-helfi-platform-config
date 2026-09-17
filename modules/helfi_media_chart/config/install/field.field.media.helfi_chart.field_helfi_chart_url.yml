@@ -12,7 +12,7 @@ field_name: field_helfi_chart_url
 entity_type: media
 bundle: helfi_chart
 label: URL
-description: "Enter the Chart URL. Should be in format <i>https://app.powerbi.com/view?r=eyJrIjo..</i>.\r\n"
+description: "Enter the Chart URL in format <i>https://app.powerbi.com/view?r=eyJrIjo...</i>\r\n"
 required: true
 translatable: false
 default_value: {  }

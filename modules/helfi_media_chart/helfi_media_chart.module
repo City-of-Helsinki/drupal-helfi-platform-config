@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\Entity\BaseFieldOverride;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_media_chart\Entity\HelfiChart;
 
 /**
@@ -49,6 +50,25 @@ function helfi_media_chart_platform_config_grant_permissions() : array {
 }
 
 /**
+ * Implements hook_field_widget_single_element_link_default_form_alter().
+ */
+function helfi_media_chart_field_widget_single_element_link_default_form_alter(array &$element, FormStateInterface $form_state, array $context) : void {
+  $field_definition = $context['items']->getFieldDefinition();
+
+  if (
+    $field_definition->getName() === 'field_helfi_chart_url' &&
+    $field_definition->getTargetBundle() === 'helfi_chart'
+  ) {
+    // Core wraps the user-entered field description together with its own
+    // "This must be an external URL..." text in an item list. We want to keep
+    // only the first item in the list since that one is added by us for the field.
+    if (isset($element['uri']['#description']['#items'][0])) {
+      $element['uri']['#description'] = $element['uri']['#description']['#items'][0];
+    }
+  }
+}
+
+/**
  * Implements hook_entity_bundle_field_info_alter().
  */
 function helfi_media_chart_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) : void {
@@ -75,6 +95,8 @@ function helfi_media_chart_entity_bundle_field_info(EntityTypeInterface $entity_
   ) {
     $field = BaseFieldOverride::createFromBaseFieldDefinition($base_field_definitions['name'], $bundle);
     $field->setLabel(t('Administrative title'));
+    // @phpstan-ignore-next-line Drupal accepts TranslatableMarkup.
+    $field->setDescription(t('This is only visible in the content creator view. The title is created automatically, but you can edit it if you wish.'));
     $fields['name'] = $field;
   }
 
