@@ -55,18 +55,35 @@ class HookTest extends UnitTestCase {
   }
 
   /**
-   * Builds a display that has no ai_summary field yet.
+   * Builds a form display that has no ai_summary field yet.
    *
    * @param string $id
    *   The display id.
-   * @param string $class
-   *   The display interface to prophesize.
    *
-   * @return \Prophecy\Prophecy\ObjectProphecy
-   *   The display.
+   * @return \Prophecy\Prophecy\ObjectProphecy<EntityFormDisplayInterface>
+   *   The form display.
    */
-  private function prophesizeDisplay(string $id, string $class): ObjectProphecy {
-    $display = $this->prophesize($class);
+  private function prophesizeFormDisplay(string $id): ObjectProphecy {
+    $display = $this->prophesize(EntityFormDisplayInterface::class);
+    $display->id()->willReturn($id);
+    $display->isSyncing()->willReturn(FALSE);
+    $display->getComponent('ai_summary')->willReturn(NULL);
+    $display->get('hidden')->willReturn([]);
+
+    return $display;
+  }
+
+  /**
+   * Builds a view display that has no ai_summary field yet.
+   *
+   * @param string $id
+   *   The display id.
+   *
+   * @return \Prophecy\Prophecy\ObjectProphecy<EntityViewDisplayInterface>
+   *   The view display.
+   */
+  private function prophesizeViewDisplay(string $id): ObjectProphecy {
+    $display = $this->prophesize(EntityViewDisplayInterface::class);
     $display->id()->willReturn($id);
     $display->isSyncing()->willReturn(FALSE);
     $display->getComponent('ai_summary')->willReturn(NULL);
@@ -128,7 +145,7 @@ class HookTest extends UnitTestCase {
    * Test that the widget is added to the tpr_service form display.
    */
   public function testAddsWidgetToTprServiceFormDisplay(): void {
-    $display = $this->prophesizeDisplay('tpr_service.tpr_service.default', EntityFormDisplayInterface::class);
+    $display = $this->prophesizeFormDisplay('tpr_service.tpr_service.default');
     $display->setComponent('ai_summary', [
       'type' => 'ai_summary',
       'weight' => 7,
@@ -142,7 +159,7 @@ class HookTest extends UnitTestCase {
    * Test that the formatter is added to the tpr_service view display.
    */
   public function testAddsFormatterToTprServiceViewDisplay(): void {
-    $display = $this->prophesizeDisplay('tpr_service.tpr_service.default', EntityViewDisplayInterface::class);
+    $display = $this->prophesizeViewDisplay('tpr_service.tpr_service.default');
     $display->setComponent('ai_summary', [
       'type' => 'text_default',
       'label' => 'hidden',
@@ -157,10 +174,10 @@ class HookTest extends UnitTestCase {
    * Test that other displays are left alone.
    */
   public function testIgnoresOtherDisplays(): void {
-    $formDisplay = $this->prophesizeDisplay('node.page.default', EntityFormDisplayInterface::class);
+    $formDisplay = $this->prophesizeFormDisplay('node.page.default');
     $formDisplay->setComponent(Argument::cetera())->shouldNotBeCalled();
 
-    $viewDisplay = $this->prophesizeDisplay('tpr_service.tpr_service.teaser', EntityViewDisplayInterface::class);
+    $viewDisplay = $this->prophesizeViewDisplay('tpr_service.tpr_service.teaser');
     $viewDisplay->setComponent(Argument::cetera())->shouldNotBeCalled();
 
     $hooks = new EntityHooks();
@@ -172,7 +189,7 @@ class HookTest extends UnitTestCase {
    * Test that a display being imported is left alone.
    */
   public function testIgnoresSyncingDisplay(): void {
-    $display = $this->prophesizeDisplay('tpr_service.tpr_service.default', EntityFormDisplayInterface::class);
+    $display = $this->prophesizeFormDisplay('tpr_service.tpr_service.default');
     $display->isSyncing()->willReturn(TRUE);
     $display->setComponent(Argument::cetera())->shouldNotBeCalled();
 
@@ -183,7 +200,7 @@ class HookTest extends UnitTestCase {
    * Test that an existing component is not overridden.
    */
   public function testKeepsExistingComponent(): void {
-    $display = $this->prophesizeDisplay('tpr_service.tpr_service.default', EntityFormDisplayInterface::class);
+    $display = $this->prophesizeFormDisplay('tpr_service.tpr_service.default');
     $display->getComponent('ai_summary')->willReturn(['type' => 'string_textarea']);
     $display->setComponent(Argument::cetera())->shouldNotBeCalled();
 
@@ -194,7 +211,7 @@ class HookTest extends UnitTestCase {
    * Test that a field hidden by an editor stays hidden.
    */
   public function testKeepsFieldHiddenByEditor(): void {
-    $display = $this->prophesizeDisplay('tpr_service.tpr_service.default', EntityFormDisplayInterface::class);
+    $display = $this->prophesizeFormDisplay('tpr_service.tpr_service.default');
     $display->get('hidden')->willReturn(['ai_summary' => TRUE]);
     $display->setComponent(Argument::cetera())->shouldNotBeCalled();
 
