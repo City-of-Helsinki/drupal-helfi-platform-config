@@ -175,8 +175,11 @@ class ModuleHooksTest extends UnitTestCase {
    */
   public function testSavesFormAndViewDisplays(): void {
     $this->setUpTprService();
+
+    $installed = $this->prophesize(FieldStorageDefinitionInterface::class);
+    $installed->getProvider()->willReturn('helfi_ai');
     $this->entityDefinitionUpdateManager->getFieldStorageDefinition('ai_summary', 'tpr_service')
-      ->willReturn(NULL);
+      ->willReturn($installed->reveal());
 
     $this->formDisplay->save()->shouldBeCalledOnce();
     $this->viewDisplay->save()->shouldBeCalledOnce();
