@@ -27,35 +27,35 @@ class ModuleHooksTest extends UnitTestCase {
   /**
    * The entity definition update manager.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface>
    */
   private ObjectProphecy $entityDefinitionUpdateManager;
 
   /**
    * The entity field manager.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\Core\Entity\EntityFieldManagerInterface>
    */
   private ObjectProphecy $entityFieldManager;
 
   /**
    * The entity type manager.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\Core\Entity\EntityTypeManagerInterface>
    */
   private ObjectProphecy $entityTypeManager;
 
   /**
    * The tpr_service form display.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\Core\Entity\Display\EntityFormDisplayInterface>
    */
   private ObjectProphecy $formDisplay;
 
   /**
    * The tpr_service view display.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\Core\Entity\Display\EntityViewDisplayInterface>
    */
   private ObjectProphecy $viewDisplay;
 

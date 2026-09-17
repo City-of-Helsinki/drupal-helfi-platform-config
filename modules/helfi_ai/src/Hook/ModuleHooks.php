@@ -26,6 +26,8 @@ class ModuleHooks {
 
   /**
    * Implements hook_modules_installed().
+   *
+   * @phpstan-param string[] $modules
    */
   #[Hook('modules_installed')]
   public function modulesInstalled(array $modules, bool $is_syncing): void {

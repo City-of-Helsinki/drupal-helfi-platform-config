@@ -71,6 +71,8 @@ class EntityHooks {
    *   The form or view display.
    * @param array $options
    *   The display options.
+   *
+   * @phpstan-param array<string, mixed> $options
    */
   private function addAiSummaryComponent(EntityDisplayInterface $display, array $options): void {
     if (
