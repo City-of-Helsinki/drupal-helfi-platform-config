@@ -75,11 +75,7 @@ class EntityHooks {
    * @phpstan-param array<string, mixed> $options
    */
   private function addAiSummaryComponent(EntityDisplayInterface $display, array $options): void {
-    if (
-      $display->isSyncing() ||
-      $display->getComponent('ai_summary') ||
-      isset($display->get('hidden')['ai_summary'])
-    ) {
+    if ($display->isSyncing() || $display->getComponent('ai_summary')) {
       return;
     }
 
