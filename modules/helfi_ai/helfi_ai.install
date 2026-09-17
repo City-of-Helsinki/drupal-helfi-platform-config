@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_ai\Hook\ModuleHooks;
 use Drupal\user\Entity\Role;
 
 /**
@@ -17,24 +18,10 @@ function helfi_ai_install(bool $is_syncing): void {
     return;
   }
   $manager = \Drupal::entityDefinitionUpdateManager();
-  $entityTypeManager = \Drupal::entityTypeManager();
-  $fieldManager = \Drupal::service('entity_field.manager');
-
-  // Map each entity type to the module that defines its ai_summary field.
-  $providers = [
-    'node' => 'helfi_ai',
-    'tpr_service' => 'helfi_tpr_config',
-  ];
-
-  foreach ($providers as $entityTypeId => $provider) {
-    if (!$entityTypeManager->hasDefinition($entityTypeId)) {
-      continue;
-    }
-    $definition = $fieldManager->getFieldStorageDefinitions($entityTypeId)['ai_summary'] ?? NULL;
-
-    if ($definition && !$manager->getFieldStorageDefinition('ai_summary', $entityTypeId)) {
-      $manager->installFieldStorageDefinition('ai_summary', $entityTypeId, $provider, $definition);
-    }
+  $definition = \Drupal::service('entity_field.manager')
+    ->getFieldStorageDefinitions('node')['ai_summary'] ?? NULL;
+  if ($definition && !$manager->getFieldStorageDefinition('ai_summary', 'node')) {
+    $manager->installFieldStorageDefinition('ai_summary', 'node', 'helfi_ai', $definition);
   }
 }
 
@@ -80,4 +67,11 @@ function helfi_ai_update_11002(): void {
     }
     $role->save();
   }
+}
+
+/**
+ * Add an AI summary field to tpr_service.
+ */
+function helfi_ai_update_11003(): void {
+  \Drupal::classResolver(ModuleHooks::class)->installAiSummaryField();
 }
