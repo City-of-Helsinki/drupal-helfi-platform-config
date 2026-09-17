@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_tpr_config\Kernel;
 
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_tpr\Entity\Service as ServiceBase;
 use Drupal\helfi_tpr\Entity\Unit as UnitBase;
@@ -73,6 +74,17 @@ class EntityTest extends KernelTestBase {
     $this->assertInstanceOf(Service::class, $service);
     // Make sure Unit extends the original service class.
     $this->assertInstanceOf(ServiceBase::class, $service);
+  }
+
+  /**
+   * Tests that the AI summary field is not added without helfi_ai.
+   */
+  public function testServiceHasNoAiSummaryField() : void {
+    $fields = $this->container->get(EntityFieldManagerInterface::class)
+      ->getFieldStorageDefinitions('tpr_service');
+
+    $this->assertArrayHasKey('hide_service_points', $fields);
+    $this->assertArrayNotHasKey('ai_summary', $fields);
   }
 
 }

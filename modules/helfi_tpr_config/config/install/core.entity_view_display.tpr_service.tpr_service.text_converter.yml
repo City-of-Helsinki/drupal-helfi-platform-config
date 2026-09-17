@@ -53,7 +53,6 @@ content:
     weight: 8
     region: content
 hidden:
-  ai_summary: true
   errand_services: true
   field_hide_errand_services: true
   field_metatags: true

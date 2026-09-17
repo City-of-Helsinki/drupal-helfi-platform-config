@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_ai\Hook\ModuleHooks;
 use Drupal\user\Entity\Role;
 
 /**
@@ -66,4 +67,11 @@ function helfi_ai_update_11002(): void {
     }
     $role->save();
   }
+}
+
+/**
+ * Add an AI summary field to tpr_service.
+ */
+function helfi_ai_update_11003(): void {
+  \Drupal::classResolver(ModuleHooks::class)->installAiSummaryField();
 }
