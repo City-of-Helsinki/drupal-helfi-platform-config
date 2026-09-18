@@ -15,3 +15,12 @@ msgid "Given host (%value) is not valid, must be one of: %domains"
 msgstr ""
 "Syötetyn URL-osoitteen verkkotunnus (%value) ei kelpaa, "
 "sen on oltava jokin seuraavista: %domains"
+
+msgid "Write a title for the map. This is only visible in the content creator view."
+msgstr "Kirjoita kartalle otsikko. Tämä näkyy vain sisällöntuottajan näkymässä."
+
+msgid "You can embed maps from Palvelukartta or Karttapalvelu."
+msgstr "Voit upottaa karttoja Palvelukartalta tai Karttapalvelusta."
+
+msgid "Map embed URL"
+msgstr "URL-osoite"
