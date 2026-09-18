@@ -52,12 +52,8 @@ function helfi_media_chart_platform_config_grant_permissions() : array {
 /**
  * Implements hook_field_widget_single_element_link_default_form_alter().
  *
- * @param array<string, mixed> $element
- *   The widget form element.
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   The form state.
- * @param array<string, mixed> $context
- *   The widget context.
+ * @phpstan-param array<string, mixed> $element
+ * @phpstan-param array<string, mixed> $context
  */
 function helfi_media_chart_field_widget_single_element_link_default_form_alter(array &$element, FormStateInterface $form_state, array $context) : void {
   $field_definition = $context['items']->getFieldDefinition();
