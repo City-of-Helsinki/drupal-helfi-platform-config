@@ -1,0 +1,16 @@
+.koro-motif {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.koro-motif__label {
+  align-self: end;
+  flex: 0 0 120px;
+}
+
+.koro-motif .hds-koros {
+  flex: 1 1 auto;
+  width: auto;
+}

@@ -65,3 +65,8 @@ site_settings:
     assets/js/siteSettingsDefaultColor.js: {}
   dependencies:
     - hdbt/hdbt-icons
+
+koro_overrides:
+  css:
+    theme:
+      assets/css/koro_overrides.css: {}
