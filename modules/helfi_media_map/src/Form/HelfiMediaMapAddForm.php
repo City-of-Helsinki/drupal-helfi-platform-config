@@ -6,7 +6,6 @@ namespace Drupal\helfi_media_map\Form;
 
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\media_library\Form\AddFormBase;
 
