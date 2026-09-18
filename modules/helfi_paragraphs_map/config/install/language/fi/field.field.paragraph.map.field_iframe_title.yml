@@ -1,2 +1,2 @@
 label: 'Otsikko avustavalle teknologialle'
-description: 'Kirjoita otsikko avustavan teknologian käyttäjälle. Jos kartalla on jo otsikko, käytä samaa otsikkoa. Otsikko luetaan ruudunlukijalle ennen karttaa. Tämä teksti ei näy sivulla. Otsikkoon lisätään automaattisesti etuliite “Kartta: ”.'
+description: 'Kirjoita otsikko avustavan teknologian käyttäjälle. Otsikko luetaan ruudunlukijalle ennen karttaa. Tämä teksti ei näy sivulla.'

@@ -25,10 +25,7 @@ class HelfiMediaMapAddForm extends AddFormBase {
     $container['helfi_media_map_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Map embed URL'),
-      '#description' => $this->t('Enter the map embed URL from @kartta or @palvelukartta.', [
-        '@kartta' => Link::fromTextAndUrl('https://kartta.hel.fi/', Url::fromUri('https://kartta.hel.fi/', ['attributes' => ['target' => '_blank']]))->toString(),
-        '@palvelukartta' => Link::fromTextAndUrl('https://palvelukartta.hel.fi/fi/', Url::fromUri('https://palvelukartta.hel.fi/fi/', ['attributes' => ['target' => '_blank']]))->toString(),
-      ]),
+      '#description' => $this->t('You can embed maps from Palvelukartta or Karttapalvelu.', []),
       '#maxlength' => 2048,
     ];
 
