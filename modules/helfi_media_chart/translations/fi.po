@@ -31,3 +31,6 @@ msgstr "Katso kaavio ulkoiselta sivustolta"
 
 msgid "Change cookie settings"
 msgstr "Muokkaa evästeasetuksia"
+
+msgid "Enter the chart embed URL from @powerbi."
+msgstr "Anna kaavion URL-osoite muodossa <i>https://app.powerbi.com/view?r=eyJrIjo...</i>"
