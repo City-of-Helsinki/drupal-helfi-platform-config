@@ -28,7 +28,7 @@ hdbt_admin_tools.appearance_settings:
 
 hdbt_admin_tools.koro_overrides:
   title: 'Koro overrides'
-  description: 'Set the wave motif for a path and its subpaths.'
+  description: 'Set the koro for a path and its subpaths.'
   parent: hdbt_admin_tools.site_settings
   route_name: hdbt_admin_tools.koro_overrides
   weight: -7

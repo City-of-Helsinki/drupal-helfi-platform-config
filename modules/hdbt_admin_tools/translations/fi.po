@@ -197,3 +197,34 @@ msgstr "Sumu"
 
 msgid "The sidebar content area will be removed. Please move the content to the upper or lower content area or remove it."
 msgstr "Sivupalkin sisältöalue tullaan poistamaan. Siirrä sisältö ylemmälle tai alemmalle sisältöalueelle tai poista se."
+
+msgid "Koro overrides"
+msgstr "Polkukohtaiset koromuodot"
+
+msgid "Set the koro for a path and its subpaths."
+msgstr "Määritä koromuodot polkukohtaisesti."
+
+msgid ""
+"One rule per line as <strong>path|wave motif</strong>, for example "
+"<strong>/savoy-talo|wave</strong>. "
+"A rule applies to the path and everything under it and the most specific "
+"rule wins. Leave the language and site prefixes out of the path and add a "
+"rule per language."
+msgstr ""
+"Yksi sääntö riviä kohden muodossa <strong>polku|koro</strong>, esimerkiksi "
+"<strong>/savoy-talo|wave</strong>. "
+"Sääntö koskee polkua ja kaikkia sen alasivuja, ja tarkin sääntö voittaa. "
+"Jätä kieli- ja sivustoetuliite pois polusta ja lisää sääntö jokaiselle "
+"kielelle."
+
+msgid "Wave motifs"
+msgstr "Koromuodot"
+
+msgid "Path @path must start with a slash."
+msgstr "Polun @path pitää alkaa kautta-merkillä."
+
+msgid "Wave motif @koro is not available."
+msgstr "Koromuoto @koro ei ole käytettävissä."
+
+msgid "Koro"
+msgstr "Koro"
