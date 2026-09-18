@@ -10,6 +10,9 @@ msgstr "Muokkaa @name."
 msgid "Chart embed URL"
 msgstr "Upotettavan kaavion URL-osoite"
 
+msgid "Enter the chart embed URL from @powerbi."
+msgstr "Anna kaavion URL-osoite muodossa <i>https://app.powerbi.com/view?r=eyJrIjo...</i>"
+
 msgctxt "Helfi Charts cookie compliance"
 msgid "Chart cannot be displayed"
 msgstr "Kaaviota ei voida näyttää"

@@ -10,7 +10,7 @@ field_name: field_iframe_title
 entity_type: paragraph
 bundle: chart
 label: 'Assistive technology title'
-description: 'Write a title for users of assistive technology. If the chart already has a title, use the same one. The title is read by screen readers before the chart. This text is not visible on the page. The prefix “Chart: ” is added automatically.'
+description: 'Write a short description for users of assistive technology who cannot see the chart. The description is read by screen readers before the chart. This text is not visible on the page.'
 required: true
 translatable: true
 default_value: {  }

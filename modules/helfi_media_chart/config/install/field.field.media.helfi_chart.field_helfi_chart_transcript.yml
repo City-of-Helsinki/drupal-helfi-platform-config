@@ -11,8 +11,8 @@ id: media.helfi_chart.field_helfi_chart_transcript
 field_name: field_helfi_chart_transcript
 entity_type: media
 bundle: helfi_chart
-label: Transcript
-description: 'Provide a descriptive transcript of the visual information what is presented in the chart.'
+label: 'Chart description'
+description: 'Write a brief explanation of what the chart shows. This appears below the chart, like a caption.'
 required: true
 translatable: false
 default_value: {  }
