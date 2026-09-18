@@ -8,6 +8,7 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
 use Drupal\Core\Config\StorableConfigBase;
 use Drupal\Core\Config\StorageInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 
 /**
  * Add the AI tone check button to editor toolbars.
@@ -29,6 +30,7 @@ final class ToneCheckToolbarOverride implements ConfigFactoryOverrideInterface {
 
   public function __construct(
     private readonly StorageInterface $configStorage,
+    private readonly AccountProxyInterface $currentUser,
   ) {
   }
 
@@ -69,7 +71,10 @@ final class ToneCheckToolbarOverride implements ConfigFactoryOverrideInterface {
    */
   private function toneCheckEnabled() : bool {
     if ($this->toneCheckEnabled === NULL) {
-      $this->toneCheckEnabled = (bool) ($this->configStorage->read('helfi_ai.settings')['enable_tone_check'] ?? FALSE);
+      $isEnabled = (bool) ($this->configStorage->read('helfi_ai.settings')['enable_tone_check'] ?? FALSE);
+      $hasPermission = $this->currentUser->hasPermission('use helfi ai tone check');
+
+      $this->toneCheckEnabled = $isEnabled && $hasPermission;
     }
     return $this->toneCheckEnabled;
   }

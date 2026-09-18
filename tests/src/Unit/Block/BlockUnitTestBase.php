@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_platform_config\Unit\Block;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_platform_config\EntityVersionMatcher;
@@ -43,6 +44,13 @@ class BlockUnitTestBase extends UnitTestCase {
   protected ModuleHandlerInterface|MockObject $moduleHandler;
 
   /**
+   * The route match mock.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface|\PHPUnit\Framework\MockObject\MockObject
+   */
+  protected RouteMatchInterface|MockObject $routeMatch;
+
+  /**
    * The mocked translator.
    *
    * @var \Drupal\Core\StringTranslation\TranslationInterface|\PHPUnit\Framework\MockObject\MockObject
@@ -58,6 +66,7 @@ class BlockUnitTestBase extends UnitTestCase {
     $this->entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
     $this->entityVersionMatcher = $this->createMock(EntityVersionMatcher::class);
     $this->moduleHandler = $this->createMock(ModuleHandlerInterface::class);
+    $this->routeMatch = $this->createMock(RouteMatchInterface::class);
 
     $this->stringTranslation = $this->createMock('Drupal\Core\StringTranslation\TranslationInterface');
   }

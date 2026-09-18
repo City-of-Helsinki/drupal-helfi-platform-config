@@ -1,0 +1,14 @@
+third_party_settings:
+  field_group:
+    group_my_pages:
+      label: 'Omat sivut'
+    group_my_tpr_errand_services:
+      label: 'TPR - Asiointipalvelut'
+    group_my_tpr_services:
+      label: 'TPR - Palvelut'
+    group_my_tpr_units:
+      label: 'TPR - Toimipisteet'
+    group_my_tpr_service_channels:
+      label: 'TPR - Palvelukanavat'
+    group_my_tpr_content:
+      label: 'Omat TPR-sisällöt'

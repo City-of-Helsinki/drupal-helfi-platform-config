@@ -28,6 +28,7 @@ class MapParagraphTest extends KernelTestBase {
     'field',
     'file',
     'focal_point',
+    'diff',
     'helfi_api_base',
     'helfi_media',
     'helfi_media_map',

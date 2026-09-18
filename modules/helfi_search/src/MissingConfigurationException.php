@@ -7,5 +7,5 @@ namespace Drupal\helfi_search;
 /**
  * Exception for model errors.
  */
-class MissingConfigurationException extends EmbeddingsModelException {
+class MissingConfigurationException extends EmbeddingApiException {
 }

@@ -1,0 +1,13 @@
+diff --git a/src/SearchAPI/IndexParamBuilder.php b/src/SearchAPI/IndexParamBuilder.php
+index 3fb98f7..86b0604 100644
+--- a/src/SearchAPI/IndexParamBuilder.php
++++ b/src/SearchAPI/IndexParamBuilder.php
+@@ -111,7 +111,7 @@ class IndexParamBuilder {
+       }
+       $values[] = match ($field_type) {
+         'string' => (string) $value,
+-        'boolean' => (boolean) $value,
++        'boolean' => (bool) $value,
+         default => $value,
+       };
+     }

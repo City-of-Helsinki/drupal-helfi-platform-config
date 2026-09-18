@@ -30,14 +30,16 @@ class EventList extends Paragraph implements ParagraphInterface {
    * Get number of items to show.
    */
   public function getCount(): int {
-    $default_value = 3;
-
     // The lifts layout always renders the three latest events.
     if ($this->getEventListLayout() === 'lifts') {
-      return $default_value;
+      return 3;
     }
 
-    return (int) ($this->get('field_event_count')->value ?? $default_value);
+    $count = (int) ($this->get('field_event_count')->value ?? 5);
+
+    // 3 is no longer a selectable option.
+    // If some legacy value is 3 treat it as 5.
+    return $count === 3 ? 5 : $count;
   }
 
   /**
@@ -52,6 +54,13 @@ class EventList extends Paragraph implements ParagraphInterface {
    */
   public function getEventListLayout(): string {
     return $this->get('field_event_list_layout')->value ?? 'default';
+  }
+
+  /**
+   * Whether the list should be limited to super events.
+   */
+  public function showOnlySuperEvents(): bool {
+    return (bool) $this->get('field_event_list_only_super')->value;
   }
 
   /**
@@ -196,12 +205,14 @@ class EventList extends Paragraph implements ParagraphInterface {
         default => 'General',
       },
       'format' => 'json',
-      'include' => 'keywords,location',
+      'include' => 'keywords,location,registration,super_event',
       'page' => 1,
       'page_size' => $this->getCount(),
       'sort' => 'end_time',
       'start' => 'now',
-      'super_event_type' => 'umbrella,none',
+      ...($this->showOnlySuperEvents()
+        ? ['hide_recurring_children' => 'true']
+        : ['super_event_type' => 'umbrella,none']),
       'language' => $this->language()->getId(),
     ];
 
@@ -295,7 +306,7 @@ class EventList extends Paragraph implements ParagraphInterface {
         continue;
       }
       if (!$this->get($filter->value)->isEmpty()) {
-        $filters[$filter->value] = (boolean) $this->get($filter->value)->value;
+        $filters[$filter->drupalSettingName()] = (bool) $this->get($filter->value)->value;
       }
     }
 

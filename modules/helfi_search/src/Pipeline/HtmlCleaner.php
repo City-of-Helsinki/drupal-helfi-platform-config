@@ -61,17 +61,32 @@ class HtmlCleaner {
   }
 
   /**
-   * Remove all nodes in a DOMNodeList.
+   * Remove every node an XPath expression matches.
    *
    * Converts to array first since the live list changes during removal.
    *
-   * @param \DOMNodeList<\DOMNode> $nodes
-   *   List of nodes to remove.
+   * @return int
+   *   How many nodes were removed.
    */
-  private function removeNodeList(\DOMNodeList $nodes): void {
-    foreach (iterator_to_array($nodes) as $node) {
-      $node->parentNode?->removeChild($node);
+  private static function removeMatching(\DOMXPath $xpath, string $expression): int {
+    $nodes = $xpath->query($expression);
+
+    if (!$nodes) {
+      return 0;
     }
+
+    $removed = 0;
+
+    foreach (iterator_to_array($nodes) as $node) {
+      // An expression can also select namespace nodes, which are not children
+      // of the element they are declared on and cannot be removed from it.
+      if ($node instanceof \DOMNode && $node->parentNode !== NULL) {
+        $node->parentNode->removeChild($node);
+        $removed++;
+      }
+    }
+
+    return $removed;
   }
 
   /**
@@ -123,9 +138,7 @@ class HtmlCleaner {
     // body content. This catches placeholder "ghost" cards rendered before
     // a JS/HTMX widget swaps in real content, plus decorative icons
     // independent of which CSS class the widget happens to use.
-    if ($hidden = $xpath->query('//*[@aria-hidden="true"]')) {
-      $this->removeNodeList($hidden);
-    }
+    self::removeMatching($xpath, '//*[@aria-hidden="true"]');
 
     // Uses the whitespace-boundary trick: pad @class with spaces so that
     // contains() matches whole words only (e.g. " visually-hidden ").
@@ -134,19 +147,14 @@ class HtmlCleaner {
       ...$this->settings->get('helfi_search_additional_ignored_classes', []),
     ];
     foreach ($ignoredClasses as $class) {
-      $elements = $xpath->query(
+      self::removeMatching(
+        $xpath,
         '//*[contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")]'
       );
-      if ($elements) {
-        $this->removeNodeList($elements);
-      }
     }
 
     foreach (self::REMOVE_IDS as $id) {
-      $elements = $xpath->query('//*[@id="' . $id . '"]');
-      if ($elements) {
-        $this->removeNodeList($elements);
-      }
+      self::removeMatching($xpath, '//*[@id="' . $id . '"]');
     }
   }
 
@@ -192,24 +200,12 @@ class HtmlCleaner {
   private function removeEmptyWrappers(\DOMDocument $doc): void {
     $tagFilter = "(local-name()='div' or local-name()='span' or local-name()='li' or local-name()='ul' or local-name()='ol')";
     do {
-      $changed = FALSE;
       $xpath = new \DOMXPath($doc);
       // $tagFilter: must be one of the five wrapper tags.
       // not(*): has no child elements.
       // not(normalize-space()): has no text after collapsing whitespace.
-      $emptyNodes = $xpath->query("//*[$tagFilter and not(*) and not(normalize-space())]");
-
-      if (!$emptyNodes || $emptyNodes->length === 0) {
-        break;
-      }
-
-      foreach (iterator_to_array($emptyNodes) as $node) {
-        if ($node->parentNode) {
-          $node->parentNode->removeChild($node);
-          $changed = TRUE;
-        }
-      }
-    } while ($changed);
+      $removed = self::removeMatching($xpath, "//*[$tagFilter and not(*) and not(normalize-space())]");
+    } while ($removed > 0);
   }
 
 }

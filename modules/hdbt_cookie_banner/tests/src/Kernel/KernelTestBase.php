@@ -88,6 +88,7 @@ class KernelTestBase extends CoreKernelTestBase {
   protected static $modules = [
     'system',
     'hdbt_cookie_banner',
+    'diff',
     'helfi_api_base',
   ];
 

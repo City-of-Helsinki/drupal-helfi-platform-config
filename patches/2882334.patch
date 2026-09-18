@@ -1,0 +1,38 @@
+diff --git a/src/Form/EntityRevisionOverviewForm.php b/src/Form/EntityRevisionOverviewForm.php
+index 26fe2fb..c4fda22 100644
+--- a/src/Form/EntityRevisionOverviewForm.php
++++ b/src/Form/EntityRevisionOverviewForm.php
+@@ -10,6 +10,7 @@ use Drupal\Core\Config\ImmutableConfig;
+ use Drupal\Core\Datetime\DateFormatterInterface;
+ use Drupal\Core\DependencyInjection\AutowireTrait;
+ use Drupal\Core\Entity\ContentEntityInterface;
++use Drupal\Core\Entity\ContentEntityTypeInterface;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
+ use Drupal\Core\Entity\RevisionableStorageInterface;
+ use Drupal\Core\Entity\RevisionLogInterface;
+@@ -307,6 +308,8 @@ class EntityRevisionOverviewForm extends FormBase {
+    */
+   protected function getRevisionIds(ContentEntityInterface $entity, RevisionableStorageInterface $entity_storage): array {
+     $entityType = $entity->getEntityType();
++    assert($entityType instanceof ContentEntityTypeInterface);
++
+     $translatable = $entityType->isTranslatable();
+     $query = $entity_storage->getQuery()
+       // Access to the content has already been verified. Disable query-level
+@@ -320,8 +323,15 @@ class EntityRevisionOverviewForm extends FormBase {
+     // Only show revisions that are affected by the language that is being
+     // displayed.
+     if ($translatable) {
++      // In certain cases, the latest revision might have a NULL value in
++      // 'revision_translation_affected'. Make sure to always load latest
++      // revision as well.
++      $orCondition = $query->orConditionGroup()
++          ->condition($entityType->getKey('revision_translation_affected'), '1')
++          ->condition($entityType->getRevisionMetadataKey('revision_default'), '1');
++
+       $query->condition($entityType->getKey('langcode'), $entity->language()->getId())
+-        ->condition($entityType->getKey('revision_translation_affected'), '1');
++        ->condition($orCondition);
+     }
+     $result = $query->execute();
+     return \array_keys($result);

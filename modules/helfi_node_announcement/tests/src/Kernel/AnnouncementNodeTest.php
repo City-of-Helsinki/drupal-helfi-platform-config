@@ -22,6 +22,7 @@ class AnnouncementNodeTest extends KernelTestBase {
     'content_translation',
     'field',
     'config_rewrite',
+    'diff',
     'helfi_api_base',
     'helfi_platform_config',
     'hdbt_admin_tools',

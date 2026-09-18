@@ -148,7 +148,7 @@ final class QueryBuilder {
     int $innerHitsSize = 1,
     bool $includeAggregations = FALSE,
   ): array {
-    $minScore = (float) ($this->getSetting('min_score') ?? 0.0);
+    $similarity = (float) ($this->getSetting('similarity') ?? 0.0);
     $language = match($language) {
       "fi", "sv", "en" => $language,
       default => "en",
@@ -196,7 +196,7 @@ final class QueryBuilder {
           $fieldPrefix,
           $embeddings,
           ['bool' => ['must' => [$languageFilter, ['terms' => ['entity_bundle' => $deboostedSubset]]]]],
-          $minScore,
+          $similarity,
           ['name' => 'deboosted'] + $innerHits,
           (float) ($this->getSetting('deboost_factor') ?? 1.0),
         ),
@@ -204,7 +204,7 @@ final class QueryBuilder {
           $fieldPrefix,
           $embeddings,
           ['bool' => $contentBool],
-          $minScore,
+          $similarity,
           ['name' => 'content'] + $innerHits,
           1.0,
         ),
@@ -212,7 +212,7 @@ final class QueryBuilder {
     }
     else {
       $filter = $this->buildBundleFilter($languageFilter, $bundles, $excludeBundles);
-      $knn = $this->buildKnnEntry($fieldPrefix, $embeddings, $filter, $minScore, $innerHits, NULL);
+      $knn = $this->buildKnnEntry($fieldPrefix, $embeddings, $filter, $similarity, $innerHits, NULL);
     }
 
     $body = [
@@ -333,8 +333,8 @@ final class QueryBuilder {
     $entry = [
       'field' => $fieldPrefix . '.vector',
       'query_vector' => $embeddings,
-      'k' => 50,
-      'num_candidates' => 500,
+      'k' => 150,
+      'num_candidates' => 200,
       'filter' => $filter,
       'inner_hits' => $innerHits,
     ];
@@ -343,7 +343,7 @@ final class QueryBuilder {
     // in a way that ensures that a larger score corresponds to a higher
     // ranking. We use cosine similarity metric.
     if ($similarity !== NULL) {
-      // min_score = (2 * _score) - 1.
+      // The resulting _score is (similarity + 1) / 2.
       $entry['similarity'] = $similarity;
     }
     // https://www.elastic.co/docs/solutions/search/vector/knn#_search_multiple_knn_fields.
@@ -361,7 +361,7 @@ final class QueryBuilder {
    * @param \Drupal\helfi_search\EmbeddingModel $model
    *   The embedding model to use.
    *
-   * @return array<mixed>
+   * @return list<mixed>
    *   Parsed search results.
    */
   public function parseKnnHits(array $response, EmbeddingModel $model): array {
@@ -388,7 +388,12 @@ final class QueryBuilder {
         'metatag_title' => array_first($hit['_source']['metatag_title'] ?? []),
         'published_at' => array_first($hit['_source']['published_at'] ?? []),
         'content' => $innerFields['content'][0] ?? '',
-        'fragment' => $innerFields['fragment'][0] ?? NULL,
+        // @todo Fragment is disabled for now. Plan is to enable it later
+        // in follow-up tickets for UHF-13376.
+        // @code
+        //   'fragment' => $innerFields['fragment'][0] ?? NULL,
+        // @endcode
+        'fragment' => NULL,
       ];
       // Debug: when more than one inner hit was requested, surface every
       // matching chunk with its individual similarity score.
@@ -434,7 +439,7 @@ final class QueryBuilder {
    * @param array<mixed> $response
    *   The Elasticsearch response array.
    *
-   * @return array<mixed>
+   * @return list<mixed>
    *   Parsed promotion results.
    */
   public function parsePromotionHits(array $response): array {

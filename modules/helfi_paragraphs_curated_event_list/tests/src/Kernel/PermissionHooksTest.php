@@ -25,6 +25,7 @@ class PermissionHooksTest extends KernelTestBase {
     'system',
     'user',
     'helfi_user_roles',
+    'diff',
     'helfi_api_base',
     'config_rewrite',
     'language',

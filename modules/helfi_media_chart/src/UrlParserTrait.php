@@ -41,7 +41,7 @@ trait UrlParserTrait {
    *   The uri.
    */
   protected function mediaUrlToUri(string $url) : UriInterface {
-    $uri = Http::createFromString($url);
+    $uri = Http::new($url);
     $this->assertMediaLink($uri);
 
     return $uri;

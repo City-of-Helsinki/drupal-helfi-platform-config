@@ -195,6 +195,20 @@ final class ReactSearchHooksTest extends UnitTestCase {
     $this->assertTrue(
       $element['subform']['field_event_location']['#states']['disabled'][0][':input[name="event_list[0][subform][field_remote_events][value]"]']['checked']
     );
+
+    // Fields that only affect the search form are disabled by the lifts layout.
+    $lifts = [':input[name="event_list[0][subform][field_event_list_layout]"]' => ['value' => 'lifts']];
+    foreach (['field_event_count', 'field_event_time', 'field_language', 'field_free_events'] as $field) {
+      $this->assertSame($lifts, $element['subform'][$field]['#states']['disabled']);
+    }
+
+    // Fields with a condition of their own keep it, with the lifts layout as an
+    // alternative. Both rules have to live in the same `#states` array so that
+    // they cannot override each other.
+    foreach (['field_event_location', 'field_remote_events', 'field_search_term'] as $field) {
+      $this->assertSame($lifts, $element['subform'][$field]['#states']['disabled'][2]);
+      $this->assertSame('or', $element['subform'][$field]['#states']['disabled'][1]);
+    }
   }
 
 }

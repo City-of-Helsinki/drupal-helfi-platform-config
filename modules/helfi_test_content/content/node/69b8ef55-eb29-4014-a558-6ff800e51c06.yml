@@ -76,7 +76,7 @@ default:
               value: true
           field_event_count:
             -
-              value: 3
+              value: 5
           field_event_list_title:
             -
               value: 'Event list - Upper content region'

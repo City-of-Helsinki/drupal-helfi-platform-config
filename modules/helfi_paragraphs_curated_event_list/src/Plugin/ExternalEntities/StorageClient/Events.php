@@ -124,12 +124,12 @@ class Events extends StorageClientBase {
 
     // Run when receiving input from autocomplete field.
     $query = [
-      'input' => $parameters[0]['value'],
+      'full_text' => $parameters[0]['value'],
+      'full_text_language' => $langcode,
       'language' => $langcode,
       'start' => date('Y-m-d'),
-      'type' => 'event',
     ];
-    return $uri('search', $query);
+    return $uri('event', $query);
   }
 
   /**

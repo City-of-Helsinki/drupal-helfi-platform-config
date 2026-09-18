@@ -1,0 +1,21 @@
+uuid: ad587c5a-7377-4f09-a90e-d149d95b1052
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_reference_revisions
+    - helfi_tpr
+    - paragraphs
+id: tpr_service.field_upper_content
+field_name: field_upper_content
+entity_type: tpr_service
+type: entity_reference_revisions
+settings:
+  target_type: paragraph
+module: entity_reference_revisions
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

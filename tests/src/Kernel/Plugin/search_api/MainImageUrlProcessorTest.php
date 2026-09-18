@@ -38,6 +38,7 @@ class MainImageUrlProcessorTest extends ProcessorTestBase {
     'image',
     'file',
     'config_rewrite',
+    'diff',
     'helfi_api_base',
   ];
 

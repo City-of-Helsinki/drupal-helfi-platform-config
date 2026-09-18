@@ -7,13 +7,20 @@ namespace Drupal\helfi_platform_config\Hook;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Hook\Attribute\RemoveHook;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater;
 use Drupal\helfi_platform_config\ClearSiteData;
+use Drupal\locale\Hook\LocaleHooks;
 
 /**
  * Hook implementations for platform config module.
+ *
+ * Remove locale module's modules_installed hook because it triggers
+ * translation updates whenever modules are installed, which we don't want
+ * to happen automatically.
  */
+#[RemoveHook('modules_installed', class: LocaleHooks::class, method: 'modulesInstalled')]
 class PlatformConfigHooks {
 
   use AutowireTrait;

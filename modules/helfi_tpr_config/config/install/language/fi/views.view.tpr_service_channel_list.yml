@@ -1,4 +1,3 @@
-label: 'TPR Palvelukanavat'
 display:
   default:
     display_options:
@@ -9,7 +8,7 @@ display:
             format: plain_text
       exposed_form:
         options:
-          submit_button: Käytä
+          submit_button: Suodata
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
           sort_asc_label: Nousevasti
@@ -28,7 +27,6 @@ display:
         tpr_service_channel_bulk_form:
           label: Massapäivitys
           action_title: Toiminto
-        id: {  }
         name:
           label: Nimi
         langcode:
@@ -45,10 +43,20 @@ display:
       filters:
         combine:
           expose:
-            label: Etsi
+            label: 'Nimi tai ID'
         langcode:
           expose:
             label: Kieli
+        content_translation_status:
+          expose:
+            description: ''
+          group_info:
+            label: Julkaisutila
+            group_items:
+              1:
+                title: Julkaistu
+              2:
+                title: Julkaisematon
       title: 'TPR Palvelukanavat'
       header:
         result:
@@ -56,3 +64,4 @@ display:
     display_title: Oletus
   page_1:
     display_title: Sivu
+label: 'TPR Palvelukanavat'

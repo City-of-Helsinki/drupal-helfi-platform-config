@@ -4,88 +4,17 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config;
 
+use Drupal\Component\Transliteration\TransliterationInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
 /**
- * Generates heading anchor slugs that attempts to match headingIdInjector.js.
+ * Generates heading anchor slugs.
+ *
+ * @see \Drupal\helfi_platform_config\HeadingIdInjector
  */
 final class HeadingSlugger {
-
-  /**
-   * Main languages use simpler character mapping for backwards compatability.
-   */
-  private const array MAIN_LANGUAGES = ['en', 'fi', 'sv'];
-
-  /**
-   * Character classes ported from headingIdInjector.js.
-   */
-  private const array LOCALE_CONVERSIONS = [
-    '0' => '[°₀۰０]',
-    '1' => '[¹₁۱１]',
-    '2' => '[²₂۲２]',
-    '3' => '[³₃۳３]',
-    '4' => '[⁴₄۴٤４]',
-    '5' => '[⁵₅۵٥５]',
-    '6' => '[⁶₆۶٦６]',
-    '7' => '[⁷₇۷７]',
-    '8' => '[⁸₈۸８]',
-    '9' => '[⁹₉۹９]',
-    'a' => '[àáảãạăắằẳẵặâấầẩẫậāąåαάἀἁἂἃἄἅἆἇᾀᾁᾂᾃᾄᾅᾆᾇὰᾰᾱᾲᾳᾴᾶᾷаأအာါǻǎªაअاａä]',
-    'aa' => '[عआآ]',
-    'ae' => '[æǽ]',
-    'ai' => '[ऐ]',
-    'b' => '[бβبဗბｂब]',
-    'c' => '[çćčĉċｃ©]',
-    'ch' => '[чჩჭچ]',
-    'd' => '[ďðđƌȡɖɗᵭᶁᶑдδدضဍဒდｄᴅᴆ]',
-    'dj' => '[ђđ]',
-    'dz' => '[џძ]',
-    'e' => '[éèẻẽẹêếềểễệëēęěĕėεέἐἑἒἓἔἕὲеёэєəဧေဲეएإئｅ]',
-    'ei' => '[ऍ]',
-    'f' => '[фφفƒფｆ]',
-    'g' => '[ĝğġģгґγဂგگｇ]',
-    'gh' => '[غღ]',
-    'gx' => '[ĝ]',
-    'h' => '[ĥħηήحهဟှჰｈ]',
-    'hx' => '[ĥ]',
-    'i' => '[íìỉĩịîïīĭįıιίϊΐἰἱἲἳἴἵἶἷὶῐῑῒῖῗіїиဣိီည်ǐიइیｉi̇ϒ]',
-    'ii' => '[ई]',
-    'ij' => '[ĳ]',
-    'j' => '[ĵјჯجｊ]',
-    'jx' => '[ĵ]',
-    'k' => '[ķĸкκقكကკქکｋ]',
-    'kh' => '[хخხ]',
-    'l' => '[łľĺļŀлλلလლｌल]',
-    'lj' => '[љ]',
-    'm' => '[мμمမმｍ]',
-    'n' => '[ñńňņŉŋνнنနნｎ]',
-    'nj' => '[њ]',
-    'o' => '[óòỏõọôốồổỗộơớờởỡợøōőŏοὀὁὂὃὄὅὸόоوθိုǒǿºოओｏöө]',
-    'oe' => '[öœؤ]',
-    'oi' => '[ऑ]',
-    'oii' => '[ऒ]',
-    'p' => '[пπပპپｐ]',
-    'ps' => '[ψ]',
-    'q' => '[ყｑ]',
-    'r' => '[ŕřŗрρرრｒ]',
-    's' => '[śšşсσșςسصစſსｓŝ]',
-    'sh' => '[шშش]',
-    'shch' => '[щ]',
-    'ss' => '[ß]',
-    'sx' => '[ŝ]',
-    't' => '[ťţтτțتطဋတŧთტｔ]',
-    'th' => '[þϑثذظ]',
-    'ts' => '[цცწ]',
-    'u' => '[úùủũụưứừửữựûūůűŭųµуဉုူǔǖǘǚǜუउｕўü]',
-    'ue' => '[ü]',
-    'uu' => '[ऊ]',
-    'v' => '[вვϐｖ]',
-    'w' => '[ŵωώဝွｗ]',
-    'x' => '[χξｘ]',
-    'y' => '[ýỳỷỹỵÿŷйыυϋύΰيယｙῠῡὺ]',
-    'ya' => '[я]',
-    'yu' => '[ю]',
-    'z' => '[źžżзζزဇზｚ]',
-    'zh' => '[жჟژ]',
-  ];
 
   /**
    * Slugs already issued by this instance.
@@ -97,23 +26,27 @@ final class HeadingSlugger {
   /**
    * IDs already present on the page.
    *
-   * @var array<string, true>
+   * @phpstan-var array<string, true>
    */
-  private array $reserved;
+  private array $reserved = [];
+
+  public function __construct(
+    #[Autowire(service: 'transliteration')]
+    private readonly TransliterationInterface $transliteration,
+    private readonly LanguageManagerInterface $languageManager,
+  ) {}
 
   /**
-   * Constructs a new instance.
+   * Sets the IDs the generated slugs must not collide with.
    *
-   * @param string $langcode
-   *   Language code.
    * @param string[] $reservedIds
-   *   IDs already present on the page that the slug must not collide with.
+   *   IDs already present on the page.
    */
-  public function __construct(
-    private readonly string $langcode,
-    array $reservedIds = [],
-  ) {
-    $this->reserved = array_fill_keys($reservedIds, TRUE);
+  public function withReservedIds(array $reservedIds): self {
+    $slugger = clone $this;
+    $slugger->issued = [];
+    $slugger->reserved = array_fill_keys($reservedIds, TRUE);
+    return $slugger;
   }
 
   /**
@@ -132,11 +65,14 @@ final class HeadingSlugger {
       return '';
     }
 
-    $name = $this->transliterate($name);
+    $langcode = $this->languageManager
+      ->getCurrentLanguage(LanguageInterface::TYPE_URL)
+      ->getId();
 
-    // Replace any non-ASCII-word character with '-'. Matches JS /\W/g (which
-    // ignores Unicode), but stays Unicode-safe by enumerating ASCII directly.
-    $name = preg_replace('/[^A-Za-z0-9_]/u', '-', $name) ?? $name;
+    $name = $this->transliteration->transliterate($name, $langcode);
+
+    // Replace anything that is not URL safe with '-'.
+    $name = preg_replace('/[^A-Za-z0-9_]/', '-', $name) ?? $name;
 
     // Trailing -<digits> becomes _<digits> ('example-1' to 'example_1').
     $name = preg_replace('/-(\d+)$/', '_$1', $name) ?? $name;
@@ -144,20 +80,6 @@ final class HeadingSlugger {
     $available = $this->findAvailable($name);
     $this->issued[$available] = TRUE;
     return $available;
-  }
-
-  /**
-   * Apply the locale conversion table.
-   */
-  private function transliterate(string $name): string {
-    if (in_array($this->langcode, self::MAIN_LANGUAGES, TRUE)) {
-      return strtr($name, ['ä' => 'a', 'ö' => 'o', 'å' => 'a']);
-    }
-
-    foreach (self::LOCALE_CONVERSIONS as $replacement => $pattern) {
-      $name = preg_replace('/' . $pattern . '/u', (string) $replacement, $name) ?? $name;
-    }
-    return $name;
   }
 
   /**

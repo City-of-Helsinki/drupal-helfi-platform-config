@@ -37,7 +37,7 @@ class ChunkAnnotatorTest extends UnitTestCase {
    */
   public function testExtractedFragmentSetOnChunk(): void {
     $chunk = new Chunk('Body text.', heading: new Heading('How to Apply', 2));
-    $fragments = $this->extractFragments('<main class="layout-main-wrapper"><h2>How to Apply</h2></main>');
+    $fragments = $this->extractFragments('<main class="layout-main-wrapper"><h2 id="how-to-apply">How to Apply</h2></main>');
 
     $this->getSut()->annotate([$chunk], $fragments);
 
@@ -53,7 +53,7 @@ class ChunkAnnotatorTest extends UnitTestCase {
     $heading = new Heading('How to Apply', 2);
     $chunk1 = new Chunk('First half content.', heading: $heading);
     $chunk2 = new Chunk('Second half content.', heading: $heading);
-    $fragments = $this->extractFragments('<main class="layout-main-wrapper"><h2>How to Apply</h2></main>');
+    $fragments = $this->extractFragments('<main class="layout-main-wrapper"><h2 id="how-to-apply">How to Apply</h2></main>');
 
     $this->getSut()->annotate([$chunk1, $chunk2], $fragments);
 
@@ -67,7 +67,7 @@ class ChunkAnnotatorTest extends UnitTestCase {
   public function testH1DoesNotConsumeFragment(): void {
     $h1 = new Chunk('Top body content.', heading: new Heading('Top', 1));
     $h2 = new Chunk('Sub body content.', heading: new Heading('Sub', 2));
-    $fragments = $this->extractFragments('<main class="layout-main-wrapper"><h2>Sub</h2></main>');
+    $fragments = $this->extractFragments('<main class="layout-main-wrapper"><h2 id="sub">Sub</h2></main>');
 
     $this->getSut()->annotate([$h1, $h2], $fragments);
 
@@ -119,7 +119,7 @@ class ChunkAnnotatorTest extends UnitTestCase {
   private function extractFragments(string $bodyHtml = ''): array {
     $html5 = new HTML5(['disable_html_ns' => TRUE, 'encoding' => 'UTF-8']);
     $doc = $html5->loadHTML('<!doctype html><html><body>' . $bodyHtml);
-    return HeadingFragmentExtractor::extract($doc, 'en');
+    return HeadingFragmentExtractor::extract($doc);
   }
 
   /**

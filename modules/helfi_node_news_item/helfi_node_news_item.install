@@ -7,12 +7,7 @@
 
 declare(strict_types=1);
 
-/**
- * UHF-10555: Removed references to media display that is no longer used.
- */
-function helfi_node_news_item_update_9005(): void {
-  // This is automated now.
-}
+use Drupal\entity\BundleFieldDefinition;
 
 /**
  * UHF-11232: Use HelfiLinkitWidget for link fields.
@@ -27,7 +22,16 @@ function helfi_node_news_item_update_9006(): void {
  */
 function helfi_node_news_item_update_9007(): void {
   $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
-  $field_storage_definition = _helfi_node_news_item_changed_at_field();
+  $field_storage_definition = BundleFieldDefinition::create('timestamp')
+    ->setName('changed_at')
+    ->setLabel(t('Content changed on'))
+    ->setDescription(t('Timestamp of when content was last changed via form.'))
+    ->setTargetEntityTypeId('node')
+    ->setTargetBundle('news_item')
+    ->setRevisionable(TRUE)
+    ->setTranslatable(TRUE)
+    ->setDisplayConfigurable('view', TRUE)
+    ->setDisplayConfigurable('form', FALSE);
 
   $entity_definition_update_manager->installFieldStorageDefinition(
     'changed_at',

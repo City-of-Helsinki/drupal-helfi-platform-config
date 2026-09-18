@@ -1,18 +1,28 @@
 hdbt_admin_tools.list_all:
   path: '/admin/tools'
   defaults:
-    _controller: '\Drupal\hdbt_admin_tools\Controller\ListController::build'
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
     _title: 'Tools'
   requirements:
     _permission: 'access administration pages'
   options:
     _admin_route: TRUE
 
-hdbt_admin_tools.site_settings_form:
+hdbt_admin_tools.site_settings:
   path: '/admin/tools/site-settings'
   defaults:
-    _form: '\Drupal\hdbt_admin_tools\Form\SiteSettings'
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
     _title: 'Site settings'
+  requirements:
+    _permission: 'administer site configuration+access administration pages'
+  options:
+    _admin_route: TRUE
+
+hdbt_admin_tools.appearance_settings:
+  path: '/admin/tools/appearance-settings'
+  defaults:
+    _form: '\Drupal\hdbt_admin_tools\Form\AppearanceSettings'
+    _title: 'Appearance settings'
   requirements:
     _permission: 'access administration pages'
   options:

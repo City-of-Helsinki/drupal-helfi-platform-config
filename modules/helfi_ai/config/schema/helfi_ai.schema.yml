@@ -17,3 +17,9 @@ helfi_ai.settings:
       sequence:
         type: string
         label: 'Content type machine name'
+    model_tiers:
+      type: sequence
+      label: 'Model tier to AI provider and model mapping'
+      sequence:
+        type: string
+        label: 'Provider and model, for example azure__gpt-5-nano'

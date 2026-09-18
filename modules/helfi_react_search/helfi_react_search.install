@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\language\ConfigurableLanguageManagerInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * UHF-9754: Unset '_info_file_ctime' for helfi_react_search module.
@@ -230,4 +231,106 @@ function helfi_react_search_update_9020(): void {
     $override->set('description', 'Valitse listalla näytettävien sisältöjen lukumäärä. Jos olet valinnut esitystavaksi nostot, näytetään aina enintään kolme sisältöä.')
       ->save();
   }
+}
+
+/**
+ * Remove the "3" option from the event count field, defaulting it to 5.
+ *
+ * Using $sandbox to avoid possible timeout or running out of memory.
+ *
+ * @param array<string, mixed> $sandbox
+ *   The sandbox.
+ */
+function helfi_react_search_update_9021(array &$sandbox): void {
+  $query = \Drupal::entityQuery('paragraph')
+    ->condition('type', 'event_list')
+    ->condition('field_event_count', 3)
+    ->accessCheck(FALSE);
+
+  if (!isset($sandbox['total'])) {
+    $config = \Drupal::configFactory()
+      ->getEditable('field.field.paragraph.event_list.field_event_count');
+    if (!$config->isNew()) {
+      $config->set('default_value', [['value' => 5]])->save();
+    }
+
+    $sandbox['total'] = $query->count()->execute();
+    $sandbox['current'] = 0;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  // Existing matches are updated to 5 on each pass, so they drop out of this
+  // condition and the next range() picks up the remaining ones.
+  /** @var array<int|string> $ids */
+  $ids = $query
+    ->range(0, 25)
+    ->execute();
+
+  if (empty($ids)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($ids as $id) {
+    $entity = Paragraph::load($id);
+    $entity->set('field_event_count', 5);
+    $entity->save();
+    $sandbox['current']++;
+  }
+
+  $sandbox['#finished'] = $sandbox['current'] >= $sandbox['total'] ? 1 : ($sandbox['current'] / $sandbox['total']);
+}
+
+/**
+ * UHF-13422: Install the "show only super events" toggle for event_list.
+ */
+function helfi_react_search_update_9022(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+
+  $form_display = \Drupal::configFactory()
+    ->getEditable('core.entity_form_display.paragraph.event_list.default');
+
+  if ($form_display->isNew()) {
+    return;
+  }
+
+  $config_deps = $form_display->get('dependencies.config') ?? [];
+  $only_super_dep = 'field.field.paragraph.event_list.field_event_list_only_super';
+  if (!in_array($only_super_dep, $config_deps, TRUE)) {
+    $config_deps[] = $only_super_dep;
+    sort($config_deps);
+    $form_display->set('dependencies.config', $config_deps);
+  }
+
+  $reweight = [
+    'content.field_event_count.weight' => 5,
+    'content.field_event_list_free_text.weight' => 6,
+    'content.field_event_list_category_event.weight' => 7,
+    'content.field_event_list_category_hobby.weight' => 8,
+    'content.field_event_list_keywords.weight' => 9,
+    'content.field_event_list_place.weight' => 9,
+    'third_party_settings.field_group.group_search_filters.weight' => 10,
+  ];
+  foreach ($reweight as $key => $weight) {
+    if ($form_display->get($key) !== NULL) {
+      $form_display->set($key, $weight);
+    }
+  }
+
+  if (!$form_display->get('content.field_event_list_only_super')) {
+    $form_display->set('content.field_event_list_only_super', [
+      'type' => 'boolean_checkbox',
+      'weight' => 4,
+      'region' => 'content',
+      'settings' => ['display_label' => TRUE],
+      'third_party_settings' => [],
+    ]);
+  }
+
+  $form_display->save();
 }

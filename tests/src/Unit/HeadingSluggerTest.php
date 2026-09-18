@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit;
 
+use Drupal\Component\Transliteration\PhpTransliteration;
+use Drupal\Core\Language\Language;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_platform_config\HeadingSlugger;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -20,7 +23,7 @@ class HeadingSluggerTest extends UnitTestCase {
    */
   #[DataProvider('slugData')]
   public function testSlug(string $langcode, string $input, string $expected): void {
-    $sut = new HeadingSlugger($langcode);
+    $sut = $this->slugger($langcode);
 
     $this->assertSame($expected, $sut->slug($input));
   }
@@ -35,14 +38,14 @@ class HeadingSluggerTest extends UnitTestCase {
       // Basic ASCII headings get hyphenated and lowercased.
       'ascii heading' => ['en', 'How to Apply', 'how-to-apply'],
 
-      // Main languages (fi/sv/en) replace 'ääkköset'.
+      // 'ääkköset' are replaced with ASCII equivalents.
       'fi: paatos' => ['fi', 'Päätös', 'paatos'],
       'sv: hojdpunkter' => ['sv', 'Höjdpunkter', 'hojdpunkter'],
       'en: arstid' => ['en', 'Årstid', 'arstid'],
 
-      // Non-main languages get the full transliteration table.
+      // Cyrillic and Greek transliterate to ASCII.
       'ru: cyrillic' => ['ru', 'Привет', 'privet'],
-      'ru: greek' => ['ru', 'Καλημέρα', 'kalhmera'],
+      'ru: greek' => ['ru', 'Καλημέρα', 'kalimera'],
 
       // Trailing digits switch to underscore.
       'trailing single digit' => ['en', 'Section 1', 'section_1'],
@@ -66,7 +69,7 @@ class HeadingSluggerTest extends UnitTestCase {
    * "-1" is skipped when colliding with a previously injected anchor.
    */
   public function testDuplicateHeadingDeduplication(): void {
-    $sut = new HeadingSlugger('en');
+    $sut = $this->slugger();
 
     $this->assertSame('intro', $sut->slug('Intro'));
     $this->assertSame('intro-2', $sut->slug('Intro'));
@@ -77,10 +80,21 @@ class HeadingSluggerTest extends UnitTestCase {
    * Tests collision against a reserved page ID.
    */
   public function testCollisionWithReservedIdUsesMinusOne(): void {
-    $sut = new HeadingSlugger('en', ['intro']);
+    $sut = $this->slugger()->withReservedIds(['intro']);
 
     $this->assertSame('intro-1', $sut->slug('Intro'));
     $this->assertSame('intro-2', $sut->slug('Intro'));
+  }
+
+  /**
+   * Constructs a slugger.
+   */
+  private function slugger(string $langcode = 'en'): HeadingSlugger {
+    $languageManager = $this->createMock(LanguageManagerInterface::class);
+    $languageManager->method('getCurrentLanguage')
+      ->willReturn(new Language(['id' => $langcode]));
+
+    return new HeadingSlugger(new PhpTransliteration(), $languageManager);
   }
 
 }

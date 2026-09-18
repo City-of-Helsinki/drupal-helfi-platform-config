@@ -10,7 +10,7 @@
   <link rel="stylesheet" media="all" href="../../../../../../../themes/contrib/hdbt/dist/css/hdbt-icons.css">
   <script>
     // Simulate Drupal environment.
-    let drupalSettings = {};
+    const drupalSettings = {};
     drupalSettings.path = {};
     drupalSettings.path.currentLanguage = window.sessionStorage.getItem('testLang') || 'fi'
     drupalSettings.helfiCalculator = {};
@@ -346,7 +346,7 @@
       <a class="lang-select" href="?lang=sv">Sv</a>
       <a class="lang-select" href="?lang=en">En</a>
       <script>
-        let langClick = (e) => {
+        const langClick = (e) => {
           e.preventDefault();
           console.log(e)
           window.sessionStorage.setItem('testLang', e.target.href.split('?lang=')[1]);
@@ -359,7 +359,7 @@
     </header>
     <script>
       function setValues(formSelector, data, expectedResults) {
-        const elem = document.querySelector('#'+formSelector);
+        const elem = document.querySelector(`#${formSelector}`);
         const selectors = Object.keys(data);
         for (let i = 0; i < selectors.length; i++) {
           const selector = selectors[i];
@@ -381,7 +381,7 @@
         }
 
         if (expectedResults) {
-          let errors = [];
+          const errors = [];
           const resultSelectors = Object.keys(expectedResults);
           for (let i = 0; i < resultSelectors.length; i++) {
             const resultSelector = resultSelectors[i];

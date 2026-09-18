@@ -33,7 +33,8 @@ class TeliaAceAuthenticatedWidgetTest extends BlockUnitTestBase {
     $this->teliaAceAuthenticatedWidget = new class (
       [],
       'telia_ace_authenticated_widget',
-      ['provider' => 'helfi_platform_config']
+      ['provider' => 'helfi_platform_config'],
+      $this->routeMatch
     ) extends TeliaAceAuthenticatedWidget {
     };
 

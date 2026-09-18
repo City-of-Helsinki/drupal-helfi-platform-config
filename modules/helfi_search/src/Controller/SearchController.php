@@ -8,8 +8,8 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Flood\FloodInterface;
 use Drupal\helfi_search\EmbeddingModel;
-use Drupal\helfi_search\EmbeddingsModelException;
-use Drupal\helfi_search\EmbeddingsModelInterface;
+use Drupal\helfi_search\EmbeddingApiException;
+use Drupal\helfi_search\EmbeddingApiInterface;
 use Drupal\helfi_search\QueryBuilder;
 use Drupal\helfi_search\QueryRewriter;
 use Elastic\Elasticsearch\Client;
@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Semantic search API controller.
  *
- * @phpstan-type SearchResult array{promoted: list<mixed>, results: list<mixed>, total_hits: int, debug?: array<string, mixed>}
+ * @phpstan-type SearchResult array{promoted: list<mixed>, results: list<mixed>, total_hits: int, max_score: float|null, debug?: array<string, mixed>}
  */
 final class SearchController extends ControllerBase {
 
@@ -40,7 +40,7 @@ final class SearchController extends ControllerBase {
   const array NEWS_BUNDLES = ['news_item', 'news_article'];
 
   public function __construct(
-    private readonly EmbeddingsModelInterface $embeddingsModel,
+    private readonly EmbeddingApiInterface $embeddingsModel,
     private readonly FloodInterface $flood,
     private readonly QueryBuilder $queryBuilder,
     #[Autowire(service: 'helfi_platform_config.etusivu_elastic_client')]
@@ -109,7 +109,7 @@ final class SearchController extends ControllerBase {
 
       return $this->createResponse($result, $page, $size);
     }
-    catch (EmbeddingsModelException | ElasticsearchException | TransportException) {
+    catch (EmbeddingApiException | ElasticsearchException | TransportException) {
       return new JsonResponse(
         ['error' => 'Search service temporarily unavailable.'],
         503,
@@ -200,7 +200,10 @@ final class SearchController extends ControllerBase {
     $result = [
       'promoted' => [],
       'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
-      'total_hits' => $knnResponse['hits']['total']['value'] ?? 0,
+      'total_hits' => (int) ($knnResponse['hits']['total']['value'] ?? 0),
+      'max_score' => isset($knnResponse['hits']['max_score'])
+        ? (float) $knnResponse['hits']['max_score']
+        : NULL,
     ];
     if ($debug) {
       $result['debug'] = ['bundles' => $this->queryBuilder->parseBundleAggregations($knnResponse)];
@@ -251,12 +254,31 @@ final class SearchController extends ControllerBase {
     $result = [
       'promoted' => $promoted,
       'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
-      'total_hits' => ($knnResponse['hits']['total']['value'] ?? 0) + count($promoted),
+      'total_hits' => (int) ($knnResponse['hits']['total']['value'] ?? 0) + count($promoted),
+      'max_score' => isset($knnResponse['hits']['max_score'])
+        ? (float) $knnResponse['hits']['max_score']
+        : NULL,
     ];
     if ($debug && !isset($responses[1]['error'])) {
       $result['debug'] = ['bundles' => $this->queryBuilder->parseBundleAggregations($knnResponse)];
     }
     return $result;
+  }
+
+  /**
+   * Tells whether the best hit of this page misses the relevancy threshold.
+   *
+   * @param SearchResult $result
+   *   The search result payload from one of the execute*() helpers.
+   */
+  private function isLowRelevance(array $result): bool {
+    if ($result['promoted']) {
+      return FALSE;
+    }
+
+    $threshold = (float) ($this->config('helfi_search.settings')->get('low_relevance_threshold') ?? 0);
+
+    return $result['max_score'] === NULL || $result['max_score'] < $threshold;
   }
 
   /**
@@ -276,6 +298,7 @@ final class SearchController extends ControllerBase {
       'page' => $page,
       'size' => $size,
       'total_hits' => $result['total_hits'],
+      'low_relevance' => $this->isLowRelevance($result),
     ];
     if (isset($result['debug'])) {
       $payload['debug'] = $result['debug'];

@@ -25,7 +25,7 @@ final class SearchSettingsForm extends ConfigFormBase {
   public function __construct(
     ConfigFactoryInterface $config_factory,
     TypedConfigManagerInterface $typedConfigManager,
-    private readonly EnvironmentResolverInterface $environmentResolver,
+    protected readonly EnvironmentResolverInterface $environmentResolver,
   ) {
     parent::__construct($config_factory, $typedConfigManager);
   }
@@ -100,42 +100,24 @@ final class SearchSettingsForm extends ConfigFormBase {
       '#config_target' => 'helfi_search.settings:deboost_factor',
     ];
 
-    $form['ranking']['min_score'] = [
+    $form['ranking']['similarity'] = [
       '#type' => 'number',
       '#title' => $this->t('Minimum similarity'),
-      '#description' => $this->t('Raw cosine-similarity floor between query and document embeddings (0.0–1.0). Hits below this threshold are dropped. Higher values return fewer but more relevant results. Calculate similarity value from desired minimum score value with: similarity = desired_min_score * 2 - 1.'),
+      '#description' => $this->t('Cosine-similarity between query and document embeddings. Hits below this threshold are dropped. Elasticsearch derives the hit score from the similarity as <code>score = (similarity + 1) / 2</code>.'),
       '#min' => 0,
       '#max' => 1,
       '#step' => 0.01,
-      '#config_target' => 'helfi_search.settings:min_score',
+      '#config_target' => 'helfi_search.settings:similarity',
     ];
 
-    $form['external_links'] = [
-      '#type' => 'details',
-      '#title' => $this->t('External links'),
-      '#open' => TRUE,
-    ];
-
-    $external_link_labels = [
-      'jobs' => $this->t('Open jobs URL'),
-      'events' => $this->t('Events URL'),
-      'decisions' => $this->t('Decisions URL'),
-      'contact' => $this->t('Contact URL'),
-      'helsinki_near_you' => $this->t('Helsinki near you URL'),
-    ];
-
-    foreach ($external_link_labels as $key => $label) {
-      $form['external_links'][$key] = [
-        '#type' => 'url',
-        '#title' => $label,
-        '#config_target' => "helfi_search.settings:external_links.$key",
-      ];
-    }
-
-    $form['ai_register_url'] = [
-      '#type' => 'url',
-      '#title' => $this->t('AI register URL'),
-      '#config_target' => 'helfi_search.settings:ai_register_url',
+    $form['ranking']['low_relevance_threshold'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Low relevancy threshold'),
+      '#description' => $this->t('Every result gets a score between 0 and 1. When the best result of a search scores below this value, the search is reported as low relevancy.'),
+      '#min' => 0,
+      '#max' => 1,
+      '#step' => 0.01,
+      '#config_target' => 'helfi_search.settings:low_relevance_threshold',
     ];
 
     $form['query_preprocessing'] = [

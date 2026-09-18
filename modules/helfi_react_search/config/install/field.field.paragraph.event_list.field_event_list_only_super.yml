@@ -1,0 +1,23 @@
+uuid: 463c5697-6316-4521-8f4b-31e75675f811
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_event_list_only_super
+    - paragraphs.paragraphs_type.event_list
+id: paragraph.event_list.field_event_list_only_super
+field_name: field_event_list_only_super
+entity_type: paragraph
+bundle: event_list
+label: 'Show only super events'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

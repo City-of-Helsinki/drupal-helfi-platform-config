@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
 use Drupal\Core\Block\Attribute\Block;
-use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
@@ -16,7 +15,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   id: "ibm_chat_app",
   admin_label: new TranslatableMarkup("IBM Chat App"),
 )]
-class IbmChatApp extends BlockBase {
+class IbmChatApp extends ChatBlockBase {
 
   /**
    * {@inheritdoc}

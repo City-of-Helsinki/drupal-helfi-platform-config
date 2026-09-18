@@ -23,6 +23,7 @@ class EventListTest extends KernelTestBase {
    */
   protected static $modules = [
     'helfi_react_search',
+    'diff',
     'helfi_api_base',
     'entity_reference_revisions',
     'user',
@@ -146,7 +147,7 @@ class EventListTest extends KernelTestBase {
    */
   private function testGetters(EventList $paragraph): void {
     // Test item count.
-    $this->assertEquals(3, $paragraph->getCount());
+    $this->assertEquals(5, $paragraph->getCount());
     $paragraph->set('field_event_count', 6);
     $this->assertEquals(6, $paragraph->getCount());
 
@@ -154,6 +155,12 @@ class EventListTest extends KernelTestBase {
     $this->assertEmpty($paragraph->getTitle());
     $paragraph->set('field_event_list_title', 'Test title');
     $this->assertEquals('Test title', $paragraph->getTitle());
+
+    // Test super events toggle. It is off unless the editor enables it.
+    $this->assertFalse($paragraph->showOnlySuperEvents());
+    $paragraph->set('field_event_list_only_super', TRUE);
+    $this->assertTrue($paragraph->showOnlySuperEvents());
+    $paragraph->set('field_event_list_only_super', FALSE);
   }
 
   /**
@@ -196,7 +203,7 @@ class EventListTest extends KernelTestBase {
     // Field values are not set.
     $settings = $paragraph->getFilterSettings();
     foreach (Filters::cases() as $case) {
-      $this->assertFalse($settings[$case->value]);
+      $this->assertFalse($settings[$case->drupalSettingName()]);
 
       // Enable the settings.
       $paragraph->set($case->value, TRUE);
@@ -205,7 +212,7 @@ class EventListTest extends KernelTestBase {
     // Field values should be enabled.
     $settings = $paragraph->getFilterSettings();
     foreach (Filters::cases() as $case) {
-      $this->assertTrue($settings[$case->value]);
+      $this->assertTrue($settings[$case->drupalSettingName()]);
     }
   }
 
@@ -217,7 +224,7 @@ class EventListTest extends KernelTestBase {
     // UrlHelper::buildQuery encodes commas in include/super_event_type and
     // colons in division; empty keyword/location still appear as
     // keyword=&location= in the query string.
-    $emptyQuery = 'keyword=&location=&event_type=General&format=json&include=keywords%2Clocation&page=1&page_size=3&sort=end_time&start=now&super_event_type=umbrella%2Cnone&language=en&ongoing=true&division=kunta%3Ahelsinki';
+    $emptyQuery = 'keyword=&location=&event_type=General&format=json&include=keywords%2Clocation%2Cregistration%2Csuper_event&page=1&page_size=5&sort=end_time&start=now&super_event_type=umbrella%2Cnone&language=en&ongoing=true&division=kunta%3Ahelsinki';
     $this->assertSame($base . '?' . $emptyQuery, $paragraph->getApiUrl());
 
     $paragraph->set('field_event_list_keywords', [
@@ -228,7 +235,7 @@ class EventListTest extends KernelTestBase {
     ]);
     $paragraph->set('field_event_list_type', 'events');
 
-    $eventsQuery = 'keyword=yso%3Ap23&location=tprek%3A28473&event_type=General&format=json&include=keywords%2Clocation&page=1&page_size=3&sort=end_time&start=now&super_event_type=umbrella%2Cnone&language=en&ongoing=true&division=kunta%3Ahelsinki';
+    $eventsQuery = 'keyword=yso%3Ap23&location=tprek%3A28473&event_type=General&format=json&include=keywords%2Clocation%2Cregistration%2Csuper_event&page=1&page_size=5&sort=end_time&start=now&super_event_type=umbrella%2Cnone&language=en&ongoing=true&division=kunta%3Ahelsinki';
     $this->assertSame($base . '?' . $eventsQuery, $paragraph->getApiUrl());
 
     $paragraph->set('field_event_list_type', 'hobbies');
@@ -277,6 +284,22 @@ class EventListTest extends KernelTestBase {
     $paragraph->set('field_event_list_free_text', 'jooga');
     $url = $paragraph->getApiUrl(['all_ongoing_AND' => 'swimming']);
     $this->assertStringContainsString('full_text=jooga%20swimming', $url);
+
+    $paragraph->set('field_event_list_free_text', NULL);
+    $url = $paragraph->getApiUrl();
+    $this->assertStringContainsString('super_event_type=umbrella%2Cnone', $url);
+    $this->assertStringNotContainsString('hide_recurring_children', $url);
+
+    $paragraph->set('field_event_list_only_super', TRUE);
+    $url = $paragraph->getApiUrl();
+    $this->assertStringContainsString('hide_recurring_children=true', $url);
+    $this->assertStringNotContainsString('super_event_type=', $url);
+
+    $paragraph->set('field_event_list_free_text', '?super_event_type=umbrella');
+    $this->assertStringContainsString('super_event_type=umbrella&', $paragraph->getApiUrl());
+
+    $paragraph->set('field_event_list_free_text', 'jooga');
+    $paragraph->set('field_event_list_only_super', FALSE);
   }
 
 }

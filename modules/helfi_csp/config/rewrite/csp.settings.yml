@@ -9,7 +9,7 @@ enforce:
     default-src:
       base: self
     img-src:
-      base: any
+      base: self
     script-src:
       base: self
       flags:

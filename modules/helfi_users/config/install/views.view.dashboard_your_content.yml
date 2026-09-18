@@ -569,7 +569,7 @@ display:
           entity_type: node
           entity_field: changed
           plugin_id: field
-          label: Changed
+          label: Updated
           exclude: false
           alter:
             alter_text: false
@@ -736,7 +736,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: "No pages to display."
+            value: 'No pages to display.'
             format: full_html
           tokenize: false
       sorts:
@@ -1070,6 +1070,7 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
+      use_ajax: true
       header: {  }
       footer: {  }
       display_extenders: {  }

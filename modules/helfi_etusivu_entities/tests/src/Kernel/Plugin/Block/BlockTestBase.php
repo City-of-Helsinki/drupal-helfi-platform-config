@@ -16,6 +16,7 @@ abstract class BlockTestBase extends EntityKernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'diff',
     'helfi_api_base',
     'helfi_platform_config',
     'node',

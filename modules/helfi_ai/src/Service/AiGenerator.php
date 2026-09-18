@@ -12,6 +12,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Utility\Error;
+use Drupal\helfi_ai\ModelTier;
 use Drupal\helfi_platform_config\TextConverter\TextConverterManager;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -56,8 +57,12 @@ final readonly class AiGenerator {
     if (!$content || strlen($content) > self::MAX_CONTENT_BYTES) {
       return [];
     }
-    $message = $this
-      ->getChatMessage($content, $entity->language()->getId(), 'helfi_seo_title__helfi_seo_title_default');
+    $message = $this->getChatMessage(
+      $content,
+      $entity->language()->getId(),
+      'helfi_seo_title__helfi_seo_title_default',
+      ModelTier::Low,
+    );
 
     if (!$message) {
       return [];
@@ -88,8 +93,12 @@ final readonly class AiGenerator {
    *   request fails.
    */
   public function checkTone(string $content, string $langcode): ?string {
-    $message = $this
-      ->getChatMessage($content, $langcode, 'helfi_tone_check__helfi_tone_check_default');
+    $message = $this->getChatMessage(
+      $content,
+      $langcode,
+      'helfi_tone_check__helfi_tone_check_default',
+      ModelTier::High,
+    );
 
     if (!$message) {
       return NULL;
@@ -109,8 +118,12 @@ final readonly class AiGenerator {
   public function generateSummary(ContentEntityInterface $entity): ?string {
     $content = $this->textConverterManager->convert($entity);
 
-    $message = $this
-      ->getChatMessage($content, $entity->language()->getId(), 'helfi_content_summary__helfi_content_summary_default');
+    $message = $this->getChatMessage(
+      $content,
+      $entity->language()->getId(),
+      'helfi_content_summary__helfi_content_summary_default',
+      ModelTier::Low,
+    );
 
     if (!$message) {
       return NULL;
@@ -143,11 +156,18 @@ final readonly class AiGenerator {
    *   The language name.
    * @param string $promptId
    *   The prompt id.
+   * @param \Drupal\helfi_ai\ModelTier $tier
+   *   The model tier to run the prompt on.
    *
    * @return \Drupal\ai\OperationType\Chat\ChatMessage|null
    *   The chat message or NULL.
    */
-  private function getChatMessage(string $content, string $langcode, string $promptId): ?ChatMessage {
+  private function getChatMessage(
+    string $content,
+    string $langcode,
+    string $promptId,
+    ModelTier $tier,
+  ): ?ChatMessage {
     if (!$prompt = $this->loadPrompt($promptId, $langcode)) {
       return NULL;
     }
@@ -161,7 +181,8 @@ final readonly class AiGenerator {
     }
 
     try {
-      ['provider_id' => $provider, 'model_id' => $model] = $this->aiProvider->getSetProvider('chat');
+      ['provider_id' => $provider, 'model_id' => $model] = $this->aiProvider
+        ->getSetProvider('chat', $this->resolveModel($tier));
       $input = new ChatInput([new ChatMessage('user', $text)]);
       $normalized = $provider->chat($input, $model)->getNormalized();
       // A non-streaming chat reply is a single ChatMessage, not a stream.
@@ -203,6 +224,25 @@ final readonly class AiGenerator {
     $this->languageManager->setConfigOverrideLanguage($original);
 
     return $prompt;
+  }
+
+  /**
+   * Resolves the provider and model to use for the given tier.
+   *
+   * @param \Drupal\helfi_ai\ModelTier $tier
+   *   The requested tier.
+   *
+   * @return string|null
+   *   A provider and model string such as 'azure__gpt-5-nano', or NULL when
+   *   neither the tier nor the default tier is configured. NULL makes the AI
+   *   module fall back to the site-wide provider in 'ai.settings'.
+   */
+  private function resolveModel(ModelTier $tier): ?string {
+    $tiers = $this->configFactory
+      ->get('helfi_ai.settings')
+      ->get('model_tiers') ?? [];
+
+    return $tiers[$tier->value] ?? $tiers[ModelTier::Default->value] ?? NULL;
   }
 
 }

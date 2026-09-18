@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_search\Kernel\Form;
 use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_search\Form\SearchSettingsForm;
@@ -30,6 +31,7 @@ class SearchSettingsFormTest extends KernelTestBase {
    */
   protected static $modules = [
     'system',
+    'search_api',
     'helfi_search',
   ];
 
@@ -48,20 +50,18 @@ class SearchSettingsFormTest extends KernelTestBase {
   public function testSubmitSavesConfig(): void {
     $form_state = $this->submit([
       'deboost_factor' => 0.5,
-      'min_score' => 0.4,
-      'ai_register_url' => 'https://example.com/ai',
-      'jobs' => 'https://example.com/jobs',
+      'similarity' => 0.4,
       'canonical_terms' => "OmaStadi\nMyHelsinki",
       'ignored_classes' => "is-hidden\nannouncement",
+      'low_relevance_threshold' => 0.6,
     ]);
 
     $this->assertEmpty($form_state->getErrors());
 
     $config = $this->config('helfi_search.settings');
     $this->assertEquals(0.5, $config->get('deboost_factor'));
-    $this->assertEquals(0.4, $config->get('min_score'));
-    $this->assertEquals('https://example.com/ai', $config->get('ai_register_url'));
-    $this->assertEquals('https://example.com/jobs', $config->get('external_links.jobs'));
+    $this->assertEquals(0.4, $config->get('similarity'));
+    $this->assertEquals(0.6, $config->get('low_relevance_threshold'));
     // Textareas are stored as lists, one item per line.
     $this->assertSame(['OmaStadi', 'MyHelsinki'], $config->get('canonical_terms'));
     $this->assertSame(['is-hidden', 'announcement'], $config->get('ignored_classes'));
@@ -129,7 +129,7 @@ class SearchSettingsFormTest extends KernelTestBase {
    *
    * @phpstan-param array<string, mixed> $values
    */
-  private function submit(array $values): FormState {
+  private function submit(array $values): FormStateInterface {
     $form_state = new FormState();
     $form_state->setValues($values);
     $this->container->get(FormBuilderInterface::class)

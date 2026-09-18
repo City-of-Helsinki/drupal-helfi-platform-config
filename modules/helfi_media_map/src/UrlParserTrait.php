@@ -37,7 +37,7 @@ trait UrlParserTrait {
    *   The url.
    */
   protected function getEmbedUrl(string $uri) : string {
-    $uri = Http::createFromString($uri);
+    $uri = Http::new($uri);
 
     $this->assertMediaLink($uri);
 
@@ -99,7 +99,7 @@ trait UrlParserTrait {
    *   The url.
    */
   protected function getMapUrl(string $uri) : ? string {
-    $uri = Http::createFromString($uri);
+    $uri = Http::new($uri);
 
     $this->assertMediaLink($uri);
 

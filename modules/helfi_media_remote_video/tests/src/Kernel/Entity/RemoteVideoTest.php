@@ -39,6 +39,7 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'diff',
     'helfi_api_base',
     'helfi_media_remote_video',
     'oembed_providers',
@@ -488,15 +489,14 @@ class RemoteVideoTest extends HelfiMediaKernelTestBase {
    */
   protected function getValue(Media $media): object {
     return new class ($media) {
-      // phpcs:ignore
-      private $entity;
 
-      public function __construct($entity) {
-        $this->entity = $entity;
+      public function __construct(private readonly Media $entity) {
       }
 
-      // phpcs:ignore
-      public function getEntity() {
+      /**
+       * Gets the wrapped media entity.
+       */
+      public function getEntity(): Media {
         return $this->entity;
       }
 

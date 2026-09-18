@@ -288,3 +288,10 @@ function helfi_tpr_config_update_11001(&$sandbox): ?FormattableMarkup {
     '@num' => $sandbox['processed'],
   ]);
 }
+
+/**
+ * Add an AI summary field to tpr_service.
+ */
+function helfi_tpr_config_update_11002(): void {
+  // Moved the field installation to helfi_ai_update_11003().
+}

@@ -102,7 +102,7 @@ class LocalTasksBlockTest extends KernelTestBase {
 
     $build = $block->build();
     $this->assertEquals(
-      'My pages',
+      'My content',
       (string) $build['#primary']['entity.user.canonical']['#link']['title'],
     );
   }

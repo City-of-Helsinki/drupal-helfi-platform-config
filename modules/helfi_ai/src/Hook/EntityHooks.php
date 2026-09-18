@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_ai\Hook;
 
+use Drupal\Core\Entity\Display\EntityDisplayInterface;
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Hook\Attribute\Hook;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\helfi_ai\Field\AiSummaryFieldDefinition;
 
 /**
  * Hook implementations for Helfi AI module related entities.
  */
 class EntityHooks {
-
-  use StringTranslationTrait;
 
   /**
    * Implements hook_entity_base_field_info().
@@ -23,19 +23,63 @@ class EntityHooks {
    */
   #[Hook('entity_base_field_info')]
   public function entityBaseFieldInfo(EntityTypeInterface $entity_type): array {
-    if ($entity_type->id() !== 'node') {
+    if (!in_array($entity_type->id(), ['node', 'tpr_service'], TRUE)) {
       return [];
     }
+    return AiSummaryFieldDefinition::create();
+  }
 
-    $fields['ai_summary'] = BaseFieldDefinition::create('text_long')
-      ->setLabel($this->t('AI summary', options: ['context' => 'Helfi AI']))
-      ->setDescription($this->t('AI-generated content summary as a bullet list. Edit before accepting.', options: ['context' => 'Helfi AI']))
-      ->setRevisionable(TRUE)
-      ->setTranslatable(TRUE)
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
+  /**
+   * Implements hook_ENTITY_TYPE_presave().
+   */
+  #[Hook('entity_form_display_presave')]
+  public function entityFormDisplayPresave(EntityFormDisplayInterface $display): void {
+    if ($display->id() !== 'tpr_service.tpr_service.default') {
+      return;
+    }
 
-    return $fields;
+    // Add ai_summary field to TPR service form display.
+    $this->addAiSummaryComponent($display, [
+      'type' => 'ai_summary',
+      'weight' => 7,
+      'region' => 'content',
+    ]);
+  }
+
+  /**
+   * Implements hook_ENTITY_TYPE_presave().
+   */
+  #[Hook('entity_view_display_presave')]
+  public function entityViewDisplayPresave(EntityViewDisplayInterface $display): void {
+    if ($display->id() !== 'tpr_service.tpr_service.default') {
+      return;
+    }
+
+    // Add ai_summary field to TPR service entity display.
+    $this->addAiSummaryComponent($display, [
+      'type' => 'text_default',
+      'label' => 'hidden',
+      'weight' => 4,
+      'region' => 'content',
+    ]);
+  }
+
+  /**
+   * Adds the ai_summary field to a display.
+   *
+   * @param \Drupal\Core\Entity\Display\EntityDisplayInterface $display
+   *   The form or view display.
+   * @param array $options
+   *   The display options.
+   *
+   * @phpstan-param array<string, mixed> $options
+   */
+  private function addAiSummaryComponent(EntityDisplayInterface $display, array $options): void {
+    if ($display->isSyncing() || $display->getComponent('ai_summary')) {
+      return;
+    }
+
+    $display->setComponent('ai_summary', $options);
   }
 
 }

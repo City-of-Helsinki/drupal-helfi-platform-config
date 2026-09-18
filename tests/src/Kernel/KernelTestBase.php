@@ -18,6 +18,7 @@ abstract class KernelTestBase extends CoreKernelTestBase {
     'helfi_api_base',
     'helfi_platform_config',
     'config_rewrite',
+    'diff',
   ];
 
 }

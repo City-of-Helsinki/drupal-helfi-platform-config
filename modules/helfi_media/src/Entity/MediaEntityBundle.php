@@ -32,16 +32,6 @@ class MediaEntityBundle extends Media implements MediaInterface {
   }
 
   /**
-   * Get js library path.
-   *
-   * @return string
-   *   The js library path.
-   */
-  public function getJsLibrary(): string {
-    return 'hdbt/embedded-content-cookie-compliance';
-  }
-
-  /**
    * Check if module exists.
    *
    * @return bool

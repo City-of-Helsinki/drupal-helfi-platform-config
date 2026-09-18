@@ -24,6 +24,7 @@ class RecommendationsBlockKernelTest extends AnnifKernelTestBase {
   protected static $modules = [
     'config_rewrite',
     'helfi_platform_config',
+    'diff',
     'helfi_api_base',
     'node',
   ];

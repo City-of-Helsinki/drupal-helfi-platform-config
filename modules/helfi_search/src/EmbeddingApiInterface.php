@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Drupal\helfi_search;
+
+/**
+ * Embedding API interface.
+ */
+interface EmbeddingApiInterface {
+
+  /**
+   * Get vector embedding for text.
+   *
+   * @param string $text
+   *   Input text.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   Model to use.
+   *
+   * @return float[]
+   *   Vector.
+   *
+   * @throws \Drupal\helfi_search\EmbeddingApiException
+   */
+  public function getEmbedding(string $text, EmbeddingModel $model): array;
+
+  /**
+   * Get vector embedding for batch.
+   *
+   * @param string[] $batch
+   *   Input batch.
+   * @param \Drupal\helfi_search\EmbeddingModel $model
+   *   Model to use.
+   *
+   * @return array<float[]>
+   *   Vectors keyed by input keys.
+   *
+   * @throws \Drupal\helfi_search\EmbeddingApiException
+   */
+  public function batchGetEmbedding(array $batch, EmbeddingModel $model): array;
+
+}

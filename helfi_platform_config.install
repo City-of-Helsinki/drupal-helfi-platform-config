@@ -14,10 +14,13 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\UpdateException;
+use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
+use Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\user\Entity\User;
 
@@ -652,4 +655,214 @@ function helfi_platform_config_update_11005(): void {
 
   \Drupal::service('helfi_platform_config.config_update_helper')
     ->update('helfi_platform_config');
+}
+
+/**
+ * UHF-13368: Install the 'changed_at' field storage for existing sites.
+ *
+ * The field storage is entity-type-wide, so it only needs one representative
+ * bundle per entity type to build the definition from. Entity types are
+ * collected dynamically from hook_helfi_changed_at_field_bundles()
+ * implementations rather than hardcoded, so this keeps working for any
+ * entity type that opts in, not just 'node'.
+ *
+ * @see \Drupal\helfi_platform_config\Hook\ChangedAtFieldHooks
+ * @see \Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle
+ */
+function helfi_platform_config_update_11006(): void {
+  $entityDefinitionUpdateManager = \Drupal::entityDefinitionUpdateManager();
+
+  // Collect one representative bundle per entity type that opted into the
+  // 'changed_at' field.
+  $entityTypes = [];
+
+  foreach (\Drupal::moduleHandler()->invokeAll('helfi_changed_at_field_bundles') as $bundle) {
+    if (!$bundle instanceof ChangedAtFieldBundle) {
+      continue;
+    }
+    $entityTypes[$bundle->entityType] ??= $bundle->bundle;
+  }
+
+  foreach ($entityTypes as $entityTypeId => $bundle) {
+    if ($entityDefinitionUpdateManager->getFieldStorageDefinition('changed_at', $entityTypeId)) {
+      // Already installed, e.g. by helfi_node_news_item_update_9007() on
+      // sites where news_item was already using the field.
+      continue;
+    }
+
+    $storageDefinition = BundleFieldDefinition::create('timestamp')
+      ->setName('changed_at')
+      ->setLabel(new TranslatableMarkup('Content changed on'))
+      ->setDescription(new TranslatableMarkup('Timestamp of when content was last changed via form.'))
+      ->setTargetEntityTypeId($entityTypeId)
+      ->setTargetBundle($bundle)
+      ->setRevisionable(TRUE)
+      ->setTranslatable(TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', FALSE);
+
+    $entityDefinitionUpdateManager->installFieldStorageDefinition(
+      'changed_at',
+      $entityTypeId,
+      'helfi_platform_config',
+      $storageDefinition,
+    );
+  }
+}
+
+/**
+ * UHF-13368: Populate 'changed_at' from 'changed' for existing nodes.
+ *
+ * @param array<string, mixed> $sandbox
+ *   The sandbox.
+ *
+ * @see \Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle
+ */
+function helfi_platform_config_update_11007(array &$sandbox): void {
+  $bundles = array_values(array_unique(array_map(
+    static fn (ChangedAtFieldBundle $bundle) => $bundle->bundle,
+    array_filter(
+      \Drupal::moduleHandler()->invokeAll('helfi_changed_at_field_bundles'),
+      static fn ($bundle) => $bundle instanceof ChangedAtFieldBundle && $bundle->entityType === 'node',
+    ),
+  )));
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  if (!isset($sandbox['total'])) {
+    $sandbox['total'] = $storage->getQuery()
+      ->condition('type', $bundles, 'IN')
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['last_id'] = 0;
+
+    if ($sandbox['total'] === 0) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  $nids = $storage->getQuery()
+    ->condition('type', $bundles, 'IN')
+    ->condition('nid', $sandbox['last_id'], '>')
+    ->accessCheck(FALSE)
+    ->sort('nid')
+    ->range(0, 50)
+    ->execute();
+
+  if (empty($nids)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  $nodes = $storage->loadMultiple($nids);
+
+  foreach ($nodes as $node) {
+    $sandbox['current']++;
+    $sandbox['last_id'] = $node->id();
+
+    if (!$node->hasField('changed_at')) {
+      continue;
+    }
+
+    $changed = FALSE;
+
+    foreach ($node->getTranslationLanguages() as $langcode => $language) {
+      $translation = $node->getTranslation($langcode);
+
+      if (!$translation->get('changed_at')->isEmpty()) {
+        continue;
+      }
+
+      $translation->set('changed_at', $translation->getChangedTime());
+      $changed = TRUE;
+    }
+
+    if ($changed) {
+      $node->save();
+    }
+  }
+
+  $sandbox['#finished'] = $sandbox['total'] > 0
+    ? $sandbox['current'] / $sandbox['total']
+    : 1;
+}
+
+/**
+ * UHF-13390: Fix breadcrumb - updating to 2.0.10 from 2.0.9 added duplicate.
+ */
+function helfi_platform_config_update_11008(): void {
+  if (\Drupal::moduleHandler()->moduleExists('easy_breadcrumb')) {
+    // Use menu title on breadcrumb when possible.
+    $config = \Drupal::configFactory()->getEditable('easy_breadcrumb.settings');
+    $config->set('title_from_page_when_available', FALSE)
+      ->set('use_menu_title_as_fallback', TRUE)
+      ->set('include_title_segment', TRUE)
+      ->set('remove_repeated_segments', TRUE)
+      ->save();
+  }
+
+  if (\Drupal::moduleHandler()->moduleExists('pathauto')) {
+    // Always use menu link on url.
+    $config = \Drupal::configFactory()->getEditable('pathauto.pattern.page_content_pattern');
+    $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
+      ->save();
+
+    $config = \Drupal::configFactory()->getEditable('pathauto.pattern.landing_page_content_pattern');
+    $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:menu-link]')
+      ->save();
+  }
+}
+
+/**
+ * Run the path updates for all nodes.
+ *
+ * @param array<string, mixed> $sandbox
+ *   The sandbox.
+ */
+function helfi_platform_config_update_11009(array &$sandbox): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+
+  if (!isset($sandbox['total'])) {
+    $sandbox['total'] = $storage->getQuery()
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+    $sandbox['current'] = 0;
+    $sandbox['last_id'] = 0;
+
+    if ($sandbox['total'] === 0) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  $nids = $storage->getQuery()
+    ->condition('nid', $sandbox['last_id'], '>')
+    ->accessCheck(FALSE)
+    ->sort('nid')
+    ->range(0, 50)
+    ->execute();
+
+  if (empty($nids)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  /** @var \Drupal\pathauto\PathautoGeneratorInterface $generator */
+  $generator = \Drupal::service('pathauto.generator');
+  $nodes = $storage->loadMultiple($nids);
+  foreach ($nodes as $node) {
+    $sandbox['current']++;
+    $sandbox['last_id'] = $node->id();
+
+    foreach ($node->getTranslationLanguages() as $langcode => $language) {
+      $generator->updateEntityAlias($node, 'update', ['language' => $langcode]);
+    }
+  }
+
+  $sandbox['#finished'] = $sandbox['total'] > 0
+    ? $sandbox['current'] / $sandbox['total']
+    : 1;
 }

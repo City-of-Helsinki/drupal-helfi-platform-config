@@ -9,21 +9,21 @@ use Drupal\Core\Entity\EntityInterface;
 /**
  * Converts Drupal entities into text chunks for embedding.
  *
- * Orchestrates the full pipeline: HTML extraction → cleaning → Markdown
- * conversion → normalization → chunking → field composition → embedding.
- *
- * Each pipeline stage is a separate service that can be independently replaced
- * This allows experimenting with different strategies for individual stages
- * without affecting the rest of the pipeline:
- *
- * - HtmlExtractor: How raw HTML is obtained from an entity.
- * - HtmlCleaner: Which HTML elements are considered non-content noise.
- * - MarkdownConverter: How HTML structure maps to Markdown.
- * - TextNormalizer: What normalization is applied to the text.
- * - ContentChunker: How long content is split into chunks.
- * - ChunkAnnotator: How chunks are annotated.
+ * Full pipeline consists of
+ *  1) HTML extraction,
+ *  2) cleaning,
+ *  3) Markdown conversion,
+ *  4) normalization,
+ *  5) chunking,
+ *  6) field composition and
+ *  7) embedding.
  */
 class TextPipeline {
+
+  /**
+   * The version of this pipeline's output.
+   */
+  public const int VERSION = 1;
 
   public function __construct(
     private readonly HtmlExtractor $htmlExtractor,
@@ -47,7 +47,7 @@ class TextPipeline {
    */
   public function process(EntityInterface $entity): array {
     $doc = $this->htmlExtractor->extract($entity);
-    $headingFragments = HeadingFragmentExtractor::extract($doc, $entity->language()->getId());
+    $headingFragments = HeadingFragmentExtractor::extract($doc);
     $cleanHtml = $this->htmlCleaner->clean($doc);
     $markdown = MarkdownConverter::convert($cleanHtml);
     $normalized = TextNormalizer::normalize($markdown);

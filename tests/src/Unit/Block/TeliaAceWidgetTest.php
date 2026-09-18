@@ -34,7 +34,8 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
     $this->teliaAceWidget = new class (
       [],
       'telia_ace_widget',
-      ['provider' => 'helfi_platform_config']
+      ['provider' => 'helfi_platform_config'],
+      $this->routeMatch
     ) extends TeliaAceWidget {
     };
 

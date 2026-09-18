@@ -24,6 +24,7 @@ class OrgChartParagraphTest extends KernelTestBase {
     'entity_reference_revisions',
     'field',
     'file',
+    'diff',
     'helfi_api_base',
     'user',
     'helfi_paragraphs_org_chart',

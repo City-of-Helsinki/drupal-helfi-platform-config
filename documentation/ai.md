@@ -13,29 +13,67 @@ This module integrates the [Drupal AI module](https://www.drupal.org/project/ai)
 Add the following block to the instance `settings.php`. The API key is managed separately via the Key module (see below) and does not go here.
 
 ```php
-// Azure OpenAI for Drupal AI module (ai_provider_azure).
-// See: https://helsinkisolutionoffice.atlassian.net/browse/UHF-13110.
-if (getenv('AZURE_OPENAI_ENDPOINT') && getenv('AZURE_OPENAI_DEPLOYMENT_NAME')) {
-  $deployment = getenv('AZURE_OPENAI_DEPLOYMENT_NAME');
-  $config['ai.settings']['default_providers']['chat']['model_id'] = $deployment;
-  $config['ai.settings']['default_providers']['embeddings']['model_id'] = $deployment;
-  $config['ai.settings']['models']['azure']['chat'][$deployment] = [
-    'endpoint' => getenv('AZURE_OPENAI_ENDPOINT'),
+$azure_openai_tiers = [
+  'default' => ['AZURE_OPENAI_ENDPOINT', 'AZURE_OPENAI_DEPLOYMENT_NAME'],
+  'low' => ['AZURE_OPENAI_ENDPOINT_LOW', 'AZURE_OPENAI_DEPLOYMENT_LOW'],
+  'high' => ['AZURE_OPENAI_ENDPOINT_HIGH', 'AZURE_OPENAI_DEPLOYMENT_HIGH'],
+];
+
+foreach ($azure_openai_tiers as $azure_tier => [$azure_endpoint_var, $azure_deployment_var]) {
+  $azure_endpoint = getenv($azure_endpoint_var);
+  $azure_deployment = getenv($azure_deployment_var);
+
+  if (!$azure_endpoint || !$azure_deployment) {
+    continue;
+  }
+
+  $config['ai.settings']['models']['azure']['chat'][$azure_deployment] = [
+    'endpoint' => $azure_endpoint,
     'api_key' => 'helfi_azure_openai',
     'connect_header' => 'api-key',
   ];
+  $config['helfi_ai.settings']['model_tiers'][$azure_tier] = 'azure__' . $azure_deployment;
+
+  if ($azure_tier === 'default') {
+    $config['ai.settings']['default_providers']['chat']['model_id'] = $azure_deployment;
+    $config['ai.settings']['default_providers']['embeddings']['model_id'] = $azure_deployment;
+  }
 }
 ```
 
-Three environment variables are required:
-
-| Variable | Description |
-|---|---|
-| `AZURE_OPENAI_API_KEY` | Azure OpenAI API key |
-| `AZURE_OPENAI_ENDPOINT` | Full Azure Chat Completions URL including deployment name and `api-version` query parameter |
-| `AZURE_OPENAI_DEPLOYMENT_NAME` | Deployment name used as the model ID |
+| Variable | Required | Description |
+|---|---|---|
+| `AZURE_OPENAI_API_KEY` | yes | Azure OpenAI API key. Shared by every tier |
+| `AZURE_OPENAI_ENDPOINT` | yes | Chat Completions URL for the default tier, including the `api-version` query parameter |
+| `AZURE_OPENAI_DEPLOYMENT_NAME` | yes | Deployment name for the default tier. Sent as the `model` field in the request body |
+| `AZURE_OPENAI_ENDPOINT_LOW` | low tier | Chat Completions URL for the low tier |
+| `AZURE_OPENAI_DEPLOYMENT_LOW` | low tier | Deployment name for the low tier |
+| `AZURE_OPENAI_ENDPOINT_HIGH` | high tier | Chat Completions URL for the high tier |
+| `AZURE_OPENAI_DEPLOYMENT_HIGH` | high tier | Deployment name for the high tier |
 
 In production these are provisioned via Azure Keyvault through the CI pipeline.
+
+## Model tiers
+
+Features differ in what they need from a model: rewriting text in the city's tone of voice benefits from a capable model, while producing a summary or a few title candidates does not. Rather than naming models in code, each feature asks for a **tier** and the instance decides which deployment backs it.
+
+| Tier | Used by |
+|---|---|
+| `high` | Tone check |
+| `low` | AI summary, SEO title suggestions |
+| `default` | Fallback for any tier the instance has not configured |
+
+Tiers are declared in code via `\Drupal\helfi_ai\ModelTier` and mapped to providers in `helfi_ai.settings:model_tiers`, which `settings.php` populates from the environment. The stored value is the AI module's provider and model string, for example `azure__gpt-5-nano`.
+
+Resolution falls back in three steps, so nothing hard-fails when a tier is missing:
+
+```
+requested tier → default tier → site-wide provider in 'ai.settings'
+```
+
+An instance therefore only needs to provision the tiers it actually wants to differentiate. Adding one is a pipeline change, not a code change: set the endpoint and deployment variables for that tier and the mapping appears on the next deploy.
+
+Note that `default` is also the slot a third tier would occupy if `medium` is ever needed, so it is deliberately not named `medium` today.
 
 ## Local development
 
@@ -57,7 +95,13 @@ $config['ai.settings']['models']['azure']['chat'][$azure_deployment] = [
 ];
 $config['key.key.helfi_azure_openai']['key_provider'] = 'config';
 $config['key.key.helfi_azure_openai']['key_provider_settings']['key_value'] = $azure_api_key;
+
+// Point every tier at the same deployment. Add 'low' and 'high' entries only
+// if you have more than one deployment to test tier routing against.
+$config['helfi_ai.settings']['model_tiers']['default'] = 'azure__' . $azure_deployment;
 ```
+
+Set `model_tiers` directly rather than via `putenv()`. `local.settings.php` is included at the end of `settings.php`, long after the tier loop above has already read the environment, so environment variables set there arrive too late to register a tier.
 
 Run `drush cr` after editing `local.settings.php`. The endpoint must be the full Chat Completions URL from Azure AI Studio (the one ending in `/chat/completions?api-version=...`), not the Responses API URL.
 
@@ -84,6 +128,17 @@ $input = new ChatInput([
 
 $response = $provider->chat($input, $model)->getNormalized();
 $answer = $response->getText();
+```
+
+That uses the site-wide default model. To pick a model by capability instead, resolve a [tier](#model-tiers) and pass it as the second argument:
+
+```php
+use Drupal\helfi_ai\ModelTier;
+
+$tiers = \Drupal::config('helfi_ai.settings')->get('model_tiers') ?? [];
+$preferred = $tiers[ModelTier::High->value] ?? $tiers[ModelTier::Default->value] ?? NULL;
+
+['provider_id' => $provider, 'model_id' => $model] = $ai->getSetProvider('chat', $preferred);
 ```
 
 ## Prompt Library

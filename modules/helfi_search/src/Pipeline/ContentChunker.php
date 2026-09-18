@@ -44,8 +44,8 @@ class ContentChunker {
    *   Array of chunks.
    */
   public function chunk(string $markdown): array {
-    if (empty($markdown)) {
-      return [new Chunk('')];
+    if (trim($markdown) === '') {
+      return [];
     }
 
     // Short content: skip chunking entirely.
@@ -159,7 +159,7 @@ class ContentChunker {
     // Index 0 is intro content before the first heading.
     $i = 1;
     while ($i < count($parts)) {
-      $hashes = $parts[$i] ?? '';
+      $hashes = $parts[$i];
       $title = $parts[$i + 1] ?? '';
       $body = $parts[$i + 2] ?? '';
 

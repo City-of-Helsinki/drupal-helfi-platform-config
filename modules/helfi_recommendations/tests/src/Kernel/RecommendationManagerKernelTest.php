@@ -49,6 +49,7 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
    * @var string[]
    */
   protected static $modules = [
+    'diff',
     'helfi_api_base',
     'node',
   ];

@@ -9,6 +9,7 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldConfigBase;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Hook\Order\Order;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\paragraphs\Entity\ParagraphsType;
 
@@ -38,8 +39,11 @@ class EntityHooks {
 
   /**
    * Implements hook_ENTITY_TYPE_presave().
+   *
+   * Runs first, before field module's own presave, so the rebuilt handler
+   * settings are in place before field module acts on them.
    */
-  #[Hook('field_config_presave')]
+  #[Hook('field_config_presave', order: Order::First)]
   public function fieldConfigPresave(FieldConfigBase $field): void {
     $this->rebuildHandlerSettings($field);
   }

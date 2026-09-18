@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_search\EventSubscriber;
 
 use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
+use Drupal\elasticsearch_connector\Event\IndexPreCreateEvent;
 use Drupal\elasticsearch_connector\Event\SupportsDataTypeEvent;
 use Drupal\search_api\Event\MappingFieldTypesEvent;
 use Drupal\search_api\Event\SearchApiEvents;
@@ -21,6 +22,7 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
   public static function getSubscribedEvents(): array {
     $events[SupportsDataTypeEvent::class] = 'supportsDataType';
     $events[FieldMappingEvent::class] = 'mapElasticFields';
+    $events[IndexPreCreateEvent::class] = 'excludeVectorsFromSource';
 
     if (class_exists(SearchApiEvents::class)) {
       $events[SearchApiEvents::MAPPING_FIELD_TYPES] = 'mapFieldTypes';
@@ -68,6 +70,33 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
         ],
       ]);
     }
+  }
+
+  /**
+   * Keep the embedding vectors out of _source.
+   *
+   * This speeds up querying since Elasticsearch has to do less work.
+   * The vector fields are quite large and not useful outside the knn
+   * search.
+   *
+   * @see \Drupal\helfi_search\QueryBuilder::buildKnnQuery()
+   */
+  public function excludeVectorsFromSource(IndexPreCreateEvent $event): void {
+    $excludes = [];
+
+    foreach ($event->getIndex()->getFields() as $fieldId => $field) {
+      if ($field->getType() === 'embeddings') {
+        $excludes[] = $fieldId . '.vector';
+      }
+    }
+
+    if (!$excludes) {
+      return;
+    }
+
+    $params = $event->getParams();
+    $params['body']['mappings']['_source']['excludes'] = $excludes;
+    $event->setParams($params);
   }
 
 }

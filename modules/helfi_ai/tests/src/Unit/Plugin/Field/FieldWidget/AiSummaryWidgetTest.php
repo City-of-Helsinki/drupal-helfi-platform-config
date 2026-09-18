@@ -9,6 +9,7 @@ use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormState;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\helfi_ai\Plugin\Field\FieldWidget\AiSummaryWidget;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
@@ -34,7 +35,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   /**
    * Creates a widget instance for the given field name.
    */
-  private function createWidget(string $fieldName = 'ai_summary', bool $enabled = TRUE): AiSummaryWidget {
+  private function createWidget(string $fieldName = 'ai_summary', bool $enabled = TRUE, bool $access = TRUE): AiSummaryWidget {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
     $fieldDef->getName()->willReturn($fieldName);
 
@@ -43,7 +44,10 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $configFactory = $this->prophesize(ConfigFactoryInterface::class);
     $configFactory->get('helfi_ai.settings')->willReturn($config->reveal());
 
-    $widget = new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], [], $configFactory->reveal());
+    $accountProxy = $this->prophesize(AccountProxyInterface::class);
+    $accountProxy->hasPermission('use helfi ai summary')->willReturn($access);
+
+    $widget = new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], [], $configFactory->reveal(), $accountProxy->reveal());
     $widget->setStringTranslation($this->getStringTranslationStub());
     return $widget;
   }
