@@ -62,7 +62,7 @@ class HelfiMediaMapAddForm extends AddFormBase {
    * {@inheritDoc}
    */
   public function getFormId() : string {
-    return 'helfi_media_map_add_form';
+    return 'media_library_add_form_helfi_media_map';
   }
 
 }
