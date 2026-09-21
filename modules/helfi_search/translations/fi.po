@@ -1,8 +1,14 @@
 msgid ""
 msgstr ""
 
+msgid "Hel.fi site search"
+msgstr "Hel.fi sivustohaku"
+
 msgid "Hel.fi site search settings"
 msgstr "Hel.fi sivustohaun asetukset"
+
+msgid "Site search settings"
+msgstr "Haun asetukset"
 
 msgid "Tune ranking parameters and configure external search links."
 msgstr "Säädä hakutulosten parametreja ja määritä ulkoisia hakulinkkejä."
