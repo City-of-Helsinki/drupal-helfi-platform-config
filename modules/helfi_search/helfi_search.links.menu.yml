@@ -1,6 +1,13 @@
-helfi_search.settings_form:
-  title: 'Hel.fi site search settings'
-  description: 'Tune ranking parameters and configure external search links.'
+helfi_search.overview:
+  title: 'Hel.fi site search'
+  description: 'Site search settings'
   parent: hdbt_admin_tools.overview
+  route_name: helfi_search.overview
+  weight: -8
+
+helfi_search.settings_form:
+  title: 'Site search settings'
+  description: 'Tune ranking parameters and configure external search links.'
+  parent: helfi_search.overview
   route_name: helfi_search.settings_form
-  weight: 4
+  weight: -1
