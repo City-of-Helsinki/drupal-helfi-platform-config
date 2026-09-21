@@ -8,6 +8,8 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\Entity\BaseFieldOverride;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\helfi_media_map\Entity\HelMap;
 
 /**
@@ -67,5 +69,53 @@ function helfi_media_map_theme($existing, $type, $theme, $path) : array {
 function helfi_media_map_entity_bundle_info_alter(array &$bundles): void {
   if (isset($bundles['media']['hel_map'])) {
     $bundles['media']['hel_map']['class'] = HelMap::class;
+  }
+}
+
+/**
+ * Implements hook_entity_bundle_field_info().
+ *
+ * @phpstan-param array<string, mixed> $base_field_definitions
+ * @phpstan-return array<string, mixed>
+ */
+function helfi_media_map_entity_bundle_field_info(EntityTypeInterface $entity_type, string $bundle, array $base_field_definitions): array {
+  $fields = [];
+
+  // Switch Helfi Chart media type 'name' label to "Administrative title".
+  if (
+    $entity_type->id() == 'media' &&
+    $bundle == 'hel_map' &&
+    !empty($base_field_definitions['name'])
+  ) {
+    $field = BaseFieldOverride::createFromBaseFieldDefinition($base_field_definitions['name'], $bundle);
+    // @phpstan-ignore-next-line Drupal accepts TranslatableMarkup.
+    $field->setLabel(t('Administrative title'));
+    // @phpstan-ignore-next-line Drupal accepts TranslatableMarkup.
+    $field->setDescription(t('Write a title for the map. This is only visible in the content creator view.'));
+    $fields['name'] = $field;
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_field_widget_single_element_link_default_form_alter().
+ *
+ * @phpstan-param array<string, mixed> $element
+ * @phpstan-param array<string, mixed> $context
+ */
+function helfi_media_map_field_widget_single_element_link_default_form_alter(array &$element, FormStateInterface $form_state, array $context) : void {
+  $field_definition = $context['items']->getFieldDefinition();
+
+  if (
+    $field_definition->getName() === 'field_media_hel_map' &&
+    $field_definition->getTargetBundle() === 'hel_map'
+  ) {
+    // Core wraps the user-entered field description together with its own
+    // "This must be an external URL..." text in an item list. We want to keep
+    // only the first item in the list since that one is added by us.
+    if (isset($element['uri']['#description']['#items'][0])) {
+      $element['uri']['#description'] = $element['uri']['#description']['#items'][0];
+    }
   }
 }

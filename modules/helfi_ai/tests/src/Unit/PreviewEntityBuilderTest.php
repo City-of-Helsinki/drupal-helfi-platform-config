@@ -62,7 +62,6 @@ class PreviewEntityBuilderTest extends UnitTestCase {
 
     $this->assertInstanceOf(ContentEntityInterface::class, $result);
     // The builder flags the throwaway entity for unsaved-state rendering.
-    // @phpstan-ignore-next-line
     $this->assertTrue($result->in_preview);
   }
 

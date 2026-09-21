@@ -65,7 +65,7 @@ class HelfiChartAddForm extends AddFormBase {
    * {@inheritDoc}
    */
   public function getFormId() {
-    return 'helfi_chart_add_form';
+    return 'media_library_add_form_helfi_chart';
   }
 
 }

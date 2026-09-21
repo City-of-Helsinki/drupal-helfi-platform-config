@@ -3,6 +3,7 @@
 # Use this translation file for translation overrides only!
 msgid ""
 msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 # Drupal
 msgid "1 error has been found: "
@@ -117,7 +118,19 @@ msgstr "Korvaa tiedosto"
 
 # Media library
 msgid "The media item has been created but has not yet been saved. Fill in any required fields and save to add it to the media library."
-msgstr "Media on luotu, mutta sitä ei ole vielä tallennettu. Täytä kaikki pakolliset kentät ja tallenna lisätäksesi se mediakirjastoon."
+msgid_plural "The media items have been created but have not yet been saved. Fill in any required fields and save to add them to the media library."
+msgstr[0] "Media on luotu, mutta sitä ei ole vielä tallennettu. Täytä kaikki pakolliset kentät ja tallenna lisätäksesi se mediakirjastoon."
+msgstr[1] "Mediat on luotu, mutta niitä ei ole vielä tallennettu. Täytä kaikki pakolliset kentät ja tallenna lisätäksesi ne mediakirjastoon."
+
+msgid "1 item selected"
+msgid_plural "@count items selected"
+msgstr[0] "1 mediatiedosto valittu"
+msgstr[1] "@count mediatiedostoa valittu"
+
+msgid "@selected of @count item selected"
+msgid_plural "@selected of @count items selected"
+msgstr[0] "@selected / @count mediatiedosto valittu"
+msgstr[1] "@selected / @count mediatiedostoa valittu"
 
 # Menu
 msgid "Parent link"

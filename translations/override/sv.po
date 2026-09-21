@@ -3,6 +3,7 @@
 # Use this translation file for translation overrides only!
 msgid ""
 msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 # Drupal
 msgid "Front page"

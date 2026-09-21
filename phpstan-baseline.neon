@@ -3773,13 +3773,7 @@ parameters:
 			path: modules/helfi_platform_config_base/helfi_platform_config_base.module
 
 		-
-			message: '#^Access to an undefined property Drupal\\media\\MediaInterface\:\:\$field_media_image\.$#'
-			identifier: property.notFound
-			count: 3
-			path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
-
-		-
-			message: '#^Access to an undefined property Drupal\\node\\NodeInterface\:\:\$field_organization\.$#'
+			message: '#^Access to an undefined property Drupal\\Core\\Entity\\EntityInterface\:\:\$field_default_image\.$#'
 			identifier: property.notFound
 			count: 1
 			path: modules/helfi_platform_config_base/src/Token/NodeImageBuilder.php
@@ -5415,24 +5409,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: modules/helfi_toc/helfi_toc.install
-
-		-
-			message: '#^Form alter hook "form_node_form_alter" implementation must have 2 or 3 parameters\. Expected signature\: method\(&\$form, \\Drupal\\Core\\Form\\FormStateInterface \$form_state\[, \$form_id\]\)$#'
-			identifier: hookFormAlter.invalidParameterCount
-			count: 1
-			path: modules/helfi_toc/src/Hook/FormHooks.php
-
-		-
-			message: '#^Form alter hook "form_tpr_service_form_alter" implementation must have 2 or 3 parameters\. Expected signature\: method\(&\$form, \\Drupal\\Core\\Form\\FormStateInterface \$form_state\[, \$form_id\]\)$#'
-			identifier: hookFormAlter.invalidParameterCount
-			count: 1
-			path: modules/helfi_toc/src/Hook/FormHooks.php
-
-		-
-			message: '#^Form alter hook "form_tpr_unit_form_alter" implementation must have 2 or 3 parameters\. Expected signature\: method\(&\$form, \\Drupal\\Core\\Form\\FormStateInterface \$form_state\[, \$form_id\]\)$#'
-			identifier: hookFormAlter.invalidParameterCount
-			count: 1
-			path: modules/helfi_toc/src/Hook/FormHooks.php
 
 		-
 			message: '#^Method Drupal\\Tests\\helfi_toc\\FunctionalJavascript\\TableOfContentsTest\:\:generateContent\(\) has parameter \$headings with no value type specified in iterable type array\.$#'
