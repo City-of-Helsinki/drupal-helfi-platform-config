@@ -1,2 +1,2 @@
 label: 'Otsikko avustavalle teknologialle'
-description: 'Kirjoita otsikko avustavan teknologian käyttäjälle. Jos kaaviolla on jo otsikko, käytä samaa otsikkoa. Otsikko luetaan ruudunlukijalle ennen kaaviota. Tämä teksti ei näy sivulla. Otsikkoon lisätään automaattisesti etuliite “Kaavio: ”.'
+description: 'Kirjoita lyhyt kuvaus avustavalle teknologialle käyttäjille, jotka eivät näe kaaviota. Kuvaus luetaan ruudunlukijalle ennen kaaviota. Tämä teksti ei näy sivulla.'

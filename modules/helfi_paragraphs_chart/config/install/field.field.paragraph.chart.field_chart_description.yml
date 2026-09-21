@@ -12,7 +12,7 @@ field_name: field_chart_description
 entity_type: paragraph
 bundle: chart
 label: Description
-description: ''
+description: 'This appears above the chart. The description below the chart can be edited through the media library.'
 required: false
 translatable: false
 default_value: {  }
