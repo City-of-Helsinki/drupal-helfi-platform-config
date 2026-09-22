@@ -58,6 +58,16 @@ services:
   helfi_platform_config.term_route_subscriber:
     class: Drupal\helfi_platform_config\Routing\TermRouteSubscriber
 
+  Drupal\helfi_platform_config\Routing\MultisiteContentRouteSubscriber: ~
+
+  Drupal\helfi_platform_config\ParamConverter\MultisiteContentParamConverter:
+    tags:
+      - { name: paramconverter, priority: 10 }
+
+  Drupal\helfi_platform_config\Routing\MultisiteContentRouteEnhancer:
+    tags:
+      - { name: route_enhancer, priority: 25 }
+
   helfi_platform_config.filter_disabled_translations:
     class: Drupal\helfi_platform_config\Menu\FilterDisabledTranslations
     arguments:

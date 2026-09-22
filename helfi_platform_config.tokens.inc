@@ -37,9 +37,17 @@ function helfi_platform_config_token_info() : array {
       'Lead in will try to use the hero paragraph description if it exists. If not, it will use the node lead in field.'
     ),
   ];
-  $info['tokens']['helfi_multisite_node']['parent_instance'] = [
-    'name' => t('Parent instance'),
-    'description' => t('Parent instance of the node.'),
+  $info['tokens']['site']['helfi-current-instance'] = [
+    'name' => t('Current instance'),
+    'description' => t('Current instance.'),
+  ];
+  $info['tokens']['helfi_multisite_content']['external-url'] = [
+    'name' => t('External URL'),
+    'description' => t('External URL.'),
+  ];
+  $info['tokens']['helfi_multisite_content']['language-code'] = [
+    'name' => t('Language code'),
+    'description' => t('Language code.'),
   ];
   return $info;
 }
@@ -153,10 +161,28 @@ function helfi_platform_config_tokens(
         }
         break;
 
-      // Handle parent instance.
-      case 'parent_instance':
-        if (!empty($data['helfi_multisite_node'])) {
-          $replacements[$original] = $data['helfi_multisite_node']->get('parent_instance')->value;
+      // Handle current instance.
+      case 'helfi-current-instance':
+        try {
+          $instance = \Drupal::service('helfi_api_base.environment_resolver')->getActiveProject()->getName();
+          $replacements[$original] = $instance;
+        }
+        catch (\Exception $e) {
+          $replacements[$original] = '';
+        }
+        break;
+
+      // Handle external URL.
+      case 'external-url':
+        if ($type === 'helfi_multisite_content') {
+          $replacements[$original] = $data['helfi_multisite_content']->getExternalUrl()->toString();
+        }
+        break;
+
+      // Handle language code.
+      case 'language-code':
+        if ($type === 'helfi_multisite_content') {
+          $replacements[$original] = $data['helfi_multisite_content']->get('language_code')->value;
         }
         break;
 

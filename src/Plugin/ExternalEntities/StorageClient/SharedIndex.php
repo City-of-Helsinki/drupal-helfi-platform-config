@@ -4,20 +4,65 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Plugin\ExternalEntities\StorageClient;
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Utility\Error;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\StorageClientBase;
-use Drupal\Core\Form\FormStateInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_platform_config\MultisiteContentId;
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\Exception\ElasticsearchException;
+use Elastic\Transport\Exception\TransportException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * External entity storage client for shared index.
  *
  * @StorageClient(
  *   id = "helfi_shared_index",
- *   label = @Translation("Helfi: Shared index"),
- *   description = @Translation("Retrieves content from shared index")
+ *   label = @Translation("Helfi: Shared frontpage index (embeddings)"),
+ *   description = @Translation("Retrieves content from shared frontpage index (embeddings)")
  * )
  */
 final class SharedIndex extends StorageClientBase {
+
+  /**
+   * Elasticsearch index name.
+   */
+  private const string INDEX = 'embeddings';
+
+  /**
+   * Elasticsearch client built by ClientBuilder.
+   */
+  private Client $elasticsearchClient;
+
+  /**
+   * The environment resolver.
+   */
+  private EnvironmentResolverInterface $environmentResolver;
+
+  /**
+   * The language manager.
+   */
+  private LanguageManagerInterface $languageManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+  ) : self {
+    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $instance->elasticsearchClient = $container->get('helfi_platform_config.etusivu_elastic_client');
+    $instance->environmentResolver = $container->get('helfi_api_base.environment_resolver');
+    $instance->languageManager = $container->get('language_manager');
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -33,126 +78,63 @@ final class SharedIndex extends StorageClientBase {
   }
 
   /**
-   * Maps the given field to something else.
+   * Executes a search against the embeddings index.
    *
-   * @param string $field
-   *   The field name to map.
-   *
-   * @return string
-   *   The mapped field.
-   */
-  protected function getFieldMapping(string $field) : string {
-    return $field;
-  }
-
-  /**
-   * Creates a request against JSON:API.
-   *
-   * @param array $parameters
-   *   The query parameters.
+   * @param array $body
+   *   Elasticsearch request body.
    *
    * @return array
-   *   An array of entities.
+   *   Raw Elasticsearch hits.
    */
-  protected function request(
-    array $parameters,
-  ) : array {
-    // Return mock data.
-    $mock = [
-      'hits' => [
-        'hits' => [
-          [
-            '_source' => [
-              'uuid' => ['1'],
-              'parent_title_fi' => ['Title FI'],
-              'parent_title_en' => ['Title EN'],
-              'parent_title_sv' => ['Title SV'],
-              'parent_id' => ['1'],
-              'parent_type' => ['node'],
-              'parent_bundle' => ['news_article'],
-              'parent_url_fi' => ['https://example.com/fi/foo/1'],
-              'parent_url_en' => ['https://example.com/en/1'],
-              'parent_url_sv' => ['https://example.com/sv/1'],
-              'parent_instance' => ['etusivu'],
-            ],
-          ],
-          [
-            '_source' => [
-              'uuid' => ['2'],
-              'parent_title_fi' => ['Title 2 FI'],
-              'parent_title_en' => ['Title 2 EN'],
-              'parent_title_sv' => ['Title 2 SV'],
-              'parent_id' => ['2'],
-              'parent_type' => ['node'],
-              'parent_bundle' => ['news_item'],
-              'parent_url_fi' => ['https://example.com/fi/foo/2'],
-              'parent_url_en' => ['https://example.com/en/2'],
-              'parent_url_sv' => ['https://example.com/sv/2'],
-              'parent_instance' => ['terveys'],
-            ],
-          ],
-          [
-            '_source' => [
-              'uuid' => ['3'],
-              'parent_title_fi' => ['Title 3 FI'],
-              'parent_title_en' => ['Title 3 EN'],
-              'parent_title_sv' => ['Title 3 SV'],
-              'parent_id' => ['3'],
-              'parent_type' => ['node'],
-              'parent_bundle' => ['news_article'],
-              'parent_url_fi' => ['https://helfi-etusivu.docker.so/fi/uutiset/tulevaisuuden-helsinki-tarvitsee-kansainvalista-osaamista-ja-innovaatioita'],
-              'parent_url_en' => ['https://example.com/en/3'],
-              'parent_url_sv' => ['https://example.com/sv/3'],
-              'parent_instance' => ['etusivu'],
-            ],
-          ],
-        ],
-      ],
-    ];
-
-    if (!empty($parameters)) {
-      $mock['hits']['hits'] = array_filter($mock['hits']['hits'], function ($hit) use ($parameters) {
-        return in_array($hit['_source']['uuid'][0], $parameters);
-      });
+  private function search(array $body): array {
+    try {
+      $response = $this->elasticsearchClient->search([
+        'index' => self::INDEX,
+        'body' => $body,
+      ])->asArray();
+    }
+    catch (ElasticsearchException | TransportException $e) {
+      Error::logException($this->logger, $e);
+      return [];
     }
 
-    return $mock['hits']['hits'] ?? [];
+    $hits = $response['hits']['hits'] ?? [];
+
+    return $hits;
   }
 
   /**
-   * Checks whether the API responds or not.
-   *
-   * @return bool
-   *   TRUE if API responds, FALSE if not.
+   * {@inheritdoc}
    */
   public function ping() : bool {
-    return TRUE;
+    try {
+      $response = $this->elasticsearchClient->indices()->exists([
+        'index' => self::INDEX,
+      ]);
+      return $response->getStatusCode() === 200;
+    }
+    catch (ElasticsearchException | TransportException) {
+    }
+    return FALSE;
   }
 
   /**
    * {@inheritdoc}
    */
   public function loadMultiple(?array $ids = NULL) : array {
-    $data = $this->request($ids ?? []);
-    return $data ?? [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function query(
-    array $parameters = [],
-    array $sorts = [],
-    ?int $start = NULL,
-    ?int $length = NULL,
-    array &$unhandled_filters = [],
-  ) : array {
-    $uuids = [];
-    if (!empty($parameters[0]['field']) && $parameters[0]['field'] === 'uuid') {
-      $uuids = $parameters[0]['value'];
+    if ($ids === NULL || $ids === []) {
+      return [];
     }
-    $data = $this->request($uuids);
-    return $data ?? [];
+
+    $hits = $this->querySource([
+      [
+        'field' => '_id',
+        'operator' => 'IN',
+        'value' => array_values($ids),
+      ],
+    ], [], NULL, count($ids));
+
+    return array_column($hits, NULL, '_id');
   }
 
   /**
@@ -171,7 +153,136 @@ final class SharedIndex extends StorageClientBase {
     ?int $start = NULL,
     ?int $length = NULL,
   ): array {
-    return [];
+    $must = [];
+    $filter = [];
+    $must_not = [];
+
+    foreach ($parameters as $parameter) {
+      $field = $parameter['field'] ?? '';
+      $value = $parameter['value'] ?? NULL;
+
+      if ($field === 'search' && is_string($value) && $value !== '') {
+        $id = MultisiteContentId::extractFromUserInput($value);
+        if ($id !== NULL) {
+          $filter[] = [
+            'terms' => [
+              '_id' => [$id],
+            ],
+          ];
+          continue;
+        }
+
+        $must[] = [
+          'multi_match' => [
+            'query' => $value,
+            'type' => 'best_fields',
+            'fields' => [
+              'label',
+              'metatag_title',
+              'url',
+            ],
+          ],
+        ];
+        $exclusion = $this->getCurrentInstanceCurrentLanguageExclusion();
+        if ($exclusion !== NULL) {
+          $must_not[] = $exclusion;
+        }
+      }
+      elseif ($field === '_id' && $value !== NULL && $value !== []) {
+        $filter[] = [
+          'terms' => [
+            '_id' => array_map(
+              strval(...),
+              array_values((array) $value),
+            ),
+          ],
+        ];
+      }
+    }
+
+    $known_instances = $this->getKnownInstanceFilter();
+    if ($known_instances !== NULL) {
+      $filter[] = $known_instances;
+    }
+
+    $query = ['match_all' => new \stdClass()];
+    if ($must !== [] || $filter !== [] || $must_not !== []) {
+      $query = [
+        'bool' => array_filter([
+          'must' => $must,
+          'filter' => $filter,
+          'must_not' => $must_not,
+        ]),
+      ];
+    }
+
+    $body = [
+      'size' => $length ?? 10,
+      'query' => $query,
+    ];
+    if ($start !== NULL) {
+      $body['from'] = $start;
+    }
+
+    return $this->search($body);
+  }
+
+  /**
+   * Builds a filter limiting hits to instances known by EnvironmentResolver.
+   *
+   * @return array|null
+   *   Elasticsearch terms clause, or NULL if no projects are defined.
+   */
+  private function getKnownInstanceFilter(): ?array {
+    $instances = array_keys($this->environmentResolver->getProjects());
+    if ($instances === []) {
+      return NULL;
+    }
+
+    return [
+      'terms' => [
+        'instance' => array_values($instances),
+      ],
+    ];
+  }
+
+  /**
+   * Builds a clause matching current instance content in the current language.
+   *
+   * Used to exclude those hits from autocomplete, while still allowing other
+   * instances and other languages of the current instance.
+   *
+   * @return array|null
+   *   Elasticsearch bool clause, or NULL if the active project is unknown.
+   */
+  private function getCurrentInstanceCurrentLanguageExclusion(): ?array {
+    try {
+      $instance = $this->environmentResolver->getActiveProject()->getName();
+    }
+    catch (\InvalidArgumentException) {
+      return NULL;
+    }
+
+    $langcode = $this->languageManager
+      ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+      ->getId();
+
+    return [
+      'bool' => [
+        'must' => [
+          [
+            'term' => [
+              'instance' => $instance,
+            ],
+          ],
+          [
+            'term' => [
+              'search_api_language' => $langcode,
+            ],
+          ],
+        ],
+      ],
+    ];
   }
 
   /**
@@ -181,7 +292,67 @@ final class SharedIndex extends StorageClientBase {
     array $parameters,
     array $context = [],
   ): array {
-    return [];
+    $source = [];
+
+    foreach ($parameters as $parameter) {
+      if (!is_array($parameter) || !isset($parameter['field'])) {
+        continue;
+      }
+
+      $field = $parameter['field'];
+      $operator = strtoupper((string) ($parameter['operator'] ?? '='));
+      $value = $parameter['value'] ?? NULL;
+
+      if (in_array($field, ['title', 'name', 'label'], TRUE) && is_string($value)) {
+        if ($operator === 'LIKE') {
+          $value = stripslashes(trim($value, '%'));
+        }
+        $source[] = [
+          'field' => 'search',
+          'operator' => 'CONTAINS',
+          'value' => $value,
+        ];
+        continue;
+      }
+
+      if (in_array($field, ['id', 'uuid'], TRUE)) {
+        $source[] = [
+          'field' => '_id',
+          'operator' => in_array($operator, ['IN', '='], TRUE) ? $operator : 'IN',
+          'value' => (array) $value,
+        ];
+      }
+    }
+
+    return $this->transliterateDrupalFiltersAlter(
+      [
+        'source' => $source,
+        'drupal' => [],
+        'unhandled' => [],
+      ],
+      $parameters,
+      $context
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function transliterateDrupalSorts(
+    array $sorts,
+    array $context = [],
+  ): array {
+    // Keep ranking on Elasticsearch (_score). Sending Drupal label sorts to
+    // the Drupal side would force loading all hits before paging.
+    return $this->transliterateDrupalSortsAlter(
+      [
+        'source' => [],
+        'drupal' => [],
+        'unhandled' => [],
+      ],
+      $sorts,
+      $context
+    );
   }
 
 }
