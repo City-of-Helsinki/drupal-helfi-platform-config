@@ -415,3 +415,50 @@ function helfi_search_update_11021(): void {
     }
   }
 }
+
+/**
+ * Update the embeddings index for cross-instance linking.
+ */
+function helfi_search_update_11022(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  $changed = FALSE;
+
+  // Add instance field.
+  if (!$index->getField('instance')) {
+    $field = (new Field($index, 'instance'))
+      ->setType('string')
+      ->setPropertyPath('instance')
+      ->setLabel('Instance');
+    $index->addField($field);
+    $changed = TRUE;
+  }
+
+  // Update autocomplete search fields from string to text.
+  $fields = [
+    'label',
+    'metatag_title',
+    'url',
+  ];
+  foreach ($fields as $field) {
+    $field = $index->getField($field);
+    if (!$field) {
+      continue;
+    }
+
+    if ($field->getType() === 'text') {
+      continue;
+    }
+
+    $field->setType('text');
+    $changed = TRUE;
+  }
+
+  if ($changed) {
+    $index->save();
+  }
+}
