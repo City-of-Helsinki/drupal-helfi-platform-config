@@ -23,7 +23,7 @@ mode: default
 content:
   description:
     type: readonly_field_widget
-    weight: 6
+    weight: 5
     region: content
     settings:
       label: above
@@ -43,7 +43,7 @@ content:
     third_party_settings: {  }
   field_upper_content:
     type: paragraphs
-    weight: 12
+    weight: 6
     region: content
     settings:
       title: Paragraph
@@ -107,7 +107,7 @@ content:
     third_party_settings: {  }
   field_hide_errand_services:
     type: boolean_checkbox
-    weight: 26
+    weight: 21
     region: content
     settings:
       display_label: true
