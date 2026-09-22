@@ -28,7 +28,7 @@ mode: default
 content:
   accessibility_email:
     type: readonly_field_widget
-    weight: 13
+    weight: 14
     region: content
     settings:
       label: above
@@ -38,7 +38,7 @@ content:
     third_party_settings: {  }
   accessibility_phone:
     type: readonly_field_widget
-    weight: 12
+    weight: 13
     region: content
     settings:
       label: above
@@ -48,7 +48,7 @@ content:
     third_party_settings: {  }
   accessibility_www:
     type: readonly_field_widget
-    weight: 18
+    weight: 19
     region: content
     settings:
       label: above
@@ -98,7 +98,7 @@ content:
     third_party_settings: {  }
   description:
     type: readonly_field_widget
-    weight: 19
+    weight: 20
     region: content
     settings:
       label: above
@@ -108,7 +108,7 @@ content:
     third_party_settings: {  }
   email:
     type: readonly_field_widget
-    weight: 11
+    weight: 12
     region: content
     settings:
       label: above
@@ -129,7 +129,7 @@ content:
         hide_guidelines: '1'
   field_upper_content:
     type: paragraphs
-    weight: 20
+    weight: 8
     region: content
     settings:
       title: Paragraph
@@ -194,7 +194,7 @@ content:
     third_party_settings: {  }
   field_phone_label:
     type: string_textfield
-    weight: 10
+    weight: 11
     region: content
     settings:
       size: 60
@@ -202,7 +202,7 @@ content:
     third_party_settings: {  }
   field_phone_with_contacts:
     type: boolean_checkbox
-    weight: 9
+    weight: 10
     region: content
     settings:
       display_label: true
@@ -311,13 +311,13 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 17
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
   phone:
     type: readonly_field_widget
-    weight: 8
+    weight: 9
     region: content
     settings:
       label: above
@@ -384,13 +384,13 @@ content:
     third_party_settings: {  }
   show_www:
     type: boolean_checkbox
-    weight: 16
+    weight: 17
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 15
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -444,7 +444,7 @@ content:
     third_party_settings: {  }
   www:
     type: readonly_field_widget
-    weight: 14
+    weight: 15
     region: content
     settings:
       label: above

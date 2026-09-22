@@ -23,7 +23,7 @@ mode: default
 content:
   description:
     type: readonly_field_widget
-    weight: 5
+    weight: 6
     region: content
     settings:
       label: above
@@ -43,7 +43,7 @@ content:
     third_party_settings: {  }
   field_upper_content:
     type: paragraphs
-    weight: 6
+    weight: 5
     region: content
     settings:
       title: Paragraph
