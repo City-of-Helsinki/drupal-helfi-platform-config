@@ -12,3 +12,4 @@ use_menu_title_as_fallback: true
 include_title_segment: true
 remove_repeated_segments: true
 include_home_segment: false
+use_page_title_as_menu_title_fallback: true
