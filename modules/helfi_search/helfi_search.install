@@ -434,7 +434,9 @@ function helfi_search_update_11022(): void {
       ->setType('string')
       ->setPropertyPath('custom_value')
       ->setLabel('Instance')
-      ->addValue('[site:helfi-current-instance]');
+      ->setConfiguration([
+        'value' => '[site:helfi-current-instance]',
+      ]);
     $index->addField($field);
     $changed = TRUE;
   }
