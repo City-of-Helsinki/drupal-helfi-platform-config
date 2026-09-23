@@ -142,6 +142,9 @@ class EntityHooks {
 
     /** @var \Drupal\Core\Entity\EntityTypeInterface $entity_type */
     $entity_type = $entity_types[MultisiteContentId::ENTITY_TYPE_ID];
+    // Entity type label is used as the group label in the autocomplete
+    // results.
+    $entity_type->set('label', new TranslatableMarkup('Other language versions and sites', [], ['context' => 'External entity type label']));
     $canonical = MultisiteContentId::canonicalPathTemplate();
     $entity_type->setLinkTemplate('canonical', $canonical);
     foreach (['edit-form' => '/edit', 'delete-form' => '/delete'] as $rel => $suffix) {

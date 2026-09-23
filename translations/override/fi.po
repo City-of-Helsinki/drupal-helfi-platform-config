@@ -207,3 +207,7 @@ msgstr "Muokkaa sisältöä"
 
 msgid "Edit media"
 msgstr "Muokkaa tiedostoa"
+
+msgctxt "External entity type label"
+msgid "Other language versions and sites"
+msgstr "Muut kieliversiot ja sivustot"
