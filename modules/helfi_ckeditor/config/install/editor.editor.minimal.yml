@@ -20,6 +20,7 @@ settings:
       - '|'
       - link
       - helfiLanguageSelector
+      - helfiNbsp
       - '|'
       - sourceEditing
   plugins:
