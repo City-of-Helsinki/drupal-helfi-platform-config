@@ -34,10 +34,12 @@ class ConfigUpdaterTest extends KernelTestBase {
     'csp',
     'entity_reference_revisions',
     'language',
+    'content_translation',
     'locale',
     'node',
     'paragraphs',
     'paragraphs_library',
+    'external_entities',
   ];
 
   /**
@@ -53,6 +55,7 @@ class ConfigUpdaterTest extends KernelTestBase {
       'csp',
       'locale',
       'language',
+      'content_translation',
     ]);
     // Create a new user to make sure we don't accidentally get all
     // permissions later due to user being uid 1.
