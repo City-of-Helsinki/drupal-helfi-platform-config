@@ -5,22 +5,23 @@ declare(strict_types=1);
 namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Config\Config;
+use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'select_icon' field formatter.
- *
- * @FieldFormatter(
- *   id = "select_icon_formatter",
- *   label = @Translation("Select Icon"),
- *   field_types = {
- *     "select_icon",
- *   }
- * )
  */
+#[FieldFormatter(
+  id: 'select_icon_formatter',
+  label: new TranslatableMarkup('Select Icon'),
+  field_types: [
+    'select_icon',
+  ],
+)]
 final class SelectIconFormatter extends FormatterBase {
 
   /**

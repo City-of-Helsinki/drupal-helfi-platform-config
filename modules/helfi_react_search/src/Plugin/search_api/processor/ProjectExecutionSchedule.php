@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\NodeInterface;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -12,18 +14,17 @@ use Drupal\search_api\Processor\ProcessorProperty;
 
 /**
  * Get start and end date for daterange field.
- *
- * @SearchApiProcessor(
- *    id = "project_execution_schedule",
- *    label = @Translation("Project execution schedule"),
- *    description = @Translation("Get start and end date for daterange field"),
- *    stages = {
- *      "add_properties" = 0,
- *    },
- *    locked = true,
- *    hidden = true,
- * )
  */
+#[SearchApiProcessor(
+  id: 'project_execution_schedule',
+  label: new TranslatableMarkup('Project execution schedule'),
+  description: new TranslatableMarkup('Get start and end date for daterange field'),
+  stages: [
+    'add_properties' => 0,
+  ],
+  locked: TRUE,
+  hidden: TRUE,
+)]
 class ProjectExecutionSchedule extends ProcessorPluginBase {
 
   /**

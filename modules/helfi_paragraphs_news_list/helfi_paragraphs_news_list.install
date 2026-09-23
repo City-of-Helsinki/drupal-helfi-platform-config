@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Field\FieldPurger;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -59,7 +60,7 @@ function helfi_paragraphs_news_list_update_9003(&$sandbox) : void {
       /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $item */
       foreach ($value as $item) {
         // Make sure already updated items are not affected.
-        [$id] = explode(':', $item->target_id);
+        [$id] = explode(':', (string) $item->target_id);
 
         $item->target_id = sprintf('%s:%s', $id, $value->getLangcode());
       }
@@ -110,5 +111,5 @@ function helfi_paragraphs_news_list_update_9011() : void {
   }
 
   $field_storage->delete();
-  field_purge_batch(50);
+  \Drupal::service(FieldPurger::class)->purgeBatch(50);
 }

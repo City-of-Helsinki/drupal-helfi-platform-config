@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_media_map\Plugin\Validation\Constraint;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Validation\Attribute\Constraint as ConstraintAttribute;
 use Symfony\Component\Validator\Constraint;
 
 /**
  * Provides a ValidMapLink constraint.
- *
- * @Constraint(
- *   id = "ValidMediaMapLink",
- *   label = @Translation("ValidMapLink", context = "Validation"),
- * )
  */
+#[ConstraintAttribute(
+  id: 'ValidMediaMapLink',
+  label: new TranslatableMarkup('ValidMapLink', options: ['context' => 'Validation']),
+)]
 final class ValidMediaMapLinkConstraint extends Constraint {
 
   /**

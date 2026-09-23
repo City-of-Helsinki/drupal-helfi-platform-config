@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
 use Drupal\helfi_react_search\SupportsServiceIndexTrait;
 use Drupal\helfi_tpr\Entity\Unit;
 use Drupal\helfi_tpr\Entity\Service;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\MediaInterface;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -19,18 +21,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Adds units for a TPR service to the index.
- *
- * @SearchApiProcessor(
- *   id = "units_for_service",
- *   label = @Translation("Units for service"),
- *   description = @Translation("Adds units for a TPR service to the index"),
- *   stages = {
- *     "add_properties" = 0,
- *   },
- *   locked = true,
- *   hidden = true,
- * )
  */
+#[SearchApiProcessor(
+  id: 'units_for_service',
+  label: new TranslatableMarkup('Units for service'),
+  description: new TranslatableMarkup('Adds units for a TPR service to the index'),
+  stages: [
+    'add_properties' => 0,
+  ],
+  locked: TRUE,
+  hidden: TRUE,
+)]
 class UnitsForService extends ProcessorPluginBase {
 
   use SupportsServiceIndexTrait;
