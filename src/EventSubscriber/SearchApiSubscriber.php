@@ -121,7 +121,7 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
       if (!$entity instanceof EntityInterface) {
         continue;
       }
-      $cache_tags = Cache::mergeTags($cache_tags, $entity->getCacheTagsToInvalidate());
+      $cache_tags = Cache::mergeTags($cache_tags, array_values($entity->getCacheTagsToInvalidate()));
     }
 
     if ($cache_tags !== []) {

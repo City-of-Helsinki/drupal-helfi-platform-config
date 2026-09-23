@@ -14,7 +14,9 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_platform_config\MultisiteContentId;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
+use Elastic\Elasticsearch\Response\Elasticsearch;
 use Elastic\Transport\Exception\TransportException;
+use Http\Promise\Promise;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -36,20 +38,22 @@ final class SharedIndex extends StorageClientBase {
   /**
    * Elasticsearch client built by ClientBuilder.
    */
-  private Client $elasticsearchClient;
+  protected Client $elasticsearchClient;
 
   /**
    * The environment resolver.
    */
-  private EnvironmentResolverInterface $environmentResolver;
+  protected EnvironmentResolverInterface $environmentResolver;
 
   /**
    * The language manager.
    */
-  private LanguageManagerInterface $languageManager;
+  protected LanguageManagerInterface $languageManager;
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $configuration
    */
   public static function create(
     ContainerInterface $container,
@@ -80,10 +84,10 @@ final class SharedIndex extends StorageClientBase {
   /**
    * Executes a search against the embeddings index.
    *
-   * @param array $body
+   * @param array<string, mixed> $body
    *   Elasticsearch request body.
    *
-   * @return array
+   * @return array<string, mixed>
    *   Raw Elasticsearch hits.
    */
   private function search(array $body): array {
@@ -91,16 +95,19 @@ final class SharedIndex extends StorageClientBase {
       $response = $this->elasticsearchClient->search([
         'index' => self::INDEX,
         'body' => $body,
-      ])->asArray();
+      ]);
+      if ($response instanceof Promise) {
+        $response = $response->wait();
+      }
+      if ($response instanceof Elasticsearch) {
+        return $response->asArray()['hits']['hits'] ?? [];
+      }
     }
     catch (ElasticsearchException | TransportException $e) {
       Error::logException($this->logger, $e);
-      return [];
     }
 
-    $hits = $response['hits']['hits'] ?? [];
-
-    return $hits;
+    return [];
   }
 
   /**
@@ -111,7 +118,10 @@ final class SharedIndex extends StorageClientBase {
       $response = $this->elasticsearchClient->indices()->exists([
         'index' => self::INDEX,
       ]);
-      return $response->getStatusCode() === 200;
+      if ($response instanceof Promise) {
+        $response = $response->wait();
+      }
+      return $response instanceof Elasticsearch && $response->getStatusCode() === 200;
     }
     catch (ElasticsearchException | TransportException) {
     }
@@ -120,6 +130,9 @@ final class SharedIndex extends StorageClientBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string>|null $ids
+   * @phpstan-return array<string, mixed>
    */
   public function loadMultiple(?array $ids = NULL) : array {
     if ($ids === NULL || $ids === []) {
@@ -139,6 +152,9 @@ final class SharedIndex extends StorageClientBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $form
+   * @phpstan-return array<string, mixed>
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
     return [];
@@ -146,6 +162,10 @@ final class SharedIndex extends StorageClientBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<mixed> $parameters
+   * @phpstan-param array<mixed> $sorts
+   * @phpstan-return array<string, mixed>
    */
   public function querySource(
     array $parameters = [],
@@ -230,7 +250,7 @@ final class SharedIndex extends StorageClientBase {
   /**
    * Builds a filter limiting hits to instances known by EnvironmentResolver.
    *
-   * @return array|null
+   * @return array<string, mixed>|null
    *   Elasticsearch terms clause, or NULL if no projects are defined.
    */
   private function getKnownInstanceFilter(): ?array {
@@ -241,7 +261,7 @@ final class SharedIndex extends StorageClientBase {
 
     return [
       'terms' => [
-        'instance' => array_values($instances),
+        'instance' => $instances,
       ],
     ];
   }
@@ -252,7 +272,7 @@ final class SharedIndex extends StorageClientBase {
    * Used to exclude those hits from autocomplete, while still allowing other
    * instances and other languages of the current instance.
    *
-   * @return array|null
+   * @return array<string, mixed>|null
    *   Elasticsearch bool clause, or NULL if the active project is unknown.
    */
   private function getCurrentInstanceCurrentLanguageExclusion(): ?array {
@@ -287,6 +307,10 @@ final class SharedIndex extends StorageClientBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $parameters
+   * @phpstan-param array<string, mixed> $context
+   * @phpstan-return array<string, mixed>
    */
   public function transliterateDrupalFilters(
     array $parameters,
@@ -337,6 +361,10 @@ final class SharedIndex extends StorageClientBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $sorts
+   * @phpstan-param array<string, mixed> $context
+   * @phpstan-return array<string, mixed>
    */
   public function transliterateDrupalSorts(
     array $sorts,

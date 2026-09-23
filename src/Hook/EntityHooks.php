@@ -101,6 +101,8 @@ class EntityHooks {
 
   /**
    * Implements hook_entity_bundle_info_alter().
+   *
+   * @phpstan-param array<string, mixed> $bundles
    */
   #[Hook('entity_bundle_info_alter')]
   public function entityBundleInfoAlter(array &$bundles): void {
@@ -111,9 +113,11 @@ class EntityHooks {
 
   /**
    * Implements hook_entity_bundle_field_info_alter().
+   *
+   * @phpstan-param array<string, mixed> $fields
    */
   #[Hook('entity_bundle_field_info_alter')]
-  public function entityBundleFieldInfoAlter(array &$fields, EntityTypeInterface $entity_type, $bundle): void {
+  public function entityBundleFieldInfoAlter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {
     if ($entity_type->id() !== 'helfi_multisite_content') {
       return;
     }
@@ -133,6 +137,8 @@ class EntityHooks {
 
   /**
    * Implements hook_entity_type_alter().
+   *
+   * @phpstan-param array<string, mixed> $entity_types
    */
   #[Hook('entity_type_alter')]
   public function entityTypeAlter(array &$entity_types): void {

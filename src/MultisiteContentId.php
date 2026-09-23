@@ -64,8 +64,12 @@ final class MultisiteContentId {
   /**
    * Extracts a source id from a helfi-multisite-content path.
    *
+   * This is used to return the proper autocomplete suggestion
+   * when editing existing ckeditor links or link field values.
+   *
    * @param string $value
-   *   User input such as "/fi/helfi-multisite-content/site_etusivu/entity-node/8420-en".
+   *   User input such as
+   *   "/fi/helfi-multisite-content/site_etusivu/entity-node/8420-en".
    *
    * @return string|null
    *   Elasticsearch document id, or NULL if the value is not that path.

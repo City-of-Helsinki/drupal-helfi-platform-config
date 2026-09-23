@@ -21,6 +21,9 @@ final class MultisiteContentRouteEnhancer implements EnhancerInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $defaults
+   * @phpstan-return array<string, mixed>
    */
   public function enhance(array $defaults, Request $request): array {
     $route_name = $defaults[RouteObjectInterface::ROUTE_NAME] ?? '';

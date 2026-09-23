@@ -19,6 +19,8 @@ class MultisiteContentIdTest extends UnitTestCase {
 
   /**
    * Tests round-trip conversion between source ids and path segments.
+   *
+   * @phpstan-param array{instance: string, datasource: string, item: string} $expected_segments
    */
   #[DataProvider('providerSourceIds')]
   public function testPathSegmentRoundTrip(string $source_id, array $expected_segments): void {

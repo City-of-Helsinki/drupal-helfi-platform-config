@@ -27,6 +27,8 @@ final class MultisiteContentParamConverter implements ParamConverterInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $defaults
    */
   public function convert($value, $definition, $name, array $defaults) {
     $datasource = $defaults['datasource'] ?? NULL;
