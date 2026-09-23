@@ -1,0 +1,6 @@
+/* Show the marked non-breaking spaces in the editing view. */
+.ck-content [data-nbsp] {
+  background-color: #d7f1ff;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px #0072c6;
+}
