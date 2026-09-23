@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\helfi_platform_config\Plugin\Linkit\Substitution;
 
 use Drupal\Component\Plugin\PluginBase;
@@ -23,7 +25,7 @@ class Multisite extends PluginBase implements SubstitutionInterface {
    */
   public function getUrl(EntityInterface $entity) {
     if (!$entity instanceof MultisiteContent) {
-      return NULL;
+      return $entity->toUrl();
     }
 
     $url = $entity->getExternalUrl();
