@@ -182,6 +182,9 @@ final class SharedIndex extends StorageClientBase {
       $value = $parameter['value'] ?? NULL;
 
       if ($field === 'search' && is_string($value) && $value !== '') {
+        // Search by shared-index document id. This use case is reached when
+        // an existing field is selected in the edit form, and will then
+        // display just one suggestion result matching the internal uri.
         $id = MultisiteContentId::extractFromUserInput($value);
         if ($id !== NULL) {
           $filter[] = [
@@ -192,6 +195,8 @@ final class SharedIndex extends StorageClientBase {
           continue;
         }
 
+        // A regular text search on label, metatag_title, and url fields.
+        // This use case is reached when user starts typing in the link field.
         $must[] = [
           'multi_match' => [
             'query' => $value,
@@ -203,12 +208,17 @@ final class SharedIndex extends StorageClientBase {
             ],
           ],
         ];
+
+        // Exclude content from current instance and language, as they are
+        // already suggested by the regular content entity matcher.
         $exclusion = $this->getCurrentInstanceCurrentLanguageExclusion();
         if ($exclusion !== NULL) {
           $must_not[] = $exclusion;
         }
       }
       elseif ($field === '_id' && $value !== NULL && $value !== []) {
+        // Search by shared-index document id. This use case is reached when
+        // Drupal loads the entity for rendering etc.
         $filter[] = [
           'terms' => [
             '_id' => array_map(
@@ -220,6 +230,8 @@ final class SharedIndex extends StorageClientBase {
       }
     }
 
+    // Filter by known instances to exclude content indexed
+    // via crawling etc.
     $known_instances = $this->getKnownInstanceFilter();
     if ($known_instances !== NULL) {
       $filter[] = $known_instances;
@@ -308,8 +320,8 @@ final class SharedIndex extends StorageClientBase {
   /**
    * {@inheritdoc}
    *
-   * @phpstan-param array<string, mixed> $parameters
-   * @phpstan-param array<string, mixed> $context
+   * @phpstan-param array<mixed> $parameters
+   * @phpstan-param array<mixed> $context
    * @phpstan-return array<string, mixed>
    */
   public function transliterateDrupalFilters(

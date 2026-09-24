@@ -9,6 +9,7 @@ use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\external_entities\Entity\ExternalEntityType;
 use Drupal\helfi_platform_config\Entity\ExternalEntity\MultisiteContent;
 use Drupal\helfi_platform_config\MultisiteContentId;
+use Drupal\helfi_platform_config\Plugin\Linkit\Substitution\Multisite;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use Elastic\Elasticsearch\ClientBuilder;
@@ -148,6 +149,28 @@ final class MultisiteContentTest extends KernelTestBase {
   }
 
   /**
+   * Tests that Linkit substitution uses the external URL.
+   */
+  public function testSubstitutionUsesExternalUrl(): void {
+    $entity = $this->createMultisiteContent([
+      'entity_url' => 'https://www.hel.fi/fi/news/example',
+    ]);
+
+    $url = $this->createSubstitutionPlugin()->getUrl($entity);
+    $this->assertNotNull($url);
+    $this->assertTrue($url->getOption('absolute'));
+    $this->assertSame('https://www.hel.fi/fi/news/example', $url->toString());
+  }
+
+  /**
+   * Tests that Linkit substitution returns NULL when the entity has no URL.
+   */
+  public function testSubstitutionWithoutExternalUrl(): void {
+    $entity = $this->createMultisiteContent();
+    $this->assertNull($this->createSubstitutionPlugin()->getUrl($entity));
+  }
+
+  /**
    * Tests that a site-relative path is turned into an absolute URL.
    */
   public function testGetExternalUrlFromInternalPath(): void {
@@ -178,6 +201,13 @@ final class MultisiteContentTest extends KernelTestBase {
     $this->assertInstanceOf(MultisiteContent::class, $entity);
 
     return $entity;
+  }
+
+  /**
+   * Creates the Linkit substitution plugin.
+   */
+  private function createSubstitutionPlugin(): Multisite {
+    return new Multisite([], 'multisite', ['id' => 'multisite']);
   }
 
 }
