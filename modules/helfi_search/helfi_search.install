@@ -433,7 +433,7 @@ function helfi_search_update_11022(): void {
 }
 
 /**
- * UHF-13496: Re-queue every document so stored snippets are regenerated (vectors get reused).
+ * UHF-13496: Re-queue every document so stored snippets are regenerated.
  */
 function helfi_search_update_11023(): void {
   \Drupal::database()->update('helfi_search_document')
