@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_search\DocumentState;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Item\Field;
@@ -429,4 +430,17 @@ function helfi_search_update_11022(): void {
   $fields = helfi_search_schema()['helfi_search_chunk']['fields'];
 
   $schema->changeField('helfi_search_chunk', 'snippet', 'snippet', $fields['snippet']);
+}
+
+/**
+ * UHF-13496: Re-queue every document so stored snippets are regenerated (vectors get reused).
+ */
+function helfi_search_update_11023(): void {
+  \Drupal::database()->update('helfi_search_document')
+    ->fields([
+      'state' => DocumentState::Pending->value,
+      'attempts' => 0,
+      'changed' => \Drupal::time()->getRequestTime(),
+    ])
+    ->execute();
 }
