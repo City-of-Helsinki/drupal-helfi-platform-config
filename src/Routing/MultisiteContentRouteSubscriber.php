@@ -32,16 +32,7 @@ final class MultisiteContentRouteSubscriber extends RouteSubscriberBase {
       $route->setPath(MultisiteContentId::canonicalPathTemplate($suffix));
       $parameters = $route->getOption('parameters') ?? [];
       unset($parameters[MultisiteContentId::ENTITY_TYPE_ID]);
-      $parameters['instance'] = [
-        'type' => 'entity:' . MultisiteContentId::ENTITY_TYPE_ID,
-        'converter' => 'Drupal\helfi_platform_config\ParamConverter\MultisiteContentParamConverter',
-      ];
       $route->setOption('parameters', $parameters);
-
-      $access = $route->getRequirement('_entity_access');
-      if (is_string($access) && str_starts_with($access, MultisiteContentId::ENTITY_TYPE_ID . '.')) {
-        $route->setRequirement('_entity_access', 'instance' . substr($access, strlen(MultisiteContentId::ENTITY_TYPE_ID)));
-      }
     }
 
     $collection_route = $collection->get('entity.' . MultisiteContentId::ENTITY_TYPE_ID . '.collection');
