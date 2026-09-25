@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.paragraph.banner.field_banner_desc
     - field.field.paragraph.banner.field_banner_design
+    - field.field.paragraph.banner.field_banner_hide_from_toc
     - field.field.paragraph.banner.field_banner_link
     - field.field.paragraph.banner.field_banner_link_design
     - field.field.paragraph.banner.field_banner_title
@@ -69,4 +70,5 @@ content:
     third_party_settings: {  }
     weight: 5
     region: content
-hidden: {  }
+hidden:
+  field_banner_hide_from_toc: true

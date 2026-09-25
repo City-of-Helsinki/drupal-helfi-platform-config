@@ -38,6 +38,8 @@ class TrackingHelperTest extends EntityKernelTestBase implements ServiceModifier
    */
   protected static $modules = [
     'helfi_hyte_search',
+    'diff',
+    'helfi_api_base',
     'helfi_tpr',
     'language',
     'config_rewrite',
