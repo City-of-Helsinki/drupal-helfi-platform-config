@@ -4,194 +4,94 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\EventSubscriber;
 
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
+use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
+use Drupal\elasticsearch_connector\Event\SupportsDataTypeEvent;
 use Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber;
-use Drupal\helfi_platform_config\MultisiteContentId;
-use Drupal\helfi_platform_config\MultisiteSearch;
-use Drupal\search_api\Event\ItemsIndexedEvent;
+use Drupal\search_api\Event\MappingFieldTypesEvent;
 use Drupal\search_api\Event\SearchApiEvents;
-use Drupal\search_api\IndexInterface;
+use Drupal\search_api\Item\FieldInterface;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * Tests Search API cache invalidation for the embeddings index.
+ * Tests Search API event subscriber field type mapping.
  */
 #[CoversClass(SearchApiSubscriber::class)]
 #[Group('helfi_platform_config')]
 final class SearchApiSubscriberTest extends UnitTestCase {
 
   /**
-   * Tests that items indexed on the embeddings index are subscribed to.
+   * Tests that field mapping events are subscribed to.
    */
   public function testGetSubscribedEvents(): void {
-    $this->assertSame(
-      'onItemsIndexed',
-      SearchApiSubscriber::getSubscribedEvents()[SearchApiEvents::ITEMS_INDEXED],
-    );
+    $this->assertSame([
+      SearchApiEvents::MAPPING_FIELD_TYPES => 'mapFieldTypes',
+      SupportsDataTypeEvent::class => 'onSupportsDataType',
+      FieldMappingEvent::class => 'onFieldMapping',
+    ], SearchApiSubscriber::getSubscribedEvents());
   }
 
   /**
-   * Tests that other indexes do not trigger cache invalidation.
+   * Tests that custom field types are mapped.
    */
-  public function testIgnoresNonEmbeddingsIndex(): void {
-    $invalidator = $this->createMock(CacheTagInvalidatorInterface::class);
-    $invalidator->expects($this->never())->method('invalidateTags');
+  public function testMapFieldTypes(): void {
+    $mapping = ['string' => 'string'];
+    $event = new MappingFieldTypesEvent($mapping);
 
-    $entity_type_manager = $this->createMock(EntityTypeManagerInterface::class);
-    $entity_type_manager->expects($this->never())->method('getStorage');
+    (new SearchApiSubscriber())->mapFieldTypes($event);
 
-    $this->createSut($invalidator, $this->createMock(MultisiteSearch::class), $entity_type_manager)
-      ->onItemsIndexed($this->createEvent('news', ['entity:node/1:en']));
+    $this->assertSame('location', $mapping['location']);
+    $this->assertSame('geo_shape', $mapping['computed_geo_shape']);
+    $this->assertSame('string', $mapping['string']);
   }
 
   /**
-   * Tests that multisite index ids are prefixed before loading.
+   * Tests that geo_shape is marked as a supported data type.
    */
-  public function testInvalidatesPrefixedIdsOnMultisiteIndex(): void {
-    $processed_id = 'entity:node/1:en';
-    $prefixed_id = 'site_etusivu/' . $processed_id;
+  public function testSupportsGeoShapeDataType(): void {
+    $event = new SupportsDataTypeEvent('geo_shape');
 
-    $search = $this->createMock(MultisiteSearch::class);
-    $search->method('isMultisiteIndex')->with('embeddings')->willReturn(TRUE);
-    $search->expects($this->once())
-      ->method('addPrefixToId')
-      ->with($processed_id)
-      ->willReturn($prefixed_id);
+    (new SearchApiSubscriber())->onSupportsDataType($event);
 
-    $entity = $this->createEntity(['helfi_multisite_content:' . $prefixed_id]);
-    $this->createSut(
-      $this->expectInvalidatedTags(['helfi_multisite_content:' . $prefixed_id]),
-      $search,
-      $this->createEntityTypeManager([$prefixed_id], [$prefixed_id => $entity]),
-    )->onItemsIndexed($this->createEvent('embeddings', [$processed_id]));
+    $this->assertTrue($event->isSupported());
   }
 
   /**
-   * Tests that cache tags from loaded entities are merged uniquely.
+   * Tests that other data types are left unsupported.
    */
-  public function testMergesCacheTagsFromLoadedEntities(): void {
-    $search = $this->createMock(MultisiteSearch::class);
-    $search->method('isMultisiteIndex')->willReturn(FALSE);
+  public function testDoesNotSupportOtherDataTypes(): void {
+    $event = new SupportsDataTypeEvent('string');
 
-    $first = $this->createEntity([
-      'helfi_multisite_content:1' => 'helfi_multisite_content:1',
-      'shared' => 'shared',
-    ]);
-    $second = $this->createEntity(['helfi_multisite_content:2', 'shared']);
+    (new SearchApiSubscriber())->onSupportsDataType($event);
 
-    $this->createSut(
-      $this->expectInvalidatedTags([
-        'helfi_multisite_content:1',
-        'shared',
-        'helfi_multisite_content:2',
-      ]),
-      $search,
-      $this->createEntityTypeManager(
-        ['id-1', 'id-2'],
-        ['id-1' => $first, 'id-2' => $second],
-      ),
-    )->onItemsIndexed($this->createEvent('embeddings', ['id-1', 'id-2']));
+    $this->assertFalse($event->isSupported());
   }
 
   /**
-   * Tests that missing entities and empty tag lists do not invalidate.
+   * Tests that geo_shape fields are mapped to Elasticsearch geo_shape.
    */
-  public function testDoesNotInvalidateWhenNoCacheTags(): void {
-    $invalidator = $this->createMock(CacheTagInvalidatorInterface::class);
-    $invalidator->expects($this->never())->method('invalidateTags');
+  public function testMapsGeoShapeField(): void {
+    $field = $this->createMock(FieldInterface::class);
+    $field->method('getType')->willReturn('geo_shape');
+    $event = new FieldMappingEvent($field, ['type' => 'text']);
 
-    $search = $this->createMock(MultisiteSearch::class);
-    $search->method('isMultisiteIndex')->willReturn(FALSE);
+    (new SearchApiSubscriber())->onFieldMapping($event);
 
-    $this->createSut(
-      $invalidator,
-      $search,
-      $this->createEntityTypeManager(['missing'], ['missing' => new \stdClass()]),
-    )->onItemsIndexed($this->createEvent('embeddings', ['missing']));
+    $this->assertSame(['type' => 'geo_shape'], $event->getParam());
   }
 
   /**
-   * Creates the subscriber.
+   * Tests that other field types keep their original mapping.
    */
-  private function createSut(
-    CacheTagInvalidatorInterface $invalidator,
-    MultisiteSearch $search,
-    EntityTypeManagerInterface $entity_type_manager,
-  ): SearchApiSubscriber {
-    return new SearchApiSubscriber($invalidator, $search, $entity_type_manager);
-  }
+  public function testDoesNotMapOtherFieldTypes(): void {
+    $field = $this->createMock(FieldInterface::class);
+    $field->method('getType')->willReturn('string');
+    $event = new FieldMappingEvent($field, ['type' => 'keyword']);
 
-  /**
-   * Creates an items-indexed event.
-   *
-   * Search API documents processed IDs as int[], but the embeddings index uses
-   * string item IDs. The constructor is typed only as array at runtime.
-   *
-   * @phpstan-param array<int|string> $processed_ids
-   *   Processed Search API item ids.
-   */
-  private function createEvent(string $index_id, array $processed_ids): ItemsIndexedEvent {
-    $index = $this->createMock(IndexInterface::class);
-    $index->method('id')->willReturn($index_id);
-    $event = new ItemsIndexedEvent($index, []);
-    $reflection = new \ReflectionProperty(ItemsIndexedEvent::class, 'processedIds');
-    $reflection->setValue($event, $processed_ids);
-    return $event;
-  }
+    (new SearchApiSubscriber())->onFieldMapping($event);
 
-  /**
-   * Creates entity type manager that loads the given entities.
-   *
-   * @param list<string> $ids
-   *   Ids expected to be passed to loadMultiple().
-   * @param array<string, object> $entities
-   *   Entities keyed by id.
-   */
-  private function createEntityTypeManager(array $ids, array $entities): EntityTypeManagerInterface {
-    $storage = $this->createMock(EntityStorageInterface::class);
-    $storage->expects($this->once())
-      ->method('loadMultiple')
-      ->with($ids)
-      ->willReturn($entities);
-
-    $entity_type_manager = $this->createMock(EntityTypeManagerInterface::class);
-    $entity_type_manager->expects($this->once())
-      ->method('getStorage')
-      ->with(MultisiteContentId::ENTITY_TYPE_ID)
-      ->willReturn($storage);
-
-    return $entity_type_manager;
-  }
-
-  /**
-   * Creates an entity that reports the given cache tags.
-   *
-   * @param list<string>|array<string, string> $tags
-   *   Tags returned by getCacheTagsToInvalidate().
-   */
-  private function createEntity(array $tags): EntityInterface {
-    $entity = $this->createMock(EntityInterface::class);
-    $entity->method('getCacheTagsToInvalidate')->willReturn($tags);
-    return $entity;
-  }
-
-  /**
-   * Creates an invalidator that must receive the given tags.
-   *
-   * @param list<string> $tags
-   *   Expected tags.
-   */
-  private function expectInvalidatedTags(array $tags): CacheTagInvalidatorInterface {
-    $invalidator = $this->createMock(CacheTagInvalidatorInterface::class);
-    $invalidator->expects($this->once())
-      ->method('invalidateTags')
-      ->with($tags);
-    return $invalidator;
+    $this->assertSame(['type' => 'keyword'], $event->getParam());
   }
 
 }
