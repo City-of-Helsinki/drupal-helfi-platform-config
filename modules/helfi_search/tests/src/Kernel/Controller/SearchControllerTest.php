@@ -123,6 +123,19 @@ class SearchControllerTest extends KernelTestBase {
                 ],
               ],
             ],
+            [
+              'hits' => [
+                'hits' => [
+                  [
+                    '_score' => 3.1,
+                    '_source' => [
+                      'name_parts' => ['Matti', 'Meikäläinen'],
+                      'email' => ['matti.meikalainen@hel.fi'],
+                    ],
+                  ],
+                ],
+              ],
+            ],
           ],
         ]),
         // Promotion sub-query errors, KNN succeeds.
@@ -161,6 +174,7 @@ class SearchControllerTest extends KernelTestBase {
     $data = json_decode((string) $response->getContent(), TRUE);
     $this->assertEmpty($data['results']);
     $this->assertEmpty($data['promoted']);
+    $this->assertEmpty($data['contacts']);
 
     // Test with promoted and KNN results.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'test query']);
@@ -177,6 +191,9 @@ class SearchControllerTest extends KernelTestBase {
     $this->assertEquals('node', $data['results'][0]['entity_type']);
     $this->assertEquals('/fi/test-page', $data['results'][0]['url']);
     $this->assertEquals('Test Page', $data['results'][0]['title']);
+    $this->assertCount(1, $data['contacts']);
+    $this->assertEquals('Matti Meikäläinen', $data['contacts'][0]['name']);
+    $this->assertEquals('matti.meikalainen@hel.fi', $data['contacts'][0]['email']);
 
     // Test promotion error is handled gracefully.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'test query']);
@@ -187,6 +204,7 @@ class SearchControllerTest extends KernelTestBase {
     $this->assertEmpty($data['promoted']);
     $this->assertCount(1, $data['results']);
     $this->assertEquals('/fi/fallback', $data['results'][0]['url']);
+    $this->assertEmpty($data['contacts']);
 
     // Test total ES failure.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'test query']);
