@@ -6739,30 +6739,6 @@ parameters:
 			path: tests/src/Unit/EventSubscriber/CspSubscriberBaseTest.php
 
 		-
-			message: '#^Parameter \#1 \$event of method Drupal\\helfi_platform_config\\EventSubscriber\\ElasticsearchParamsSubscriber\:\:prefixItemIds\(\) expects Drupal\\elasticsearch_connector\\Event\\BaseParamsEvent, object given\.$#'
-			identifier: argument.type
-			count: 2
-			path: tests/src/Unit/EventSubscriber/ElasticsearchParamsSubscriberTest.php
-
-		-
-			message: '#^Property Drupal\\Tests\\helfi_platform_config\\Unit\\EventSubscriber\\ElasticsearchParamsSubscriberTest\:\:\$event with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: tests/src/Unit/EventSubscriber/ElasticsearchParamsSubscriberTest.php
-
-		-
-			message: '#^Property Drupal\\Tests\\helfi_platform_config\\Unit\\EventSubscriber\\ElasticsearchParamsSubscriberTest\:\:\$expectedParams type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/src/Unit/EventSubscriber/ElasticsearchParamsSubscriberTest.php
-
-		-
-			message: '#^Property Drupal\\Tests\\helfi_platform_config\\Unit\\EventSubscriber\\ElasticsearchParamsSubscriberTest\:\:\$multisiteSearch with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: tests/src/Unit/EventSubscriber/ElasticsearchParamsSubscriberTest.php
-
-		-
 			message: '#^Method Drupal\\Tests\\helfi_platform_config\\Unit\\HelfiLinkitWidgetTest\:\:massageFormValuesData\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1

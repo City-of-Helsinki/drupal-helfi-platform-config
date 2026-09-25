@@ -1,0 +1,122 @@
+uuid: 87acd82e-a1b5-42c3-8a54-62d8b21b0d6a
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_platform_config
+id: helfi_multisite_content
+label: 'Helfi: Multisite content'
+label_plural: 'Helfi: Multisite contents'
+base_path: helfi-multisite-content
+description: ''
+content_class: Drupal\external_entities\Entity\ExternalEntity
+read_only: true
+debug_level: 0
+field_mappers:
+  entity_url:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.url[0]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config:
+                  datatype: ''
+                  default: null
+            description: ''
+      debug_level: 0
+  id:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $._id
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config:
+                  datatype: ''
+                  default: null
+            description: ''
+      debug_level: 0
+  language_code:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.search_api_language[0]'
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config:
+                  datatype: ''
+                  default: null
+            description: ''
+      debug_level: 0
+  title:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: '$._source.label[0]'
+            required_field: true
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config:
+                  datatype: ''
+                  default: null
+            description: ''
+      debug_level: 0
+  uuid:
+    id: generic
+    config:
+      property_mappings:
+        value:
+          id: jsonpath
+          config:
+            mapping: $._id
+            required_field: false
+            main_property: true
+            data_processors:
+              -
+                id: default
+                config:
+                  datatype: ''
+                  default: null
+            description: ''
+      debug_level: 0
+field_save_order: null
+field_mapping_notes: ''
+data_aggregator:
+  id: single
+  config:
+    storage_clients:
+      -
+        id: helfi_shared_index
+        config: {  }
+data_aggregator_notes: ''
+language_settings: null
+persistent_cache_max_age: 0
+annotation_entity_type_id: null
+annotation_bundle_id: null
+annotation_field_name: null
+annotation_inherited_fields: {  }
+locks: {  }
