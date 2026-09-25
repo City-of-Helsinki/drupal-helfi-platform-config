@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\text\Plugin\Field\FieldWidget\TextareaWidget;
 
 /**
  * Plugin implementation of the 'formatted_text_character_counter' widget.
- *
- * @FieldWidget(
- *   id = "formatted_text_character_counter",
- *   label = @Translation("Text area (formatted text, character counter)"),
- *   field_types = {
- *     "text_long",
- *     "text_with_summary",
- *   }
- * )
  */
+#[FieldWidget(
+  id: 'formatted_text_character_counter',
+  label: new TranslatableMarkup('Text area (formatted text, character counter)'),
+  field_types: [
+    'text_long',
+    'text_with_summary',
+  ],
+)]
 class FormattedTextCharacterCounterWidget extends TextareaWidget {
 
   use CharacterCounterFieldWidgetTrait;

@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Plugin implementation of the 'link_target_icon_field_widget' widget.
- *
- * @FieldWidget(
- *   id = "link_target_icon_field_widget",
- *   label = @Translation("Link with target and icon"),
- *   field_types = {
- *     "link"
- *   }
- * )
  */
+#[FieldWidget(
+  id: 'link_target_icon_field_widget',
+  label: new TranslatableMarkup('Link with target and icon'),
+  field_types: [
+    'link',
+  ],
+)]
 class LinkTargetIconFieldWidget extends LinkTargetFieldWidget {
 
   /**

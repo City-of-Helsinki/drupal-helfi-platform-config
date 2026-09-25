@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldType;
 
+use Drupal\Core\Field\Attribute\FieldType;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TypedData\DataDefinition;
 
 /**
@@ -14,15 +16,15 @@ use Drupal\Core\TypedData\DataDefinition;
  * Note. The field type machine name is still old select2_icon as changing
  * field types when content exists can potentially lose data.
  *
- * @FieldType(
- *   id = "select2_icon",
- *   label = @Translation("Select Icon"),
- *   category = "Helfi",
- *   default_widget = "select_icon_widget",
- *   default_formatter = "select_icon_formatter"
- * )
  * @property string $icon
  */
+#[FieldType(
+  id: 'select2_icon',
+  label: new TranslatableMarkup('Select Icon'),
+  category: 'Helfi',
+  default_widget: 'select_icon_widget',
+  default_formatter: 'select_icon_formatter',
+)]
 class SelectIcon extends FieldItemBase {
 
   const SELECT_ICON_CACHE = 'select_icon_cache';

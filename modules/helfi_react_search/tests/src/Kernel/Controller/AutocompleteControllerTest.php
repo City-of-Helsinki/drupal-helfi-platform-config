@@ -122,7 +122,7 @@ final class AutocompleteControllerTest extends KernelTestBase {
           'text' => 'Test',
         ],
       ],
-    ], json_decode($response->getContent(), associative: TRUE));
+    ], json_decode((string) $response->getContent(), associative: TRUE));
   }
 
   /**

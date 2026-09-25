@@ -123,7 +123,7 @@ abstract class ElasticExternalEntityBase extends RestClient {
         'query' => [
           'bool' => [
             'filter' => [
-              'terms' => ['uuid_langcode' => array_values($ids)],
+              'terms' => ['uuid_langcode' => array_values($ids ?? [])],
             ],
           ],
         ],

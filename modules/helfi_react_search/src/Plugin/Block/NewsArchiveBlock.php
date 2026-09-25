@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\Plugin\Block;
 
+use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Block for rendering the news archive react app.
- *
- * @Block(
- *   id = "block__news_archive_application",
- *   admin_label = @Translation("News archive"),
- *   category = @Translation("HELfi News Archive")
- * )
  */
+#[Block(
+  id: 'block__news_archive_application',
+  admin_label: new TranslatableMarkup('News archive'),
+  category: new TranslatableMarkup('HELfi News Archive'),
+)]
 class NewsArchiveBlock extends BlockBase {
 
   /**
