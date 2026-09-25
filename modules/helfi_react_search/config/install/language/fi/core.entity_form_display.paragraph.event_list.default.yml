@@ -1,6 +1,10 @@
 third_party_settings:
   field_group:
+    group_search_restrictions:
+      label: 'Haun rajaukset'
+      format_settings:
+        description: 'Rajaa listalla näytettäviä sisältöjä. Käyttäjät eivät voi muuttaa näitä rajauksia.'
     group_search_filters:
-      label: 'Haun suodattimet'
+      label: 'Haun suodattimet käyttäjille'
       format_settings:
         description: 'Valitse, mitkä suodattimet näytetään käyttäjille sivulla.'

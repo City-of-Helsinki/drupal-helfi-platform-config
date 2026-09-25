@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Component\Serialization\Yaml;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 
@@ -385,4 +386,42 @@ function helfi_react_search_update_9023(): void {
   }
 
   $form_display->save();
+}
+
+/**
+ * UHF-13096: Group event_list filters into search restrictions and filters.
+ */
+function helfi_react_search_update_9024(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+
+  $config_name = 'core.entity_form_display.paragraph.event_list.default';
+  $install_path = \Drupal::service('extension.list.module')->getPath('helfi_react_search') . '/config/install';
+
+  $form_display = \Drupal::configFactory()->getEditable($config_name);
+  if ($form_display->isNew()) {
+    return;
+  }
+
+  $default = Yaml::decode((string) file_get_contents("$install_path/$config_name.yml"));
+  $form_display->set('third_party_settings.field_group', $default['third_party_settings']['field_group']);
+  foreach ($default['content'] as $field_name => $settings) {
+    if ($form_display->get("content.$field_name") !== NULL) {
+      $form_display->set("content.$field_name.weight", $settings['weight']);
+    }
+  }
+  $form_display->save();
+
+  $language_manager = \Drupal::languageManager();
+  if (
+    !$language_manager instanceof ConfigurableLanguageManagerInterface ||
+    !$language_manager->getLanguage('fi')
+  ) {
+    return;
+  }
+
+  $default = Yaml::decode((string) file_get_contents("$install_path/language/fi/$config_name.yml"));
+  $language_manager->getLanguageConfigOverride('fi', $config_name)
+    ->set('third_party_settings.field_group', $default['third_party_settings']['field_group'])
+    ->save();
 }
