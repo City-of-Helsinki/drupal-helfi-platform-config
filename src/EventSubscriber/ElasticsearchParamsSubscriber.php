@@ -16,12 +16,6 @@ use Drupal\helfi_platform_config\MultisiteSearch;
  */
 final class ElasticsearchParamsSubscriber implements EventSubscriberInterface {
 
-  /**
-   * Event subscriber constructor.
-   *
-   * @param \Drupal\helfi_platform_config\MultisiteSearch $multisiteSearch
-   *   The multisite search helper.
-   */
   public function __construct(
     protected MultisiteSearch $multisiteSearch,
     protected CacheTagInvalidatorInterface $cacheTagInvalidator,
