@@ -24,6 +24,7 @@ class TprUnitRenderHooksTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'diff',
     'helfi_api_base',
     'helfi_tpr',
     'user',
