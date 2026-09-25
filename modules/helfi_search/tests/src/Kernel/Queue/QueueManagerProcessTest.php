@@ -171,7 +171,7 @@ class QueueManagerProcessTest extends KernelTestBase {
 
     foreach ($chunks as $i => $chunk) {
       $this->assertEqualsWithDelta([0.25, 0.5], $storedChunks[$i]->vector, 1e-6);
-      $this->assertSame($chunk->getTruncatedSnippet(), $storedChunks[$i]->snippet);
+      $this->assertSame($chunk->snippet, $storedChunks[$i]->snippet);
       $this->assertSame($chunk->fragment, $storedChunks[$i]->fragment);
     }
 

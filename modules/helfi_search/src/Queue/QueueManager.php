@@ -379,7 +379,7 @@ class QueueManager {
 
     foreach ($chunks as $delta => $chunk) {
       $hash = $chunk->contentHash();
-      $snippet = $chunk->getTruncatedSnippet();
+      $snippet = $chunk->snippet;
 
       $rows[] = $key + [
         'delta' => $delta,
