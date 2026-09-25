@@ -69,6 +69,7 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
     $this->assertLanguageUnSelection();
     $this->assertAddingQuote();
     $this->assertAddingTable();
+    $this->assertNonBreakingSpaces();
   }
 
   /**
@@ -375,6 +376,74 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
     // Check that the table and the cell content is present.
     $table = $page->find('css', 'figure.table > table');
     $this->assertEquals($cell, $table->getText());
+  }
+
+  /**
+   * Test the Helfi nbsp plugin.
+   */
+  protected function assertNonBreakingSpaces(): void {
+    // Non-breaking spaces the editor didn't add on purpose should be
+    // converted to regular spaces.
+    $this->initializeEditor('<p>Test&nbsp;content</p>');
+    $this->assertSame('<p>Test content</p>', $this->getEditorDataAsHtmlString());
+
+    // Repeated spaces are collapsed to space.
+    $this->initializeEditor('<p>Test &nbsp; content</p>');
+    $this->assertSame('<p>Test content</p>', $this->getEditorDataAsHtmlString());
+
+    // Span without the data-nbsp, should be converted to single space.
+    $this->initializeEditor('<p>Test<span>&nbsp;</span> content</p>');
+    $this->assertSame('<p>Test content</p>', $this->getEditorDataAsHtmlString());
+
+    // Spaces are removed from the start and the end of a text block.
+    $this->initializeEditor('<p><span>&nbsp;</span>Test content<span>&nbsp;</span></p>');
+    $this->assertSame('<p>Test content</p>', $this->getEditorDataAsHtmlString());
+
+    // Marked non-breaking spaces are kept.
+    $marked_content = '<p>Test<span data-nbsp="">&nbsp;</span>content</p>';
+    $this->initializeEditor($marked_content);
+    $this->assertSame($marked_content, $this->getEditorDataAsHtmlString());
+
+    // Repeated non-breaking spaces are collapsed into one space.
+    $this->initializeEditor('<p>Test<span data-nbsp="">&nbsp;&nbsp;&nbsp;</span>content</p>');
+    $this->assertSame($marked_content, $this->getEditorDataAsHtmlString());
+
+    // A marked non-breaking space next to a regular space is kept.
+    $before_space_content = '<p>Test<span data-nbsp="">&nbsp;</span> content</p>';
+    $this->initializeEditor($before_space_content);
+    $this->assertSame($before_space_content, $this->getEditorDataAsHtmlString());
+
+    // Empty paragraphs are removed from the start and the end of the content.
+    $this->initializeEditor('<p>&nbsp;</p><p>Test</p><p>&nbsp;</p>');
+    $this->assertSame('<p>Test</p>', $this->getEditorDataAsHtmlString());
+
+    // Empty paragraphs between text content are kept.
+    $between_content = '<p>Test</p><p>&nbsp;</p><p>Content</p>';
+    $this->initializeEditor($between_content);
+    $this->assertSame($between_content, $this->getEditorDataAsHtmlString());
+
+    // An inserted non-breaking space is wrapped in <span data-nbsp>.
+    $this->initializeEditor('<p>Testcontent</p>');
+    $this->insertNonBreakingSpace(strlen('Test'));
+    $this->assertSame($marked_content, $this->getEditorDataAsHtmlString());
+  }
+
+  /**
+   * Insert a non-breaking space to the first paragraph.
+   *
+   * @param int $offset
+   *   The position to insert the non-breaking space to.
+   */
+  protected function insertNonBreakingSpace(int $offset): void {
+    $javascript = <<<JS
+(function(){
+  const editor = Drupal.CKEditor5Instances.get(Drupal.CKEditor5Instances.keys().next().value);
+  const paragraph = editor.model.document.getRoot().getChild(0);
+  editor.model.change((writer) => writer.setSelection(writer.createPositionAt(paragraph, $offset)));
+  editor.execute('insertText', { text: '\u00A0' });
+})();
+JS;
+    $this->getSession()->executeScript($javascript);
   }
 
   /**

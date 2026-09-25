@@ -74,3 +74,17 @@ helfi_ckeditor_helfi_table:
     conditions:
       plugins:
         - ckeditor5_table
+
+helfi_ckeditor_helfi_nbsp:
+  # Configuration that will be sent to CKEditor 5 JavaScript plugins.
+  ckeditor5:
+    plugins:
+      - helfiNbsp.HelfiNbsp
+
+  # Configuration that will be used directly by Drupal.
+  drupal:
+    label: Helfi Nbsp
+    library: helfi_ckeditor/helfi_nbsp
+    elements:
+      - <span data-nbsp>
+
