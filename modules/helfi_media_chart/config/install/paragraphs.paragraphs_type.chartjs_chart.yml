@@ -1,0 +1,10 @@
+uuid: 8398c04f-27ef-45ef-bc39-ac24cf19f1ed
+langcode: fi
+status: true
+dependencies: {  }
+id: chartjs_chart
+label: 'Chartjs chart'
+icon_uuid: null
+icon_default: null
+description: 'Chartjs chart'
+behavior_plugins: {  }

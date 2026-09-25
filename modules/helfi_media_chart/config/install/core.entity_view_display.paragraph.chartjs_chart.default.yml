@@ -1,0 +1,21 @@
+uuid: b109cb74-533e-4be6-b6bc-916e5e3fe12e
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.chartjs_chart.field_json
+    - paragraphs.paragraphs_type.chartjs_chart
+id: paragraph.chartjs_chart.default
+targetEntityType: paragraph
+bundle: chartjs_chart
+mode: default
+content:
+  field_json:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

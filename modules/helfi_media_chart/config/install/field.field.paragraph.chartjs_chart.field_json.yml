@@ -1,0 +1,19 @@
+uuid: a087a307-de10-40a9-92dd-6f284edff9d8
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_json
+    - paragraphs.paragraphs_type.chartjs_chart
+id: paragraph.chartjs_chart.field_json
+field_name: field_json
+entity_type: paragraph
+bundle: chartjs_chart
+label: json
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long
