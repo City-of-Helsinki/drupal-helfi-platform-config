@@ -257,6 +257,22 @@ class EventListTest extends KernelTestBase {
     );
     $this->assertSame($base . '?' . $movieQuery, $paragraph->getApiUrl());
 
+    // Target groups are added as a separate keyword set, so that they are
+    // combined with the other keywords using AND.
+    $this->assertEmpty($paragraph->getAudiences());
+    $paragraph->set('field_event_list_audience', [
+      '{"id": "yso:p11617", "name": {"en": "young people"}}',
+      '{"id": "yso:p4354", "name": {"en": "children (age groups)"}}',
+    ]);
+    $this->assertCount(2, $paragraph->getAudiences());
+    $audienceQuery = str_replace(
+      'language=en&ongoing=true',
+      'language=en&keyword_OR_set1=yso%3Ap11617%2Cyso%3Ap4354&ongoing=true',
+      $movieQuery
+    );
+    $this->assertSame($base . '?' . $audienceQuery, $paragraph->getApiUrl());
+    $paragraph->set('field_event_list_audience', []);
+
     $paragraph->set('field_event_list_category_event', []);
     $paragraph->set('field_event_list_free_text', 'jooga');
     $eventsWithFullText = str_replace(
