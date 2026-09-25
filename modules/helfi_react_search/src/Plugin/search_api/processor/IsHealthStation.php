@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_react_search\SupportsUnitIndexTrait;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 
 /**
  * Checks if given TPR entity is a health station.
- *
- * @SearchApiProcessor(
- *   id = "is_health_station",
- *   label = @Translation("Health station filter"),
- *   description = @Translation("Exclude non-health station entities from index"),
- *   stages = {
- *     "alter_items" = 0,
- *   }
- * )
  */
+#[SearchApiProcessor(
+  id: 'is_health_station',
+  label: new TranslatableMarkup('Health station filter'),
+  description: new TranslatableMarkup('Exclude non-health station entities from index'),
+  stages: [
+    'alter_items' => 0,
+  ],
+)]
 class IsHealthStation extends ProcessorPluginBase {
 
   use SupportsUnitIndexTrait;

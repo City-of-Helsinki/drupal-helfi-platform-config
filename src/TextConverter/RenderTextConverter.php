@@ -60,7 +60,7 @@ final class RenderTextConverter implements TextConverterInterface {
     );
 
     // Strip HTML tags, entities and excessive newlines.
-    return trim(preg_replace("/\n\s*/u", "\n", html_entity_decode(strip_tags((string) $document))));
+    return trim(preg_replace("/\n\s*/u", "\n", html_entity_decode(strip_tags((string) $document))) ?? '');
   }
 
 }

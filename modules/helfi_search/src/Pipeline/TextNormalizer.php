@@ -24,13 +24,13 @@ final class TextNormalizer {
     }
 
     // Collapse multiple horizontal whitespace chars (non-newline) to one space.
-    $text = preg_replace('/[^\S\n]+/', ' ', $text);
+    $text = preg_replace('/[^\S\n]+/', ' ', $text) ?? $text;
 
     // Remove spaces immediately before or after newlines.
-    $text = preg_replace('/ *\n */', "\n", $text);
+    $text = preg_replace('/ *\n */', "\n", $text) ?? $text;
 
     // Limit consecutive newlines to a maximum of two.
-    $text = preg_replace('/\n{3,}/', "\n\n", $text);
+    $text = preg_replace('/\n{3,}/', "\n\n", $text) ?? $text;
 
     return trim($text);
   }

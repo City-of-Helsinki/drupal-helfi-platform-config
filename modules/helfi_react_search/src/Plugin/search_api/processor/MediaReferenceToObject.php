@@ -9,7 +9,9 @@ use Drupal\Core\Entity\Plugin\DataType\EntityReference;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Plugin\PluginFormTrait;
@@ -19,16 +21,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Converts media reference fields to objects in index.
- *
- * @SearchApiProcessor(
- *   id = "media_reference_to_object",
- *   label = @Translation("Convert media reference to object"),
- *   description = @Translation("Converts media reference fields to objects in index"),
- *   stages = {
- *     "add_properties" = 0,
- *   }
- * )
  */
+#[SearchApiProcessor(
+  id: 'media_reference_to_object',
+  label: new TranslatableMarkup('Convert media reference to object'),
+  description: new TranslatableMarkup('Converts media reference fields to objects in index'),
+  stages: [
+    'add_properties' => 0,
+  ],
+)]
 class MediaReferenceToObject extends ProcessorPluginBase implements PluginFormInterface {
 
   use PluginFormTrait;

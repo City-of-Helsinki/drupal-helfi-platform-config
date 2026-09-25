@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_react_search\SupportsServiceIndexTrait;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 
 /**
  * Checks if given TPR entity is a Hyte-service.
- *
- * @SearchApiProcessor(
- *   id = "is_hyte_service",
- *   label = @Translation("Hyte service filter"),
- *   description = @Translation("Exclude non-Hyte service entities from index"),
- *   stages = {
- *     "alter_items" = 0,
- *   }
- * )
  */
+#[SearchApiProcessor(
+  id: 'is_hyte_service',
+  label: new TranslatableMarkup('Hyte service filter'),
+  description: new TranslatableMarkup('Exclude non-Hyte service entities from index'),
+  stages: [
+    'alter_items' => 0,
+  ],
+)]
 class IsHyteService extends ProcessorPluginBase {
 
   use SupportsServiceIndexTrait;

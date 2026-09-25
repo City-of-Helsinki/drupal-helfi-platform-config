@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_media_chart\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_media_chart\UrlParserTrait;
 use Psr\Log\LoggerInterface;
@@ -13,15 +15,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'Chart' formatter.
- *
- * @FieldFormatter(
- *   id = "helfi_chart_media_library",
- *   label = @Translation("Chart - Media library"),
- *   field_types = {
- *     "link",
- *   }
- * )
  */
+#[FieldFormatter(
+  id: 'helfi_chart_media_library',
+  label: new TranslatableMarkup('Chart - Media library'),
+  field_types: [
+    'link',
+  ],
+)]
 final class ChartMediaLibraryFormatter extends FormatterBase {
 
   use UrlParserTrait;

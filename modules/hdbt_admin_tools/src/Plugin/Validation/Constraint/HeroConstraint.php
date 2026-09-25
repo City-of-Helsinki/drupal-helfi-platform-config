@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Plugin\Validation\Constraint;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Validation\Attribute\Constraint as ConstraintAttribute;
 use Symfony\Component\Validator\Constraint;
 
 /**
  * Checks that the hero is present if the boolean value has been enabled.
- *
- * @Constraint(
- *   id = "Hero",
- *   label = @Translation("Hero is missing.", context = "Validation"),
- * )
  */
+#[ConstraintAttribute(
+  id: 'Hero',
+  label: new TranslatableMarkup('Hero is missing.', options: ['context' => 'Validation']),
+)]
 class HeroConstraint extends Constraint {
 
   /**
