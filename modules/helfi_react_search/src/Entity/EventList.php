@@ -216,6 +216,11 @@ class EventList extends Paragraph implements ParagraphInterface {
       'language' => $this->language()->getId(),
     ];
 
+    $audiences = array_map(static fn (LinkedEventsItem $item) => $item->id, $this->getAudiences());
+    if ($audiences) {
+      $query['keyword_OR_set1'] = implode(',', $audiences);
+    }
+
     if ($freeText = $this->get('field_event_list_free_text')->value) {
       // At the moment, some valid queries cannot be represented with the
       // paragraph form, so this offers an escape hatch for more advanced
@@ -265,6 +270,19 @@ class EventList extends Paragraph implements ParagraphInterface {
    */
   public function getKeywords(): array {
     return $this->deserializeAutocompleteField($this->get('field_event_list_keywords'));
+  }
+
+  /**
+   * Get list of enabled target groups.
+   *
+   * @return \Drupal\helfi_react_search\DTO\LinkedEventsItem[]
+   *   Enabled target groups.
+   */
+  public function getAudiences(): array {
+    if (!$this->hasField('field_event_list_audience')) {
+      return [];
+    }
+    return $this->deserializeAutocompleteField($this->get('field_event_list_audience'));
   }
 
   /**

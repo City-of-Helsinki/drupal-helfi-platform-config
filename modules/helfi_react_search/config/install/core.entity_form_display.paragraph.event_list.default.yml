@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.event_list.field_event_count
+    - field.field.paragraph.event_list.field_event_list_audience
     - field.field.paragraph.event_list.field_event_list_category_event
     - field.field.paragraph.event_list.field_event_list_category_hobby
     - field.field.paragraph.event_list.field_event_list_description
@@ -42,7 +43,7 @@ third_party_settings:
       label: 'Search filters'
       region: content
       parent_name: ''
-      weight: 10
+      weight: 12
       format_type: details
       format_settings:
         classes: ''
@@ -61,6 +62,16 @@ content:
     weight: 5
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_event_list_audience:
+    type: linked_events_select2
+    weight: 11
+    region: content
+    settings:
+      width: 100%
+      endpoint: keyword
+      query: ''
+      keyword_set: 'helsinki:audiences'
     third_party_settings: {  }
   field_event_list_category_event:
     type: select2
@@ -125,7 +136,7 @@ content:
     third_party_settings: {  }
   field_event_list_place:
     type: linked_events_select2
-    weight: 9
+    weight: 10
     region: content
     settings:
       width: 100%

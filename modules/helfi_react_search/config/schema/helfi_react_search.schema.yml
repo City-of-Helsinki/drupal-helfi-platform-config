@@ -24,6 +24,9 @@ field.widget.settings.linked_events_select2:
     query:
       type: string
       label: 'Additional query parameters'
+    keyword_set:
+      type: string
+      label: 'Linked events keyword set to load the options from'
 
 plugin.plugin_configuration.search_api_processor.media_reference_to_object:
   type: search_api.default_processor_configuration

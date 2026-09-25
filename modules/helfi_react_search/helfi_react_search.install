@@ -334,3 +334,55 @@ function helfi_react_search_update_9022(): void {
 
   $form_display->save();
 }
+
+/**
+ * UHF-13096: Install the target group filter for event_list.
+ */
+function helfi_react_search_update_9023(): void {
+  \Drupal::service('helfi_platform_config.config_update_helper')
+    ->update('helfi_react_search');
+
+  $form_display = \Drupal::configFactory()
+    ->getEditable('core.entity_form_display.paragraph.event_list.default');
+
+  if ($form_display->isNew()) {
+    return;
+  }
+
+  $config_deps = $form_display->get('dependencies.config') ?? [];
+  $audience_dep = 'field.field.paragraph.event_list.field_event_list_audience';
+  if (!in_array($audience_dep, $config_deps, TRUE)) {
+    $config_deps[] = $audience_dep;
+    sort($config_deps);
+    $form_display->set('dependencies.config', $config_deps);
+  }
+
+  // Place the target group filter after the place filter.
+  $reweight = [
+    'content.field_event_list_keywords.weight' => 9,
+    'content.field_event_list_place.weight' => 10,
+    'third_party_settings.field_group.group_search_filters.weight' => 12,
+  ];
+  foreach ($reweight as $key => $weight) {
+    if ($form_display->get($key) !== NULL) {
+      $form_display->set($key, $weight);
+    }
+  }
+
+  if (!$form_display->get('content.field_event_list_audience')) {
+    $form_display->set('content.field_event_list_audience', [
+      'type' => 'linked_events_select2',
+      'weight' => 11,
+      'region' => 'content',
+      'settings' => [
+        'width' => '100%',
+        'endpoint' => 'keyword',
+        'query' => '',
+        'keyword_set' => 'helsinki:audiences',
+      ],
+      'third_party_settings' => [],
+    ]);
+  }
+
+  $form_display->save();
+}

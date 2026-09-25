@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -13,7 +14,11 @@ use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\helfi_react_search\DTO\LinkedEventsItem;
 use Drupal\select2\Plugin\Field\FieldWidget\Select2Widget;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -32,7 +37,22 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
   /**
    * The language manager.
    */
-  private LanguageManagerInterface $languageManager;
+  protected LanguageManagerInterface $languageManager;
+
+  /**
+   * The HTTP client.
+   */
+  protected ClientInterface $httpClient;
+
+  /**
+   * The cache backend.
+   */
+  protected CacheBackendInterface $cache;
+
+  /**
+   * The logger.
+   */
+  protected LoggerInterface $logger;
 
   /**
    * {@inheritdoc}
@@ -40,6 +60,9 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): self {
     $widget = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $widget->languageManager = $container->get(LanguageManagerInterface::class);
+    $widget->httpClient = $container->get('http_client');
+    $widget->cache = $container->get('cache.default');
+    $widget->logger = $container->get('logger.factory')->get('helfi_react_search');
     return $widget;
   }
 
@@ -50,6 +73,7 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
     return [
       'endpoint' => 'keyword',
       'query' => '',
+      'keyword_set' => '',
     ] + parent::defaultSettings();
   }
 
@@ -96,6 +120,11 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
+    $element['#multiple'] = $this->multiple;
+
+    if ($this->getSetting('keyword_set')) {
+      return $element;
+    }
 
     $element['#target_type'] = $this->getSetting('endpoint');
     $element['#autocomplete_route_callback'] = self::class . '::setAutocompleteRouteParameters';
@@ -105,7 +134,6 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
       'search_key' => $this->getSetting('search_key'),
     ];
     $element['#autocomplete'] = TRUE;
-    $element['#multiple'] = $this->multiple;
 
     return $element;
   }
@@ -125,9 +153,93 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
       }
 
       $this->options = $selected_options;
+
+      if ($keyword_set = $this->getSetting('keyword_set')) {
+        $this->options = $this->getKeywordSetOptions($keyword_set, $selected_options);
+      }
     }
 
     return $this->options;
+  }
+
+  /**
+   * Get options from a Linked Events keyword set.
+   *
+   * @param string $keyword_set
+   *   The keyword set id, e.g. 'helsinki:audiences'.
+   * @param array<string, string> $selected_options
+   *   Currently selected options. These are kept as they are, so that
+   *   the stored values match the options even if the API data changes.
+   *
+   * @return array<string, string>
+   *   Key => encoded item, Value => option label.
+   */
+  private function getKeywordSetOptions(string $keyword_set, array $selected_options): array {
+    $selected_ids = [];
+    foreach (array_keys($selected_options) as $value) {
+      $selected_ids[json_decode($value)?->id] = TRUE;
+    }
+
+    $options = $selected_options;
+    foreach ($this->getKeywordSetItems($keyword_set) as $item) {
+      if (isset($selected_ids[$item->id])) {
+        continue;
+      }
+      $value = (string) json_encode($item);
+      $options[$value] = $this->getOptionLabel($value);
+    }
+
+    natcasesort($options);
+
+    /** @var array<string, string> $options */
+    return $options;
+  }
+
+  /**
+   * Fetch keywords of a Linked Events keyword set.
+   *
+   * @param string $keyword_set
+   *   The keyword set id.
+   *
+   * @return \Drupal\helfi_react_search\DTO\LinkedEventsItem[]
+   *   The keywords.
+   */
+  private function getKeywordSetItems(string $keyword_set): array {
+    $cid = 'helfi_react_search:keyword_set:' . $keyword_set;
+    if ($cache = $this->cache->get($cid)) {
+      return $cache->data;
+    }
+
+    try {
+      $response = $this->httpClient->request('GET', 'https://api.hel.fi/linkedevents/v1/keyword_set/' . rawurlencode($keyword_set) . '/', [
+        'query' => [
+          'format' => 'json',
+          'include' => 'keywords',
+        ],
+      ]);
+      $response = json_decode(
+        json: $response->getBody()->getContents(),
+        flags: JSON_THROW_ON_ERROR,
+      );
+    }
+    catch (GuzzleException | \JsonException $e) {
+      $this->logger->error('Failed to fetch Linked Events keyword set @id: @message', [
+        '@id' => $keyword_set,
+        '@message' => $e->getMessage(),
+      ]);
+      return [];
+    }
+
+    $items = [];
+    foreach ($response->keywords ?? [] as $keyword) {
+      if (isset($keyword->id, $keyword->name)) {
+        $items[] = new LinkedEventsItem($keyword->id, (array) $keyword->name);
+      }
+    }
+
+    $this->cache->set($cid, $items, time() + 86400);
+
+    return $items;
   }
 
   /**
