@@ -2023,8 +2023,14 @@ parameters:
 			path: modules/helfi_media_chart/helfi_media_chart.module
 
 		-
-			message: '#^Function helfi_media_chart_preprocess_chart_iframe\(\) has parameter \$variables with no type specified\.$#'
-			identifier: missingType.parameter
+			message: '#^Function helfi_media_chart_preprocess_chart_iframe\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: modules/helfi_media_chart/helfi_media_chart.module
+
+		-
+			message: '#^Function helfi_media_chart_preprocess_paragraph__chartjs_chart\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: modules/helfi_media_chart/helfi_media_chart.module
 
