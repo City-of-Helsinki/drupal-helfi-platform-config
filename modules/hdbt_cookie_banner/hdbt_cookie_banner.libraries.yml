@@ -57,7 +57,7 @@ hds_cookie_consent:
   version: 1.0.3
   header: true
   js:
-    assets/js/hds-cookie-consent.min.js: { weight: -17, minified: true, preprocess: false }
+    assets/js/hds-cookie-consent.min.js: { weight: -17, minified: true, preprocess: false, attributes: { defer: true } }
 
 embedded_content_cookie_compliance:
   version: HELFI_DEPLOYMENT_IDENTIFIER
