@@ -1,5 +1,5 @@
 uuid: 8398c04f-27ef-45ef-bc39-ac24cf19f1ed
-langcode: fi
+langcode: en
 status: true
 dependencies: {  }
 id: chartjs_chart
