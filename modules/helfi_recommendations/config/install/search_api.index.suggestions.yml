@@ -2,6 +2,8 @@ uuid: 364cb85c-4a7a-49e7-ac68-3d7cadc772e0
 langcode: en
 status: true
 dependencies:
+  config:
+    - search_api.server.etusivu
   module:
     - helfi_recommendations
 id: suggestions
@@ -126,6 +128,8 @@ processor_settings:
   entity_status: {  }
   entity_type: {  }
   language_with_fallback: {  }
+  project_execution_schedule: {  }
+  project_plan_schedule: {  }
   rendered_item: {  }
   scored_reference: {  }
   scored_reference_parent: {  }
@@ -137,6 +141,7 @@ tracker_settings:
 options:
   cron_limit: 50
   delete_on_fail: true
-  index_directly: true
+  index_directly: false
   track_changes_in_references: true
+  helfi_platform_config_multisite: false
 server: etusivu
