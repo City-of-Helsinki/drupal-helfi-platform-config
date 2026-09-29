@@ -30,9 +30,20 @@ class TopicSuggestionsMetaTagTest extends BrowserTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
+    'elasticsearch_connector',
+    'helfi_platform_config',
     'helfi_user_roles',
-    'helfi_recommendations',
   ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    // Install helfi_recommendations here to avoid dependency issues.
+    $this->container->get('module_installer')->install(['helfi_recommendations']);
+    $this->rebuildContainer();
+  }
 
   /**
    * Tests the topic suggestions meta tag.
