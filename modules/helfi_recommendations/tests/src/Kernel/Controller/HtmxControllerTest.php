@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_recommendations\Kernel\Controller;
 
+use Drupal\Core\Cache\CacheableResponseInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_api_base\Cache\CacheTagInvalidator;
+use Drupal\helfi_recommendations\Controller\HtmxController;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_recommendations\Entity\SuggestedTopics;
@@ -22,6 +24,7 @@ use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\node\Entity\NodeType;
 use Elastic\Elasticsearch\ClientBuilder;
 use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\HttpFoundation\Response;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -127,6 +130,9 @@ class HtmxControllerTest extends AnnifKernelTestBase {
       $request = $this->getMockedRequest($this->getUri($this->nodes[$type]));
       $response = $this->processRequest($request);
       $this->assertEquals($statusCode, $response->getStatusCode());
+      if ($statusCode === 200) {
+        $this->assertCacheMaxAge($response);
+      }
     }
   }
 
@@ -178,6 +184,7 @@ class HtmxControllerTest extends AnnifKernelTestBase {
       $request = $this->getMockedRequest($this->getUri($node));
       $response = $this->processRequest($request);
       $this->assertEquals(200, $response->getStatusCode());
+      $this->assertCacheMaxAge($response);
       $this->assertStringContainsString('News ' . $langcode, (string) $response->getContent());
       $this->assertStringNotContainsString('Search result score:', (string) $response->getContent());
     }
@@ -193,9 +200,18 @@ class HtmxControllerTest extends AnnifKernelTestBase {
       $request = $this->getMockedRequest($this->getUri($node));
       $response = $this->processRequest($request);
       $this->assertEquals(200, $response->getStatusCode());
+      $this->assertCacheMaxAge($response);
       $this->assertStringContainsString('News ' . $langcode, (string) $response->getContent());
       $this->assertStringContainsString('Search result score:', (string) $response->getContent());
     }
+  }
+
+  /**
+   * Asserts that the response cache lifetime matches the controller.
+   */
+  private function assertCacheMaxAge(Response $response): void {
+    $this->assertInstanceOf(CacheableResponseInterface::class, $response);
+    $this->assertSame(HtmxController::MAX_AGE, $response->getCacheableMetadata()->getCacheMaxAge());
   }
 
 }
