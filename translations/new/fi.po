@@ -538,3 +538,6 @@ msgstr "Pienet kortit"
 msgctxt "Content cards design"
 msgid "Large cards"
 msgstr "Suuret kortit"
+
+msgid "Updated by user"
+msgstr "Käyttäjän tallentama"
