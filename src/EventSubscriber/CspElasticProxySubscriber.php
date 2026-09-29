@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\EventSubscriber;
 
 use Drupal\csp\Event\PolicyAlterEvent;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_api_base\Environment\ServiceEnum;
@@ -28,9 +29,16 @@ class CspElasticProxySubscriber extends CspSubscriberBase {
     $policy = $event->getPolicy();
     $urls = [];
 
-    $proxy_url = $this->configFactory->get('elastic_proxy.settings')?->get('elastic_proxy_url');
-    if ($proxy_url) {
-      $urls = [$proxy_url];
+    try {
+      $proxy = $this->environmentResolver
+        ->getActiveEnvironment()
+        ->getService(ServiceEnum::PublicElasticProxy);
+
+      if ($proxy) {
+        $urls[] = $proxy->address->getAddress();
+      }
+    }
+    catch (EnvironmentResolverException) {
     }
 
     // Core sites should have access to etusivu

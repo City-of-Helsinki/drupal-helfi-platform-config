@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_react_search\Unit\Hook;
 
-use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Form\FormState;
 use Drupal\entity_reference_revisions\EntityReferenceRevisionsFieldItemList;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_react_search\Hook\ReactSearchHooks;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
 
 /**
@@ -19,21 +21,17 @@ use Drupal\Tests\UnitTestCase;
  */
 final class ReactSearchHooksTest extends UnitTestCase {
 
+  use EnvironmentResolverTrait;
+
   /**
    * Test hook_preprocess_paragraph().
    */
   public function testPreprocessParagraph(): void {
-    $elasticProxyConfig = $this->prophesize(ImmutableConfig::class);
-    $elasticProxyConfig->get('elastic_proxy_url')->willReturn('anything');
-
-    $reactSearchConfig = $this->prophesize(ImmutableConfig::class);
-    $reactSearchConfig->get('sentry_dsn_react')->willReturn('anything');
-
     $reactHooksClass = new ReactSearchHooks(
       $this->getConfigFactoryStub([
-        'elastic_proxy.settings' => ['elastic_proxy_url' => 'anything1'],
         'react_search.settings' => ['sentry_dsn_react' => 'anything2'],
-      ])
+      ]),
+      $this->getEnvironmentResolver(Project::REKRY, EnvironmentEnum::Prod),
     );
 
     $badParagraph = $this->prophesize(Paragraph::class);
@@ -58,7 +56,7 @@ final class ReactSearchHooksTest extends UnitTestCase {
     $reactHooksClass->preprocessParagraph($variables);
 
     $this->assertEquals(
-      'anything1',
+      'https://helfi-rekry-elastic-proxy.api.hel.ninja',
       $variables['#attached']['drupalSettings']['helfi_react_search']['elastic_proxy_url'],
       'Elastic proxy url should be set.'
     );
@@ -70,11 +68,30 @@ final class ReactSearchHooksTest extends UnitTestCase {
   }
 
   /**
+   * Tests that the proxy URL is skipped without an active environment.
+   */
+  public function testPreprocessParagraphWithoutEnvironment(): void {
+    $reactHooksClass = new ReactSearchHooks(
+      $this->getConfigFactoryStub(['react_search.settings' => []]),
+      $this->getEnvironmentResolver(),
+    );
+
+    $paragraph = $this->prophesize(Paragraph::class);
+    $paragraph->getType()->willReturn('event_list');
+
+    $variables['paragraph'] = $paragraph->reveal();
+    $reactHooksClass->preprocessParagraph($variables);
+
+    $this->assertArrayNotHasKey('elastic_proxy_url', $variables['#attached']['drupalSettings']['helfi_react_search'] ?? []);
+  }
+
+  /**
    * Test hook_entity_bundle_field_info_alter() adds LinkedEvents constraint.
    */
   public function testEntityBundleFieldInfoAlterAddsConstraint(): void {
     $reactHooksClass = new ReactSearchHooks(
-      $this->getConfigFactoryStub([])
+      $this->getConfigFactoryStub([]),
+      $this->getEnvironmentResolver(),
     );
 
     $entityType = $this->createMock(EntityTypeInterface::class);
@@ -97,7 +114,8 @@ final class ReactSearchHooksTest extends UnitTestCase {
    */
   public function testEntityBundleFieldInfoAlterSkipsNonParagraph(): void {
     $reactHooksClass = new ReactSearchHooks(
-      $this->getConfigFactoryStub([])
+      $this->getConfigFactoryStub([]),
+      $this->getEnvironmentResolver(),
     );
 
     $entityType = $this->createMock(EntityTypeInterface::class);
@@ -118,7 +136,8 @@ final class ReactSearchHooksTest extends UnitTestCase {
    */
   public function testEntityBundleFieldInfoAlterSkipsNonEventListBundle(): void {
     $reactHooksClass = new ReactSearchHooks(
-      $this->getConfigFactoryStub([])
+      $this->getConfigFactoryStub([]),
+      $this->getEnvironmentResolver(),
     );
 
     $entityType = $this->createMock(EntityTypeInterface::class);
@@ -139,7 +158,8 @@ final class ReactSearchHooksTest extends UnitTestCase {
    */
   public function testEntityBundleFieldInfoAlterSkipsWhenFieldAbsent(): void {
     $reactHooksClass = new ReactSearchHooks(
-      $this->getConfigFactoryStub([])
+      $this->getConfigFactoryStub([]),
+      $this->getEnvironmentResolver(),
     );
 
     $entityType = $this->createMock(EntityTypeInterface::class);
@@ -156,7 +176,8 @@ final class ReactSearchHooksTest extends UnitTestCase {
    */
   public function testTheme(): void {
     $reactHooksClass = new ReactSearchHooks(
-      $this->getConfigFactoryStub([])
+      $this->getConfigFactoryStub([]),
+      $this->getEnvironmentResolver(),
     );
 
     $this->assertIsArray($reactHooksClass->theme());
@@ -167,7 +188,8 @@ final class ReactSearchHooksTest extends UnitTestCase {
    */
   public function testFieldWidgetSingleElementParagraphAlter(): void {
     $reactHooksClass = new ReactSearchHooks(
-      $this->getConfigFactoryStub([])
+      $this->getConfigFactoryStub([]),
+      $this->getEnvironmentResolver(),
     );
 
     $element = [
