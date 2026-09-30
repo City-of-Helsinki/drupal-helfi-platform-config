@@ -8,8 +8,6 @@ dependencies:
     - node
     - user
     - views_bulk_operations
-_core:
-  default_config_hash: SLp_J9ad2OkAoUoMkPFqIfOoK5aYAFQR7FAY-jh7ddw
 id: dashboard_your_content
 label: 'Dashboard - My pages'
 module: views
