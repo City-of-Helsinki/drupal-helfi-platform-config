@@ -6,25 +6,26 @@ namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Config\Config;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'select_icon_widget' widget.
- *
- * @FieldWidget(
- *   id = "select_icon_widget",
- *   label = @Translation("Select icon"),
- *   field_types = {
- *     "select_icon"
- *   }
- * )
  */
+#[FieldWidget(
+  id: 'select_icon_widget',
+  label: new TranslatableMarkup('Select icon'),
+  field_types: [
+    'select_icon',
+  ],
+)]
 final class SelectIconWidget extends WidgetBase {
 
   /**

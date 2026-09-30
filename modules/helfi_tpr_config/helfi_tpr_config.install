@@ -224,7 +224,7 @@ function helfi_tpr_config_update_11001(&$sandbox): ?FormattableMarkup {
   $json = file_get_contents($modulePath . '/assets/hyte_services.json');
 
   // Load a list of services from HYTE services JSON.
-  $services = json_decode($json, TRUE);
+  $services = json_decode((string) $json, TRUE);
 
   if (empty($services)) {
     return $skip;

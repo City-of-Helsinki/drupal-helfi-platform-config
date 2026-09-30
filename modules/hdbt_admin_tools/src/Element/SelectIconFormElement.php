@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Drupal\hdbt_admin_tools\Element;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Attribute\FormElement;
 use Drupal\Core\Render\Element\Select;
 use Drupal\hdbt_admin_tools\Plugin\Field\FieldType\SelectIcon;
 
 /**
  * Provides a Select icon form element.
- *
- * @FormElement("select_icon_element")
  */
+#[FormElement('select_icon_element')]
 class SelectIconFormElement extends Select {
 
   /**

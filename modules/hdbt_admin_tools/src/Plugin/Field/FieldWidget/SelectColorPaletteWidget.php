@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\hdbt_admin_tools\Form\AppearanceSettings;
 use Drupal\hdbt_admin_tools\SelectWidgetBase;
 
 /**
  * Plugin implementation of the 'color_palette_field_widget' widget.
- *
- * @FieldWidget(
- *   id = "color_palette_field_widget",
- *   module = "hdbt_admin_tools",
- *   label = @Translation("Color palette field widget"),
- *   field_types = {
- *     "list_string"
- *   },
- *   multiple_values = FALSE
- * )
  */
+#[FieldWidget(
+  id: 'color_palette_field_widget',
+  label: new TranslatableMarkup('Color palette field widget'),
+  field_types: [
+    'list_string',
+  ],
+)]
 class SelectColorPaletteWidget extends SelectWidgetBase {
 
   /**

@@ -24,7 +24,7 @@ class HelfiChart extends MediaEntityBundle implements MediaInterface {
     $chart_url = $this->get('field_helfi_chart_url')
       ?->first()
       ?->getString();
-    $url_parts = parse_url($chart_url);
+    $url_parts = parse_url($chart_url ?? '');
     return $url_parts['scheme'] . "://" . $url_parts['host'];
   }
 

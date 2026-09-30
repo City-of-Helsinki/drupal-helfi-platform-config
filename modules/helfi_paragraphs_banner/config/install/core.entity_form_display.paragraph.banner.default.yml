@@ -8,6 +8,7 @@ dependencies:
   config:
     - field.field.paragraph.banner.field_banner_desc
     - field.field.paragraph.banner.field_banner_design
+    - field.field.paragraph.banner.field_banner_hide_from_toc
     - field.field.paragraph.banner.field_banner_link
     - field.field.paragraph.banner.field_banner_link_design
     - field.field.paragraph.banner.field_banner_title
@@ -34,6 +35,13 @@ content:
     weight: 0
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_banner_hide_from_toc:
+    type: boolean_checkbox
+    weight: 6
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_banner_link:
     type: link_target_icon_field_widget

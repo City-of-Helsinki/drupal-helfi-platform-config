@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_react_search\SupportsServiceIndexTrait;
 use Drupal\helfi_tpr\Entity\Channel;
 use Drupal\helfi_tpr\Entity\ErrandService;
 use Drupal\helfi_tpr\Entity\Service;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -16,18 +18,17 @@ use Drupal\search_api\Processor\ProcessorProperty;
 
 /**
  * Adds channels for a TPR service to the index.
- *
- * @SearchApiProcessor(
- *   id = "channels_for_service",
- *   label = @Translation("Channels for service"),
- *   description = @Translation("Adds channels for a TPR service to the index"),
- *   stages = {
- *     "add_properties" = 0,
- *   },
- *   locked = true,
- *   hidden = true,
- * )
  */
+#[SearchApiProcessor(
+  id: 'channels_for_service',
+  label: new TranslatableMarkup('Channels for service'),
+  description: new TranslatableMarkup('Adds channels for a TPR service to the index'),
+  stages: [
+    'add_properties' => 0,
+  ],
+  locked: TRUE,
+  hidden: TRUE,
+)]
 class ChannelsForService extends ProcessorPluginBase {
 
   use SupportsServiceIndexTrait;

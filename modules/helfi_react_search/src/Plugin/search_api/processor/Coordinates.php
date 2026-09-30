@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_react_search\SupportsUnitIndexTrait;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
@@ -12,16 +14,15 @@ use Drupal\search_api\Processor\ProcessorProperty;
 
 /**
  * Checks if given TPR entity is a school.
- *
- * @SearchApiProcessor(
- *   id = "coordinates",
- *   label = @Translation("Add coordinates"),
- *   description = @Translation("Adds coordinates to the index based on selections"),
- *   stages = {
- *     "add_properties" = 0,
- *   }
- * )
  */
+#[SearchApiProcessor(
+  id: 'coordinates',
+  label: new TranslatableMarkup('Add coordinates'),
+  description: new TranslatableMarkup('Adds coordinates to the index based on selections'),
+  stages: [
+    'add_properties' => 0,
+  ],
+)]
 class Coordinates extends ProcessorPluginBase {
 
   use SupportsUnitIndexTrait;

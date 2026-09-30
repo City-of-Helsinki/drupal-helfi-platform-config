@@ -28,7 +28,7 @@
         "drupal/elasticsearch_connector": "^8.0@alpha",
         "drupal/entity_browser": "^2.5",
         "drupal/entity_usage": "^2.0@beta",
-        "drupal/external_entities": "^3.0",
+        "drupal/external_entities": "3.0.0-rc2",
         "drupal/field_group": "^4.0",
         "drupal/focal_point": "^2.0",
         "drupal/jquery_ui": "^1.6",

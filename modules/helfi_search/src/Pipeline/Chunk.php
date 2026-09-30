@@ -13,11 +13,6 @@ use Drupal\helfi_search\OpenAI\EmbeddingsApi;
 final class Chunk {
 
   /**
-   * Maximum length of a stored snippet, in characters.
-   */
-  public const int MAX_SNIPPET_LENGTH = 200;
-
-  /**
    * Constructs a new chunk.
    *
    * @phpstan-param array<string, string> $metadata
@@ -40,19 +35,6 @@ final class Chunk {
   public function setMetadata(array $metadata): self {
     $this->metadata = $metadata;
     return $this;
-  }
-
-  /**
-   * Gets truncated snippet.
-   *
-   * @return string|null
-   *   The truncated snippet, or NULL when the chunk has none.
-   */
-  public function getTruncatedSnippet(): ?string {
-    if ($this->snippet === NULL) {
-      return NULL;
-    }
-    return Unicode::truncate($this->snippet, self::MAX_SNIPPET_LENGTH, TRUE, TRUE);
   }
 
   /**

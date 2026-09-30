@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_react_search\Plugin\search_api\processor;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_react_search\SupportsUnitIndexTrait;
+use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 
 /**
  * Checks if given TPR entity is a maternity and child health clinic.
- *
- * @SearchApiProcessor(
- *   id = "maternity_and_child_health_clinic",
- *   label = @Translation("Maternity and child health clinic filter"),
- *   description = @Translation("Exclude other entities from index"),
- *   stages = {
- *     "alter_items" = 0,
- *   }
- * )
  */
+#[SearchApiProcessor(
+  id: 'maternity_and_child_health_clinic',
+  label: new TranslatableMarkup('Maternity and child health clinic filter'),
+  description: new TranslatableMarkup('Exclude other entities from index'),
+  stages: [
+    'alter_items' => 0,
+  ],
+)]
 class IsMaternityAndChildHealthClinic extends ProcessorPluginBase {
 
   use SupportsUnitIndexTrait;

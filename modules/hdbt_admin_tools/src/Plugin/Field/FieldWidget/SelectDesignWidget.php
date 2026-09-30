@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace Drupal\hdbt_admin_tools\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\hdbt_admin_tools\SelectWidgetBase;
 
 /**
  * Plugin implementation of the 'design_field_widget' widget.
- *
- * @FieldWidget(
- *   id = "design_field_widget",
- *   module = "hdbt_admin_tools",
- *   label = @Translation("Design field widget"),
- *   field_types = {
- *     "list_string"
- *   },
- *   multiple_values = FALSE
- * )
  */
+#[FieldWidget(
+  id: 'design_field_widget',
+  label: new TranslatableMarkup('Design field widget'),
+  field_types: [
+    'list_string',
+  ],
+)]
 class SelectDesignWidget extends SelectWidgetBase {
 
   /**

@@ -1,0 +1,23 @@
+uuid: 3e0241b0-00ae-4a71-9def-18f8ca277160
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_banner_hide_from_toc
+    - paragraphs.paragraphs_type.banner
+id: paragraph.banner.field_banner_hide_from_toc
+field_name: field_banner_hide_from_toc
+entity_type: paragraph
+bundle: banner
+label: 'Do not show in the table of contents'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

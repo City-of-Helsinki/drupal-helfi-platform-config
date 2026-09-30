@@ -1,0 +1,18 @@
+uuid: cb3cad5f-69c7-425c-ad71-c37de75ad048
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.field_banner_hide_from_toc
+field_name: field_banner_hide_from_toc
+entity_type: paragraph
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
