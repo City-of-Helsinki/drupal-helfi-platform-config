@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Semantic search API controller.
  *
- * @phpstan-type SearchResult array{promoted: list<mixed>, results: list<mixed>, total_hits: int, max_score: float|null, debug?: array<string, mixed>}
+ * @phpstan-type SearchResult array{promoted: list<mixed>, contacts: list<mixed>, results: list<mixed>, total_hits: int, max_score: float|null, debug?: array<string, mixed>}
  */
 final class SearchController extends ControllerBase {
 
@@ -199,6 +199,7 @@ final class SearchController extends ControllerBase {
 
     $result = [
       'promoted' => [],
+      'contacts' => [],
       'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
       'total_hits' => (int) ($knnResponse['hits']['total']['value'] ?? 0),
       'max_score' => isset($knnResponse['hits']['max_score'])
@@ -212,7 +213,7 @@ final class SearchController extends ControllerBase {
   }
 
   /**
-   * Run the msearch() path that blends promotions with KNN results.
+   * Run the msearch() path that blends KNN hits with other results.
    *
    * @param array<string, mixed> $knnQuery
    *   The pre-built KNN query (index + body).
@@ -226,14 +227,15 @@ final class SearchController extends ControllerBase {
    *   Whether to include per-bundle aggregations in the result.
    *
    * @return SearchResult
-   *   The promoted hits, KNN results, total hit count, and optional debug
-   *   payload keyed under 'debug' when $debug is TRUE.
+   *   The promoted hits, contacts, KNN results, total hit count, and optional
+   *   debug payload keyed under 'debug' when $debug is TRUE.
    *
    * @throws \Elastic\Elasticsearch\Exception\ElasticsearchException
    * @throws \Elastic\Transport\Exception\TransportException
    */
   private function executeBlendedSearch(array $knnQuery, string $query, string $language, EmbeddingModel $model, bool $debug): array {
     $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $language);
+    $contactQuery = $this->queryBuilder->buildContactQuery($query, $language);
 
     $msearchResult = $this->elasticClient->msearch([
       'body' => [
@@ -241,6 +243,8 @@ final class SearchController extends ControllerBase {
         $promotionQuery['body'],
         ['index' => $knnQuery['index']],
         $knnQuery['body'],
+        ['index' => $contactQuery['index']],
+        $contactQuery['body'],
       ],
     ]);
     assert($msearchResult instanceof Elasticsearch);
@@ -250,9 +254,19 @@ final class SearchController extends ControllerBase {
       ? []
       : $this->queryBuilder->parsePromotionHits($responses[0] ?? []);
 
+    $contacts = isset($responses[2]['error'])
+      ? []
+      : $this->queryBuilder->parseContactHits($responses[2] ?? []);
+
+    if ($this->currentUser()->isAnonymous()) {
+      // @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-13271.
+      $contacts = [];
+    }
+
     $knnResponse = isset($responses[1]['error']) ? [] : ($responses[1] ?? []);
     $result = [
       'promoted' => $promoted,
+      'contacts' => $contacts,
       'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
       'total_hits' => (int) ($knnResponse['hits']['total']['value'] ?? 0) + count($promoted),
       'max_score' => isset($knnResponse['hits']['max_score'])
@@ -272,7 +286,7 @@ final class SearchController extends ControllerBase {
    *   The search result payload from one of the execute*() helpers.
    */
   private function isLowRelevance(array $result): bool {
-    if ($result['promoted']) {
+    if ($result['promoted'] || $result['contacts']) {
       return FALSE;
     }
 
@@ -294,6 +308,7 @@ final class SearchController extends ControllerBase {
   private function createResponse(array $result, int $page, int $size): JsonResponse {
     $payload = [
       'promoted' => $result['promoted'],
+      'contacts' => $result['contacts'],
       'results' => $result['results'],
       'page' => $page,
       'size' => $size,
