@@ -88,6 +88,3 @@ msgstr "%title är schemalagd att publiceras @publish_time."
 
 msgid "%title is scheduled to be unpublished @unpublish_time."
 msgstr "%title är schemalagd att bli opublicerad @unpublish_time."
-
-msgid "Updated by user"
-msgstr "Uppdaterad av användare"

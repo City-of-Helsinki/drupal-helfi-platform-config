@@ -1,34 +1,24 @@
+label: Sisältö
+description: 'Etsi ja ylläpidä sisältöä.'
 display:
   default:
+    display_title: Oletus
     display_options:
-      empty:
-        area:
-          content:
-            value: '<p>Ei näytettäviä sivuja.</p>'
-            format: full_html
-      title: 'Omat sivut'
+      title: Sisältö
       fields:
-        views_bulk_operations_bulk_form:
-          action_title: Toiminto
-        content_translation_outdated:
-          label: 'Käännös vanhentunut'
         title:
           label: Otsikko
         type:
           label: Sisältötyyppi
-        uid:
+        name:
           label: Kirjoittaja
-        revision_uid:
-          label: 'Viimeisin päivittäjä'
-        langcode:
-          label: Kieli
         status:
           label: Tila
           settings:
             format_custom_false: Julkaisematon
             format_custom_true: Julkaistu
-        changed:
-          label: Päivitetty
+        langcode:
+          label: Kieli
         operations:
           label: Toimenpiteet
         changed_at:
@@ -40,9 +30,6 @@ display:
             previous: Edellinen
             first: Ensimmäinen
             last: Viimeinen
-          expose:
-            items_per_page_label: 'Merkintöjä sivua kohti'
-            items_per_page_options_all_label: '- Kaikki -'
       exposed_form:
         options:
           submit_button: Suodata
@@ -50,6 +37,9 @@ display:
           exposed_sorts_label: Lajittele
           sort_asc_label: Nousevasti
           sort_desc_label: Laskevasti
+      empty:
+        area_text_custom:
+          content: 'Ei sisältöä.'
       filters:
         title:
           expose:
@@ -59,7 +49,7 @@ display:
             label: Sisältötyyppi
         status:
           expose:
-            label: Julkaisutila
+            label: Tila
           group_info:
             label: Julkaisutila
             group_items:
@@ -70,11 +60,11 @@ display:
         langcode:
           expose:
             label: Kieli
-        helfi_node_authorship:
-          expose:
-            label: 'Kirjoittaja & päivittäjä'
-    display_title: Oletus
-  your_content_block:
-    display_title: Lohko
-label: 'Dashboard - Omat sisällöt'
-description: 'Kaikki käyttäjän luoma/viimeisenä päivittämä sisältö.'
+  page_1:
+    display_title: Sivu
+    display_options:
+      menu:
+        title: Sisältö
+      tab_options:
+        title: Sisältö
+        description: 'Etsi ja hallitse sisältöä'
