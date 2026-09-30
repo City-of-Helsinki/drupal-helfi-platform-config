@@ -22,7 +22,6 @@ use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
 use Drupal\Tests\helfi_recommendations\Kernel\AnnifKernelTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\node\Entity\NodeType;
-use Elastic\Elasticsearch\ClientBuilder;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Response;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -163,10 +162,10 @@ class HtmxControllerTest extends AnnifKernelTestBase {
         ],
       ],
     ]);
-    $mock = $this->createMockHttpClient([$elasticResponse, $elasticResponse]);
-    $client = ClientBuilder::create()
-      ->setHttpClient($mock)
-      ->build();
+    $client = $this->createMockElasticsearchClient([
+      $elasticResponse,
+      $elasticResponse,
+    ]);
 
     $this->container->get('kernel')->rebuildContainer();
     $manager = new RecommendationManager(

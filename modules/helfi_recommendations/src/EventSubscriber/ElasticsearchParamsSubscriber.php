@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Elasticsearch params subscriber.
  */
-final class ElasticsearchParamsSubscriber implements EventSubscriberInterface {
+class ElasticsearchParamsSubscriber implements EventSubscriberInterface {
 
   public function __construct(
     protected RecommendationManagerInterface $recommendationManager,

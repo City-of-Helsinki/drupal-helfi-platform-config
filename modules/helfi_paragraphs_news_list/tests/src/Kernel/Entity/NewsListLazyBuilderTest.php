@@ -7,10 +7,8 @@ namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\Entity;
 use Drupal\helfi_paragraphs_news_list\Entity\ExternalEntity\News;
 use Drupal\helfi_paragraphs_news_list\Entity\NewsListLazyBuilder;
 use Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
-use Elastic\Elasticsearch\ClientBuilder;
 
 /**
  * Tests lazy builder.
@@ -18,8 +16,6 @@ use Elastic\Elasticsearch\ClientBuilder;
  * @group helfi_paragraphs_news_list
  */
 class NewsListLazyBuilderTest extends KernelTestBase {
-
-  use ApiTestTrait;
 
   /**
    * Tests ::build().
@@ -44,16 +40,11 @@ class NewsListLazyBuilderTest extends KernelTestBase {
         ],
       ],
     ];
-    $mock = $this->createMockHttpClient([
+    $this->mockEtusivuElasticClient([
       $this->createElasticsearchResponse([]),
       $this->createElasticsearchResponse($realResponse),
       $this->createElasticsearchResponse($realResponse),
     ]);
-    $client = ClientBuilder::create()
-      ->setHttpClient($mock)
-      ->build();
-
-    $this->container->set('helfi_platform_config.etusivu_elastic_client', $client);
     $sut = $this->container->get(NewsListLazyBuilder::class);
     assert($sut instanceof NewsListLazyBuilder);
 

@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_recommendations\Kernel\EventSubscriber;
 
-use Drupal\elasticsearch_connector\Event\BaseParamsEvent;
 use Drupal\helfi_recommendations\Entity\SuggestedTopics;
 use Drupal\helfi_recommendations\EventSubscriber\ElasticsearchParamsSubscriber;
-use Drupal\helfi_recommendations\RecommendationManagerInterface;
 use Drupal\node\Entity\Node;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Entity\Server;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
 use Drupal\Tests\helfi_recommendations\Kernel\AnnifKernelTestBase;
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise\Create;
-use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests that indexing and deletion reach the Elasticsearch params subscriber.
@@ -24,6 +22,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[Group('helfi_recommendations')]
 #[RunTestsInSeparateProcesses]
 class ElasticsearchParamsSubscriberTest extends AnnifKernelTestBase {
+
+  use ElasticTrait;
 
   /**
    * {@inheritdoc}
@@ -38,9 +38,11 @@ class ElasticsearchParamsSubscriberTest extends AnnifKernelTestBase {
   private Index $index;
 
   /**
-   * How many times the subscriber method was entered.
+   * The subscriber prophecy.
+   *
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\helfi_recommendations\EventSubscriber\ElasticsearchParamsSubscriber>
    */
-  private \stdClass $calls;
+  private ObjectProphecy $subscriber;
 
   /**
    * {@inheritdoc}
@@ -51,40 +53,10 @@ class ElasticsearchParamsSubscriberTest extends AnnifKernelTestBase {
     $this->installSchema('search_api', ['search_api_item']);
     $this->installConfig(['search_api']);
 
-    // The connector reads http_client when the backend is first built. Keep
-    // Elasticsearch off the network; the param builders still dispatch.
-    $this->container->set('http_client', new Client([
-      'handler' => static function () {
-        return Create::promiseFor(new Response(200, [
-          'X-Elastic-Product' => 'Elasticsearch',
-          'Content-Type' => 'application/json',
-        ], '{}'));
-      },
-    ]));
+    $this->mockElasticsearchConnectorHttpClient();
 
-    $this->calls = new \stdClass();
-    $this->calls->count = 0;
-    $calls = $this->calls;
-    $subscriber = new ElasticsearchParamsSubscriber($this->createMock(RecommendationManagerInterface::class));
-    // The subscriber is final, so count calls from the service the dispatcher
-    // resolves and forward them to the real method.
-    $this->container->set(ElasticsearchParamsSubscriber::class, new class($subscriber, $calls) {
-
-      public function __construct(
-        private ElasticsearchParamsSubscriber $subscriber,
-        private \stdClass $calls,
-      ) {
-      }
-
-      /**
-       * Counts a call, then runs the real subscriber.
-       */
-      public function invalidateCacheTags(BaseParamsEvent $event): void {
-        $this->calls->count++;
-        $this->subscriber->invalidateCacheTags($event);
-      }
-
-    });
+    $this->subscriber = $this->prophesize(ElasticsearchParamsSubscriber::class);
+    $this->container->set(ElasticsearchParamsSubscriber::class, $this->subscriber->reveal());
 
     $this->container->get('entity_type.manager')->getStorage('search_api_server')->resetCache();
     $this->container->get('entity_type.manager')->getStorage('search_api_index')->resetCache();
@@ -135,13 +107,15 @@ class ElasticsearchParamsSubscriberTest extends AnnifKernelTestBase {
     $node = $this->createNodeWithSuggestedTopics();
     // Index the insert so the next run only covers the update.
     $this->index->indexItems();
-    $calls = $this->calls->count;
+    $this->subscriber->invalidateCacheTags(Argument::cetera())
+      ->shouldHaveBeenCalledOnce();
 
     $node->setTitle('Updated title');
     $node->save();
     $this->index->indexItems();
 
-    $this->assertGreaterThan($calls, $this->calls->count);
+    $this->subscriber->invalidateCacheTags(Argument::cetera())
+      ->shouldHaveBeenCalledTimes(2);
   }
 
   /**
@@ -149,11 +123,13 @@ class ElasticsearchParamsSubscriberTest extends AnnifKernelTestBase {
    */
   public function testSubscriberIsReachedWhenReferencedNodeIsDeleted(): void {
     $node = $this->createNodeWithSuggestedTopics();
-    $calls = $this->calls->count;
+    $this->subscriber->invalidateCacheTags(Argument::cetera())
+      ->shouldNotHaveBeenCalled();
 
     $node->delete();
 
-    $this->assertGreaterThan($calls, $this->calls->count);
+    $this->subscriber->invalidateCacheTags(Argument::cetera())
+      ->shouldHaveBeenCalledOnce();
   }
 
   /**

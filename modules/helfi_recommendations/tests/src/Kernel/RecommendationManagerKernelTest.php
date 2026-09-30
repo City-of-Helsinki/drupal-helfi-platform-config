@@ -15,11 +15,9 @@ use Drupal\helfi_recommendations\Entity\SuggestedTopics;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
-use Elastic\Elasticsearch\ClientBuilder;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -33,7 +31,6 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
   use EnvironmentResolverTrait;
   use NodeCreationTrait;
   use ProphecyTrait;
-  use ApiTestTrait;
   use ElasticTrait;
 
   /**
@@ -307,10 +304,7 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
   ): RecommendationManager {
     $loggerChannel = $this->prophesize(LoggerChannelInterface::class);
 
-    $mock = $this->createMockHttpClient($responses);
-    $client = ClientBuilder::create()
-      ->setHttpClient($mock)
-      ->build();
+    $client = $this->createMockElasticsearchClient($responses);
 
     return new RecommendationManager(
       $loggerChannel->reveal(),
