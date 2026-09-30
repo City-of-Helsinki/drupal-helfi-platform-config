@@ -46,9 +46,9 @@ class HeadingIdInjectorTest extends UnitTestCase {
         <h3>Foobar</h3>
         HTML,
         <<<HTML
-        <h2 id="visible" data-helfi-heading-id="" tabindex="-1">Visible</h2>
+        <h2 id="visible" tabindex="-1">Visible</h2>
         <p>body</p>
-        <h3 id="foobar" data-helfi-heading-id="" tabindex="-1">Foobar</h3>
+        <h3 id="foobar" tabindex="-1">Foobar</h3>
         HTML,
       ],
 
@@ -61,7 +61,7 @@ class HeadingIdInjectorTest extends UnitTestCase {
         HTML,
         <<<HTML
         <h2 id="custom-anchor" tabindex="-1">Pretty Title</h2>
-        <h2 id="pretty-title" data-helfi-heading-id="" tabindex="-1">Pretty Title</h2>
+        <h2 id="pretty-title" tabindex="-1">Pretty Title</h2>
         HTML,
       ],
 
@@ -73,7 +73,7 @@ class HeadingIdInjectorTest extends UnitTestCase {
         HTML,
         <<<HTML
         <h2 id="" tabindex="-1">Heading</h2>
-        <h3 id="second" data-helfi-heading-id="" tabindex="-1">Second</h3>
+        <h3 id="second" tabindex="-1">Second</h3>
         HTML,
       ],
 
@@ -81,7 +81,7 @@ class HeadingIdInjectorTest extends UnitTestCase {
       'existing tabindex is not duplicated' => [
         'en',
         '<h2 tabindex="0">Focusable</h2>',
-        '<h2 tabindex="0" id="focusable" data-helfi-heading-id="">Focusable</h2>',
+        '<h2 tabindex="0" id="focusable">Focusable</h2>',
       ],
 
       // An empty heading gets no id, but is still focusable.
@@ -100,8 +100,8 @@ class HeadingIdInjectorTest extends UnitTestCase {
         <h2 data-label='c > d'>Second</h2>
         HTML,
         <<<HTML
-        <h2 data-label="a > b" id="first" data-helfi-heading-id="" tabindex="-1">First</h2>
-        <h2 data-label="c > d" id="second" data-helfi-heading-id="" tabindex="-1">Second</h2>
+        <h2 data-label="a > b" id="first" tabindex="-1">First</h2>
+        <h2 data-label="c > d" id="second" tabindex="-1">Second</h2>
         HTML,
       ],
 
@@ -114,7 +114,7 @@ class HeadingIdInjectorTest extends UnitTestCase {
         HTML,
         <<<HTML
         <aside id="intro">sidebar</aside>
-        <h2 id="intro-1" data-helfi-heading-id="" tabindex="-1">Intro</h2>
+        <h2 id="intro-1" tabindex="-1">Intro</h2>
         HTML,
       ],
 
@@ -127,9 +127,9 @@ class HeadingIdInjectorTest extends UnitTestCase {
         <h2>Section</h2>
         HTML,
         <<<HTML
-        <h2 id="section" data-helfi-heading-id="" tabindex="-1">Section</h2>
-        <h2 id="section-2" data-helfi-heading-id="" tabindex="-1">Section</h2>
-        <h2 id="section-3" data-helfi-heading-id="" tabindex="-1">Section</h2>
+        <h2 id="section" tabindex="-1">Section</h2>
+        <h2 id="section-2" tabindex="-1">Section</h2>
+        <h2 id="section-3" tabindex="-1">Section</h2>
         HTML,
       ],
 
@@ -147,7 +147,7 @@ class HeadingIdInjectorTest extends UnitTestCase {
         <div class="hide-from-table-of-contents">
           <h2>Section</h2>
         </div>
-        <h2 id="section" data-helfi-heading-id="" tabindex="-1">Section</h2>
+        <h2 id="section" tabindex="-1">Section</h2>
         HTML,
       ],
 
@@ -165,7 +165,7 @@ class HeadingIdInjectorTest extends UnitTestCase {
         <noscript class="table-of-contents__nojs js-remove">
           <h2 class="nojs__title">Content cannot be displayed</h2>
         </noscript>
-        <h2 id="content-cannot-be-displayed" data-helfi-heading-id="" tabindex="-1">Content cannot be displayed</h2>
+        <h2 id="content-cannot-be-displayed" tabindex="-1">Content cannot be displayed</h2>
         HTML,
       ],
 
@@ -180,7 +180,7 @@ class HeadingIdInjectorTest extends UnitTestCase {
         <<<HTML
         <script>var markup = '<h2>Not a heading</h2>';</script>
         <!-- <h2>Commented out</h2> -->
-        <h2 id="real" data-helfi-heading-id="" tabindex="-1">Real</h2>
+        <h2 id="real" tabindex="-1">Real</h2>
         HTML,
       ],
 
@@ -193,20 +193,20 @@ class HeadingIdInjectorTest extends UnitTestCase {
         HTML,
         <<<HTML
         <script>var markup = '</main>';</script>
-        <h2 id="real" data-helfi-heading-id="" tabindex="-1">Real</h2>
+        <h2 id="real" tabindex="-1">Real</h2>
         HTML,
       ],
 
       'main language transliteration' => [
         'fi',
         '<h2>Otsikko täällä</h2>',
-        '<h2 id="otsikko-taalla" data-helfi-heading-id="" tabindex="-1">Otsikko täällä</h2>',
+        '<h2 id="otsikko-taalla" tabindex="-1">Otsikko täällä</h2>',
       ],
 
       'other language transliteration' => [
         'ru',
         '<h2>Привет</h2>',
-        '<h2 id="privet" data-helfi-heading-id="" tabindex="-1">Привет</h2>',
+        '<h2 id="privet" tabindex="-1">Привет</h2>',
       ],
     ];
   }
@@ -228,7 +228,7 @@ class HeadingIdInjectorTest extends UnitTestCase {
 
     $expected = str_replace(
       '<h2 aria-label="">Heading</h2>',
-      '<h2 aria-label="" id="heading" data-helfi-heading-id="" tabindex="-1">Heading</h2>',
+      '<h2 aria-label="" id="heading" tabindex="-1">Heading</h2>',
       $html,
     );
 
