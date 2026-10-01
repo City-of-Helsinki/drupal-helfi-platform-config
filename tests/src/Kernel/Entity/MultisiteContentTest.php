@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Kernel\Entity;
 
 use Drupal\Component\Serialization\Yaml;
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\external_entities\Entity\ExternalEntityType;
 use Drupal\helfi_platform_config\Entity\ExternalEntity\MultisiteContent;
 use Drupal\helfi_platform_config\MultisiteContentId;

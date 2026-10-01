@@ -6,7 +6,6 @@ namespace Drupal\Tests\helfi_etusivu_entities\Kernel;
 
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Surveys;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;

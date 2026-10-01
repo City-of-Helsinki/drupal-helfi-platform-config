@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_curated_event_list\Kernel;
 
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;

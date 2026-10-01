@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_curated_event_list\Kernel;
 
 use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Entity\ParagraphsType;

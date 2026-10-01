@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_hearings\Kernel;
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\external_entities\Entity\ExternalEntityType;
 use Drupal\helfi_paragraphs_hearings\Hook\HearingsParagraphHooks;
 use Drupal\KernelTests\KernelTestBase;

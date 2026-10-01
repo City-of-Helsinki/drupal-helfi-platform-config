@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_curated_event_list\Kernel;
 
 use Drupal\Core\Render\HtmlResponse;
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_paragraphs_curated_event_list\Controller\HtmxController;
 use Drupal\KernelTests\KernelTestBase;

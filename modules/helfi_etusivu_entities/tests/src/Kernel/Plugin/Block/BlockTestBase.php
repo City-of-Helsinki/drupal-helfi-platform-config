@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Kernel\Plugin\Block;
 
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
 /**
