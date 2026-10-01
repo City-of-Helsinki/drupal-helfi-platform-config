@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel;
 
 use Drupal\KernelTests\KernelTestBase as CoreKernelTestBase;
-use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticKernelTrait;
 
 /**
  * Kernel test base for news feed list tests.
  */
 abstract class KernelTestBase extends CoreKernelTestBase {
 
-  use ElasticTrait;
+  use ElasticKernelTrait;
 
   /**
    * {@inheritdoc}

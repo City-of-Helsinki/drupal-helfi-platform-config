@@ -9,7 +9,7 @@ use Drupal\helfi_recommendations\EventSubscriber\ElasticsearchParamsSubscriber;
 use Drupal\node\Entity\Node;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Entity\Server;
-use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticKernelTrait;
 use Drupal\Tests\helfi_recommendations\Kernel\AnnifKernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -23,7 +23,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 #[RunTestsInSeparateProcesses]
 class ElasticsearchParamsSubscriberTest extends AnnifKernelTestBase {
 
-  use ElasticTrait;
+  use ElasticKernelTrait;
 
   /**
    * {@inheritdoc}

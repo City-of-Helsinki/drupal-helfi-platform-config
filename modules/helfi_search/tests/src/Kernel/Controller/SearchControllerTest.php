@@ -9,7 +9,7 @@ use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EmbeddingApiInterface;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
-use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticKernelTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Group;
@@ -26,7 +26,7 @@ class SearchControllerTest extends KernelTestBase {
 
   use ProphecyTrait;
   use ApiTestTrait;
-  use ElasticTrait;
+  use ElasticKernelTrait;
   use UserCreationTrait;
 
   /**
