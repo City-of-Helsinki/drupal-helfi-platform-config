@@ -7,17 +7,18 @@ namespace Drupal\helfi_platform_config\Plugin\Linkit\Substitution;
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_platform_config\Entity\ExternalEntity\MultisiteContent;
+use Drupal\linkit\Attribute\Substitution;
 use Drupal\linkit\SubstitutionInterface;
 
 /**
  * A substitution plugin for the absolute URL of an external entity.
- *
- * @Substitution(
- *   id = "multisite",
- *   label = @Translation("Multisite absolute URL"),
- * )
  */
+#[Substitution(
+  id: 'multisite',
+  label: new TranslatableMarkup('Multisite absolute URL'),
+)]
 class Multisite extends PluginBase implements SubstitutionInterface {
 
   /**
