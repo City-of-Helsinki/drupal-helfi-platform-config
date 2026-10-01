@@ -70,12 +70,6 @@ class HtmxControllerTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    // Triggers rebuilding routes.
-    // https://www.drupal.org/project/external_entities/issues/3549828.
-    $this->container
-      ->get(RouteProviderInterface::class)
-      ->getAllRoutes();
-
     $this->installConfig(['system', 'user', 'paragraphs', 'external_entities']);
     $this->installEntitySchema('user');
     $this->installEntitySchema('paragraph');

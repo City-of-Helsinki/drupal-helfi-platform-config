@@ -57,12 +57,6 @@ class ParagraphHooksTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    // Triggers rebuilding routes.
-    // @see https://www.drupal.org/project/external_entities/issues/3549828.
-    $this->container
-      ->get(RouteProviderInterface::class)
-      ->getAllRoutes();
-
     $this->installConfig(['system', 'external_entities']);
     $this->installEntitySchema('paragraph');
     $this->installEntitySchema('paragraphs_type');
