@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\helfi_search\DocumentState;
+use Drupal\helfi_search\Plugin\search_api\processor\VectorEmbeddingsProcessor;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Item\Field;
@@ -81,6 +82,12 @@ function helfi_search_schema(): array {
         'not null' => TRUE,
         'default' => 0,
         'description' => 'Timestamp of the last state change.',
+      ],
+      'markdown' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+        'description' => 'Markdown of the whole document.',
       ],
     ],
     'primary key' => ['entity_type', 'entity_id', 'langcode'],
@@ -493,4 +500,47 @@ function helfi_search_update_11024(): void {
   if ($changed) {
     $index->save();
   }
+}
+
+/**
+ * UHF-13642: Add the markdown column to the document table.
+ */
+function helfi_search_update_11025(): void {
+  $schema = \Drupal::database()->schema();
+
+  if (!$schema->tableExists('helfi_search_document')) {
+    return;
+  }
+
+  if (!$schema->fieldExists('helfi_search_document', 'markdown')) {
+    $fields = helfi_search_schema()['helfi_search_document']['fields'];
+    $schema->addField('helfi_search_document', 'markdown', $fields['markdown']);
+  }
+
+  // Re-queue every document so that the markdown is populated.
+  \Drupal::database()->update('helfi_search_document')
+    ->fields([
+      'state' => DocumentState::Pending->value,
+      'attempts' => 0,
+      'changed' => \Drupal::time()->getRequestTime(),
+    ])
+    ->execute();
+}
+
+/**
+ * UHF-13642: Add the markdown field to the embeddings index.
+ */
+function helfi_search_update_11026(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index || $index->getField('markdown')) {
+    return;
+  }
+
+  $field = (new Field($index, 'markdown'))
+    ->setType('text')
+    ->setPropertyPath(VectorEmbeddingsProcessor::MARKDOWN_PROPERTY)
+    ->setLabel('Page markdown');
+  $index->addField($field);
+  $index->save();
 }

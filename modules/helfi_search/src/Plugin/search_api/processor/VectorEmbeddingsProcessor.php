@@ -11,6 +11,7 @@ use Drupal\helfi_search\DocumentKeyTrait;
 use Drupal\helfi_search\DocumentState;
 use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\Plugin\search_api\processor\DTO\StoredChunk;
+use Drupal\helfi_search\Plugin\search_api\processor\DTO\StoredDocument;
 use Drupal\helfi_search\Vector;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
@@ -37,16 +38,21 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
   use DocumentKeyTrait;
 
   /**
+   * The property that holds the whole document as markdown.
+   */
+  public const string MARKDOWN_PROPERTY = 'helfi_search_markdown';
+
+  /**
    * The database connection.
    */
   protected Connection $database;
 
   /**
-   * Cached chunks read for the current batch.
+   * Cached documents read for the current batch.
    *
-   * @var array<string, array<string, \Drupal\helfi_search\Plugin\search_api\processor\DTO\StoredChunk[]>>
+   * @var array<string, \Drupal\helfi_search\Plugin\search_api\processor\DTO\StoredDocument>
    */
-  protected array $chunks = [];
+  protected array $documents = [];
 
   /**
    * {@inheritdoc}
@@ -55,7 +61,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $processor->database = $container->get('database');
+    $processor->database = $container->get(Connection::class);
     return $processor;
   }
 
@@ -74,6 +80,13 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
           'processor_id' => $this->getPluginId(),
         ]);
       }
+
+      $properties[self::MARKDOWN_PROPERTY] = new ProcessorProperty([
+        'label' => $this->t('Page markdown'),
+        'description' => $this->t('The document markdown.'),
+        'type' => 'text',
+        'processor_id' => $this->getPluginId(),
+      ]);
     }
 
     return $properties;
@@ -100,11 +113,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
       }
     }
 
-    $this->chunks = [];
-
-    foreach (EmbeddingModel::ENABLED as $model) {
-      $this->chunks[$model->value] = $this->getChunks($entities, $model);
-    }
+    $this->documents = $this->getDocuments($entities);
   }
 
   /**
@@ -118,7 +127,27 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
       return;
     }
 
-    $missing = FALSE;
+    $document = $this->documents[$item->getId()]
+      ?? array_first($this->getDocuments([$entity]))
+      ?? new StoredDocument();
+
+    // Cached document should not be needed anymore.
+    unset($this->documents[$item->getId()]);
+
+    if (!$document->hasChunks()) {
+      // Side-effect:
+      // Create a row to the tracking table if we don't know about this entity
+      // yet. This does not trigger re-processing if the entity already has a
+      // row.
+      $key = self::key($entity);
+
+      $this->database->merge(self::DOCUMENT_TABLE)
+        ->keys($key)
+        ->insertFields($key + ['state' => DocumentState::Pending->value])
+        ->execute();
+
+      return;
+    }
 
     foreach (EmbeddingModel::ENABLED as $model) {
       $fields = $this->getFieldsHelper()
@@ -129,14 +158,7 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
         continue;
       }
 
-      $chunks = $this->chunks[$model->value][$item->getId()] ?? NULL;
-
-      if ($chunks === NULL) {
-        $chunks = array_first($this->getChunks([$entity], $model));
-      }
-      else {
-        unset($this->chunks[$model->value][$item->getId()]);
-      }
+      $chunks = $document->getChunks($model);
 
       foreach ($chunks as $chunk) {
         foreach ($fields as $field) {
@@ -147,39 +169,29 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
           ]);
         }
       }
-
-      if (!$chunks) {
-        $missing = TRUE;
-      }
     }
 
-    // Side-effect:
-    // Create a row to the tracking table if we don't know about this entity
-    // yet. This does not trigger re-processing if the entity already has a
-    // row.
-    if ($missing) {
-      $key = self::key($entity);
+    if ($document->markdown) {
+      $fields = $this->getFieldsHelper()
+        ->filterForPropertyPath($item->getFields(FALSE), NULL, self::MARKDOWN_PROPERTY);
 
-      $this->database->merge(self::DOCUMENT_TABLE)
-        ->keys($key)
-        ->insertFields($key + ['state' => DocumentState::Pending->value])
-        ->execute();
+      foreach ($fields as $field) {
+        $field->addValue($document->markdown);
+      }
     }
   }
 
   /**
-   * Reads chunks of given documents.
+   * Reads given documents and their chunks for all enabled models.
    *
    * @param array<\Drupal\Core\Entity\ContentEntityInterface> $entities
    *   The entities.
-   * @param \Drupal\helfi_search\EmbeddingModel $model
-   *   The embedding model.
    *
-   * @return array<\Drupal\helfi_search\Plugin\search_api\processor\DTO\StoredChunk[]>
-   *   Each document's chunks, keyed by the caller's own keys. A document
-   *   that has no embedded chunks returns an empty array.
+   * @return array<\Drupal\helfi_search\Plugin\search_api\processor\DTO\StoredDocument>
+   *   Found documents, keyed by the caller's own keys. Documents that are
+   *   not stored are left out.
    */
-  private function getChunks(array $entities, EmbeddingModel $model): array {
+  private function getDocuments(array $entities): array {
     if (!$entities) {
       return [];
     }
@@ -187,18 +199,33 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
     // Each document gets its own key condition:
     // WHERE (key1 = 1a AND key2 = 1b) OR (key1 = 2a, key2 = 2b) OR ...
     $documents = $this->database->condition('OR');
+
     $keys = [];
-    $chunks = [];
 
     foreach ($entities as $key => $entity) {
-      $chunks[$key] = [];
-      $id = self::keyId($entity);
+      $documents->condition(self::keyCondition($this->database->condition('AND'), $entity));
+      $keys[self::keyId($entity)] = $key;
+    }
 
-      if (!isset($keys[$id])) {
-        $documents->condition(self::keyCondition($this->database->condition('AND'), $entity));
-      }
+    $markdown = [];
+    $chunks = [];
 
-      $keys[$id][] = $key;
+    $rows = $this->database->select(self::DOCUMENT_TABLE, 'd')
+      ->fields('d', [
+        'entity_type',
+        'entity_id',
+        'langcode',
+        'markdown',
+      ])
+      ->condition($documents)
+      ->execute();
+
+    foreach ($rows as $row) {
+      $markdown[self::keyId([
+        'entity_type' => $row->entity_type,
+        'entity_id' => $row->entity_id,
+        'langcode' => $row->langcode,
+      ])] = $row->markdown;
     }
 
     $rows = $this->database->select(self::CHUNK_TABLE, 'c')
@@ -206,34 +233,37 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
         'entity_type',
         'entity_id',
         'langcode',
+        'model',
         'vector',
         'snippet',
         'fragment',
       ])
-      ->condition('model', $model->value)
+      ->condition('model', array_map(static fn (EmbeddingModel $model) => $model->value, EmbeddingModel::ENABLED), 'IN')
       ->condition($documents)
       ->orderBy('delta')
       ->execute();
 
     foreach ($rows as $row) {
-      $id = self::keyId([
+      $keyId = self::keyId([
         'entity_type' => $row->entity_type,
         'entity_id' => $row->entity_id,
         'langcode' => $row->langcode,
       ]);
 
-      $chunk = new StoredChunk(
+      $chunks[$keyId][$row->model][] = new StoredChunk(
         Vector::unpack($row->vector),
         $row->snippet,
         $row->fragment,
       );
-
-      foreach ($keys[$id] ?? [] as $key) {
-        $chunks[$key][] = $chunk;
-      }
     }
 
-    return $chunks;
+    $result = [];
+
+    foreach (array_keys($markdown + $chunks) as $id) {
+      $result[$keys[$id]] = new StoredDocument($markdown[$id] ?? NULL, $chunks[$id] ?? []);
+    }
+
+    return $result;
   }
 
 }
