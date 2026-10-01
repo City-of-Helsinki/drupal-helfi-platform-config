@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\EventSubscriber;
 
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ServiceEnum;
 use Drupal\helfi_platform_config\EventSubscriber\CspElasticProxySubscriber;
-use Drupal\Core\Config\ImmutableConfig;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Unit tests for CspElasticProxySubscriber.
@@ -19,27 +18,9 @@ use Prophecy\Prophecy\ObjectProphecy;
 class CspElasticProxySubscriberTest extends CspEventSubscriberTestBase {
 
   /**
-   * The Elastic proxy config.
-   *
-   * @var \Prophecy\Prophecy\ObjectProphecy
-   */
-  protected ObjectProphecy $elasticProxyConfig;
-
-  /**
    * The event class to test.
    */
   protected ?string $eventClass = CspElasticProxySubscriber::class;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
-    parent::setUp();
-
-    $this->elasticProxyConfig = $this->prophesize(ImmutableConfig::class);
-    $this->elasticProxyConfig->get('elastic_proxy_url')->willReturn('');
-    $this->configFactory->get('elastic_proxy.settings')->willReturn($this->elasticProxyConfig->reveal());
-  }
 
   /**
    * Tests appending of directive values.
@@ -47,25 +28,30 @@ class CspElasticProxySubscriberTest extends CspEventSubscriberTestBase {
    * @covers ::policyAlter
    */
   public function testAppendDirectiveValues(): void {
-    $url = 'https://elastic-proxy.example.com';
-    $this->elasticProxyConfig->get('elastic_proxy_url')->willReturn($url);
+    $this->environmentResolver = $this->getEnvironmentResolver(Project::REKRY, EnvironmentEnum::Local);
+    $eventSubscriber = new CspElasticProxySubscriber(
+      $this->configFactory->reveal(),
+      $this->moduleHandler->reveal(),
+      $this->environmentResolver,
+      $this->policyHelper->reveal(),
+    );
 
     $this->policy->fallbackAwareAppendIfEnabled('connect-src', [
-      $url,
+      'https://elastic-proxy-helfi-rekry.docker.so',
       $this->getEtusivuElasticProxyUrl(),
     ])->shouldBeCalled();
 
-    $this->eventSubscriber->policyAlter($this->event->reveal());
+    $eventSubscriber->policyAlter($this->event->reveal());
   }
 
   /**
-   * Tests appending of directive values when elastic proxy URL is not set.
+   * Tests appending of directive values when project has no Elastic proxy.
    *
    * Core sites still get the etusivu elastic proxy URL.
    *
    * @covers ::policyAlter
    */
-  public function testAppendDirectiveValuesWhenModuleIsNotEnabled(): void {
+  public function testAppendDirectiveValuesWithoutProjectProxy(): void {
     $this->policy->fallbackAwareAppendIfEnabled('connect-src', [
       $this->getEtusivuElasticProxyUrl(),
     ])->shouldBeCalled();

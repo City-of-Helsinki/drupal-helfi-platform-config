@@ -7,6 +7,8 @@ namespace Drupal\helfi_react_search\Hook;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\helfi_api_base\Environment\ActiveServiceTrait;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_react_search\Entity\EventList;
 use Drupal\Core\Entity\EntityTypeInterface;
 
@@ -15,8 +17,11 @@ use Drupal\Core\Entity\EntityTypeInterface;
  */
 final class ReactSearchHooks {
 
+  use ActiveServiceTrait;
+
   public function __construct(
     private readonly ConfigFactoryInterface $configFactory,
+    protected readonly EnvironmentResolverInterface $environmentResolver,
   ) {
   }
 
@@ -61,15 +66,14 @@ final class ReactSearchHooks {
       'event_list',
     ];
 
-    $config = $this->configFactory->get('elastic_proxy.settings');
     $react_search_config = $this->configFactory->get('react_search.settings');
 
     if (
       isset($variables['paragraph']) &&
       in_array($variables['paragraph']->getType(), $reactParagraphs)
     ) {
-      if ($proxyUrl = $config->get('elastic_proxy_url')) {
-        $variables['#attached']['drupalSettings']['helfi_react_search']['elastic_proxy_url'] = $proxyUrl;
+      if ($proxy = $this->getPublicElasticProxy()) {
+        $variables['#attached']['drupalSettings']['helfi_react_search']['elastic_proxy_url'] = $proxy->getAddress();
       }
       if ($sentry_dsn_react = $react_search_config->get('sentry_dsn_react')) {
         $variables['#attached']['drupalSettings']['helfi_react_search']['sentry_dsn_react'] = $sentry_dsn_react;
