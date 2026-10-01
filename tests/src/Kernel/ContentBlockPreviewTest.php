@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel;
 
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -121,9 +122,10 @@ class ContentBlockPreviewTest extends KernelTestBase {
     ]);
     $this->container->set('helfi_platform_config.entity_version_matcher', $versionMatcher->reveal());
 
-    $build = $this->container->get('plugin.manager.block')
-      ->createInstance($plugin_id)
-      ->build();
+    $block = $this->container->get('plugin.manager.block')
+      ->createInstance($plugin_id);
+    $this->assertInstanceOf(BlockPluginInterface::class, $block);
+    $build = $block->build();
     $output = (string) $this->container->get('renderer')->renderInIsolation($build);
 
     $this->assertStringContainsString('Unsaved paragraph', $output, 'The unsaved paragraph is rendered.');
@@ -132,7 +134,7 @@ class ContentBlockPreviewTest extends KernelTestBase {
   /**
    * Data provider for the content blocks.
    *
-   * @return array[]
+   * @return array<string, array{string, string}>
    *   The block plugin ids and paragraph field names.
    */
   public static function getBlocks(): array {
