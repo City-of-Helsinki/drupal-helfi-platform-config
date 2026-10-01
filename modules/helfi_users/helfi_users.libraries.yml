@@ -1,0 +1,6 @@
+dashboard_notifications:
+  css:
+    component:
+      assets/css/dashboard-notifications.css: {}
+  dependencies:
+    - hdbt/hdbt-icons

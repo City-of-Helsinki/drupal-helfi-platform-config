@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\ExternalEntities\StorageClient;
 
-use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
-use Drupal\external_entities\Entity\ExternalEntityType;
 use Drupal\external_entities\ExternalEntityStorage;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
@@ -18,6 +16,7 @@ use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
+use Drupal\Tests\helfi_platform_config\Traits\InstallConfigEntityTrait;
 use Elastic\Elasticsearch\ClientBuilder;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -36,6 +35,7 @@ final class SharedIndexTest extends KernelTestBase {
   use ApiTestTrait;
   use ElasticTrait;
   use EnvironmentResolverTrait;
+  use InstallConfigEntityTrait;
 
   /**
    * {@inheritdoc}
@@ -73,14 +73,7 @@ final class SharedIndexTest extends KernelTestBase {
         ->build(),
     );
 
-    $module_path = $this->container
-      ->get('extension.list.module')
-      ->getPath('helfi_platform_config');
-    $values = Yaml::decode((string) file_get_contents(
-      $module_path . '/config/install/external_entities.external_entity_type.helfi_multisite_content.yml',
-    ));
-    unset($values['uuid']);
-    ExternalEntityType::create($values)->save();
+    $this->installConfigEntity('helfi_platform_config', 'external_entities.external_entity_type.helfi_multisite_content');
 
     $this->installEntitySchema(MultisiteContentId::ENTITY_TYPE_ID);
     $this->container->get('entity_type.manager')->clearCachedDefinitions();
