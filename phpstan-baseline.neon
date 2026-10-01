@@ -3907,12 +3907,6 @@ parameters:
 			path: modules/helfi_react_search/src/Plugin/DebugDataItem/SearchApiIndex.php
 
 		-
-			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
-			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
-			count: 1
-			path: modules/helfi_react_search/src/Plugin/Field/FieldWidget/LinkedEventsSelect2Widget.php
-
-		-
 			message: '#^Method Drupal\\helfi_react_search\\Plugin\\Field\\FieldWidget\\LinkedEventsSelect2Widget\:\:create\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
