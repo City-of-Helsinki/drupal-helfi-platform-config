@@ -53,6 +53,8 @@ final readonly class ClientBuilder {
       ->setHttpClient($this->httpClientFactory->fromOptions([
         'timeout' => $timeout,
         'connect_timeout' => $connectTimeout,
+        // Elasticsearch uses a self-signed certificate.
+        'verify' => FALSE,
       ]))
       ->build();
 
