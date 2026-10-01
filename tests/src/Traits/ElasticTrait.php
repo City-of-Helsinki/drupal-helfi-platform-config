@@ -4,11 +4,20 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Traits;
 
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Response\Elasticsearch;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Promise\Create;
 use GuzzleHttp\Psr7\Response;
 
 /**
  * A trait for mocking elastic requests.
+ *
+ * @phpstan-require-extends \Drupal\KernelTests\KernelTestBase
  */
 trait ElasticTrait {
 
@@ -21,12 +30,87 @@ trait ElasticTrait {
   protected function createElasticsearchResponse(array $response): Response {
     return new Response(
       200,
-      [
-        Elasticsearch::HEADER_CHECK => Elasticsearch::PRODUCT_NAME,
-        'Content-Type' => 'application/json',
-      ],
+      $this->elasticsearchResponseHeaders(),
       (string) json_encode($response),
     );
+  }
+
+  /**
+   * Builds an Elasticsearch client that replays queued responses.
+   *
+   * @param array<int, \Psr\Http\Message\ResponseInterface|\Throwable> $responses
+   *   Responses or exceptions, returned in order.
+   * @param array<int, array<string, mixed>> $history
+   *   Outgoing requests are appended here. Omit it to discard them.
+   *
+   * @return \Elastic\Elasticsearch\Client
+   *   The client.
+   */
+  protected function createMockElasticsearchClient(array $responses, array &$history = []): Client {
+    $handlerStack = HandlerStack::create(new MockHandler($responses));
+    $recorded = &$history;
+    $handlerStack->push(Middleware::history($recorded));
+
+    return ClientBuilder::create()
+      ->setHttpClient(new HttpClient(['handler' => $handlerStack]))
+      ->build();
+  }
+
+  /**
+   * Installs a mocked etusivu Elasticsearch client.
+   *
+   * Replaces helfi_platform_config.etusivu_elastic_client.
+   *
+   * @param array<int, \Psr\Http\Message\ResponseInterface|\Throwable> $responses
+   *   Responses or exceptions, returned in order.
+   * @param array<int, array<string, mixed>> $history
+   *   Outgoing requests are appended here. Omit it to discard them.
+   *
+   * @return \Elastic\Elasticsearch\Client
+   *   The installed client.
+   */
+  protected function mockEtusivuElasticClient(array $responses, array &$history = []): Client {
+    $client = $this->createMockElasticsearchClient($responses, $history);
+    $this->container->set('helfi_platform_config.etusivu_elastic_client', $client);
+    return $client;
+  }
+
+  /**
+   * Stubs Drupal's http_client for the Elasticsearch connector.
+   *
+   * The search API connector reads http_client when its backend is built,
+   * then may call Elasticsearch again while indexing. Every call gets the
+   * same response, so those tests stay off the network.
+   *
+   * @param array<mixed> $response
+   *   The JSON object returned for every request. An empty array is encoded
+   *   as an empty object, which is what the client accepts for a no-op call.
+   */
+  protected function mockElasticsearchConnectorHttpClient(array $response = []): void {
+    $this->container->set('http_client', new HttpClient([
+      'handler' => function () use ($response) {
+        // A fresh response each time: the client consumes the body stream.
+        $body = $response === [] ? '{}' : (string) json_encode($response);
+        return Create::promiseFor(new Response(
+          200,
+          $this->elasticsearchResponseHeaders(),
+          $body,
+        ));
+      },
+    ]));
+  }
+
+  /**
+   * Headers the Elasticsearch client requires on a successful response.
+   *
+   * @return array<string, string>
+   *   The headers.
+   */
+  private function elasticsearchResponseHeaders(): array {
+    return [
+      Elasticsearch::HEADER_CHECK => Elasticsearch::PRODUCT_NAME,
+      'Content-Type' => 'application/json',
+    ];
   }
 
 }
