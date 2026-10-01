@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_curated_event_list\Kernel;
 
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\helfi_paragraphs_curated_event_list\Entity\LinkedEventsEvent;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
@@ -55,12 +54,6 @@ class EventEntityTest extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-
-    // Triggers rebuilding routes.
-    // https://www.drupal.org/project/external_entities/issues/3549828.
-    $this->container
-      ->get(RouteProviderInterface::class)
-      ->getAllRoutes();
 
     $this->installConfig(['external_entities', 'helfi_paragraphs_curated_event_list']);
     $this->installEntitySchema('linkedevents_event');

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_node_announcement\Kernel;
 
 use Drupal\helfi_node_announcement\Entity\Announcement;
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 
 /**
  * Tests the Announcement node entity class.
@@ -38,6 +38,7 @@ class AnnouncementNodeTest extends KernelTestBase {
     'select2',
     'text',
     'user',
+    'external_entities',
   ];
 
   /**
