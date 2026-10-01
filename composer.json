@@ -118,6 +118,9 @@
             "drupal/elasticsearch_connector": {
                 "deprecation causes tests to fail": "./public/modules/contrib/helfi_platform_config/patches/elasticsearch_connector_deprecation.patch"
             },
+            "drupal/external_entities": {
+                "Creating external entity types in KernelTests no longer works (https://www.drupal.org/project/external_entities/issues/3549828)": "./public/modules/contrib/helfi_platform_config/patches/3549828.patch"
+            },
             "drupal/metatag": {
                 "Fix deprecation error which breaks everything https://www.drupal.org/project/metatag/issues/3563261": "./public/modules/contrib/helfi_platform_config/patches/3563261-14.patch"
             },
