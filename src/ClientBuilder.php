@@ -10,6 +10,7 @@ use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ServiceEnum;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder as ElasticClientBuilder;
+use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * The client builder factory.
@@ -47,10 +48,10 @@ final class ClientBuilder {
       ->setHosts([
         $service->getAddress(),
       ])
-      ->setHttpClientOptions([
+      ->setHttpClient(new GuzzleClient([
         'timeout' => $timeout,
         'connect_timeout' => $connectTimeout,
-      ])
+      ]))
       ->build();
   }
 
