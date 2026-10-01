@@ -1,4 +1,4 @@
-uuid: 7d58fe83-408a-4075-a7f4-a1c8c4affee2
+config_rewrite: 'replace'
 langcode: en
 status: true
 dependencies:
@@ -536,17 +536,6 @@ display:
             fi: fi
             sv: sv
             en: en
-            de: de
-            fr: fr
-            ru: ru
-            uk: uk
-            ar: ar
-            et: et
-            fa: fa
-            es: es
-            so: so
-            se: se
-            zh-hans: zh-hans
           group: 1
           exposed: true
           expose:
