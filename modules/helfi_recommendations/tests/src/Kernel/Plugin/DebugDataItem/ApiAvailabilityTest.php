@@ -6,7 +6,7 @@ namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\Plugin\DebugData;
 
 use Drupal\helfi_api_base\DebugDataItemPluginManager;
 use Drupal\helfi_recommendations\Plugin\DebugDataItem\ApiAvailability;
-use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticKernelTrait;
 use Drupal\Tests\helfi_recommendations\Kernel\AnnifKernelTestBase;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
@@ -20,7 +20,7 @@ use GuzzleHttp\Psr7\Response;
  */
 class ApiAvailabilityTest extends AnnifKernelTestBase {
 
-  use ElasticTrait;
+  use ElasticKernelTrait;
 
   /**
    * {@inheritdoc}
