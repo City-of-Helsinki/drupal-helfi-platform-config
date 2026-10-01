@@ -139,6 +139,7 @@ class CookieSettings {
         '#attributes' => [
           'src' => $library,
           'type' => 'text/javascript',
+          'defer' => TRUE,
         ],
       ],
       'external_script',

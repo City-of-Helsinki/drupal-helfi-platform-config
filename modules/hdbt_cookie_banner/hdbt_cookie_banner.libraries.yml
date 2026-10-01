@@ -53,11 +53,12 @@ hdbt_cookie_banner:
 # - Appended the hel.fi color scheme styles to the hds-cookie-consent.min.js.
 # - Added data-nosnippet attribute to div.hds-cc__target to prevent Google
 #   using cookie banner texts in their search result snippets.
+# - Skipped rendering of collapsed banner sections with content-visibility.
 hds_cookie_consent:
-  version: 1.0.3
+  version: 1.0.4
   header: true
   js:
-    assets/js/hds-cookie-consent.min.js: { weight: -17, minified: true, preprocess: false }
+    assets/js/hds-cookie-consent.min.js: { weight: -17, minified: true, preprocess: false, attributes: { defer: true } }
 
 embedded_content_cookie_compliance:
   version: HELFI_DEPLOYMENT_IDENTIFIER
@@ -67,4 +68,3 @@ embedded_content_cookie_compliance:
     - core/jquery
     - core/drupal
     - core/drupalSettings
-
