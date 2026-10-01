@@ -101,19 +101,6 @@ class SearchControllerTest extends KernelTestBase {
                 ],
               ],
             ],
-            [
-              'hits' => [
-                'hits' => [
-                  [
-                    '_score' => 3.1,
-                    '_source' => [
-                      'name_parts' => ['Matti', 'Meikäläinen'],
-                      'email' => ['matti.meikalainen@hel.fi'],
-                    ],
-                  ],
-                ],
-              ],
-            ],
           ],
           [
             'hits' => [
@@ -125,6 +112,19 @@ class SearchControllerTest extends KernelTestBase {
                     'url' => ['/fi/test-page'],
                     'label' => ['Test Page'],
                     'search_api_language' => ['fi'],
+                  ],
+                ],
+              ],
+            ],
+          ],
+          [
+            'hits' => [
+              'hits' => [
+                [
+                  '_score' => 3.1,
+                  '_source' => [
+                    'name_parts' => ['Matti', 'Meikäläinen'],
+                    'email' => ['matti.meikalainen@hel.fi'],
                   ],
                 ],
               ],
