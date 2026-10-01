@@ -21,7 +21,7 @@ use Drupal\search_api\SearchApiException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a processor for vector search.
+ * Copies vectors from chunks table to elasticsearch index.
  */
 #[SearchApiProcessor(
   id: "helfi_search_embeddings",
