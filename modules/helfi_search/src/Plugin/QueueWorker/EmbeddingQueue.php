@@ -57,11 +57,6 @@ final class EmbeddingQueue extends QueueWorkerBase implements ContainerFactoryPl
     }
 
     try {
-      $this->logger->info('Processing @type:@id to embedding queue: @document', [
-        '@type' => $data->entityType,
-        '@id' => $data->entityId,
-      ]);
-
       $this->queueManager->process($data);
     }
     catch (MissingConfigurationException $e) {
