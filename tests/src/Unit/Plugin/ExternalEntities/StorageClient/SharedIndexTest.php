@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Utility\Token;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
@@ -23,9 +22,8 @@ use Elastic\Elasticsearch\ClientBuilder;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Tests the shared index storage client.
@@ -199,15 +197,12 @@ final class SharedIndexTest extends UnitTestCase {
       ->with(LanguageInterface::TYPE_CONTENT)
       ->willReturn($language);
 
-    $logger_factory = $this->createMock(LoggerChannelFactoryInterface::class);
-    $logger_factory->method('get')->willReturn($this->createMock(LoggerChannelInterface::class));
-
     $sut = new SharedIndex(
       [],
       'helfi_shared_index',
       ['id' => 'helfi_shared_index', 'label' => 'Shared index'],
       $this->getStringTranslationStub(),
-      $logger_factory,
+      $this->createMock(LoggerChannelInterface::class),
       $this->createMock(EntityTypeManagerInterface::class),
       $this->createMock(EntityFieldManagerInterface::class),
       $this->createMock(Token::class),

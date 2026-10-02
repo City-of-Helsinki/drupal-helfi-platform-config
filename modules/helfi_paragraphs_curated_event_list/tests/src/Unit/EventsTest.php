@@ -9,7 +9,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Utility\Token;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
@@ -22,8 +21,8 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Unit tests for LinkedEvents external entity storage client.
@@ -57,7 +56,7 @@ class EventsTest extends UnitTestCase {
       self::PLUGIN_ID,
       self::PLUGIN_DEFINITION,
       $this->getStringTranslationStub(),
-      $this->createLoggerFactoryMock(),
+      $this->createMock(LoggerChannelInterface::class),
       $this->createMock(EntityTypeManagerInterface::class),
       $this->createMock(EntityFieldManagerInterface::class),
       $this->createTokenMock(),
@@ -112,16 +111,6 @@ class EventsTest extends UnitTestCase {
         return $this->jsonResponse(['data' => []]);
       });
     return $client;
-  }
-
-  /**
-   * Creates a logger factory mock suitable for StorageClientBase.
-   */
-  private function createLoggerFactoryMock(): LoggerChannelFactoryInterface {
-    $logger = $this->createMock(LoggerChannelInterface::class);
-    $loggerFactory = $this->createMock(LoggerChannelFactoryInterface::class);
-    $loggerFactory->method('get')->willReturn($logger);
-    return $loggerFactory;
   }
 
   /**
