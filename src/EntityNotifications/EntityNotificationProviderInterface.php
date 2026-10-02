@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_users\Dashboard;
+namespace Drupal\helfi_platform_config\EntityNotifications;
 
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
- * Provides notifications for content entities listed in the user dashboard.
+ * Provides notifications for content entities.
  *
  * Services implementing this interface must be tagged with
- * 'helfi_users.dashboard_notification_provider'.
+ * 'helfi_platform_config.entity_notification_provider'.
  */
-interface DashboardNotificationProviderInterface {
+interface EntityNotificationProviderInterface {
 
   /**
    * Gets notifications for the given entity.
@@ -23,7 +23,7 @@ interface DashboardNotificationProviderInterface {
    * @param \Drupal\Core\Cache\RefinableCacheableDependencyInterface $cacheability
    *   The cacheability of the notifications.
    *
-   * @return list<\Drupal\helfi_users\Dashboard\DashboardNotification>
+   * @return list<\Drupal\helfi_platform_config\EntityNotifications\EntityNotification>
    *   The notifications.
    */
   public function getNotifications(ContentEntityInterface $entity, RefinableCacheableDependencyInterface $cacheability): array;

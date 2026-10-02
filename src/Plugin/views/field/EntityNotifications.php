@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_users\Plugin\views\field;
+namespace Drupal\helfi_platform_config\Plugin\views\field;
 
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\helfi_users\Dashboard\DashboardNotificationManager;
+use Drupal\helfi_platform_config\EntityNotifications\EntityNotificationManager;
 use Drupal\views\Attribute\ViewsField;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
 
 /**
- * Renders user dashboard notifications for a content entity.
+ * Renders notifications for a content entity.
  */
-#[ViewsField('helfi_dashboard_notifications')]
-final class DashboardNotifications extends FieldPluginBase {
+#[ViewsField('helfi_entity_notifications')]
+final class EntityNotifications extends FieldPluginBase {
 
   /**
-   * Constructs a DashboardNotifications object.
+   * Constructs a EntityNotifications object.
    *
    * @param array<string, mixed> $configuration
    *   Plugin configuration.
@@ -27,14 +27,14 @@ final class DashboardNotifications extends FieldPluginBase {
    *   The plugin ID.
    * @param mixed $plugin_definition
    *   The plugin definition.
-   * @param \Drupal\helfi_users\Dashboard\DashboardNotificationManager $notificationManager
-   *   The dashboard notification manager.
+   * @param \Drupal\helfi_platform_config\EntityNotifications\EntityNotificationManager $notificationManager
+   *   The entity notification manager.
    */
   public function __construct(
     array $configuration,
     string $plugin_id,
     $plugin_definition,
-    protected readonly DashboardNotificationManager $notificationManager,
+    protected readonly EntityNotificationManager $notificationManager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -68,9 +68,9 @@ final class DashboardNotifications extends FieldPluginBase {
     $build = [];
     if ($notifications) {
       $build = [
-        '#theme' => 'helfi_dashboard_notifications',
+        '#theme' => 'helfi_entity_notifications',
         '#notifications' => $notifications,
-        '#attached' => ['library' => ['helfi_users/dashboard_notifications']],
+        '#attached' => ['library' => ['helfi_platform_config/entity_notifications']],
       ];
     }
 

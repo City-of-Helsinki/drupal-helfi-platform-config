@@ -131,12 +131,6 @@ parameters:
 			path: helfi_platform_config.module
 
 		-
-			message: '#^Function helfi_platform_config_theme\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: helfi_platform_config.module
-
-		-
 			message: '#^Call to an undefined method Drupal\\Core\\TypedData\\TypedDataInterface\:\:getTarget\(\)\.$#'
 			identifier: method.notFound
 			count: 1

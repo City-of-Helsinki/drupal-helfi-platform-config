@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_users\Dashboard;
+namespace Drupal\helfi_platform_config\EntityNotifications;
 
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 /**
- * Collects dashboard notifications.
+ * Collects entity notifications.
  */
-final readonly class DashboardNotificationManager {
+final readonly class EntityNotificationManager {
 
   /**
    * Constructs a new instance.
    *
-   * @param iterable<\Drupal\helfi_users\Dashboard\DashboardNotificationProviderInterface> $providers
+   * @param iterable<\Drupal\helfi_platform_config\EntityNotifications\EntityNotificationProviderInterface> $providers
    *   The notification providers.
    */
   public function __construct(
-    #[AutowireIterator(tag: 'helfi_users.dashboard_notification_provider')]
+    #[AutowireIterator(tag: 'helfi_platform_config.entity_notification_provider')]
     private iterable $providers,
   ) {}
 
@@ -32,7 +32,7 @@ final readonly class DashboardNotificationManager {
    * @param \Drupal\Core\Cache\RefinableCacheableDependencyInterface $cacheability
    *   Collects the cacheability of all providers.
    *
-   * @return list<\Drupal\helfi_users\Dashboard\DashboardNotification>
+   * @return list<\Drupal\helfi_platform_config\EntityNotifications\EntityNotification>
    *   The notifications.
    */
   public function getNotifications(ContentEntityInterface $entity, RefinableCacheableDependencyInterface $cacheability): array {

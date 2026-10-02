@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_users\Hook;
+namespace Drupal\helfi_platform_config\Hook;
 
 use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -10,9 +10,9 @@ use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
- * Hook implementations for user dashboard notifications.
+ * Hook implementations for entity notifications.
  */
-class DashboardNotificationHooks {
+class EntityNotificationHooks {
 
   use StringTranslationTrait;
 
@@ -21,28 +21,12 @@ class DashboardNotificationHooks {
   ) {}
 
   /**
-   * Implements hook_theme().
-   *
-   * @phpstan-return array<string, mixed>
-   */
-  #[Hook('theme')]
-  public function theme(): array {
-    return [
-      'helfi_dashboard_notifications' => [
-        'variables' => [
-          'notifications' => [],
-        ],
-      ],
-    ];
-  }
-
-  /**
    * Implements hook_views_data_alter().
    *
    * @phpstan-param array<string, mixed> $data
    */
   #[Hook('views_data_alter')]
-  public function dashboardNotificationsField(array &$data): void {
+  public function entityNotificationsField(array &$data): void {
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type) {
       if (!$entity_type instanceof ContentEntityTypeInterface) {
         continue;
@@ -55,12 +39,12 @@ class DashboardNotificationHooks {
       }
 
       // Exposes the notifications field for all content entity types.
-      $data[$table]['helfi_dashboard_notifications'] = [
-        'title' => $this->t('Dashboard notifications'),
+      $data[$table]['helfi_entity_notifications'] = [
+        'title' => $this->t('Entity notifications'),
         'field' => [
-          'title' => $this->t('Dashboard notifications'),
+          'title' => $this->t('Entity notifications'),
           'help' => $this->t('Notifications about the content.'),
-          'id' => 'helfi_dashboard_notifications',
+          'id' => 'helfi_entity_notifications',
         ],
       ];
     }

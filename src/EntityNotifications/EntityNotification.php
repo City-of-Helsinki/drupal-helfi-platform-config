@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_users\Dashboard;
+namespace Drupal\helfi_platform_config\EntityNotifications;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 
 /**
- * A notification shown for a content entity in the user dashboard.
+ * A notification shown for a content entity.
  */
-final readonly class DashboardNotification {
+final readonly class EntityNotification {
 
   public function __construct(
     public TranslatableMarkup|string $label,

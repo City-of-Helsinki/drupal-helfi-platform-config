@@ -2,33 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_users\Kernel;
+namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\view;
 
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
-use Drupal\helfi_users\Dashboard\DashboardNotification;
-use Drupal\helfi_users\Dashboard\DashboardNotificationProviderInterface;
-use Drupal\helfi_users\Hook\DashboardNotificationHooks;
-use Drupal\helfi_users\Plugin\views\field\DashboardNotifications;
-use Drupal\KernelTests\KernelTestBase;
+use Drupal\helfi_platform_config\EntityNotifications\EntityNotification;
+use Drupal\helfi_platform_config\EntityNotifications\EntityNotificationProviderInterface;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
+use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use Drupal\Tests\helfi_platform_config\Traits\InstallConfigEntityTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\views\Views;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
- * Tests the dashboard notifications views field in the dashboard view.
+ * Tests the entity notifications views field in the dashboard view.
  */
 #[Group('helfi_users')]
 #[RunTestsInSeparateProcesses]
-class DashboardNotificationsFieldTest extends KernelTestBase {
+class EntityNotificationsFieldTest extends KernelTestBase {
 
   use InstallConfigEntityTrait;
   use UserCreationTrait;
@@ -45,7 +42,6 @@ class DashboardNotificationsFieldTest extends KernelTestBase {
     'filter',
     'views',
     'views_bulk_operations',
-    'helfi_users',
   ];
 
   /**
@@ -61,12 +57,12 @@ class DashboardNotificationsFieldTest extends KernelTestBase {
   public function register(ContainerBuilder $container): void {
     parent::register($container);
 
-    $container->register('helfi_users_test.notification_provider')
+    $container->register('helfi_platform_config_test.notification_provider')
       ->setSynthetic(TRUE)
-      ->addTag('helfi_users.dashboard_notification_provider');
+      ->addTag('helfi_platform_config.entity_notification_provider');
 
     // register() runs again on every container rebuild.
-    $container->set('helfi_users_test.notification_provider', new class ($this->notifications) implements DashboardNotificationProviderInterface {
+    $container->set('helfi_platform_config_test.notification_provider', new class ($this->notifications) implements EntityNotificationProviderInterface {
 
       /**
        * @param array<int|string, list<string>> $notifications
@@ -79,7 +75,7 @@ class DashboardNotificationsFieldTest extends KernelTestBase {
        */
       public function getNotifications(ContentEntityInterface $entity, RefinableCacheableDependencyInterface $cacheability): array {
         return array_map(
-          static fn (string $label) => new DashboardNotification($label, Url::fromRoute('<front>')),
+          static fn (string $label) => new EntityNotification($label, Url::fromRoute('<front>')),
           $this->notifications[$entity->id()] ?? [],
         );
       }
@@ -97,7 +93,7 @@ class DashboardNotificationsFieldTest extends KernelTestBase {
     $this->installSchema('node', ['node_access']);
     $this->installConfig(['system', 'node', 'filter', 'views']);
 
-    // Install only the dashboard view.
+    // Install dashboard view.
     $this->installConfigEntity('helfi_users', 'views.view.dashboard_your_content');
     NodeType::create(['type' => 'page', 'name' => 'Page'])->save();
   }
@@ -123,8 +119,8 @@ class DashboardNotificationsFieldTest extends KernelTestBase {
 
     $html = (string) $this->container->get(RendererInterface::class)->renderInIsolation($build);
 
-    $this->assertSame(1, substr_count($html, 'class="dashboard-notifications"'));
-    $this->assertMatchesRegularExpression('#<td[^>]*views-field-title[^>]*>\s*<a[^>]*>Second</a>\s*<ul class="dashboard-notifications">.*notification.*</ul>\s*</td>#s', $html);
+    $this->assertSame(1, substr_count($html, 'class="entity-notifications"'));
+    $this->assertMatchesRegularExpression('#<td[^>]*views-field-title[^>]*>\s*<a[^>]*>Second</a>\s*<ul class="entity-notifications">.*notification.*</ul>\s*</td>#s', $html);
   }
 
 }

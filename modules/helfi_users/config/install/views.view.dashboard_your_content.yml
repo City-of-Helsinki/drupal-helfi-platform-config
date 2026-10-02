@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - helfi_platform_config
     - helfi_users
     - node
     - user
@@ -231,15 +232,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        helfi_dashboard_notifications:
-          id: helfi_dashboard_notifications
+        helfi_entity_notifications:
+          id: helfi_entity_notifications
           table: node_field_data
-          field: helfi_dashboard_notifications
+          field: helfi_entity_notifications
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: node
-          plugin_id: helfi_dashboard_notifications
+          plugin_id: helfi_entity_notifications
           label: ''
           exclude: false
           alter:
@@ -1034,7 +1035,7 @@ display:
           columns:
             views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
             title: title
-            helfi_dashboard_notifications: title
+            helfi_entity_notifications: title
             type: type
             uid: uid
             revision_uid: revision_uid
@@ -1056,7 +1057,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            helfi_dashboard_notifications:
+            helfi_entity_notifications:
               align: ''
               separator: ''
               empty_column: false
