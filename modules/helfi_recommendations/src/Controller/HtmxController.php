@@ -23,6 +23,8 @@ final readonly class HtmxController implements ContainerInjectionInterface {
 
   use AutowireTrait;
 
+  public const int MAX_AGE = 3600;
+
   public function __construct(
     private RecommendationManagerInterface $recommendationManager,
     private AccountProxyInterface $currentUser,
@@ -105,6 +107,7 @@ final readonly class HtmxController implements ContainerInjectionInterface {
           'url.path',
         ],
         'tags' => Cache::mergeTags($entity->getCacheTags(), [$this->recommendationManager->getCacheTagForAll()]),
+        'max-age' => self::MAX_AGE,
       ],
       '#entity_type' => $entity->bundle(),
     ];
@@ -135,6 +138,7 @@ final readonly class HtmxController implements ContainerInjectionInterface {
       $build['#rows'][] = $recommendation;
 
     }
+
     return $build;
   }
 

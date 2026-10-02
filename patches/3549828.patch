@@ -1,0 +1,125 @@
+diff --git a/modules/external_entities_drupalorg/config/optional/external_entities.external_entity_type.drupalorg_jsonapi_module.yml b/modules/external_entities_drupalorg/config/optional/external_entities.external_entity_type.drupalorg_jsonapi_module.yml
+index e840af33b55ab2e26618671c4a55d076222829a2..0e1c32677b9679cced3f0c676af63c02180944c9 100644
+--- a/modules/external_entities_drupalorg/config/optional/external_entities.external_entity_type.drupalorg_jsonapi_module.yml
++++ b/modules/external_entities_drupalorg/config/optional/external_entities.external_entity_type.drupalorg_jsonapi_module.yml
+@@ -4,6 +4,7 @@ dependencies: {  }
+ id: drupalorg_jsonapi_module
+ label: 'Drupal.org module - JSONAPI'
+ label_plural: 'Drupal.org modules - JSONAPI'
++base_path: drupalorg-jsonapi-module
+ description: 'Drupal.org modules via JSONAPI.'
+ content_class: Drupal\external_entities\Entity\ExternalEntity
+ read_only: false
+@@ -117,3 +118,4 @@ annotation_entity_type_id: null
+ annotation_bundle_id: null
+ annotation_field_name: null
+ annotation_inherited_fields: {  }
++locks: {  }
+diff --git a/modules/external_entities_drupalorg/config/optional/external_entities.external_entity_type.drupalorg_rest_issue.yml b/modules/external_entities_drupalorg/config/optional/external_entities.external_entity_type.drupalorg_rest_issue.yml
+index 98a01c781ab2a4472fd57753ad1271f7c25b3dfd..8470da2b076c0cd1d5fc8d6d4676aec4fb69c7d1 100644
+--- a/modules/external_entities_drupalorg/config/optional/external_entities.external_entity_type.drupalorg_rest_issue.yml
++++ b/modules/external_entities_drupalorg/config/optional/external_entities.external_entity_type.drupalorg_rest_issue.yml
+@@ -4,6 +4,7 @@ dependencies: {  }
+ id: drupalorg_rest_issue
+ label: 'Drupal.org issue - REST'
+ label_plural: 'Drupal.org issues - REST'
++base_path: drupalorg-rest-issue
+ description: 'Drupal.org issues via REST.'
+ content_class: Drupal\external_entities\Entity\ExternalEntity
+ read_only: true
+@@ -200,3 +201,4 @@ annotation_entity_type_id: null
+ annotation_bundle_id: null
+ annotation_field_name: null
+ annotation_inherited_fields: {  }
++locks: {  }
+diff --git a/src/EventSubscriber/RouteUpdateSubscriber.php b/src/EventSubscriber/RouteUpdateSubscriber.php
+index f6429fba9a07cef6adcace564dd6f33eb44fe8fc..d6c631e5b2dc414f18064cfaf1d3f6a8a83f79b7 100644
+--- a/src/EventSubscriber/RouteUpdateSubscriber.php
++++ b/src/EventSubscriber/RouteUpdateSubscriber.php
+@@ -2,10 +2,10 @@
+ 
+ namespace Drupal\external_entities\EventSubscriber;
+ 
+-use Drupal\Component\EventDispatcher\Event;
+ use Drupal\Core\Routing\RoutingEvents;
+ use Drupal\Core\Messenger\MessengerInterface;
+ use Drupal\Core\Entity\EntityTypeManagerInterface;
++use Drupal\Core\Routing\RouteBuildEvent;
+ use Drupal\Core\Routing\RouteProviderInterface;
+ use Drupal\Core\StringTranslation\StringTranslationTrait;
+ use Psr\Log\LoggerInterface;
+@@ -73,14 +73,14 @@ class RouteUpdateSubscriber implements EventSubscriberInterface {
+   /**
+    * Check for conflicting routes with external entity ones.
+    *
+-   * @param \Drupal\Component\EventDispatcher\Event $event
++   * @param \Drupal\Core\Routing\RouteBuildEvent $event
+    *   The event.
+    */
+-  public function onFinishedRouteEvent(Event $event) {
+-    $route_collection = $this->routeProvider->getAllRoutes();
++  public function onAlterRouteEvent(RouteBuildEvent $event) {
++    $route_collection = $event->getRouteCollection();
+     $external_entity_base_paths = $this->getExternalEntityBasePaths();
+ 
+-    foreach ($route_collection as $route_name => $route) {
++    foreach ($route_collection->all() as $route_name => $route) {
+       $route_path = trim($route->getPath(), '/');
+       if (!empty($external_entity_base_paths[$route_path])
+           && ($external_entity_base_paths[$route_path] !== $route_name)
+@@ -143,7 +143,7 @@ class RouteUpdateSubscriber implements EventSubscriberInterface {
+    */
+   public static function getSubscribedEvents(): array {
+     return [
+-      RoutingEvents::FINISHED => ['onFinishedRouteEvent'],
++      RoutingEvents::ALTER => ['onAlterRouteEvent'],
+     ];
+   }
+ 
+diff --git a/tests/src/Kernel/DrupalOrgExternalEntityTest.php b/tests/src/Kernel/DrupalOrgExternalEntityTest.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..6effbdadb87b662557e0369a600aa6069a4d95ab
+--- /dev/null
++++ b/tests/src/Kernel/DrupalOrgExternalEntityTest.php
+@@ -0,0 +1,41 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\external_entities\Kernel;
++
++use Drupal\Core\Entity\EntityTypeManagerInterface;
++use Drupal\external_entities\Entity\ExternalEntityType;
++use Drupal\KernelTests\KernelTestBase;
++
++/**
++ * Test importing config from external_entities_drupalorg.
++ *
++ * @group ExternalEntities
++ */
++class DrupalOrgExternalEntityTest extends KernelTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'external_entities',
++    'external_entities_drupalorg',
++  ];
++
++  /**
++   * Test config import.
++   */
++  public function testExternalEntityType(): void {
++    $this->installEntitySchema('external_entity_type');
++    $this->installConfig(['external_entities_drupalorg']);
++
++    $entityType = $this->container
++      ->get(EntityTypeManagerInterface::class)
++      ->getStorage('external_entity_type')
++      ->load('drupalorg_jsonapi_module');
++
++    $this->assertInstanceOf(ExternalEntityType::class, $entityType);
++  }
++
++}

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.event_list.field_event_count
+    - field.field.paragraph.event_list.field_event_list_audience
     - field.field.paragraph.event_list.field_event_list_category_event
     - field.field.paragraph.event_list.field_event_list_category_hobby
     - field.field.paragraph.event_list.field_event_list_description
@@ -30,6 +31,27 @@ dependencies:
     - text
 third_party_settings:
   field_group:
+    group_search_restrictions:
+      children:
+        - field_event_list_free_text
+        - field_event_list_category_event
+        - field_event_list_category_hobby
+        - field_event_list_keywords
+        - field_event_list_place
+        - field_event_list_audience
+        - field_event_list_only_super
+      label: 'Search restrictions'
+      region: content
+      parent_name: ''
+      weight: 5
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: 'Restrict the content shown in the list. Users cannot change these restrictions.'
+        required_fields: false
     group_search_filters:
       children:
         - field_search_term
@@ -39,16 +61,17 @@ third_party_settings:
         - field_language
         - field_remote_events
         - field_free_events
-      label: 'Search filters'
+        - field_event_list_keywords_filter
+      label: 'Search filters for users'
       region: content
       parent_name: ''
-      weight: 10
+      weight: 6
       format_type: details
       format_settings:
         classes: ''
         show_empty_fields: false
         id: ''
-        open: true
+        open: false
         description: 'Select which filters are shown to users.'
         required_fields: false
 id: paragraph.event_list.default
@@ -58,20 +81,30 @@ mode: default
 content:
   field_event_count:
     type: options_select
-    weight: 5
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_event_list_audience:
+    type: linked_events_select2
+    weight: 15
+    region: content
+    settings:
+      width: 100%
+      endpoint: keyword
+      query: ''
+      keyword_set: 'helsinki:audiences'
+    third_party_settings: {  }
   field_event_list_category_event:
     type: select2
-    weight: 7
+    weight: 11
     region: content
     settings:
       width: 100%
     third_party_settings: {  }
   field_event_list_category_hobby:
     type: select2
-    weight: 8
+    weight: 12
     region: content
     settings:
       width: 100%
@@ -86,7 +119,7 @@ content:
     third_party_settings: {  }
   field_event_list_free_text:
     type: string_textfield
-    weight: 6
+    weight: 10
     region: content
     settings:
       size: 60
@@ -94,7 +127,7 @@ content:
     third_party_settings: {  }
   field_event_list_keywords:
     type: linked_events_select2
-    weight: 9
+    weight: 13
     region: content
     settings:
       width: 100%
@@ -103,7 +136,7 @@ content:
     third_party_settings: {  }
   field_event_list_keywords_filter:
     type: linked_events_select2
-    weight: 14
+    weight: 27
     region: content
     settings:
       width: 100%
@@ -118,14 +151,14 @@ content:
     third_party_settings: {  }
   field_event_list_only_super:
     type: boolean_checkbox
-    weight: 4
+    weight: 16
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_event_list_place:
     type: linked_events_select2
-    weight: 9
+    weight: 14
     region: content
     settings:
       width: 100%
@@ -134,7 +167,7 @@ content:
     third_party_settings: {  }
   field_event_list_target_group:
     type: boolean_checkbox
-    weight: 9
+    weight: 21
     region: content
     settings:
       display_label: true
@@ -155,42 +188,42 @@ content:
     third_party_settings: {  }
   field_event_location:
     type: boolean_checkbox
-    weight: 10
+    weight: 22
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_event_time:
     type: boolean_checkbox
-    weight: 11
+    weight: 23
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_free_events:
     type: boolean_checkbox
-    weight: 14
+    weight: 26
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_language:
     type: boolean_checkbox
-    weight: 12
+    weight: 24
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_remote_events:
     type: boolean_checkbox
-    weight: 13
+    weight: 25
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_search_term:
     type: boolean_checkbox
-    weight: 8
+    weight: 20
     region: content
     settings:
       display_label: true

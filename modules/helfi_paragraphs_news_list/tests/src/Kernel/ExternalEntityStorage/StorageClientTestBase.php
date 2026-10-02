@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\ExternalEntityStorage;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
 use Drupal\external_entities\ExternalEntityStorage;
-use Elastic\Elasticsearch\ClientBuilder;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 
@@ -16,8 +14,6 @@ use Psr\Http\Message\RequestInterface;
  * A base class for storage client tests.
  */
 abstract class StorageClientTestBase extends KernelTestBase {
-
-  use ApiTestTrait;
 
   /**
    * Gets the storage name.
@@ -57,12 +53,7 @@ abstract class StorageClientTestBase extends KernelTestBase {
    *   The storage.
    */
   public function getSut(array &$container, array $responses) : ExternalEntityStorage {
-    $mock = $this->createMockHistoryMiddlewareHttpClient($container, $responses);
-    $client = ClientBuilder::create()
-      ->setHttpClient($mock)
-      ->build();
-
-    $this->container->set('helfi_platform_config.etusivu_elastic_client', $client);
+    $this->mockEtusivuElasticClient($responses, $container);
     $storage = $this->container->get(EntityTypeManagerInterface::class)
       ->getStorage($this->getStorageName());
     $this->assertInstanceOf(ExternalEntityStorage::class, $storage);

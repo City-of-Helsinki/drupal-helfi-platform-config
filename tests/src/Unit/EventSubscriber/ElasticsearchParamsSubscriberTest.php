@@ -7,16 +7,21 @@ namespace Drupal\Tests\helfi_platform_config\Unit\EventSubscriber;
 use Drupal\elasticsearch_connector\Event\BaseParamsEvent;
 use Drupal\elasticsearch_connector\Event\DeleteParamsEvent;
 use Drupal\elasticsearch_connector\Event\IndexParamsEvent;
+use Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface;
 use Drupal\helfi_platform_config\EventSubscriber\ElasticsearchParamsSubscriber;
 use Drupal\helfi_platform_config\MultisiteSearch;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Argument;
 
 /**
  * Tests the Elasticsearch Params EventSubscriber.
  */
+#[CoversClass(ElasticsearchParamsSubscriber::class)]
+#[Group('helfi_platform_config')]
 class ElasticsearchParamsSubscriberTest extends UnitTestCase {
 
   use ProphecyTrait;
@@ -24,16 +29,16 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
   /**
    * The MultisiteSearch.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\helfi_platform_config\MultisiteSearch>
    */
   protected ObjectProphecy $multisiteSearch;
 
   /**
-   * The Event.
+   * The cache tag invalidator.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\helfi_api_base\Cache\CacheTagInvalidatorInterface>
    */
-  protected ObjectProphecy $event;
+  protected ObjectProphecy $cacheTagInvalidator;
 
   /**
    * The EventSubscriber to test.
@@ -43,9 +48,16 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
   protected ElasticsearchParamsSubscriber $eventSubscriber;
 
   /**
-   * The expected params.
+   * Params used as the default event body.
    *
-   * @var array
+   * @var array<string, mixed>
+   */
+  protected array $params;
+
+  /**
+   * The expected params after ids are prefixed.
+   *
+   * @var array<string, mixed>
    */
   protected array $expectedParams;
 
@@ -55,7 +67,7 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
   protected function setUp(): void {
     parent::setUp();
 
-    $params = [
+    $this->params = [
       'body' => [
         [
           'index' => [
@@ -84,15 +96,16 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
       ],
     ];
 
-    $this->event = $this->prophesize(BaseParamsEvent::class);
-    $this->event->getIndexName()->willReturn('test_index');
-    $this->event->getParams()->willReturn($params);
-
     $this->multisiteSearch = $this->prophesize(MultisiteSearch::class);
     $this->multisiteSearch->addPrefixToId('item_1_to_index')->willReturn('has_prefix_item_1_to_index');
     $this->multisiteSearch->addPrefixToId('item_1_to_delete')->willReturn('has_prefix_item_1_to_delete');
 
-    $this->eventSubscriber = new ElasticsearchParamsSubscriber($this->multisiteSearch->reveal());
+    $this->cacheTagInvalidator = $this->prophesize(CacheTagInvalidatorInterface::class);
+
+    $this->eventSubscriber = new ElasticsearchParamsSubscriber(
+      $this->multisiteSearch->reveal(),
+      $this->cacheTagInvalidator->reveal(),
+    );
   }
 
   /**
@@ -100,8 +113,14 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
    */
   public function testGetSubscribedEvents(): void {
     $this->assertEquals([
-      IndexParamsEvent::class => 'prefixItemIds',
-      DeleteParamsEvent::class => 'prefixItemIds',
+      IndexParamsEvent::class => [
+        ['prefixItemIds', 1],
+        ['invalidateCacheTags', 0],
+      ],
+      DeleteParamsEvent::class => [
+        ['prefixItemIds', 1],
+        ['invalidateCacheTags', 0],
+      ],
     ], $this->eventSubscriber->getSubscribedEvents());
   }
 
@@ -110,8 +129,11 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
    */
   public function testPrefixItemIdsWhenIndexIsMultisite(): void {
     $this->multisiteSearch->isMultisiteIndex('test_index')->willReturn(TRUE);
-    $this->event->setParams($this->expectedParams)->shouldBeCalled();
-    $this->eventSubscriber->prefixItemIds($this->event->reveal());
+    $event = $this->createEvent('test_index', $this->params);
+
+    $this->eventSubscriber->prefixItemIds($event);
+
+    $this->assertSame($this->expectedParams, $event->getParams());
   }
 
   /**
@@ -119,8 +141,74 @@ class ElasticsearchParamsSubscriberTest extends UnitTestCase {
    */
   public function testPrefixItemIdsWhenIndexIsNotMultisite(): void {
     $this->multisiteSearch->isMultisiteIndex('test_index')->willReturn(FALSE);
-    $this->event->setParams(Argument::any())->shouldNotBeCalled();
-    $this->eventSubscriber->prefixItemIds($this->event->reveal());
+    $event = $this->createEvent('test_index', $this->params);
+
+    $this->eventSubscriber->prefixItemIds($event);
+
+    $this->assertSame($this->params, $event->getParams());
+  }
+
+  /**
+   * Tests that embeddings index and delete ids invalidate cache tags.
+   */
+  public function testInvalidateCacheTagsOnEmbeddingsIndex(): void {
+    $this->cacheTagInvalidator->invalidateTags([
+      'helfi_multisite_content:has_prefix_item_1_to_index',
+      'helfi_multisite_content:has_prefix_item_1_to_delete',
+    ])->shouldBeCalled();
+
+    $this->eventSubscriber->invalidateCacheTags(
+      $this->createEvent('embeddings', $this->expectedParams),
+    );
+  }
+
+  /**
+   * Tests that other indexes do not invalidate cache tags.
+   */
+  public function testDoesNotInvalidateCacheTagsOnOtherIndexes(): void {
+    $this->cacheTagInvalidator->invalidateTags(Argument::any())->shouldNotBeCalled();
+
+    $this->eventSubscriber->invalidateCacheTags(
+      $this->createEvent('hyte', $this->expectedParams),
+    );
+  }
+
+  /**
+   * Tests that an empty body does not invalidate cache tags.
+   */
+  public function testDoesNotInvalidateCacheTagsWhenBodyIsEmpty(): void {
+    $this->cacheTagInvalidator->invalidateTags(Argument::any())->shouldNotBeCalled();
+
+    $this->eventSubscriber->invalidateCacheTags(
+      $this->createEvent('embeddings', ['body' => []]),
+    );
+  }
+
+  /**
+   * Tests that document source rows without ids do not invalidate cache tags.
+   */
+  public function testDoesNotInvalidateCacheTagsWhenBodyHasNoIds(): void {
+    $this->cacheTagInvalidator->invalidateTags(Argument::any())->shouldNotBeCalled();
+
+    $this->eventSubscriber->invalidateCacheTags(
+      $this->createEvent('embeddings', [
+        'body' => [
+          ['search_api_id' => ['entity:node/1:en']],
+        ],
+      ]),
+    );
+  }
+
+  /**
+   * Creates a params event.
+   *
+   * @param string $index
+   *   The index name.
+   * @param array<string, mixed> $params
+   *   The bulk params.
+   */
+  private function createEvent(string $index, array $params): BaseParamsEvent {
+    return new IndexParamsEvent($index, $params, $index);
   }
 
 }

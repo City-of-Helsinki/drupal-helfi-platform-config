@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_etusivu_entities\Kernel\Plugin\Block;
 
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
 /**
@@ -39,12 +38,6 @@ abstract class BlockTestBase extends EntityKernelTestBase {
    */
   protected function setUp(array $modules = []): void {
     parent::setUp();
-
-    // Triggers rebuilding routes.
-    // https://www.drupal.org/project/external_entities/issues/3549828.
-    $this->container
-      ->get(RouteProviderInterface::class)
-      ->getAllRoutes();
 
     $this->installEntitySchema('node');
     $this->installConfig(array_merge([

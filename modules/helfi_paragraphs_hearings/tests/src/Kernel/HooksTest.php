@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_paragraphs_hearings\Kernel;
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\external_entities\Entity\ExternalEntityType;
 use Drupal\helfi_paragraphs_hearings\Hook\HearingsParagraphHooks;
 use Drupal\KernelTests\KernelTestBase;
@@ -50,12 +49,6 @@ class HooksTest extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-
-    // Triggers rebuilding routes.
-    // https://www.drupal.org/project/external_entities/issues/3549828.
-    $this->container
-      ->get(RouteProviderInterface::class)
-      ->getAllRoutes();
 
     $this->installEntitySchema('paragraph');
     $this->installConfig(['helfi_paragraphs_hearings']);
