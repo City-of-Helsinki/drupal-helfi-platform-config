@@ -114,6 +114,16 @@ class EventsTest extends UnitTestCase {
   }
 
   /**
+   * Creates a logger factory mock suitable for StorageClientBase.
+   */
+  private function createLoggerFactoryMock(): LoggerChannelFactoryInterface {
+    $logger = $this->createMock(LoggerChannelInterface::class);
+    $loggerFactory = $this->createMock(LoggerChannelFactoryInterface::class);
+    $loggerFactory->method('get')->willReturn($logger);
+    return $loggerFactory;
+  }
+
+  /**
    * Creates a Token service mock without invoking the real constructor.
    */
   private function createTokenMock(): Token {
