@@ -72,7 +72,7 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ) : self {
+  ) : static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->client = $container->get('http_client');
     $instance->languageManager = $container->get('language_manager');

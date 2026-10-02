@@ -2905,12 +2905,6 @@ parameters:
 			path: modules/helfi_paragraphs_curated_event_list/helfi_paragraphs_curated_event_list.module
 
 		-
-			message: '#^Method Drupal\\helfi_paragraphs_curated_event_list\\Entity\\LinkedEventsEvent\:\:getCacheMaxAge\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: modules/helfi_paragraphs_curated_event_list/src/Entity/LinkedEventsEvent.php
-
-		-
 			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
 			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
 			count: 1
