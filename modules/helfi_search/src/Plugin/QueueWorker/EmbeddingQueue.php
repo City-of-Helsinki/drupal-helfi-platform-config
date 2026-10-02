@@ -23,7 +23,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 #[QueueWorkerAttribute(
   id: self::class,
   title: new TranslatableMarkup('Embeddings queue'),
-  cron: ['time' => 60],
 )]
 final class EmbeddingQueue extends QueueWorkerBase implements ContainerFactoryPluginInterface {
 
