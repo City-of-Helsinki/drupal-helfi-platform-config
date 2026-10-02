@@ -27,9 +27,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 final class Hearings extends RestClient {
 
-  public const API_URL = 'https://kerrokantasi.api.hel.fi/v1/hearing?';
 
-  public const HEARING_URL = 'https://kerrokantasi.hel.fi/';
+  public const string API_URL = 'https://kerrokantasi.api.hel.fi/v1/hearing?';
+
+  public const string HEARING_URL = 'https://kerrokantasi.hel.fi/';
 
   /**
    * The current language service.

@@ -157,6 +157,7 @@ class EventsTest extends UnitTestCase {
       'token' => $this->createTokenMock(),
       'language_manager' => $languageManager,
       'http_client' => $httpClient,
+      'event_dispatcher' => $this->createMock(EventDispatcherInterface::class),
     ];
 
     $container = $this->createMock(ContainerInterface::class);
