@@ -22,6 +22,7 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -60,6 +61,7 @@ class EventsTest extends UnitTestCase {
       $this->createMock(EntityTypeManagerInterface::class),
       $this->createMock(EntityFieldManagerInterface::class),
       $this->createTokenMock(),
+      $this->createMock(EventDispatcherInterface::class),
     );
 
     $reflection = new \ReflectionClass($events);
