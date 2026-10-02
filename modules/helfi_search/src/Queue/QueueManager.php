@@ -8,7 +8,6 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Statement\FetchAs;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\helfi_search\DocumentKeyTrait;
 use Drupal\helfi_search\DocumentState;
@@ -266,11 +265,6 @@ class QueueManager {
    *   Database query fails.
    */
   private function run(ContentEntityInterface $entity): void {
-    if ($entity instanceof EntityPublishedInterface && !$entity->isPublished()) {
-      $this->setState($entity, DocumentState::Skipped, ['markdown' => NULL]);
-      return;
-    }
-
     $document = $this->textPipeline->process($entity);
     $chunks = $document->chunks;
 

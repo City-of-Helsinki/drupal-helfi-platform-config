@@ -184,29 +184,6 @@ class QueueManagerProcessTest extends KernelTestBase {
   }
 
   /**
-   * Tests that unpublished documents produce no embeddings.
-   */
-  public function testProcessSkipsUnpublishedEntity(): void {
-    $entity = $this->createEntity(published: FALSE);
-    $this->setDocumentState($entity, DocumentState::Embedding, markdown: 'Stale');
-    $this->fillChunks($entity, [
-      new Chunk(text: 'First'),
-      new Chunk(text: 'Second'),
-    ]);
-
-    $this->advanceTime(10);
-    $this->getSut()->process(new ClaimedDocument(
-      entityType: $entity->getEntityTypeId(),
-      entityId: (string) $entity->id(),
-      langcode: 'en',
-      changed: $this->now,
-    ));
-
-    $this->assertDocumentState($entity, DocumentState::Skipped, changed: $this->now, markdown: NULL);
-    $this->textPipeline->process(Argument::any())->shouldNotHaveBeenCalled();
-  }
-
-  /**
    * Tests that unchanged documents are neither re-embedded nor re-indexed.
    */
   public function testProcessReusesStoredVectorsWhenNothingChanged(): void {
