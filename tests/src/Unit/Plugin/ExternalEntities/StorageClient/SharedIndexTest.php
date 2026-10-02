@@ -23,6 +23,7 @@ use Elastic\Elasticsearch\ClientBuilder;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -210,6 +211,7 @@ final class SharedIndexTest extends UnitTestCase {
       $this->createMock(EntityTypeManagerInterface::class),
       $this->createMock(EntityFieldManagerInterface::class),
       $this->createMock(Token::class),
+      $this->createMock(EventDispatcherInterface::class),
     );
 
     foreach ([
