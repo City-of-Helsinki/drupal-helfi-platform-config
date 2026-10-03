@@ -31,6 +31,8 @@ display:
           label: Päivitetty
         operations:
           label: Toimenpiteet
+        changed_at:
+          label: 'Käyttäjän tallentama'
       pager:
         options:
           tags:
