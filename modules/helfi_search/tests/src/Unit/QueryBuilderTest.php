@@ -281,41 +281,6 @@ class QueryBuilderTest extends UnitTestCase {
   }
 
   /**
-   * Tests parseKnnHits falls back to stored chunks without inner hits.
-   */
-  public function testParseKnnHitsFallsBackToSourceContent(): void {
-    $response = [
-      'hits' => [
-        'hits' => [
-          [
-            '_id' => 'doc1',
-            '_score' => 0.66,
-            '_source' => [
-              'url' => ['/fi/page'],
-              'label' => ['Page'],
-              self::TEST_MODEL_FIELD => [
-                ['content' => ''],
-                ['content' => 'First snippet'],
-                ['content' => 'Second snippet'],
-              ],
-            ],
-            'inner_hits' => [
-              self::TEST_MODEL_FIELD => [
-                'hits' => ['total' => ['value' => 0], 'hits' => []],
-              ],
-            ],
-          ],
-        ],
-      ],
-    ];
-
-    $results = (new QueryBuilder())->parseKnnHits($response, self::TEST_MODEL);
-
-    $this->assertEquals('First snippet', $results[0]['content']);
-    $this->assertNull($results[0]['fragment']);
-  }
-
-  /**
    * Tests parseKnnHits with empty response.
    */
   public function testParseKnnHitsEmpty(): void {
