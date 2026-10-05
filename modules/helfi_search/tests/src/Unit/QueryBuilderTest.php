@@ -162,7 +162,16 @@ class QueryBuilderTest extends UnitTestCase {
       $query['body']['knn']['inner_hits']['fields'],
     );
     $this->assertEquals(
-      ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at', 'metatag_title'],
+      [
+        'id',
+        'entity_type',
+        'entity_bundle',
+        'url',
+        'label',
+        'published_at',
+        'metatag_title',
+        self::TEST_MODEL_FIELD . '.content',
+      ],
       $query['body']['_source'],
     );
     $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $query['body']['size']);
@@ -269,6 +278,41 @@ class QueryBuilderTest extends UnitTestCase {
     $this->assertCount(1, $results);
     $this->assertEquals('doc1', $results[0]['id']);
     $this->assertEquals('Some content', $results[0]['content']);
+  }
+
+  /**
+   * Tests parseKnnHits falls back to stored chunks without inner hits.
+   */
+  public function testParseKnnHitsFallsBackToSourceContent(): void {
+    $response = [
+      'hits' => [
+        'hits' => [
+          [
+            '_id' => 'doc1',
+            '_score' => 0.66,
+            '_source' => [
+              'url' => ['/fi/page'],
+              'label' => ['Page'],
+              self::TEST_MODEL_FIELD => [
+                ['content' => ''],
+                ['content' => 'First snippet'],
+                ['content' => 'Second snippet'],
+              ],
+            ],
+            'inner_hits' => [
+              self::TEST_MODEL_FIELD => [
+                'hits' => ['total' => ['value' => 0], 'hits' => []],
+              ],
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    $results = (new QueryBuilder())->parseKnnHits($response, self::TEST_MODEL);
+
+    $this->assertEquals('First snippet', $results[0]['content']);
+    $this->assertNull($results[0]['fragment']);
   }
 
   /**
