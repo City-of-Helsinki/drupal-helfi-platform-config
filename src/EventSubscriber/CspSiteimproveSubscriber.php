@@ -22,5 +22,8 @@ class CspSiteimproveSubscriber extends CspSubscriberBase {
   const CONNECT_SRC = self::COMMON_SRC;
   const SCRIPT_SRC = self::COMMON_SRC;
   const FRAME_SRC = self::COMMON_SRC;
+  const IMG_SRC = [
+    'https://*.siteimproveanalytics.io',
+  ];
 
 }
