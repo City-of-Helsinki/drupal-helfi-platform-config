@@ -259,7 +259,16 @@ final class QueryBuilder {
       ],
     ];
 
-    $source = ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at', 'metatag_title'];
+    $source = [
+      'id',
+      'entity_type',
+      'entity_bundle',
+      'url',
+      'label',
+      'published_at',
+      'metatag_title',
+      $fieldPrefix . '.content',
+    ];
 
     $innerHits = [
       '_source' => FALSE,
@@ -487,6 +496,12 @@ final class QueryBuilder {
         'content' => $innerFields['content'][0] ?? '',
         'fragment' => $innerFields['fragment'][0] ?? NULL,
       ];
+      if ($result['content'] === '') {
+        $result['content'] = array_find(
+          array_column($hit['_source'][$fieldPrefix] ?? [], 'content'),
+          static fn (mixed $content): bool => is_string($content) && $content !== '',
+        ) ?? '';
+      }
       // Debug: when more than one inner hit was requested, surface every
       // matching chunk with its individual similarity score.
       if (count($innerHits) > 1) {
