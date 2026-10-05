@@ -88,4 +88,5 @@ entity_notifications:
     component:
       assets/css/entity-notifications.css: {}
   dependencies:
+    - core/drupal.dialog.ajax
     - hdbt/hdbt-icons

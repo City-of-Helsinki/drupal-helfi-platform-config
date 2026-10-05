@@ -11,6 +11,7 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_platform_config\EntityNotifications\EntityNotification;
 use Drupal\helfi_platform_config\EntityNotifications\EntityNotificationProviderInterface;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
@@ -42,12 +43,13 @@ class EntityNotificationsFieldTest extends KernelTestBase {
     'filter',
     'views',
     'views_bulk_operations',
+    'language',
   ];
 
   /**
-   * Notification labels keyed by entity ID.
+   * Notification labels keyed by entity ID and langcode ("id:langcode").
    *
-   * @var array<int|string, list<string>>
+   * @var array<string, list<string>>
    */
   private array $notifications = [];
 
@@ -65,8 +67,8 @@ class EntityNotificationsFieldTest extends KernelTestBase {
     $container->set('helfi_platform_config_test.notification_provider', new class ($this->notifications) implements EntityNotificationProviderInterface {
 
       /**
-       * @param array<int|string, list<string>> $notifications
-       *   Notification labels keyed by entity ID.
+       * @param array<string, list<string>> $notifications
+       *   Notification labels keyed by entity ID and langcode.
        */
       public function __construct(private array &$notifications) {}
 
@@ -76,7 +78,7 @@ class EntityNotificationsFieldTest extends KernelTestBase {
       public function getNotifications(ContentEntityInterface $entity, RefinableCacheableDependencyInterface $cacheability): array {
         return array_map(
           static fn (string $label) => new EntityNotification($label, Url::fromRoute('<front>')),
-          $this->notifications[$entity->id()] ?? [],
+          $this->notifications[$entity->id() . ':' . $entity->language()->getId()] ?? [],
         );
       }
 
@@ -91,7 +93,7 @@ class EntityNotificationsFieldTest extends KernelTestBase {
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installSchema('node', ['node_access']);
-    $this->installConfig(['system', 'node', 'filter', 'views']);
+    $this->installConfig(['system', 'node', 'filter', 'views', 'language']);
 
     // Install dashboard view.
     $this->installConfigEntity('helfi_users', 'views.view.dashboard_your_content');
@@ -102,14 +104,14 @@ class EntityNotificationsFieldTest extends KernelTestBase {
    * Tests that notifications render in the title column.
    */
   public function testNotificationsRenderUnderTitle(): void {
-    $user = $this->setUpCurrentUser(permissions: ['access content']);
+    $user = $this->setUpCurrentUser(permissions: ['access content', 'administer users']);
 
     foreach (['First', 'Second'] as $title) {
       $nodes[$title] = Node::create(['type' => 'page', 'title' => $title, 'uid' => $user->id()]);
       $nodes[$title]->save();
     }
 
-    $this->notifications[$nodes['Second']->id()][] = 'notification';
+    $this->notifications[$nodes['Second']->id() . ':en'][] = 'notification';
 
     $view = Views::getView('dashboard_your_content');
     $this->assertNotNull($view);

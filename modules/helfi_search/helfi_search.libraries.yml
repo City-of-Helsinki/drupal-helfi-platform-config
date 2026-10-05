@@ -1,0 +1,10 @@
+similar_content:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  css:
+    component:
+      css/similar-content.css: {}
+  js:
+    js/similar-content.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
