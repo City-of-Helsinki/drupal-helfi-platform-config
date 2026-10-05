@@ -23,6 +23,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Unit tests for LinkedEvents external entity storage client.
@@ -56,10 +57,11 @@ class EventsTest extends UnitTestCase {
       self::PLUGIN_ID,
       self::PLUGIN_DEFINITION,
       $this->getStringTranslationStub(),
-      $this->createLoggerFactoryMock(),
+      $this->createMock(LoggerChannelInterface::class),
       $this->createMock(EntityTypeManagerInterface::class),
       $this->createMock(EntityFieldManagerInterface::class),
       $this->createTokenMock(),
+      $this->createMock(EventDispatcherInterface::class),
     );
 
     $reflection = new \ReflectionClass($events);
@@ -155,6 +157,7 @@ class EventsTest extends UnitTestCase {
       'token' => $this->createTokenMock(),
       'language_manager' => $languageManager,
       'http_client' => $httpClient,
+      'event_dispatcher' => $this->createMock(EventDispatcherInterface::class),
     ];
 
     $container = $this->createMock(ContainerInterface::class);
