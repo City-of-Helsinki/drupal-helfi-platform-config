@@ -55,7 +55,7 @@ final class LinkedEventsEvent extends ExternalEntity {
   /**
    * {@inheritdoc}
    */
-  public function getCacheMaxAge(): ?int {
+  public function getCacheMaxAge(): int {
     // Cache until the event ends + 5 seconds to give it some
     // buffer.
     if ($endTime = $this->getEndTime()?->getTimestamp()) {

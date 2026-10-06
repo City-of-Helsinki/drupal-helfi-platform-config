@@ -27,9 +27,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 final class Hearings extends RestClient {
 
-  public const API_URL = 'https://kerrokantasi.api.hel.fi/v1/hearing?';
 
-  public const HEARING_URL = 'https://kerrokantasi.hel.fi/';
+  public const string API_URL = 'https://kerrokantasi.api.hel.fi/v1/hearing?';
+
+  public const string HEARING_URL = 'https://kerrokantasi.hel.fi/';
 
   /**
    * The current language service.
@@ -53,7 +54,7 @@ final class Hearings extends RestClient {
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ) : self {
+  ) : static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->languageManager = $container->get('language_manager');
     $instance->client = $container->get('http_client');
