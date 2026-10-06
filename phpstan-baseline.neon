@@ -6667,12 +6667,6 @@ parameters:
 			path: tests/src/Unit/Plugin/Field/FieldWidget/LocationWidgetTest.php
 
 		-
-			message: '#^Method Drupal\\Tests\\helfi_platform_config\\Unit\\Plugin\\Field\\FieldWidget\\LocationWidgetTest\:\:massageFormValuesProvider\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 2
-			path: tests/src/Unit/Plugin/Field/FieldWidget/LocationWidgetTest.php
-
-		-
 			message: '#^Method Drupal\\Tests\\helfi_platform_config\\Unit\\Plugin\\Field\\FieldWidget\\LocationWidgetTest\:\:testMassageFormValues\(\) has parameter \$expected with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1

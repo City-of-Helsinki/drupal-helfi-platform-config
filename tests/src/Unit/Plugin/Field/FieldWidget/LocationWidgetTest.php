@@ -170,7 +170,7 @@ class LocationWidgetTest extends UnitTestCase {
    * @return array
    *   An array of test cases with input and expected output.
    *
-   * @phpstan-return array<string, array{input: array, expected: array}>
+   * @phpstan-return array<string, array{input: list<array<string, string|null>>, expected: list<array<string, string|null>>}>
    */
   public static function massageFormValuesProvider(): array {
     return [
