@@ -565,7 +565,10 @@ final class QueryBuilder {
         'name' => implode(' ', $source['name_parts'] ?? []),
         'email' => array_first($source['email'] ?? []),
         'job_title' => array_first($source['job_title'] ?? []),
-        'organization' => array_first($source['organization_name'] ?? []),
+        'organization_hierarchy' => array_values(array_filter(array_map(
+          static fn (array $organization): ?string => $organization['name'] ?? NULL,
+          $source['organization_hierarchy'] ?? [],
+        ))),
         'phones' => $values($source['public_phones'] ?? []),
         'addresses' => $values($source['public_addresses'] ?? []),
         'service_hours' => array_first($source['service_hours'] ?? []),

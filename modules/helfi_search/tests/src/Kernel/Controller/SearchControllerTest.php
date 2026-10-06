@@ -125,6 +125,10 @@ class SearchControllerTest extends KernelTestBase {
                   '_source' => [
                     'name_parts' => ['Matti', 'Meikäläinen'],
                     'email' => ['matti.meikalainen@hel.fi'],
+                    'organization_hierarchy' => [
+                      ['id' => 1, 'name' => 'Kaupunginkanslia'],
+                      ['id' => 2, 'name' => 'Viestintäosasto'],
+                    ],
                   ],
                 ],
               ],
@@ -185,6 +189,7 @@ class SearchControllerTest extends KernelTestBase {
     $this->assertCount(1, $data['contacts']);
     $this->assertEquals('Matti Meikäläinen', $data['contacts'][0]['name']);
     $this->assertEquals('matti.meikalainen@hel.fi', $data['contacts'][0]['email']);
+    $this->assertEquals(['Kaupunginkanslia', 'Viestintäosasto'], $data['contacts'][0]['organization_hierarchy']);
 
     // Test promotion error is handled gracefully.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'test query']);
