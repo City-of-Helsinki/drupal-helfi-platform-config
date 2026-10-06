@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
 use Drupal\pathauto\Entity\PathautoPattern;
 use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
@@ -20,10 +20,6 @@ class PathautoHookTest extends KernelTestBase {
 
   use ContentTypeCreationTrait;
   use UserCreationTrait;
-
-  private PathautoPattern $title_pattern;
-
-  private PathautoPattern $menu_title_pattern;
 
   /**
    * {@inheritdoc}
@@ -86,7 +82,7 @@ class PathautoHookTest extends KernelTestBase {
     $alias_repository = $this->container->get('path_alias.repository');
     $entity_type_manager = $this->container->get('entity_type.manager');
 
-    // Create first level link and assert.
+    // Assert that path should be node title for node without menu title.
     $node = $this->createPageByNodeForm('node-title', NULL, NULL);
     $alias = $alias_repository->lookupBySystemPath('/node/' . $node->id(), $node->language()->getId());
     $this->assertEquals('/node-title', $alias['alias'] ?? NULL);
@@ -115,7 +111,7 @@ class PathautoHookTest extends KernelTestBase {
     $this->assertEquals('/menu-title/sub-menu-title', $alias['alias'] ?? NULL);
   }
 
-  private function createPageByNodeForm(string $nodeTitle, ?string $menuTitle, ?string $parentPluginId): NodeInterface {
+  private function createPageByNodeForm(string $nodeTitle, ?string $menuTitle, ?string $parentPluginId): EntityInterface {
     $form_object = $this->container->get('entity_type.manager')
       ->getFormObject('node', 'default')
       ->setEntity(Node::create(['type' => 'page']));
