@@ -11,6 +11,7 @@ use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests the 'changed_at' views integration.
