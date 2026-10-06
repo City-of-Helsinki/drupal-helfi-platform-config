@@ -818,9 +818,6 @@ function helfi_platform_config_update_11008(): void {
 
 /**
  * Run the path updates for all nodes.
- *
- * @param array<string, mixed> $sandbox
- *   The sandbox.
  */
 function helfi_platform_config_update_11009(array &$sandbox): void {
   try {
@@ -881,4 +878,22 @@ function helfi_platform_config_update_11009(array &$sandbox): void {
   $sandbox['#finished'] = $sandbox['total'] > 0
     ? $sandbox['current'] / $sandbox['total']
     : 1;
+}
+
+/**
+ * Run the path updates for all nodes.
+ */
+function helfi_platform_config_update_11010(array &$sandbox): void {
+  if (\Drupal::moduleHandler()->moduleExists('pathauto')) {
+    // Always use menu link on url.
+    $config = \Drupal::configFactory()->getEditable('pathauto.pattern.page_content_pattern');
+    $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:title]')
+      ->save();
+
+    $config = \Drupal::configFactory()->getEditable('pathauto.pattern.landing_page_content_pattern');
+    $config->set('pattern', '/[node:menu-link:parents:join-path]/[node:title]')
+      ->save();
+  }
+
+  helfi_platform_config_update_11009($sandbox);
 }
