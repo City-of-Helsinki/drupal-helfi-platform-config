@@ -8,6 +8,8 @@ use Drupal\Core\Hook\Attribute\Hook;
 
 /**
  * Permission hooks.
+ *
+ * @codeCoverageIgnore
  */
 final readonly class PermissionHooks {
 
