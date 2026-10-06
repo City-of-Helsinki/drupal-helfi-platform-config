@@ -15,8 +15,8 @@ use Drupal\views\Views;
 /**
  * Tests the 'changed_at' views integration.
  */
+#[RunTestsInSeparateProcesses]
 final class ChangedAtViewsHooksTest extends KernelTestBase {
-
   /**
    * {@inheritdoc}
    */

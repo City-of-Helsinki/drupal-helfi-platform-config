@@ -25,7 +25,6 @@ use Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle;
  */
 class ChangedAtViewsHooks {
 
-  use AutowireTrait;
   use StringTranslationTrait;
 
   private const string FIELD_NAME = 'changed_at';
