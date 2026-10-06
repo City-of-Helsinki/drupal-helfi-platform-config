@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\Block;
 
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\helfi_platform_config\EntityVersionMatcher;
 use Drupal\helfi_platform_config\Plugin\Block\SidebarContentBlock;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -22,7 +19,7 @@ class SidebarContentBlockTest extends BlockUnitTestBase {
    *
    * @var \Drupal\helfi_platform_config\Plugin\Block\SidebarContentBlock|\PHPUnit\Framework\MockObject\MockObject
    */
-  private SidebarContentBlock|MockObject $lowerContentBlock;
+  private SidebarContentBlock|MockObject $sidebarContentBlock;
 
   /**
    * {@inheritdoc}
@@ -30,7 +27,7 @@ class SidebarContentBlockTest extends BlockUnitTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->lowerContentBlock = $this->getMockBuilder(SidebarContentBlock::class)
+    $this->sidebarContentBlock = $this->getMockBuilder(SidebarContentBlock::class)
       ->setConstructorArgs([
         [],
         'sidebar_content_block',
@@ -39,22 +36,18 @@ class SidebarContentBlockTest extends BlockUnitTestBase {
         $this->entityVersionMatcher,
         $this->moduleHandler,
       ])
-      ->onlyMethods(['getCurrentEntityVersion'])
+      ->onlyMethods([])
       ->getMock();
 
-    $this->lowerContentBlock->setStringTranslation($this->stringTranslation);
+    $this->sidebarContentBlock->setStringTranslation($this->stringTranslation);
   }
 
   /**
-   * Tests that render array is empty when no entity is available.
+   * Tests that render array contains the sidebar content theme.
    *
    * @covers ::build
    */
   public function testBuildReturnsDefaultRenderArray(): void {
-    $this->lowerContentBlock->expects($this->once())
-      ->method('getCurrentEntityVersion')
-      ->willReturn(['entity' => NULL, 'entity_version' => NULL]);
-
     $expected = [
       'sidebar_content' => [
         '#theme' => 'sidebar_content_block',
@@ -62,49 +55,7 @@ class SidebarContentBlockTest extends BlockUnitTestBase {
       ],
     ];
 
-    $this->assertEquals($expected, $this->lowerContentBlock->build());
-  }
-
-  /**
-   * Tests that render array includes paragraphs and cache tags.
-   *
-   * @covers ::build
-   */
-  public function testBuildIncludesParagraphsAndCacheTags(): void {
-    $contentEntity = $this->createMock(ContentEntityInterface::class);
-    $fieldSidebarContent = $this->createMock(FieldItemListInterface::class);
-
-    $contentEntity->expects($this->once())
-      ->method('hasField')
-      ->with('field_sidebar_content')
-      ->willReturn(TRUE);
-
-    $contentEntity->expects($this->once())
-      ->method('get')
-      ->with('field_sidebar_content')
-      ->willReturn($fieldSidebarContent);
-
-    $contentEntity->expects($this->once())
-      ->method('getCacheTags')
-      ->willReturn(['entity:node:1']);
-
-    $this->lowerContentBlock->expects($this->once())
-      ->method('getCurrentEntityVersion')
-      ->willReturn(['entity' => $contentEntity, 'entity_version' => EntityVersionMatcher::ENTITY_VERSION_REVISION]);
-
-    $expected = [
-      'sidebar_content' => [
-        '#theme' => 'sidebar_content_block',
-        '#title' => $this->translate('Sidebar content block'),
-        '#is_revision' => TRUE,
-        '#paragraphs' => $fieldSidebarContent,
-        '#cache' => [
-          'tags' => ['entity:node:1'],
-        ],
-      ],
-    ];
-
-    $this->assertEquals($expected, $this->lowerContentBlock->build());
+    $this->assertEquals($expected, $this->sidebarContentBlock->build());
   }
 
 }
