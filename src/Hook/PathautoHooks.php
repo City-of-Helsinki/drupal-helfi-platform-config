@@ -52,7 +52,6 @@ final class PathautoHooks {
         $pattern->setPattern(self::menu_title_pattern);
       }
     }
-
   }
 
 }
