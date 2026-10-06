@@ -17,7 +17,7 @@ final class PathautoHooks {
 
   private const string menu_title_pattern = '/[node:menu-link:parents:join-path]/[node:menu-link]';
 
-  public function __construct(protected MenuLinkManager $menuLinkManager) {
+  public function __construct(protected MenuLinkManagerInterface $menuLinkManager) {
   }
 
   /**
