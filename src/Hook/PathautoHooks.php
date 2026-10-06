@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Hook;
 
-use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\node\NodeInterface;
@@ -15,7 +14,7 @@ use Drupal\pathauto\Entity\PathautoPattern;
  */
 final class PathautoHooks {
 
-  private const string menu_title_pattern = '/[node:menu-link:parents:join-path]/[node:menu-link]';
+  private const string MENU_TITLE_PATTERN = '/[node:menu-link:parents:join-path]/[node:menu-link]';
 
   public function __construct(protected MenuLinkManagerInterface $menuLinkManager) {
   }
@@ -49,7 +48,7 @@ final class PathautoHooks {
       $title = $link->getTitle();
 
       if ($title) {
-        $pattern->setPattern(self::menu_title_pattern);
+        $pattern->setPattern(self::MENU_TITLE_PATTERN);
       }
     }
   }
