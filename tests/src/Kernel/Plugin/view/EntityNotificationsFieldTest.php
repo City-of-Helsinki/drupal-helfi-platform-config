@@ -11,7 +11,6 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_platform_config\EntityNotifications\EntityNotification;
 use Drupal\helfi_platform_config\EntityNotifications\EntityNotificationProviderInterface;
-use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;

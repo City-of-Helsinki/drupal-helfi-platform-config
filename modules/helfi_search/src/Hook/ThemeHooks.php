@@ -23,7 +23,7 @@ final class ThemeHooks {
         'variables' => [
           'edit_url' => NULL,
           'markdown' => '',
-          'documents' => []
+          'documents' => [],
         ],
         'template' => 'similar-content',
       ],

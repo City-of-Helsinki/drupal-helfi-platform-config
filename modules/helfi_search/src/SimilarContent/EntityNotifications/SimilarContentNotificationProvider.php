@@ -54,7 +54,8 @@ final class SimilarContentNotificationProvider implements EntityNotificationProv
       return [];
     }
 
-    // Simple time-based cache: Re-fetch new similar content results after 5 minutes.
+    // Simple time-based cache: Re-fetch new similar content results after
+    // 5 minutes.
     $cacheability->mergeCacheMaxAge(self::MAX_AGE);
 
     if ($count === 0) {
