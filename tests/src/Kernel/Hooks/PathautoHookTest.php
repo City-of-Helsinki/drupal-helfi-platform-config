@@ -10,12 +10,14 @@ use Drupal\node\Entity\Node;
 use Drupal\pathauto\Entity\PathautoPattern;
 use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests hook_pathauto_pattern_alter().
- *
- * @group pathauto
  */
+#[Group('helfi_platform_config')]
+#[RunTestsInSeparateProcesses]
 class PathautoHookTest extends KernelTestBase {
 
   use ContentTypeCreationTrait;
