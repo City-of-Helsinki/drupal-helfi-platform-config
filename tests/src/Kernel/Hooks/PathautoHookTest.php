@@ -82,7 +82,6 @@ class PathautoHookTest extends KernelTestBase {
    */
   public function testNodePathWithoutMenuLinks(): void {
     $alias_repository = $this->container->get('path_alias.repository');
-    $entity_type_manager = $this->container->get('entity_type.manager');
 
     // Assert that path should be node title for node without menu title.
     $node = $this->createPageByNodeForm('node-title', NULL, NULL);
@@ -113,6 +112,19 @@ class PathautoHookTest extends KernelTestBase {
     $this->assertEquals('/menu-title/sub-menu-title', $alias['alias'] ?? NULL);
   }
 
+  /**
+   * Create a node by submitting node-edit form.
+   *
+   * @param string $nodeTitle
+   *   The node title.
+   * @param string|null $menuTitle
+   *   Title for menu item.
+   * @param string|null $parentPluginId
+   *   Menu item parent if nested menu.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The node.
+   */
   private function createPageByNodeForm(string $nodeTitle, ?string $menuTitle, ?string $parentPluginId): EntityInterface {
     $form_object = $this->container->get('entity_type.manager')
       ->getFormObject('node', 'default')
