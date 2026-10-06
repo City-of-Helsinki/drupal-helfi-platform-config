@@ -818,9 +818,6 @@ function helfi_platform_config_update_11008(): void {
 
 /**
  * Run the path updates for all nodes.
- *
- * @param array<string, mixed> $sandbox
- *   The sandbox.
  */
 function helfi_platform_config_update_11009(array &$sandbox): void {
   try {
@@ -885,9 +882,6 @@ function helfi_platform_config_update_11009(array &$sandbox): void {
 
 /**
  * Run the path updates for all nodes.
- *
- * @param array<string, mixed> $sandbox
- *   The sandbox.
  */
 function helfi_platform_config_update_11010(array &$sandbox): void {
   if (\Drupal::moduleHandler()->moduleExists('pathauto')) {
