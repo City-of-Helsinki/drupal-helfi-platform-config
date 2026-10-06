@@ -6,7 +6,7 @@ namespace Drupal\helfi_platform_config\Hook;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
-use Drupal\Core\Menu\MenuLinkManager;
+use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\node\NodeInterface;
 use Drupal\pathauto\Entity\PathautoPattern;
 
