@@ -400,13 +400,12 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
     $this->assertSame('<p>Test content</p>', $this->getEditorDataAsHtmlString());
 
     // Marked non-breaking spaces are kept.
-    $marked_content = '<p>Test<span data-nbsp="">&nbsp;</span>content</p>';
-    $this->initializeEditor($marked_content);
-    $this->assertSame($marked_content, $this->getEditorDataAsHtmlString());
+    $this->initializeEditor('<p>Test<span data-nbsp="">&nbsp;</span>content</p>');
+    $this->assertSame('<p>Test<span data-nbsp="">&nbsp;</span>content</p>', $this->getEditorDataAsHtmlString());
 
     // Repeated non-breaking spaces are collapsed into one space.
     $this->initializeEditor('<p>Test<span data-nbsp="">&nbsp;&nbsp;&nbsp;</span>content</p>');
-    $this->assertSame($marked_content, $this->getEditorDataAsHtmlString());
+    $this->assertSame('<p>Test<span data-nbsp="">&nbsp;</span>content</p>', $this->getEditorDataAsHtmlString());
 
     // A marked non-breaking space next to a regular space is kept.
     $before_space_content = '<p>Test<span data-nbsp="">&nbsp;</span> content</p>';
@@ -425,7 +424,7 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
     // An inserted non-breaking space is wrapped in <span data-nbsp>.
     $this->initializeEditor('<p>Testcontent</p>');
     $this->insertNonBreakingSpace(strlen('Test'));
-    $this->assertSame($marked_content, $this->getEditorDataAsHtmlString());
+    $this->assertSame('<p>Test<span data-nbsp="">&nbsp;</span>content</p>', $this->getEditorDataAsHtmlString());
   }
 
   /**
