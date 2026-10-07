@@ -243,13 +243,13 @@ final class SharedIndexTest extends KernelTestBase {
    * Returns the etusivu index role when the installed enum defines it.
    */
   private function etusivuIndexRole(): ?ProjectRoleEnum {
-    $enum = new \ReflectionEnum(ProjectRoleEnum::class);
-    if (!$enum->hasCase('HasEtusivuIndex')) {
-      return NULL;
+    foreach (ProjectRoleEnum::cases() as $role) {
+      if ($role->name === 'HasEtusivuIndex') {
+        return $role;
+      }
     }
 
-    $role = $enum->getCase('HasEtusivuIndex')->getValue();
-    return $role instanceof ProjectRoleEnum ? $role : NULL;
+    return NULL;
   }
 
   /**
