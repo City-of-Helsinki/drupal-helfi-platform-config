@@ -1,23 +1,26 @@
-label: Innehåll
-description: 'Hitta och hantera innehåll.'
 display:
   default:
-    display_title: Förvald
     display_options:
-      title: Innehåll
       fields:
+        views_bulk_operations_bulk_form:
+          action_title: Åtgärd
+        content_translation_outdated:
+          label: 'Översättnign utdaterad'
+          settings:
+            format_custom_true: föråldrad
         title:
           label: Titel
         type:
           label: Innehållstyp
-        name:
+        uid:
           label: Författare
+        revision_uid: {  }
+        langcode:
+          label: Språk
         status:
           settings:
             format_custom_false: 'Ej publicerad'
             format_custom_true: Publicerad
-        langcode:
-          label: Språk
         operations:
           label: Funktioner
         changed_at:
@@ -29,6 +32,10 @@ display:
             previous: Föregående
             first: Första
             last: Sista
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
       exposed_form:
         options:
           submit_button: Filtrera
@@ -36,9 +43,6 @@ display:
           exposed_sorts_label: 'Sortera efter'
           sort_asc_label: Stigande
           sort_desc_label: Fallande
-      empty:
-        area_text_custom:
-          content: 'Inget innehåll tillgängligt.'
       filters:
         title:
           expose:
@@ -47,6 +51,8 @@ display:
           expose:
             label: Innehållstyp
         status:
+          expose:
+            label: 'Status för publicering'
           group_info:
             label: 'Status för publicering'
             group_items:
@@ -57,11 +63,10 @@ display:
         langcode:
           expose:
             label: Språk
-  page_1:
-    display_title: Sida
-    display_options:
-      menu:
-        title: Innehåll
-      tab_options:
-        title: Innehåll
-        description: 'Hitta och hantera innehåll'
+      empty:
+        area:
+          content:
+            value: '<p>No pages to display.</p>'
+            format: full_html
+    display_title: Förvald
+  your_content_block: {  }
