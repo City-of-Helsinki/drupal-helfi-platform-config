@@ -1088,3 +1088,11 @@ function helfi_platform_config_update_11011(array &$sandbox): TranslatableMarkup
     '@stale' => $sandbox['stale'],
   ]);
 }
+
+/**
+ * UHF-13030: Remove the sidebar content blocks.
+ */
+function helfi_platform_config_update_11012(): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('block');
+  $storage->delete($storage->loadByProperties(['plugin' => 'sidebar_content_block']));
+}
