@@ -11,8 +11,12 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Utility\Token;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Environment\ProjectMetadata;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\Plugin\ExternalEntities\StorageClient\SharedIndex;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
@@ -159,6 +163,23 @@ final class SharedIndexTest extends UnitTestCase {
   }
 
   /**
+   * Tests that searches are skipped when the etusivu index role is absent.
+   */
+  public function testSearchSkippedWithoutEtusivuIndexRole(): void {
+    $history = [];
+    $this->assertSame([], $this->createSut($history, enabled: FALSE)->querySource([
+      ['field' => 'search', 'value' => 'library'],
+    ]));
+    $this->assertSame([], $history);
+
+    $history = [];
+    $this->assertSame([], $this->createSut($history, enabled: FALSE)->loadMultiple([
+      'site_etusivu/entity:node/1:en',
+    ]));
+    $this->assertSame([], $history);
+  }
+
+  /**
    * Tests that Elasticsearch errors are caught.
    */
   public function testQuerySourceException(): void {
@@ -173,8 +194,10 @@ final class SharedIndexTest extends UnitTestCase {
    *   Guzzle history container.
    * @param \Psr\Http\Message\ResponseInterface[] $responses
    *   Mocked responses.
+   * @param bool $enabled
+   *   Whether the active project is given the etusivu index role.
    */
-  private function createSut(array &$history, array $responses = []): SharedIndex {
+  private function createSut(array &$history, array $responses = [], bool $enabled = TRUE): SharedIndex {
     if ($responses === []) {
       $responses = [
         $this->createElasticsearchResponse([
@@ -210,10 +233,20 @@ final class SharedIndexTest extends UnitTestCase {
       $this->createMock(EventDispatcherInterface::class),
     );
 
+    $project = new Project(
+      'example',
+      new ProjectMetadata('https://example.com/example'),
+      roles: $enabled ? [ProjectRoleEnum::HasEtusivuIndex] : [],
+    );
+    $roles_resolver = $this->createMock(EnvironmentResolverInterface::class);
+    $roles_resolver->method('getActiveProject')->willReturn($project);
+    $project_roles = new ActiveProjectRoles($roles_resolver);
+
     foreach ([
       'elasticsearchClient' => $client,
       'environmentResolver' => $this->getEnvironmentResolver(Project::ETUSIVU, EnvironmentEnum::Local),
       'languageManager' => $language_manager,
+      'projectRoles' => $project_roles,
     ] as $property => $value) {
       $reflection = new \ReflectionProperty(SharedIndex::class, $property);
       $reflection->setValue($sut, $value);
