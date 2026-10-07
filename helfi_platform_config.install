@@ -897,3 +897,25 @@ function helfi_platform_config_update_11010(array &$sandbox): void {
 
   helfi_platform_config_update_11009($sandbox);
 }
+
+/**
+ * UHF-12647: Enable multisite linking in selected instances.
+ */
+function helfi_platform_config_update_11011(): void {
+  /** @var \Drupal\helfi_api_base\Environment\ActiveProjectRoles $projectRoles */
+  $projectRoles = \Drupal::service(ActiveProjectRoles::class);
+  try {
+    $project = \Drupal::service(EnvironmentResolverInterface::class)
+      ->getActiveProject();
+  }
+  catch (\InvalidArgumentException) {
+    $project = NULL;
+  }
+
+  // Only enable on core instances and paatokset.
+  if ($projectRoles->hasRole(ProjectRoleEnum::Core) || $project?->getName() === Project::PAATOKSET) {
+    $config = \Drupal::configFactory()->getEditable('helfi_platform_config.multi_site_linking');
+    $config->set('enable', TRUE)
+      ->save();
+  }
+}

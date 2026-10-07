@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit\Plugin\ExternalEntities\StorageClient;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -159,6 +161,23 @@ final class SharedIndexTest extends UnitTestCase {
   }
 
   /**
+   * Tests that searches are skipped when multi-site linking is not enabled.
+   */
+  public function testSearchSkippedWhenMultiSiteLinkingDisabled(): void {
+    $history = [];
+    $this->assertSame([], $this->createSut($history, enabled: FALSE)->querySource([
+      ['field' => 'search', 'value' => 'library'],
+    ]));
+    $this->assertSame([], $history);
+
+    $history = [];
+    $this->assertSame([], $this->createSut($history, enabled: NULL)->loadMultiple([
+      'site_etusivu/entity:node/1:en',
+    ]));
+    $this->assertSame([], $history);
+  }
+
+  /**
    * Tests that Elasticsearch errors are caught.
    */
   public function testQuerySourceException(): void {
@@ -173,8 +192,10 @@ final class SharedIndexTest extends UnitTestCase {
    *   Guzzle history container.
    * @param \Psr\Http\Message\ResponseInterface[] $responses
    *   Mocked responses.
+   * @param bool|null $enabled
+   *   Multi-site linking config value. NULL means the setting is not set.
    */
-  private function createSut(array &$history, array $responses = []): SharedIndex {
+  private function createSut(array &$history, array $responses = [], bool|null $enabled = TRUE): SharedIndex {
     if ($responses === []) {
       $responses = [
         $this->createElasticsearchResponse([
@@ -210,10 +231,18 @@ final class SharedIndexTest extends UnitTestCase {
       $this->createMock(EventDispatcherInterface::class),
     );
 
+    $config = $this->createMock(ImmutableConfig::class);
+    $config->method('get')->with('enable')->willReturn($enabled);
+    $config_factory = $this->createMock(ConfigFactoryInterface::class);
+    $config_factory->method('get')
+      ->with('helfi_platform_config.multi_site_linking')
+      ->willReturn($config);
+
     foreach ([
       'elasticsearchClient' => $client,
       'environmentResolver' => $this->getEnvironmentResolver(Project::ETUSIVU, EnvironmentEnum::Local),
       'languageManager' => $language_manager,
+      'configFactory' => $config_factory,
     ] as $property => $value) {
       $reflection = new \ReflectionProperty(SharedIndex::class, $property);
       $reflection->setValue($sut, $value);

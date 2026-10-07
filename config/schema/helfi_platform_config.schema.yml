@@ -80,6 +80,14 @@ helfi_platform_config.clear_site_data:
         type: string
         label: 'Directive'
 
+helfi_platform_config.multi_site_linking:
+  type: config_object
+  label: 'Multi-site linking settings'
+  mapping:
+    enable:
+      type: boolean
+      label: 'Enable multi-site linking'
+
 # Default value.
 field.value.location:
   type: mapping

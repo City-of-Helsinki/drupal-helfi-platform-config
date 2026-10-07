@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Plugin\ExternalEntities\StorageClient;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -51,6 +52,11 @@ final class SharedIndex extends StorageClientBase {
   protected LanguageManagerInterface $languageManager;
 
   /**
+   * The config factory.
+   */
+  protected ConfigFactoryInterface $configFactory;
+
+  /**
    * {@inheritdoc}
    *
    * @phpstan-param array<string, mixed> $configuration
@@ -65,6 +71,7 @@ final class SharedIndex extends StorageClientBase {
     $instance->elasticsearchClient = $container->get('helfi_platform_config.etusivu_elastic_client');
     $instance->environmentResolver = $container->get('helfi_api_base.environment_resolver');
     $instance->languageManager = $container->get('language_manager');
+    $instance->configFactory = $container->get('config.factory');
     return $instance;
   }
 
@@ -91,6 +98,10 @@ final class SharedIndex extends StorageClientBase {
    *   Raw Elasticsearch hits.
    */
   private function search(array $body): array {
+    if (!$this->configFactory->get('helfi_platform_config.multi_site_linking')->get('enable')) {
+      return [];
+    }
+
     try {
       $response = $this->elasticsearchClient->search([
         'index' => self::INDEX,

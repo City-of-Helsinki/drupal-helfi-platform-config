@@ -62,6 +62,9 @@ final class SharedIndexTest extends KernelTestBase {
       ->getAllRoutes();
 
     $this->installConfig(['system', 'external_entities']);
+    $this->config('helfi_platform_config.multi_site_linking')
+      ->set('enable', TRUE)
+      ->save();
     $this->installEntitySchema('user');
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
 
