@@ -85,6 +85,7 @@ final class SharedIndexTest extends UnitTestCase {
    * Tests a free-text search query.
    */
   public function testQuerySourceTextSearch(): void {
+    $this->skipWithoutEtusivuIndexRole();
     $history = [];
     $this->createSut($history)->querySource([
       ['field' => 'search', 'value' => 'library'],
@@ -113,6 +114,7 @@ final class SharedIndexTest extends UnitTestCase {
    * Tests looking up an existing canonical path.
    */
   public function testQuerySourceCanonicalPath(): void {
+    $this->skipWithoutEtusivuIndexRole();
     $history = [];
     $this->createSut($history)->querySource([
       [
@@ -134,6 +136,7 @@ final class SharedIndexTest extends UnitTestCase {
    * Tests filtering by Elasticsearch document ids.
    */
   public function testQuerySourceById(): void {
+    $this->skipWithoutEtusivuIndexRole();
     $history = [];
     $hits = $this->createSut($history)->loadMultiple(['site_etusivu/entity:node/1:en', '2']);
 
@@ -166,6 +169,7 @@ final class SharedIndexTest extends UnitTestCase {
    * Tests that searches are skipped when the etusivu index role is absent.
    */
   public function testSearchSkippedWithoutEtusivuIndexRole(): void {
+    $this->skipWithoutEtusivuIndexRole();
     $history = [];
     $this->assertSame([], $this->createSut($history, enabled: FALSE)->querySource([
       ['field' => 'search', 'value' => 'library'],
@@ -183,6 +187,7 @@ final class SharedIndexTest extends UnitTestCase {
    * Tests that Elasticsearch errors are caught.
    */
   public function testQuerySourceException(): void {
+    $this->skipWithoutEtusivuIndexRole();
     $history = [];
     $this->assertSame([], $this->createSut($history, [new Response(500)])->querySource());
   }
@@ -233,10 +238,11 @@ final class SharedIndexTest extends UnitTestCase {
       $this->createMock(EventDispatcherInterface::class),
     );
 
+    $role = $this->etusivuIndexRole();
     $project = new Project(
       'example',
       new ProjectMetadata('https://example.com/example'),
-      roles: $enabled ? [ProjectRoleEnum::HasEtusivuIndex] : [],
+      roles: ($enabled && $role instanceof ProjectRoleEnum) ? [$role] : [],
     );
     $roles_resolver = $this->createMock(EnvironmentResolverInterface::class);
     $roles_resolver->method('getActiveProject')->willReturn($project);
@@ -253,6 +259,28 @@ final class SharedIndexTest extends UnitTestCase {
     }
 
     return $sut;
+  }
+
+  /**
+   * Skips the test when this helfi_api_base has no etusivu index role.
+   */
+  private function skipWithoutEtusivuIndexRole(): void {
+    if (!$this->etusivuIndexRole() instanceof ProjectRoleEnum) {
+      $this->markTestSkipped('ProjectRoleEnum::HasEtusivuIndex is not available in this version of helfi_api_base.');
+    }
+  }
+
+  /**
+   * Returns the etusivu index role when the installed enum defines it.
+   */
+  private function etusivuIndexRole(): ?ProjectRoleEnum {
+    $enum = new \ReflectionEnum(ProjectRoleEnum::class);
+    if (!$enum->hasCase('HasEtusivuIndex')) {
+      return NULL;
+    }
+
+    $role = $enum->getCase('HasEtusivuIndex')->getValue();
+    return $role instanceof ProjectRoleEnum ? $role : NULL;
   }
 
   /**
