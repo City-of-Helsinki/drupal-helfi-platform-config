@@ -5929,12 +5929,6 @@ parameters:
 			path: src/Plugin/Block/ReactAndShare.php
 
 		-
-			message: '#^Method Drupal\\helfi_platform_config\\Plugin\\Block\\SidebarContentBlock\:\:build\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Plugin/Block/SidebarContentBlock.php
-
-		-
 			message: '#^Method Drupal\\helfi_platform_config\\Plugin\\Block\\SocialMediaSharingBlock\:\:build\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
