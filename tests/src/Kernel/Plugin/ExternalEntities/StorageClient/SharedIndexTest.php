@@ -61,10 +61,6 @@ final class SharedIndexTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    if (!$this->etusivuIndexRole() instanceof ProjectRoleEnum) {
-      $this->markTestSkipped('ProjectRoleEnum::HasEtusivuIndex is not available in this version of helfi_api_base.');
-    }
-
     $this->container
       ->get(RouteProviderInterface::class)
       ->getAllRoutes();
@@ -228,28 +224,14 @@ final class SharedIndexTest extends KernelTestBase {
    * Stubs whether the active project has the etusivu index role.
    */
   private function setEtusivuIndexRole(bool $enabled): void {
-    $role = $this->etusivuIndexRole();
     $project = new Project(
       'example',
       new ProjectMetadata('https://example.com/example'),
-      roles: ($enabled && $role instanceof ProjectRoleEnum) ? [$role] : [],
+      roles: $enabled ? [ProjectRoleEnum::HasEtusivuIndex] : [],
     );
     $resolver = $this->createMock(EnvironmentResolverInterface::class);
     $resolver->method('getActiveProject')->willReturn($project);
     $this->container->set(ActiveProjectRoles::class, new ActiveProjectRoles($resolver));
-  }
-
-  /**
-   * Returns the etusivu index role when the installed enum defines it.
-   */
-  private function etusivuIndexRole(): ?ProjectRoleEnum {
-    foreach (ProjectRoleEnum::cases() as $role) {
-      if ($role->name === 'HasEtusivuIndex') {
-        return $role;
-      }
-    }
-
-    return NULL;
   }
 
   /**

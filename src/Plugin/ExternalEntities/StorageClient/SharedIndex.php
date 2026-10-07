@@ -96,27 +96,7 @@ final class SharedIndex extends StorageClientBase {
    *   TRUE if multisite linking is enabled, FALSE otherwise.
    */
   private function isEnabled(): bool {
-    $role = $this->etusivuIndexRole();
-    return $role instanceof ProjectRoleEnum && $this->projectRoles->hasRole($role);
-  }
-
-  /**
-   * The etusivu index role, when this helfi_api_base version defines it.
-   *
-   * Older releases of helfi_api_base do not include this enum case. Matching
-   * it by name avoids a fatal error from a missing case.
-   *
-   * @return \Drupal\helfi_api_base\Environment\ProjectRoleEnum|null
-   *   The role, or NULL when it is not defined.
-   */
-  private function etusivuIndexRole(): ?ProjectRoleEnum {
-    foreach (ProjectRoleEnum::cases() as $role) {
-      if ($role->name === 'HasEtusivuIndex') {
-        return $role;
-      }
-    }
-
-    return NULL;
+    return $this->projectRoles->hasRole(ProjectRoleEnum::HasEtusivuIndex);
   }
 
   /**
