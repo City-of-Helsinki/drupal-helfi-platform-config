@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Plugin\ExternalEntities\StorageClient;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -12,6 +11,8 @@ use Drupal\Core\Utility\Error;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\StorageClientBase;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\MultisiteContentId;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
@@ -52,9 +53,9 @@ final class SharedIndex extends StorageClientBase {
   protected LanguageManagerInterface $languageManager;
 
   /**
-   * The config factory.
+   * The active project roles.
    */
-  protected ConfigFactoryInterface $configFactory;
+  protected ActiveProjectRoles $projectRoles;
 
   /**
    * {@inheritdoc}
@@ -71,7 +72,7 @@ final class SharedIndex extends StorageClientBase {
     $instance->elasticsearchClient = $container->get('helfi_platform_config.etusivu_elastic_client');
     $instance->environmentResolver = $container->get('helfi_api_base.environment_resolver');
     $instance->languageManager = $container->get('language_manager');
-    $instance->configFactory = $container->get('config.factory');
+    $instance->projectRoles = $container->get(ActiveProjectRoles::class);
     return $instance;
   }
 
@@ -89,6 +90,16 @@ final class SharedIndex extends StorageClientBase {
   }
 
   /**
+   * Checks if multisite linking is enabled.
+   *
+   * @return bool
+   *   TRUE if multisite linking is enabled, FALSE otherwise.
+   */
+  private function isEnabled(): bool {
+    return $this->projectRoles->hasRole(ProjectRoleEnum::HasEtusivuIndex);
+  }
+
+  /**
    * Executes a search against the embeddings index.
    *
    * @param array<string, mixed> $body
@@ -98,7 +109,7 @@ final class SharedIndex extends StorageClientBase {
    *   Raw Elasticsearch hits.
    */
   private function search(array $body): array {
-    if (!$this->configFactory->get('helfi_platform_config.multi_site_linking')->get('enable')) {
+    if (!$this->isEnabled()) {
       return [];
     }
 
