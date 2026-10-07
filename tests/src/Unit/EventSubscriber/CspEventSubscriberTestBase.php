@@ -37,35 +37,35 @@ abstract class CspEventSubscriberTestBase extends UnitTestCase {
   /**
    * The Event.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\csp\Event\PolicyAlterEvent>
    */
   protected ObjectProphecy $event;
 
   /**
    * The Csp policy.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\csp\Csp>
    */
   protected ObjectProphecy $policy;
 
   /**
    * The config factory.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\Core\Config\ConfigFactoryInterface>
    */
   protected ObjectProphecy $configFactory;
 
   /**
    * The ModuleHandlerInterface.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\Core\Extension\ModuleHandlerInterface>
    */
   protected ObjectProphecy $moduleHandler;
 
   /**
    * The PolicyHelper.
    *
-   * @var \Prophecy\Prophecy\ObjectProphecy
+   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\csp\PolicyHelper>
    */
   protected ObjectProphecy $policyHelper;
 

@@ -9,13 +9,8 @@ use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EmbeddingApiInterface;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
-use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticKernelTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
-use Elastic\Elasticsearch\ClientBuilder;
-use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -31,7 +26,7 @@ class SearchControllerTest extends KernelTestBase {
 
   use ProphecyTrait;
   use ApiTestTrait;
-  use ElasticTrait;
+  use ElasticKernelTrait;
   use UserCreationTrait;
 
   /**
@@ -81,77 +76,90 @@ class SearchControllerTest extends KernelTestBase {
 
     $this->container->set(EmbeddingApiInterface::class, $embeddingsModel->reveal());
 
-    $client = ClientBuilder::create()
-      ->setHttpClient($this->createMockHttpClient([
-        // Empty response (no promotions, no KNN results).
-        $this->createElasticsearchResponse([
-          'responses' => [
-            ['hits' => ['hits' => []]],
-            ['hits' => ['hits' => []]],
-          ],
-        ]),
-        // Response with promoted and KNN results.
-        $this->createElasticsearchResponse([
-          'responses' => [
-            [
+    $this->mockEtusivuElasticClient([
+      // Empty response (no promotions, no KNN results).
+      $this->createElasticsearchResponse([
+        'responses' => [
+          ['hits' => ['hits' => []]],
+          ['hits' => ['hits' => []]],
+        ],
+      ]),
+      // Response with promoted and KNN results.
+      $this->createElasticsearchResponse([
+        'responses' => [
+          [
+            'hits' => [
               'hits' => [
-                'hits' => [
-                  [
-                    '_score' => 1.2,
-                    '_source' => [
-                      'title' => ['Promoted Result'],
-                      'description' => ['A promoted description'],
-                      'link' => ['/fi/promoted'],
-                      'search_api_language' => ['fi'],
-                    ],
-                  ],
-                ],
-              ],
-            ],
-            [
-              'hits' => [
-                'hits' => [
-                  [
-                    '_score' => 0.95,
-                    '_source' => [
-                      'entity_type' => ['node'],
-                      'url' => ['/fi/test-page'],
-                      'label' => ['Test Page'],
-                      'search_api_language' => ['fi'],
-                    ],
+                [
+                  '_score' => 1.2,
+                  '_source' => [
+                    'title' => ['Promoted Result'],
+                    'description' => ['A promoted description'],
+                    'link' => ['/fi/promoted'],
+                    'search_api_language' => ['fi'],
                   ],
                 ],
               ],
             ],
           ],
-        ]),
-        // Promotion sub-query errors, KNN succeeds.
-        $this->createElasticsearchResponse([
-          'responses' => [
-            ['error' => ['type' => 'index_not_found_exception']],
-            [
+          [
+            'hits' => [
               'hits' => [
-                'hits' => [
-                  [
-                    '_score' => 0.80,
-                    '_source' => [
-                      'entity_type' => ['node'],
-                      'url' => ['/fi/fallback'],
-                      'label' => ['Fallback Page'],
-                      'search_api_language' => ['fi'],
+                [
+                  '_score' => 0.95,
+                  '_source' => [
+                    'entity_type' => ['node'],
+                    'url' => ['/fi/test-page'],
+                    'label' => ['Test Page'],
+                    'search_api_language' => ['fi'],
+                  ],
+                ],
+              ],
+            ],
+          ],
+          [
+            'hits' => [
+              'hits' => [
+                [
+                  '_score' => 3.1,
+                  '_source' => [
+                    'name_parts' => ['Matti', 'Meikäläinen'],
+                    'email' => ['matti.meikalainen@hel.fi'],
+                    'organization_hierarchy' => [
+                      ['id' => 1, 'name' => 'Kaupunginkanslia'],
+                      ['id' => 2, 'name' => 'Viestintäosasto'],
                     ],
                   ],
                 ],
               ],
             ],
           ],
-        ]),
-        // Error response.
-        new Response(500, [], 'Internal Server Error'),
-      ]))
-      ->build();
-
-    $this->container->set('helfi_platform_config.etusivu_elastic_client', $client);
+        ],
+      ]),
+      // Promotion sub-query errors, KNN succeeds.
+      $this->createElasticsearchResponse([
+        'responses' => [
+          ['error' => ['type' => 'index_not_found_exception']],
+          [
+            'hits' => [
+              'hits' => [
+                [
+                  '_score' => 0.80,
+                  '_source' => [
+                    'entity_type' => ['node'],
+                    'url' => ['/fi/fallback'],
+                    'label' => ['Fallback Page'],
+                    'search_api_language' => ['fi'],
+                  ],
+                ],
+              ],
+            ],
+          ],
+        ],
+      ]),
+      // Error response.
+      new Response(500, [], 'Internal Server Error'),
+    ]);
 
     // Test empty results.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'no results query']);
@@ -161,6 +169,7 @@ class SearchControllerTest extends KernelTestBase {
     $data = json_decode((string) $response->getContent(), TRUE);
     $this->assertEmpty($data['results']);
     $this->assertEmpty($data['promoted']);
+    $this->assertEmpty($data['contacts']);
 
     // Test with promoted and KNN results.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'test query']);
@@ -177,6 +186,10 @@ class SearchControllerTest extends KernelTestBase {
     $this->assertEquals('node', $data['results'][0]['entity_type']);
     $this->assertEquals('/fi/test-page', $data['results'][0]['url']);
     $this->assertEquals('Test Page', $data['results'][0]['title']);
+    $this->assertCount(1, $data['contacts']);
+    $this->assertEquals('Matti Meikäläinen', $data['contacts'][0]['name']);
+    $this->assertEquals('matti.meikalainen@hel.fi', $data['contacts'][0]['email']);
+    $this->assertEquals(['Kaupunginkanslia', 'Viestintäosasto'], $data['contacts'][0]['organization_hierarchy']);
 
     // Test promotion error is handled gracefully.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'test query']);
@@ -187,6 +200,7 @@ class SearchControllerTest extends KernelTestBase {
     $this->assertEmpty($data['promoted']);
     $this->assertCount(1, $data['results']);
     $this->assertEquals('/fi/fallback', $data['results'][0]['url']);
+    $this->assertEmpty($data['contacts']);
 
     // Test total ES failure.
     $request = $this->getMockedRequest('/api/v1/search', parameters: ['q' => 'test query']);
@@ -233,13 +247,10 @@ class SearchControllerTest extends KernelTestBase {
         ],
       ],
     ];
-    $client = ClientBuilder::create()
-      ->setHttpClient($this->createMockHttpClient([
-        $this->createElasticsearchResponse($hits),
-        $this->createElasticsearchResponse($hits),
-      ]))
-      ->build();
-    $this->container->set('helfi_platform_config.etusivu_elastic_client', $client);
+    $this->mockEtusivuElasticClient([
+      $this->createElasticsearchResponse($hits),
+      $this->createElasticsearchResponse($hits),
+    ]);
 
     // 1) ?bundle=others&debug=1 in a non-prod env → debug payload returned.
     $request = $this->getMockedRequest('/api/v1/search', parameters: [
@@ -271,17 +282,11 @@ class SearchControllerTest extends KernelTestBase {
     $this->container->set(EmbeddingApiInterface::class, $embeddingsModel->reveal());
 
     $transactions = [];
-    $mock = new MockHandler([
+    $this->mockEtusivuElasticClient([
       $this->createElasticsearchResponse([
         'hits' => ['total' => ['value' => 0], 'hits' => []],
       ]),
-    ]);
-    $stack = HandlerStack::create($mock);
-    $stack->push(Middleware::history($transactions));
-    $elasticClient = ClientBuilder::create()
-      ->setHttpClient(new Client(['handler' => $stack]))
-      ->build();
-    $this->container->set('helfi_platform_config.etusivu_elastic_client', $elasticClient);
+    ], $transactions);
 
     $request = $this->getMockedRequest('/api/v1/search', parameters: [
       'q' => 'test query',

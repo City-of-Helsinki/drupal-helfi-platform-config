@@ -14,6 +14,8 @@ final class QueryBuilder {
   const string EMBEDDINGS_INDEX = 'embeddings';
   const string PROMOTIONS_INDEX = 'search_promotions';
   const int PROMOTIONS_LIMIT = 3;
+  const string CONTACTS_INDEX = 'contacts';
+  const int CONTACTS_LIMIT = 5;
   const int KNN_DEFAULT_SIZE = 10;
   const int KNN_MAX_SIZE = 50;
 
@@ -110,6 +112,101 @@ final class QueryBuilder {
   }
 
   /**
+   * Build a contact search query for use in search() or msearch().
+   *
+   * @param string $query
+   *   The search query string.
+   * @param string $language
+   *   The language code.
+   *
+   * @return array<mixed>
+   *   An array with 'index' and 'body' keys for Elasticsearch.
+   *
+   * @see \Drupal\Tests\helfi_etusivu\Kernel\Search\Numerot\ContactQueryTest
+   */
+  public function buildContactQuery(string $query, string $language): array {
+    $language = match ($language) {
+      "fi", "sv", "en" => $language,
+      default => "en",
+    };
+
+    if ($phone = self::normalizePhoneNumber($query)) {
+      $match = [
+        'nested' => [
+          'path' => 'public_phones',
+          'query' => [
+            'term' => ['public_phones.value.keyword' => $phone],
+          ],
+        ],
+      ];
+    }
+    elseif (str_contains($query, '@')) {
+      $match = [
+        'term' => [
+          'email' => [
+            'value' => $query,
+            'case_insensitive' => TRUE,
+          ],
+        ],
+      ];
+    }
+    else {
+      $match = [
+        'multi_match' => [
+          'query' => $query,
+          'type' => 'cross_fields',
+          'fields' => ['name_parts^2', 'job_title'],
+          'operator' => 'and',
+        ],
+      ];
+    }
+
+    return [
+      'index' => self::CONTACTS_INDEX,
+      'body' => [
+        'query' => [
+          'bool' => [
+            'must' => $match,
+            'filter' => [
+              'term' => [
+                'search_api_language' => $language,
+              ],
+            ],
+          ],
+        ],
+        'size' => self::CONTACTS_LIMIT,
+        '_source' => [
+          'name_parts',
+          'email',
+          'job_title',
+          'organization_hierarchy',
+          'public_phones',
+          'public_addresses',
+          'service_hours',
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * Normalize a phone-like query to the format stored in the contacts index.
+   */
+  public static function normalizePhoneNumber(string $query): ?string {
+    if (!preg_match('/^\+?[\d\s\-()]+$/', $query)) {
+      return NULL;
+    }
+
+    $digits = (string) preg_replace('/\D/', '', $query);
+
+    // +358 9 310 12345 -> 09 310 12345.
+    if (str_starts_with(trim($query), '+358')) {
+      $digits = '0' . substr($digits, 3);
+    }
+
+    return $digits !== '' ? $digits : NULL;
+  }
+
+  /**
    * Build a KNN search query for use in search() or msearch().
    *
    * @param float[] $embeddings
@@ -162,7 +259,16 @@ final class QueryBuilder {
       ],
     ];
 
-    $source = ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at', 'metatag_title'];
+    $source = [
+      'id',
+      'entity_type',
+      'entity_bundle',
+      'url',
+      'label',
+      'published_at',
+      'metatag_title',
+      $fieldPrefix . '.content',
+    ];
 
     $innerHits = [
       '_source' => FALSE,
@@ -388,13 +494,14 @@ final class QueryBuilder {
         'metatag_title' => array_first($hit['_source']['metatag_title'] ?? []),
         'published_at' => array_first($hit['_source']['published_at'] ?? []),
         'content' => $innerFields['content'][0] ?? '',
-        // @todo Fragment is disabled for now. Plan is to enable it later
-        // in follow-up tickets for UHF-13376.
-        // @code
-        //   'fragment' => $innerFields['fragment'][0] ?? NULL,
-        // @endcode
-        'fragment' => NULL,
+        'fragment' => $innerFields['fragment'][0] ?? NULL,
       ];
+      if ($result['content'] === '') {
+        $result['content'] = array_find(
+          array_column($hit['_source'][$fieldPrefix] ?? [], 'content'),
+          static fn (mixed $content): bool => is_string($content) && $content !== '',
+        ) ?? '';
+      }
       // Debug: when more than one inner hit was requested, surface every
       // matching chunk with its individual similarity score.
       if (count($innerHits) > 1) {
@@ -431,6 +538,44 @@ final class QueryBuilder {
       }
     }
     return $result;
+  }
+
+  /**
+   * Parse contact hits from an Elasticsearch response.
+   *
+   * @param array<mixed> $response
+   *   The Elasticsearch response array.
+   *
+   * @return list<mixed>
+   *   Parsed contact results.
+   */
+  public function parseContactHits(array $response): array {
+    $values = static fn (array $items): array => array_map(
+      static fn (array $item): array => [
+        'value' => $item['value'] ?? '',
+        'type' => $item['type'] ?? NULL,
+      ],
+      $items,
+    );
+
+    $contacts = [];
+    foreach ($response['hits']['hits'] ?? [] as $hit) {
+      $source = $hit['_source'] ?? [];
+      $contacts[] = [
+        'name' => implode(' ', $source['name_parts'] ?? []),
+        'email' => array_first($source['email'] ?? []),
+        'job_title' => array_first($source['job_title'] ?? []),
+        'organization_hierarchy' => array_values(array_filter(array_map(
+          static fn (array $organization): ?string => $organization['name'] ?? NULL,
+          $source['organization_hierarchy'] ?? [],
+        ))),
+        'phones' => $values($source['public_phones'] ?? []),
+        'addresses' => $values($source['public_addresses'] ?? []),
+        'service_hours' => array_first($source['service_hours'] ?? []),
+        'score' => $hit['_score'] ?? 0,
+      ];
+    }
+    return $contacts;
   }
 
   /**

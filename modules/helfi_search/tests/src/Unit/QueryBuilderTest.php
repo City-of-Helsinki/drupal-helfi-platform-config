@@ -162,7 +162,16 @@ class QueryBuilderTest extends UnitTestCase {
       $query['body']['knn']['inner_hits']['fields'],
     );
     $this->assertEquals(
-      ['id', 'entity_type', 'entity_bundle', 'url', 'label', 'published_at', 'metatag_title'],
+      [
+        'id',
+        'entity_type',
+        'entity_bundle',
+        'url',
+        'label',
+        'published_at',
+        'metatag_title',
+        self::TEST_MODEL_FIELD . '.content',
+      ],
       $query['body']['_source'],
     );
     $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $query['body']['size']);

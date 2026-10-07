@@ -1,0 +1,15 @@
+uuid: b5b8140d-c991-4f3a-8fbb-b5cdf702b230
+langcode: en
+status: true
+dependencies:
+  module:
+    - content_translation
+    - external_entities
+third_party_settings:
+  content_translation:
+    enabled: false
+id: helfi_multisite_content.helfi_multisite_content
+target_entity_type_id: helfi_multisite_content
+target_bundle: helfi_multisite_content
+default_langcode: site_default
+language_alterable: false

@@ -22,7 +22,7 @@ content:
       responsive_image_style: image_gallery_1_1
       image_link: ''
       image_loading:
-        attribute: eager
+        attribute: lazy
     third_party_settings: {  }
     weight: 0
     region: content

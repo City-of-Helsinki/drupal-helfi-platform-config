@@ -58,6 +58,8 @@ services:
   helfi_platform_config.term_route_subscriber:
     class: Drupal\helfi_platform_config\Routing\TermRouteSubscriber
 
+  Drupal\helfi_platform_config\Routing\MultisiteContentRouteSubscriber: ~
+
   helfi_platform_config.filter_disabled_translations:
     class: Drupal\helfi_platform_config\Menu\FilterDisabledTranslations
     arguments:
@@ -132,3 +134,4 @@ services:
   Drupal\helfi_platform_config\HeadingSlugger: ~
   Drupal\helfi_platform_config\HeadingIdInjector: ~
   Drupal\helfi_platform_config\EventSubscriber\HeadingIdResponseSubscriber: ~
+

@@ -56,3 +56,15 @@ helfi_table:
     assets/js/build/helfiTable.js: { preprocess: false, minified: true }
   dependencies:
     - core/ckeditor5
+
+# Helfi Nbsp CKEditor5 plugin JavaScript and CSS.
+helfi_nbsp:
+  version: 1.0.0
+  js:
+    assets/js/build/helfiNbsp.js: { preprocess: false, minified: true }
+  css:
+    theme:
+      assets/css/helfi_nbsp_plugin.css: { }
+  dependencies:
+    - core/ckeditor5
+

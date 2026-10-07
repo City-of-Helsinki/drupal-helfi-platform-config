@@ -86,3 +86,8 @@ msgstr "Tavallinen linkki"
 msgctxt "CKEditor5 Helfi Link plugin"
 msgid "Icon"
 msgstr "Ikoni"
+
+# CKEditor5 Helfi Nbsp plugin
+msgctxt "CKEditor5 Helfi Nbsp plugin"
+msgid "Non-breaking space"
+msgstr "Sitova välilyönti"

@@ -10,7 +10,6 @@
  * @see \Drupal\helfi_platform_config\Plugin\Block\LowerContentBlock
  */
 #}
-
 {% if paragraphs or computed %}
   <div class="lower-content layout-content components components--lower">
     {{ computed }}
@@ -19,7 +18,7 @@
       {% if is_revision %}
         {{ drupal_entity_revision('paragraph', paragraph.target_revision_id) }}
       {% else %}
-        {{ drupal_entity('paragraph', paragraph.target_id) }}
+        {{ paragraph.entity|view('full') }}
       {% endif %}
     {% endfor %}
   </div>

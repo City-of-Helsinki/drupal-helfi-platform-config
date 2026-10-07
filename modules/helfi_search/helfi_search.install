@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_search\DocumentState;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Item\Field;
@@ -135,8 +136,8 @@ function helfi_search_schema(): array {
         'description' => 'The embedding.',
       ],
       'snippet' => [
-        'type' => 'varchar',
-        'length' => 255,
+        'type' => 'text',
+        'size' => 'normal',
         'not null' => FALSE,
         'description' => 'Human readable excerpt.',
       ],
@@ -413,5 +414,83 @@ function helfi_search_update_11021(): void {
     if (!$schema->tableExists($table)) {
       $schema->createTable($table, $tables[$table]);
     }
+  }
+}
+
+/**
+ * UHF-13496: Convert the chunk snippet column to text.
+ */
+function helfi_search_update_11022(): void {
+  $schema = \Drupal::database()->schema();
+
+  if (!$schema->tableExists('helfi_search_chunk')) {
+    return;
+  }
+
+  $fields = helfi_search_schema()['helfi_search_chunk']['fields'];
+
+  $schema->changeField('helfi_search_chunk', 'snippet', 'snippet', $fields['snippet']);
+}
+
+/**
+ * UHF-13496: Re-queue every document so stored snippets are regenerated.
+ */
+function helfi_search_update_11023(): void {
+  \Drupal::database()->update('helfi_search_document')
+    ->fields([
+      'state' => DocumentState::Pending->value,
+      'attempts' => 0,
+      'changed' => \Drupal::time()->getRequestTime(),
+    ])
+    ->execute();
+}
+
+/**
+ * UHF-12647: Update the embeddings index for cross-instance linking.
+ */
+function helfi_search_update_11024(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  $changed = FALSE;
+
+  // Add instance field.
+  if (!$index->getField('instance')) {
+    $field = (new Field($index, 'instance'))
+      ->setType('string')
+      ->setPropertyPath('custom_value')
+      ->setLabel('Instance')
+      ->setConfiguration([
+        'value' => '[site:helfi-current-instance]',
+      ]);
+    $index->addField($field);
+    $changed = TRUE;
+  }
+
+  // Update autocomplete search fields from string to text.
+  $fields = [
+    'label',
+    'metatag_title',
+    'url',
+  ];
+  foreach ($fields as $field) {
+    $field = $index->getField($field);
+    if (!$field) {
+      continue;
+    }
+
+    if ($field->getType() === 'text') {
+      continue;
+    }
+
+    $field->setType('text');
+    $changed = TRUE;
+  }
+
+  if ($changed) {
+    $index->save();
   }
 }

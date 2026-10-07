@@ -6,9 +6,8 @@ namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel\Plugin\DebugData;
 
 use Drupal\helfi_api_base\DebugDataItemPluginManager;
 use Drupal\helfi_recommendations\Plugin\DebugDataItem\ApiAvailability;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticKernelTrait;
 use Drupal\Tests\helfi_recommendations\Kernel\AnnifKernelTestBase;
-use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Elastic\Elasticsearch\Response\Elasticsearch;
@@ -21,7 +20,7 @@ use GuzzleHttp\Psr7\Response;
  */
 class ApiAvailabilityTest extends AnnifKernelTestBase {
 
-  use ApiTestTrait;
+  use ElasticKernelTrait;
 
   /**
    * {@inheritdoc}
@@ -37,11 +36,7 @@ class ApiAvailabilityTest extends AnnifKernelTestBase {
    *   The responses.
    */
   public function getSut(array $responses) : ApiAvailability {
-    $client = $this->createMockHttpClient($responses);
-    $elasticClient = ClientBuilder::create()
-      ->setHttpClient($client)
-      ->build();
-    $this->container->set('helfi_platform_config.etusivu_elastic_client', $elasticClient);
+    $this->mockEtusivuElasticClient($responses);
 
     return $this->container->get(DebugDataItemPluginManager::class)
       ->createInstance('recommendations');

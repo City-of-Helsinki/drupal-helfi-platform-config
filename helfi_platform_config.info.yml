@@ -9,6 +9,8 @@ dependencies:
   - drupal:node
   - helfi_platform_config:helfi_platform_config
   - helfi_api_base:helfi_api_base
+  - external_entities:external_entities
+  - drupal:content_translation
   - config_rewrite:config_rewrite
   - menu_block_current_language:menu_block_current_language
   - drupal:menu_link_content

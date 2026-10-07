@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 
@@ -42,7 +43,7 @@ function helfi_user_roles_update_9002() : void {
     // password.
     \Drupal::service('helfi_api_base.environment_resolver')->getActiveEnvironment();
   }
-  catch (\InvalidArgumentException) {
+  catch (EnvironmentResolverException) {
     return;
   }
 

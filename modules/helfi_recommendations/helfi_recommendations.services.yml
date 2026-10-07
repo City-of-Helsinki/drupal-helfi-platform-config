@@ -17,4 +17,6 @@ services:
 
   Drupal\helfi_recommendations\Client\ApiClient : ~
 
+  Drupal\helfi_recommendations\EventSubscriber\ElasticsearchParamsSubscriber: ~
+
   Drupal\helfi_recommendations\EventSubscriber\SearchApiSubscriber: ~

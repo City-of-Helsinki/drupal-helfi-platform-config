@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel;
 
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\KernelTests\KernelTestBase as CoreKernelTestBase;
-use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticKernelTrait;
 
 /**
  * Kernel test base for news feed list tests.
  */
 abstract class KernelTestBase extends CoreKernelTestBase {
 
-  use ElasticTrait;
+  use ElasticKernelTrait;
 
   /**
    * {@inheritdoc}
@@ -43,12 +42,6 @@ abstract class KernelTestBase extends CoreKernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-
-    // Triggers rebuilding routes.
-    // https://www.drupal.org/project/external_entities/issues/3549828.
-    $this->container
-      ->get(RouteProviderInterface::class)
-      ->getAllRoutes();
 
     $this->installConfig(['system', 'paragraphs', 'external_entities']);
     $this->installEntitySchema('user');
