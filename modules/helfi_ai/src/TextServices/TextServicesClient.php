@@ -8,6 +8,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -55,7 +56,9 @@ class TextServicesClient implements TextServicesClientInterface {
     $done = FALSE;
 
     while (!$body->eof()) {
-      foreach ($parser->feed($body->read(8192)) as $event) {
+      // Read line by line: a larger read() waits until that many bytes have
+      // arrived, which would hold back the events until the stream ends.
+      foreach ($parser->feed(Utils::readLine($body)) as $event) {
         $data = json_decode($event['data'], TRUE);
 
         if (!is_array($data)) {
@@ -63,6 +66,9 @@ class TextServicesClient implements TextServicesClientInterface {
         }
         if ($event['event'] === 'error') {
           throw new TextServicesException(sprintf('Helfi Text Services stream failed: %s', $data['error'] ?? 'unknown error'));
+        }
+        if ($event['event'] === 'done' && ($data['finish_reason'] ?? NULL) === 'length') {
+          throw new TextServicesException('Helfi Text Services response was cut off at the output token limit');
         }
         $done = $event['event'] === 'done';
         yield ['event' => $event['event'], 'data' => $data];

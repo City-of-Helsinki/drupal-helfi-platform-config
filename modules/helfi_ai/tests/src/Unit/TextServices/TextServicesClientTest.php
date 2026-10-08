@@ -12,8 +12,10 @@ use Drupal\helfi_ai\TextServices\TextServicesResponse;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\UnitTestCase;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Psr7\FnStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Utils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -157,6 +159,43 @@ class TextServicesClientTest extends UnitTestCase {
 
     $this->assertSame(['text' => 'Teksti', 'stream' => TRUE], json_decode((string) $this->history[0]['request']->getBody(), TRUE));
     $this->assertTrue($this->history[0]['options']['stream']);
+  }
+
+  /**
+   * An event is yielded as soon as it has arrived, before the stream ends.
+   */
+  public function testStreamYieldsEventsAsTheyArrive(): void {
+    $arrived = "event: start\ndata: {\"model\": \"gpt-5.1\"}\n\n";
+    $offset = 0;
+    // A network stream whose read() would wait for data that hasn't arrived.
+    $body = FnStream::decorate(Utils::streamFor(''), [
+      'read' => function (int $length) use ($arrived, &$offset): string {
+        if ($offset + $length > strlen($arrived)) {
+          throw new \LogicException('Read would wait for data that has not arrived.');
+        }
+        $chunk = substr($arrived, $offset, $length);
+        $offset += $length;
+        return $chunk;
+      },
+      'eof' => fn (): bool => FALSE,
+    ]);
+    $client = $this->createClient([new Response(200, [], $body)]);
+
+    $events = $client->stream(new TextServicesRequest(Service::Tone, 'Teksti', 'fi'));
+
+    $this->assertSame(['event' => 'start', 'data' => ['model' => 'gpt-5.1']], $events->current());
+  }
+
+  /**
+   * A stream cut off at the output token limit throws.
+   */
+  public function testStreamCutOffAtTokenLimit(): void {
+    $body = "event: start\ndata: {\"model\": \"gpt-5.1\"}\n\nevent: delta\ndata: {\"text\": \"Hei\"}\n\nevent: done\ndata: {\"model\": \"gpt-5.1\", \"finish_reason\": \"length\"}\n\n";
+    $client = $this->createClient([new Response(200, [], $body)]);
+
+    $this->expectException(TextServicesException::class);
+    $this->expectExceptionMessage('output token limit');
+    iterator_to_array($client->stream(new TextServicesRequest(Service::Tone, 'Teksti', 'fi')));
   }
 
   /**
