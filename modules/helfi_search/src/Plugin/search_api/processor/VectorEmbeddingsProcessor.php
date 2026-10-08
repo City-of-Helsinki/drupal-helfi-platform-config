@@ -72,6 +72,9 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
           'description' => $this->t('Vector embeddings for @model.', ['@model' => $model->value]),
           'type' => 'embeddings',
           'processor_id' => $this->getPluginId(),
+          'settings' => [
+            'embeddings_model_dimensions' => $model->dimensions(),
+          ],
         ]);
       }
     }
