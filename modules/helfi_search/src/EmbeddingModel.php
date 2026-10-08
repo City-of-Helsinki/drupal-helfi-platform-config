@@ -41,13 +41,11 @@ enum EmbeddingModel: string {
    * dimensions-value of the model in the API.
    */
   public function dimensions(): int {
-    // We need to make sure the dimensions match actual model versions, so we
-    // match on the model name. And we don't set a default match case. This way
-    // we should catch any use case where a model name was updated or added
-    // without updating the dimensions.
-    return match ($this->value) {
-      'text-embedding-3-small' => 1536,
-      'text-embedding-3-large' => 3072,
+    // We do not set a default match case to catch a use case where a new model
+    // was added in the future without a matching dimension.
+    return match ($this) {
+      self::Small => 1536,
+      self::Large => 3072,
     };
   }
 
