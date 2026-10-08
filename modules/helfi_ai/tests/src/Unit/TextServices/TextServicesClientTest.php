@@ -99,17 +99,17 @@ class TextServicesClientTest extends UnitTestCase {
   }
 
   /**
-   * An error response throws with the API error message and HTTP status.
+   * An error response throws with the HTTP status and the error message.
    */
-  #[TestWith([400])]
-  #[TestWith([401])]
-  #[TestWith([502])]
-  public function testErrorResponse(int $status): void {
-    $client = $this->createClient([new Response($status, [], '{"error": "Something failed"}')]);
+  #[TestWith([400, '{"error": "Something failed"}', 'Something failed'])]
+  #[TestWith([401, '{"error": "Something failed"}', 'Something failed'])]
+  #[TestWith([502, '<html>Bad Gateway</html>', 'Bad Gateway'])]
+  public function testErrorResponse(int $status, string $body, string $error): void {
+    $client = $this->createClient([new Response($status, [], $body)]);
 
     $this->expectException(TextServicesException::class);
     $this->expectExceptionCode($status);
-    $this->expectExceptionMessage("HTTP $status: Something failed");
+    $this->expectExceptionMessage("HTTP $status: $error");
     $client->send(new TextServicesRequest(Service::Tone, 'Teksti', 'fi'));
   }
 
@@ -167,6 +167,18 @@ class TextServicesClientTest extends UnitTestCase {
 
     $this->expectException(TextServicesException::class);
     $this->expectExceptionMessage('Model request failed');
+    iterator_to_array($client->stream(new TextServicesRequest(Service::Tone, 'Teksti', 'fi')));
+  }
+
+  /**
+   * A stream that ends before the done event throws.
+   */
+  public function testStreamEndsBeforeDone(): void {
+    $body = "event: start\ndata: {\"model\": \"gpt-5.1\"}\n\nevent: delta\ndata: {\"text\": \"Hei\"}\n\n";
+    $client = $this->createClient([new Response(200, [], $body)]);
+
+    $this->expectException(TextServicesException::class);
+    $this->expectExceptionMessage('ended before the done event');
     iterator_to_array($client->stream(new TextServicesRequest(Service::Tone, 'Teksti', 'fi')));
   }
 

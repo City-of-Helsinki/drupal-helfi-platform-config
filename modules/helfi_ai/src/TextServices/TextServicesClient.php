@@ -12,8 +12,6 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Client for the Helfi Text Services API.
- *
- * @phpstan-import-type TextServicesEvent from TextServicesClientInterface
  */
 class TextServicesClient implements TextServicesClientInterface {
 
@@ -54,6 +52,7 @@ class TextServicesClient implements TextServicesClientInterface {
   public function stream(TextServicesRequest $request): \Generator {
     $body = $this->request($request, TRUE)->getBody();
     $parser = new SseParser();
+    $done = FALSE;
 
     while (!$body->eof()) {
       foreach ($parser->feed($body->read(8192)) as $event) {
@@ -65,8 +64,13 @@ class TextServicesClient implements TextServicesClientInterface {
         if ($event['event'] === 'error') {
           throw new TextServicesException(sprintf('Helfi Text Services stream failed: %s', $data['error'] ?? 'unknown error'));
         }
+        $done = $event['event'] === 'done';
         yield ['event' => $event['event'], 'data' => $data];
       }
+    }
+
+    if (!$done) {
+      throw new TextServicesException('Helfi Text Services stream ended before the done event');
     }
   }
 
@@ -95,20 +99,22 @@ class TextServicesClient implements TextServicesClientInterface {
       $payload['json_schema'] = $request->jsonSchema;
     }
 
+    // Guzzle's 'json' option escapes non-ASCII characters and slashes,
+    // which would waste the API's request size limit.
+    $body = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+
     try {
       return $this->httpClient->request('POST', self::BASE_URL . '/' . $request->service->value, [
         'headers' => [
           'X-API-Key' => (string) $this->configFactory->get('helfi_ai.settings')->get('text_services.api_key'),
           'Content-Type' => 'application/json',
         ],
-        // Guzzle's 'json' option escapes non-ASCII characters and slashes,
-        // which would waste the API's request size limit.
-        'body' => json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+        'body' => $body,
         'timeout' => self::TIMEOUT,
         'stream' => $stream,
       ]);
     }
-    catch (GuzzleException | \JsonException $e) {
+    catch (GuzzleException $e) {
       throw $this->createException($e);
     }
   }
@@ -119,13 +125,13 @@ class TextServicesClient implements TextServicesClientInterface {
    * Uses the error message and HTTP status from the API response if there
    * is one.
    *
-   * @param \Throwable $e
+   * @param \GuzzleHttp\Exception\GuzzleException $e
    *   The request error.
    *
    * @return \Drupal\helfi_ai\TextServices\TextServicesException
    *   The exception.
    */
-  private function createException(\Throwable $e): TextServicesException {
+  private function createException(GuzzleException $e): TextServicesException {
     $response = $e instanceof RequestException ? $e->getResponse() : NULL;
 
     if (!$response) {
