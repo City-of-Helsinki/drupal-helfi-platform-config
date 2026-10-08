@@ -13,6 +13,9 @@ use Drupal\helfi_ai\Plugin\Field\FieldWidget\AiSummaryWidget;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
+use Drupal\Tests\helfi_ai\Traits\TextServicesTestTrait;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\Argument;
@@ -23,6 +26,9 @@ use Prophecy\Argument;
 #[Group('helfi_ai')]
 #[RunTestsInSeparateProcesses]
 class AiSummaryWidgetTest extends EntityKernelTestBase {
+
+  use ApiTestTrait;
+  use TextServicesTestTrait;
 
   /**
    * {@inheritdoc}
@@ -36,7 +42,6 @@ class AiSummaryWidgetTest extends EntityKernelTestBase {
     'language',
     'key',
     'ai',
-    'ai_test',
     'helfi_ai',
   ];
 
@@ -46,8 +51,8 @@ class AiSummaryWidgetTest extends EntityKernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->installConfig(['ai', 'ai_test', 'helfi_ai']);
-    $this->installEntitySchema('ai_mock_provider_result');
+    $this->installConfig(['helfi_ai']);
+    $this->setUpTextServices();
 
     NodeType::create([
       'name' => 'Test',
@@ -127,18 +132,13 @@ class AiSummaryWidgetTest extends EntityKernelTestBase {
    * A generated summary is injected into the form and the button relabelled.
    */
   public function testAjaxCallbackInjectsSummaryOnSuccess(): void {
-    // Resolve chat operations to the echoai test provider.
-    $this->config('ai.settings')
-      ->set('default_providers', [
-        'chat' => ['provider_id' => 'echoai', 'model_id' => 'test'],
-      ])
-      ->save();
-
+    $this->textServicesResponses->append(new Response(200, [], $this->getFixture('helfi_ai', 'summarize.json')));
     $title = 'Widget kernel title ' . $this->randomMachineName();
     [$form, $formState] = $this->makeAjaxContext($title);
 
     $response = AiSummaryWidget::ajaxCallback($form, $formState);
 
+    $this->assertStringContainsString($title, (string) $this->textServicesResponses->getLastRequest()?->getBody());
     $commands = $response->getCommands();
     $this->assertCount(1, $commands);
     $this->assertSame('#ai-summary-ai-summary-0', $commands[0]['selector']);
@@ -146,7 +146,7 @@ class AiSummaryWidgetTest extends EntityKernelTestBase {
     $rendered = (string) $commands[0]['data'];
     // The summary markup is injected into a <textarea>, so it is HTML-escaped.
     $this->assertStringContainsString('&lt;ul&gt;&lt;li&gt;', $rendered);
-    $this->assertStringContainsString($title, $rendered);
+    $this->assertStringContainsString('Maksat tunnuksesta 30 euroa kuukaudessa.', $rendered);
     $this->assertStringContainsString('Regenerate AI summary', $rendered);
     $this->assertStringContainsString('data-ai-summary-confirm', $rendered);
   }
@@ -155,17 +155,14 @@ class AiSummaryWidgetTest extends EntityKernelTestBase {
    * An error is shown when generation returns nothing.
    */
   public function testAjaxCallbackShowsErrorWhenGeneratorReturnsNull(): void {
-    // An unresolvable provider makes generation fail gracefully.
-    $this->config('ai.settings')
-      ->set('default_providers', [
-        'chat' => ['provider_id' => 'no_such_provider', 'model_id' => 'test'],
-      ])
-      ->save();
+    $this->textServicesResponses->append(new Response(502, [], '{"error": "Model request failed"}'));
 
-    [$form, $formState] = $this->makeAjaxContext('Widget kernel title ' . $this->randomMachineName());
+    $title = 'Widget kernel title ' . $this->randomMachineName();
+    [$form, $formState] = $this->makeAjaxContext($title);
 
     $response = AiSummaryWidget::ajaxCallback($form, $formState);
 
+    $this->assertStringContainsString($title, (string) $this->textServicesResponses->getLastRequest()?->getBody());
     $rendered = (string) $response->getCommands()[0]['data'];
     $this->assertStringContainsString('Could not generate a summary.', $rendered);
   }

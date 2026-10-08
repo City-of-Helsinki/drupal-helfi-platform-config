@@ -11,7 +11,7 @@ use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_ai\Hook\FormHooks;
-use Drupal\helfi_ai\Service\AiGenerator;
+use Drupal\helfi_ai\Service\TextServicesGenerator;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -19,24 +19,10 @@ use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the node form alter gating logic for the title suggestion button.
- *
- * AiGenerator is final and depends on the also-final
- * AiProviderPluginManager, so it cannot be doubled here. These scenarios
- * never call the generator, so an uninitialized instance
- * (ReflectionClass::newInstanceWithoutConstructor()) is enough to satisfy
- * the constructor. Behaviour that does call the generator is covered by
- * Drupal\Tests\helfi_ai\Kernel\FormHooksTest.
  */
 #[Group('helfi_ai')]
 #[CoversClass(FormHooks::class)]
 class FormHooksTest extends UnitTestCase {
-
-  /**
-   * Builds an AiGenerator instance that is never invoked in these tests.
-   */
-  private function unusedGenerator(): AiGenerator {
-    return (new \ReflectionClass(AiGenerator::class))->newInstanceWithoutConstructor();
-  }
 
   /**
    * Builds the hooks object under test with mocked dependencies.
@@ -67,7 +53,7 @@ class FormHooksTest extends UnitTestCase {
     return new FormHooks(
       $account->reveal(),
       $configFactory->reveal(),
-      $this->unusedGenerator(),
+      $this->createMock(TextServicesGenerator::class),
     );
   }
 

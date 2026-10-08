@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_ai\Kernel;
 
 use Drupal\helfi_ai\Controller\ToneCheckController;
-use Drupal\helfi_ai\Service\AiGenerator;
+use Drupal\helfi_ai\Service\TextServicesGenerator;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\Tests\helfi_ai\Traits\TextServicesTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -16,7 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Tests the tone-check controller endpoint through the echoai test provider.
+ * Tests the tone-check controller endpoint.
  */
 #[Group('helfi_ai')]
 #[CoversClass(ToneCheckController::class)]
@@ -24,6 +26,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ToneCheckControllerTest extends EntityKernelTestBase {
 
   use ApiTestTrait;
+  use TextServicesTestTrait;
 
   /**
    * {@inheritdoc}
@@ -37,7 +40,6 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
     'language',
     'key',
     'ai',
-    'ai_test',
     'helfi_ai',
     'system',
   ];
@@ -53,15 +55,8 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->installConfig(['ai', 'ai_test', 'helfi_ai']);
-    $this->installEntitySchema('ai_mock_provider_result');
-
-    // Resolve chat operations to the echoai test provider.
-    $this->config('ai.settings')
-      ->set('default_providers', [
-        'chat' => ['provider_id' => 'echoai', 'model_id' => 'test'],
-      ])
-      ->save();
+    $this->installConfig(['helfi_ai']);
+    $this->setUpTextServices();
 
     // Enable the AI tone check functionality.
     $this->config('helfi_ai.settings')
@@ -69,7 +64,7 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
       ->save();
 
     $this->controller = new ToneCheckController(
-      $this->container->get(AiGenerator::class),
+      $this->container->get(TextServicesGenerator::class),
       $this->container->get('config.factory'),
     );
   }
@@ -154,21 +149,19 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
   }
 
   /**
-   * Valid content returns a rewrite suggestion as JSON.
+   * Valid content returns the rewrite suggestion as JSON.
    */
   public function testReturnsSuggestionForValidContent(): void {
-    $content = '<p>Tone controller content ' . $this->randomMachineName() . '</p>';
+    $this->textServicesResponses->append(new Response(200, [], $this->getFixture('helfi_ai', 'tone.json')));
 
     $response = $this->controller->check($this->request([
-      'content' => $content,
-      'langcode' => 'en',
+      'content' => '<p>Asukaspysäköinti</p>',
+      'langcode' => 'fi',
     ]));
 
     $this->assertSame(200, $response->getStatusCode());
-    $payload = $this->decode($response);
-    $this->assertArrayHasKey('suggestion', $payload);
-    // The echoed prompt proves the content reached the provider.
-    $this->assertStringContainsString($content, $payload['suggestion']);
+    $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', $this->decode($response)['suggestion']);
+    $this->assertSame('{"text":"<p>Asukaspysäköinti</p>"}', (string) $this->textServicesResponses->getLastRequest()?->getBody());
   }
 
   /**
@@ -195,7 +188,7 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
   }
 
   /**
-   * Empty content is rejected with 400 without calling the provider.
+   * Empty content is rejected with 400 without calling the API.
    */
   public function testRejectsEmptyContent(): void {
     $response = $this->controller->check($this->request([
@@ -205,29 +198,27 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
 
     $this->assertSame(400, $response->getStatusCode());
     $this->assertArrayHasKey('error', $this->decode($response));
+    $this->assertNull($this->textServicesResponses->getLastRequest());
   }
 
   /**
-   * Content larger than the byte cap is rejected with 413.
+   * Content longer than the API accepts is rejected with 413.
    */
   public function testRejectsTooLargeContent(): void {
     $response = $this->controller->check($this->request([
-      'content' => str_repeat('a', AiGenerator::MAX_CONTENT_BYTES + 1),
-      'langcode' => 'en',
+      'content' => str_repeat('ä', TextServicesGenerator::MAX_CONTENT_LENGTH + 1),
+      'langcode' => 'fi',
     ]));
 
     $this->assertSame(413, $response->getStatusCode());
+    $this->assertNull($this->textServicesResponses->getLastRequest());
   }
 
   /**
-   * An unresolvable provider yields a 400.
+   * A failed API request yields a 400.
    */
-  public function testReturns400WhenProviderUnavailable(): void {
-    $this->config('ai.settings')
-      ->set('default_providers', [
-        'chat' => ['provider_id' => 'no_such_provider', 'model_id' => 'test'],
-      ])
-      ->save();
+  public function testReturns400WhenRequestFails(): void {
+    $this->textServicesResponses->append(new Response(502, [], '{"error": "Model request failed"}'));
 
     $response = $this->controller->check($this->request([
       'content' => '<p>Hi</p>',
