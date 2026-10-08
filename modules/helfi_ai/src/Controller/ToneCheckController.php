@@ -7,7 +7,7 @@ namespace Drupal\helfi_ai\Controller;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\helfi_ai\Service\AiGenerator;
+use Drupal\helfi_ai\Service\TextServicesGenerator;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ final class ToneCheckController implements ContainerInjectionInterface {
   use AutowireTrait;
 
   public function __construct(
-    private readonly AiGenerator $generator,
+    private readonly TextServicesGenerator $generator,
     private readonly ConfigFactoryInterface $configFactory,
   ) {}
 
@@ -47,14 +47,14 @@ final class ToneCheckController implements ContainerInjectionInterface {
     if (trim($content) === '') {
       return new JsonResponse(['error' => 'No content to check.'], 400);
     }
-    if (strlen($content) > AiGenerator::MAX_CONTENT_BYTES) {
+    if (mb_strlen($content) > TextServicesGenerator::MAX_CONTENT_LENGTH) {
       return new JsonResponse(['error' => 'Content is too large to check.'], 413);
     }
 
     $suggestion = $this->generator->checkTone($content, $langcode);
 
     if ($suggestion === NULL) {
-      return new JsonResponse(['error' => 'Could not check the tone. Make sure the AI provider is configured.'], 400);
+      return new JsonResponse(['error' => 'Could not check the tone. Please try again later.'], 400);
     }
 
     return new JsonResponse(['suggestion' => $suggestion]);

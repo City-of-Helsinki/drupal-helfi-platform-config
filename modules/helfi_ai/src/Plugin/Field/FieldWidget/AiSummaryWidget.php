@@ -17,7 +17,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_ai\PreviewEntityBuilder;
-use Drupal\helfi_ai\Service\AiGenerator;
+use Drupal\helfi_ai\Service\TextServicesGenerator;
 
 /**
  * Widget for the AI summary field.
@@ -247,7 +247,7 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
 
     $entity = PreviewEntityBuilder::fromFormState($form, $form_state);
 
-    $summary = \Drupal::service(AiGenerator::class)
+    $summary = \Drupal::service(TextServicesGenerator::class)
       ->generateSummary($entity);
 
     if ($summary !== NULL && $summary !== '') {

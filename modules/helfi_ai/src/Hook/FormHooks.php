@@ -15,7 +15,7 @@ use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_ai\PreviewEntityBuilder;
-use Drupal\helfi_ai\Service\AiGenerator;
+use Drupal\helfi_ai\Service\TextServicesGenerator;
 use Drupal\node\NodeInterface;
 
 /**
@@ -28,7 +28,7 @@ final class FormHooks {
   public function __construct(
     private readonly AccountInterface $currentUser,
     private readonly ConfigFactoryInterface $configFactory,
-    private readonly AiGenerator $generator,
+    private readonly TextServicesGenerator $generator,
   ) {
   }
 
