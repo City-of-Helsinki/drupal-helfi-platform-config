@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_search\Unit;
 
 use Drupal\helfi_search\EmbeddingModel;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -19,6 +20,27 @@ class EmbeddingModelTest extends UnitTestCase {
    */
   public function testEnabledAssertion(): void {
     $this->assertContains(EmbeddingModel::DEFAULT, EmbeddingModel::ENABLED);
+  }
+
+  /**
+   * Dimensions are returned for enum cases with matching values.
+   */
+  #[DataProvider('dimensionsProvider')]
+  public function testDimensions(EmbeddingModel $model, int $dimensions): void {
+    $this->assertSame($dimensions, $model->dimensions());
+  }
+
+  /**
+   * Data provider for testDimensions().
+   *
+   * @return array<string, array{EmbeddingModel, int}>
+   *   Enum case and its expected dimensions.
+   */
+  public static function dimensionsProvider(): array {
+    return [
+      'small' => [EmbeddingModel::Small, 1536],
+      'large' => [EmbeddingModel::Large, 3072],
+    ];
   }
 
 }

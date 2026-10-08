@@ -34,6 +34,22 @@ enum EmbeddingModel: string {
   case Large = 'text-embedding-3-large';
 
   /**
+   * The dimensions of the embedding model.
+   *
+   * This is used to set the dims-parameter of the embeddings-field mapping in
+   * the Elasticsearch index. The value should always match the default
+   * dimensions-value of the model in the API.
+   */
+  public function dimensions(): int {
+    // We do not set a default match case to catch a use case where a new model
+    // was added in the future without a matching dimension.
+    return match ($this) {
+      self::Small => 1536,
+      self::Large => 3072,
+    };
+  }
+
+  /**
    * The embeddings field prefix for this model.
    */
   public function fieldPrefix(): string {
