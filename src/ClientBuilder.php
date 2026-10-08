@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config;
 
 use Drupal\Core\Http\ClientFactory;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_api_base\Environment\ServiceEnum;
 use Drupal\helfi_api_base\Vault\VaultManager;
 use Elastic\Elasticsearch\Client;
@@ -22,6 +24,7 @@ final readonly class ClientBuilder {
     private EnvironmentResolverInterface $environmentResolver,
     private VaultManager $vaultManager,
     private ClientFactory $httpClientFactory,
+    private ActiveProjectRoles $activeProjectRoles,
   ) {
   }
 
@@ -42,8 +45,13 @@ final readonly class ClientBuilder {
         ->getEnvironment(Project::ETUSIVU, EnvironmentEnum::Prod->value);
     }
 
+    // Only projects with direct access to etusivu Elasticsearch can use the
+    // internal service. Others must use the proxy. The proxy has less permissions,
+    // so we default to direct access.
+    $hasElasticAccess = $this->activeProjectRoles->hasRole(ProjectRoleEnum::HasEtusivuIndex);
+
     $service = $environment
-      ->getService(ServiceEnum::Elastic)
+      ->getService($hasElasticAccess ? ServiceEnum::Elastic : ServiceEnum::ElasticProxy)
       ->address;
 
     $client = ElasticClientBuilder::create()
@@ -54,11 +62,11 @@ final readonly class ClientBuilder {
         'timeout' => $timeout,
         'connect_timeout' => $connectTimeout,
         // Elasticsearch uses a self-signed certificate.
-        'verify' => FALSE,
+        'verify' => !$hasElasticAccess,
       ]))
       ->build();
 
-    if ($token = $this->vaultManager->get('etusivu_elastic')) {
+    if ($hasElasticAccess && $token = $this->vaultManager->get('etusivu_elastic')) {
       $client->getTransport()
         ->setHeader('Authorization', 'Basic ' . $token->data());
     }

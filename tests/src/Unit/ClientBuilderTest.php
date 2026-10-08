@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_platform_config\Unit;
 use Drupal\Tests\UnitTestCase;
 use Drupal\Tests\helfi_api_base\Mock\MockClientFactory;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Vault\AuthorizationToken;
@@ -36,6 +37,19 @@ class ClientBuilderTest extends UnitTestCase {
     ]);
 
     $this->assertEquals('Basic dGVzdDp0ZXN0', $request->getHeaderLine('Authorization'));
+    $this->assertEquals('helfi-etusivu-elastic', $request->getUri()->getHost());
+  }
+
+  /**
+   * Tests that projects without elastic access use the proxy.
+   */
+  public function testElasticProxyFallback() : void {
+    $request = $this->sendRequest([
+      new AuthorizationToken('etusivu_elastic', 'dGVzdDp0ZXN0'),
+    ], Project::GRANTS, EnvironmentEnum::Test);
+
+    $this->assertFalse($request->hasHeader('Authorization'));
+    $this->assertEquals('helfi-etusivu-elastic-proxy.test.hel.ninja', $request->getUri()->getHost());
   }
 
   /**
@@ -43,11 +57,19 @@ class ClientBuilderTest extends UnitTestCase {
    *
    * @param \Drupal\helfi_api_base\Vault\VaultItemInterface[] $vaultItems
    *   The vault items.
+   * @param string $project
+   *   The active project.
+   * @param \Drupal\helfi_api_base\Environment\EnvironmentEnum $environment
+   *   The active environment.
    *
    * @return \Psr\Http\Message\RequestInterface
    *   The request that was sent.
    */
-  private function sendRequest(array $vaultItems = []) : RequestInterface {
+  private function sendRequest(
+    array $vaultItems = [],
+    string $project = Project::ETUSIVU,
+    EnvironmentEnum $environment = EnvironmentEnum::Local,
+  ) : RequestInterface {
     $mockHandler = new MockHandler([
       new Response(200, [
         'Content-Type' => 'application/json',
@@ -55,10 +77,12 @@ class ClientBuilderTest extends UnitTestCase {
       ], '{}'),
     ]);
 
+    $environmentResolver = $this->getEnvironmentResolver($project, $environment);
     $sut = new ClientBuilder(
-      $this->getEnvironmentResolver(Project::ETUSIVU, EnvironmentEnum::Local),
+      $environmentResolver,
       new VaultManager($vaultItems),
       new MockClientFactory(new Client(['handler' => HandlerStack::create($mockHandler)])),
+      new ActiveProjectRoles($environmentResolver),
     );
     $sut->create()->info();
 
