@@ -47,7 +47,7 @@ final readonly class ClientBuilder {
 
     // Only projects with direct access to etusivu Elasticsearch can use the
     // internal service. Others must use the proxy. The proxy has less permissions,
-    // so we default to direct access.
+    // so non-core sites cannot access private indexes.
     $hasElasticAccess = $this->activeProjectRoles->hasRole(ProjectRoleEnum::HasEtusivuIndex);
 
     $service = $environment
