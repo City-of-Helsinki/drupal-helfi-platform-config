@@ -33,11 +33,15 @@ final readonly class TextServicesResponse {
    *   The response.
    *
    * @throws \Drupal\helfi_ai\TextServices\TextServicesException
-   *   When the data is not a valid response.
+   *   When the data is not a valid response, or the text was cut off at the
+   *   output token limit.
    */
   public static function fromArray(array $data): self {
     if (!is_string($data['text'] ?? NULL) || !is_string($data['model'] ?? NULL)) {
       throw new TextServicesException('Invalid response from Helfi Text Services');
+    }
+    if (($data['finish_reason'] ?? NULL) === 'length') {
+      throw new TextServicesException('Helfi Text Services response was cut off at the output token limit');
     }
     return new self($data['text'], $data['model']);
   }

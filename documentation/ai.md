@@ -13,7 +13,7 @@ Helfi Text Services is the city's own text processing API. Its prompts, models a
 
 There is no SEO title service yet, so title suggestions are the first three items of a summary until one is published.
 
-The API base URL and the service paths are defined in code (`\Drupal\helfi_ai\TextServices\TextServicesClient` and `\Drupal\helfi_ai\TextServices\Service`). The only configuration is the API key, `helfi_ai.settings:text_services.api_key`. Add the following to the instance `settings.php` to read it from the environment:
+The API base URL and the service paths are defined in code (`\Drupal\helfi_ai\TextServices\TextServicesClient` and `\Drupal\helfi_ai\TextServices\Service`). The only configuration is the API key, `helfi_ai.settings:text_services.api_key`. The platform `settings.php` reads it from the `HELFI_TEXT_API_KEY` environment variable:
 
 ```php
 if ($helfi_text_api_key = getenv('HELFI_TEXT_API_KEY')) {
@@ -53,6 +53,8 @@ Failed requests throw `\Drupal\helfi_ai\TextServices\TextServicesException`, wit
 
 ## Drupal AI module
 
+The `helfi_ai` features no longer use the Drupal AI module, and the platform `settings.php` no longer configures it. It stays installed until it is removed in a follow-up. The sections below describe that setup for reference.
+
 ### Installed modules
 
 - [`drupal/ai`](https://www.drupal.org/project/ai) — core AI abstraction layer, provider plugin system, and Prompt Library
@@ -61,7 +63,7 @@ Failed requests throw `\Drupal\helfi_ai\TextServices\TextServicesException`, wit
 
 ### Enabling on an instance
 
-Add the following block to the instance `settings.php`. The API key is managed separately via the Key module (see below) and does not go here.
+The platform `settings.php` used to contain the following block. The API key was managed separately via the Key module (see below).
 
 ```php
 $azure_openai_tiers = [

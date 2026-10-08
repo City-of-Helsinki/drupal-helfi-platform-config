@@ -130,13 +130,14 @@ class TextServicesClientTest extends UnitTestCase {
   /**
    * A response that is not a valid API response throws.
    */
-  #[TestWith(['not json'])]
-  #[TestWith(['{"model": "gpt-5.1"}'])]
-  public function testInvalidResponse(string $body): void {
+  #[TestWith(['not json', 'Invalid response'])]
+  #[TestWith(['{"model": "gpt-5.1"}', 'Invalid response'])]
+  #[TestWith(['{"text": "Cut off", "model": "gpt-5.1", "finish_reason": "length"}', 'output token limit'])]
+  public function testInvalidResponse(string $body, string $message): void {
     $client = $this->createClient([new Response(200, [], $body)]);
 
     $this->expectException(TextServicesException::class);
-    $this->expectExceptionMessage('Invalid response');
+    $this->expectExceptionMessage($message);
     $client->send(new TextServicesRequest(Service::Tone, 'Teksti', 'fi'));
   }
 
