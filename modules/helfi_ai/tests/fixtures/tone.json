@@ -1,0 +1,13 @@
+{
+    "text": "<h2>Asukaspysäköinti</h2>\n<p>Voit hakea asukaspysäköintitunnusta sähköisesti asiointipalvelussa. Käsittelemme hakemuksen noin kahdessa viikossa. Tunnus on voimassa 12 kuukautta. Saat lisätietoja <a href=\"https://www.hel.fi/fi/kaupunkiymparisto-ja-liikenne\">täältä</a>.</p>\n<ul>\n  <li>Hinta 30 €/kk</li>\n  <li>Ajoneuvon tulee olla hakijan hallinnassa</li>\n</ul>",
+    "model": "gpt-5.1",
+    "usage": {
+        "input_tokens": 16197,
+        "output_tokens": 147,
+        "total_tokens": 16344
+    },
+    "finish_reason": "stop",
+    "analysis": null,
+    "analysis_model": null,
+    "analysis_usage": null
+}

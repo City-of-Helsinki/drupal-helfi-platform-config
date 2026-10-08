@@ -1,0 +1,213 @@
+event: start
+data: {"model": "gpt-5.1"}
+
+event: delta
+data: {"text": "<h"}
+
+event: delta
+data: {"text": "2"}
+
+event: delta
+data: {"text": ">"}
+
+event: delta
+data: {"text": "As"}
+
+event: delta
+data: {"text": "uk"}
+
+event: delta
+data: {"text": "asp"}
+
+event: delta
+data: {"text": "ys"}
+
+event: delta
+data: {"text": "ä"}
+
+event: delta
+data: {"text": "kö"}
+
+event: delta
+data: {"text": "inti"}
+
+event: delta
+data: {"text": "</"}
+
+event: delta
+data: {"text": "h"}
+
+event: delta
+data: {"text": "2"}
+
+event: delta
+data: {"text": ">\n"}
+
+event: delta
+data: {"text": "<p"}
+
+event: delta
+data: {"text": ">"}
+
+event: delta
+data: {"text": "Vo"}
+
+event: delta
+data: {"text": "it"}
+
+event: delta
+data: {"text": " hake"}
+
+event: delta
+data: {"text": "a"}
+
+event: delta
+data: {"text": " as"}
+
+event: delta
+data: {"text": "uk"}
+
+event: delta
+data: {"text": "asp"}
+
+event: delta
+data: {"text": "ys"}
+
+event: delta
+data: {"text": "ä"}
+
+event: delta
+data: {"text": "kö"}
+
+event: delta
+data: {"text": "int"}
+
+event: delta
+data: {"text": "it"}
+
+event: delta
+data: {"text": "unn"}
+
+event: delta
+data: {"text": "usta"}
+
+event: delta
+data: {"text": " sähkö"}
+
+event: delta
+data: {"text": "isessä"}
+
+event: delta
+data: {"text": " asioint"}
+
+event: delta
+data: {"text": "ipalvel"}
+
+event: delta
+data: {"text": "ussa."}
+
+event: delta
+data: {"text": " Käs"}
+
+event: delta
+data: {"text": "ittelemme"}
+
+event: delta
+data: {"text": " hakem"}
+
+event: delta
+data: {"text": "uksen noin"}
+
+event: delta
+data: {"text": " kahd"}
+
+event: delta
+data: {"text": "essa vi"}
+
+event: delta
+data: {"text": "ikossa"}
+
+event: delta
+data: {"text": ". T"}
+
+event: delta
+data: {"text": "unnus"}
+
+event: delta
+data: {"text": " on voim"}
+
+event: delta
+data: {"text": "assa "}
+
+event: delta
+data: {"text": "12 kuuk"}
+
+event: delta
+data: {"text": "autta."}
+
+event: delta
+data: {"text": " Saat"}
+
+event: delta
+data: {"text": " lisätiet"}
+
+event: delta
+data: {"text": "oja <a"}
+
+event: delta
+data: {"text": " href=\"https"}
+
+event: delta
+data: {"text": "://www."}
+
+event: delta
+data: {"text": "hel.fi/"}
+
+event: delta
+data: {"text": "fi/kaupun"}
+
+event: delta
+data: {"text": "kiympar"}
+
+event: delta
+data: {"text": "isto-ja-li"}
+
+event: delta
+data: {"text": "ikenne\">"}
+
+event: delta
+data: {"text": "tästä link"}
+
+event: delta
+data: {"text": "istä</a>.</"}
+
+event: delta
+data: {"text": "p>\n<ul>\n"}
+
+event: delta
+data: {"text": "<li>Hinta"}
+
+event: delta
+data: {"text": " 30 €/kk"}
+
+event: delta
+data: {"text": "</li>\n<li"}
+
+event: delta
+data: {"text": ">Ajoneuv"}
+
+event: delta
+data: {"text": "on tulee olla hak"}
+
+event: delta
+data: {"text": "ijan hallinnassa</"}
+
+event: delta
+data: {"text": "li"}
+
+event: delta
+data: {"text": ">\n</ul>"}
+
+event: done
+data: {"model": "gpt-5.1", "usage": {"input_tokens": 16197, "input_tokens_details": {"cache_write_tokens": 0, "cached_tokens": 0}, "output_tokens": 144, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 16341}, "finish_reason": "stop", "analysis": null, "analysis_model": null, "analysis_usage": null}
+
