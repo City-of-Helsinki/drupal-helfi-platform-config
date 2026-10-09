@@ -9,13 +9,15 @@ use Drupal\helfi_ai\Service\TextServicesGenerator;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\Tests\helfi_ai\Traits\TextServicesTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
-use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Tests the tone-check controller endpoint.
@@ -85,13 +87,13 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
   /**
    * Decodes a JSON response body to an array.
    *
-   * @param \Symfony\Component\HttpFoundation\JsonResponse $response
+   * @param \Symfony\Component\HttpFoundation\Response $response
    *   The response.
    *
    * @return array<string, mixed>
    *   The decoded payload.
    */
-  private function decode(JsonResponse $response): array {
+  private function decode(Response $response): array {
     return json_decode((string) $response->getContent(), TRUE);
   }
 
@@ -149,19 +151,23 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
   }
 
   /**
-   * Valid content returns the rewrite suggestion as JSON.
+   * Valid content streams the rewrite and then the whole suggestion.
    */
-  public function testReturnsSuggestionForValidContent(): void {
-    $this->textServicesResponses->append(new Response(200, [], $this->getFixture('helfi_ai', 'tone.json')));
+  public function testStreamsSuggestionForValidContent(): void {
+    $this->textServicesResponses->append(new GuzzleResponse(200, ['Content-Type' => 'text/event-stream'], $this->getFixture('helfi_ai', 'tone-stream.txt')));
 
     $response = $this->controller->check($this->request([
       'content' => '<p>Asukaspysäköinti</p>',
       'langcode' => 'fi',
     ]));
 
-    $this->assertSame(200, $response->getStatusCode());
-    $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', $this->decode($response)['suggestion']);
-    $this->assertSame('{"text":"<p>Asukaspysäköinti</p>"}', (string) $this->textServicesResponses->getLastRequest()?->getBody());
+    $this->assertInstanceOf(EventStreamResponse::class, $response);
+    $data = $this->streamedData($response);
+    $done = array_pop($data);
+    $this->assertSame(['delta' => '<h'], $data[0]);
+    $this->assertTrue($done['done']);
+    $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', $done['result']);
+    $this->assertSame('{"text":"<p>Asukaspysäköinti</p>","stream":true}', (string) $this->textServicesResponses->getLastRequest()?->getBody());
   }
 
   /**
@@ -215,18 +221,18 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
   }
 
   /**
-   * A failed API request yields a 400.
+   * A failed API request streams an error event.
    */
-  public function testReturns400WhenRequestFails(): void {
-    $this->textServicesResponses->append(new Response(502, [], '{"error": "Model request failed"}'));
+  public function testStreamsErrorWhenRequestFails(): void {
+    $this->textServicesResponses->append(new GuzzleResponse(502, [], '{"error": "Model request failed"}'));
 
     $response = $this->controller->check($this->request([
       'content' => '<p>Hi</p>',
       'langcode' => 'en',
     ]));
 
-    $this->assertSame(400, $response->getStatusCode());
-    $this->assertArrayHasKey('error', $this->decode($response));
+    $this->assertInstanceOf(EventStreamResponse::class, $response);
+    $this->assertSame([['error' => TRUE]], $this->streamedData($response));
   }
 
 }

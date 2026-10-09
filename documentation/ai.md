@@ -13,7 +13,7 @@ Helfi Text Services is the city's own text processing API. Its prompts, models a
 
 There is no SEO title service yet, so title suggestions are the first three items of a summary until one is published.
 
-The AI summary is streamed: the widget's AJAX callback returns the page text, and the browser streams the summary from `/helfi-ai/summary` into the summary editor, showing each item as soon as it is complete.
+The AI summary and the tone check are streamed. For the summary, the widget's AJAX callback returns the page text, and the browser streams the summary from `/helfi-ai/summary` into the summary editor, showing each item as soon as it is complete. For the tone check, the CKEditor plugin streams the rewrite from `/helfi-ai/tone-check` into the dialog's Suggested tab, and shows the comparison and Replace once it is complete.
 
 The API base URL and the service paths are defined in code (`\Drupal\helfi_ai\TextServices\TextServicesClient` and `\Drupal\helfi_ai\TextServices\Service`). The only configuration is the API key, `helfi_ai.settings:text_services.api_key`. The platform `settings.php` reads it from the `HELFI_TEXT_API_KEY` environment variable:
 
@@ -63,7 +63,7 @@ The `helfi_ai` features no longer use the Drupal AI module, and the platform `se
 - [`drupal/ai_provider_azure`](https://www.drupal.org/project/ai_provider_azure) — Azure AI Studio provider (plugin ID: `azure`)
 - [`drupal/key`](https://www.drupal.org/project/key) — secure API key management
 
-### Enabling on an instance
+### Configuration in settings.php
 
 The platform `settings.php` used to contain the following block. The API key was managed separately via the Key module (see below).
 

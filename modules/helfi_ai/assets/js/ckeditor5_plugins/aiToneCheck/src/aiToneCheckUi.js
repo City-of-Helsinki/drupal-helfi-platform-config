@@ -38,6 +38,9 @@ export default class aiToneCheckUi extends Plugin {
 
 	/**
 	 * Check the tone and show the dialog.
+	 *
+	 * The rewrite is streamed into the Suggested tab as it arrives. Once it is
+	 * complete, the comparison and the Replace action are shown.
 	 */
 	async _checkTone() {
 		const { editor } = this;
@@ -48,6 +51,11 @@ export default class aiToneCheckUi extends Plugin {
 			return;
 		}
 
+		// A new check replaces any check still running.
+		this._controller?.abort();
+		const controller = new AbortController();
+		this._controller = controller;
+
 		this._show(
 			Drupal.t('Checking tone…', {}, { context: 'Helfi AI' }),
 			this._messageView(Drupal.t('Checking the tone of the content…', {}, { context: 'Helfi AI' })),
@@ -55,7 +63,7 @@ export default class aiToneCheckUi extends Plugin {
 			'loading',
 		);
 
-		let suggestion;
+		let suggestion = null;
 		try {
 			const response = await fetch(config.endpoint, {
 				method: 'POST',
@@ -64,22 +72,50 @@ export default class aiToneCheckUi extends Plugin {
 					'X-CSRF-Token': config.csrfToken,
 				},
 				body: JSON.stringify({ content: original, langcode: config.langcode }),
+				signal: controller.signal,
 			});
 			if (!response.ok) {
 				throw new Error(`Tone check request failed: ${response.status}`);
 			}
-			const data = await response.json();
-			if (typeof data?.suggestion !== 'string' || data.suggestion === '') {
-				throw new Error('Tone check returned no suggestion.');
+
+			let text = '';
+			await Drupal.helfiAi.readEvents(response, (data) => {
+				if (data.error) {
+					throw new Error('Tone check failed.');
+				}
+				if (this._isStale(controller)) {
+					throw new Error('Tone check is no longer shown.');
+				}
+				if (data.done) {
+					suggestion = data.result;
+					return;
+				}
+				if (!text) {
+					this._show(Drupal.t('Check tone', {}, { context: 'Helfi AI' }), this._tabbedView(), [this._cancelButton()]);
+					this._initTabs('suggestion');
+					this._fillPane('original', this._previewHtml(original));
+				}
+				text += data.delta;
+				this._fillPane('suggestion', this._previewHtml(text));
+			});
+			if (suggestion === null) {
+				throw new Error('Tone check stream ended early.');
 			}
-			suggestion = data.suggestion;
 		} catch {
-			this._show(
-				Drupal.t('Check tone', {}, { context: 'Helfi AI' }),
-				this._messageView(Drupal.t('Could not check the tone. Please try again.', {}, { context: 'Helfi AI' })),
-				[this._closeButton()],
-				'error',
-			);
+			if (!this._isStale(controller)) {
+				this._show(
+					Drupal.t('Check tone', {}, { context: 'Helfi AI' }),
+					this._messageView(
+						Drupal.t('Could not complete the AI request. Please try again.', {}, { context: 'Helfi AI' }),
+					),
+					[this._closeButton()],
+					'error',
+				);
+			}
+			return;
+		}
+
+		if (this._isStale(controller)) {
 			return;
 		}
 
@@ -94,36 +130,44 @@ export default class aiToneCheckUi extends Plugin {
 					editor.plugins.get('Dialog').hide();
 				},
 			},
-			{
-				label: Drupal.t('Cancel'),
-				withText: true,
-				class: 'ck-reset_all-excluded ai-tone__reset',
-				onCreate: this._styleActionButton('secondary'),
-				onExecute: () => editor.plugins.get('Dialog').hide(),
-			},
+			this._cancelButton(),
 		]);
 
-		// Fill the panes with sanitized HTML after the dialog renders.
-		const root = editor.plugins.get('Dialog').view.element;
 		const originalHtml = this._previewHtml(original);
 		const suggestionHtml = this._previewHtml(suggestion);
 		const diffHtml = this._diffHtml(originalHtml, suggestionHtml);
 
-		const fill = (name, html) => {
-			const pane = root.querySelector(`.ai-tone__pane[data-pane="${name}"]`);
-			if (pane) {
-				pane.innerHTML = html;
-			}
-		};
-		fill('comparison-original', diffHtml);
-		fill('comparison-suggestion', diffHtml);
-		fill('original', originalHtml);
-		fill('suggestion', suggestionHtml);
+		this._fillPane('comparison-original', diffHtml);
+		this._fillPane('comparison-suggestion', diffHtml);
+		this._fillPane('original', originalHtml);
+		this._fillPane('suggestion', suggestionHtml);
+		this._initTabs('comparison');
+	}
 
+	/**
+	 * Whether a check was replaced by a newer one or its dialog was closed.
+	 */
+	_isStale(controller) {
+		return controller.signal.aborted || this.editor.plugins.get('Dialog').id !== 'aiToneCheck';
+	}
+
+	/**
+	 * Fill a pane of the tabbed view with sanitized HTML.
+	 */
+	_fillPane(name, html) {
+		this.editor.plugins.get('Dialog').view.element.querySelector(`.ai-tone__pane[data-pane="${name}"]`).innerHTML =
+			html;
+	}
+
+	/**
+	 * Make the tabs of the tabbed view clickable and show the given tab.
+	 */
+	_initTabs(id) {
+		const root = this.editor.plugins.get('Dialog').view.element;
 		root.querySelectorAll('.ai-tone__tab').forEach((tab) => {
 			tab.addEventListener('click', () => this._activateTab(root, tab.dataset.tab));
 		});
-		this._activateTab(root, 'comparison');
+		this._activateTab(root, id);
 	}
 
 	/**
@@ -296,5 +340,12 @@ export default class aiToneCheckUi extends Plugin {
 			onCreate: this._styleActionButton('secondary'),
 			onExecute: () => this.editor.plugins.get('Dialog').hide(),
 		};
+	}
+
+	/**
+	 * Build the Cancel action button that hides the dialog.
+	 */
+	_cancelButton() {
+		return { ...this._closeButton(), label: Drupal.t('Cancel') };
 	}
 }

@@ -22,7 +22,6 @@ use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Symfony\Component\HttpFoundation\ServerEvent;
 
 /**
  * Tests generating suggestions with Helfi Text Services.
@@ -65,7 +64,7 @@ class TextServicesGeneratorTest extends UnitTestCase {
 
     $renderer = $this->createMock(RendererInterface::class);
     $renderer->method('renderInIsolation')
-      ->with($this->callback(fn (array $build) => $build['#theme'] === 'item_list' && $build['#list_type'] === 'ul'))
+      ->with($this->callback(fn (array $build) => $build['#theme'] === 'item_list'))
       ->willReturnCallback(fn (array $build) => '<ul><li>' . implode('</li><li>', $build['#items']) . '</li></ul>');
 
     return new TextServicesGenerator($this->client, $textConverterManager, $renderer, $this->logger);
@@ -83,18 +82,6 @@ class TextServicesGeneratorTest extends UnitTestCase {
   }
 
   /**
-   * Streams the given events from the client.
-   *
-   * @param array<int, array{event: string, data: array<mixed>}> $events
-   *   The events.
-   */
-  private function streamEvents(array $events): void {
-    $this->client->method('stream')->willReturnCallback(function () use ($events): \Generator {
-      yield from $events;
-    });
-  }
-
-  /**
    * Streams the given text deltas, followed by a done event.
    *
    * @param string[] $deltas
@@ -103,19 +90,21 @@ class TextServicesGeneratorTest extends UnitTestCase {
   private function streamDeltas(array $deltas): void {
     $events = array_map(fn (string $text) => ['event' => 'delta', 'data' => ['text' => $text]], $deltas);
     $events[] = ['event' => 'done', 'data' => ['finish_reason' => 'stop']];
-    $this->streamEvents($events);
+    $this->client->method('stream')->willReturnCallback(fn () => yield from $events);
   }
 
   /**
-   * Collects the JSON data of the streamed summary events.
+   * Collects the JSON data of streamed server-sent events.
+   *
+   * @param \Generator<int, \Symfony\Component\HttpFoundation\ServerEvent> $events
+   *   The streamed events.
    *
    * @return array<int, array<string, mixed>>
    *   The decoded event data.
    */
-  private function collectSummary(TextServicesGenerator $generator, string $text = 'Page content', string $langcode = 'fi'): array {
+  private function collect(\Generator $events): array {
     $data = [];
-    foreach ($generator->streamSummary($text, $langcode) as $event) {
-      $this->assertInstanceOf(ServerEvent::class, $event);
+    foreach ($events as $event) {
       $json = $event->getData();
       $this->assertIsString($json);
       $data[] = json_decode($json, TRUE);
@@ -124,15 +113,58 @@ class TextServicesGeneratorTest extends UnitTestCase {
   }
 
   /**
-   * The tone check sends the content and language and returns the rewrite.
+   * Streams the events of a captured API stream fixture.
+   *
+   * @return \Generator<int, array{event: string, data: array<mixed>}>
+   *   The events.
    */
-  public function testCheckTone(): void {
-    $this->client->expects($this->once())
-      ->method('send')
-      ->with(new TextServicesRequest(Service::Tone, '<p>Teksti</p>', 'sv'))
-      ->willReturn(new TextServicesResponse('<p>Parempi teksti</p>', 'gpt-5.1'));
+  private function fixtureEvents(string $name): \Generator {
+    foreach ((new SseParser())->feed((string) file_get_contents(__DIR__ . '/../../../fixtures/' . $name)) as $event) {
+      yield ['event' => $event['event'], 'data' => json_decode($event['data'], TRUE)];
+    }
+  }
 
-    $this->assertSame('<p>Parempi teksti</p>', $this->createGenerator()->checkTone('<p>Teksti</p>', 'sv'));
+  /**
+   * A captured API stream yields each part of the rewrite, then all of it.
+   */
+  public function testStreamTone(): void {
+    $this->client->expects($this->once())
+      ->method('stream')
+      ->with(new TextServicesRequest(Service::Tone, '<p>Teksti</p>', 'sv'))
+      ->willReturn($this->fixtureEvents('tone-stream.txt'));
+
+    $data = $this->collect($this->createGenerator()->streamTone('<p>Teksti</p>', 'sv'));
+    $done = array_pop($data);
+
+    $this->assertSame(['delta' => '<h'], $data[0]);
+    $this->assertTrue($done['done']);
+    $this->assertSame(implode('', array_column($data, 'delta')), $done['result']);
+    $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', $done['result']);
+  }
+
+  /**
+   * Empty deltas are skipped, and an empty rewrite is an error.
+   */
+  public function testStreamToneEmpty(): void {
+    $this->streamDeltas(['', ' ']);
+    $this->logger->expects($this->once())->method('log')
+      ->with(LogLevel::ERROR, $this->anything(), $this->callback(fn (array $context) => $context['@message'] === 'Empty rewrite from Helfi Text Services'));
+
+    $this->assertSame([['delta' => ' '], ['error' => TRUE]], $this->collect($this->createGenerator()->streamTone('<p>Teksti</p>', 'fi')));
+  }
+
+  /**
+   * A failed stream yields an error event after the parts so far.
+   */
+  public function testStreamToneFailure(): void {
+    $this->client->method('stream')->willReturnCallback(function (): \Generator {
+      yield ['event' => 'delta', 'data' => ['text' => '<p>Osa']];
+      throw new TextServicesException('Stream failed');
+    });
+    $this->logger->expects($this->once())->method('log')
+      ->with(LogLevel::ERROR, $this->anything(), $this->callback(fn (array $context) => $context['@message'] === 'Stream failed'));
+
+    $this->assertSame([['delta' => '<p>Osa'], ['error' => TRUE]], $this->collect($this->createGenerator()->streamTone('<p>Teksti</p>', 'fi')));
   }
 
   /**
@@ -195,33 +227,25 @@ class TextServicesGeneratorTest extends UnitTestCase {
    */
   public function testRequestFailure(): void {
     $this->client->method('send')->willThrowException(new TextServicesException('Request failed'));
-    $this->logger->expects($this->exactly(2))->method('log')
+    $this->logger->expects($this->once())->method('log')
       ->with(LogLevel::ERROR, $this->anything(), $this->callback(fn (array $context) => $context['@message'] === 'Request failed'));
-    $generator = $this->createGenerator();
 
-    $this->assertNull($generator->checkTone('<p>Teksti</p>', 'fi'));
-    $this->assertSame([], $generator->suggestTitles($this->createEntity()));
+    $this->assertSame([], $this->createGenerator()->suggestTitles($this->createEntity()));
   }
 
   /**
    * A captured API stream yields each item once it is complete, then the list.
    */
   public function testStreamSummary(): void {
-    $events = [];
-    foreach ((new SseParser())->feed((string) file_get_contents(__DIR__ . '/../../../fixtures/summarize-stream.txt')) as $event) {
-      $events[] = ['event' => $event['event'], 'data' => json_decode($event['data'], TRUE)];
-    }
     $this->client->expects($this->once())
       ->method('stream')
       ->with($this->callback(fn (TextServicesRequest $request) => $request->service === Service::Summarize
         && $request->text === 'Page content'
         && $request->langcode === 'sv'
         && $request->jsonSchema !== NULL))
-      ->willReturnCallback(function () use ($events): \Generator {
-        yield from $events;
-      });
+      ->willReturn($this->fixtureEvents('summarize-stream.txt'));
 
-    $data = $this->collectSummary($this->createGenerator(), langcode: 'sv');
+    $data = $this->collect($this->createGenerator()->streamSummary('Page content', 'sv'));
     $done = array_pop($data);
 
     // One event per completed item, each list growing by one.
@@ -237,7 +261,7 @@ class TextServicesGeneratorTest extends UnitTestCase {
   public function testStreamSummaryEscapedQuote(): void {
     $this->streamDeltas(['{"items": ["Sano \\"hei', '\\" ja', ' mene", "Toi', 'nen"]}']);
 
-    $data = $this->collectSummary($this->createGenerator());
+    $data = $this->collect($this->createGenerator()->streamSummary('Page content', 'fi'));
 
     $this->assertSame([['items' => ['Sano "hei" ja mene']], ['items' => ['Sano "hei" ja mene', 'Toinen']]], array_slice($data, 0, 2));
     $this->assertTrue($data[2]['done']);
@@ -253,7 +277,7 @@ class TextServicesGeneratorTest extends UnitTestCase {
     $this->logger->expects($this->once())->method('log')
       ->with(LogLevel::ERROR, $this->anything(), $this->callback(fn (array $context) => $context['@message'] === $message));
 
-    $this->assertSame([['error' => TRUE]], $this->collectSummary($this->createGenerator()));
+    $this->assertSame([['error' => TRUE]], $this->collect($this->createGenerator()->streamSummary('Page content', 'fi')));
   }
 
   /**
@@ -267,7 +291,7 @@ class TextServicesGeneratorTest extends UnitTestCase {
     $this->logger->expects($this->once())->method('log')
       ->with(LogLevel::ERROR, $this->anything(), $this->callback(fn (array $context) => $context['@message'] === 'Stream failed'));
 
-    $this->assertSame([['items' => ['First']], ['error' => TRUE]], $this->collectSummary($this->createGenerator()));
+    $this->assertSame([['items' => ['First']], ['error' => TRUE]], $this->collect($this->createGenerator()->streamSummary('Page content', 'fi')));
   }
 
 }

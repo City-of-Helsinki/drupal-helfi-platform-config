@@ -53,7 +53,6 @@ class TextServicesClient implements TextServicesClientInterface {
   public function stream(TextServicesRequest $request): \Generator {
     $body = $this->request($request, TRUE)->getBody();
     $parser = new SseParser();
-    $done = FALSE;
 
     while (!$body->eof()) {
       // Read line by line: a larger read() waits until that many bytes have
@@ -76,14 +75,15 @@ class TextServicesClient implements TextServicesClientInterface {
         if ($event['event'] === 'done' && ($data['finish_reason'] ?? NULL) === 'length') {
           throw new TextServicesException('Helfi Text Services response was cut off at the output token limit');
         }
-        $done = $event['event'] === 'done';
         yield ['event' => $event['event'], 'data' => $data];
+
+        if ($event['event'] === 'done') {
+          return;
+        }
       }
     }
 
-    if (!$done) {
-      throw new TextServicesException('Helfi Text Services stream ended before the done event');
-    }
+    throw new TextServicesException('Helfi Text Services stream ended before the done event');
   }
 
   /**

@@ -109,20 +109,12 @@ final class FormHooks {
 
     $entity = PreviewEntityBuilder::fromFormState($form, $form_state);
 
-    if (!$entity instanceof ContentEntityInterface) {
-      return $response->addCommand(new OpenModalDialogCommand(
-        $title,
-        $this->message((string) new TranslatableMarkup('Could not read the page content. Please try again.', options: ['context' => 'Helfi AI'])),
-        $dialogOptions,
-      ));
-    }
-
-    $suggestions = $this->generator->suggestTitles($entity);
+    $suggestions = $entity instanceof ContentEntityInterface ? $this->generator->suggestTitles($entity) : [];
 
     if (!$suggestions) {
       return $response->addCommand(new OpenModalDialogCommand(
         $title,
-        $this->message((string) new TranslatableMarkup('Could not generate title suggestions. Add some page content and make sure the AI provider is configured.', options: ['context' => 'Helfi AI'])),
+        $this->message((string) new TranslatableMarkup('Could not complete the AI request. Please try again.', options: ['context' => 'Helfi AI'])),
         $dialogOptions,
       ));
     }

@@ -6,6 +6,14 @@ ai_summary_confirm:
     - core/drupal
     - core/once
 
+# Reads server-sent events streamed by the Helfi AI routes.
+stream:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    js/ai-stream.js: {}
+  dependencies:
+    - core/drupal
+
 # Streams a generated AI summary into the summary editor.
 ai_summary_stream:
   version: HELFI_DEPLOYMENT_IDENTIFIER
@@ -15,6 +23,7 @@ ai_summary_stream:
     - core/drupal
     - core/drupal.ajax
     - helfi_ai/ai_summary_confirm
+    - helfi_ai/stream
 
 # Applies a chosen AI SEO-title suggestion to the node title field.
 title_suggest:
@@ -34,3 +43,4 @@ tone_check:
     assets/js/build/aiToneCheck.js: { preprocess: false, minified: true }
   dependencies:
     - core/ckeditor5
+    - helfi_ai/stream

@@ -159,7 +159,7 @@ class AiSummaryWidgetTest extends EntityKernelTestBase {
 
     $this->assertNull($this->textServicesResponses->getLastRequest());
     $rendered = (string) $response->getCommands()[0]['data'];
-    $this->assertStringContainsString('Could not generate a summary.', $rendered);
+    $this->assertStringContainsString('Could not complete the AI request. Please try again.', $rendered);
   }
 
 }

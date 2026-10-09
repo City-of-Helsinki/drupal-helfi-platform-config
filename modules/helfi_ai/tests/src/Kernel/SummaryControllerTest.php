@@ -82,21 +82,6 @@ class SummaryControllerTest extends EntityKernelTestBase {
   }
 
   /**
-   * Returns the JSON data of the events in a streamed response.
-   *
-   * @return array<int, array<string, mixed>>
-   *   The decoded event data.
-   */
-  private function streamedData(EventStreamResponse $response): array {
-    ob_start();
-    $response->sendContent();
-    $output = (string) ob_get_clean();
-
-    preg_match_all('/^data: (.*)$/m', $output, $matches);
-    return array_map(fn (string $data) => json_decode($data, TRUE), $matches[1]);
-  }
-
-  /**
    * A request without the permission is denied.
    */
   public function testWithAccountNoPermission(): void {

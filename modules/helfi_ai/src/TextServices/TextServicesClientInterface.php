@@ -6,8 +6,6 @@ namespace Drupal\helfi_ai\TextServices;
 
 /**
  * Client for the Helfi Text Services API.
- *
- * @phpstan-type TextServicesEvent array{event: string, data: array<mixed>}
  */
 interface TextServicesClientInterface {
 
@@ -33,7 +31,7 @@ interface TextServicesClientInterface {
    * @param \Drupal\helfi_ai\TextServices\TextServicesRequest $request
    *   The request.
    *
-   * @return \Generator<int, TextServicesEvent, mixed, void>
+   * @return \Generator<int, array{event: string, data: array<mixed>}, mixed, void>
    *   The events.
    *
    * @throws \Drupal\helfi_ai\TextServices\TextServicesException

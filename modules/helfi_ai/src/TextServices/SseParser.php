@@ -7,8 +7,7 @@ namespace Drupal\helfi_ai\TextServices;
 /**
  * Parses a server-sent events (SSE) stream into events.
  *
- * Network chunks can end anywhere, even in the middle of a character, so the
- * input is buffered until a complete event (terminated by an empty line) has
+ * Input is buffered until a complete event (terminated by an empty line) has
  * arrived.
  */
 final class SseParser {

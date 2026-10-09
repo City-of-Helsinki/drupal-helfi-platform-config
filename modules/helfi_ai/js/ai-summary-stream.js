@@ -4,41 +4,12 @@
  */
 ((Drupal) => {
   /**
-   * Reads server-sent events from a response and passes on their JSON data.
-   */
-  const readEvents = async (response, onData) => {
-    const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
-    let buffer = '';
-
-    for (;;) {
-      const { value, done } = await reader.read();
-      if (done) {
-        return;
-      }
-      buffer += value;
-
-      let end = buffer.indexOf('\n\n');
-      while (end !== -1) {
-        const data = buffer
-          .slice(0, end)
-          .split('\n')
-          .find((line) => line.startsWith('data:'));
-        buffer = buffer.slice(end + 2);
-        if (data) {
-          onData(JSON.parse(data.slice(5)));
-        }
-        end = buffer.indexOf('\n\n');
-      }
-    }
-  };
-
-  /**
    * Streams the summary into the editor, showing items as they complete.
    *
    * Core AJAX waits for the returned promise, so the button can't be
    * clicked again while the summary is streaming.
    */
-  Drupal.AjaxCommands.prototype.helfiAiSummaryStream = async (ajax, response) => {
+  Drupal.AjaxCommands.prototype.helfiAiSummaryStream = async (_ajax, response) => {
     const wrapper = document.getElementById(response.wrapperId);
     const button = wrapper.querySelector('[name^="ai_summary_generate_"]');
     const textarea = wrapper.querySelector('textarea[data-ckeditor5-id]');
@@ -67,7 +38,7 @@
       }
 
       let result = null;
-      await readEvents(stream, (data) => {
+      await Drupal.helfiAi.readEvents(stream, (data) => {
         if (data.error) {
           throw new Error('Summary failed.');
         }
@@ -99,7 +70,7 @@
       hiddenBox?.classList.add('hidden');
       wrapper.insertAdjacentHTML(
         'afterbegin',
-        `<p class="messages messages--error">${Drupal.t('Could not generate a summary. Add some page content and make sure the AI provider is configured.', {}, { context: 'Helfi AI' })}</p>`,
+        `<p class="messages messages--error">${Drupal.t('Could not complete the AI request. Please try again.', {}, { context: 'Helfi AI' })}</p>`,
       );
     } finally {
       throbber.remove();

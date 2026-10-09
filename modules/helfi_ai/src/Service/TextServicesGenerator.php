@@ -47,23 +47,45 @@ class TextServicesGenerator {
   }
 
   /**
-   * Suggests a tone-conforming rewrite of the given editor content.
+   * Streams a tone-conforming rewrite of the content as server-sent events.
+   *
+   * Each event is JSON: {"delta": "..."} for each part of the rewrite as it
+   * arrives, then {"done": true, "result": "<full rewrite>"}, or
+   * {"error": true} if the rewrite fails.
    *
    * @param string $content
    *   The editor content (HTML).
    * @param string $langcode
    *   The language of the content.
    *
-   * @return string|null
-   *   The rewritten content, or NULL if the request fails.
+   * @return \Generator<int, \Symfony\Component\HttpFoundation\ServerEvent>
+   *   The events.
    */
-  public function checkTone(string $content, string $langcode): ?string {
+  public function streamTone(string $content, string $langcode): \Generator {
+    $result = '';
+
     try {
-      return $this->client->send(new TextServicesRequest(Service::Tone, $content, $langcode))->text;
+      foreach ($this->client->stream(new TextServicesRequest(Service::Tone, $content, $langcode)) as $event) {
+        if ($event['event'] !== 'delta') {
+          continue;
+        }
+        $delta = (string) ($event['data']['text'] ?? '');
+
+        if ($delta === '') {
+          continue;
+        }
+        $result .= $delta;
+        yield $this->serverEvent(['delta' => $delta]);
+      }
+
+      if (trim($result) === '') {
+        throw new TextServicesException('Empty rewrite from Helfi Text Services');
+      }
+      yield $this->serverEvent(['done' => TRUE, 'result' => $result]);
     }
     catch (TextServicesException $e) {
       Error::logException($this->logger, $e);
-      return NULL;
+      yield $this->serverEvent(['error' => TRUE]);
     }
   }
 
@@ -213,7 +235,6 @@ class TextServicesGenerator {
   private function renderItems(array $items): string {
     $build = [
       '#theme' => 'item_list',
-      '#list_type' => 'ul',
       '#items' => $items,
     ];
     return (string) $this->renderer->renderInIsolation($build);

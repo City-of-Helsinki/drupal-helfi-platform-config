@@ -206,7 +206,6 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
       ],
     ];
 
-    $button['#attached']['library'][] = 'helfi_ai/ai_summary_confirm';
     $button['#attached']['library'][] = 'helfi_ai/ai_summary_stream';
     if ($has_value) {
       $button['#attributes']['data-ai-summary-confirm'] = $this->t('Regenerating replaces the current AI summary, including any manual changes. Continue?', options: $ctx);
@@ -266,7 +265,7 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
     $wrapper['error'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => new TranslatableMarkup('Could not generate a summary. Add some page content and make sure the AI provider is configured.', [], ['context' => 'Helfi AI']),
+      '#value' => new TranslatableMarkup('Could not complete the AI request. Please try again.', [], ['context' => 'Helfi AI']),
       '#attributes' => ['class' => ['messages', 'messages--error']],
       '#weight' => -20,
     ];

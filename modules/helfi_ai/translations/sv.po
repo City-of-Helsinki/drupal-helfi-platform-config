@@ -25,12 +25,8 @@ msgid "Cancel"
 msgstr "Avbryt"
 
 msgctxt "Helfi AI"
-msgid "Could not read the page content. Please try again."
-msgstr "Sidans innehåll kunde inte läsas. Försök igen."
-
-msgctxt "Helfi AI"
-msgid "Could not generate title suggestions. Add some page content and make sure the AI provider is configured."
-msgstr "Rubrikförslag kunde inte skapas. Lägg till innehåll på sidan och kontrollera att AI-tjänsten är konfigurerad."
+msgid "Could not complete the AI request. Please try again."
+msgstr "AI-begäran kunde inte slutföras. Försök igen."
 
 msgctxt "Helfi AI"
 msgid "AI summary"
@@ -65,10 +61,6 @@ msgid "Generate a new AI summary. It will replace the previous summary."
 msgstr "Skapa en ny AI-sammanfattning. Den ersätter den tidigare sammanfattningen."
 
 msgctxt "Helfi AI"
-msgid "Could not generate a summary. Add some page content and make sure the AI provider is configured."
-msgstr "Sammanfattningen kunde inte skapas. Lägg till innehåll på sidan och kontrollera att AI-tjänsten är konfigurerad."
-
-msgctxt "Helfi AI"
 msgid "Check tone"
 msgstr "Kontrollera ton"
 
@@ -79,10 +71,6 @@ msgstr "Kontrollerar tonen…"
 msgctxt "Helfi AI"
 msgid "Checking the tone of the content…"
 msgstr "Kontrollerar innehållets ton…"
-
-msgctxt "Helfi AI"
-msgid "Could not check the tone. Please try again."
-msgstr "Tonen kunde inte kontrolleras. Försök igen senare."
 
 msgctxt "Helfi AI"
 msgid "Replace the content with an AI-generated version"

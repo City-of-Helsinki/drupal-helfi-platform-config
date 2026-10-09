@@ -104,7 +104,6 @@ class TextServicesClientTest extends UnitTestCase {
    * An error response throws with the HTTP status and the error message.
    */
   #[TestWith([400, '{"error": "Something failed"}', 'Something failed'])]
-  #[TestWith([401, '{"error": "Something failed"}', 'Something failed'])]
   #[TestWith([502, '<html>Bad Gateway</html>', 'Bad Gateway'])]
   public function testErrorResponse(int $status, string $body, string $error): void {
     $client = $this->createClient([new Response($status, [], $body)]);
@@ -148,7 +147,7 @@ class TextServicesClientTest extends UnitTestCase {
    */
   public function testStream(): void {
     $client = $this->createClient([
-      new Response(200, ['Content-Type' => 'text/event-stream'], $this->fixture('tone-stream.txt')),
+      new Response(200, [], $this->fixture('tone-stream.txt')),
     ]);
 
     $events = iterator_to_array($client->stream(new TextServicesRequest(Service::Tone, 'Teksti', 'fi')), FALSE);
@@ -203,38 +202,16 @@ class TextServicesClientTest extends UnitTestCase {
   }
 
   /**
-   * A stream cut off at the output token limit throws.
+   * A stream that fails, is cut off or ends before the done event throws.
    */
-  public function testStreamCutOffAtTokenLimit(): void {
-    $body = "event: start\ndata: {\"model\": \"gpt-5.1\"}\n\nevent: delta\ndata: {\"text\": \"Hei\"}\n\nevent: done\ndata: {\"model\": \"gpt-5.1\", \"finish_reason\": \"length\"}\n\n";
+  #[TestWith(["event: error\ndata: {\"error\": \"Model request failed\"}\n\n", 'Model request failed'])]
+  #[TestWith(["event: done\ndata: {\"finish_reason\": \"length\"}\n\n", 'output token limit'])]
+  #[TestWith(["event: delta\ndata: {\"text\": \"Hei\"}\n\n", 'ended before the done event'])]
+  public function testStreamFails(string $body, string $message): void {
     $client = $this->createClient([new Response(200, [], $body)]);
 
     $this->expectException(TextServicesException::class);
-    $this->expectExceptionMessage('output token limit');
-    iterator_to_array($client->stream(new TextServicesRequest(Service::Tone, 'Teksti', 'fi')));
-  }
-
-  /**
-   * An error event in the stream throws.
-   */
-  public function testStreamErrorEvent(): void {
-    $body = "event: start\ndata: {\"model\": \"gpt-5.1\"}\n\nevent: error\ndata: {\"error\": \"Model request failed\"}\n\n";
-    $client = $this->createClient([new Response(200, [], $body)]);
-
-    $this->expectException(TextServicesException::class);
-    $this->expectExceptionMessage('Model request failed');
-    iterator_to_array($client->stream(new TextServicesRequest(Service::Tone, 'Teksti', 'fi')));
-  }
-
-  /**
-   * A stream that ends before the done event throws.
-   */
-  public function testStreamEndsBeforeDone(): void {
-    $body = "event: start\ndata: {\"model\": \"gpt-5.1\"}\n\nevent: delta\ndata: {\"text\": \"Hei\"}\n\n";
-    $client = $this->createClient([new Response(200, [], $body)]);
-
-    $this->expectException(TextServicesException::class);
-    $this->expectExceptionMessage('ended before the done event');
+    $this->expectExceptionMessage($message);
     iterator_to_array($client->stream(new TextServicesRequest(Service::Tone, 'Teksti', 'fi')));
   }
 

@@ -171,7 +171,7 @@ class FormHooksTest extends EntityKernelTestBase {
 
     $command = $this->dialogCommand($response);
     $this->assertSame('openDialog', $command['command']);
-    $this->assertStringContainsString('Could not read the page content.', (string) $command['data']);
+    $this->assertStringContainsString('Could not complete the AI request. Please try again.', (string) $command['data']);
   }
 
   /**
@@ -187,7 +187,7 @@ class FormHooksTest extends EntityKernelTestBase {
 
     $command = $this->dialogCommand($response);
     $this->assertSame('openDialog', $command['command']);
-    $this->assertStringContainsString('Could not generate title suggestions.', (string) $command['data']);
+    $this->assertStringContainsString('Could not complete the AI request. Please try again.', (string) $command['data']);
   }
 
 }
