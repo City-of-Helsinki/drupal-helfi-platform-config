@@ -7,33 +7,35 @@ namespace Drupal\helfi_ai\Controller;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\helfi_ai\Service\AiGenerator;
+use Drupal\helfi_ai\Service\TextServicesGenerator;
+use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Returns a tone-conforming rewrite of submitted editor content.
+ * Streams a tone-conforming rewrite of submitted editor content.
  */
 final class ToneCheckController implements ContainerInjectionInterface {
 
   use AutowireTrait;
 
   public function __construct(
-    private readonly AiGenerator $generator,
+    private readonly TextServicesGenerator $generator,
     private readonly ConfigFactoryInterface $configFactory,
   ) {}
 
   /**
-   * Checks the tone of the posted content and returns a suggested rewrite.
+   * Streams a suggested rewrite of the posted content as server-sent events.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request, with a JSON body of {content, langcode}.
    *
-   * @return \Symfony\Component\HttpFoundation\JsonResponse
-   *   {suggestion: string} on success, or {error: string} with a 4xx/5xx code.
+   * @return \Symfony\Component\HttpFoundation\Response
+   *   The event stream, or {error: string} with a 4xx code.
    */
-  public function check(Request $request): JsonResponse {
+  public function check(Request $request): Response {
     if (!$this->configFactory->get('helfi_ai.settings')->get('enable_tone_check')) {
       return new JsonResponse(['error' => 'Tone check is disabled.'], 403);
     }
@@ -47,17 +49,11 @@ final class ToneCheckController implements ContainerInjectionInterface {
     if (trim($content) === '') {
       return new JsonResponse(['error' => 'No content to check.'], 400);
     }
-    if (strlen($content) > AiGenerator::MAX_CONTENT_BYTES) {
+    if (mb_strlen($content) > TextServicesGenerator::MAX_CONTENT_LENGTH) {
       return new JsonResponse(['error' => 'Content is too large to check.'], 413);
     }
 
-    $suggestion = $this->generator->checkTone($content, $langcode);
-
-    if ($suggestion === NULL) {
-      return new JsonResponse(['error' => 'Could not check the tone. Make sure the AI provider is configured.'], 400);
-    }
-
-    return new JsonResponse(['suggestion' => $suggestion]);
+    return new EventStreamResponse(fn () => $this->generator->streamTone($content, $langcode));
   }
 
 }

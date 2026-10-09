@@ -14,20 +14,26 @@ use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_ai\Hook\FormHooks;
-use Drupal\helfi_ai\Service\AiGenerator;
+use Drupal\helfi_ai\Service\TextServicesGenerator;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
+use Drupal\Tests\helfi_ai\Traits\TextServicesTestTrait;
+use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\Argument;
 
 /**
- * Tests the suggest-title AJAX callback through the real AI provider stack.
+ * Tests the suggest-title AJAX callback.
  */
 #[Group('helfi_ai')]
 #[RunTestsInSeparateProcesses]
 class FormHooksTest extends EntityKernelTestBase {
+
+  use ApiTestTrait;
+  use TextServicesTestTrait;
 
   /**
    * {@inheritdoc}
@@ -41,7 +47,6 @@ class FormHooksTest extends EntityKernelTestBase {
     'language',
     'key',
     'ai',
-    'ai_test',
     'helfi_ai',
   ];
 
@@ -56,8 +61,8 @@ class FormHooksTest extends EntityKernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->installConfig(['ai', 'ai_test', 'helfi_ai']);
-    $this->installEntitySchema('ai_mock_provider_result');
+    $this->installConfig(['helfi_ai']);
+    $this->setUpTextServices();
 
     NodeType::create([
       'name' => 'Test',
@@ -85,17 +90,10 @@ class FormHooksTest extends EntityKernelTestBase {
       'status' => TRUE,
     ])->save();
 
-    // Resolve chat operations to the echoai test provider.
-    $this->config('ai.settings')
-      ->set('default_providers', [
-        'chat' => ['provider_id' => 'echoai', 'model_id' => 'test'],
-      ])
-      ->save();
-
     $this->hooks = new FormHooks(
       $this->prophesize(AccountInterface::class)->reveal(),
       $this->container->get(ConfigFactoryInterface::class),
-      $this->container->get(AiGenerator::class),
+      $this->container->get(TextServicesGenerator::class),
     );
   }
 
@@ -149,6 +147,7 @@ class FormHooksTest extends EntityKernelTestBase {
    * Suggestions open a modal with the theme carrying the generated titles.
    */
   public function testBuildSuggestionResponseOpensModalWithSuggestions(): void {
+    $this->textServicesResponses->append(new Response(200, [], $this->getFixture('helfi_ai', 'titles.json')));
     $node = $this->createNode('Kernel form hooks title ' . $this->randomMachineName());
     $form = [];
 
@@ -159,6 +158,7 @@ class FormHooksTest extends EntityKernelTestBase {
     $this->assertSame('#drupal-modal', $command['selector']);
     $this->assertSame('helfi-ai-dialog', $command['dialogOptions']['classes']['ui-dialog']);
     $this->assertStringContainsString('ai-suggestions', (string) $command['data']);
+    $this->assertStringContainsString('Asukaspysäköintitunnuksen haku ja voimassaolo', (string) $command['data']);
   }
 
   /**
@@ -171,18 +171,14 @@ class FormHooksTest extends EntityKernelTestBase {
 
     $command = $this->dialogCommand($response);
     $this->assertSame('openDialog', $command['command']);
-    $this->assertStringContainsString('Could not read the page content.', (string) $command['data']);
+    $this->assertStringContainsString('Could not complete the AI request. Please try again.', (string) $command['data']);
   }
 
   /**
-   * An unresolvable provider makes suggestion fail, showing an error message.
+   * A failed API request shows an error message.
    */
-  public function testBuildSuggestionResponseShowsErrorWhenProviderUnavailable(): void {
-    $this->config('ai.settings')
-      ->set('default_providers', [
-        'chat' => ['provider_id' => 'no_such_provider', 'model_id' => 'test'],
-      ])
-      ->save();
+  public function testBuildSuggestionResponseShowsErrorWhenRequestFails(): void {
+    $this->textServicesResponses->append(new Response(502, [], '{"error": "Model request failed"}'));
 
     $node = $this->createNode('Kernel form hooks title ' . $this->randomMachineName());
     $form = [];
@@ -191,7 +187,7 @@ class FormHooksTest extends EntityKernelTestBase {
 
     $command = $this->dialogCommand($response);
     $this->assertSame('openDialog', $command['command']);
-    $this->assertStringContainsString('Could not generate title suggestions.', (string) $command['data']);
+    $this->assertStringContainsString('Could not complete the AI request. Please try again.', (string) $command['data']);
   }
 
 }

@@ -1,0 +1,138 @@
+event: start
+data: {}
+
+event: delta
+data: {"text": "{\""}
+
+event: delta
+data: {"text": "items"}
+
+event: delta
+data: {"text": "\":[\""}
+
+event: delta
+data: {"text": "Ha"}
+
+event: delta
+data: {"text": "et"}
+
+event: delta
+data: {"text": " as"}
+
+event: delta
+data: {"text": "uk"}
+
+event: delta
+data: {"text": "asp"}
+
+event: delta
+data: {"text": "ys"}
+
+event: delta
+data: {"text": "ä"}
+
+event: delta
+data: {"text": "kö"}
+
+event: delta
+data: {"text": "int"}
+
+event: delta
+data: {"text": "it"}
+
+event: delta
+data: {"text": "unn"}
+
+event: delta
+data: {"text": "uksen"}
+
+event: delta
+data: {"text": " sähkö"}
+
+event: delta
+data: {"text": "isessä asio"}
+
+event: delta
+data: {"text": "intipal"}
+
+event: delta
+data: {"text": "velussa"}
+
+event: delta
+data: {"text": ", et"}
+
+event: delta
+data: {"text": " voi hake"}
+
+event: delta
+data: {"text": "a sitä"}
+
+event: delta
+data: {"text": " paikan"}
+
+event: delta
+data: {"text": " päällä.\",\""}
+
+event: delta
+data: {"text": "Saat päätö"}
+
+event: delta
+data: {"text": "ksen hakem"}
+
+event: delta
+data: {"text": "uksesta noin kah"}
+
+event: delta
+data: {"text": "dessa vi"}
+
+event: delta
+data: {"text": "ikossa,"}
+
+event: delta
+data: {"text": " joten varaa tähän"}
+
+event: delta
+data: {"text": " aikaa.\",\"Tunn"}
+
+event: delta
+data: {"text": "us on voimassa"}
+
+event: delta
+data: {"text": " 12 kuukautta"}
+
+event: delta
+data: {"text": " kerrallaan,"}
+
+event: delta
+data: {"text": " sen jälkeen sinun pitää uusia"}
+
+event: delta
+data: {"text": " se.\",\"Maksat tunn"}
+
+event: delta
+data: {"text": "uksesta 30"}
+
+event: delta
+data: {"text": " euroa kuukaudessa,"}
+
+event: delta
+data: {"text": " joten vuoden hinta on 360"}
+
+event: delta
+data: {"text": " euroa"}
+
+event: delta
+data: {"text": ".\",\"Voit käyttää tunnusta as"}
+
+event: delta
+data: {"text": "ukaspysäköintiin"}
+
+event: delta
+data: {"text": " niillä alueilla, jotka kuuluvat"}
+
+event: delta
+data: {"text": " tunnukseesi.\"]}"}
+
+event: done
+data: {"data": {"items": ["Haet asukaspysäköintitunnuksen sähköisessä asiointipalvelussa, et voi hakea sitä paikan päällä.", "Saat päätöksen hakemuksesta noin kahdessa viikossa, joten varaa tähän aikaa.", "Tunnus on voimassa 12 kuukautta kerrallaan, sen jälkeen sinun pitää uusia se.", "Maksat tunnuksesta 30 euroa kuukaudessa, joten vuoden hinta on 360 euroa.", "Voit käyttää tunnusta asukaspysäköintiin niillä alueilla, jotka kuuluvat tunnukseesi."]}}
+

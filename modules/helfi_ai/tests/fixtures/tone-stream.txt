@@ -1,0 +1,126 @@
+event: start
+data: {}
+
+event: delta
+data: {"text": "<h"}
+
+event: delta
+data: {"text": "2"}
+
+event: delta
+data: {"text": ">"}
+
+event: delta
+data: {"text": "As"}
+
+event: delta
+data: {"text": "uk"}
+
+event: delta
+data: {"text": "asp"}
+
+event: delta
+data: {"text": "ys"}
+
+event: delta
+data: {"text": "ä"}
+
+event: delta
+data: {"text": "kö"}
+
+event: delta
+data: {"text": "inti"}
+
+event: delta
+data: {"text": "</"}
+
+event: delta
+data: {"text": "h"}
+
+event: delta
+data: {"text": "2"}
+
+event: delta
+data: {"text": "><"}
+
+event: delta
+data: {"text": "p"}
+
+event: delta
+data: {"text": ">"}
+
+event: delta
+data: {"text": "Voit"}
+
+event: delta
+data: {"text": " hakea"}
+
+event: delta
+data: {"text": " asuk"}
+
+event: delta
+data: {"text": "aspys"}
+
+event: delta
+data: {"text": "äkö"}
+
+event: delta
+data: {"text": "intit"}
+
+event: delta
+data: {"text": "unnusta"}
+
+event: delta
+data: {"text": " sähköisessä asio"}
+
+event: delta
+data: {"text": "intipalvel"}
+
+event: delta
+data: {"text": "ussa. K"}
+
+event: delta
+data: {"text": "äsittelemme"}
+
+event: delta
+data: {"text": " hakemuksen"}
+
+event: delta
+data: {"text": " noin kahd"}
+
+event: delta
+data: {"text": "essa viikossa"}
+
+event: delta
+data: {"text": ". Tunnus"}
+
+event: delta
+data: {"text": " on voimassa "}
+
+event: delta
+data: {"text": "12 kuukautta.</"}
+
+event: delta
+data: {"text": "p><ul><li"}
+
+event: delta
+data: {"text": ">Hinta 30"}
+
+event: delta
+data: {"text": " €/kk</li><li"}
+
+event: delta
+data: {"text": ">Ajone"}
+
+event: delta
+data: {"text": "uvon tulee olla sinun hall"}
+
+event: delta
+data: {"text": "innassasi</li></ul"}
+
+event: delta
+data: {"text": ">"}
+
+event: done
+data: {"text": "<h2>Asukaspysäköinti</h2><p>Voit hakea asukaspysäköintitunnusta sähköisessä asiointipalvelussa. Käsittelemme hakemuksen noin kahdessa viikossa. Tunnus on voimassa 12 kuukautta.</p><ul><li>Hinta 30 €/kk</li><li>Ajoneuvon tulee olla sinun hallinnassasi</li></ul>"}
+

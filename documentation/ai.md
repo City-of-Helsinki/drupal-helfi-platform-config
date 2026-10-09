@@ -1,16 +1,73 @@
 # AI
 
-This module integrates the [Drupal AI module](https://www.drupal.org/project/ai) with Azure OpenAI across all hel.fi instances via `helfi_platform_config`.
+The `helfi_ai` module's tone check, AI summary and SEO title suggestions use the [Helfi Text Services](#helfi-text-services) API. The [Drupal AI module](https://www.drupal.org/project/ai) integration with Azure OpenAI described further below is still installed across all hel.fi instances via `helfi_platform_config`.
 
-## Installed modules
+## Helfi Text Services
+
+Helfi Text Services is the city's own text processing API. Its prompts, models and model settings are managed in the API's admin UI, not in Drupal.
+
+| Service | Path | Used by |
+|---|---|---|
+| Tone of voice | `v1/tone` | Tone check |
+| Summarization | `v1/summarize` | AI summary, SEO title suggestions |
+
+There is no SEO title service yet, so title suggestions are requested from the summarization service with a JSON schema that asks for titles, until one is published.
+
+Structured results are requested with `response_format: json_structure` and a JSON schema; the API returns the validated object in `data` (`TextServicesResponse::$data`), and plain text in `text`.
+
+The AI summary and the tone check are streamed. For the summary, the widget's AJAX callback returns the page text, and the browser streams the summary from `/helfi-ai/summary` into the summary editor, showing each item as soon as it is complete. For the tone check, the CKEditor plugin streams the rewrite from `/helfi-ai/tone-check` into the dialog's Suggested tab, and shows the comparison and Replace once it is complete.
+
+The API base URL and the service paths are defined in code (`\Drupal\helfi_ai\TextServices\TextServicesClient` and `\Drupal\helfi_ai\TextServices\Service`). The only configuration is the API key, `helfi_ai.settings:text_services.api_key`. The platform `settings.php` reads it from the `HELFI_TEXT_API_KEY` environment variable:
+
+```php
+if ($helfi_text_api_key = getenv('HELFI_TEXT_API_KEY')) {
+  $config['helfi_ai.settings']['text_services']['api_key'] = $helfi_text_api_key;
+}
+```
+
+For local development, set it in `public/sites/default/local.settings.php` (gitignored) and run `drush cr`:
+
+```php
+$config['helfi_ai.settings']['text_services']['api_key'] = 'YOUR_API_KEY';
+```
+
+The key is never exported with configuration. Note that `drush config:get helfi_ai.settings --include-overridden` prints it.
+
+### Using the API in code
+
+```php
+use Drupal\helfi_ai\TextServices\Service;
+use Drupal\helfi_ai\TextServices\TextServicesClientInterface;
+use Drupal\helfi_ai\TextServices\TextServicesRequest;
+
+$client = \Drupal::service(TextServicesClientInterface::class);
+$response = $client->send(new TextServicesRequest(Service::Tone, '<p>Text to rewrite</p>', 'fi'));
+$text = $response->text;
+
+// Streamed: 'start', 'delta' (the text in parts, for showing progress) and
+// 'done' (the final response) events.
+foreach ($client->stream(new TextServicesRequest(Service::Tone, '<p>Text to rewrite</p>', 'fi')) as $event) {
+  if ($event['event'] === 'done') {
+    $text = $event['data']['text'];
+  }
+}
+```
+
+Failed requests throw `\Drupal\helfi_ai\TextServices\TextServicesException`, with the HTTP status as the exception code. The API accepts at most 30 000 characters of text.
+
+## Drupal AI module
+
+The `helfi_ai` features no longer use the Drupal AI module, and the platform `settings.php` no longer configures it. It stays installed until it is removed in a follow-up. The sections below describe that setup for reference.
+
+### Installed modules
 
 - [`drupal/ai`](https://www.drupal.org/project/ai) — core AI abstraction layer, provider plugin system, and Prompt Library
 - [`drupal/ai_provider_azure`](https://www.drupal.org/project/ai_provider_azure) — Azure AI Studio provider (plugin ID: `azure`)
 - [`drupal/key`](https://www.drupal.org/project/key) — secure API key management
 
-## Enabling on an instance
+### Configuration in settings.php
 
-Add the following block to the instance `settings.php`. The API key is managed separately via the Key module (see below) and does not go here.
+The platform `settings.php` used to contain the following block. The API key was managed separately via the Key module (see below).
 
 ```php
 $azure_openai_tiers = [
@@ -53,14 +110,14 @@ foreach ($azure_openai_tiers as $azure_tier => [$azure_endpoint_var, $azure_depl
 
 In production these are provisioned via Azure Keyvault through the CI pipeline.
 
-## Model tiers
+### Model tiers
 
-Features differ in what they need from a model: rewriting text in the city's tone of voice benefits from a capable model, while producing a summary or a few title candidates does not. Rather than naming models in code, each feature asks for a **tier** and the instance decides which deployment backs it.
+Features differ in what they need from a model. Rather than naming models in code, a feature asks for a **tier** and the instance decides which deployment backs it.
 
-| Tier | Used by |
+| Tier | Meant for |
 |---|---|
-| `high` | Tone check |
-| `low` | AI summary, SEO title suggestions |
+| `high` | Tasks that need a capable model |
+| `low` | Simple tasks |
 | `default` | Fallback for any tier the instance has not configured |
 
 Tiers are declared in code via `\Drupal\helfi_ai\ModelTier` and mapped to providers in `helfi_ai.settings:model_tiers`, which `settings.php` populates from the environment. The stored value is the AI module's provider and model string, for example `azure__gpt-5-nano`.
@@ -75,7 +132,7 @@ An instance therefore only needs to provision the tiers it actually wants to dif
 
 Note that `default` is also the slot a third tier would occupy if `medium` is ever needed, so it is deliberately not named `medium` today.
 
-## Local development
+### Local development
 
 Container env vars are not consistently available across instances, so override the relevant config in `public/sites/default/local.settings.php` (gitignored):
 
@@ -105,13 +162,13 @@ Set `model_tiers` directly rather than via `putenv()`. `local.settings.php` is i
 
 Run `drush cr` after editing `local.settings.php`. The endpoint must be the full Chat Completions URL from Azure AI Studio (the one ending in `/chat/completions?api-version=...`), not the Responses API URL.
 
-## API key management
+### API key management
 
 In production the API key is stored in a `key.key` config entity (`helfi_azure_openai`) shipped by `helfi_platform_config`. It uses the Key module's `env` provider, which reads `AZURE_OPENAI_API_KEY` directly from the environment at runtime. The actual key value never enters Drupal configuration or the database.
 
 For local dev the override above swaps the provider to `config` so the value comes from `local.settings.php` instead.
 
-## Using the AI API in custom modules
+### Using the AI API in custom modules
 
 Use the `ai.provider` service to get the configured default provider and make requests.
 
@@ -141,13 +198,13 @@ $preferred = $tiers[ModelTier::High->value] ?? $tiers[ModelTier::Default->value]
 ['provider_id' => $provider, 'model_id' => $model] = $ai->getSetProvider('chat', $preferred);
 ```
 
-## Prompt Library
+### Prompt Library
 
 Shared prompts are distributed as `ai.ai_prompt_type.*` and `ai.ai_prompt.*` config entities in a module's `config/install/` directory. Use the `helfi_` prefix on prompt type IDs to avoid collisions with instance-specific prompts.
 
 The Drupal AI module stores each prompt under the ID `{type}__{prompt_id}` and substitutes variables with single-brace placeholders, e.g. `{content}`.
 
-### Adding a prompt
+#### Adding a prompt
 
 ```yaml
 # config/install/ai.ai_prompt_type.helfi_content_summary.yml
@@ -171,7 +228,7 @@ prompt: |
   {content}
 ```
 
-### Calling a prompt from code
+#### Calling a prompt from code
 
 ```php
 use Drupal\ai\OperationType\Chat\ChatInput;
@@ -192,12 +249,12 @@ $answer = $provider->chat($input, $model)->getNormalized()->getText();
 
 ## SEO title suggestions
 
-The `helfi_ai` module adds an AI **Generate SEO title with AI** button next to the node title field. It builds the unsaved node from the current form values, strips it to plain text, and asks the chat provider for a few GEO/SEO-optimized title candidates, shown in a modal for the editor to pick from. The chosen title fills the title field and can still be edited before saving.
+The `helfi_ai` module adds an AI **Generate SEO title with AI** button next to the node title field. It builds the unsaved node from the current form values, strips it to plain text, and asks [Helfi Text Services](#helfi-text-services) for up to three title candidates, shown in a modal for the editor to pick from. The chosen title fills the title field and can still be edited before saving.
 
 | Aspect | Value |
 |---|---|
-| Prompt | `ai.ai_prompt.helfi_seo_title__helfi_seo_title_default` (type `helfi_seo_title`) |
+| Service | `v1/summarize` with a titles JSON schema until an SEO title service is published |
 | Permission | `use helfi ai title suggestion` (granted to `admin`, `editor`, `content_producer`) |
 | Content types | `helfi_ai.settings:seo_title_bundles` (defaults to `page`) |
 
-The content types offering the button are read from configuration, so an instance can adjust them by overriding `seo_title_bundles` — no code change required. The prompt is shipped as config and tuned there; it instructs the model to respond in the page's language, so no per-language prompt is needed.
+The content types offering the button are read from configuration, so an instance can adjust them by overriding `seo_title_bundles` — no code change required.
