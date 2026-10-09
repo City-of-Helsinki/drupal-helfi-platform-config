@@ -13,7 +13,6 @@ enum Service: string {
   case Tone = 'v1/tone';
 
   // Summarizes content into key points.
-  // @todo Switch to v1 when the summarize service is published there.
-  case Summarize = 'dev/summarize';
+  case Summarize = 'v1/summarize';
 
 }

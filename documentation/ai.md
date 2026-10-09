@@ -9,9 +9,11 @@ Helfi Text Services is the city's own text processing API. Its prompts, models a
 | Service | Path | Used by |
 |---|---|---|
 | Tone of voice | `v1/tone` | Tone check |
-| Summarization | `dev/summarize` | AI summary, SEO title suggestions |
+| Summarization | `v1/summarize` | AI summary, SEO title suggestions |
 
-There is no SEO title service yet, so title suggestions are the first three items of a summary until one is published.
+There is no SEO title service yet, so title suggestions are requested from the summarization service with a JSON schema that asks for titles, until one is published.
+
+Structured results are requested with `response_format: json_structure` and a JSON schema; the API returns the validated object in `data` (`TextServicesResponse::$data`), and plain text in `text`.
 
 The AI summary and the tone check are streamed. For the summary, the widget's AJAX callback returns the page text, and the browser streams the summary from `/helfi-ai/summary` into the summary editor, showing each item as soon as it is complete. For the tone check, the CKEditor plugin streams the rewrite from `/helfi-ai/tone-check` into the dialog's Suggested tab, and shows the comparison and Replace once it is complete.
 
@@ -42,11 +44,11 @@ $client = \Drupal::service(TextServicesClientInterface::class);
 $response = $client->send(new TextServicesRequest(Service::Tone, '<p>Text to rewrite</p>', 'fi'));
 $text = $response->text;
 
-// Streamed: 'start', 'delta' (with the text in parts) and 'done' events.
-$text = '';
+// Streamed: 'start', 'delta' (the text in parts, for showing progress) and
+// 'done' (the final response) events.
 foreach ($client->stream(new TextServicesRequest(Service::Tone, '<p>Text to rewrite</p>', 'fi')) as $event) {
-  if ($event['event'] === 'delta') {
-    $text .= $event['data']['text'];
+  if ($event['event'] === 'done') {
+    $text = $event['data']['text'];
   }
 }
 ```
@@ -251,7 +253,7 @@ The `helfi_ai` module adds an AI **Generate SEO title with AI** button next to t
 
 | Aspect | Value |
 |---|---|
-| Service | `dev/summarize` until an SEO title service is published |
+| Service | `v1/summarize` with a titles JSON schema until an SEO title service is published |
 | Permission | `use helfi ai title suggestion` (granted to `admin`, `editor`, `content_producer`) |
 | Content types | `helfi_ai.settings:seo_title_bundles` (defaults to `page`) |
 

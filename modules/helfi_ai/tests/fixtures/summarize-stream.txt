@@ -1,5 +1,5 @@
 event: start
-data: {"model": "gpt-5.1"}
+data: {}
 
 event: delta
 data: {"text": "{\""}
@@ -50,10 +50,7 @@ event: delta
 data: {"text": " sähkö"}
 
 event: delta
-data: {"text": "isesti Hels"}
-
-event: delta
-data: {"text": "ingin asio"}
+data: {"text": "isessä asio"}
 
 event: delta
 data: {"text": "intipal"}
@@ -62,86 +59,80 @@ event: delta
 data: {"text": "velussa"}
 
 event: delta
-data: {"text": ", joten"}
+data: {"text": ", et"}
 
 event: delta
-data: {"text": " sinun ei"}
+data: {"text": " voi hake"}
 
 event: delta
-data: {"text": " tarvitse asio"}
+data: {"text": "a sitä"}
 
 event: delta
-data: {"text": "ida paikan"}
+data: {"text": " paikan"}
 
 event: delta
 data: {"text": " päällä.\",\""}
 
 event: delta
-data: {"text": "Hakemuksen"}
+data: {"text": "Saat päätö"}
 
 event: delta
-data: {"text": " käsittely"}
+data: {"text": "ksen hakem"}
 
 event: delta
-data: {"text": " kestää noin"}
+data: {"text": "uksesta noin kah"}
 
 event: delta
-data: {"text": " 2 vi"}
+data: {"text": "dessa vi"}
 
 event: delta
-data: {"text": "ikkoa, joten"}
+data: {"text": "ikossa,"}
 
 event: delta
-data: {"text": " varaa aikaa ennen"}
+data: {"text": " joten varaa tähän"}
 
 event: delta
-data: {"text": " kuin tarvitset tunn"}
+data: {"text": " aikaa.\",\"Tunn"}
 
 event: delta
-data: {"text": "usta.\",\"Saat myön"}
+data: {"text": "us on voimassa"}
 
 event: delta
-data: {"text": "netyn asukasp"}
+data: {"text": " 12 kuukautta"}
 
 event: delta
-data: {"text": "ysäköintit"}
+data: {"text": " kerrallaan,"}
 
 event: delta
-data: {"text": "unnuksen kerralla "}
+data: {"text": " sen jälkeen sinun pitää uusia"}
 
 event: delta
-data: {"text": "12 kuuka"}
+data: {"text": " se.\",\"Maksat tunn"}
 
 event: delta
-data: {"text": "udeksi.\",\"Tunnuksen"}
+data: {"text": "uksesta 30"}
 
 event: delta
-data: {"text": " hinta on 30 euroa ku"}
+data: {"text": " euroa kuukaudessa,"}
 
 event: delta
-data: {"text": "uka"}
+data: {"text": " joten vuoden hinta on 360"}
 
 event: delta
-data: {"text": "udessa, joten vuoden kokona"}
+data: {"text": " euroa"}
 
 event: delta
-data: {"text": "ishinta on 360 euroa.\",\""}
+data: {"text": ".\",\"Voit käyttää tunnusta as"}
 
 event: delta
-data: {"text": "Voit jatkaa pysäköinti"}
+data: {"text": "ukaspysäköintiin"}
 
 event: delta
-data: {"text": "ä kotialueellasi helposti,"}
+data: {"text": " niillä alueilla, jotka kuuluvat"}
 
 event: delta
-data: {"text": " kun haet ja uusit tunn"}
-
-event: delta
-data: {"text": "uksen ajoissa asiointipalvelussa.\"]"}
-
-event: delta
-data: {"text": "}"}
+data: {"text": " tunnukseesi.\"]}"}
 
 event: done
-data: {"model": "gpt-5.1", "usage": {"input_tokens": 448, "input_tokens_details": {"cache_write_tokens": 0, "cached_tokens": 0}, "output_tokens": 160, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 608}, "finish_reason": "stop", "analysis": null, "analysis_model": null, "analysis_usage": null}
+data: {"data": {"items": ["Haet asukaspysäköintitunnuksen sähköisessä asiointipalvelussa, et voi hakea sitä paikan päällä.", "Saat päätöksen hakemuksesta noin kahdessa viikossa, joten varaa tähän aikaa.", "Tunnus on voimassa 12 kuukautta kerrallaan, sen jälkeen sinun pitää uusia se.", "Maksat tunnuksesta 30 euroa kuukaudessa, joten vuoden hinta on 360 euroa.", "Voit käyttää tunnusta asukaspysäköintiin niillä alueilla, jotka kuuluvat tunnukseesi."]}}
 

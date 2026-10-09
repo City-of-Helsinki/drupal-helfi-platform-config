@@ -26,7 +26,8 @@ interface TextServicesClientInterface {
    * Sends a request and streams the response as events.
    *
    * The API sends a 'start' event, 'delta' events carrying the generated text
-   * in parts, and a 'done' event. The request is sent when iteration starts.
+   * in parts, and a 'done' event carrying the complete response. The request
+   * is sent when iteration starts.
    *
    * @param \Drupal\helfi_ai\TextServices\TextServicesRequest $request
    *   The request.

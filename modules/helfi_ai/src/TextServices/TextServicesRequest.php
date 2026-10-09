@@ -19,7 +19,7 @@ final readonly class TextServicesRequest {
    * @param string $langcode
    *   The language of the text. Not sent until the API supports it.
    * @param array<string, mixed>|null $jsonSchema
-   *   A JSON schema the response text must follow, or NULL for plain text.
+   *   A JSON schema the response data must follow, or NULL for plain text.
    */
   public function __construct(
     public Service $service,

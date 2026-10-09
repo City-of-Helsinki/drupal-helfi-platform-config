@@ -38,6 +38,22 @@ class TextServicesGenerator {
     'additionalProperties' => FALSE,
   ];
 
+  /**
+   * JSON schema for responses that are a list of title suggestions.
+   */
+  private const array TITLES_SCHEMA = [
+    'type' => 'object',
+    'properties' => [
+      'titles' => [
+        'type' => 'array',
+        'description' => 'Three alternative SEO-friendly page titles, each under 70 characters',
+        'items' => ['type' => 'string'],
+      ],
+    ],
+    'required' => ['titles'],
+    'additionalProperties' => FALSE,
+  ];
+
   public function __construct(
     private readonly TextServicesClientInterface $client,
     private readonly TextConverterManager $textConverterManager,
@@ -66,16 +82,14 @@ class TextServicesGenerator {
 
     try {
       foreach ($this->client->stream(new TextServicesRequest(Service::Tone, $content, $langcode)) as $event) {
-        if ($event['event'] !== 'delta') {
-          continue;
-        }
-        $delta = (string) ($event['data']['text'] ?? '');
+        $text = (string) ($event['data']['text'] ?? '');
 
-        if ($delta === '') {
-          continue;
+        if ($event['event'] === 'done') {
+          $result = $text;
         }
-        $result .= $delta;
-        yield $this->serverEvent(['delta' => $delta]);
+        elseif ($event['event'] === 'delta' && $text !== '') {
+          yield $this->serverEvent(['delta' => $text]);
+        }
       }
 
       if (trim($result) === '') {
@@ -122,21 +136,26 @@ class TextServicesGenerator {
   public function streamSummary(string $text, string $langcode): \Generator {
     $json = '';
     $count = 0;
+    $items = [];
 
     try {
       foreach ($this->client->stream(new TextServicesRequest(Service::Summarize, $text, $langcode, self::ITEMS_SCHEMA)) as $event) {
+        if ($event['event'] === 'done') {
+          $items = $this->validItems($event['data']['data']['items'] ?? NULL);
+          continue;
+        }
         if ($event['event'] !== 'delta') {
           continue;
         }
+        // Show each item as soon as it is complete in the JSON received so far.
         $json .= (string) ($event['data']['text'] ?? '');
-        $items = $this->completedItems($json);
+        $completed = $this->completedItems($json);
 
-        if (count($items) > $count) {
-          $count = count($items);
-          yield $this->serverEvent(['items' => $items]);
+        if (count($completed) > $count) {
+          $count = count($completed);
+          yield $this->serverEvent(['items' => $completed]);
         }
       }
-      $items = $this->decodeItems($json);
 
       if (!$items) {
         throw new TextServicesException('Empty summary from Helfi Text Services');
@@ -160,7 +179,7 @@ class TextServicesGenerator {
    */
   public function suggestTitles(ContentEntityInterface $entity): array {
     // @todo Use the SEO title service when it is published. Until then, the
-    //   summary items are used as title suggestions.
+    //   summarize service is asked for titles.
     $text = $this->summaryInput($entity);
 
     if ($text === NULL) {
@@ -168,8 +187,8 @@ class TextServicesGenerator {
     }
 
     try {
-      $response = $this->client->send(new TextServicesRequest(Service::Summarize, $text, $entity->language()->getId(), self::ITEMS_SCHEMA));
-      return array_slice($this->decodeItems($response->text), 0, 3);
+      $response = $this->client->send(new TextServicesRequest(Service::Summarize, $text, $entity->language()->getId(), self::TITLES_SCHEMA));
+      return array_slice($this->validItems($response->data['titles'] ?? NULL), 0, 3);
     }
     catch (TextServicesException $e) {
       Error::logException($this->logger, $e);
@@ -178,22 +197,20 @@ class TextServicesGenerator {
   }
 
   /**
-   * Decodes the summary items from a complete JSON response text.
+   * Returns the given value if it is a list of strings.
    *
-   * @param string $json
-   *   The response text.
+   * @param mixed $items
+   *   The list from the API response.
    *
    * @return string[]
    *   The items.
    *
    * @throws \Drupal\helfi_ai\TextServices\TextServicesException
-   *   When the text is not a valid list of items.
+   *   When the value is not a list of strings.
    */
-  private function decodeItems(string $json): array {
-    $items = json_decode($json, TRUE)['items'] ?? NULL;
-
+  private function validItems(mixed $items): array {
     if (!is_array($items) || !array_is_list($items) || array_filter($items, 'is_string') !== $items) {
-      throw new TextServicesException('Invalid summary items from Helfi Text Services');
+      throw new TextServicesException('Invalid items from Helfi Text Services');
     }
     return $items;
   }

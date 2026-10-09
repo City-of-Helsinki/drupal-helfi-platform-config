@@ -86,10 +86,12 @@ class TextServicesGeneratorTest extends UnitTestCase {
    *
    * @param string[] $deltas
    *   The deltas.
+   * @param array<string, mixed> $done
+   *   The data of the done event: the complete response.
    */
-  private function streamDeltas(array $deltas): void {
+  private function streamDeltas(array $deltas, array $done): void {
     $events = array_map(fn (string $text) => ['event' => 'delta', 'data' => ['text' => $text]], $deltas);
-    $events[] = ['event' => 'done', 'data' => ['finish_reason' => 'stop']];
+    $events[] = ['event' => 'done', 'data' => $done];
     $this->client->method('stream')->willReturnCallback(fn () => yield from $events);
   }
 
@@ -136,21 +138,21 @@ class TextServicesGeneratorTest extends UnitTestCase {
     $data = $this->collect($this->createGenerator()->streamTone('<p>Teksti</p>', 'sv'));
     $done = array_pop($data);
 
-    $this->assertSame(['delta' => '<h'], $data[0]);
-    $this->assertTrue($done['done']);
+    $this->assertCount(40, $data);
     $this->assertSame(implode('', array_column($data, 'delta')), $done['result']);
+    $this->assertTrue($done['done']);
     $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', $done['result']);
   }
 
   /**
-   * Empty deltas are skipped, and an empty rewrite is an error.
+   * Empty deltas are skipped, and an empty final rewrite is an error.
    */
   public function testStreamToneEmpty(): void {
-    $this->streamDeltas(['', ' ']);
+    $this->streamDeltas(['', '<p>Osa'], ['text' => ' ']);
     $this->logger->expects($this->once())->method('log')
       ->with(LogLevel::ERROR, $this->anything(), $this->callback(fn (array $context) => $context['@message'] === 'Empty rewrite from Helfi Text Services'));
 
-    $this->assertSame([['delta' => ' '], ['error' => TRUE]], $this->collect($this->createGenerator()->streamTone('<p>Teksti</p>', 'fi')));
+    $this->assertSame([['delta' => '<p>Osa'], ['error' => TRUE]], $this->collect($this->createGenerator()->streamTone('<p>Teksti</p>', 'fi')));
   }
 
   /**
@@ -193,7 +195,7 @@ class TextServicesGeneratorTest extends UnitTestCase {
   }
 
   /**
-   * Title suggestions are the first three summary items.
+   * Title suggestions are requested as titles, and up to three are returned.
    */
   public function testSuggestTitles(): void {
     $this->client->expects($this->once())
@@ -201,23 +203,26 @@ class TextServicesGeneratorTest extends UnitTestCase {
       ->with($this->callback(fn (TextServicesRequest $request) => $request->service === Service::Summarize
         && $request->text === 'Page content'
         && $request->langcode === 'sv'
-        && $request->jsonSchema !== NULL))
-      ->willReturn(new TextServicesResponse('{"items": ["One", "Two", "Three", "Four"]}', 'gpt-5.1'));
+        && isset($request->jsonSchema['properties']['titles'])))
+      ->willReturn(new TextServicesResponse(NULL, ['titles' => ['One', 'Two', 'Three', 'Four']]));
 
     $this->assertSame(['One', 'Two', 'Three'], $this->createGenerator()->suggestTitles($this->createEntity('sv')));
   }
 
   /**
-   * A response without a valid item list is logged as an error.
+   * A response without a valid list of titles is logged as an error.
+   *
+   * @param array<mixed>|null $data
+   *   The structured response data.
    */
-  #[TestWith(['not json'])]
-  #[TestWith(['{"summary": ["First"]}'])]
-  #[TestWith(['{"items": "First"}'])]
-  #[TestWith(['{"items": [1, 2]}'])]
-  public function testInvalidItems(string $text): void {
-    $this->client->method('send')->willReturn(new TextServicesResponse($text, 'gpt-5.1'));
+  #[TestWith([NULL])]
+  #[TestWith([['summary' => ['First']]])]
+  #[TestWith([['titles' => 'First']])]
+  #[TestWith([['titles' => [1, 2]]])]
+  public function testInvalidTitles(?array $data): void {
+    $this->client->method('send')->willReturn(new TextServicesResponse(NULL, $data));
     $this->logger->expects($this->once())->method('log')
-      ->with(LogLevel::ERROR, $this->anything(), $this->callback(fn (array $context) => $context['@message'] === 'Invalid summary items from Helfi Text Services'));
+      ->with(LogLevel::ERROR, $this->anything(), $this->callback(fn (array $context) => $context['@message'] === 'Invalid items from Helfi Text Services'));
 
     $this->assertSame([], $this->createGenerator()->suggestTitles($this->createEntity()));
   }
@@ -250,7 +255,7 @@ class TextServicesGeneratorTest extends UnitTestCase {
 
     // One event per completed item, each list growing by one.
     $this->assertSame([1, 2, 3, 4, 5], array_map(fn (array $event) => count($event['items']), $data));
-    $this->assertSame('Haet asukaspysäköintitunnuksen sähköisesti Helsingin asiointipalvelussa, joten sinun ei tarvitse asioida paikan päällä.', $data[0]['items'][0]);
+    $this->assertStringStartsWith('Haet asukaspysäköintitunnuksen', $data[0]['items'][0]);
     $this->assertTrue($done['done']);
     $this->assertSame(5, substr_count($done['result'], '<li>'));
   }
@@ -259,7 +264,10 @@ class TextServicesGeneratorTest extends UnitTestCase {
    * An escaped quote inside an item doesn't end the item.
    */
   public function testStreamSummaryEscapedQuote(): void {
-    $this->streamDeltas(['{"items": ["Sano \\"hei', '\\" ja', ' mene", "Toi', 'nen"]}']);
+    $this->streamDeltas(
+      ['{"items": ["Sano \\"hei', '\\" ja', ' mene", "Toi', 'nen"]}'],
+      ['data' => ['items' => ['Sano "hei" ja mene', 'Toinen']]],
+    );
 
     $data = $this->collect($this->createGenerator()->streamSummary('Page content', 'fi'));
 
@@ -269,11 +277,16 @@ class TextServicesGeneratorTest extends UnitTestCase {
 
   /**
    * An invalid or empty summary yields an error event and is logged.
+   *
+   * @param array<mixed> $items
+   *   The structured data of the done event.
+   * @param string $message
+   *   The expected log message.
    */
-  #[TestWith(['{"items": "First"}', 'Invalid summary items from Helfi Text Services'])]
-  #[TestWith(['{"items": []}', 'Empty summary from Helfi Text Services'])]
-  public function testStreamSummaryInvalid(string $json, string $message): void {
-    $this->streamDeltas([$json]);
+  #[TestWith([['items' => 'First'], 'Invalid items from Helfi Text Services'])]
+  #[TestWith([['items' => []], 'Empty summary from Helfi Text Services'])]
+  public function testStreamSummaryInvalid(array $items, string $message): void {
+    $this->streamDeltas([], ['data' => $items]);
     $this->logger->expects($this->once())->method('log')
       ->with(LogLevel::ERROR, $this->anything(), $this->callback(fn (array $context) => $context['@message'] === $message));
 

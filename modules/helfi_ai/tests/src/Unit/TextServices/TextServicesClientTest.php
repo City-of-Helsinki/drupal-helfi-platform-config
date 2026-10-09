@@ -70,8 +70,8 @@ class TextServicesClientTest extends UnitTestCase {
 
     $response = $client->send(new TextServicesRequest(Service::Tone, '<p>Hyvää päivää</p>', 'fi'));
 
-    $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', $response->text);
-    $this->assertSame('gpt-5.1', $response->model);
+    $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', (string) $response->text);
+    $this->assertNull($response->data);
 
     $request = $this->history[0]['request'];
     $this->assertSame('POST', $request->getMethod());
@@ -86,16 +86,17 @@ class TextServicesClientTest extends UnitTestCase {
    * A JSON schema is sent as the response format.
    */
   public function testSendJsonSchema(): void {
-    $client = $this->createClient([new Response(200, [], $this->fixture('summarize.json'))]);
+    $client = $this->createClient([new Response(200, [], $this->fixture('titles.json'))]);
     $schema = ['type' => 'object'];
 
-    $client->send(new TextServicesRequest(Service::Summarize, 'Teksti', 'fi', $schema));
+    $response = $client->send(new TextServicesRequest(Service::Summarize, 'Teksti', 'fi', $schema));
 
+    $this->assertCount(3, $response->data['titles'] ?? []);
     $request = $this->history[0]['request'];
-    $this->assertSame(TextServicesClient::BASE_URL . '/dev/summarize', (string) $request->getUri());
+    $this->assertSame(TextServicesClient::BASE_URL . '/v1/summarize', (string) $request->getUri());
     $this->assertSame([
       'text' => 'Teksti',
-      'response_format' => 'json_schema',
+      'response_format' => 'json_structure',
       'json_schema' => $schema,
     ], json_decode((string) $request->getBody(), TRUE));
   }
@@ -132,8 +133,7 @@ class TextServicesClientTest extends UnitTestCase {
    * A response that is not a valid API response throws.
    */
   #[TestWith(['not json', 'Invalid response'])]
-  #[TestWith(['{"model": "gpt-5.1"}', 'Invalid response'])]
-  #[TestWith(['{"text": "Cut off", "model": "gpt-5.1", "finish_reason": "length"}', 'output token limit'])]
+  #[TestWith(['{"analysis": null}', 'Invalid response'])]
   public function testInvalidResponse(string $body, string $message): void {
     $client = $this->createClient([new Response(200, [], $body)]);
 
@@ -152,9 +152,11 @@ class TextServicesClientTest extends UnitTestCase {
 
     $events = iterator_to_array($client->stream(new TextServicesRequest(Service::Tone, 'Teksti', 'fi')), FALSE);
 
-    $this->assertSame(['event' => 'start', 'data' => ['model' => 'gpt-5.1']], $events[0]);
-    $this->assertSame('done', end($events)['event']);
+    $this->assertSame(['event' => 'start', 'data' => []], $events[0]);
     $this->assertSame(['event' => 'delta', 'data' => ['text' => '<h']], $events[1]);
+    $done = end($events);
+    $this->assertSame('done', $done['event']);
+    $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', $done['data']['text']);
 
     $this->assertSame(['text' => 'Teksti', 'stream' => TRUE], json_decode((string) $this->history[0]['request']->getBody(), TRUE));
     $this->assertTrue($this->history[0]['options']['stream']);
@@ -164,7 +166,7 @@ class TextServicesClientTest extends UnitTestCase {
    * An event is yielded as soon as it has arrived, before the stream ends.
    */
   public function testStreamYieldsEventsAsTheyArrive(): void {
-    $arrived = "event: start\ndata: {\"model\": \"gpt-5.1\"}\n\n";
+    $arrived = "event: start\ndata: {}\n\n";
     $offset = 0;
     // A network stream whose read() would wait for data that hasn't arrived.
     $body = FnStream::decorate(Utils::streamFor(''), [
@@ -182,7 +184,7 @@ class TextServicesClientTest extends UnitTestCase {
 
     $events = $client->stream(new TextServicesRequest(Service::Tone, 'Teksti', 'fi'));
 
-    $this->assertSame(['event' => 'start', 'data' => ['model' => 'gpt-5.1']], $events->current());
+    $this->assertSame(['event' => 'start', 'data' => []], $events->current());
   }
 
   /**
@@ -202,10 +204,9 @@ class TextServicesClientTest extends UnitTestCase {
   }
 
   /**
-   * A stream that fails, is cut off or ends before the done event throws.
+   * A stream that fails or ends before the done event throws.
    */
   #[TestWith(["event: error\ndata: {\"error\": \"Model request failed\"}\n\n", 'Model request failed'])]
-  #[TestWith(["event: done\ndata: {\"finish_reason\": \"length\"}\n\n", 'output token limit'])]
   #[TestWith(["event: delta\ndata: {\"text\": \"Hei\"}\n\n", 'ended before the done event'])]
   public function testStreamFails(string $body, string $message): void {
     $client = $this->createClient([new Response(200, [], $body)]);

@@ -147,7 +147,7 @@ class FormHooksTest extends EntityKernelTestBase {
    * Suggestions open a modal with the theme carrying the generated titles.
    */
   public function testBuildSuggestionResponseOpensModalWithSuggestions(): void {
-    $this->textServicesResponses->append(new Response(200, [], $this->getFixture('helfi_ai', 'summarize.json')));
+    $this->textServicesResponses->append(new Response(200, [], $this->getFixture('helfi_ai', 'titles.json')));
     $node = $this->createNode('Kernel form hooks title ' . $this->randomMachineName());
     $form = [];
 
@@ -158,7 +158,7 @@ class FormHooksTest extends EntityKernelTestBase {
     $this->assertSame('#drupal-modal', $command['selector']);
     $this->assertSame('helfi-ai-dialog', $command['dialogOptions']['classes']['ui-dialog']);
     $this->assertStringContainsString('ai-suggestions', (string) $command['data']);
-    $this->assertStringContainsString('Haet asukaspysäköintitunnuksen', (string) $command['data']);
+    $this->assertStringContainsString('Asukaspysäköintitunnuksen haku ja voimassaolo', (string) $command['data']);
   }
 
   /**

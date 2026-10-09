@@ -1,5 +1,5 @@
 event: start
-data: {"model": "gpt-5.1"}
+data: {}
 
 event: delta
 data: {"text": "<h"}
@@ -41,173 +41,86 @@ event: delta
 data: {"text": "2"}
 
 event: delta
-data: {"text": ">\n"}
+data: {"text": "><"}
 
 event: delta
-data: {"text": "<p"}
+data: {"text": "p"}
 
 event: delta
 data: {"text": ">"}
 
 event: delta
-data: {"text": "Vo"}
+data: {"text": "Voit"}
 
 event: delta
-data: {"text": "it"}
+data: {"text": " hakea"}
 
 event: delta
-data: {"text": " hake"}
+data: {"text": " asuk"}
 
 event: delta
-data: {"text": "a"}
+data: {"text": "aspys"}
 
 event: delta
-data: {"text": " as"}
+data: {"text": "äkö"}
 
 event: delta
-data: {"text": "uk"}
+data: {"text": "intit"}
 
 event: delta
-data: {"text": "asp"}
+data: {"text": "unnusta"}
 
 event: delta
-data: {"text": "ys"}
+data: {"text": " sähköisessä asio"}
 
 event: delta
-data: {"text": "ä"}
+data: {"text": "intipalvel"}
 
 event: delta
-data: {"text": "kö"}
+data: {"text": "ussa. K"}
 
 event: delta
-data: {"text": "int"}
+data: {"text": "äsittelemme"}
 
 event: delta
-data: {"text": "it"}
+data: {"text": " hakemuksen"}
 
 event: delta
-data: {"text": "unn"}
+data: {"text": " noin kahd"}
 
 event: delta
-data: {"text": "usta"}
+data: {"text": "essa viikossa"}
 
 event: delta
-data: {"text": " sähkö"}
+data: {"text": ". Tunnus"}
 
 event: delta
-data: {"text": "isessä"}
+data: {"text": " on voimassa "}
 
 event: delta
-data: {"text": " asioint"}
+data: {"text": "12 kuukautta.</"}
 
 event: delta
-data: {"text": "ipalvel"}
+data: {"text": "p><ul><li"}
 
 event: delta
-data: {"text": "ussa."}
+data: {"text": ">Hinta 30"}
 
 event: delta
-data: {"text": " Käs"}
+data: {"text": " €/kk</li><li"}
 
 event: delta
-data: {"text": "ittelemme"}
+data: {"text": ">Ajone"}
 
 event: delta
-data: {"text": " hakem"}
+data: {"text": "uvon tulee olla sinun hall"}
 
 event: delta
-data: {"text": "uksen noin"}
+data: {"text": "innassasi</li></ul"}
 
 event: delta
-data: {"text": " kahd"}
-
-event: delta
-data: {"text": "essa vi"}
-
-event: delta
-data: {"text": "ikossa"}
-
-event: delta
-data: {"text": ". T"}
-
-event: delta
-data: {"text": "unnus"}
-
-event: delta
-data: {"text": " on voim"}
-
-event: delta
-data: {"text": "assa "}
-
-event: delta
-data: {"text": "12 kuuk"}
-
-event: delta
-data: {"text": "autta."}
-
-event: delta
-data: {"text": " Saat"}
-
-event: delta
-data: {"text": " lisätiet"}
-
-event: delta
-data: {"text": "oja <a"}
-
-event: delta
-data: {"text": " href=\"https"}
-
-event: delta
-data: {"text": "://www."}
-
-event: delta
-data: {"text": "hel.fi/"}
-
-event: delta
-data: {"text": "fi/kaupun"}
-
-event: delta
-data: {"text": "kiympar"}
-
-event: delta
-data: {"text": "isto-ja-li"}
-
-event: delta
-data: {"text": "ikenne\">"}
-
-event: delta
-data: {"text": "tästä link"}
-
-event: delta
-data: {"text": "istä</a>.</"}
-
-event: delta
-data: {"text": "p>\n<ul>\n"}
-
-event: delta
-data: {"text": "<li>Hinta"}
-
-event: delta
-data: {"text": " 30 €/kk"}
-
-event: delta
-data: {"text": "</li>\n<li"}
-
-event: delta
-data: {"text": ">Ajoneuv"}
-
-event: delta
-data: {"text": "on tulee olla hak"}
-
-event: delta
-data: {"text": "ijan hallinnassa</"}
-
-event: delta
-data: {"text": "li"}
-
-event: delta
-data: {"text": ">\n</ul>"}
+data: {"text": ">"}
 
 event: done
-data: {"model": "gpt-5.1", "usage": {"input_tokens": 16197, "input_tokens_details": {"cache_write_tokens": 0, "cached_tokens": 0}, "output_tokens": 144, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 16341}, "finish_reason": "stop", "analysis": null, "analysis_model": null, "analysis_usage": null}
+data: {"text": "<h2>Asukaspysäköinti</h2><p>Voit hakea asukaspysäköintitunnusta sähköisessä asiointipalvelussa. Käsittelemme hakemuksen noin kahdessa viikossa. Tunnus on voimassa 12 kuukautta.</p><ul><li>Hinta 30 €/kk</li><li>Ajoneuvon tulee olla sinun hallinnassasi</li></ul>"}
 

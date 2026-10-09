@@ -12,14 +12,14 @@ final readonly class TextServicesResponse {
   /**
    * Constructs a new instance.
    *
-   * @param string $text
-   *   The generated text. A JSON string when a JSON schema was requested.
-   * @param string $model
-   *   The model that generated the text.
+   * @param string|null $text
+   *   The generated text, or NULL when a JSON schema was requested.
+   * @param array<mixed>|null $data
+   *   The generated object matching the requested JSON schema, or NULL.
    */
   public function __construct(
-    public string $text,
-    public string $model,
+    public ?string $text,
+    public ?array $data = NULL,
   ) {
   }
 
@@ -33,17 +33,16 @@ final readonly class TextServicesResponse {
    *   The response.
    *
    * @throws \Drupal\helfi_ai\TextServices\TextServicesException
-   *   When the data is not a valid response, or the text was cut off at the
-   *   output token limit.
+   *   When the data is not a valid response.
    */
   public static function fromArray(array $data): self {
-    if (!is_string($data['text'] ?? NULL) || !is_string($data['model'] ?? NULL)) {
+    $text = $data['text'] ?? NULL;
+    $object = $data['data'] ?? NULL;
+
+    if (!is_string($text) && !is_array($object)) {
       throw new TextServicesException('Invalid response from Helfi Text Services');
     }
-    if (($data['finish_reason'] ?? NULL) === 'length') {
-      throw new TextServicesException('Helfi Text Services response was cut off at the output token limit');
-    }
-    return new self($data['text'], $data['model']);
+    return new self(is_string($text) ? $text : NULL, is_array($object) ? $object : NULL);
   }
 
 }
