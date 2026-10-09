@@ -6,6 +6,16 @@ ai_summary_confirm:
     - core/drupal
     - core/once
 
+# Streams a generated AI summary into the summary editor.
+ai_summary_stream:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    js/ai-summary-stream.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - helfi_ai/ai_summary_confirm
+
 # Applies a chosen AI SEO-title suggestion to the node title field.
 title_suggest:
   version: HELFI_DEPLOYMENT_IDENTIFIER

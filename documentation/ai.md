@@ -13,6 +13,8 @@ Helfi Text Services is the city's own text processing API. Its prompts, models a
 
 There is no SEO title service yet, so title suggestions are the first three items of a summary until one is published.
 
+The AI summary is streamed: the widget's AJAX callback returns the page text, and the browser streams the summary from `/helfi-ai/summary` into the summary editor, showing each item as soon as it is complete.
+
 The API base URL and the service paths are defined in code (`\Drupal\helfi_ai\TextServices\TextServicesClient` and `\Drupal\helfi_ai\TextServices\Service`). The only configuration is the API key, `helfi_ai.settings:text_services.api_key`. The platform `settings.php` reads it from the `HELFI_TEXT_API_KEY` environment variable:
 
 ```php

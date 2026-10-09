@@ -114,6 +114,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $this->assertSame('ai_summary_generate_ai_summary_0', $wrapper['generate']['#name']);
     $this->assertSame('Generate AI summary', (string) $wrapper['generate']['#value']);
     $this->assertContains('helfi_ai/ai_summary_confirm', $wrapper['generate']['#attached']['library']);
+    $this->assertContains('helfi_ai/ai_summary_stream', $wrapper['generate']['#attached']['library']);
     $this->assertArrayNotHasKey('data-ai-summary-confirm', $wrapper['generate']['#attributes'] ?? []);
     $this->assertArrayHasKey('description', $wrapper);
     $this->assertArrayNotHasKey('error', $wrapper);

@@ -1,0 +1,147 @@
+event: start
+data: {"model": "gpt-5.1"}
+
+event: delta
+data: {"text": "{\""}
+
+event: delta
+data: {"text": "items"}
+
+event: delta
+data: {"text": "\":[\""}
+
+event: delta
+data: {"text": "Ha"}
+
+event: delta
+data: {"text": "et"}
+
+event: delta
+data: {"text": " as"}
+
+event: delta
+data: {"text": "uk"}
+
+event: delta
+data: {"text": "asp"}
+
+event: delta
+data: {"text": "ys"}
+
+event: delta
+data: {"text": "ä"}
+
+event: delta
+data: {"text": "kö"}
+
+event: delta
+data: {"text": "int"}
+
+event: delta
+data: {"text": "it"}
+
+event: delta
+data: {"text": "unn"}
+
+event: delta
+data: {"text": "uksen"}
+
+event: delta
+data: {"text": " sähkö"}
+
+event: delta
+data: {"text": "isesti Hels"}
+
+event: delta
+data: {"text": "ingin asio"}
+
+event: delta
+data: {"text": "intipal"}
+
+event: delta
+data: {"text": "velussa"}
+
+event: delta
+data: {"text": ", joten"}
+
+event: delta
+data: {"text": " sinun ei"}
+
+event: delta
+data: {"text": " tarvitse asio"}
+
+event: delta
+data: {"text": "ida paikan"}
+
+event: delta
+data: {"text": " päällä.\",\""}
+
+event: delta
+data: {"text": "Hakemuksen"}
+
+event: delta
+data: {"text": " käsittely"}
+
+event: delta
+data: {"text": " kestää noin"}
+
+event: delta
+data: {"text": " 2 vi"}
+
+event: delta
+data: {"text": "ikkoa, joten"}
+
+event: delta
+data: {"text": " varaa aikaa ennen"}
+
+event: delta
+data: {"text": " kuin tarvitset tunn"}
+
+event: delta
+data: {"text": "usta.\",\"Saat myön"}
+
+event: delta
+data: {"text": "netyn asukasp"}
+
+event: delta
+data: {"text": "ysäköintit"}
+
+event: delta
+data: {"text": "unnuksen kerralla "}
+
+event: delta
+data: {"text": "12 kuuka"}
+
+event: delta
+data: {"text": "udeksi.\",\"Tunnuksen"}
+
+event: delta
+data: {"text": " hinta on 30 euroa ku"}
+
+event: delta
+data: {"text": "uka"}
+
+event: delta
+data: {"text": "udessa, joten vuoden kokona"}
+
+event: delta
+data: {"text": "ishinta on 360 euroa.\",\""}
+
+event: delta
+data: {"text": "Voit jatkaa pysäköinti"}
+
+event: delta
+data: {"text": "ä kotialueellasi helposti,"}
+
+event: delta
+data: {"text": " kun haet ja uusit tunn"}
+
+event: delta
+data: {"text": "uksen ajoissa asiointipalvelussa.\"]"}
+
+event: delta
+data: {"text": "}"}
+
+event: done
+data: {"model": "gpt-5.1", "usage": {"input_tokens": 448, "input_tokens_details": {"cache_write_tokens": 0, "cached_tokens": 0}, "output_tokens": 160, "output_tokens_details": {"reasoning_tokens": 0}, "total_tokens": 608}, "finish_reason": "stop", "analysis": null, "analysis_model": null, "analysis_usage": null}
+

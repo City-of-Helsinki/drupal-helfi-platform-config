@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_ai\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Access\CsrfRequestHeaderAccessCheck;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -16,6 +17,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
+use Drupal\helfi_ai\Ajax\SummaryStreamCommand;
 use Drupal\helfi_ai\PreviewEntityBuilder;
 use Drupal\helfi_ai\Service\TextServicesGenerator;
 
@@ -204,6 +207,7 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
     ];
 
     $button['#attached']['library'][] = 'helfi_ai/ai_summary_confirm';
+    $button['#attached']['library'][] = 'helfi_ai/ai_summary_stream';
     if ($has_value) {
       $button['#attributes']['data-ai-summary-confirm'] = $this->t('Regenerating replaces the current AI summary, including any manual changes. Continue?', options: $ctx);
     }
@@ -228,7 +232,7 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
   }
 
   /**
-   * Summarizes the live form state and fills the field.
+   * Starts streaming a summary of the live form state into the field.
    *
    * @param array<string, mixed> $form
    *   The form structure.
@@ -236,7 +240,7 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
    *   The current form state.
    *
    * @return \Drupal\Core\Ajax\AjaxResponse
-   *   Response replacing the widget wrapper.
+   *   Response starting the summary stream, or showing an error.
    */
   public static function ajaxCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
     $trigger = $form_state->getTriggeringElement();
@@ -246,40 +250,26 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
     $wrapper_id = $wrapper['#attributes']['id'] ?? '';
 
     $entity = PreviewEntityBuilder::fromFormState($form, $form_state);
+    $text = $entity ? \Drupal::service(TextServicesGenerator::class)->summaryInput($entity) : NULL;
 
-    $summary = \Drupal::service(TextServicesGenerator::class)
-      ->generateSummary($entity);
-
-    if ($summary !== NULL && $summary !== '') {
-      // Inject the generated value into the editor textarea.
-      if (isset($wrapper['summary']['value']['value'])) {
-        $wrapper['summary']['value']['value']['#value'] = $summary;
-      }
-      // Reveal the editor now that it holds a summary.
-      if (isset($wrapper['summary']['#attributes']['class'])) {
-        $wrapper['summary']['#attributes']['class'] = array_values(
-          array_diff($wrapper['summary']['#attributes']['class'], ['hidden']),
-        );
-      }
-
-      if (isset($wrapper['generate'])) {
-        $wrapper['generate']['#value'] = new TranslatableMarkup('Regenerate AI summary', [], ['context' => 'Helfi AI']);
-        $wrapper['generate']['#attributes']['data-ai-summary-confirm'] = (string) new TranslatableMarkup('Regenerating replaces the current AI summary, including any manual changes. Continue?', [], ['context' => 'Helfi AI']);
-      }
-      if (isset($wrapper['description'])) {
-        $wrapper['description']['#value'] = new TranslatableMarkup('Generate a new AI summary. It will replace the previous summary.', [], ['context' => 'Helfi AI']);
-      }
+    if ($entity && $text !== NULL) {
+      return (new AjaxResponse())->addCommand(new SummaryStreamCommand(
+        $wrapper_id,
+        $text,
+        $entity->language()->getId(),
+        Url::fromRoute('helfi_ai.summary_stream')->toString(),
+        \Drupal::csrfToken()->get(CsrfRequestHeaderAccessCheck::TOKEN_KEY),
+      ));
     }
-    else {
-      // Show an inline error when generation produced nothing.
-      $wrapper['error'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => new TranslatableMarkup('Could not generate a summary. Add some page content and make sure the AI provider is configured.', [], ['context' => 'Helfi AI']),
-        '#attributes' => ['class' => ['messages', 'messages--error']],
-        '#weight' => -20,
-      ];
-    }
+
+    // Show an inline error when there is nothing to summarize.
+    $wrapper['error'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => new TranslatableMarkup('Could not generate a summary. Add some page content and make sure the AI provider is configured.', [], ['context' => 'Helfi AI']),
+      '#attributes' => ['class' => ['messages', 'messages--error']],
+      '#weight' => -20,
+    ];
 
     return (new AjaxResponse())->addCommand(
       new ReplaceCommand('#' . $wrapper_id, $wrapper),

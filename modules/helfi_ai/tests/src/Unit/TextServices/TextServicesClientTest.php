@@ -187,6 +187,22 @@ class TextServicesClientTest extends UnitTestCase {
   }
 
   /**
+   * A stream that stalls until the read timeout throws.
+   */
+  public function testStreamTimesOut(): void {
+    $body = FnStream::decorate(Utils::streamFor(''), [
+      'read' => fn (): string => '',
+      'eof' => fn (): bool => FALSE,
+      'getMetadata' => fn (?string $key = NULL): bool => $key === 'timed_out',
+    ]);
+    $client = $this->createClient([new Response(200, [], $body)]);
+
+    $this->expectException(TextServicesException::class);
+    $this->expectExceptionMessage('stream timed out');
+    iterator_to_array($client->stream(new TextServicesRequest(Service::Tone, 'Teksti', 'fi')));
+  }
+
+  /**
    * A stream cut off at the output token limit throws.
    */
   public function testStreamCutOffAtTokenLimit(): void {

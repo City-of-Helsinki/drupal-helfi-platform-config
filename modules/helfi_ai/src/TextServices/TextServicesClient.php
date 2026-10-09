@@ -58,7 +58,13 @@ class TextServicesClient implements TextServicesClientInterface {
     while (!$body->eof()) {
       // Read line by line: a larger read() waits until that many bytes have
       // arrived, which would hold back the events until the stream ends.
-      foreach ($parser->feed(Utils::readLine($body)) as $event) {
+      $line = Utils::readLine($body);
+
+      // The timeout applies to each read, so a stalled stream ends here.
+      if ($body->getMetadata('timed_out')) {
+        throw new TextServicesException('Helfi Text Services stream timed out');
+      }
+      foreach ($parser->feed($line) as $event) {
         $data = json_decode($event['data'], TRUE);
 
         if (!is_array($data)) {
