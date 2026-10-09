@@ -7,6 +7,7 @@ namespace Drupal\helfi_search\EventSubscriber;
 use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
 use Drupal\elasticsearch_connector\Event\IndexPreCreateEvent;
 use Drupal\elasticsearch_connector\Event\SupportsDataTypeEvent;
+use Drupal\helfi_search\Plugin\search_api\processor\VectorEmbeddingsProcessor;
 use Drupal\search_api\Event\MappingFieldTypesEvent;
 use Drupal\search_api\Event\SearchApiEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -49,7 +50,7 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Map embeddings type to dense vector.
+   * Map embeddings type to dense vector, and markdown to a stored field.
    */
   public function mapElasticFields(FieldMappingEvent $event): void {
     if ($event->getField()->getType() === 'embeddings') {
@@ -70,6 +71,13 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
             'index' => FALSE,
           ],
         ],
+      ]);
+    }
+
+    if ($event->getField()->getPropertyPath() === VectorEmbeddingsProcessor::MARKDOWN_PROPERTY) {
+      $event->setParam([
+        'type' => 'text',
+        'index' => FALSE,
       ]);
     }
   }
