@@ -2,35 +2,51 @@
  * Table of Contents
  *
  * This functionality creates an interactive table of contents by scanning
- * the page for H2 headings. It works alongside headingIdInjector.js which
- * ensures all headings have unique IDs.
+ * the page for H2 headings. The anchor IDs it links to are written
+ * server-side by HeadingIdInjector.php.
  *
  * The table of contents is built automatically when the page loads
  * and updates based on the content.
  */
 ((Drupal, once) => {
   /**
+   * Content headings that have an anchor id to link to.
+   *
+   * Headings inside a .hide-from-table-of-contents element are not content,
+   * and are left without an id by HeadingIdInjector.php.
+   */
+  const HEADING_SELECTOR = ['h2', 'h3', 'h4', 'h5', 'h6']
+    .map((tag) => `${tag}[id]:not(.hide-from-table-of-contents *)`)
+    .join(',');
+
+  /**
    * Initialize the tableOfContents namespace if it doesn't exist.
    */
   Drupal.tableOfContents = Drupal.tableOfContents || {};
 
   /**
-   * Retrieve all headings that were processed by HeadingIdInjector.
+   * Retrieve the main content headings that have an anchor id.
    * Each heading contains:
-   * - nodeName: The HTML tag name ('H2')
+   * - nodeName: The HTML tag name ('h2')
    * - anchorName: The ID used for the anchor link
    * - content: Reference to the actual DOM element
    *
    * @returns {Array} Array of heading objects or empty array if not available
    */
   Drupal.tableOfContents.getInjectedHeadings = () => {
-    if (
-      !Drupal.HeadingIdInjector ||
-      !Drupal.HeadingIdInjector.injectedHeadings
-    ) {
+    const mainContent = document.querySelector('main.layout-main-wrapper');
+
+    if (!mainContent) {
       return [];
     }
-    return Array.from(Drupal.HeadingIdInjector.injectedHeadings);
+
+    return Array.from(mainContent.querySelectorAll(HEADING_SELECTOR)).map(
+      (content) => ({
+        nodeName: content.nodeName.toLowerCase(),
+        anchorName: content.id,
+        content,
+      }),
+    );
   };
 
   /**
@@ -163,7 +179,7 @@
         return;
       }
 
-      // Get all headings injected by HeadingIdInjector.
+      // Get all content headings that can be linked to.
       const headings = Drupal.tableOfContents.getInjectedHeadings();
       if (!headings.length) {
         return;
