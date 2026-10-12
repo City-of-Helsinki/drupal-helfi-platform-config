@@ -82,3 +82,11 @@ sentry_ignore:
     dist/js/sentryIgnore.min.js: { minified: true }
   dependencies:
     - core/drupalSettings
+
+entity_notifications:
+  css:
+    component:
+      assets/css/entity-notifications.css: {}
+  dependencies:
+    - core/drupal.dialog.ajax
+    - hdbt/hdbt-icons

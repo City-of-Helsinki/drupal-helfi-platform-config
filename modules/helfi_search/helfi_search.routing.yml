@@ -26,3 +26,16 @@ helfi_search.settings_form:
     _custom_access: 'Drupal\helfi_search\Form\SearchSettingsForm::access'
   options:
     _admin_route: TRUE
+
+helfi_search.similar_content:
+  path: '/api/v1/similar-content/{entity_type}/{entity}/{langcode}'
+  defaults:
+    _controller: '\Drupal\helfi_search\SimilarContent\SimilarContentController::view'
+    _title_callback: '\Drupal\helfi_search\SimilarContent\SimilarContentController::title'
+  requirements:
+    _entity_access: 'entity.update'
+    entity_type: '[a-z_]+'
+  options:
+    parameters:
+      entity:
+        type: 'entity:{entity_type}'

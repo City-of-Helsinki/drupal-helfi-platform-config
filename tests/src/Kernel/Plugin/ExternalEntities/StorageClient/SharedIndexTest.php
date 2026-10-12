@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\ExternalEntities\StorageClient;
 
-use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteProviderInterface;
-use Drupal\external_entities\Entity\ExternalEntityType;
 use Drupal\external_entities\ExternalEntityStorage;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Environment\ProjectMetadata;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\Entity\ExternalEntity\MultisiteContent;
 use Drupal\helfi_platform_config\MultisiteContentId;
 use Drupal\helfi_platform_config\Plugin\ExternalEntities\StorageClient\SharedIndex;
@@ -18,6 +20,7 @@ use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
+use Drupal\Tests\helfi_platform_config\Traits\InstallConfigEntityTrait;
 use Elastic\Elasticsearch\ClientBuilder;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -36,6 +39,7 @@ final class SharedIndexTest extends KernelTestBase {
   use ApiTestTrait;
   use ElasticTrait;
   use EnvironmentResolverTrait;
+  use InstallConfigEntityTrait;
 
   /**
    * {@inheritdoc}
@@ -64,6 +68,7 @@ final class SharedIndexTest extends KernelTestBase {
     $this->installConfig(['system', 'external_entities']);
     $this->installEntitySchema('user');
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
+    $this->setEtusivuIndexRole(TRUE);
 
     $history = [];
     $this->container->set(
@@ -73,18 +78,28 @@ final class SharedIndexTest extends KernelTestBase {
         ->build(),
     );
 
-    $module_path = $this->container
-      ->get('extension.list.module')
-      ->getPath('helfi_platform_config');
-    $values = Yaml::decode((string) file_get_contents(
-      $module_path . '/config/install/external_entities.external_entity_type.helfi_multisite_content.yml',
-    ));
-    unset($values['uuid']);
-    ExternalEntityType::create($values)->save();
+    $this->installConfigEntity('helfi_platform_config', 'external_entities.external_entity_type.helfi_multisite_content');
 
     $this->installEntitySchema(MultisiteContentId::ENTITY_TYPE_ID);
     $this->container->get('entity_type.manager')->clearCachedDefinitions();
     $this->container->get('entity_type.bundle.info')->clearCachedBundles();
+  }
+
+  /**
+   * Tests that searches are skipped when the etusivu index role is absent.
+   */
+  public function testSearchSkippedWithoutEtusivuIndexRole(): void {
+    $this->setEtusivuIndexRole(FALSE);
+
+    $history = [];
+    $result = $this->getStorage($history, [$this->createElasticsearchResponse([])])
+      ->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('title', 'library', 'CONTAINS')
+      ->execute();
+
+    $this->assertSame([], $result);
+    $this->assertSame([], $history);
   }
 
   /**
@@ -196,6 +211,20 @@ final class SharedIndexTest extends KernelTestBase {
       ['site_etusivu/entity:node/8420:en'],
       $body['query']['bool']['filter'][0]['terms']['_id'],
     );
+  }
+
+  /**
+   * Stubs whether the active project has the etusivu index role.
+   */
+  private function setEtusivuIndexRole(bool $enabled): void {
+    $project = new Project(
+      'example',
+      new ProjectMetadata('https://example.com/example'),
+      roles: $enabled ? [ProjectRoleEnum::HasEtusivuIndex] : [],
+    );
+    $resolver = $this->createMock(EnvironmentResolverInterface::class);
+    $resolver->method('getActiveProject')->willReturn($project);
+    $this->container->set(ActiveProjectRoles::class, new ActiveProjectRoles($resolver));
   }
 
   /**

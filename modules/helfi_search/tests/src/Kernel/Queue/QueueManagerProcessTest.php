@@ -6,12 +6,14 @@ namespace Drupal\Tests\helfi_search\Kernel\Queue;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\entity_test\Entity\EntityTestMulRevPub;
 use Drupal\helfi_search\DocumentState;
 use Drupal\helfi_search\EmbeddingApiInterface;
 use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\Pipeline\Chunk;
+use Drupal\helfi_search\Pipeline\Document;
 use Drupal\helfi_search\Pipeline\PipelineException;
 use Drupal\helfi_search\Pipeline\TextPipeline;
 use Drupal\helfi_search\Queue\DTO\ClaimedDocument;
@@ -103,7 +105,7 @@ class QueueManagerProcessTest extends KernelTestBase {
   }
 
   /**
-   * Tests the pipeline with an entity that was deleted before the pipeline ran.
+   * Tests the pipeline with an entity that no longer exists is not processed.
    */
   public function testProcessRemovesDeletedEntity(): void {
     $key = [
@@ -149,8 +151,8 @@ class QueueManagerProcessTest extends KernelTestBase {
     ];
 
     $this->textPipeline
-      ->process(Argument::that(static fn ($entity) => $entity->language()->getId() === 'sv'))
-      ->willReturn($chunks)
+      ->process(Argument::that(static fn (EntityInterface $entity) => $entity->language()->getId() === 'sv'))
+      ->willReturn(new Document("# Svenska\n\nBody text", $chunks))
       ->shouldBeCalledOnce();
 
     $this->expectEmbedding($chunks);
@@ -163,7 +165,7 @@ class QueueManagerProcessTest extends KernelTestBase {
       changed: $this->now,
     ));
 
-    $this->assertDocumentState($translation, DocumentState::Ready);
+    $this->assertDocumentState($translation, DocumentState::Ready, markdown: "# Svenska\n\nBody text");
     $this->assertSame(['sv', 'sv'], $this->chunkColumn('langcode'));
 
     $storedChunks = $this->readChunks($translation);
@@ -186,7 +188,7 @@ class QueueManagerProcessTest extends KernelTestBase {
    */
   public function testProcessSkipsUnpublishedEntity(): void {
     $entity = $this->createEntity(published: FALSE);
-    $this->setDocumentState($entity, DocumentState::Embedding);
+    $this->setDocumentState($entity, DocumentState::Embedding, markdown: 'Stale');
     $this->fillChunks($entity, [
       new Chunk(text: 'First'),
       new Chunk(text: 'Second'),
@@ -200,7 +202,7 @@ class QueueManagerProcessTest extends KernelTestBase {
       changed: $this->now,
     ));
 
-    $this->assertDocumentState($entity, DocumentState::Skipped, changed: $this->now);
+    $this->assertDocumentState($entity, DocumentState::Skipped, changed: $this->now, markdown: NULL);
     $this->textPipeline->process(Argument::any())->shouldNotHaveBeenCalled();
   }
 
@@ -209,7 +211,7 @@ class QueueManagerProcessTest extends KernelTestBase {
    */
   public function testProcessReusesStoredVectorsWhenNothingChanged(): void {
     $entity = $this->createEntity();
-    $this->setDocumentState($entity, DocumentState::Embedding);
+    $this->setDocumentState($entity, DocumentState::Embedding, markdown: 'Body text');
 
     $chunks = [
       new Chunk(text: 'Body text', snippet: 'Body', fragment: 'how-to-apply'),
@@ -217,7 +219,7 @@ class QueueManagerProcessTest extends KernelTestBase {
     ];
     $this->fillChunks($entity, $chunks);
 
-    $this->textPipeline->process(Argument::any())->willReturn($chunks);
+    $this->textPipeline->process(Argument::any())->willReturn(new Document('Body text', $chunks));
     $this->embeddingsApi->batchGetEmbedding(Argument::cetera())->shouldNotBeCalled();
     $this->trackingManager->getIndexesForEntity(Argument::any())->shouldNotBeCalled();
 
@@ -248,7 +250,7 @@ class QueueManagerProcessTest extends KernelTestBase {
 
     // The pipeline does not return the third chunk.
     $this->textPipeline->process(Argument::any())
-      ->willReturn([$chunks[0], $chunks[1]]);
+      ->willReturn(new Document('First Second', [$chunks[0], $chunks[1]]));
     // The content is identical, so no need to re-generate the vectors.
     $this->embeddingsApi->batchGetEmbedding(Argument::cetera())->shouldNotBeCalled();
     // But we expect reindexing to elasticsearch.
@@ -352,7 +354,9 @@ class QueueManagerProcessTest extends KernelTestBase {
    * Expects the entity translation to be marked for re-indexing.
    */
   private function expectTracking(ContentEntityInterface $entity, string $langcode = 'en'): void {
-    $index = $this->stubIndex();
+    $index = $this->prophesize(IndexInterface::class);
+    $index->isValidProcessor(QueueManager::PROCESSOR_ID)->willReturn(TRUE);
+    $index->isValidDatasource(Argument::any())->willReturn(FALSE);
     $index->trackItemsUpdated(
       'entity:' . self::ENTITY_TYPE,
       [$entity->id() . ':' . $langcode],
@@ -360,23 +364,6 @@ class QueueManagerProcessTest extends KernelTestBase {
 
     $this->trackingManager->getIndexesForEntity(Argument::any())
       ->willReturn(['embeddings' => $index->reveal()]);
-  }
-
-  /**
-   * Builds a search api index.
-   *
-   * An index with no valid datasource passes item IDs through untouched, which
-   * keeps the static filtering in ContentEntityTrackingManager out of the way.
-   *
-   * @return \Prophecy\Prophecy\ObjectProphecy<\Drupal\search_api\IndexInterface>
-   *   The index.
-   */
-  private function stubIndex(bool $hasProcessor = TRUE): ObjectProphecy {
-    $index = $this->prophesize(IndexInterface::class);
-    $index->isValidProcessor(QueueManager::PROCESSOR_ID)->willReturn($hasProcessor);
-    $index->isValidDatasource(Argument::any())->willReturn(FALSE);
-
-    return $index;
   }
 
 }
