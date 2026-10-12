@@ -156,21 +156,6 @@ final class CspLogService extends BaseCspLogService {
   }
 
   /**
-   * Removes the reports older than the given number of days.
-   *
-   * @param int $days
-   *   The number of days to keep the reports.
-   *
-   * @return int
-   *   The number of removed reports.
-   */
-  public function removeOldLogs(int $days): int {
-    return $this->database->delete(self::DATABASE_TABLE)
-      ->condition('timestamp', $this->time->getRequestTime() - $days * 86400, '<')
-      ->execute();
-  }
-
-  /**
    * Fetch aggregated logs to identify real problems.
    *
    * @param int $seconds

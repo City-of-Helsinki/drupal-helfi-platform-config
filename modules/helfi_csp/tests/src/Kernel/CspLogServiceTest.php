@@ -7,7 +7,6 @@ namespace Drupal\Tests\helfi_csp\Kernel;
 use Drupal\Core\Database\Connection;
 use Drupal\csp_log\CspLogServiceInterface;
 use Drupal\helfi_csp\CspLogService;
-use Drupal\helfi_csp\Hook\CronHook;
 use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -202,28 +201,6 @@ class CspLogServiceTest extends KernelTestBase {
     $this->assertIsArray($decoded);
     $this->assertArrayNotHasKey('original-policy', $decoded);
     $this->assertSame('new', $decoded['marker']);
-  }
-
-  /**
-   * Tests that cron removes the old reports whatever the reporting plugin is.
-   */
-  public function testCronRemovesOldLogs(): void {
-    $now = $this->container->get('datetime.time')->getRequestTime();
-    $this->insertCspLogRows(2, ['timestamp' => $now - 3 * 86400]);
-    $this->insertCspLogRows(1, ['timestamp' => $now - 86400]);
-    $this->insertCspLogRows(1, ['timestamp' => $now - 3 * 86400, 'type' => 'enforce']);
-
-    // The reporting plugin is not csp_log.
-    $this->config('helfi_csp.settings')->set('retention_days', 2)->save();
-    $cronHook = $this->container->get(CronHook::class);
-    $this->assertInstanceOf(CronHook::class, $cronHook);
-    $cronHook();
-
-    $timestamps = $this->connection->select(CspLogServiceInterface::DATABASE_TABLE, 't')
-      ->fields('t', ['timestamp'])
-      ->execute()
-      ->fetchCol();
-    $this->assertSame([(string) ($now - 86400)], $timestamps);
   }
 
   /**

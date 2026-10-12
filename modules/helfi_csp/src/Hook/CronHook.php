@@ -45,20 +45,14 @@ class CronHook {
     if ($this->cspLogService === NULL) {
       return;
     }
-    $config = $this->configFactory->get('helfi_csp.settings');
-
-    // Remove the old reports whatever the reporting plugin is. The csp_log
-    // module only removes them when its own reporting plugin is used, but the
-    // reports are also received from the other instances.
-    if ($retentionDays = (int) $config->get('retention_days')) {
-      $this->cspLogService->removeOldLogs($retentionDays);
-    }
 
     // Only proceed if CSP logging is enabled.
     $cspConfig = $this->configFactory->get('csp.settings');
     if ($cspConfig->get('enforce.reporting.plugin') !== 'csp_log') {
       return;
     }
+
+    $config = $this->configFactory->get('helfi_csp.settings');
 
     // We can stop sending aggregated reports in cron runs by running:
     // @code
