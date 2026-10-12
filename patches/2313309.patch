@@ -1,8 +1,8 @@
 diff --git a/core/.phpstan-baseline.php b/core/.phpstan-baseline.php
-index 79432dc851d..e6000e5e132 100644
+index 16f9bc34ac7..6df1ad0cc0c 100644
 --- a/core/.phpstan-baseline.php
 +++ b/core/.phpstan-baseline.php
-@@ -14023,6 +14023,18 @@ $ignoreErrors[] = [
+@@ -14023,6 +14023,18 @@
  	'count' => 1,
  	'path' => __DIR__ . '/modules/contextual/src/Plugin/views/field/ContextualLinks.php',
  ];
@@ -21,7 +21,7 @@ index 79432dc851d..e6000e5e132 100644
  $ignoreErrors[] = [
  	'message' => '#^Method Drupal\\\\Tests\\\\contextual\\\\FunctionalJavascript\\\\ContextualLinksTest\\:\\:clickContextualLink\\(\\) has no return type specified\\.$#',
  	'identifier' => 'missingType.return',
-@@ -14035,6 +14047,18 @@ $ignoreErrors[] = [
+@@ -14035,6 +14047,18 @@
  	'count' => 1,
  	'path' => __DIR__ . '/modules/contextual/tests/src/FunctionalJavascript/ContextualLinksTest.php',
  ];
@@ -58,10 +58,10 @@ index da312112acd..dff854dde89 100644
      arguments: ['@current_user', '@user_permissions_hash_generator']
 diff --git a/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php b/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php
 new file mode 100644
-index 00000000000..1e2bf0eba7f
+index 00000000000..cbb33f1d2ab
 --- /dev/null
 +++ b/core/lib/Drupal/Core/Cache/Context/AccountAdminLanguageCacheContext.php
-@@ -0,0 +1,57 @@
+@@ -0,0 +1,63 @@
 +<?php
 +
 +namespace Drupal\Core\Cache\Context;
@@ -113,9 +113,15 @@ index 00000000000..1e2bf0eba7f
 +   * {@inheritdoc}
 +   */
 +  public function getCacheableMetadata(): CacheableMetadata {
++    $metadata = new CacheableMetadata();
 +    // The resolved value depends on which negotiation methods are enabled,
-+    // which is stored in the language.types configuration.
-+    return (new CacheableMetadata())->addCacheTags(['config:language.types']);
++    // which is stored in the language.types configuration. Without the
++    // language module there is no negotiation and the context is always
++    // empty, so the metadata must not depend on the configuration.
++    if ($this->languageManager instanceof ConfigurableLanguageManagerInterface) {
++      $metadata->addCacheTags(['config:language.types']);
++    }
++    return $metadata;
 +  }
 +
 +}
@@ -123,7 +129,7 @@ diff --git a/core/lib/Drupal/Core/Language/LanguageManager.php b/core/lib/Drupal
 index 1f812b7c2c9..cbe1961c2aa 100644
 --- a/core/lib/Drupal/Core/Language/LanguageManager.php
 +++ b/core/lib/Drupal/Core/Language/LanguageManager.php
-@@ -444,4 +444,12 @@ class LanguageManager implements LanguageManagerInterface {
+@@ -444,4 +444,12 @@ protected function filterLanguages(array $languages, $flags = LanguageInterface:
      return $filtered_languages;
    }
 
@@ -140,7 +146,7 @@ diff --git a/core/lib/Drupal/Core/Language/LanguageManagerInterface.php b/core/l
 index 270e8920f5d..6339102c170 100644
 --- a/core/lib/Drupal/Core/Language/LanguageManagerInterface.php
 +++ b/core/lib/Drupal/Core/Language/LanguageManagerInterface.php
-@@ -212,4 +212,19 @@ interface LanguageManagerInterface {
+@@ -212,4 +212,19 @@ public function getConfigOverrideLanguage();
     */
    public static function getStandardLanguageList();
 
@@ -164,7 +170,7 @@ diff --git a/core/lib/Drupal/Core/Menu/Plugin/Block/LocalTasksBlock.php b/core/l
 index 014f4419604..334c7c74e11 100644
 --- a/core/lib/Drupal/Core/Menu/Plugin/Block/LocalTasksBlock.php
 +++ b/core/lib/Drupal/Core/Menu/Plugin/Block/LocalTasksBlock.php
-@@ -12,6 +12,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+@@ -12,6 +12,7 @@
  use Drupal\Core\Render\Element;
  use Drupal\Core\Routing\RouteMatchInterface;
  use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -172,7 +178,7 @@ index 014f4419604..334c7c74e11 100644
 
  /**
   * Provides a "Tabs" block to display the local tasks.
-@@ -83,6 +84,15 @@ class LocalTasksBlock extends BlockBase implements ContainerFactoryPluginInterfa
+@@ -83,6 +84,15 @@ public function build() {
        }
      }
 
@@ -188,7 +194,7 @@ index 014f4419604..334c7c74e11 100644
      $tabs = [
        '#theme' => 'menu_local_tasks',
      ];
-@@ -105,7 +115,13 @@ class LocalTasksBlock extends BlockBase implements ContainerFactoryPluginInterfa
+@@ -105,7 +115,13 @@ public function build() {
        ];
      }
 
@@ -206,7 +212,7 @@ diff --git a/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php 
 index 58749d8485a..3cf006c4b5b 100644
 --- a/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php
 +++ b/core/modules/block/tests/src/Functional/Views/DisplayBlockTest.php
-@@ -361,7 +361,7 @@ class DisplayBlockTest extends ViewTestBase {
+@@ -361,7 +361,7 @@ public function testBlockEmptyRendering(): void {
        'http_response',
        'rendered',
      ]));
@@ -215,7 +221,7 @@ index 58749d8485a..3cf006c4b5b 100644
 
      // Hide the header on empty results.
      $display = &$view->getDisplay('block_1');
-@@ -406,7 +406,7 @@ class DisplayBlockTest extends ViewTestBase {
+@@ -406,7 +406,7 @@ public function testBlockEmptyRendering(): void {
        'http_response',
        'rendered',
      ]));
@@ -224,7 +230,7 @@ index 58749d8485a..3cf006c4b5b 100644
    }
 
    /**
-@@ -422,9 +422,9 @@ class DisplayBlockTest extends ViewTestBase {
+@@ -422,9 +422,9 @@ public function testBlockContextualLinks(): void {
      $cached_block = $this->drupalPlaceBlock('views_block:test_view_block-block_1');
      $this->drupalGet('test-page');
 
@@ -240,7 +246,7 @@ diff --git a/core/modules/block_content/tests/src/Functional/BlockContentContext
 index 4bbd9906824..f645454b3b0 100644
 --- a/core/modules/block_content/tests/src/Functional/BlockContentContextualLinksTest.php
 +++ b/core/modules/block_content/tests/src/Functional/BlockContentContextualLinksTest.php
-@@ -41,7 +41,7 @@ class BlockContentContextualLinksTest extends BlockContentTestBase {
+@@ -41,7 +41,7 @@ public function testBlockContentContextualLinks(): void {
      $this->drupalLogin($user);
 
      $this->drupalGet('<front>');
@@ -253,7 +259,7 @@ diff --git a/core/modules/contextual/src/ContextualLinksSerializer.php b/core/mo
 index 18d86843da3..5cb3e32bf35 100644
 --- a/core/modules/contextual/src/ContextualLinksSerializer.php
 +++ b/core/modules/contextual/src/ContextualLinksSerializer.php
-@@ -40,15 +40,21 @@ readonly class ContextualLinksSerializer {
+@@ -40,15 +40,21 @@ public function __construct(
     */
    public function linksToId(array $contextualLinks): string {
      $ids = [];
@@ -283,7 +289,7 @@ diff --git a/core/modules/contextual/src/Hook/ContextualThemeHooks.php b/core/mo
 index 607986bd171..933b8e0254a 100644
 --- a/core/modules/contextual/src/Hook/ContextualThemeHooks.php
 +++ b/core/modules/contextual/src/Hook/ContextualThemeHooks.php
-@@ -39,6 +39,7 @@ class ContextualThemeHooks {
+@@ -39,6 +39,7 @@ public function preprocess(&$variables, $hook, $info): void {
 
      if (isset($element) && is_array($element) && !empty($element['#contextual_links'])) {
        $variables['#cache']['contexts'][] = 'user.permissions';
@@ -295,7 +301,7 @@ diff --git a/core/modules/contextual/tests/src/Functional/ContextualDynamicConte
 index a5dbdc46c0d..f85a9602790 100644
 --- a/core/modules/contextual/tests/src/Functional/ContextualDynamicContextTest.php
 +++ b/core/modules/contextual/tests/src/Functional/ContextualDynamicContextTest.php
-@@ -103,10 +103,10 @@ class ContextualDynamicContextTest extends BrowserTestBase {
+@@ -103,10 +103,10 @@ public function testDifferentPermissions(): void {
      // Now, on the front page, all article nodes should have contextual links
      // placeholders, as should the view that contains them.
      $ids = [
@@ -310,7 +316,7 @@ index a5dbdc46c0d..f85a9602790 100644
      ];
 
      // Editor user: can access contextual links and can edit articles.
-@@ -130,7 +130,7 @@ class ContextualDynamicContextTest extends BrowserTestBase {
+@@ -130,7 +130,7 @@ public function testDifferentPermissions(): void {
        'title' => $this->randomString(),
        'promote' => TRUE,
      ])->save();
@@ -319,7 +325,7 @@ index a5dbdc46c0d..f85a9602790 100644
      $this->drupalGet('node', ['language' => ConfigurableLanguage::createFromLangcode('it')]);
      $this->assertContextualLinkPlaceHolder($id);
 
-@@ -184,7 +184,7 @@ class ContextualDynamicContextTest extends BrowserTestBase {
+@@ -184,7 +184,7 @@ public function testTokenProtection(): void {
 
      // Now, on the front page, all article nodes should have contextual links
      // placeholders, as should the view that contains them.
@@ -328,11 +334,298 @@ index a5dbdc46c0d..f85a9602790 100644
 
      // Editor user: can access contextual links and can edit articles.
      $this->drupalGet('node');
+diff --git a/core/modules/contextual/tests/src/Functional/LanguageAdministrationPagesLanguageTest.php b/core/modules/contextual/tests/src/Functional/LanguageAdministrationPagesLanguageTest.php
+new file mode 100644
+index 00000000000..cdab3c62c40
+--- /dev/null
++++ b/core/modules/contextual/tests/src/Functional/LanguageAdministrationPagesLanguageTest.php
+@@ -0,0 +1,151 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\contextual\Functional;
++
++use Drupal\language\Entity\ConfigurableLanguage;
++use Drupal\Tests\BrowserTestBase;
++use Drupal\node\NodeInterface;
++use Drupal\Tests\contextual\FunctionalJavascript\ContextualLinkClickTrait;
++use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
++use Drupal\Tests\node\Traits\NodeCreationTrait;
++use Drupal\user\UserInterface;
++use PHPUnit\Framework\Attributes\Group;
++use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
++
++/**
++ * Tests administration pages language.
++ */
++#[Group('language')]
++#[RunTestsInSeparateProcesses]
++class LanguageAdministrationPagesLanguageTest extends BrowserTestBase {
++
++  use ContentTypeCreationTrait {
++    createContentType as drupalCreateContentType;
++  }
++  use ContextualLinkClickTrait;
++  use NodeCreationTrait {
++    createNode as drupalCreateNode;
++  }
++
++  /**
++   * Admin user.
++   */
++  protected UserInterface $admin;
++
++  /**
++   * Test node.
++   */
++  protected NodeInterface $node;
++
++  /**
++   * Block ID.
++   */
++  protected array $blockId;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'language',
++    'locale',
++    'content_translation',
++    'block',
++    'node',
++    'contextual',
++    'toolbar',
++    'system_test',
++  ];
++
++  /**
++   * {@inheritdoc}
++   */
++  protected $defaultTheme = 'stark';
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++    // User to manage languages.
++    $this->admin = $this->drupalCreateUser([], NULL, TRUE);
++    $this->drupalLogin($this->admin);
++
++    // Create FR.
++    ConfigurableLanguage::createFromLangcode('fr')->save();
++
++    // Set language detection to URL and browser detection.
++    $this->drupalGet('/admin/config/regional/language/detection');
++    $this->submitForm([
++      'language_interface[enabled][language-url]' => TRUE,
++      'language_interface[enabled][language-user-admin]' => TRUE,
++      'language_content[configurable]' => TRUE,
++      'language_content[enabled][language-url]' => TRUE,
++      'language_content[enabled][language-interface]' => FALSE,
++    ], 'Save settings');
++
++    // Set prefixes to en and fr.
++    $this->drupalGet('/admin/config/regional/language/detection/url');
++    $this->submitForm([
++      'prefix[en]' => 'en',
++      'prefix[fr]' => 'fr',
++    ], 'Save configuration');
++
++    // Create a node type.
++    $this->drupalCreateContentType([
++      'type' => 'page',
++      'name' => 'Basic page',
++    ]);
++    $this->node = $this->drupalCreateNode([
++      'type' => 'page',
++      'title' => 'New page',
++    ]);
++
++    $this->drupalGet('/admin/config/regional/content-language');
++    $edit = [
++      'entity_types[node]' => TRUE,
++      'settings[node][page][translatable]' => TRUE,
++    ];
++    $this->submitForm($edit, 'Save configuration');
++
++    $local_tasks_block = $this->drupalPlaceBlock('local_tasks_block');
++    $page_title_block = $this->drupalPlaceBlock('page_title_block');
++    $this->blockId['local_tasks_block'] = $local_tasks_block->id();
++    $this->blockId['page_title_block'] = $page_title_block->id();
++
++    $this->drupalGet('/node/' . $this->node->id() . '/translations/add/en/fr');
++    $edit = [
++      'title[0][value]' => 'Nouvelle page',
++    ];
++    $this->submitForm($edit, 'Save (this translation)');
++  }
++
++  /**
++   * Tests administration pages language.
++   */
++  public function testLanguageAdministrationPagesLanguage(): void {
++    $local_tasks_block_prefix = '//div[contains(@data-contextual-id, "block:block=' . $this->blockId['local_tasks_block'];
++    $page_title_block_prefix = '//div[contains(@data-contextual-id, "block:block=' . $this->blockId['page_title_block'];
++
++    $this->drupalGet('/node/' . $this->node->id());
++    $this->assertSession()->elementsCount('xpath', $local_tasks_block_prefix . ':langcode=en&admin_langcode=en")]', 1);
++    $this->assertSession()->elementsCount('xpath', $page_title_block_prefix . ':langcode=en&admin_langcode=en")]', 1);
++
++    $this->drupalGet('/fr/node/' . $this->node->id());
++    $this->assertSession()->elementsCount('xpath', $local_tasks_block_prefix . ':langcode=fr&admin_langcode=en")]', 1);
++    $this->assertSession()->elementsCount('xpath', $page_title_block_prefix . ':langcode=fr&admin_langcode=en")]', 1);
++
++    $this->drupalGet('/user/' . $this->admin->id() . '/edit');
++    $this->submitForm(['preferred_admin_langcode' => 'fr'], 'Save');
++    // drupal_flush_all_caches($this->kernel);.
++    $this->drupalGet('/node/' . $this->node->id());
++    $this->assertSession()->elementsCount('xpath', $local_tasks_block_prefix . ':langcode=en&admin_langcode=fr")]', 1);
++    $this->assertSession()->elementsCount('xpath', $page_title_block_prefix . ':langcode=en&admin_langcode=fr")]', 1);
++
++    $this->drupalGet('/fr/node/' . $this->node->id());
++    $this->assertSession()->elementsCount('xpath', $local_tasks_block_prefix . ':langcode=fr&admin_langcode=fr")]', 1);
++    $this->assertSession()->elementsCount('xpath', $page_title_block_prefix . ':langcode=fr&admin_langcode=fr")]', 1);
++  }
++
++}
+diff --git a/core/modules/contextual/tests/src/FunctionalJavascript/ContextualTranslationTest.php b/core/modules/contextual/tests/src/FunctionalJavascript/ContextualTranslationTest.php
+new file mode 100644
+index 00000000000..675d176aab4
+--- /dev/null
++++ b/core/modules/contextual/tests/src/FunctionalJavascript/ContextualTranslationTest.php
+@@ -0,0 +1,124 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\contextual\FunctionalJavascript;
++
++use Drupal\Core\Language\LanguageManagerInterface;
++use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
++use Drupal\language\Entity\ConfigurableLanguage;
++use Drupal\locale\StringStorageInterface;
++use Drupal\user\UserInterface;
++use PHPUnit\Framework\Attributes\Group;
++use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
++
++/**
++ * Tests contextual link translation.
++ */
++#[Group('contextual')]
++#[RunTestsInSeparateProcesses]
++class ContextualTranslationTest extends WebDriverTestBase {
++
++  use ContextualLinkClickTrait;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected $defaultTheme = 'stark';
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'block',
++    'contextual',
++    'language',
++    'locale',
++    'node',
++    'system',
++  ];
++
++  /**
++   * The admin user.
++   *
++   * @var \Drupal\user\UserInterface
++   */
++  protected UserInterface $adminUser;
++
++  /**
++   * The language manager.
++   *
++   * @var \Drupal\Core\Language\LanguageManagerInterface
++   */
++  protected LanguageManagerInterface $languageManager;
++
++  /**
++   * The locale storage.
++   *
++   * @var \Drupal\locale\StringStorageInterface
++   */
++  protected StringStorageInterface $localeStorage;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++
++    $this->languageManager = $this->container->get('language_manager');
++    $this->localeStorage = $this->container->get('locale.storage');
++
++    $this->drupalPlaceBlock('local_actions_block');
++    $this->drupalPlaceBlock('local_tasks_block');
++
++    $this->adminUser = $this->createUser([], NULL, TRUE);
++    $this->drupalLogin($this->adminUser);
++
++    $this->drupalCreateContentType(['type' => 'page', 'name' => 'Basic page']);
++
++    ConfigurableLanguage::createFromLangcode('nl')->save();
++    $this->rebuildContainer();
++
++    // Enable the 'Account administration pages' language detection.
++    $this->drupalGet('admin/config/regional/language/detection');
++    $this->submitForm(['language_interface[enabled][language-user-admin]' => TRUE], 'Save settings');
++  }
++
++  /**
++   * Tests that contextual links are shown in the preferred admin language.
++   */
++  public function testContextualLinksPreferredAdminLanguage(): void {
++    // Create a node and visit the translated page so new translation labels
++    // are added.
++    $nl_language = $this->languageManager->getLanguage('nl');
++    $node1 = $this->drupalCreateNode(['type' => 'page']);
++    $this->drupalGet($node1->toUrl('canonical', ['language' => $nl_language]));
++
++    // Add a translation for the 'Edit' string.
++    $edit_translation = $this->randomMachineName();
++    $this->drupalGet('admin/config/regional/translate');
++    $this->submitForm(['string' => 'Edit', 'langcode' => 'nl'], 'Filter');
++    $textarea = current($this->xpath('//textarea'));
++    $lid = (string) $textarea->getAttribute('name');
++    $this->submitForm([$lid => $edit_translation], 'Save translations');
++
++    // Configure a preferred admin language.
++    $this->adminUser->set('preferred_admin_langcode', 'nl');
++    $this->adminUser->save();
++
++    // The edit link text should be using the translated string.
++    $this->drupalGet($node1->toUrl('canonical'));
++    $this->clickContextualLink('article', $edit_translation);
++    $this->assertSession()->addressEquals($node1->toUrl('edit-form'));
++
++    // Change the preferred admin language.
++    $this->adminUser->set('preferred_admin_langcode', 'en');
++    $this->adminUser->save();
++
++    // The edit link text should be using the english string.
++    $this->drupalGet($node1->toUrl('canonical'));
++    $this->clickContextualLink('article', 'Edit');
++    $this->assertSession()->addressEquals($node1->toUrl('edit-form'));
++  }
++
++}
 diff --git a/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php b/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php
 index 5258ceb0c8a..db4e0a2a031 100644
 --- a/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php
 +++ b/core/modules/contextual/tests/src/Kernel/ContextualUnitTest.php
-@@ -38,10 +38,10 @@ class ContextualUnitTest extends KernelTestBase {
+@@ -38,10 +38,10 @@ public static function contextualLinksDataProvider(): array {
            'route_parameters' => [
              'node' => '14031991',
            ],
@@ -345,7 +638,7 @@ index 5258ceb0c8a..db4e0a2a031 100644
        'olivero',
      ];
 
-@@ -53,10 +53,10 @@ class ContextualUnitTest extends KernelTestBase {
+@@ -53,10 +53,10 @@ public static function contextualLinksDataProvider(): array {
              'key' => 'baz',
              1 => 'qux',
            ],
@@ -358,7 +651,7 @@ index 5258ceb0c8a..db4e0a2a031 100644
        'claro',
      ];
 
-@@ -70,10 +70,11 @@ class ContextualUnitTest extends KernelTestBase {
+@@ -70,10 +70,11 @@ public static function contextualLinksDataProvider(): array {
              'location' => 'page',
              'display' => 'page_1',
              'langcode' => 'en',
@@ -371,7 +664,7 @@ index 5258ceb0c8a..db4e0a2a031 100644
        'olivero',
      ];
 
-@@ -83,7 +84,7 @@ class ContextualUnitTest extends KernelTestBase {
+@@ -83,7 +84,7 @@ public static function contextualLinksDataProvider(): array {
            'route_parameters' => [
              'node' => '14031991',
            ],
@@ -380,7 +673,7 @@ index 5258ceb0c8a..db4e0a2a031 100644
          ],
          'foo' => [
            'route_parameters' => [
-@@ -91,14 +92,14 @@ class ContextualUnitTest extends KernelTestBase {
+@@ -91,14 +92,14 @@ public static function contextualLinksDataProvider(): array {
              'key' => 'baz',
              1 => 'qux',
            ],
@@ -399,22 +692,15 @@ index 5258ceb0c8a..db4e0a2a031 100644
      ];
 
 diff --git a/core/modules/language/language.services.yml b/core/modules/language/language.services.yml
-index 98184c214fe..65e160237d0 100644
+index 98184c214fe..07978a294d9 100644
 --- a/core/modules/language/language.services.yml
 +++ b/core/modules/language/language.services.yml
-@@ -5,6 +5,7 @@ parameters:
- services:
-   _defaults:
-     autoconfigure: true
-+    autowire: true
-   plugin.manager.language_negotiation_method:
-     class: Drupal\language\LanguageNegotiationMethodManager
-     arguments: ['@container.namespaces', '@cache.discovery', '@module_handler']
-@@ -29,3 +30,4 @@ services:
+@@ -29,3 +29,5 @@ services:
      arguments: ['@language_manager']
      tags:
        - { name: paramconverter }
-+  Drupal\language\AdminLanguageRender: ~
++  Drupal\language\AdminLanguageRender:
++    arguments: ['@language_manager', '@string_translation']
 diff --git a/core/modules/language/src/AdminLanguageNegotiationInterface.php b/core/modules/language/src/AdminLanguageNegotiationInterface.php
 new file mode 100644
 index 00000000000..5a8ea939df6
@@ -597,7 +883,7 @@ diff --git a/core/modules/language/src/ConfigurableLanguageManager.php b/core/mo
 index b76b32ace4f..879b738238a 100644
 --- a/core/modules/language/src/ConfigurableLanguageManager.php
 +++ b/core/modules/language/src/ConfigurableLanguageManager.php
-@@ -246,6 +246,20 @@ class ConfigurableLanguageManager extends LanguageManager implements Configurabl
+@@ -246,6 +246,20 @@ public function getCurrentLanguage($type = LanguageInterface::TYPE_INTERFACE) {
      return $this->negotiatedLanguages[$type];
    }
 
@@ -622,7 +908,7 @@ diff --git a/core/modules/language/src/ConfigurableLanguageManagerInterface.php 
 index 41a1681f3f2..a2d6689e691 100644
 --- a/core/modules/language/src/ConfigurableLanguageManagerInterface.php
 +++ b/core/modules/language/src/ConfigurableLanguageManagerInterface.php
-@@ -103,4 +103,17 @@ interface ConfigurableLanguageManagerInterface extends LanguageManagerInterface
+@@ -103,4 +103,17 @@ public function getStandardLanguageListWithoutConfigured();
     */
    public function getNegotiatedLanguageMethod($type = LanguageInterface::TYPE_INTERFACE);
 
@@ -644,7 +930,7 @@ diff --git a/core/modules/language/src/Hook/LanguageHooks.php b/core/modules/lan
 index 9f521270194..074ddd23aed 100644
 --- a/core/modules/language/src/Hook/LanguageHooks.php
 +++ b/core/modules/language/src/Hook/LanguageHooks.php
-@@ -17,6 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
+@@ -17,6 +17,7 @@
  use Drupal\Core\Config\InstallStorage;
  use Drupal\Core\Config\FileStorage;
  use Drupal\Core\Installer\InstallerKernel;
@@ -652,7 +938,7 @@ index 9f521270194..074ddd23aed 100644
  use Drupal\language\Entity\ContentLanguageSettings;
  use Drupal\Core\Language\LanguageInterface;
  use Drupal\Core\Url;
-@@ -169,6 +170,14 @@ class LanguageHooks {
+@@ -169,6 +170,14 @@ public function elementInfoAlter(&$type): void {
        $type['language_select']['#theme_wrappers'] = array_merge($type['language_select']['#theme_wrappers'], ['form_element']);
        $type['language_select']['#languages'] = LanguageInterface::STATE_CONFIGURABLE;
        $type['language_select']['#multiple'] = FALSE;
@@ -671,7 +957,7 @@ diff --git a/core/modules/language/src/LanguageNegotiator.php b/core/modules/lan
 index ad2977a245a..13f9fddd67f 100644
 --- a/core/modules/language/src/LanguageNegotiator.php
 +++ b/core/modules/language/src/LanguageNegotiator.php
-@@ -5,6 +5,7 @@ namespace Drupal\language;
+@@ -5,6 +5,7 @@
  use Drupal\Component\Plugin\Exception\PluginNotFoundException;
  use Drupal\Component\Plugin\PluginManagerInterface;
  use Drupal\Core\Config\ConfigFactoryInterface;
@@ -679,7 +965,7 @@ index ad2977a245a..13f9fddd67f 100644
  use Drupal\Core\Logger\LoggerChannelTrait;
  use Drupal\Core\Session\AccountInterface;
  use Drupal\Core\Site\Settings;
-@@ -239,6 +240,30 @@ class LanguageNegotiator implements LanguageNegotiatorInterface {
+@@ -239,6 +240,30 @@ public function getPrimaryNegotiationMethod($type) {
      return empty($enabled_methods) ? LanguageNegotiatorInterface::METHOD_ID : key($enabled_methods);
    }
 
@@ -714,7 +1000,7 @@ diff --git a/core/modules/language/src/LanguageNegotiatorInterface.php b/core/mo
 index b0ca173d3db..d780e9bbcad 100644
 --- a/core/modules/language/src/LanguageNegotiatorInterface.php
 +++ b/core/modules/language/src/LanguageNegotiatorInterface.php
-@@ -179,6 +179,19 @@ interface LanguageNegotiatorInterface {
+@@ -179,6 +179,19 @@ public function getPrimaryNegotiationMethod($type);
     */
    public function isNegotiationMethodEnabled($method_id, $type = NULL);
 
@@ -738,7 +1024,7 @@ diff --git a/core/modules/navigation/src/NavigationRenderer.php b/core/modules/n
 index 0d8b185fdae..0f9eb9dc522 100644
 --- a/core/modules/navigation/src/NavigationRenderer.php
 +++ b/core/modules/navigation/src/NavigationRenderer.php
-@@ -20,6 +20,7 @@ use Drupal\Core\Render\Element;
+@@ -20,6 +20,7 @@
  use Drupal\Core\Routing\RouteMatchInterface;
  use Drupal\Core\Security\Attribute\TrustedCallback;
  use Drupal\Core\Session\AccountInterface;
@@ -746,7 +1032,7 @@ index 0d8b185fdae..0f9eb9dc522 100644
  use Drupal\layout_builder\SectionStorage\SectionStorageManagerInterface;
  use Symfony\Component\HttpFoundation\RequestStack;
 
-@@ -94,11 +95,31 @@ final class NavigationRenderer {
+@@ -94,11 +95,31 @@ public function buildNavigation(array &$page_top): void {
     */
    #[TrustedCallback]
    public function doBuildNavigation(): array {
@@ -780,7 +1066,7 @@ index 0d8b185fdae..0f9eb9dc522 100644
      $contexts = [
        'navigation' => new Context(ContextDefinition::create('string'), 'navigation'),
      ];
-@@ -106,7 +127,7 @@ final class NavigationRenderer {
+@@ -106,7 +127,7 @@ public function doBuildNavigation(): array {
 
      if ($storage) {
        foreach ($storage->getSections() as $delta => $section) {
@@ -789,7 +1075,7 @@ index 0d8b185fdae..0f9eb9dc522 100644
        }
      }
      // The render array is built based on decisions made by SectionStorage
-@@ -114,28 +135,29 @@ final class NavigationRenderer {
+@@ -114,28 +135,29 @@ public function doBuildNavigation(): array {
      // cacheability of those decisions.
      $cacheability->addCacheableDependency($logo_settings)
        ->addCacheableDependency($this->configFactory->get('navigation.block_layout'));
@@ -830,7 +1116,7 @@ diff --git a/core/modules/navigation/src/Plugin/Block/NavigationUserBlock.php b/
 index f825d1a9993..86fca1d6797 100644
 --- a/core/modules/navigation/src/Plugin/Block/NavigationUserBlock.php
 +++ b/core/modules/navigation/src/Plugin/Block/NavigationUserBlock.php
-@@ -12,6 +12,7 @@ use Drupal\Core\Menu\MenuLinkTreeElement;
+@@ -12,6 +12,7 @@
  use Drupal\Core\Menu\MenuTreeParameters;
  use Drupal\Core\Security\Attribute\TrustedCallback;
  use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -838,7 +1124,7 @@ index f825d1a9993..86fca1d6797 100644
  use Drupal\user\Entity\User;
 
  /**
-@@ -45,6 +46,25 @@ final class NavigationUserBlock extends BlockBase {
+@@ -45,6 +46,25 @@ public function build(): array {
     */
    #[TrustedCallback]
    public static function buildLinks(string $label): array {
@@ -864,7 +1150,7 @@ index f825d1a9993..86fca1d6797 100644
      $parameters = new MenuTreeParameters();
      $parameters
        ->setMinDepth(0)
-@@ -60,11 +80,8 @@ final class NavigationUserBlock extends BlockBase {
+@@ -60,11 +80,8 @@ public static function buildLinks(string $label): array {
      if (!$account) {
        // In certain edge case, the user load may fail, such as a late lazy
        // builder in tests when it was already deleted.
@@ -878,7 +1164,7 @@ index f825d1a9993..86fca1d6797 100644
      }
 
      $menu_definition = [
-@@ -88,14 +105,22 @@ final class NavigationUserBlock extends BlockBase {
+@@ -88,14 +105,22 @@ public static function buildLinks(string $label): array {
        ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
      ];
      $tree = $menu_tree->transform([$tree], $manipulators);
@@ -908,11 +1194,146 @@ index f825d1a9993..86fca1d6797 100644
    }
 
  }
+diff --git a/core/modules/navigation/tests/src/Functional/NavigationMenuTranslationTest.php b/core/modules/navigation/tests/src/Functional/NavigationMenuTranslationTest.php
+new file mode 100644
+index 00000000000..d1c92e76ae9
+--- /dev/null
++++ b/core/modules/navigation/tests/src/Functional/NavigationMenuTranslationTest.php
+@@ -0,0 +1,129 @@
++<?php
++
++declare(strict_types=1);
++
++namespace Drupal\Tests\navigation\Functional;
++
++use Drupal\language\Entity\ConfigurableLanguage;
++use Drupal\Tests\BrowserTestBase;
++use PHPUnit\Framework\Attributes\Group;
++use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
++
++// cspell:ignore rakenne nayta profiili
++/**
++ * Tests that the navigation is shown in the preferred admin language.
++ *
++ * @see \Drupal\language\AdminLanguageRender
++ */
++#[Group('navigation')]
++#[RunTestsInSeparateProcesses]
++class NavigationMenuTranslationTest extends BrowserTestBase {
++
++  /**
++   * A user with permission to access the administrative navigation.
++   *
++   * @var \Drupal\user\UserInterface
++   */
++  protected $adminUser;
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'navigation',
++    'locale',
++    'block',
++  ];
++
++  /**
++   * {@inheritdoc}
++   */
++  protected $defaultTheme = 'stark';
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function setUp(): void {
++    parent::setUp();
++
++    $this->adminUser = $this->drupalCreateUser([
++      'access navigation',
++      'administer languages',
++      'access administration pages',
++      // Makes the 'Structure' item (via Block layout) appear in the admin menu.
++      'administer blocks',
++    ]);
++    $this->drupalLogin($this->adminUser);
++  }
++
++  /**
++   * Tests that the navigation is shown in the preferred admin language.
++   */
++  public function testNavigationRenderedInPreferredAdminLanguage(): void {
++    $langcode = 'es';
++    ConfigurableLanguage::createFromLangcode($langcode)->save();
++
++    // Enable URL negotiation (so the /es prefix selects Spanish) and the
++    // 'Account administration pages' method, which takes priority when set so
++    // that admin routes use the preferred admin language.
++    $config = $this->config('language.types');
++    $negotiation = $config->get('negotiation.language_interface.enabled');
++    $negotiation['language-user-admin'] = -10;
++    $negotiation['language-url'] = -8;
++    $config->set('negotiation.language_interface.enabled', $negotiation)->save();
++
++    // Configure the 'es' URL prefix.
++    $this->config('language.negotiation')->set('url.prefixes.es', 'es')->save();
++
++    // Translate two strings rendered by the navigation: 'Structure' comes from
++    // the admin menu block (rendered inline in NavigationRenderer) and
++    // 'View profile' from the user block (rendered in a separate lazy builder).
++    // Together they exercise both places the admin-language switch is applied.
++    $this->setUpTranslation($langcode, 'Structure', 'RAKENNE-TEST');
++    $this->setUpTranslation($langcode, 'View profile', 'NAYTA-PROFIILI-TEST');
++
++    // Without a preferred admin language, the navigation follows the interface
++    // language of the page, so the Spanish-prefixed page shows the Spanish
++    // translations.
++    $this->drupalGet($langcode . '/user');
++    $this->assertSession()->linkExists('RAKENNE-TEST');
++    $this->assertSession()->linkExists('NAYTA-PROFIILI-TEST');
++
++    // Configure a preferred admin language different from the page language.
++    $this->adminUser->set('preferred_admin_langcode', 'en')->save();
++    drupal_flush_all_caches();
++
++    // The navigation is now rendered in the preferred admin language even on
++    // the Spanish-prefixed page, while the page itself stays in Spanish.
++    $this->drupalGet($langcode . '/user');
++    $this->assertSession()->linkExists('Structure');
++    $this->assertSession()->linkExists('View profile');
++    $this->assertSession()->linkNotExists('RAKENNE-TEST');
++    $this->assertSession()->linkNotExists('NAYTA-PROFIILI-TEST');
++    // The page itself is still served in the negotiated interface language.
++    $this->assertSession()->elementAttributeContains('css', 'html', 'lang', $langcode);
++  }
++
++  /**
++   * Creates a translation for a source string.
++   *
++   * @param string $langcode
++   *   The langcode of the translation.
++   * @param string $source
++   *   The untranslated source string.
++   * @param string $translation
++   *   The translation.
++   */
++  protected function setUpTranslation(string $langcode, string $source, string $translation): void {
++    $storage = \Drupal::service('locale.storage');
++    $string = $storage->findString(['source' => $source]) ?: $storage->createString(['source' => $source])->save();
++    $storage->createTranslation([
++      'lid' => $string->getId(),
++      'language' => $langcode,
++      'translation' => $translation,
++    ])->save();
++    // Make the new translation available to the string translation service.
++    \Drupal::service('string_translation')->reset();
++  }
++
++}
 diff --git a/core/modules/node/tests/src/Functional/Views/FrontPageTest.php b/core/modules/node/tests/src/Functional/Views/FrontPageTest.php
 index dab95d8b589..2b7c6358116 100644
 --- a/core/modules/node/tests/src/Functional/Views/FrontPageTest.php
 +++ b/core/modules/node/tests/src/Functional/Views/FrontPageTest.php
-@@ -321,6 +321,9 @@ class FrontPageTest extends ViewTestBase {
+@@ -321,6 +321,9 @@ protected function doTestFrontPageViewCacheTags($do_assert_views_caches): void {
        $do_assert_views_caches,
        $first_page_output_cache_tags
      );
@@ -926,7 +1347,7 @@ diff --git a/core/modules/page_cache/tests/src/Functional/PageCacheTagsIntegrati
 index 0f5782b9410..37fad7140e2 100644
 --- a/core/modules/page_cache/tests/src/Functional/PageCacheTagsIntegrationTest.php
 +++ b/core/modules/page_cache/tests/src/Functional/PageCacheTagsIntegrationTest.php
-@@ -129,6 +129,7 @@ class PageCacheTagsIntegrationTest extends BrowserTestBase {
+@@ -129,6 +129,7 @@ public function testPageCacheTags(): void {
        'url.query_args:' . MainContentViewSubscriber::WRAPPER_FORMAT,
        // rel=canonical links and friends have absolute URLs as their values.
        'url.site',
@@ -938,7 +1359,7 @@ diff --git a/core/modules/system/tests/src/Functional/System/ThemeTest.php b/cor
 index 1132ededea8..33a5c42e29c 100644
 --- a/core/modules/system/tests/src/Functional/System/ThemeTest.php
 +++ b/core/modules/system/tests/src/Functional/System/ThemeTest.php
-@@ -443,7 +443,7 @@ class ThemeTest extends BrowserTestBase {
+@@ -443,7 +443,7 @@ public function testSwitchDefaultTheme(): void {
      // Install Olivero and set it as the default theme.
      $theme_installer->install(['olivero']);
      $this->drupalGet('admin/appearance');
@@ -947,7 +1368,7 @@ index 1132ededea8..33a5c42e29c 100644
      $this->assertEquals('olivero', $this->config('system.theme')->get('default'));
 
      // Test the default theme on the secondary links (blocks admin page).
-@@ -453,7 +453,7 @@ class ThemeTest extends BrowserTestBase {
+@@ -453,7 +453,7 @@ public function testSwitchDefaultTheme(): void {
      // cleared.
      $this->drupalGet('admin/appearance');
      // Stark is the first 'Set as default' link.
@@ -960,25 +1381,53 @@ diff --git a/core/modules/toolbar/tests/src/Functional/ToolbarMenuTranslationTes
 index 7833619b031..3a8b13d9486 100644
 --- a/core/modules/toolbar/tests/src/Functional/ToolbarMenuTranslationTest.php
 +++ b/core/modules/toolbar/tests/src/Functional/ToolbarMenuTranslationTest.php
-@@ -72,49 +72,108 @@ class ToolbarMenuTranslationTest extends BrowserTestBase {
+@@ -72,40 +72,12 @@ public function testToolbarClasses(): void {
      // Visit a page that has the string on it so it can be translated.
      $this->drupalGet($langcode . '/admin/structure');
 
 -    // Search for the menu item.
-+    // Check that the class is on the item before we translate it.
-+    $this->assertSession()->elementsCount('xpath', '//a[contains(@class, "icon-system-admin-structure")]', 1);
-+
-+    // Translate the menu item.
-+    $menu_item_translated = $this->randomMachineName();
+-    $search = [
+-      'string' => $menu_item,
+-      'langcode' => $langcode,
+-      'translation' => 'untranslated',
+-    ];
+-    $this->drupalGet('admin/config/regional/translate');
+-    $this->submitForm($search, 'Filter');
+-    // Make sure will be able to translate the menu item.
+-    $this->assertSession()->pageTextNotContains('No strings available.');
+-
+     // Check that the class is on the item before we translate it.
+     $this->assertSession()->elementsCount('xpath', '//a[contains(@class, "icon-system-admin-structure")]', 1);
+
+     // Translate the menu item.
+     $menu_item_translated = $this->randomMachineName();
+-    $textarea = $this->assertSession()->elementExists('xpath', '//textarea');
+-    $lid = (string) $textarea->getAttribute('name');
+-    $edit = [
+-      $lid => $menu_item_translated,
+-    ];
+-    $this->drupalGet('admin/config/regional/translate');
+-    $this->submitForm($edit, 'Save translations');
+-
+-    // Search for the translated menu item.
+-    $search = [
+-      'string' => $menu_item,
+-      'langcode' => $langcode,
+-      'translation' => 'translated',
+-    ];
+-    $this->drupalGet('admin/config/regional/translate');
+-    $this->submitForm($search, 'Filter');
+-    // Make sure the menu item string was translated.
+-    $this->assertSession()->pageTextContains($menu_item_translated);
 +    $this->addLocalizedString($langcode, $menu_item, $menu_item_translated);
-+
-+    // Go to another page in the custom language and make sure the menu item
-+    // was translated.
-+    $this->drupalGet($langcode . '/admin/structure');
-+    $this->assertSession()->pageTextContains($menu_item_translated);
-+
-+    // Toolbar icons are included based on the presence of a specific class on
-+    // the menu item. Ensure that class also exists for a translated menu item.
+
+     // Go to another page in the custom language and make sure the menu item
+     // was translated.
+@@ -114,7 +86,94 @@ public function testToolbarClasses(): void {
+
+     // Toolbar icons are included based on the presence of a specific class on
+     // the menu item. Ensure that class also exists for a translated menu item.
+-    $this->assertSession()->elementsCount('xpath', '//a[contains(@class, "icon-system-admin-structure")]', 1);
 +    $xpath = $this->xpath('//a[contains(@class, "icon-system-admin-structure")]');
 +    $this->assertCount(1, $xpath, 'The menu item class is the same.');
 +  }
@@ -1042,53 +1491,30 @@ index 7833619b031..3a8b13d9486 100644
 +   */
 +  protected function addLocalizedString(string $langcode, string $string, string $translation): void {
 +    // Search for the label.
-     $search = [
--      'string' => $menu_item,
++    $search = [
 +      'string' => $string,
-       'langcode' => $langcode,
-       'translation' => 'untranslated',
-     ];
-     $this->drupalGet('admin/config/regional/translate');
-     $this->submitForm($search, 'Filter');
--    // Make sure will be able to translate the menu item.
++      'langcode' => $langcode,
++      'translation' => 'untranslated',
++    ];
++    $this->drupalGet('admin/config/regional/translate');
++    $this->submitForm($search, 'Filter');
 +    // Make sure will be able to translate the label.
-     $this->assertSession()->pageTextNotContains('No strings available.');
-
--    // Check that the class is on the item before we translate it.
--    $this->assertSession()->elementsCount('xpath', '//a[contains(@class, "icon-system-admin-structure")]', 1);
++    $this->assertSession()->pageTextNotContains('No strings available.');
++
 +    $textarea = current($this->xpath('//textarea'));
-
--    // Translate the menu item.
--    $menu_item_translated = $this->randomMachineName();
--    $textarea = $this->assertSession()->elementExists('xpath', '//textarea');
-     $lid = (string) $textarea->getAttribute('name');
--    $edit = [
--      $lid => $menu_item_translated,
--    ];
--    $this->drupalGet('admin/config/regional/translate');
--    $this->submitForm($edit, 'Save translations');
++
++    $lid = (string) $textarea->getAttribute('name');
 +    $this->submitForm([$lid => $translation], 'Save translations');
-
-     // Search for the translated menu item.
-     $search = [
--      'string' => $menu_item,
++
++    // Search for the translated menu item.
++    $search = [
 +      'string' => $string,
-       'langcode' => $langcode,
-       'translation' => 'translated',
-     ];
-     $this->drupalGet('admin/config/regional/translate');
-     $this->submitForm($search, 'Filter');
-     // Make sure the menu item string was translated.
--    $this->assertSession()->pageTextContains($menu_item_translated);
--
--    // Go to another page in the custom language and make sure the menu item
--    // was translated.
--    $this->drupalGet($langcode . '/admin/structure');
--    $this->assertSession()->pageTextContains($menu_item_translated);
--
--    // Toolbar icons are included based on the presence of a specific class on
--    // the menu item. Ensure that class also exists for a translated menu item.
--    $this->assertSession()->elementsCount('xpath', '//a[contains(@class, "icon-system-admin-structure")]', 1);
++      'langcode' => $langcode,
++      'translation' => 'translated',
++    ];
++    $this->drupalGet('admin/config/regional/translate');
++    $this->submitForm($search, 'Filter');
++    // Make sure the menu item string was translated.
 +    $this->assertSession()->pageTextContains($translation);
    }
 
@@ -1097,7 +1523,7 @@ diff --git a/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiatio
 index f9640b39679..bca7ec85628 100644
 --- a/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php
 +++ b/core/modules/user/src/Plugin/LanguageNegotiation/LanguageNegotiationUserAdmin.php
-@@ -8,6 +8,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+@@ -8,6 +8,7 @@
  use Drupal\Core\Routing\AdminContext;
  use Drupal\Core\Routing\StackedRouteMatchInterface;
  use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -1105,7 +1531,7 @@ index f9640b39679..bca7ec85628 100644
  use Drupal\language\Attribute\LanguageNegotiation;
  use Drupal\language\LanguageNegotiationMethodBase;
  use Drupal\Core\Routing\RouteObjectInterface;
-@@ -27,7 +28,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
+@@ -27,7 +28,7 @@
    weight: -10,
    description: new TranslatableMarkup('Account administration pages language setting.')
  )]
@@ -1114,7 +1540,7 @@ index f9640b39679..bca7ec85628 100644
 
    /**
     * The language negotiation method id.
-@@ -100,15 +101,26 @@ class LanguageNegotiationUserAdmin extends LanguageNegotiationMethodBase impleme
+@@ -100,15 +101,26 @@ public static function create(ContainerInterface $container, array $configuratio
     * {@inheritdoc}
     */
    public function getLangcode(?Request $request = NULL) {
@@ -1194,7 +1620,7 @@ index 8d989b339e5..d964f7e633c 100644
 
    /**
     * Lazy builder callback for rendering toolbar links.
-@@ -69,6 +67,11 @@ class ToolbarLinkBuilder implements TrustedCallbackInterface {
+@@ -69,6 +67,11 @@ public function renderToolbarLinks() {
        ],
      ];
 
@@ -1210,7 +1636,7 @@ diff --git a/core/modules/user/tests/src/Unit/ToolbarLinkBuilderTest.php b/core/
 index 96a22070f49..d70e8639842 100644
 --- a/core/modules/user/tests/src/Unit/ToolbarLinkBuilderTest.php
 +++ b/core/modules/user/tests/src/Unit/ToolbarLinkBuilderTest.php
-@@ -4,6 +4,7 @@ declare(strict_types=1);
+@@ -4,6 +4,7 @@
 
  namespace Drupal\Tests\user\Unit;
 
@@ -1218,7 +1644,7 @@ index 96a22070f49..d70e8639842 100644
  use Drupal\Core\Session\AccountProxyInterface;
  use Drupal\Tests\UnitTestCase;
  use Drupal\user\ToolbarLinkBuilder;
-@@ -24,7 +25,8 @@ class ToolbarLinkBuilderTest extends UnitTestCase {
+@@ -24,7 +25,8 @@ public function testRenderDisplayName(): void {
      $account = $this->prophesize(AccountProxyInterface::class);
      $display_name = 'Something suspicious that should be #plain_text, not #markup';
      $account->getDisplayName()->willReturn($display_name);
@@ -1229,7 +1655,7 @@ index 96a22070f49..d70e8639842 100644
      $this->assertSame($expected, $toolbar_link_builder->renderDisplayName());
    }
 diff --git a/core/modules/user/user.services.yml b/core/modules/user/user.services.yml
-index 78e4b281498..742893f94a5 100644
+index 78e4b281498..77f89d9faa6 100644
 --- a/core/modules/user/user.services.yml
 +++ b/core/modules/user/user.services.yml
 @@ -61,7 +61,7 @@ services:
@@ -1237,7 +1663,7 @@ index 78e4b281498..742893f94a5 100644
    user.toolbar_link_builder:
      class: Drupal\user\ToolbarLinkBuilder
 -    arguments: ['@current_user']
-+    autowire: true
++    arguments: ['@current_user', '@module_handler']
    Drupal\user\ToolbarLinkBuilder: '@user.toolbar_link_builder'
    user.flood_control:
      class: Drupal\user\UserFloodControl
@@ -1245,7 +1671,7 @@ diff --git a/core/modules/views/tests/src/Functional/Plugin/DisplayPageWebTest.p
 index 74a34b84026..7ce613fd700 100644
 --- a/core/modules/views/tests/src/Functional/Plugin/DisplayPageWebTest.php
 +++ b/core/modules/views/tests/src/Functional/Plugin/DisplayPageWebTest.php
-@@ -68,7 +68,7 @@ class DisplayPageWebTest extends ViewTestBase {
+@@ -68,7 +68,7 @@ public function testArguments(): void {
      // Ensure that just the filtered entry is returned.
      $this->drupalGet('test_route_with_argument/1');
      $this->assertSession()->statusCodeEquals(200);
@@ -1258,7 +1684,7 @@ diff --git a/core/modules/views_ui/tests/src/FunctionalJavascript/DisplayTest.ph
 index 838f4e46457..4e5e5ad18fc 100644
 --- a/core/modules/views_ui/tests/src/FunctionalJavascript/DisplayTest.php
 +++ b/core/modules/views_ui/tests/src/FunctionalJavascript/DisplayTest.php
-@@ -136,7 +136,7 @@ class DisplayTest extends WebDriverTestBase {
+@@ -136,7 +136,7 @@ public function testPageContextualLinks(): void {
      $element = $this->getSession()->getPage()->find('css', $selector);
      $element->find('css', '.contextual button')->press();
 
@@ -1268,10 +1694,10 @@ index 838f4e46457..4e5e5ad18fc 100644
      $this->assertNotEmpty($contextual_container);
 
 diff --git a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
-index b4b1a5d3a83..3bbc020fdc7 100644
+index 1ecb03fc51b..f62f36f4b2a 100644
 --- a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
 +++ b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
-@@ -142,7 +142,7 @@ class OpenTelemetryAuthenticatedPerformanceTest extends PerformanceTestBase {
+@@ -142,7 +142,7 @@ protected function doTestNodePageAdministrator(): void {
          'file_parsing' => 1,
          'menu' => 22,
        ],
@@ -1280,11 +1706,107 @@ index b4b1a5d3a83..3bbc020fdc7 100644
        'CacheDeleteCount' => 0,
        'CacheTagInvalidationCount' => 0,
        'CacheTagLookupQueryCount' => 28,
+diff --git a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php
+index fb9518120de..7435933bf16 100644
+--- a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php
++++ b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryFrontPagePerformanceTest.php
+@@ -54,7 +54,7 @@ protected function testFrontPageColdCache(): void {
+     $expected = [
+       'QueryCount' => 178,
+       'CacheGetCount' => 237,
+-      'CacheSetCount' => 241,
++      'CacheSetCount' => 252,
+       'CacheDeleteCount' => 0,
+       'CacheTagLookupQueryCount' => 24,
+       'CacheTagInvalidationCount' => 0,
+@@ -122,9 +122,9 @@ protected function testFrontPageCoolCache(): void {
+     }, 'umamiFrontPageCoolCache');
+
+     $expected = [
+-      'QueryCount' => 54,
+-      'CacheGetCount' => 174,
+-      'CacheSetCount' => 75,
++      'QueryCount' => 60,
++      'CacheGetCount' => 175,
++      'CacheSetCount' => 84,
+       'CacheDeleteCount' => 0,
+       'CacheTagInvalidationCount' => 0,
+       'CacheTagLookupQueryCount' => 19,
+diff --git a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php
+index 8a3ccbd830b..5a46b0231b0 100644
+--- a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php
++++ b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryNodePagePerformanceTest.php
+@@ -55,9 +55,9 @@ protected function testNodePageColdCache(): void {
+     $this->assertSession()->pageTextContains('quiche');
+
+     $expected = [
+-      'QueryCount' => 195,
++      'QueryCount' => 204,
+       'CacheGetCount' => 229,
+-      'CacheSetCount' => 227,
++      'CacheSetCount' => 235,
+       'CacheDeleteCount' => 0,
+       'CacheTagLookupQueryCount' => 23,
+       'CacheTagInvalidationCount' => 0,
+@@ -118,9 +118,9 @@ protected function testNodePageCoolCache(): void {
+     $this->assertSession()->pageTextContains('quiche');
+
+     $expected = [
+-      'QueryCount' => 66,
+-      'CacheGetCount' => 172,
+-      'CacheSetCount' => 59,
++      'QueryCount' => 75,
++      'CacheGetCount' => 173,
++      'CacheSetCount' => 64,
+       'CacheDeleteCount' => 0,
+       'CacheTagInvalidationCount' => 0,
+       'CacheTagLookupQueryCount' => 19,
+@@ -211,8 +211,8 @@ protected function testNodePageWarmCache(): void {
+     $this->assertSame($expected_queries, $recorded_queries);
+
+     $expected = [
+-      'QueryCount' => 51,
+-      'CacheGetCount' => 167,
++      'QueryCount' => 60,
++      'CacheGetCount' => 168,
+       'CacheGetCountByBin' => [
+         'page' => 1,
+         'config' => 34,
+@@ -222,10 +222,10 @@ protected function testNodePageWarmCache(): void {
+         'entity' => 21,
+         'dynamic_page_cache' => 1,
+         'routes' => 5,
+-        'render' => 17,
++        'render' => 18,
+         'default' => 3,
+       ],
+-      'CacheSetCount' => 41,
++      'CacheSetCount' => 46,
+       'CacheDeleteCount' => 0,
+       'CacheTagInvalidationCount' => 0,
+       'CacheTagLookupQueryCount' => 19,
 diff --git a/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php b/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php
-index 5935cec5c1b..cf041842203 100644
+index b3a39633a6a..9cbf6aeeaf4 100644
 --- a/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php
 +++ b/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php
-@@ -146,7 +146,7 @@ class StandardPerformanceTest extends PerformanceTestBase {
+@@ -131,7 +131,7 @@ protected function testAnonymous(): void {
+     $this->assertSame($expected_queries, $recorded_queries);
+     $expected = [
+       'QueryCount' => 32,
+-      'CacheGetCount' => 96,
++      'CacheGetCount' => 99,
+       'CacheGetCountByBin' => [
+         'page' => 1,
+         'config' => 18,
+@@ -139,14 +139,14 @@ protected function testAnonymous(): void {
+         'discovery' => 37,
+         'bootstrap' => 10,
+         'dynamic_page_cache' => 1,
+-        'render' => 11,
++        'render' => 14,
+         'default' => 5,
+         'routes' => 4,
+         'entity' => 2,
          'menu' => 3,
          'file_parsing' => 1,
        ],
@@ -1293,7 +1815,7 @@ index 5935cec5c1b..cf041842203 100644
        'CacheDeleteCount' => 0,
        'CacheTagInvalidationCount' => 0,
        'CacheTagLookupQueryCount' => 9,
-@@ -167,11 +167,8 @@ class StandardPerformanceTest extends PerformanceTestBase {
+@@ -167,10 +167,7 @@ protected function testAnonymous(): void {
          ['config:views.view.frontpage', 'node:1', 'node_list'],
          ['rendered', 'user:0', 'user_view'],
          ['config:filter.format.restricted_html', 'node_view'],
@@ -1301,19 +1823,17 @@ index 5935cec5c1b..cf041842203 100644
 -          'config:block_list',
 -          'config:system.site',
 -        ],
--        ['config:system.menu.account'],
-+        ['config:block_list'],
-+        ['config:system.menu.account', 'config:system.site'],
++        ['config:block_list', 'config:system.site'],
+         ['config:system.menu.account'],
          ['config:system.menu.main'],
          ['config:user.role.anonymous'],
-       ],
-@@ -208,11 +205,11 @@ class StandardPerformanceTest extends PerformanceTestBase {
+@@ -208,11 +205,11 @@ protected function testAnonymous(): void {
      $this->assertSame($expected_queries, $recorded_queries);
      $expected = [
        'QueryCount' => 8,
 -      'CacheGetCount' => 69,
 -      'CacheSetCount' => 17,
-+      'CacheGetCount' => 70,
++      'CacheGetCount' => 73,
 +      'CacheSetCount' => 18,
        'CacheDeleteCount' => 0,
        'CacheTagInvalidationCount' => 0,
@@ -1322,22 +1842,30 @@ index 5935cec5c1b..cf041842203 100644
        'CacheTagGroupedLookups' => [
          [
            'route_match',
-@@ -229,11 +226,10 @@ class StandardPerformanceTest extends PerformanceTestBase {
+@@ -228,12 +225,11 @@ protected function testAnonymous(): void {
+         ],
          ['rendered', 'user:0', 'user_view'],
          ['config:filter.format.restricted_html', 'node:1', 'node_view'],
++        ['config:block_list', 'config:system.site'],
          [
 -          'config:block_list',
+-          'config:system.site',
 +          'config:system.menu.account',
 +          'config:system.menu.main',
-           'config:system.site',
          ],
 -        ['config:system.menu.main'],
 -        ['config:system.menu.account'],
          ['config:user.role.anonymous'],
        ],
        'StylesheetCount' => 1,
-@@ -268,7 +264,7 @@ class StandardPerformanceTest extends PerformanceTestBase {
-       'CacheSetCount' => 17,
+@@ -264,11 +260,11 @@ protected function testAnonymous(): void {
+     $this->assertSame($expected_queries, $recorded_queries);
+     $expected = [
+       'QueryCount' => 10,
+-      'CacheGetCount' => 58,
+-      'CacheSetCount' => 17,
++      'CacheGetCount' => 61,
++      'CacheSetCount' => 19,
        'CacheDeleteCount' => 0,
        'CacheTagInvalidationCount' => 0,
 -      'CacheTagLookupQueryCount' => 6,
@@ -1345,16 +1873,34 @@ index 5935cec5c1b..cf041842203 100644
        'StylesheetCount' => 1,
        'StylesheetBytes' => 1150,
      ];
-@@ -421,7 +417,7 @@ class StandardPerformanceTest extends PerformanceTestBase {
+@@ -309,7 +305,7 @@ protected function testCacheInvalidation(): void {
+     $this->assertSame($expected_queries, $recorded_queries);
+     $expected = [
+       'QueryCount' => 3,
+-      'CacheGetCount' => 66,
++      'CacheGetCount' => 69,
+       'CacheGetCountByBin' => [
+         'page' => 1,
+         'config' => 11,
+@@ -317,7 +313,7 @@ protected function testCacheInvalidation(): void {
+         'discovery' => 21,
+         'bootstrap' => 8,
+         'dynamic_page_cache' => 2,
+-        'render' => 12,
++        'render' => 15,
+         'default' => 3,
+         'routes' => 3,
+         'entity' => 1,
+@@ -421,7 +417,7 @@ protected function testLogin(): void {
        'StylesheetBytes' => 1429,
        'StylesheetCount' => 1,
        'QueryCount' => 15,
 -      'CacheGetCount' => 73,
-+      'CacheGetCount' => 74,
++      'CacheGetCount' => 77,
        'CacheSetCount' => 1,
        'CacheDeleteCount' => 1,
        'CacheTagInvalidationCount' => 0,
-@@ -511,7 +507,7 @@ class StandardPerformanceTest extends PerformanceTestBase {
+@@ -511,7 +507,7 @@ protected function testLoginBlock(): void {
      $this->assertSame($expected_queries, $recorded_queries);
      $expected = [
        'QueryCount' => 15,
@@ -1363,14 +1909,20 @@ index 5935cec5c1b..cf041842203 100644
        'CacheSetCount' => 1,
        'CacheDeleteCount' => 1,
        'CacheTagInvalidationCount' => 0,
-@@ -577,8 +573,8 @@ class StandardPerformanceTest extends PerformanceTestBase {
+@@ -560,14 +556,14 @@ protected function testAdmin(): void {
+
+     $expected = [
+       'QueryCount' => 4,
+-      'CacheGetCount' => 47,
++      'CacheGetCount' => 50,
+       'CacheGetCountByBin' => [
+         'config' => 10,
+         'data' => 4,
+         'discovery' => 9,
+         'bootstrap' => 8,
+         'dynamic_page_cache' => 1,
+-        'render' => 10,
++        'render' => 13,
+         'routes' => 4,
+         'menu' => 1,
        ],
-       'CacheDeleteCount' => 0,
-       'CacheTagInvalidationCount' => 0,
--      'CacheTagLookupQueryCount' => 6,
--      'ScriptCount' => 3,
-+      'CacheTagLookupQueryCount' => 7,
-+      'ScriptCount' => 9,
-       'ScriptBytes' => 141352,
-       'StylesheetCount' => 2,
-       'StylesheetBytes' => 42533,
