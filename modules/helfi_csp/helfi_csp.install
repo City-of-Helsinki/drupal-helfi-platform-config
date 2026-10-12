@@ -115,3 +115,13 @@ function helfi_csp_update_11001() : void {
   $config->set('treshold', 100);
   $config->save();
 }
+
+/**
+ * Remove the old CSP reports and limit the number of reports per client.
+ */
+function helfi_csp_update_11002() : void {
+  $config = \Drupal::configFactory()->getEditable('helfi_csp.settings');
+  $config->set('retention_days', 2);
+  $config->set('rate_limit', 60);
+  $config->save();
+}

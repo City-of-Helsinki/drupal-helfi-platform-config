@@ -7,8 +7,7 @@ namespace Drupal\helfi_csp;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Statement\FetchAs;
-use Drupal\Core\Lock\LockBackendInterface;
-use Drupal\Core\State\StateInterface;
+use Drupal\Core\Flood\FloodInterface;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\csp_log\CspLogService as BaseCspLogService;
 use Psr\Log\LoggerInterface;
@@ -83,26 +82,31 @@ final class CspLogService extends BaseCspLogService {
   ];
 
   /**
-   * State key to enable lock-based rate limiting (one log per second).
-   *
-   * Set to TRUE via drush: drush state:set helfi_csp.rate_limit_enabled 1
-   * Disabled by default.
+   * The flood event for rate limiting the reports per client.
    */
-  private const STATE_RATE_LIMIT_ENABLED = 'helfi_csp.rate_limit_enabled';
+  private const FLOOD_EVENT = 'helfi_csp.report';
 
   /**
-   * Lock name for rate limiting CSP log writes (one per second).
-   *
-   * Lock is acquired with a 1s timeout so it auto-expires; we do not release
-   * it, so the next request can only acquire after the lock has expired.
+   * The rate limit window in seconds.
    */
-  private const LOCK_NAME = 'helfi_csp_log_rate_limit';
+  private const FLOOD_WINDOW = 60;
+
+  /**
+   * The report fields that are not stored.
+   *
+   * The original policy is the whole CSP policy, which makes up most of the
+   * report size.
+   */
+  private const REMOVED_FIELDS = ['original-policy', 'script-sample'];
+
+  /**
+   * The maximum size of a stored report in bytes.
+   */
+  public const MAX_REPORT_SIZE = 4096;
 
   public function __construct(
     private readonly RequestStack $requestStack,
-    #[Autowire('@lock')]
-    private readonly LockBackendInterface $lock,
-    private readonly StateInterface $state,
+    private readonly FloodInterface $flood,
     #[Autowire('@database')] Connection $database,
     #[Autowire('@logger.channel.csp_log')] LoggerInterface $logger,
     private readonly TimeInterface $time,
@@ -127,18 +131,43 @@ final class CspLogService extends BaseCspLogService {
       return;
     }
 
-    // Acquire with 1s timeout so lock auto-expires; we don't release, so at
-    // most one log per second from concurrent requests. The lock is released
-    // automatically at the end of the request, so we might get more than one
-    // log per second from sequential requests.
-    if (
-      $this->state->get(self::STATE_RATE_LIMIT_ENABLED, FALSE) &&
-      !$this->lock->acquire(self::LOCK_NAME, 1)
-    ) {
+    foreach (self::REMOVED_FIELDS as $field) {
+      unset($data->{$field});
+    }
+    // Don't store the oversized reports.
+    if (strlen((string) json_encode($data)) > self::MAX_REPORT_SIZE) {
       return;
     }
 
+    // Limit the number of reports per client. Set the limit to 0 to disable
+    // the rate limiting:
+    // @code
+    // drush cset helfi_csp.settings rate_limit 0
+    // @endcode
+    $rateLimit = (int) $this->configFactory->get('helfi_csp.settings')->get('rate_limit');
+    if ($rateLimit > 0) {
+      if (!$this->flood->isAllowed(self::FLOOD_EVENT, $rateLimit, self::FLOOD_WINDOW)) {
+        return;
+      }
+      $this->flood->register(self::FLOOD_EVENT, self::FLOOD_WINDOW);
+    }
+
     parent::insertLog($data, $type);
+  }
+
+  /**
+   * Removes the reports older than the given number of days.
+   *
+   * @param int $days
+   *   The number of days to keep the reports.
+   *
+   * @return int
+   *   The number of removed reports.
+   */
+  public function removeOldLogs(int $days): int {
+    return $this->database->delete(self::DATABASE_TABLE)
+      ->condition('timestamp', $this->time->getRequestTime() - $days * 86400, '<')
+      ->execute();
   }
 
   /**
@@ -282,14 +311,23 @@ final class CspLogService extends BaseCspLogService {
     // Allow if document host root domain:
     // 1. is in the allowlist
     // 2. matches the current host root domain.
-    $currentHostRootDomain = array_reduce(self::DOMAIN_ALLOWLIST, function (string|null $carry, string $item) use ($currentHost) {
-      return str_ends_with($currentHost, $item) ? $item : $carry;
-    });
-    $documentHostRootDomain = array_reduce(self::DOMAIN_ALLOWLIST, function (string|null $carry, string $item) use ($documentHost) {
-      return str_ends_with($documentHost, $item) ? $item : $carry;
-    });
+    $documentHostRootDomain = $this->getRootDomain($documentHost);
 
-    return $documentHostRootDomain && $documentHostRootDomain === $currentHostRootDomain;
+    return $documentHostRootDomain && $documentHostRootDomain === $this->getRootDomain($currentHost);
+  }
+
+  /**
+   * Gets the allowlisted root domain of the host.
+   *
+   * @param string $host
+   *   The host.
+   *
+   * @return string|null
+   *   The root domain, or NULL if the host isn't the root domain or its
+   *   subdomain.
+   */
+  private function getRootDomain(string $host): ?string {
+    return array_find(self::DOMAIN_ALLOWLIST, fn (string $domain) => $host === $domain || str_ends_with($host, '.' . $domain));
   }
 
 }

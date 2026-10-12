@@ -1,2 +1,4 @@
 time_window: 3600
 treshold: 100
+retention_days: 2
+rate_limit: 60
