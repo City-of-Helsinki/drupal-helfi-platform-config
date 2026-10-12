@@ -102,7 +102,7 @@ final class CspLogService extends BaseCspLogService {
   /**
    * The maximum size of a stored report in bytes.
    */
-  public const MAX_REPORT_SIZE = 4096;
+  public const MAX_REPORT_SIZE = 10240;
 
   public function __construct(
     private readonly RequestStack $requestStack,
