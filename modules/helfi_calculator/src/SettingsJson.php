@@ -21,7 +21,7 @@ final class SettingsJson {
    *   The settings JSON. An empty string means no settings.
    *
    * @return bool
-   *   TRUE if the JSON is valid and every key is a simple name.
+   *   TRUE if the JSON is valid and every key is a simple name or a number.
    */
   public static function isValid(string $json) : bool {
     return self::decode($json) !== NULL;
@@ -60,8 +60,8 @@ final class SettingsJson {
    *   The settings JSON.
    *
    * @return array<mixed>|object|null
-   *   The decoded settings, or NULL if the JSON is not valid or a key is not
-   *   a simple name.
+   *   The decoded settings, or NULL if the JSON is not valid or a key is
+   *   neither a simple name nor a number.
    */
   private static function decode(string $json) : array|object|null {
     if (trim($json) === '') {
@@ -79,7 +79,9 @@ final class SettingsJson {
   }
 
   /**
-   * Checks that every key is a simple name or a list index.
+   * Checks that every key is a simple name or a number.
+   *
+   * The numbers are used for example as income limits, like "1489.01".
    *
    * @param array<mixed>|object $data
    *   The decoded settings.
@@ -89,7 +91,7 @@ final class SettingsJson {
    */
   private static function hasValidKeys(array|object $data) : bool {
     foreach ((array) $data as $key => $value) {
-      if (is_string($key) && !preg_match('/^[A-Za-z0-9_]+$/', $key)) {
+      if (is_string($key) && !is_numeric($key) && !preg_match('/^[A-Za-z0-9_]+$/', $key)) {
         return FALSE;
       }
       if ((is_array($value) || is_object($value)) && !self::hasValidKeys($value)) {

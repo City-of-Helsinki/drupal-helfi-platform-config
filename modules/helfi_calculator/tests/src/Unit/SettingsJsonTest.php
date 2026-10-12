@@ -35,6 +35,8 @@ final class SettingsJsonTest extends UnitTestCase {
       'empty object' => ['{}', TRUE],
       'numbers' => ['{"guardianship_fee": 37.5, "limits": {"min": 0, "max": 1000}, "income_limit": [1000, "1200.50"], "enabled": true, "other": null}', TRUE],
       'text' => ['{"title": "Asumismaksu <strong>2026</strong>"}', TRUE],
+      'number keys' => ['{"safetyphone_limits": {"1": {"0": 35.68, "1489.01": 71.36}}, "voucher_from_net_income": {"900.01": 3424}}', TRUE],
+      'prices as text' => ['{"single_low_income": "35,68", "guardianship_fee": 43.34}', TRUE],
       'invalid JSON' => ['{"guardianship_fee": ', FALSE],
       'scalar' => ['37.5', FALSE],
       'HTML in a key' => ['{"<img src=x onerror=alert(1)>": 1}', FALSE],
@@ -58,7 +60,7 @@ final class SettingsJsonTest extends UnitTestCase {
    */
   public static function sanitizationData() : array {
     // The JSON is kept as it is when there is nothing to filter.
-    $numbers = '{"guardianship_fee": 37.5, "limits": {"min": 0, "max": 1000.0}, "income_limit": [1000, "1200.50"], "empty": {}}';
+    $numbers = '{"guardianship_fee": 37.5, "limits": {"min": 0, "max": 1000.0}, "income_limit": [1000, "1200.50"], "safetyphone_limits": {"1": {"0": 35.68, "1489.01": 71.36}}, "single_low_income": "35,68", "empty": {}}';
 
     return [
       'empty string' => ['', ''],

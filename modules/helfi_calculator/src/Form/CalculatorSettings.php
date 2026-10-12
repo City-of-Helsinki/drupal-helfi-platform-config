@@ -153,7 +153,7 @@ class CalculatorSettings extends ConfigFormBase {
 
     foreach ($form_state->getValue('calculators') ?? [] as $machine_name => $values) {
       if (!SettingsJson::isValid((string) ($values['json'] ?? ''))) {
-        $form_state->setErrorByName("calculators][$machine_name][json", $this->t('The calculator data must be valid JSON, and the keys can only contain letters, numbers and underscores.'));
+        $form_state->setErrorByName("calculators][$machine_name][json", $this->t('The calculator data must be valid JSON, and the keys can only be numbers or contain letters, numbers and underscores.'));
       }
     }
   }
