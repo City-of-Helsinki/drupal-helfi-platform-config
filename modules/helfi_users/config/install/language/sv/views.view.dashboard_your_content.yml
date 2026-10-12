@@ -1,0 +1,72 @@
+display:
+  default:
+    display_options:
+      fields:
+        views_bulk_operations_bulk_form:
+          action_title: Åtgärd
+        content_translation_outdated:
+          label: 'Översättnign utdaterad'
+          settings:
+            format_custom_true: föråldrad
+        title:
+          label: Titel
+        type:
+          label: Innehållstyp
+        uid:
+          label: Författare
+        revision_uid: {  }
+        langcode:
+          label: Språk
+        status:
+          settings:
+            format_custom_false: 'Ej publicerad'
+            format_custom_true: Publicerad
+        operations:
+          label: Funktioner
+        changed_at:
+          label: 'Uppdaterad av användare'
+      pager:
+        options:
+          tags:
+            next: Nästa
+            previous: Föregående
+            first: Första
+            last: Sista
+          expose:
+            items_per_page_label: 'Inlägg per sida'
+            items_per_page_options_all_label: '- Alla -'
+            offset_label: Kompensera
+      exposed_form:
+        options:
+          submit_button: Filtrera
+          reset_button_label: Återställ
+          exposed_sorts_label: 'Sortera efter'
+          sort_asc_label: Stigande
+          sort_desc_label: Fallande
+      filters:
+        title:
+          expose:
+            label: Titel
+        type:
+          expose:
+            label: Innehållstyp
+        status:
+          expose:
+            label: 'Status för publicering'
+          group_info:
+            label: 'Status för publicering'
+            group_items:
+              1:
+                title: Publicerad
+              2:
+                title: 'Ej publicerad'
+        langcode:
+          expose:
+            label: Språk
+      empty:
+        area:
+          content:
+            value: '<p>No pages to display.</p>'
+            format: full_html
+    display_title: Förvald
+  your_content_block: {  }

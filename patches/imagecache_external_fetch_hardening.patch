@@ -1,0 +1,83 @@
+--- a/imagecache_external.module
++++ b/imagecache_external.module
+@@ -20,6 +20,11 @@
+ const IMAGECACHE_EXTERNAL_FLUSH_DIRECTORIES = '_IMAGECACHE_FLUSH_DIRECTORIES_';
+ 
+ /**
++ * The maximum size of a fetched image in bytes.
++ */
++const IMAGECACHE_EXTERNAL_MAX_SIZE = 20 * 1024 * 1024;
++
++/**
+  * Implements hook_theme().
+  */
+ function imagecache_external_theme() {
+@@ -187,6 +192,28 @@
+ }
+ 
+ /**
++ * Checks that the content is an image.
++ *
++ * The Content-Type header can't be trusted, and responses without it are
++ * treated as application/octet-stream.
++ *
++ * @param string $content
++ *   The content.
++ * @param string $content_type
++ *   The content type of the response.
++ *
++ * @return bool
++ *   TRUE if the content is an image.
++ */
++function imagecache_external_is_image(string $content, string $content_type): bool {
++  // SVG images are validated by imagecache_sanitize_svg().
++  if ($content_type === 'image/svg+xml') {
++    return TRUE;
++  }
++  return getimagesizefromstring($content) !== FALSE;
++}
++
++/**
+  * Api function to fetch a url.
+  *
+  * @param string $url
+@@ -203,13 +230,29 @@
+     return FALSE;
+   }
+ 
++  // Only fetch the images over HTTP.
++  if (!in_array(strtolower((string) parse_url($url, PHP_URL_SCHEME)), ['http', 'https'], TRUE)) {
++    return FALSE;
++  }
++
+   // Drupal config object.
+   $config = imagecache_external_config();
+ 
+   try {
+     // Drupal httpClient.
+     $http = \Drupal::httpClient();
+-    $result = $http->request('get', $url);
++    $result = $http->request('get', $url, [
++      // Don't let slow or large responses tie up the PHP workers.
++      'connect_timeout' => 5,
++      'timeout' => 15,
++      'allow_redirects' => [
++        'max' => 5,
++        'protocols' => ['http', 'https'],
++      ],
++      'curl' => [
++        CURLOPT_MAXFILESIZE_LARGE => IMAGECACHE_EXTERNAL_MAX_SIZE,
++      ],
++    ]);
+     $code = floor($result->getStatusCode() / 100) * 100;
+     $types = imagecache_external_allowed_mimetypes();
+ 
+@@ -238,7 +281,7 @@
+     }
+ 
+     $content = (string) $result->getBody();
+-    if (!empty($content) && $code != 400 && $code != 500 && $content_type_allowed && imagecache_sanitize_svg($content, $content_type)) {
++    if (!empty($content) && $code != 400 && $code != 500 && $content_type_allowed && imagecache_external_is_image($content, $content_type) && imagecache_sanitize_svg($content, $content_type)) {
+       if ($config->get('imagecache_external_management') == 'unmanaged') {
+         return \Drupal::service('file_system')->saveData($content, $cache_path, FileExists::Replace);
+       }

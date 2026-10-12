@@ -11,6 +11,9 @@ use Drupal\KernelTests\KernelTestBase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Kernel tests for CspLogService database queries.
@@ -198,6 +201,35 @@ class CspLogServiceTest extends KernelTestBase {
     $this->assertIsArray($decoded);
     $this->assertArrayNotHasKey('original-policy', $decoded);
     $this->assertSame('new', $decoded['marker']);
+  }
+
+  /**
+   * Tests the reports are rate limited per client.
+   */
+  public function testRateLimit(): void {
+    $request = Request::create('https://www.hel.fi/fi/log-report-uri/enforce', 'POST', server: [
+      'REMOTE_ADDR' => '203.0.113.10',
+    ]);
+    $request->setSession(new Session(new MockArraySessionStorage()));
+    $this->container->get('request_stack')->push($request);
+    $this->config('helfi_csp.settings')->set('rate_limit', 2)->save();
+
+    for ($i = 0; $i < 3; $i++) {
+      $this->cspLogService->insertLog((object) [
+        'document-uri' => 'https://www.hel.fi/fi/page',
+        'effective-directive' => 'script-src',
+        'blocked-uri' => "https://example.com/$i.js",
+        'original-policy' => "script-src 'self'",
+      ], 'enforce');
+    }
+
+    $reports = $this->connection->select(CspLogServiceInterface::DATABASE_TABLE, 't')
+      ->fields('t', ['report'])
+      ->orderBy('id')
+      ->execute()
+      ->fetchCol();
+    $this->assertCount(2, $reports);
+    $this->assertArrayNotHasKey('original-policy', json_decode($reports[0], TRUE));
   }
 
 }

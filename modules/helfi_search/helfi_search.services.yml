@@ -30,3 +30,8 @@ services:
   Drupal\helfi_search\QueryBuilder: ~
 
   Drupal\helfi_search\EventSubscriber\SearchApiSubscriber: ~
+
+  Drupal\helfi_search\SimilarContent\SimilarContentFinder: ~
+  Drupal\helfi_search\SimilarContent\EntityNotifications\SimilarContentNotificationProvider:
+    tags:
+      - { name: helfi_platform_config.entity_notification_provider }
