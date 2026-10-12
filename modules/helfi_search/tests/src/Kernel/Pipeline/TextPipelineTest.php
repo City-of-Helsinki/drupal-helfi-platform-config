@@ -25,8 +25,6 @@ use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Tests for the TextPipeline.
- *
- * The HTTP client is mocked because there is no web server in kernel tests.
  */
 #[Group('helfi_search')]
 #[RunTestsInSeparateProcesses]
@@ -76,13 +74,13 @@ class TextPipelineTest extends KernelTestBase {
       'type' => 'page',
     ]);
 
-    $result = $pipeline->process($node);
+    $document = $pipeline->process($node);
 
-    $this->assertCount(1, $result);
-    $this->assertInstanceOf(Chunk::class, $result[0]);
-    $this->assertStringContainsString('Helsinki', (string) $result[0]);
-    $this->assertNotEmpty($result[0]->snippet);
-    $this->assertStringContainsString('Helsinki', $result[0]->snippet);
+    $this->assertSame("# Test Article\n\nHelsinki", $document->markdown);
+    $this->assertCount(1, $document->chunks);
+    $this->assertInstanceOf(Chunk::class, $document->chunks[0]);
+    $this->assertStringContainsString('Helsinki', (string) $document->chunks[0]);
+    $this->assertStringContainsString('Helsinki', $document->chunks[0]->snippet);
   }
 
   /**

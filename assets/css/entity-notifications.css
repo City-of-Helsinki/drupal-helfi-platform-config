@@ -1,0 +1,25 @@
+.entity-notifications {
+  list-style: none;
+  margin: var(--gin-spacing-xs, 8px) 0 0;
+  padding: 0;
+}
+
+.entity-notifications__item {
+  align-items: center;
+  color: var(--gin-color-primary, #0000bf);
+  display: flex;
+  gap: var(--gin-spacing-xs, 8px);
+}
+
+.entity-notifications__item + .entity-notifications__item {
+  margin-block-start: var(--gin-spacing-xxs, 4px);
+}
+
+.entity-notifications__item .hel-icon {
+  --icon-size: 24px;
+}
+
+.entity-notifications__link {
+  font-weight: var(--gin-font-weight-semibold, 600);
+  text-decoration: underline;
+}

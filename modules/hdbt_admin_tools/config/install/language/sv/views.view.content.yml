@@ -16,12 +16,12 @@ display:
           settings:
             format_custom_false: 'Ej publicerad'
             format_custom_true: Publicerad
-        changed:
-          label: Uppdaterad
         langcode:
           label: Språk
         operations:
           label: Funktioner
+        changed_at:
+          label: 'Uppdaterad av användare'
       pager:
         options:
           tags:
@@ -47,7 +47,6 @@ display:
           expose:
             label: Innehållstyp
         status:
-          expose: {  }
           group_info:
             label: 'Status för publicering'
             group_items:
