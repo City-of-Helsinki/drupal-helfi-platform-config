@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_platform_config\Kernel;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigRewriter;
 use Drupal\helfi_platform_config\HelfiPlatformConfigServiceProvider;
 use Drupal\helfi_platform_config\SearchAPI\Query\QueryResultParser;
+use Drupal\helfi_platform_config\SearchAPI\RestrictedBackendClientFactory;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -33,6 +34,7 @@ class HelfiPlatformConfigServiceProviderTest extends KernelTestBase {
     $serviceProvider->alter($this->container);
     $this->assertInstanceOf(ConfigRewriter::class, $this->container->get('config_rewrite.config_rewriter'));
     $this->assertInstanceOf(QueryResultParser::class, $this->container->get('elasticsearch_connector.query_result_parser'));
+    $this->assertInstanceOf(RestrictedBackendClientFactory::class, $this->container->get('elasticsearch_connector.backend_client_factory'));
   }
 
 }

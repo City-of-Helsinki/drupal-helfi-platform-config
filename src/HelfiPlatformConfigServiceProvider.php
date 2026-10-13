@@ -18,6 +18,7 @@ use Drupal\helfi_platform_config\EventSubscriber\CspSiteimproveSubscriber;
 use Drupal\helfi_platform_config\EventSubscriber\CspSentrySubscriber;
 use Drupal\helfi_platform_config\EventSubscriber\CspSocialMediaSubscriber;
 use Drupal\helfi_platform_config\SearchAPI\Query\QueryResultParser;
+use Drupal\helfi_platform_config\SearchAPI\RestrictedBackendClientFactory;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -42,6 +43,12 @@ final class HelfiPlatformConfigServiceProvider extends ServiceProviderBase {
       $definition = $container->getDefinition('elasticsearch_connector.query_result_parser');
       $definition->setClass(QueryResultParser::class);
       $definition->addArgument(new Reference(MultisiteSearch::class));
+    }
+
+    if ($container->hasDefinition('elasticsearch_connector.backend_client_factory')) {
+      $definition = $container->getDefinition('elasticsearch_connector.backend_client_factory');
+      $definition->setClass(RestrictedBackendClientFactory::class);
+      $definition->addArgument(new Reference(RestrictedSearchIndex::class));
     }
   }
 
