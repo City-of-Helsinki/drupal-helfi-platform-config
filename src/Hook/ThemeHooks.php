@@ -44,14 +44,6 @@ class ThemeHooks {
           'url' => NULL,
         ],
       ],
-      'sidebar_content_block' => [
-        'variables' => [
-          'title' => NULL,
-          'is_revision' => NULL,
-          'paragraphs' => NULL,
-          'computed' => NULL,
-        ],
-      ],
       'react_and_share' => [
         'variables' => [
           'title' => NULL,

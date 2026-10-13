@@ -572,41 +572,6 @@ function helfi_base_content_get_block_configurations(string $theme) : array {
         ],
       ],
     ],
-    'sidebarcontentblock' => [
-      'block' => [
-        'id' => 'sidebarcontentblock',
-        'plugin' => 'sidebar_content_block',
-        'provider' => 'helfi_base_content',
-        'weight' => -9,
-        'settings' => [
-          'id' => 'sidebar_content_block',
-          'label' => 'Sidebar content block',
-          'provider' => 'helfi_platform_config',
-        ],
-        'visibility' => [
-          'entity_bundle:node' => [
-            'id' => 'entity_bundle:node',
-            'negate' => TRUE,
-            'context_mapping' => [
-              'node' => '@node.node_route_context:node',
-            ],
-            'bundles' => [
-              'landing_page' => 'landing_page',
-            ],
-          ],
-        ],
-      ],
-      'variations' => [
-        [
-          'theme' => $theme,
-          'region' => 'sidebar_second',
-        ],
-        [
-          'theme' => 'stark',
-          'region' => 'content',
-        ],
-      ],
-    ],
     'sitebranding' => [
       'block' => [
         'id' => 'sitebranding',
