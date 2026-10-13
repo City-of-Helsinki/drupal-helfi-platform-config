@@ -75,11 +75,11 @@ class TextServicesClientTest extends UnitTestCase {
 
     $request = $this->history[0]['request'];
     $this->assertSame('POST', $request->getMethod());
-    $this->assertSame(TextServicesClient::BASE_URL . '/v1/tone', (string) $request->getUri());
+    $this->assertSame(TextServicesClient::BASE_URL . '/v1/tone-of-voice', (string) $request->getUri());
     $this->assertSame('test-key', $request->getHeaderLine('X-API-Key'));
     $this->assertSame('application/json', $request->getHeaderLine('Content-Type'));
-    // The language is not sent, and the text is not unicode-escaped.
-    $this->assertSame('{"text":"<p>Hyvää päivää</p>"}', (string) $request->getBody());
+    // The text is not unicode-escaped.
+    $this->assertSame('{"text":"<p>Hyvää päivää</p>","content_language":"fi"}', (string) $request->getBody());
   }
 
   /**
@@ -89,13 +89,14 @@ class TextServicesClientTest extends UnitTestCase {
     $client = $this->createClient([new Response(200, [], $this->fixture('titles.json'))]);
     $schema = ['type' => 'object'];
 
-    $response = $client->send(new TextServicesRequest(Service::Summarize, 'Teksti', 'fi', $schema));
+    $response = $client->send(new TextServicesRequest(Service::SeoTitles, 'Teksti', 'fi', $schema));
 
     $this->assertCount(3, $response->data['titles'] ?? []);
     $request = $this->history[0]['request'];
-    $this->assertSame(TextServicesClient::BASE_URL . '/v1/summarize', (string) $request->getUri());
+    $this->assertSame(TextServicesClient::BASE_URL . '/v1/seo-title-suggestions', (string) $request->getUri());
     $this->assertSame([
       'text' => 'Teksti',
+      'content_language' => 'fi',
       'response_format' => 'json_structure',
       'json_schema' => $schema,
     ], json_decode((string) $request->getBody(), TRUE));
@@ -158,7 +159,7 @@ class TextServicesClientTest extends UnitTestCase {
     $this->assertSame('done', $done['event']);
     $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', $done['data']['text']);
 
-    $this->assertSame(['text' => 'Teksti', 'stream' => TRUE], json_decode((string) $this->history[0]['request']->getBody(), TRUE));
+    $this->assertSame(['text' => 'Teksti', 'content_language' => 'fi', 'stream' => TRUE], json_decode((string) $this->history[0]['request']->getBody(), TRUE));
     $this->assertTrue($this->history[0]['options']['stream']);
   }
 

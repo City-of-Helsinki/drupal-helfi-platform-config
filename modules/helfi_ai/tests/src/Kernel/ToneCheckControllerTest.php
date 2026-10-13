@@ -167,7 +167,7 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
     $this->assertSame(['delta' => '<h'], $data[0]);
     $this->assertTrue($done['done']);
     $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', $done['result']);
-    $this->assertSame('{"text":"<p>Asukaspysäköinti</p>","stream":true}', (string) $this->textServicesResponses->getLastRequest()?->getBody());
+    $this->assertSame('{"text":"<p>Asukaspysäköinti</p>","content_language":"fi","stream":true}', (string) $this->textServicesResponses->getLastRequest()?->getBody());
   }
 
   /**

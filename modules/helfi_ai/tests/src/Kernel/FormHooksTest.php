@@ -158,7 +158,7 @@ class FormHooksTest extends EntityKernelTestBase {
     $this->assertSame('#drupal-modal', $command['selector']);
     $this->assertSame('helfi-ai-dialog', $command['dialogOptions']['classes']['ui-dialog']);
     $this->assertStringContainsString('ai-suggestions', (string) $command['data']);
-    $this->assertStringContainsString('Asukaspysäköintitunnuksen haku ja voimassaolo', (string) $command['data']);
+    $this->assertStringContainsString('Helsingin asukaspysäköintitunnuksen hinta ja voimassaolo', (string) $command['data']);
   }
 
   /**

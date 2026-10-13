@@ -11,10 +11,25 @@ event: delta
 data: {"text": "\":[\""}
 
 event: delta
-data: {"text": "Ha"}
+data: {"text": "<"}
 
 event: delta
-data: {"text": "et"}
+data: {"text": "p"}
+
+event: delta
+data: {"text": ">"}
+
+event: delta
+data: {"text": "Vo"}
+
+event: delta
+data: {"text": "it"}
+
+event: delta
+data: {"text": " hake"}
+
+event: delta
+data: {"text": "a"}
 
 event: delta
 data: {"text": " as"}
@@ -35,104 +50,113 @@ event: delta
 data: {"text": "kö"}
 
 event: delta
-data: {"text": "int"}
+data: {"text": "intit"}
 
 event: delta
-data: {"text": "it"}
+data: {"text": "unnusta"}
 
 event: delta
-data: {"text": "unn"}
+data: {"text": " sähköisesti"}
 
 event: delta
-data: {"text": "uksen"}
+data: {"text": " asioint"}
 
 event: delta
-data: {"text": " sähkö"}
+data: {"text": "ipalvel"}
 
 event: delta
-data: {"text": "isessä asio"}
+data: {"text": "ussa,"}
 
 event: delta
-data: {"text": "intipal"}
+data: {"text": " jossa tä"}
 
 event: delta
-data: {"text": "velussa"}
+data: {"text": "ytät hak"}
 
 event: delta
-data: {"text": ", et"}
+data: {"text": "emuksen.</"}
 
 event: delta
-data: {"text": " voi hake"}
+data: {"text": "p>\",\""}
 
 event: delta
-data: {"text": "a sitä"}
+data: {"text": "<p>"}
 
 event: delta
-data: {"text": " paikan"}
+data: {"text": "Hakemuksen"}
 
 event: delta
-data: {"text": " päällä.\",\""}
+data: {"text": " käsittely"}
 
 event: delta
-data: {"text": "Saat päätö"}
+data: {"text": "aika on noin"}
 
 event: delta
-data: {"text": "ksen hakem"}
+data: {"text": " 2 viikko"}
 
 event: delta
-data: {"text": "uksesta noin kah"}
+data: {"text": "a, joten sinun"}
 
 event: delta
-data: {"text": "dessa vi"}
+data: {"text": " kannattaa varautua od"}
 
 event: delta
-data: {"text": "ikossa,"}
+data: {"text": "ottamaan päätöstä"}
 
 event: delta
-data: {"text": " joten varaa tähän"}
+data: {"text": " tämän ajan.</p>"}
 
 event: delta
-data: {"text": " aikaa.\",\"Tunn"}
+data: {"text": "\",\"<p>Asuk"}
 
 event: delta
-data: {"text": "us on voimassa"}
+data: {"text": "aspysä"}
 
 event: delta
-data: {"text": " 12 kuukautta"}
+data: {"text": "köintitunnus on"}
 
 event: delta
-data: {"text": " kerrallaan,"}
+data: {"text": " voimassa 12 kuukautta"}
 
 event: delta
-data: {"text": " sen jälkeen sinun pitää uusia"}
+data: {"text": ","}
 
 event: delta
-data: {"text": " se.\",\"Maksat tunn"}
+data: {"text": " joten sinun ei tarvitse uusia sitä use"}
 
 event: delta
-data: {"text": "uksesta 30"}
+data: {"text": "ita kertoja vuodessa.</"}
 
 event: delta
-data: {"text": " euroa kuukaudessa,"}
+data: {"text": "p>\",\"<p>Tunnuksen"}
 
 event: delta
-data: {"text": " joten vuoden hinta on 360"}
+data: {"text": " hinta on 30 euroa kuukaud"}
 
 event: delta
-data: {"text": " euroa"}
+data: {"text": "essa, ja sinä maksat"}
 
 event: delta
-data: {"text": ".\",\"Voit käyttää tunnusta as"}
+data: {"text": " sen koko voimassaoloajalta.</p>"}
 
 event: delta
-data: {"text": "ukaspysäköintiin"}
+data: {"text": "\",\"<p>As"}
 
 event: delta
-data: {"text": " niillä alueilla, jotka kuuluvat"}
+data: {"text": "iointipalvelu on sähköinen palvelu,"}
 
 event: delta
-data: {"text": " tunnukseesi.\"]}"}
+data: {"text": " jossa sinä hoid"}
+
+event: delta
+data: {"text": "at hakemuksen verkossa ilman paperilomakkeita"}
+
+event: delta
+data: {"text": ".</p>"}
+
+event: delta
+data: {"text": "\"]}"}
 
 event: done
-data: {"data": {"items": ["Haet asukaspysäköintitunnuksen sähköisessä asiointipalvelussa, et voi hakea sitä paikan päällä.", "Saat päätöksen hakemuksesta noin kahdessa viikossa, joten varaa tähän aikaa.", "Tunnus on voimassa 12 kuukautta kerrallaan, sen jälkeen sinun pitää uusia se.", "Maksat tunnuksesta 30 euroa kuukaudessa, joten vuoden hinta on 360 euroa.", "Voit käyttää tunnusta asukaspysäköintiin niillä alueilla, jotka kuuluvat tunnukseesi."]}}
+data: {"data": {"items": ["<p>Voit hakea asukaspysäköintitunnusta sähköisesti asiointipalvelussa, jossa täytät hakemuksen.</p>", "<p>Hakemuksen käsittelyaika on noin 2 viikkoa, joten sinun kannattaa varautua odottamaan päätöstä tämän ajan.</p>", "<p>Asukaspysäköintitunnus on voimassa 12 kuukautta, joten sinun ei tarvitse uusia sitä useita kertoja vuodessa.</p>", "<p>Tunnuksen hinta on 30 euroa kuukaudessa, ja sinä maksat sen koko voimassaoloajalta.</p>", "<p>Asiointipalvelu on sähköinen palvelu, jossa sinä hoidat hakemuksen verkossa ilman paperilomakkeita.</p>"]}}
 

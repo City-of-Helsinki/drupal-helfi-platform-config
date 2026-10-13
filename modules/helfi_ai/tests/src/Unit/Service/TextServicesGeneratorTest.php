@@ -138,7 +138,7 @@ class TextServicesGeneratorTest extends UnitTestCase {
     $data = $this->collect($this->createGenerator()->streamTone('<p>Teksti</p>', 'sv'));
     $done = array_pop($data);
 
-    $this->assertCount(40, $data);
+    $this->assertCount(41, $data);
     $this->assertSame(implode('', array_column($data, 'delta')), $done['result']);
     $this->assertTrue($done['done']);
     $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', $done['result']);
@@ -200,7 +200,7 @@ class TextServicesGeneratorTest extends UnitTestCase {
   public function testSuggestTitles(): void {
     $this->client->expects($this->once())
       ->method('send')
-      ->with($this->callback(fn (TextServicesRequest $request) => $request->service === Service::Summarize
+      ->with($this->callback(fn (TextServicesRequest $request) => $request->service === Service::SeoTitles
         && $request->text === 'Page content'
         && $request->langcode === 'sv'
         && isset($request->jsonSchema['properties']['titles'])))
@@ -255,7 +255,6 @@ class TextServicesGeneratorTest extends UnitTestCase {
 
     // One event per completed item, each list growing by one.
     $this->assertSame([1, 2, 3, 4, 5], array_map(fn (array $event) => count($event['items']), $data));
-    $this->assertStringStartsWith('Haet asukaspysäköintitunnuksen', $data[0]['items'][0]);
     $this->assertTrue($done['done']);
     $this->assertSame(5, substr_count($done['result'], '<li>'));
   }

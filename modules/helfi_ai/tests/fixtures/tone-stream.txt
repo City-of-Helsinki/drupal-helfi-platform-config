@@ -71,56 +71,59 @@ event: delta
 data: {"text": "unnusta"}
 
 event: delta
-data: {"text": " sähköisessä asio"}
+data: {"text": " sähköisesti asio"}
 
 event: delta
 data: {"text": "intipalvel"}
 
 event: delta
-data: {"text": "ussa. K"}
+data: {"text": "ussa. Hak"}
 
 event: delta
-data: {"text": "äsittelemme"}
+data: {"text": "emuksen käs"}
 
 event: delta
-data: {"text": " hakemuksen"}
+data: {"text": "ittelya"}
 
 event: delta
-data: {"text": " noin kahd"}
+data: {"text": "ika on noin"}
 
 event: delta
-data: {"text": "essa viikossa"}
+data: {"text": " 2 viikko"}
 
 event: delta
-data: {"text": ". Tunnus"}
+data: {"text": "a. Tunn"}
 
 event: delta
-data: {"text": " on voimassa "}
+data: {"text": "us on voimassa"}
 
 event: delta
-data: {"text": "12 kuukautta.</"}
+data: {"text": " 12 kuukautta"}
 
 event: delta
-data: {"text": "p><ul><li"}
+data: {"text": ".</p><ul><"}
 
 event: delta
-data: {"text": ">Hinta 30"}
+data: {"text": "li>Hinta "}
 
 event: delta
-data: {"text": " €/kk</li><li"}
+data: {"text": "30 €/kk</li><"}
 
 event: delta
-data: {"text": ">Ajone"}
+data: {"text": "li>Aj"}
 
 event: delta
-data: {"text": "uvon tulee olla sinun hall"}
+data: {"text": "oneuvon tulee olla hak"}
 
 event: delta
-data: {"text": "innassasi</li></ul"}
+data: {"text": "ijan hallinnassa</li></"}
+
+event: delta
+data: {"text": "ul"}
 
 event: delta
 data: {"text": ">"}
 
 event: done
-data: {"text": "<h2>Asukaspysäköinti</h2><p>Voit hakea asukaspysäköintitunnusta sähköisessä asiointipalvelussa. Käsittelemme hakemuksen noin kahdessa viikossa. Tunnus on voimassa 12 kuukautta.</p><ul><li>Hinta 30 €/kk</li><li>Ajoneuvon tulee olla sinun hallinnassasi</li></ul>"}
+data: {"text": "<h2>Asukaspysäköinti</h2><p>Voit hakea asukaspysäköintitunnusta sähköisesti asiointipalvelussa. Hakemuksen käsittelyaika on noin 2 viikkoa. Tunnus on voimassa 12 kuukautta.</p><ul><li>Hinta 30 €/kk</li><li>Ajoneuvon tulee olla hakijan hallinnassa</li></ul>"}
 

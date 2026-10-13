@@ -10,9 +10,12 @@ namespace Drupal\helfi_ai\TextServices;
 enum Service: string {
 
   // Rewrites content in the hel.fi tone of voice.
-  case Tone = 'v1/tone';
+  case Tone = 'v1/tone-of-voice';
 
   // Summarizes content into key points.
-  case Summarize = 'v1/summarize';
+  case Summarize = 'v1/summarization';
+
+  // Suggests SEO-friendly page titles.
+  case SeoTitles = 'v1/seo-title-suggestions';
 
 }

@@ -122,7 +122,7 @@ class SummaryControllerTest extends EntityKernelTestBase {
     $done = array_pop($data);
     $this->assertCount(5, $data[count($data) - 1]['items']);
     $this->assertTrue($done['done']);
-    $this->assertStringContainsString('<li>Haet asukaspysäköintitunnuksen', $done['result']);
+    $this->assertSame(5, substr_count($done['result'], '<li>'));
 
     $sent = json_decode((string) $this->textServicesResponses->getLastRequest()?->getBody(), TRUE);
     $this->assertSame('Asukaspysäköinti', $sent['text']);

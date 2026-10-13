@@ -97,9 +97,7 @@ class TextServicesClient implements TextServicesClientInterface {
    * @throws \Drupal\helfi_ai\TextServices\TextServicesException
    */
   private function request(TextServicesRequest $request, bool $stream): ResponseInterface {
-    $payload = ['text' => $request->text];
-    // The API has no language field yet, and it rejects unknown fields with
-    // 400, so $request->langcode is not sent.
+    $payload = ['text' => $request->text, 'content_language' => $request->langcode];
     if ($stream) {
       $payload['stream'] = TRUE;
     }

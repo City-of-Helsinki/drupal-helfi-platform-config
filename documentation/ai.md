@@ -8,10 +8,11 @@ Helfi Text Services is the city's own text processing API. Its prompts, models a
 
 | Service | Path | Used by |
 |---|---|---|
-| Tone of voice | `v1/tone` | Tone check |
-| Summarization | `v1/summarize` | AI summary, SEO title suggestions |
+| Tone of voice | `v1/tone-of-voice` | Tone check |
+| Summarization | `v1/summarization` | AI summary |
+| SEO title suggestions | `v1/seo-title-suggestions` | SEO title suggestions |
 
-There is no SEO title service yet, so title suggestions are requested from the summarization service with a JSON schema that asks for titles, until one is published.
+Every request sends the content's language as `content_language`, so the response is in the same language as the content.
 
 Structured results are requested with `response_format: json_structure` and a JSON schema; the API returns the validated object in `data` (`TextServicesResponse::$data`), and plain text in `text`.
 
@@ -253,7 +254,7 @@ The `helfi_ai` module adds an AI **Generate SEO title with AI** button next to t
 
 | Aspect | Value |
 |---|---|
-| Service | `v1/summarize` with a titles JSON schema until an SEO title service is published |
+| Service | `v1/seo-title-suggestions` |
 | Permission | `use helfi ai title suggestion` (granted to `admin`, `editor`, `content_producer`) |
 | Content types | `helfi_ai.settings:seo_title_bundles` (defaults to `page`) |
 

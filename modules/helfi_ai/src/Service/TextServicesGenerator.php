@@ -44,11 +44,7 @@ class TextServicesGenerator {
   private const array TITLES_SCHEMA = [
     'type' => 'object',
     'properties' => [
-      'titles' => [
-        'type' => 'array',
-        'description' => 'Three alternative SEO-friendly page titles, each under 70 characters',
-        'items' => ['type' => 'string'],
-      ],
+      'titles' => ['type' => 'array', 'items' => ['type' => 'string']],
     ],
     'required' => ['titles'],
     'additionalProperties' => FALSE,
@@ -178,8 +174,6 @@ class TextServicesGenerator {
    *   Up to three titles, or an empty array if none were generated.
    */
   public function suggestTitles(ContentEntityInterface $entity): array {
-    // @todo Use the SEO title service when it is published. Until then, the
-    //   summarize service is asked for titles.
     $text = $this->summaryInput($entity);
 
     if ($text === NULL) {
@@ -187,7 +181,7 @@ class TextServicesGenerator {
     }
 
     try {
-      $response = $this->client->send(new TextServicesRequest(Service::Summarize, $text, $entity->language()->getId(), self::TITLES_SCHEMA));
+      $response = $this->client->send(new TextServicesRequest(Service::SeoTitles, $text, $entity->language()->getId(), self::TITLES_SCHEMA));
       return array_slice($this->validItems($response->data['titles'] ?? NULL), 0, 3);
     }
     catch (TextServicesException $e) {
