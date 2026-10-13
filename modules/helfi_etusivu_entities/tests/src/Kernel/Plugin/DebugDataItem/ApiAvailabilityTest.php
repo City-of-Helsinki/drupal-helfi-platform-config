@@ -95,8 +95,7 @@ class ApiAvailabilityTest extends KernelTestBase {
         new Response(body: json_encode(['meta' => 1])),
       ]);
       $this->container->set('http_client', $client);
-      $sut = $this->container->get(DebugDataItemPluginManager::class)
-        ->createInstance($plugin);
+      $sut = $this->getSut($plugin, [new Response()]);
 
       $this->assertTrue($sut->check());
       $this->assertSame(EtusivuJsonApiEntityBase::TIMEOUT, $history[0]['options']['timeout']);
