@@ -8,6 +8,7 @@ use Drupal\helfi_api_base\DebugDataItemPluginManager;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_etusivu_entities\Plugin\DebugDataItem\ApiAvailabilityBase;
+use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\EtusivuJsonApiEntityBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
@@ -89,8 +90,16 @@ class ApiAvailabilityTest extends KernelTestBase {
    */
   public function testCheck(): void {
     foreach ($this->plugins as $plugin) {
-      $sut = $this->getSut($plugin, [new Response(body: json_encode(['meta' => 1]))]);
+      $history = [];
+      $client = $this->createMockHistoryMiddlewareHttpClient($history, [
+        new Response(body: json_encode(['meta' => 1])),
+      ]);
+      $this->container->set('http_client', $client);
+      $sut = $this->container->get(DebugDataItemPluginManager::class)
+        ->createInstance($plugin);
+
       $this->assertTrue($sut->check());
+      $this->assertSame(EtusivuJsonApiEntityBase::TIMEOUT, $history[0]['options']['timeout']);
     }
   }
 
