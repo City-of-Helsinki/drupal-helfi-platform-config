@@ -147,6 +147,8 @@ final class RestrictedBackendClientTest extends UnitTestCase {
 
   /**
    * Builds a client whose connector call is either refused or thrown.
+   *
+   * @phpstan-param array<int, array<string, mixed>> $history
    */
   private function client(bool $isEtusivu, string $signal, bool $reachConnector, array &$history = []): RestrictedBackendClient {
     $fieldMapper = $this->createMock(FieldMapper::class);

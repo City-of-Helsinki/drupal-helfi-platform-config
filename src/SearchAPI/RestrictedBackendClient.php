@@ -93,8 +93,7 @@ class RestrictedBackendClient extends BackendClient {
   }
 
   /**
-   * Skips settings updates for shared search indexes on instances other
-   * than etusivu.
+   * Skips settings updates for shared search indexes.
    *
    * {@inheritdoc}
    */
@@ -106,8 +105,7 @@ class RestrictedBackendClient extends BackendClient {
   }
 
   /**
-   * Skips mapping updates for shared search indexes on instances other
-   * than etusivu.
+   * Skips mapping updates for shared search indexes.
    *
    * {@inheritdoc}
    */
