@@ -1807,18 +1807,6 @@ parameters:
 			path: modules/helfi_etusivu_entities/tests/src/Kernel/Plugin/Block/SurveyBlockTest.php
 
 		-
-			message: '#^Method Drupal\\Tests\\helfi_etusivu_entities\\Kernel\\Plugin\\DebugDataItem\\ApiAvailabilityTest\:\:getSut\(\) has parameter \$responses with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/helfi_etusivu_entities/tests/src/Kernel/Plugin/DebugDataItem/ApiAvailabilityTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\helfi_etusivu_entities\\Kernel\\Plugin\\DebugDataItem\\ApiAvailabilityTest\:\:getSut\(\) should return Drupal\\helfi_etusivu_entities\\Plugin\\DebugDataItem\\ApiAvailabilityBase but returns object\.$#'
-			identifier: return.type
-			count: 1
-			path: modules/helfi_etusivu_entities/tests/src/Kernel/Plugin/DebugDataItem/ApiAvailabilityTest.php
-
-		-
 			message: '#^Parameter \$body of class GuzzleHttp\\Psr7\\Response constructor expects Psr\\Http\\Message\\StreamInterface\|resource\|string\|null, string\|false given\.$#'
 			identifier: argument.type
 			count: 1

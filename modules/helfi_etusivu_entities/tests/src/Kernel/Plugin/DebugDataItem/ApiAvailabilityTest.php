@@ -61,18 +61,22 @@ class ApiAvailabilityTest extends KernelTestBase {
    *
    * @param string $plugin
    *   The plugin id.
-   * @param array $responses
+   * @param array<\GuzzleHttp\Psr7\Response|\GuzzleHttp\Exception\GuzzleException> $responses
    *   The responses.
+   * @param array<mixed> $history
+   *   The HTTP history.
    *
    * @return \Drupal\helfi_etusivu_entities\Plugin\DebugDataItem\ApiAvailabilityBase
    *   The SUT.
    */
-  public function getSut(string $plugin, array $responses) : ApiAvailabilityBase {
-    $client = $this->createMockHttpClient($responses);
+  public function getSut(string $plugin, array $responses, array &$history = []) : ApiAvailabilityBase {
+    $client = $this->createMockHistoryMiddlewareHttpClient($history, $responses);
     $this->container->set('http_client', $client);
 
-    return $this->container->get(DebugDataItemPluginManager::class)
+    $instance = $this->container->get(DebugDataItemPluginManager::class)
       ->createInstance($plugin);
+    $this->assertInstanceOf(ApiAvailabilityBase::class, $instance);
+    return $instance;
   }
 
   /**
@@ -91,11 +95,7 @@ class ApiAvailabilityTest extends KernelTestBase {
   public function testCheck(): void {
     foreach ($this->plugins as $plugin) {
       $history = [];
-      $client = $this->createMockHistoryMiddlewareHttpClient($history, [
-        new Response(body: json_encode(['meta' => 1])),
-      ]);
-      $this->container->set('http_client', $client);
-      $sut = $this->getSut($plugin, [new Response()]);
+      $sut = $this->getSut($plugin, [new Response(body: json_encode(['meta' => 1]))], $history);
 
       $this->assertTrue($sut->check());
       $this->assertSame(EtusivuJsonApiEntityBase::TIMEOUT, $history[0]['options']['timeout']);
