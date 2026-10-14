@@ -1267,19 +1267,6 @@ index 838f4e46457..4e5e5ad18fc 100644
      $contextual_container = $page->find('css', '[data-contextual-id="' . $contextual_container_id . '"]');
      $this->assertNotEmpty($contextual_container);
 
-diff --git a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
-index b4b1a5d3a83..3bbc020fdc7 100644
---- a/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
-+++ b/core/profiles/demo_umami/tests/src/FunctionalJavascript/OpenTelemetryAuthenticatedPerformanceTest.php
-@@ -142,7 +142,7 @@ class OpenTelemetryAuthenticatedPerformanceTest extends PerformanceTestBase {
-         'file_parsing' => 1,
-         'menu' => 22,
-       ],
--      'CacheSetCount' => 266,
-+      'CacheSetCount' => 274,
-       'CacheDeleteCount' => 0,
-       'CacheTagInvalidationCount' => 0,
-       'CacheTagLookupQueryCount' => 28,
 diff --git a/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php b/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php
 index 5935cec5c1b..cf041842203 100644
 --- a/core/profiles/standard/tests/src/FunctionalJavascript/StandardPerformanceTest.php
