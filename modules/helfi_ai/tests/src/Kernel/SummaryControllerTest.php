@@ -13,6 +13,7 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
@@ -153,11 +154,18 @@ class SummaryControllerTest extends EntityKernelTestBase {
   }
 
   /**
-   * A missing text or langcode parameter is a bad request.
+   * A missing or non-string parameter is a bad request.
+   *
+   * @param array<string, mixed> $body
+   *   The request body.
    */
-  public function testRejectsMissingParameters(): void {
+  #[TestWith([['text' => 'Page content']])]
+  #[TestWith([['text' => [], 'langcode' => 'fi']])]
+  #[TestWith([['text' => ['nested' => 'object'], 'langcode' => 'fi']])]
+  #[TestWith([['text' => 'Page content', 'langcode' => ['fi']]])]
+  public function testRejectsInvalidParameters(array $body): void {
     $this->expectException(BadRequestException::class);
-    $this->controller->summary($this->request(['text' => 'Page content']));
+    $this->controller->summary($this->request($body));
   }
 
   /**

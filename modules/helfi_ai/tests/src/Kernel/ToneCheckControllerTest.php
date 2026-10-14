@@ -13,6 +13,7 @@ use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\HttpFoundation\EventStreamResponse;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -186,11 +187,18 @@ class ToneCheckControllerTest extends EntityKernelTestBase {
   }
 
   /**
-   * A missing content or langcode parameter is a bad request.
+   * A missing or non-string parameter is a bad request.
+   *
+   * @param array<string, mixed> $body
+   *   The request body.
    */
-  public function testRejectsMissingParameters(): void {
+  #[TestWith([['content' => '<p>Hi</p>']])]
+  #[TestWith([['content' => [], 'langcode' => 'fi']])]
+  #[TestWith([['content' => ['nested' => 'object'], 'langcode' => 'fi']])]
+  #[TestWith([['content' => '<p>Hi</p>', 'langcode' => ['fi']]])]
+  public function testRejectsInvalidParameters(array $body): void {
     $this->expectException(BadRequestException::class);
-    $this->controller->check($this->request(['content' => '<p>Hi</p>']));
+    $this->controller->check($this->request($body));
   }
 
   /**

@@ -40,11 +40,12 @@ final class SummaryController implements ContainerInjectionInterface {
       return new JsonResponse(['error' => 'AI summary is disabled.'], 403);
     }
     $data = json_decode($request->getContent(), TRUE);
+    $text = $data['text'] ?? NULL;
+    $langcode = $data['langcode'] ?? NULL;
 
-    if (!isset($data['text'], $data['langcode'])) {
-      throw new BadRequestException('Missing "text" or "langcode" parameter.');
+    if (!is_string($text) || !is_string($langcode)) {
+      throw new BadRequestException('Missing or invalid "text" or "langcode" parameter.');
     }
-    ['text' => $text, 'langcode' => $langcode] = $data;
 
     if (trim($text) === '') {
       return new JsonResponse(['error' => 'No text to summarize.'], 400);

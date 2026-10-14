@@ -40,11 +40,12 @@ final class ToneCheckController implements ContainerInjectionInterface {
       return new JsonResponse(['error' => 'Tone check is disabled.'], 403);
     }
     $data = json_decode($request->getContent(), TRUE);
+    $content = $data['content'] ?? NULL;
+    $langcode = $data['langcode'] ?? NULL;
 
-    if (!isset($data['content'], $data['langcode'])) {
-      throw new BadRequestException('Missing "content" or "langcode" parameter.');
+    if (!is_string($content) || !is_string($langcode)) {
+      throw new BadRequestException('Missing or invalid "content" or "langcode" parameter.');
     }
-    ['content' => $content, 'langcode' => $langcode] = $data;
 
     if (trim($content) === '') {
       return new JsonResponse(['error' => 'No content to check.'], 400);
