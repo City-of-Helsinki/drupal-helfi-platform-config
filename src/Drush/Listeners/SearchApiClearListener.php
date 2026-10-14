@@ -6,8 +6,8 @@ namespace Drupal\helfi_platform_config\Drush\Listeners;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\helfi_platform_config\RestrictedClearAction;
-use Drupal\helfi_platform_config\RestrictedSearchIndex;
+use Drupal\helfi_platform_config\SearchAPI\RestrictedClearAction;
+use Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex;
 use Drupal\search_api\IndexInterface;
 use Drush\Commands\AutowireTrait;
 use Drush\Style\DrushStyle;
@@ -39,8 +39,7 @@ class SearchApiClearListener {
   /**
    * Blocks or confirms a clear of shared search indexes.
    *
-   * On instances other than etusivu the command is disabled. On etusivu it
-   * asks for confirmation.
+   * The main instance is asked to confirm. Every other instance is blocked.
    * The default answer is no, so a non-interactive run is disabled unless
    * --yes is passed. DrushStyle::confirm() accepts --yes before the prompt.
    */
@@ -51,19 +50,20 @@ class SearchApiClearListener {
 
     $indexId = $event->getInput()->getArgument('indexId');
     $candidates = $this->candidateIds(is_string($indexId) && $indexId !== '' ? $indexId : NULL);
-    $targets = $this->restrictedSearchIndex->matchingIds($candidates);
-    $action = $this->restrictedSearchIndex->actionFor($candidates);
+    $actions = $this->restrictedSearchIndex->actionFor($candidates);
 
-    if ($action === RestrictedClearAction::Allow) {
-      return;
-    }
-    if ($action === RestrictedClearAction::Block) {
-      $this->logger->error($this->blockMessage($targets));
+    if ($this->idsFor($actions, RestrictedClearAction::Block) !== []) {
+      $this->logger->error($this->blockMessage($actions));
       $event->disableCommand();
       return;
     }
 
-    $question = $this->confirmMessage($targets);
+    $confirmIds = $this->idsFor($actions, RestrictedClearAction::Confirm);
+    if ($confirmIds === []) {
+      return;
+    }
+
+    $question = $this->confirmMessage($confirmIds);
     if (!$this->confirmClear($question, $event->getInput(), $event->getOutput())) {
       $this->logger->error($question);
       $event->disableCommand();
@@ -108,20 +108,45 @@ class SearchApiClearListener {
   }
 
   /**
-   * Message shown when this instance must not clear the indexes.
+   * Index ids whose action matches.
    *
-   * @param string[] $targets
-   *   Restricted index ids.
+   * @param array<string, \Drupal\helfi_platform_config\SearchAPI\RestrictedClearAction> $actions
+   *   Actions keyed by index id.
+   * @param \Drupal\helfi_platform_config\SearchAPI\RestrictedClearAction $expected
+   *   The action to collect.
+   *
+   * @return string[]
+   *   Matching index ids, in the given order.
    */
-  private function blockMessage(array $targets): string {
-    if (count($targets) === 1) {
-      return sprintf('Cannot clear the shared search index %s from this instance. Clear it on etusivu.', $targets[0]);
+  private function idsFor(array $actions, RestrictedClearAction $expected): array {
+    $ids = [];
+    foreach ($actions as $id => $action) {
+      if ($action === $expected) {
+        $ids[] = $id;
+      }
     }
-    return sprintf('Cannot clear the shared search indexes %s from this instance. Clear them on etusivu.', implode(', ', $targets));
+    return $ids;
   }
 
   /**
-   * Confirmation question for a clear on etusivu.
+   * Message shown when this instance must not clear the indexes.
+   *
+   * @param array<string, \Drupal\helfi_platform_config\SearchAPI\RestrictedClearAction> $actions
+   *   Actions keyed by index id.
+   */
+  private function blockMessage(array $actions): string {
+    $lines = ['Cannot clear the following shared indexes here:'];
+    foreach ($this->idsFor($actions, RestrictedClearAction::Block) as $indexId) {
+      $mainInstance = $this->restrictedSearchIndex->mainInstance($indexId);
+      if ($mainInstance !== NULL) {
+        $lines[] = sprintf('- %s, clear on %s', $indexId, $mainInstance);
+      }
+    }
+    return implode("\n", $lines);
+  }
+
+  /**
+   * Confirmation question for a clear on the main instance.
    *
    * @param string[] $targets
    *   Restricted index ids.

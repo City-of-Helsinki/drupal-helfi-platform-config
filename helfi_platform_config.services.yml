@@ -108,7 +108,7 @@ services:
 
   Drupal\helfi_platform_config\MultisiteSearch: ~
 
-  Drupal\helfi_platform_config\RestrictedSearchIndex: ~
+  Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex: ~
 
   Drupal\helfi_platform_config\RedirectCleaner: ~
 

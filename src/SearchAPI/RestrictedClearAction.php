@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_platform_config;
+namespace Drupal\helfi_platform_config\SearchAPI;
 
 /**
  * What to do when drush sapi-c targets a restricted search index.

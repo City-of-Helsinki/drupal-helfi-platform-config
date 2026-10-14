@@ -11,7 +11,6 @@ use Drupal\elasticsearch_connector\SearchAPI\FieldMapper;
 use Drupal\elasticsearch_connector\SearchAPI\IndexParamBuilder;
 use Drupal\elasticsearch_connector\SearchAPI\Query\QueryParamBuilder;
 use Drupal\elasticsearch_connector\SearchAPI\Query\QueryResultParser;
-use Drupal\helfi_platform_config\RestrictedSearchIndex;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Utility\FieldsHelperInterface;
 use Elastic\Elasticsearch\Client;
@@ -19,7 +18,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Keeps shared search indexes unchanged on instances other than etusivu.
+ * Keeps each shared search index unchanged outside its main instance.
  *
  * Index deletion, creation, settings, and field mappings return without
  * calling Elasticsearch. Document indexing and deletion stay on the parent
@@ -134,7 +133,9 @@ class RestrictedBackendClient extends BackendClient {
     if (!is_string($indexId)) {
       return FALSE;
     }
-    return $this->restrictedSearchIndex->blocksSchemaChange($indexId);
+    $action = $this->restrictedSearchIndex->actionFor([$indexId])[$indexId]
+      ?? RestrictedClearAction::Allow;
+    return $action === RestrictedClearAction::Block;
   }
 
 }

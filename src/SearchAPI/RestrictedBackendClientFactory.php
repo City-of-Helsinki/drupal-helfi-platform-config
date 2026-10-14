@@ -12,7 +12,6 @@ use Drupal\elasticsearch_connector\SearchAPI\FieldMapper;
 use Drupal\elasticsearch_connector\SearchAPI\IndexParamBuilder;
 use Drupal\elasticsearch_connector\SearchAPI\Query\QueryParamBuilder;
 use Drupal\elasticsearch_connector\SearchAPI\Query\QueryResultParser;
-use Drupal\helfi_platform_config\RestrictedSearchIndex;
 use Drupal\search_api\Utility\FieldsHelperInterface;
 use Elastic\Elasticsearch\Client;
 use Psr\Log\LoggerInterface;

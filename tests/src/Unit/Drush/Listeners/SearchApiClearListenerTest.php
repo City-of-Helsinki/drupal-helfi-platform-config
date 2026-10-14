@@ -7,12 +7,12 @@ namespace Drupal\Tests\helfi_platform_config\Unit\Drush\Listeners;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_api_base\Environment\ProjectMetadata;
 use Drupal\helfi_platform_config\Drush\Listeners\SearchApiClearListener;
-use Drupal\helfi_platform_config\RestrictedSearchIndex;
+use Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex;
 use Drupal\search_api\IndexInterface;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -28,14 +28,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[Group('helfi_platform_config')]
 final class SearchApiClearListenerTest extends UnitTestCase {
 
+  use EnvironmentResolverTrait;
+
   /**
    * A named index outside the restricted list is cleared without a prompt.
    */
   public function testAllowsUnrestrictedIndex(): void {
-    $listener = $this->listener(isEtusivu: FALSE);
+    $listener = $this->listener();
     $listener->entityTypeManager->expects($this->never())->method('getStorage');
     $listener->logger->expects($this->never())->method('error');
-    $event = $this->event('hyte');
+    $event = $this->event('news');
 
     $listener->onSearchApiClear($event);
 
@@ -47,7 +49,7 @@ final class SearchApiClearListenerTest extends UnitTestCase {
    * Other commands are left alone.
    */
   public function testIgnoresOtherCommands(): void {
-    $listener = $this->listener(isEtusivu: FALSE);
+    $listener = $this->listener();
     $listener->logger->expects($this->never())->method('error');
     $event = $this->event('embeddings', 'cache:rebuild');
 
@@ -61,10 +63,10 @@ final class SearchApiClearListenerTest extends UnitTestCase {
    * On instances other than etusivu, clearing shared indexes is rejected.
    */
   public function testBlocksRestrictedIndexOffEtusivu(): void {
-    $listener = $this->listener(isEtusivu: FALSE);
+    $listener = $this->listener();
     $listener->logger->expects($this->once())
       ->method('error')
-      ->with('Cannot clear the shared search index embeddings from this instance. Clear it on etusivu.');
+      ->with("Cannot clear the following shared indexes here:\n- embeddings, clear on etusivu");
     $event = $this->event('embeddings');
 
     $listener->onSearchApiClear($event);
@@ -77,7 +79,7 @@ final class SearchApiClearListenerTest extends UnitTestCase {
    * On etusivu, a confirmed clear of a shared index proceeds.
    */
   public function testConfirmsRestrictedIndexOnEtusivu(): void {
-    $listener = $this->listener(isEtusivu: TRUE);
+    $listener = $this->listener(Project::ETUSIVU);
     $listener->confirmResult = TRUE;
     $listener->logger->expects($this->never())->method('error');
     $event = $this->event('suggestions');
@@ -93,7 +95,7 @@ final class SearchApiClearListenerTest extends UnitTestCase {
    * On etusivu, declining the confirmation disables the clear.
    */
   public function testAbortsWhenConfirmationIsDeclined(): void {
-    $listener = $this->listener(isEtusivu: TRUE);
+    $listener = $this->listener(Project::ETUSIVU);
     $listener->confirmResult = FALSE;
     $question = 'The search index embeddings is in shared use. Clear it anyway?';
     $listener->logger->expects($this->once())->method('error')->with($question);
@@ -110,7 +112,6 @@ final class SearchApiClearListenerTest extends UnitTestCase {
    */
   public function testBlocksClearAllWhenRestrictedIndexIsEnabled(): void {
     $listener = $this->listener(
-      isEtusivu: FALSE,
       indexes: [
         $this->index('news', TRUE),
         $this->index('embeddings', TRUE),
@@ -119,7 +120,7 @@ final class SearchApiClearListenerTest extends UnitTestCase {
     );
     $listener->logger->expects($this->once())
       ->method('error')
-      ->with('Cannot clear the shared search indexes embeddings, suggestions from this instance. Clear them on etusivu.');
+      ->with("Cannot clear the following shared indexes here:\n- embeddings, clear on etusivu\n- suggestions, clear on etusivu");
     $event = $this->event(NULL);
 
     $listener->onSearchApiClear($event);
@@ -132,7 +133,6 @@ final class SearchApiClearListenerTest extends UnitTestCase {
    */
   public function testAllowsClearAllWhenRestrictedIndexIsDisabled(): void {
     $listener = $this->listener(
-      isEtusivu: FALSE,
       indexes: [
         $this->index('news', TRUE),
         $this->index('embeddings', FALSE),
@@ -152,7 +152,7 @@ final class SearchApiClearListenerTest extends UnitTestCase {
    */
   public function testConfirmsClearAllOnEtusivu(): void {
     $listener = $this->listener(
-      isEtusivu: TRUE,
+      Project::ETUSIVU,
       indexes: [
         $this->index('suggestions', TRUE),
         $this->index('news', TRUE),
@@ -167,24 +167,61 @@ final class SearchApiClearListenerTest extends UnitTestCase {
 
     $this->assertTrue($event->commandShouldRun());
     $this->assertSame(1, $listener->confirmCalls);
-    $this->assertSame('The search indexes embeddings, suggestions are in shared use. Clear them anyway?', $listener->confirmQuestion);
+    $this->assertSame('The search indexes suggestions, embeddings are in shared use. Clear them anyway?', $listener->confirmQuestion);
+  }
+
+  /**
+   * Hyte is blocked on etusivu and confirmed on asuminen.
+   */
+  public function testHyteFollowsAsuminen(): void {
+    $etusivu = $this->listener(Project::ETUSIVU);
+    $etusivu->logger->expects($this->once())
+      ->method('error')
+      ->with("Cannot clear the following shared indexes here:\n- hyte, clear on asuminen");
+    $blocked = $this->event('hyte');
+    $etusivu->onSearchApiClear($blocked);
+    $this->assertFalse($blocked->commandShouldRun());
+
+    $asuminen = $this->listener(Project::ASUMINEN);
+    $asuminen->confirmResult = TRUE;
+    $asuminen->logger->expects($this->never())->method('error');
+    $confirmed = $this->event('hyte');
+    $asuminen->onSearchApiClear($confirmed);
+    $this->assertTrue($confirmed->commandShouldRun());
+    $this->assertSame('The search index hyte is in shared use. Clear it anyway?', $asuminen->confirmQuestion);
+  }
+
+  /**
+   * A clear of every index stops when any included index is blocked.
+   */
+  public function testBlocksClearAllWhenMainsDiffer(): void {
+    $listener = $this->listener(
+      Project::LIIKENNE,
+      indexes: [
+        $this->index('embeddings', TRUE),
+        $this->index('hyte', TRUE),
+      ],
+    );
+    $listener->logger->expects($this->once())
+      ->method('error')
+      ->with("Cannot clear the following shared indexes here:\n- embeddings, clear on etusivu\n- hyte, clear on asuminen");
+    $event = $this->event(NULL);
+
+    $listener->onSearchApiClear($event);
+
+    $this->assertFalse($event->commandShouldRun());
+    $this->assertSame(0, $listener->confirmCalls);
   }
 
   /**
    * Builds the listener with a stand-in for the confirmation prompt.
    *
-   * @param bool $isEtusivu
-   *   Whether the active project is etusivu.
+   * @param string $project
+   *   The active project name.
    * @param \Drupal\search_api\IndexInterface[] $indexes
    *   Indexes returned when sapi-c is run with no id.
    */
-  private function listener(bool $isEtusivu, array $indexes = []): SearchApiClearListenerUnderTest {
-    $resolver = $this->createMock(EnvironmentResolverInterface::class);
-    $resolver->method('getActiveProject')->willReturn(new Project(
-      $isEtusivu ? Project::ETUSIVU : Project::LIIKENNE,
-      new ProjectMetadata('https://github.com/city-of-helsinki/drupal-helfi-etusivu'),
-    ));
-
+  private function listener(string $project = Project::LIIKENNE, array $indexes = []): SearchApiClearListenerUnderTest {
     $storage = $this->createMock(EntityStorageInterface::class);
     $storage->method('loadMultiple')->willReturn($indexes);
 
@@ -195,7 +232,7 @@ final class SearchApiClearListenerTest extends UnitTestCase {
     $moduleHandler->method('moduleExists')->with('search_api')->willReturn(TRUE);
 
     return new SearchApiClearListenerUnderTest(
-      new RestrictedSearchIndex($resolver),
+      new RestrictedSearchIndex($this->getEnvironmentResolver($project, EnvironmentEnum::Local)),
       $entityTypeManager,
       $moduleHandler,
       $this->createMock(LoggerInterface::class),

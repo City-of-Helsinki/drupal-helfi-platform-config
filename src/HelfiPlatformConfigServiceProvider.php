@@ -19,6 +19,7 @@ use Drupal\helfi_platform_config\EventSubscriber\CspSentrySubscriber;
 use Drupal\helfi_platform_config\EventSubscriber\CspSocialMediaSubscriber;
 use Drupal\helfi_platform_config\SearchAPI\Query\QueryResultParser;
 use Drupal\helfi_platform_config\SearchAPI\RestrictedBackendClientFactory;
+use Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
