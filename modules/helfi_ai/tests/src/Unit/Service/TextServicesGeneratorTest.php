@@ -255,8 +255,11 @@ class TextServicesGeneratorTest extends UnitTestCase {
 
     // One event per completed item, each list growing by one.
     $this->assertSame([1, 2, 3, 4, 5], array_map(fn (array $event) => count($event['items']), $data));
+    // The captured items are wrapped in <p> tags, which are removed.
+    $this->assertStringNotContainsString('<', $data[0]['items'][0]);
     $this->assertTrue($done['done']);
     $this->assertSame(5, substr_count($done['result'], '<li>'));
+    $this->assertStringNotContainsString('<p>', $done['result']);
   }
 
   /**

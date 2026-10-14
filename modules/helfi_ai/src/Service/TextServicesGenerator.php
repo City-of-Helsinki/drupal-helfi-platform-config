@@ -137,7 +137,7 @@ class TextServicesGenerator {
     try {
       foreach ($this->client->stream(new TextServicesRequest(Service::Summarize, $text, $langcode, self::ITEMS_SCHEMA)) as $event) {
         if ($event['event'] === 'done') {
-          $items = $this->validItems($event['data']['data']['items'] ?? NULL);
+          $items = $this->plainItems($this->validItems($event['data']['data']['items'] ?? NULL));
           continue;
         }
         if ($event['event'] !== 'delta') {
@@ -145,7 +145,7 @@ class TextServicesGenerator {
         }
         // Show each item as soon as it is complete in the JSON received so far.
         $json .= (string) ($event['data']['text'] ?? '');
-        $completed = $this->completedItems($json);
+        $completed = $this->plainItems($this->completedItems($json));
 
         if (count($completed) > $count) {
           $count = count($completed);
@@ -232,6 +232,25 @@ class TextServicesGenerator {
       array_map(static fn (string $item) => json_decode('"' . $item . '"'), $matches[1]),
       'is_string',
     ));
+  }
+
+  /**
+   * Removes HTML tags from summary items.
+   *
+   * Workaround: the summarization service sometimes wraps the items in <p>
+   * tags, although they should be plain text. Without this, the tags would
+   * show up as text in the summary list.
+   *
+   * @todo Remove when the API returns plain-text items.
+   *
+   * @param string[] $items
+   *   The items.
+   *
+   * @return string[]
+   *   The items as plain text.
+   */
+  private function plainItems(array $items): array {
+    return array_map(static fn (string $item) => trim(strip_tags($item)), $items);
   }
 
   /**
