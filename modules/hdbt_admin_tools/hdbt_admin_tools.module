@@ -263,16 +263,6 @@ function hdbt_admin_tools_handle_sidebar_visibility(array &$variables, ContentEn
     $variables['has_sidebar_first'] = FALSE;
   }
 
-  // Check if page entity has sidebar content field and there's content
-  // in it and set "has_deprecated_field_sidebar_content" variable accordingly.
-  // @todo UHF-13030 Remove this when the field is removed.
-  if (
-    $entity->hasField('field_sidebar_content') &&
-    !$entity->get('field_sidebar_content')->isEmpty()
-  ) {
-    $variables['has_deprecated_field_sidebar_content'] = TRUE;
-  }
-
   // Enable sidebar second for News item.
   if ($content_type === 'news_item') {
     $variables['has_sidebar_second'] = TRUE;
@@ -319,8 +309,6 @@ function hdbt_admin_tools_toolbar_alter(&$items): void {
 
     if (is_array($value['#attached']['library'])) {
       $value['#attached']['library'][] = 'hdbt_admin_tools/menu_styles';
-      // @todo UHF-13030 Remove this when the field is removed.
-      $value['#attached']['library'][] = 'hdbt_admin_tools/sidebar_content';
     }
   }
 }
@@ -438,14 +426,6 @@ function hdbt_admin_tools_entity_bundle_field_info_alter(&$fields, EntityTypeInt
     if (array_key_exists('field_gallery_item', $fields)) {
       $fields['field_gallery_item']->addConstraint('ImageGallery', []);
     }
-  }
-
-  // Add constraint to check if sidebar has content.
-  // @todo UHF-13030 Remove this when the field is removed.
-  if (
-    array_key_exists('field_sidebar_content', $fields)
-  ) {
-    $fields['field_sidebar_content']->addConstraint('SidebarContent', []);
   }
 }
 

@@ -33,6 +33,8 @@ trait EmbeddingStoreTrait {
    *   The failed attempt count, or NULL to leave it alone.
    * @param int|null $changed
    *   The timestamp to stamp the row with, or NULL for the request time.
+   * @param string|null $markdown
+   *   The document's markdown, or NULL to leave it alone.
    *
    * @phpstan-param \Drupal\Core\Entity\EntityInterface|DocumentKey $entity
    */
@@ -41,6 +43,7 @@ trait EmbeddingStoreTrait {
     DocumentState $state,
     ?int $attempts = NULL,
     ?int $changed = NULL,
+    ?string $markdown = NULL,
   ): void {
     if ($entity instanceof EntityInterface) {
       $entity = self::key($entity);
@@ -55,6 +58,10 @@ trait EmbeddingStoreTrait {
 
     if ($attempts !== NULL) {
       $fields['attempts'] = $attempts;
+    }
+
+    if ($markdown !== NULL) {
+      $fields['markdown'] = $markdown;
     }
 
     $this->container->get(Connection::class)
@@ -76,16 +83,19 @@ trait EmbeddingStoreTrait {
    * @param int|null $changed
    *   The expected timestamp of the last state change, or NULL to skip the
    *   assertion.
+   * @param string|false|null $markdown
+   *   The expected markdown, or FALSE to skip the assertion.
    */
   private function assertDocumentState(
     EntityInterface $entity,
     DocumentState $state,
     ?int $attempts = NULL,
     ?int $changed = NULL,
+    string|false|null $markdown = FALSE,
   ): void {
     $query = $this->container->get(Connection::class)
       ->select(self::DOCUMENT_TABLE, 'd')
-      ->fields('d', ['state', 'attempts', 'changed']);
+      ->fields('d', ['state', 'attempts', 'changed', 'markdown']);
 
     $row = self::keyCondition($query, $entity)->execute()->fetchAssoc();
 
@@ -98,6 +108,10 @@ trait EmbeddingStoreTrait {
 
     if ($changed !== NULL) {
       $this->assertSame($changed, (int) $row['changed']);
+    }
+
+    if ($markdown !== FALSE) {
+      $this->assertSame($markdown, $row['markdown']);
     }
   }
 

@@ -11,18 +11,22 @@ use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityPublishedInterface;
 use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldPurger;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Utility\UpdateException;
 use Drupal\entity\BundleFieldDefinition;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\user\Entity\User;
 
 /**
@@ -896,4 +900,199 @@ function helfi_platform_config_update_11010(array &$sandbox): void {
   }
 
   helfi_platform_config_update_11009($sandbox);
+}
+
+/**
+ * UHF-13030: Remove field_sidebar_content and the sidebar_text paragraphs.
+ *
+ * @param array<string, mixed> $sandbox
+ *   The sandbox.
+ *
+ * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+ *   Returns the progress or the summary message.
+ */
+function helfi_platform_config_update_11011(array &$sandbox): TranslatableMarkup {
+  $entityTypeManager = \Drupal::entityTypeManager();
+  $moduleHandler = \Drupal::moduleHandler();
+  $paragraphStorage = $entityTypeManager->getStorage('paragraph');
+  $logger = \Drupal::logger('helfi_platform_config');
+
+  if (!isset($sandbox['ids'])) {
+    $database = \Drupal::database();
+    $results = [];
+
+    // Get paragraphs from all sidebar content revisions.
+    foreach (['node', 'tpr_service'] as $entityType) {
+      foreach ([
+        "{$entityType}__field_sidebar_content",
+        "{$entityType}_revision__field_sidebar_content",
+      ] as $table) {
+        if (!$database->schema()->tableExists($table)) {
+          continue;
+        }
+        $results[$table] = $database->select($table, 't')
+          ->fields('t', ['field_sidebar_content_target_id'])
+          ->distinct()
+          ->execute()
+          ->fetchCol();
+      }
+    }
+
+    if ($moduleHandler->moduleExists('helfi_paragraphs_sidebar_text')) {
+      if ($moduleHandler->moduleExists('paragraphs_library')) {
+
+        // Get all paragraph library items that contain sidebar text.
+        $libraryItemIds = $database->select('paragraphs_item_field_data', 'p')
+          ->fields('p', ['parent_id'])
+          ->condition('type', 'sidebar_text')
+          ->condition('parent_type', 'paragraphs_library_item')
+          ->distinct()
+          ->execute()
+          ->fetchCol();
+
+        if ($libraryItemIds) {
+          // Get all "from library" paragraphs that use
+          // the sidebar text library items.
+          $results['from_library'] = $paragraphStorage->getQuery()
+            ->condition('type', 'from_library')
+            ->condition('field_reusable_paragraph', $libraryItemIds, 'IN')
+            ->accessCheck(FALSE)
+            ->execute();
+
+          // Delete the sidebar text library items.
+          $libraryStorage = $entityTypeManager->getStorage('paragraphs_library_item');
+          $libraryItems = $libraryStorage->loadMultiple($libraryItemIds);
+          $libraryStorage->delete($libraryItems);
+          $logger->notice('Deleted @count sidebar text library items.', ['@count' => count($libraryItems)]);
+        }
+      }
+
+      // Get all sidebar text paragraphs.
+      $results['sidebar_text'] = $paragraphStorage->getQuery()
+        ->condition('type', 'sidebar_text')
+        ->accessCheck(FALSE)
+        ->execute();
+    }
+
+    // Merge the paragraph IDs from both sources and remove duplicates.
+    $ids = [];
+    foreach ($results as $result) {
+      foreach ($result as $id) {
+        $ids[$id] = (int) $id;
+      }
+    }
+
+    $sandbox['ids'] = array_values($ids);
+    $sandbox['total'] = count($ids);
+    $sandbox['current'] = 0;
+    $sandbox['published'] = 0;
+    $sandbox['stale'] = 0;
+  }
+
+  // Delete the next batch of paragraphs.
+  $batch = array_slice($sandbox['ids'], $sandbox['current'], 50);
+
+  if ($batch) {
+    $paragraphs = $paragraphStorage->loadMultiple($batch);
+
+    // Count references to paragraphs that no longer exist as stale.
+    $sandbox['stale'] += count($batch) - count($paragraphs);
+
+    // Check if the paragraph's parent entity is published and mark the
+    // paragraph as published or stale. This way we can check from logs if
+    // there was any published paragraphs.
+    foreach ($paragraphs as $paragraph) {
+      assert($paragraph instanceof ParagraphInterface);
+
+      // Load the entity and the field the paragraph belongs to.
+      $parent = $paragraph->getParentEntity();
+      $field = $paragraph->get('parent_field_name')->value;
+      $isPublished = FALSE;
+
+      // Skip paragraphs without a publishable parent entity.
+      if (
+        $parent instanceof ContentEntityInterface &&
+        $parent instanceof EntityPublishedInterface &&
+        $field &&
+        $parent->hasField($field)
+      ) {
+        foreach (array_keys($parent->getTranslationLanguages()) as $langcode) {
+          $translation = $parent->getTranslation($langcode);
+          assert($translation instanceof EntityPublishedInterface);
+
+          // Skip unpublished parent entity translations.
+          if (!$translation->isPublished()) {
+            continue;
+          }
+
+          // Mark the current entity as published when the current translation
+          // still uses the paragraph.
+          foreach ($translation->get($field)->getValue() as $item) {
+            if ((int) $item['target_id'] !== (int) $paragraph->id()) {
+              continue;
+            }
+            $isPublished = TRUE;
+
+            // Log the published page so the content can be recreated if needed.
+            $logger->notice('Deleted @bundle paragraph @id from published @type @parent_id "@label" in @langcode: @path', [
+              '@bundle' => $paragraph->bundle(),
+              '@id' => $paragraph->id(),
+              '@type' => $translation->getEntityTypeId(),
+              '@parent_id' => $translation->id(),
+              '@label' => $translation->label(),
+              '@langcode' => $langcode,
+              '@path' => $translation->hasLinkTemplate('canonical') ? $translation->toUrl()->toString() : '-',
+            ]);
+          }
+        }
+      }
+
+      $isPublished ? $sandbox['published']++ : $sandbox['stale']++;
+    }
+
+    $paragraphStorage->delete($paragraphs);
+    $sandbox['current'] += count($batch);
+  }
+
+  if ($sandbox['current'] < $sandbox['total']) {
+    $sandbox['#finished'] = $sandbox['current'] / $sandbox['total'];
+
+    return new TranslatableMarkup('Processed @current/@total paragraphs.', [
+      '@current' => $sandbox['current'],
+      '@total' => $sandbox['total'],
+    ]);
+  }
+
+  // Delete the sidebar content field from all bundles.
+  foreach (['node', 'tpr_service'] as $entityType) {
+    if ($fieldStorage = FieldStorageConfig::loadByName($entityType, 'field_sidebar_content')) {
+      $fieldStorage->delete();
+      $logger->notice('Deleted field_sidebar_content field storage from @type.', ['@type' => $entityType]);
+    }
+  }
+
+  // Delete the paragraph type with its fields and displays.
+  if ($moduleHandler->moduleExists('helfi_paragraphs_sidebar_text')) {
+    $entityTypeManager->getStorage('paragraphs_type')->load('sidebar_text')?->delete();
+    \Drupal::service('module_installer')->uninstall(['helfi_paragraphs_sidebar_text']);
+    $logger->notice('Deleted sidebar_text paragraph type and uninstalled helfi_paragraphs_sidebar_text.');
+  }
+
+  // Purge the deleted field data.
+  \Drupal::service(FieldPurger::class)->purgeBatch(1000);
+
+  $sandbox['#finished'] = 1;
+
+  return new TranslatableMarkup('Deleted @published paragraphs from published content and @stale stale paragraphs or references. Check the logs above for more details.', [
+    '@published' => $sandbox['published'],
+    '@stale' => $sandbox['stale'],
+  ]);
+}
+
+/**
+ * UHF-13030: Remove the sidebar content blocks.
+ */
+function helfi_platform_config_update_11012(): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('block');
+  $storage->delete($storage->loadByProperties(['plugin' => 'sidebar_content_block']));
 }

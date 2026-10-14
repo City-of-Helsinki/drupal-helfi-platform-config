@@ -51,7 +51,6 @@ class TprParagraphHooksTest extends KernelTestBase {
       'tpr_unit:tpr_unit:field_lower_content:image_gallery' => 14,
       'tpr_service:tpr_service:field_upper_content:banner' => 0,
       'tpr_service:tpr_service:field_content:unit_contact_card' => 14,
-      'tpr_service:tpr_service:field_sidebar_content:sidebar_text' => 1,
       'tpr_service:tpr_service:field_lower_content:image_gallery' => 17,
       'node:page:field_content:unit_search' => 17,
       'node:page:field_lower_content:unit_contact_card' => 18,

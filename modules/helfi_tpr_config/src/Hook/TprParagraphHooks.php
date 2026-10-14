@@ -81,10 +81,6 @@ class TprParagraphHooks {
             'unit_contact_card' => 14,
             'image_gallery' => 15,
           ],
-          'field_sidebar_content' => [
-            'from_library' => 0,
-            'sidebar_text' => 1,
-          ],
           'field_lower_content' => [
             'list_of_links' => 0,
             'content_cards' => 1,

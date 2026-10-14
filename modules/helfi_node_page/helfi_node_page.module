@@ -101,10 +101,6 @@ function helfi_node_page_helfi_paragraph_types() : array {
       'image_gallery' => 16,
       'number_highlights' => 17,
     ],
-    'field_sidebar_content' => [
-      'from_library' => 0,
-      'sidebar_text' => 1,
-    ],
   ];
 
   $enabled = [];

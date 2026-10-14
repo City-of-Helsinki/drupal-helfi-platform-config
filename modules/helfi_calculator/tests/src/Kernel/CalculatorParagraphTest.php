@@ -116,6 +116,56 @@ final class CalculatorParagraphTest extends KernelTestBase {
   }
 
   /**
+   * Tests that the settings are filtered for XSS and invalid ones not output.
+   */
+  public function testSettingsAreSanitized(): void {
+    $this->config('helfi_calculator.settings')
+      ->set('calculators', [
+        'home_care_client_fee' => [
+          'label' => 'Home care client fee',
+          'active' => TRUE,
+          'json' => '{"guardianship_fee": "1<img src=x onerror=alert(1)>"}',
+        ],
+        'early_childhood_education_fee' => [
+          'label' => 'Early childhood education fee',
+          'active' => TRUE,
+          'json' => '{"minimum_funds": 167}',
+        ],
+        'home_care_service_voucher' => [
+          'label' => 'Home care service voucher',
+          'active' => TRUE,
+          'json' => '{"minimum_funds": ',
+        ],
+      ])
+      ->save();
+
+    $preprocess = function (string $machine_name): array {
+      $variables = ['paragraph' => $this->createCalculatorParagraph($machine_name)];
+      helfi_calculator_preprocess_paragraph__calculator($variables);
+      return $variables;
+    };
+
+    $instanceData = fn (array $variables) => array_find($variables['#attached']['drupalSettings']['helfiCalculator'], fn ($item) => is_array($item))['data'] ?? NULL;
+
+    // The text values are filtered.
+    $variables = $preprocess('home_care_client_fee');
+    $this->assertTrue($variables['is_active']);
+    $this->assertSame('{"guardianship_fee":"1"}', $variables['#attached']['drupalSettings']['helfiCalculator']['home_care_client_fee']);
+    $this->assertSame('{"guardianship_fee":"1"}', $instanceData($variables));
+
+    // The settings without anything to filter are output as they are.
+    $variables = $preprocess('early_childhood_education_fee');
+    $this->assertTrue($variables['is_active']);
+    $this->assertSame('{"minimum_funds": 167}', $instanceData($variables));
+
+    // The invalid settings are not output, and the calculator is hidden.
+    $variables = $preprocess('home_care_service_voucher');
+    $this->assertFalse($variables['is_active']);
+    $this->assertSame('{}', $variables['#attached']['drupalSettings']['helfiCalculator']['home_care_service_voucher']);
+    $this->assertNull($instanceData($variables));
+  }
+
+  /**
    * Test the getCalculatorLibraryName() for known calculators.
    */
   #[DataProvider('knownCalculatorProvider')]

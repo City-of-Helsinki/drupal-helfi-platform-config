@@ -108,6 +108,8 @@ services:
 
   Drupal\helfi_platform_config\MultisiteSearch: ~
 
+  Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex: ~
+
   Drupal\helfi_platform_config\RedirectCleaner: ~
 
   # Client builder factory for etusivu elastic search.
@@ -135,3 +137,5 @@ services:
   Drupal\helfi_platform_config\HeadingIdInjector: ~
   Drupal\helfi_platform_config\EventSubscriber\HeadingIdResponseSubscriber: ~
 
+  Drupal\helfi_platform_config\EntityNotifications\EntityNotificationManager: ~
+  Drupal\helfi_platform_config\EntityNotifications\EntityNotificationLazyBuilder: ~

@@ -67,7 +67,7 @@ final class SharedIndex extends StorageClientBase {
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ) : self {
+  ) : static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->elasticsearchClient = $container->get('helfi_platform_config.etusivu_elastic_client');
     $instance->environmentResolver = $container->get('helfi_api_base.environment_resolver');
