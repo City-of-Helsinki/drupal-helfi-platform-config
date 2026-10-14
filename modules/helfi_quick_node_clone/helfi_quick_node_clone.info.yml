@@ -1,0 +1,11 @@
+name: 'HELfi Quick node clone'
+description: 'Integrates Quick Node Clone with HELfi user roles and content types.'
+type: module
+core_version_requirement: ^11
+package: HELfi
+dependencies:
+  - helfi_node_landing_page:helfi_node_landing_page
+  - helfi_node_page:helfi_node_page
+  - helfi_platform_config:helfi_platform_config
+  - helfi_user_roles:helfi_user_roles
+  - quick_node_clone:quick_node_clone
