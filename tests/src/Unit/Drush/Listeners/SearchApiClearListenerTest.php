@@ -14,7 +14,6 @@ use Drupal\helfi_platform_config\Drush\Listeners\SearchApiClearListener;
 use Drupal\helfi_platform_config\RestrictedSearchIndex;
 use Drupal\search_api\IndexInterface;
 use Drupal\Tests\UnitTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
@@ -26,7 +25,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Unit tests for the sapi-c command listener.
  */
-#[CoversClass(SearchApiClearListener::class)]
 #[Group('helfi_platform_config')]
 final class SearchApiClearListenerTest extends UnitTestCase {
 

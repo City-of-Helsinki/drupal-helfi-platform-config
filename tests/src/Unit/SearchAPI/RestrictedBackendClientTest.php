@@ -22,7 +22,6 @@ use Drupal\search_api\Utility\FieldsHelperInterface;
 use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
 use Drupal\Tests\UnitTestCase;
 use Elastic\Elasticsearch\Client;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -32,8 +31,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 /**
  * Unit tests for the shared-index backend client.
  */
-#[CoversClass(RestrictedBackendClient::class)]
-#[CoversClass(RestrictedBackendClientFactory::class)]
 #[Group('helfi_platform_config')]
 final class RestrictedBackendClientTest extends UnitTestCase {
 

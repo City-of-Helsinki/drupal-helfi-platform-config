@@ -11,13 +11,11 @@ use Drupal\helfi_api_base\Environment\ProjectMetadata;
 use Drupal\helfi_platform_config\RestrictedClearAction;
 use Drupal\helfi_platform_config\RestrictedSearchIndex;
 use Drupal\Tests\UnitTestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Unit tests for RestrictedSearchIndex.
  */
-#[CoversClass(RestrictedSearchIndex::class)]
 #[Group('helfi_platform_config')]
 final class RestrictedSearchIndexTest extends UnitTestCase {
 
