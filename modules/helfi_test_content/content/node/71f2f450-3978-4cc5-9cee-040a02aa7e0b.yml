@@ -37,7 +37,7 @@ default:
       value: false
   toc_enabled:
     -
-      value: false
+      value: true
   toc_title:
     -
       value: 'Table of contents'
