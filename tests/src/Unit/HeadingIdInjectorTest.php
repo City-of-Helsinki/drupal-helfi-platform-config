@@ -203,6 +203,12 @@ class HeadingIdInjectorTest extends UnitTestCase {
         '<h2 id="otsikko-taalla" tabindex="-1">Otsikko täällä</h2>',
       ],
 
+      'section sign' => [
+        'fi',
+        '<h2>§ 23, 24 – Jotain lakiin liittyvää puppua</h2>',
+        '<h2 id="SS-23--24---jotain-lakiin-liittyvaa-puppua" tabindex="-1">§ 23, 24 – Jotain lakiin liittyvää puppua</h2>',
+      ],
+
       'other language transliteration' => [
         'ru',
         '<h2>Привет</h2>',
