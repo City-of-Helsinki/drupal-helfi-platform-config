@@ -297,12 +297,12 @@ declare(strict_types=1);
 
 namespace Drupal\yourmodule\Token;
 
-use Drupal\helfi_platform_config\Token\OGImageBuilderInterface;
+use Drupal\helfi_platform_config\Image\ImageBuilderInterface;
 
 /**
  * Handles token hooks.
  */
-final class YourEntityImageBuilder implements OGImageBuilderInterface {
+final class YourEntityImageBuilder implements ImageBuilderInterface {
 
   /**
    * {@inheritDoc}

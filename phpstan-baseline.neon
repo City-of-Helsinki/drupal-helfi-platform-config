@@ -6583,12 +6583,6 @@ parameters:
 			path: tests/src/Unit/MultisiteSearchTest.php
 
 		-
-			message: '#^Call to an undefined method Drupal\\helfi_platform_config\\Token\\OGImageBuilderInterface\|Prophecy\\Prophecy\\ObjectProphecy\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: tests/src/Unit/OGImageManagerTest.php
-
-		-
 			message: '#^Cannot call method shouldHaveBeenCalled\(\) on Prophecy\\Prophecy\\MethodProphecy\|string\.$#'
 			identifier: method.nonObject
 			count: 1
@@ -6597,18 +6591,6 @@ parameters:
 		-
 			message: '#^Method Drupal\\Tests\\helfi_platform_config\\Unit\\OGImageManagerTest\:\:createImageBuilderMock\(\) return type with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
 			identifier: missingType.generics
-			count: 1
-			path: tests/src/Unit/OGImageManagerTest.php
-
-		-
-			message: '#^Parameter \#1 \$builder of method Drupal\\helfi_platform_config\\Token\\OGImageManager\:\:add\(\) expects Drupal\\helfi_platform_config\\Token\\OGImageBuilderInterface, object given\.$#'
-			identifier: argument.type
-			count: 4
-			path: tests/src/Unit/OGImageManagerTest.php
-
-		-
-			message: '#^Parameter \#1 \$entity of method Drupal\\helfi_platform_config\\Token\\OGImageBuilderInterface\:\:buildUri\(\) expects Drupal\\Core\\Entity\\EntityInterface\|null, Prophecy\\Argument\\Token\\AnyValueToken given\.$#'
-			identifier: argument.type
 			count: 1
 			path: tests/src/Unit/OGImageManagerTest.php
 
