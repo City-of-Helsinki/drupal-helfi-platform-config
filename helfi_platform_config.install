@@ -24,6 +24,7 @@ use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
+use Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdaterInterface;
 use Drupal\helfi_platform_config\DTO\ChangedAtFieldBundle;
 use Drupal\helfi_platform_config\Entity\PublishableRedirect;
 use Drupal\paragraphs\ParagraphInterface;
@@ -1098,21 +1099,31 @@ function helfi_platform_config_update_11012(): void {
 }
 
 /**
- * UHF-13541: Enable helfi_quick_node_clone module.
+ * UHF-13541: Enable quick_node_clone module and grant clone permissions.
  */
 function helfi_platform_config_update_11013(): void {
   $moduleHandler = \Drupal::moduleHandler();
+  $modules = array_filter(
+    ['helfi_node_page', 'helfi_node_landing_page'],
+    fn (string $module) => $moduleHandler->moduleExists($module),
+  );
 
-  if ($moduleHandler->moduleExists('helfi_quick_node_clone')) {
+  if (!$modules) {
     return;
   }
 
-  // Skip sites that lack the content types the module depends on.
-  foreach (['helfi_node_landing_page', 'helfi_node_page'] as $dependency) {
-    if (!$moduleHandler->moduleExists($dependency)) {
-      return;
-    }
+  if (!$moduleHandler->moduleExists('quick_node_clone')) {
+    \Drupal::service('module_installer')->install(['quick_node_clone']);
   }
 
-  \Drupal::service('module_installer')->install(['helfi_quick_node_clone']);
+  $configUpdater = \Drupal::service(ConfigUpdaterInterface::class);
+  // Installing a module rebuilds the container, so the module handler must
+  // be fetched again.
+  $moduleHandler = \Drupal::moduleHandler();
+
+  foreach ($modules as $module) {
+    $configUpdater->updatePermissions(
+      $moduleHandler->invoke($module, 'platform_config_grant_permissions') ?? [],
+    );
+  }
 }

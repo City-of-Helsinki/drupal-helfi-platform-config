@@ -2569,12 +2569,6 @@ parameters:
 			path: modules/helfi_node_landing_page/helfi_node_landing_page.module
 
 		-
-			message: '#^Function helfi_node_landing_page_platform_config_grant_permissions\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/helfi_node_landing_page/helfi_node_landing_page.module
-
-		-
 			message: '#^Function helfi_node_news_item_update_9008\(\) has parameter \$sandbox with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -2636,12 +2630,6 @@ parameters:
 
 		-
 			message: '#^Function helfi_node_page_helfi_paragraph_types\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/helfi_node_page/helfi_node_page.module
-
-		-
-			message: '#^Function helfi_node_page_platform_config_grant_permissions\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: modules/helfi_node_page/helfi_node_page.module
