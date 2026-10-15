@@ -9,11 +9,12 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\helfi_platform_config\Image\ImageBuilderInterface;
 
 /**
  * Default og image for all entities.
  */
-class DefaultImageBuilder implements OGImageBuilderInterface {
+class DefaultImageBuilder implements ImageBuilderInterface {
 
   /**
    * Constructs a new instance.
