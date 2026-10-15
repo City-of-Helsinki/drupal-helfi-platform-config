@@ -1096,3 +1096,23 @@ function helfi_platform_config_update_11012(): void {
   $storage = \Drupal::entityTypeManager()->getStorage('block');
   $storage->delete($storage->loadByProperties(['plugin' => 'sidebar_content_block']));
 }
+
+/**
+ * UHF-13541: Enable helfi_quick_node_clone module.
+ */
+function helfi_platform_config_update_11013(): void {
+  $moduleHandler = \Drupal::moduleHandler();
+
+  if ($moduleHandler->moduleExists('helfi_quick_node_clone')) {
+    return;
+  }
+
+  // Skip sites that lack the content types the module depends on.
+  foreach (['helfi_node_landing_page', 'helfi_node_page'] as $dependency) {
+    if (!$moduleHandler->moduleExists($dependency)) {
+      return;
+    }
+  }
+
+  \Drupal::service('module_installer')->install(['helfi_quick_node_clone']);
+}
