@@ -7,7 +7,7 @@ namespace Drupal\Tests\helfi_platform_config\Unit;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
-use Drupal\helfi_platform_config\Token\OGImageBuilderInterface;
+use Drupal\helfi_platform_config\Image\ImageBuilderInterface;
 use Drupal\helfi_platform_config\Token\OGImageManager;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
@@ -86,11 +86,11 @@ class OGImageManagerTest extends UnitTestCase {
    * @param bool $applies
    *   Return value for applies().
    *
-   * @return \Drupal\helfi_platform_config\Token\OGImageBuilderInterface|\Prophecy\Prophecy\ObjectProphecy
+   * @return \Drupal\helfi_platform_config\Image\ImageBuilderInterface|\Prophecy\Prophecy\ObjectProphecy
    *   Builder mock.
    */
-  private function createImageBuilderMock(?string $url, bool $applies = TRUE) : OGImageBuilderInterface|ObjectProphecy {
-    $builder = $this->prophesize(OGImageBuilderInterface::class);
+  private function createImageBuilderMock(?string $url, bool $applies = TRUE) : ImageBuilderInterface|ObjectProphecy {
+    $builder = $this->prophesize(ImageBuilderInterface::class);
     $builder->applies(Argument::any())->willReturn($applies);
     $builder->buildUri(Argument::any())->willReturn($url);
     return $builder;
