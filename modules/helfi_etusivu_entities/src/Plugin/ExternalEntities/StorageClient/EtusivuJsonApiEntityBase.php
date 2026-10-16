@@ -27,6 +27,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class EtusivuJsonApiEntityBase extends JsonApi {
 
   /**
+   * The request timeout in seconds.
+   */
+  public const int TIMEOUT = 5;
+
+  /**
    * Custom cache tag.
    *
    * @var string
@@ -104,7 +109,9 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
     $uri = $this->getUri([], 'fi');
 
     try {
-      $content = $this->client->request('GET', $uri);
+      $content = $this->client->request('GET', $uri, [
+        RequestOptions::TIMEOUT => self::TIMEOUT,
+      ]);
       $json = json_decode(
         json: $content->getBody()->getContents(),
         associative: TRUE,
@@ -217,7 +224,7 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
 
     try {
       $content = $this->client->request('GET', $uri, [
-        RequestOptions::TIMEOUT => 5,
+        RequestOptions::TIMEOUT => self::TIMEOUT,
       ]);
       $json = json_decode(
         json: $content->getBody()->getContents(),
