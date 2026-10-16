@@ -49,6 +49,7 @@
         "drupal/paragraphs_asymmetric_translation_widgets": "^1.0",
         "drupal/pathauto": "^1.8",
         "drupal/publication_date": "^3.0",
+        "drupal/quick_node_clone": "^1.22",
         "drupal/real_aes": "^2.6",
         "drupal/readonly_field_widget": "^1.0 || ^2.0",
         "drupal/redirect": "^1.12",
