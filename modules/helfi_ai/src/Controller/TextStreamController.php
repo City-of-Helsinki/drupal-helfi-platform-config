@@ -15,9 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Streams an AI summary of the posted text.
+ * Streams the result of an AI feature for the posted text.
  */
-final class SummaryController implements ContainerInjectionInterface {
+final class TextStreamController implements ContainerInjectionInterface {
 
   use AutowireTrait;
 
@@ -27,17 +27,24 @@ final class SummaryController implements ContainerInjectionInterface {
   ) {}
 
   /**
-   * Streams a summary of the posted text as server-sent events.
+   * Streams the feature's result as server-sent events.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request, with a JSON body of {text, langcode}.
+   * @param 'tone'|'summary' $feature
+   *   The feature, from the route defaults.
    *
    * @return \Symfony\Component\HttpFoundation\Response
    *   The event stream, or {error: string} with a 4xx code.
    */
-  public function summary(Request $request): Response {
-    if (!$this->configFactory->get('helfi_ai.settings')->get('enable_ai_summary')) {
-      return new JsonResponse(['error' => 'AI summary is disabled.'], 403);
+  public function stream(Request $request, string $feature): Response {
+    [$flag, $generate] = match ($feature) {
+      'tone' => ['enable_tone_check', $this->generator->streamTone(...)],
+      'summary' => ['enable_ai_summary', $this->generator->streamSummary(...)],
+    };
+
+    if (!$this->configFactory->get('helfi_ai.settings')->get($flag)) {
+      return new JsonResponse(['error' => 'The feature is disabled.'], 403);
     }
     $data = json_decode($request->getContent(), TRUE);
     $text = $data['text'] ?? NULL;
@@ -48,13 +55,13 @@ final class SummaryController implements ContainerInjectionInterface {
     }
 
     if (trim($text) === '') {
-      return new JsonResponse(['error' => 'No text to summarize.'], 400);
+      return new JsonResponse(['error' => 'No text to process.'], 400);
     }
     if (mb_strlen($text) > TextServicesGenerator::MAX_CONTENT_LENGTH) {
-      return new JsonResponse(['error' => 'Text is too long to summarize.'], 413);
+      return new JsonResponse(['error' => 'The text is too long.'], 413);
     }
 
-    return new EventStreamResponse(fn () => $this->generator->streamSummary($text, $langcode));
+    return new EventStreamResponse(fn () => $generate($text, $langcode));
   }
 
 }
