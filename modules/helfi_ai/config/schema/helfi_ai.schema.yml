@@ -23,3 +23,10 @@ helfi_ai.settings:
       sequence:
         type: string
         label: 'Provider and model, for example azure__gpt-5-nano'
+    text_services:
+      type: mapping
+      label: 'Helfi Text Services API'
+      mapping:
+        api_key:
+          type: string
+          label: 'API key, set in settings.php and never exported'

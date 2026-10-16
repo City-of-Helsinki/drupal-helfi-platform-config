@@ -34,12 +34,8 @@ msgid "Cancel"
 msgstr "Peruuta"
 
 msgctxt "Helfi AI"
-msgid "Could not read the page content. Please try again."
-msgstr "Sivun sisältöä ei voitu lukea. Yritä uudelleen."
-
-msgctxt "Helfi AI"
-msgid "Could not generate title suggestions. Add some page content and make sure the AI provider is configured."
-msgstr "Otsikkoehdotuksia ei voitu luoda. Lisää sivulle sisältöä ja varmista, että tekoälypalvelu on määritetty."
+msgid "Could not complete the AI request. Please try again."
+msgstr "Tekoälypyyntöä ei voitu suorittaa. Yritä uudelleen."
 
 msgctxt "Helfi AI"
 msgid "AI summary"
@@ -74,10 +70,6 @@ msgid "Generate a new AI summary. It will replace the previous summary."
 msgstr "Luo uuden tekoälytiivistelmän, joka korvaa aiemman tiivistelmän."
 
 msgctxt "Helfi AI"
-msgid "Could not generate a summary. Add some page content and make sure the AI provider is configured."
-msgstr "Tiivistelmän luominen epäonnistui. Lisää sivulle sisältöä ja varmista, että tekoälypalvelu on määritetty."
-
-msgctxt "Helfi AI"
 msgid "Check tone"
 msgstr "Tarkista äänensävy"
 
@@ -88,10 +80,6 @@ msgstr "Tarkistetaan äänensävyä…"
 msgctxt "Helfi AI"
 msgid "Checking the tone of the content…"
 msgstr "Tarkistetaan sisällön äänensävyä…"
-
-msgctxt "Helfi AI"
-msgid "Could not check the tone. Please try again."
-msgstr "Äänensävyn tarkistus epäonnistui. Yritä myöhemmin uudelleen."
 
 msgctxt "Helfi AI"
 msgid "Replace the content with an AI-generated version"
