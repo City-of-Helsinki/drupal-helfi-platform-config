@@ -8,7 +8,7 @@
     "Every build, lint and format script below runs inside a disposable Node container via the sandbox command."
   ],
   "scripts": {
-    "preinstall": "npm install ../../../../../themes/contrib/hdbt/theme-builder --loglevel=silent",
+    "preinstall": "rm -rf node_modules/@hdbt/theme-builder && npm install ../../../../../themes/contrib/hdbt/theme-builder --loglevel=silent",
     "dev": "sandbox node theme-builder.mjs --watch --dev",
     "build": "sandbox sh -c 'biome check --fix assets/js/ && node theme-builder.mjs'",
     "lint:js": "sandbox biome lint --fix assets/js/",
