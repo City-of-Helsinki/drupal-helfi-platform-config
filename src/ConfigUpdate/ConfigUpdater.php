@@ -81,8 +81,10 @@ final class ConfigUpdater implements ConfigUpdaterInterface {
     $this->configInstaller->installDefaultConfig('module', $module);
     $this->configRewriter->rewriteModuleConfig($module);
 
-    // Collect module permissions and update them.
-    $permissions = $this->moduleHandler->invokeAll('platform_config_grant_permissions');
+    // Grant only the permissions of the module being updated. Other modules'
+    // permissions may depend on modules or configuration that are not yet
+    // installed, and are granted when those modules are updated.
+    $permissions = $this->moduleHandler->invoke($module, 'platform_config_grant_permissions');
     $this->updatePermissions($permissions ?? []);
 
     // Update all paragraph field handlers.
