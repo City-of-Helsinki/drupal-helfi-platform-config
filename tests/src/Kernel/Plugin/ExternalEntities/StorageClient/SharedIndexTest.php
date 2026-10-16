@@ -182,6 +182,23 @@ final class SharedIndexTest extends KernelTestBase {
       'type' => 'best_fields',
       'fields' => ['label', 'metatag_title', 'url'],
     ], $body['query']['bool']['must'][0]['multi_match']);
+    $this->assertArrayNotHasKey('must_not', $body['query']['bool']);
+    $this->assertContains('etusivu', $body['query']['bool']['filter'][0]['terms']['instance']);
+  }
+
+  /**
+   * Tests that the Linkit exclude condition hides current-instance content.
+   */
+  public function testTitleQueryExcludesCurrentInstance(): void {
+    $history = [];
+    $this->getStorage($history, [$this->createElasticsearchResponse([])])
+      ->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('title', 'library', 'CONTAINS')
+      ->condition(SharedIndex::EXCLUDE_CURRENT_INSTANCE, 1)
+      ->execute();
+
+    $body = $this->getRequestBody($history[0]['request']);
     $this->assertSame([
       'bool' => [
         'must' => [
@@ -190,7 +207,6 @@ final class SharedIndexTest extends KernelTestBase {
         ],
       ],
     ], $body['query']['bool']['must_not'][0]);
-    $this->assertContains('etusivu', $body['query']['bool']['filter'][0]['terms']['instance']);
   }
 
   /**
