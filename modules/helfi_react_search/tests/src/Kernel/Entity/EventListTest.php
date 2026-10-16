@@ -161,6 +161,20 @@ class EventListTest extends KernelTestBase {
     $paragraph->set('field_event_list_only_super', TRUE);
     $this->assertTrue($paragraph->showOnlySuperEvents());
     $paragraph->set('field_event_list_only_super', FALSE);
+
+    // Test all events link. It is only returned with the lifts layout.
+    $this->assertNull($paragraph->getAllEventsLink());
+    $paragraph->set('field_event_list_all_events_link', [
+      'uri' => 'https://tapahtumat.hel.fi/fi/haku',
+      'title' => 'All events',
+    ]);
+    $this->assertNull($paragraph->getAllEventsLink());
+    $paragraph->set('field_event_list_layout', 'lifts');
+    $this->assertSame([
+      'url' => 'https://tapahtumat.hel.fi/fi/haku',
+      'title' => 'All events',
+    ], $paragraph->getAllEventsLink());
+    $paragraph->set('field_event_list_layout', 'default');
   }
 
   /**
