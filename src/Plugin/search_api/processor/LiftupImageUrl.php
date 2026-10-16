@@ -55,7 +55,7 @@ final class LiftupImageUrl extends ProcessorPluginBase {
     if (!$datasource) {
       $properties['liftup_image_url'] = new ProcessorProperty([
         'label' => $this->t('Liftup image URL'),
-        'description' => $this->t('Absolute URL of the liftup image.'),
+        'description' => $this->t('Relative URL of the liftup image.'),
         'type' => 'string',
         'processor_id' => $this->getPluginId(),
       ]);

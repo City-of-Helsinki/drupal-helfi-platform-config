@@ -124,6 +124,8 @@ class EntityHooks {
 
     $additionalFields = [
       'entity_url' => new TranslatableMarkup('Entity URL'),
+      'liftup_image_url' => new TranslatableMarkup('Liftup image URL'),
+      'instance' => new TranslatableMarkup('Instance'),
       'language_code' => new TranslatableMarkup('Language code'),
     ];
     foreach ($additionalFields as $field_name => $field_label) {
