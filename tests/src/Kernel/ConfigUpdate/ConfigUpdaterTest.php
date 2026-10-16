@@ -110,11 +110,6 @@ class ConfigUpdaterTest extends KernelTestBase {
 
     /** @var \Drupal\helfi_platform_config\ConfigUpdate\ConfigUpdater $sut */
     $sut = $this->container->get(ConfigUpdater::class);
-
-    // Updating another module must not grant this module's permissions.
-    $sut->update('user');
-    $this->assertFalse($account->hasPermission('access content'));
-
     $sut->update('helfi_platform_config_update_test');
     $this->assertConfig($account);
 

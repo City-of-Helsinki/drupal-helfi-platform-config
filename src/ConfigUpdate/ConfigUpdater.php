@@ -6,10 +6,7 @@ namespace Drupal\helfi_platform_config\ConfigUpdate;
 
 use Drupal\Core\Config\ConfigInstallerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Extension\Dependency;
-use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\config_rewrite\ConfigRewriterInterface;
 
@@ -38,10 +35,6 @@ final class ConfigUpdater implements ConfigUpdaterInterface {
    *   The entity type manager.
    * @param \Drupal\helfi_platform_config\ConfigUpdate\ParagraphTypeUpdater $paragraphTypeUpdater
    *   The paragraph type updater.
-   * @param \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller
-   *   The module installer.
-   * @param \Drupal\Core\Extension\ModuleExtensionList $moduleExtensionList
-   *   The module extension list.
    */
   public function __construct(
     private ConfigInstallerInterface $configInstaller,
@@ -49,8 +42,6 @@ final class ConfigUpdater implements ConfigUpdaterInterface {
     private ModuleHandlerInterface $moduleHandler,
     private EntityTypeManagerInterface $entityTypeManager,
     private ParagraphTypeUpdater $paragraphTypeUpdater,
-    private ModuleInstallerInterface $moduleInstaller,
-    private ModuleExtensionList $moduleExtensionList,
   ) {
     $this->skipUpdate = Settings::get('is_azure', FALSE);
   }
@@ -77,39 +68,15 @@ final class ConfigUpdater implements ConfigUpdaterInterface {
     if ($this->skipUpdate) {
       return;
     }
-    $this->installMissingDependencies($module);
     $this->configInstaller->installDefaultConfig('module', $module);
     $this->configRewriter->rewriteModuleConfig($module);
 
-    // Grant only the permissions of the module being updated. Other modules'
-    // permissions may depend on modules or configuration that are not yet
-    // installed, and are granted when those modules are updated.
-    $permissions = $this->moduleHandler->invoke($module, 'platform_config_grant_permissions');
+    // Collect module permissions and update them.
+    $permissions = $this->moduleHandler->invokeAll('platform_config_grant_permissions');
     $this->updatePermissions($permissions ?? []);
 
     // Update all paragraph field handlers.
     $this->paragraphTypeUpdater->updateParagraphTargetTypes();
-  }
-
-  /**
-   * Installs dependencies added to the module after it was installed.
-   *
-   * Configuration and permissions provided by the module may depend on them.
-   *
-   * @param string $module
-   *   The module.
-   */
-  private function installMissingDependencies(string $module) : void {
-    $dependencies = $this->moduleExtensionList->getExtensionInfo($module)['dependencies'] ?? [];
-
-    $missing = array_filter(
-      array_map(fn (string $dependency) => Dependency::createFromString($dependency)->getName(), $dependencies),
-      fn (string $name) => !$this->moduleHandler->moduleExists($name),
-    );
-
-    if ($missing) {
-      $this->moduleInstaller->install(array_values($missing));
-    }
   }
 
 }

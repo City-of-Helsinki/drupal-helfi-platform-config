@@ -1099,16 +1099,20 @@ function helfi_platform_config_update_11012(): void {
 }
 
 /**
- * UHF-13541: Install quick_node_clone module and grant clone permissions.
+ * UHF-13541: Install quick_node_clone module.
  */
 function helfi_platform_config_update_11013(): void {
-  $configUpdater = \Drupal::service(ConfigUpdaterInterface::class);
+  $moduleHandler = \Drupal::moduleHandler();
+  $modules = array_filter(
+    ['helfi_node_page', 'helfi_node_landing_page'],
+    fn (string $module) => $moduleHandler->moduleExists($module),
+  );
 
-  // The update installs the newly added quick_node_clone dependency before
-  // granting the clone permissions.
-  foreach (['helfi_node_page', 'helfi_node_landing_page'] as $module) {
-    if (\Drupal::moduleHandler()->moduleExists($module)) {
-      $configUpdater->update($module);
-    }
+  if (!$modules) {
+    return;
+  }
+
+  if (!$moduleHandler->moduleExists('quick_node_clone')) {
+    \Drupal::service('module_installer')->install(['quick_node_clone']);
   }
 }
