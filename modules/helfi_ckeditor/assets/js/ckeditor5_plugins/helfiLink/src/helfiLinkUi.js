@@ -685,6 +685,7 @@ export default class HelfiLinkUi extends Plugin {
             { context: 'CKEditor5 Helfi Link plugin' },
           );
           evt.stop();
+          return;
         }
 
         // Get whitelisted domains.
@@ -765,6 +766,7 @@ export default class HelfiLinkUi extends Plugin {
             { context: 'CKEditor5 Helfi Link plugin' },
           );
           evt.stop();
+          return;
         }
 
         // Double-check if either of the checkbox values is not checked and
