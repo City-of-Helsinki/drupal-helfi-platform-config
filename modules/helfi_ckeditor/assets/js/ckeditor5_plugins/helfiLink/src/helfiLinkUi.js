@@ -138,10 +138,6 @@ export default class HelfiLinkUi extends Plugin {
       // when any advanced field is modified.
       this._bindAdvancedAutOpenFor(models);
 
-      // Move the submit button row from inside urlInputView
-      // to the bottom of the dialog.
-      this._moveSubmitButtonToBottom();
-
       // Reorder all fields in the desired layout.
       this._reorderFormFields();
 
@@ -812,35 +808,6 @@ export default class HelfiLinkUi extends Plugin {
   }
 
   /**
-   * Move the submit button row from inside urlInputView to the bottom
-   * of the main linkFormView so it's not nested inside the URL input.
-   */
-  _moveSubmitButtonToBottom() {
-    const { urlInputView } = this.linkFormView;
-
-    if (!urlInputView?.children) {
-      return;
-    }
-
-    const submitRow = urlInputView.children.find((view) =>
-      view.element?.classList.contains('ck-form__row_with-submit'),
-    );
-
-    if (!submitRow) {
-      return;
-    }
-
-    // Remove from inside the urlInputView
-    urlInputView.children.remove(submitRow);
-
-    // Add at the end of the main form
-    this.linkFormView.children.add(submitRow);
-
-    // Store a reference so you can reorder it later
-    this.linkFormView.saveButtonView = submitRow;
-  }
-
-  /**
    * Reorder the form fields to match the desired layout.
    */
   _reorderFormFields() {
@@ -880,15 +847,15 @@ export default class HelfiLinkUi extends Plugin {
     ].filter(Boolean);
 
     // Clear and re-add in correct order
+    const existing = [...children];
     children.clear();
     ordered.forEach((view) => {
       children.add(view);
     });
 
-    // Re-add anything that wasn’t explicitly reordered
-    const movedViews = new Set(ordered);
-    children._items
-      .filter((view) => !movedViews.has(view))
+    // Re-add views that were not reordered and do not wrap a reordered view.
+    existing
+      .filter((view) => !ordered.includes(view) && !ordered.some((item) => view.children?.has?.(item)))
       .forEach((view) => {
         children.add(view);
       });
