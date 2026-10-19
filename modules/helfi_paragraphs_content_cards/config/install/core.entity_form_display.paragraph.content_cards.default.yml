@@ -17,16 +17,6 @@ targetEntityType: paragraph
 bundle: content_cards
 mode: default
 content:
-  field_content_cards_content:
-    type: entity_reference_autocomplete
-    weight: 4
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_content_cards_content_ext:
     type: entity_reference_autocomplete
     weight: 3
@@ -61,4 +51,5 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_content_cards_content: true
   status: true
