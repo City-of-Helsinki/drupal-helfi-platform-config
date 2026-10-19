@@ -57,6 +57,31 @@ class EventList extends Paragraph implements ParagraphInterface {
   }
 
   /**
+   * Get the "all events" link shown with the lifts layout.
+   *
+   * @return array{url: string, title: string}|null
+   *   The link url and title, or NULL if the link is not set or the layout
+   *   is not lifts.
+   */
+  public function getAllEventsLink(): ?array {
+    if (
+      $this->getEventListLayout() !== 'lifts' ||
+      !$this->hasField('field_event_list_all_events_link') ||
+      $this->get('field_event_list_all_events_link')->isEmpty()
+    ) {
+      return NULL;
+    }
+
+    /** @var \Drupal\link\LinkItemInterface $link */
+    $link = $this->get('field_event_list_all_events_link')->first();
+
+    return [
+      'url' => $link->getUrl()->toString(),
+      'title' => (string) $link->get('title')->getValue(),
+    ];
+  }
+
+  /**
    * Whether the list should be limited to super events.
    */
   public function showOnlySuperEvents(): bool {
