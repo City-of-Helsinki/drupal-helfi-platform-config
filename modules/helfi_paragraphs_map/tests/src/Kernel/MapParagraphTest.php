@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_paragraphs_map\Kernel\Entity;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_paragraphs_map\Entity\Map;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\media\Entity\Media;
 
 /**
@@ -116,6 +117,36 @@ class MapParagraphTest extends KernelTestBase {
     $referenced = $paragraph->get('field_map_map')->referencedEntities();
     $this->assertNotEmpty($referenced);
     $this->assertEquals('Test iframe title', $referenced[0]->iframeTitle ?? NULL);
+  }
+
+  /**
+   * Tests the iframe title translation.
+   */
+  public function testSetMediaEntityIframeTitleTranslation(): void {
+    $this->installConfig(['language']);
+    ConfigurableLanguage::createFromLangcode('fi')->save();
+    ConfigurableLanguage::createFromLangcode('sv')->save();
+
+    $media = Media::create([
+      'bundle' => 'hel_map',
+      'name' => 'Map media',
+      'langcode' => 'fi',
+      'status' => 1,
+    ]);
+    $media->addTranslation('sv', ['name' => 'Map media sv']);
+    $media->save();
+
+    $paragraph = Map::create([
+      'type' => 'map',
+      'langcode' => 'sv',
+      'field_iframe_title' => 'Swedish iframe title',
+      'field_map_map' => [['target_id' => $media->id()]],
+    ]);
+    $paragraph->save();
+
+    $translation = $paragraph->get('field_map_map')->entity->getTranslation('sv');
+    $paragraph->setMediaEntityIframeTitle();
+    $this->assertSame('Swedish iframe title', $translation->iframeTitle ?? NULL);
   }
 
 }
