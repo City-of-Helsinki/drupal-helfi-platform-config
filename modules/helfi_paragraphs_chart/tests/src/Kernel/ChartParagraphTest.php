@@ -144,7 +144,9 @@ class ChartParagraphTest extends KernelTestBase {
     ]);
     $paragraph->save();
 
-    $translation = $paragraph->get('field_chart_chart')->entity->getTranslation('sv');
+    $media = $paragraph->get('field_chart_chart')->entity;
+    $this->assertInstanceOf(Media::class, $media);
+    $translation = $media->getTranslation('sv');
     $paragraph->setMediaEntityIframeTitle();
     $this->assertSame('Swedish iframe title', $translation->iframeTitle ?? NULL);
   }

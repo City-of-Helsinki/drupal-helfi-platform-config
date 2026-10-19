@@ -144,7 +144,9 @@ class MapParagraphTest extends KernelTestBase {
     ]);
     $paragraph->save();
 
-    $translation = $paragraph->get('field_map_map')->entity->getTranslation('sv');
+    $media = $paragraph->get('field_map_map')->entity;
+    $this->assertInstanceOf(Media::class, $media);
+    $translation = $media->getTranslation('sv');
     $paragraph->setMediaEntityIframeTitle();
     $this->assertSame('Swedish iframe title', $translation->iframeTitle ?? NULL);
   }

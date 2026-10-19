@@ -142,7 +142,9 @@ class RemoteVideoParagraphTest extends KernelTestBase {
     ]);
     $paragraph->save();
 
-    $translation = $paragraph->get('field_remote_video')->entity->getTranslation('sv');
+    $media = $paragraph->get('field_remote_video')->entity;
+    $this->assertInstanceOf(Media::class, $media);
+    $translation = $media->getTranslation('sv');
 
     $paragraph->setMediaEntityIframeTitle();
 
