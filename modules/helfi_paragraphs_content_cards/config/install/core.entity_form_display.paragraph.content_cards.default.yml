@@ -1,9 +1,10 @@
-uuid: 2fd310d1-f39e-4cd6-8b72-941a8afa11d1
+uuid: 3eccf4f3-3528-4769-ab26-9419e7279865
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.paragraph.content_cards.field_content_cards_content
+    - field.field.paragraph.content_cards.field_content_cards_content_ext
     - field.field.paragraph.content_cards.field_content_cards_desc
     - field.field.paragraph.content_cards.field_content_cards_design
     - field.field.paragraph.content_cards.field_content_cards_title
@@ -17,6 +18,16 @@ bundle: content_cards
 mode: default
 content:
   field_content_cards_content:
+    type: entity_reference_autocomplete
+    weight: 4
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_content_cards_content_ext:
     type: entity_reference_autocomplete
     weight: 3
     region: content

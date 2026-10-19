@@ -1,0 +1,37 @@
+uuid: 7b9cca4f-de10-4ab6-9c98-0c6205bfa64b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.helfi_multisite_content.teaser
+  module:
+    - external_entities
+    - helfi_platform_config
+id: helfi_multisite_content.helfi_multisite_content.teaser
+targetEntityType: helfi_multisite_content
+bundle: helfi_multisite_content
+mode: teaser
+content:
+  liftup_image_url:
+    type: multisite_image
+    label: hidden
+    settings:
+      responsive_image_style: content_cards
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_url: true
+  instance: true
+  langcode: true
+  language_code: true
+  search_api_excerpt: true
