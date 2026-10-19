@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\helfi_platform_config\MultisiteSearch;
+use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Copies node references onto the multisite content field.
@@ -15,64 +16,68 @@ use Drupal\helfi_platform_config\MultisiteSearch;
  * Runs after config import, once the target field storage exists.
  * A node id 9180 in etusivu and in Finnish becomes
  * site_etusivu/entity:node/9180:fi.
+ *
+ * Important to note, that non-published nodes are not in the
+ * search index, and even though the ids are migrated to the new field,
+ * they will appear empty both in the edit form and in the view mode.
  */
-function helfi_paragraphs_content_cards_deploy_migrate_content_references() : void {
+function helfi_paragraphs_content_cards_deploy_migrate_content_field() : void {
   $prefix = \Drupal::service(MultisiteSearch::class)->getInstanceIndexPrefix();
   if ($prefix === NULL) {
     throw new \RuntimeException('Cannot migrate content card references without the current instance.');
   }
 
-  $database = \Drupal::database();
-  $tables = [
-    'paragraph__field_content_cards_content' => 'paragraph__field_content_cards_content_ext',
-    'paragraph_revision__field_content_cards_content' => 'paragraph_revision__field_content_cards_content_ext',
-  ];
-  foreach ($tables as $source => $target) {
-    if (!$database->schema()->tableExists($source) || !$database->schema()->tableExists($target)) {
-      continue;
-    }
-    _helfi_paragraphs_content_cards_copy_references($source, $target, $prefix);
-  }
-}
-
-/**
- * Copies one field table into the multisite content field table.
- */
-function _helfi_paragraphs_content_cards_copy_references(string $source, string $target, string $prefix) : void {
-  $database = \Drupal::database();
-  $rows = $database->select($source, 'source')
-    ->fields('source')
+  $storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+  $ids = $storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('type', 'content_cards')
+    ->exists('field_content_cards_content')
     ->execute();
 
-  foreach ($rows as $row) {
-    $node_id = $row->field_content_cards_content_target_id;
-    if ($node_id === NULL || $node_id === '') {
-      continue;
-    }
+  foreach (array_chunk($ids, 50, TRUE) as $chunk) {
+    foreach ($storage->loadMultiple($chunk) as $paragraph) {
+      assert($paragraph instanceof ParagraphInterface);
+      if (!$paragraph->hasField('field_content_cards_content_ext')) {
+        continue;
+      }
 
-    $exists = $database->select($target, 'target')
-      ->condition('entity_id', $row->entity_id)
-      ->condition('revision_id', $row->revision_id)
-      ->condition('langcode', $row->langcode)
-      ->condition('delta', $row->delta)
-      ->condition('deleted', $row->deleted)
-      ->countQuery()
-      ->execute()
-      ->fetchField();
-    if ($exists) {
-      continue;
-    }
+      $changed = FALSE;
+      foreach (array_keys($paragraph->getTranslationLanguages()) as $langcode) {
+        $translation = $paragraph->getTranslation($langcode);
+        $values = [];
+        foreach ($translation->get('field_content_cards_content') as $item) {
+          $node_id = $item->target_id;
+          if ($node_id === NULL || $node_id === '') {
+            continue;
+          }
+          $values[] = [
+            'target_id' => $prefix . 'entity:node/' . $node_id . ':' . $item->getLangcode(),
+          ];
+        }
+        if ($values === []) {
+          continue;
+        }
 
-    $database->insert($target)
-      ->fields([
-        'bundle' => $row->bundle,
-        'deleted' => $row->deleted,
-        'entity_id' => $row->entity_id,
-        'revision_id' => $row->revision_id,
-        'langcode' => $row->langcode,
-        'delta' => $row->delta,
-        'field_content_cards_content_ext_target_id' => $prefix . 'entity:node/' . $node_id . ':' . $row->langcode,
-      ])
-      ->execute();
+        $current = array_column($translation->get('field_content_cards_content_ext')->getValue(), 'target_id');
+        $targets = array_column($values, 'target_id');
+        if ($current === $targets) {
+          continue;
+        }
+
+        $translation->set('field_content_cards_content_ext', $values);
+        $changed = TRUE;
+      }
+
+      if (!$changed) {
+        continue;
+      }
+
+      // Update the current revision in place. A new revision would leave the
+      // parent pointing at the revision that still has an empty field.
+      $paragraph->setSyncing(TRUE);
+      $paragraph->setNewRevision(FALSE);
+      $paragraph->save();
+    }
+    $storage->resetCache($chunk);
   }
 }
