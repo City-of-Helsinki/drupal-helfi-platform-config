@@ -15,6 +15,8 @@ use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Defers multisite content cards to a follow-up HTMX request.
+ *
+ * @extends \Drupal\Core\Field\FormatterBase<\Drupal\Core\Field\EntityReferenceFieldItemListInterface<\Drupal\Core\Entity\EntityInterface>>
  */
 #[FieldFormatter(
   id: 'content_cards_htmx',
@@ -35,6 +37,8 @@ final class ContentCardsHtmxFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param \Drupal\Core\Field\EntityReferenceFieldItemListInterface<\Drupal\Core\Entity\EntityInterface> $items
    */
   public function viewElements(FieldItemListInterface $items, $langcode) : array {
     if ($items->isEmpty()) {

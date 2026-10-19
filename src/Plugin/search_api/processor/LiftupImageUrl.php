@@ -30,10 +30,12 @@ final class LiftupImageUrl extends ProcessorPluginBase {
   /**
    * The liftup image manager.
    */
-  private LiftupImageManager $liftupImageManager;
+  protected LiftupImageManager $liftupImageManager;
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $configuration
    */
   public static function create(
     ContainerInterface $container,
@@ -66,6 +68,8 @@ final class LiftupImageUrl extends ProcessorPluginBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param \Drupal\search_api\Item\ItemInterface<mixed> $item
    */
   public function addFieldValues(ItemInterface $item): void {
     $entity = $item->getOriginalObject()?->getValue();

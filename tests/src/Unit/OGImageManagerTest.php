@@ -86,10 +86,10 @@ class OGImageManagerTest extends UnitTestCase {
    * @param bool $applies
    *   Return value for applies().
    *
-   * @return \Drupal\helfi_platform_config\Image\ImageBuilderInterface|\Prophecy\Prophecy\ObjectProphecy
+   * @return \Prophecy\Prophecy\ObjectProphecy<\Drupal\helfi_platform_config\Image\ImageBuilderInterface>
    *   Builder mock.
    */
-  private function createImageBuilderMock(?string $url, bool $applies = TRUE) : ImageBuilderInterface|ObjectProphecy {
+  private function createImageBuilderMock(?string $url, bool $applies = TRUE) : ObjectProphecy {
     $builder = $this->prophesize(ImageBuilderInterface::class);
     $builder->applies(Argument::any())->willReturn($applies);
     $builder->buildUri(Argument::any())->willReturn($url);

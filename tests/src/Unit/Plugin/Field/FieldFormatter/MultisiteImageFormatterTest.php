@@ -192,6 +192,8 @@ class MultisiteImageFormatterTest extends UnitTestCase {
 
   /**
    * Builds a field item list with an instance and one path.
+   *
+   * @phpstan-return \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface>
    */
   private function items(string $instance, string $path) : FieldItemListInterface {
     $instance_field = new \stdClass();
@@ -239,9 +241,13 @@ class ExistingPublicFileWrapper {
 
   /**
    * Reports whether the public file exists.
+   *
+   * @phpstan-return array<int|string, int>|false
    */
+  // phpcs:disable
   public function url_stat(string $path, int $flags) : array|false {
     return $path === 'public://image.jpg' ? stat(__FILE__) : FALSE;
   }
+  // phpcs:enable
 
 }

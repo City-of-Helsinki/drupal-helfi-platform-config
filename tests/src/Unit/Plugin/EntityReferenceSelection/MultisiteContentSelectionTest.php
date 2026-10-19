@@ -24,6 +24,7 @@ use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -79,10 +80,11 @@ final class MultisiteContentSelectionTest extends UnitTestCase {
 
   /**
    * Builds an entity double with a title and bundle.
+   *
+   * @phpstan-return \Prophecy\Prophecy\ObjectProphecy<\Drupal\Tests\helfi_platform_config\Unit\Plugin\EntityReferenceSelection\ExternalUrlEntityInterface>
    */
-  private function entity() : \Prophecy\Prophecy\ObjectProphecy {
-    $entity = $this->prophesize(EntityInterface::class);
-    $entity->willImplement(ExternalUrlEntity::class);
+  private function entity() : ObjectProphecy {
+    $entity = $this->prophesize(ExternalUrlEntityInterface::class);
     $entity->bundle()->willReturn(MultisiteContentId::ENTITY_TYPE_ID);
     $entity->label()->willReturn('Library');
     return $entity;
@@ -132,7 +134,7 @@ final class MultisiteContentSelectionTest extends UnitTestCase {
 /**
  * Test double for an entity that can provide an external URL.
  */
-interface ExternalUrlEntity {
+interface ExternalUrlEntityInterface extends EntityInterface {
 
   /**
    * Returns the external URL.

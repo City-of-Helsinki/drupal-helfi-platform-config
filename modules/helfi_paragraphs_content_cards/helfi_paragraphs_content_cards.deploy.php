@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\helfi_platform_config\MultisiteSearch;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -46,6 +47,9 @@ function helfi_paragraphs_content_cards_deploy_migrate_content_field() : void {
         $translation = $paragraph->getTranslation($langcode);
         $values = [];
         foreach ($translation->get('field_content_cards_content') as $item) {
+          if (!$item instanceof EntityReferenceItem) {
+            continue;
+          }
           $node_id = $item->target_id;
           if ($node_id === NULL || $node_id === '') {
             continue;

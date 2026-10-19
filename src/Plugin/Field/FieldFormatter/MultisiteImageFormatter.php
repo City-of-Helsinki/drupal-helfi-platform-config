@@ -6,6 +6,8 @@ namespace Drupal\helfi_platform_config\Plugin\Field\FieldFormatter;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -22,6 +24,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Renders a relative image path from the current or another instance.
+ *
+ * @extends \Drupal\Core\Field\FormatterBase<\Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface>>
  */
 #[FieldFormatter(
   id: 'multisite_image',
@@ -38,25 +42,27 @@ final class MultisiteImageFormatter extends FormatterBase {
   /**
    * The environment resolver.
    */
-  private EnvironmentResolverInterface $environmentResolver;
+  protected EnvironmentResolverInterface $environmentResolver;
 
   /**
    * The config factory.
    */
-  private ConfigFactoryInterface $configFactory;
+  protected ConfigFactoryInterface $configFactory;
 
   /**
    * The stream wrapper manager.
    */
-  private StreamWrapperManagerInterface $streamWrapperManager;
+  protected StreamWrapperManagerInterface $streamWrapperManager;
 
   /**
    * The responsive image style storage.
    */
-  private EntityStorageInterface $responsiveImageStyleStorage;
+  protected EntityStorageInterface $responsiveImageStyleStorage;
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $configuration
    */
   public static function create(
     ContainerInterface $container,
@@ -83,6 +89,8 @@ final class MultisiteImageFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-return array<string, mixed>
    */
   public static function defaultSettings() : array {
     return [
@@ -92,12 +100,21 @@ final class MultisiteImageFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $form
+   *
+   * @phpstan-return array<string, mixed>
    */
   public function settingsForm(array $form, FormStateInterface $form_state) : array {
     $elements = parent::settingsForm($form, $form_state);
     $options = [];
     $styles = $this->responsiveImageStyleStorage->loadMultiple();
-    uasort($styles, [ResponsiveImageStyle::class, 'sort']);
+    uasort($styles, static function (EntityInterface $left, EntityInterface $right): int {
+      if (!$left instanceof ConfigEntityInterface || !$right instanceof ConfigEntityInterface) {
+        return 0;
+      }
+      return ResponsiveImageStyle::sort($left, $right);
+    });
     foreach ($styles as $machine_name => $style) {
       assert($style instanceof ResponsiveImageStyle);
       if ($style->hasImageStyleMappings()) {
@@ -131,6 +148,8 @@ final class MultisiteImageFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
    */
   public function viewElements(FieldItemListInterface $items, $langcode) : array {
     $elements = [];
@@ -170,6 +189,8 @@ final class MultisiteImageFormatter extends FormatterBase {
 
   /**
    * Reads the parent entity's instance name.
+   *
+   * @phpstan-param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
    */
   private function getInstance(FieldItemListInterface $items) : ?string {
     $entity = $items->getEntity();
@@ -236,6 +257,8 @@ final class MultisiteImageFormatter extends FormatterBase {
 
   /**
    * Builds a responsive image render element.
+   *
+   * @phpstan-return array<string, mixed>
    */
   private function buildImage(string $theme, string $uri) : array {
     return [

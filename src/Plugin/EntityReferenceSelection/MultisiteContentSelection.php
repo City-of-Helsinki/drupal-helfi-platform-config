@@ -29,6 +29,8 @@ final class MultisiteContentSelection extends DefaultSelection {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-return array<string, array<int|string, string>>
    */
   public function getReferenceableEntities($match = NULL, $match_operator = 'CONTAINS', $limit = 0) {
     $target_type = $this->getConfiguration()['target_type'];
@@ -39,7 +41,7 @@ final class MultisiteContentSelection extends DefaultSelection {
     }
 
     $result = $query->execute();
-    if (empty($result)) {
+    if (empty($result) || !is_array($result)) {
       return [];
     }
 
@@ -58,7 +60,7 @@ final class MultisiteContentSelection extends DefaultSelection {
    * Builds an escaped label, with the external URL when one exists.
    */
   private function suggestionLabel(EntityInterface $entity) : string {
-    $label = Html::escape($entity->label() ?? '');
+    $label = Html::escape((string) ($entity->label() ?? ''));
     if (!method_exists($entity, 'getExternalUrl')) {
       return $label;
     }

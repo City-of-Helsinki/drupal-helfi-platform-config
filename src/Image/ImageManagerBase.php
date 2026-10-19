@@ -4,31 +4,26 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Image;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\File\FileUrlGeneratorInterface;
-use Drupal\helfi_platform_config\Image\ImageBuilderInterface;
 
 /**
  * Image manager base.
- *
  */
 abstract class ImageManagerBase {
 
   /**
-   * Builders.
+   * Builders, grouped by priority.
    *
-   * @var array
+   * @var array<int, list<\Drupal\helfi_platform_config\Image\ImageBuilderInterface>>
    */
   private array $builders = [];
 
   /**
-   * Sorted builders.
+   * Builders sorted by priority.
    *
-   * @var array
+   * @var list<\Drupal\helfi_platform_config\Image\ImageBuilderInterface>
    */
-  private array $sortedBuilders;
+  private array $sortedBuilders = [];
 
   /**
    * Adds image builder.
