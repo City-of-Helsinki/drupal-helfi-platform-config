@@ -22,6 +22,8 @@ final class MultisiteContentMatcher extends EntityMatcher {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-return array<string, mixed>
    */
   public function defaultConfiguration() {
     return [
@@ -31,6 +33,10 @@ final class MultisiteContentMatcher extends EntityMatcher {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<string, mixed> $form
+   *
+   * @phpstan-return array<string, mixed>
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
@@ -45,6 +51,10 @@ final class MultisiteContentMatcher extends EntityMatcher {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-param array<mixed> $form
+   *
+   * @phpstan-return void
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);

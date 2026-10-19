@@ -92,10 +92,15 @@ final class ContentCardsHtmxFormatterTest extends UnitTestCase {
 
   /**
    * Reads one HTMX attribute from a placeholder render element.
+   *
+   * @phpstan-param array<mixed> $element
    */
   private function attribute(array $element, string $name) : string {
-    $attributes = $element['#attributes'];
-    return (string) $attributes[$name];
+    $attributes = $element['#attributes'] ?? [];
+    if (!is_array($attributes)) {
+      return '';
+    }
+    return (string) ($attributes[$name] ?? '');
   }
 
 }

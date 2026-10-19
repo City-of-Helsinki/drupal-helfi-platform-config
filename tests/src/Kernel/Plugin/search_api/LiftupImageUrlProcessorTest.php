@@ -134,8 +134,10 @@ class LiftupImageUrlProcessorTest extends ProcessorTestBase {
    */
   #[Test]
   public function testIndexesAbsoluteUrl(): void {
+    /** @phpstan-var object{uri: string} $image */
+    $image = $this->getTestFiles('image')[0];
     $file = File::create([
-      'uri' => $this->getTestFiles('image')[0]->uri,
+      'uri' => $image->uri,
     ]);
     $file->setPermanent();
     $file->save();
