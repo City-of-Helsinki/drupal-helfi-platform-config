@@ -70,9 +70,11 @@
             break;
         }
 
-        // Use iframe title if paragraph (or video) doesn't have a title
-        if(!mediaName || mediaName === '') {
-          mediaName = attributes.skipLinkDefaultTitle;
+        // Use iframe title if paragraph (or video) doesn't have a title.
+        // The iframe title is not set when the media is rendered outside
+        // a paragraph, so fall back to an empty string.
+        if (!mediaName) {
+          mediaName = attributes.skipLinkDefaultTitle || '';
         }
 
         // Initialize skip links elements.
@@ -97,16 +99,12 @@
             skipLinkBefore.classList.add('skip-link--video--before');
 
             // Adjust the skip link text based on whether the mediaName is found.
-            skipLinkAfter.text = Drupal.t(
-              'Continue above the @video video',
-              { '@video': mediaName },
-              { context: 'Skip links' },
-            );
-            skipLinkBefore.text = Drupal.t(
-              'Continue below the @video video',
-              { '@video': mediaName },
-              { context: 'Skip links' },
-            );
+            skipLinkAfter.text = mediaName
+              ? Drupal.t('Continue above the @video video', { '@video': mediaName }, { context: 'Skip links' })
+              : Drupal.t('Continue above the video', {}, { context: 'Skip links' });
+            skipLinkBefore.text = mediaName
+              ? Drupal.t('Continue below the @video video', { '@video': mediaName }, { context: 'Skip links' })
+              : Drupal.t('Continue below the video', {}, { context: 'Skip links' });
             mediaContainer.replaceWith(skipLinkBefore, containerElement, skipLinkAfter);
             break;
 
