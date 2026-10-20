@@ -150,6 +150,14 @@ class EntityHooks {
 
     /** @var \Drupal\Core\Entity\EntityTypeInterface $entity_type */
     $entity_type = $entity_types[MultisiteContentId::ENTITY_TYPE_ID];
+
+    // Views keys the reverse relationship of an entity reference by the
+    // target base table. This entity is not stored in SQL, so without a
+    // table name that key is null and views data rebuilds fail on PHP 8.5.
+    if ($entity_type->getBaseTable() === NULL) {
+      $entity_type->set('base_table', MultisiteContentId::ENTITY_TYPE_ID);
+    }
+
     // Entity type label is used as the group label in the autocomplete
     // results.
     $entity_type->set('label', new TranslatableMarkup('Other language versions and sites', [], ['context' => 'External entity type label']));
