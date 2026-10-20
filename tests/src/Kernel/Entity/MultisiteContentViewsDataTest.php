@@ -20,7 +20,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests Views data for references to multisite content.
- * 
+ *
  * This tests that the reverse relationship of an entity reference to multisite
  * content is correctly described in Views data. This is needed as long as
  * multisite content is a target of an entity reference field, even if there is
