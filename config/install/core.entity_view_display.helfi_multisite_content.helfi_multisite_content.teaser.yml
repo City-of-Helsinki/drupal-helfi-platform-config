@@ -8,6 +8,8 @@ dependencies:
   module:
     - external_entities
     - helfi_platform_config
+    - imagecache_external
+    - responsive_image
 id: helfi_multisite_content.helfi_multisite_content.teaser
 targetEntityType: helfi_multisite_content
 bundle: helfi_multisite_content
