@@ -18,11 +18,11 @@ interface ConfigUpdaterInterface {
   public function updatePermissions(array $permissionMap): void;
 
   /**
-   * Re-imports all configuration for given module.
+   * Re-imports all configuration for given modules.
    *
-   * @param string $module
-   *   The module.
+   * @param string ...$modules
+   *   The modules.
    */
-  public function update(string $module): void;
+  public function update(string ...$modules): void;
 
 }
