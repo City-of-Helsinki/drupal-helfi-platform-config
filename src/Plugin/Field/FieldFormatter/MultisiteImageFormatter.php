@@ -9,6 +9,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -55,9 +56,9 @@ final class MultisiteImageFormatter extends FormatterBase {
   protected StreamWrapperManagerInterface $streamWrapperManager;
 
   /**
-   * The responsive image style storage.
+   * The entity type manager.
    */
-  protected EntityStorageInterface $responsiveImageStyleStorage;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * {@inheritdoc}
@@ -74,7 +75,7 @@ final class MultisiteImageFormatter extends FormatterBase {
     $instance->environmentResolver = $container->get(EnvironmentResolverInterface::class);
     $instance->configFactory = $container->get(ConfigFactoryInterface::class);
     $instance->streamWrapperManager = $container->get(StreamWrapperManagerInterface::class);
-    $instance->responsiveImageStyleStorage = $container->get('entity_type.manager')->getStorage('responsive_image_style');
+    $instance->entityTypeManager = $container->get(EntityTypeManagerInterface::class);
     return $instance;
   }
 
@@ -108,7 +109,7 @@ final class MultisiteImageFormatter extends FormatterBase {
   public function settingsForm(array $form, FormStateInterface $form_state) : array {
     $elements = parent::settingsForm($form, $form_state);
     $options = [];
-    $styles = $this->responsiveImageStyleStorage->loadMultiple();
+    $styles = $this->responsiveImageStyleStorage()->loadMultiple();
     uasort($styles, static function (EntityInterface $left, EntityInterface $right): int {
       if (!$left instanceof ConfigEntityInterface || !$right instanceof ConfigEntityInterface) {
         return 0;
@@ -137,7 +138,7 @@ final class MultisiteImageFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function settingsSummary() : array {
-    $style = $this->responsiveImageStyleStorage->load($this->getSetting('responsive_image_style'));
+    $style = $this->responsiveImageStyleStorage()->load($this->getSetting('responsive_image_style'));
     if ($style) {
       return [
         $this->t('Responsive image style: @style', ['@style' => $style->label()]),
@@ -185,6 +186,13 @@ final class MultisiteImageFormatter extends FormatterBase {
     }
 
     return $elements;
+  }
+
+  /**
+   * Loads responsive image styles when the settings form needs them.
+   */
+  private function responsiveImageStyleStorage() : EntityStorageInterface {
+    return $this->entityTypeManager->getStorage('responsive_image_style');
   }
 
   /**
