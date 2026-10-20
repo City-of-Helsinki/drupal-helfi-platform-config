@@ -13,23 +13,18 @@ use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests og image builder collector.
- *
- * @coversDefaultClass \Drupal\helfi_platform_config\Token\OGImageManager
- * @group helfi_platform_config
  */
+#[Group('helfi_platform_config')]
 class OGImageManagerTest extends UnitTestCase {
 
   use ProphecyTrait;
 
   /**
    * Tests builder.
-   *
-   * @covers ::buildUrl
-   * @covers ::add
-   * @covers ::getBuilders
    */
   public function testBuildUrl() : void {
     $sut = $this->getSut();
