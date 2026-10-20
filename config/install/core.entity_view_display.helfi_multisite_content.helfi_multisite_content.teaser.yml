@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.helfi_multisite_content.teaser
+    - external_entities.external_entity_type.helfi_multisite_content
   module:
     - external_entities
     - helfi_platform_config
