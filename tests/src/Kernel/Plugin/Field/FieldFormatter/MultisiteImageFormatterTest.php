@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Form\FormState;
 use Drupal\Core\StreamWrapper\LocalStream;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\responsive_image\Entity\ResponsiveImageStyle;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
@@ -104,6 +106,50 @@ final class MultisiteImageFormatterTest extends KernelTestBase {
   }
 
   /**
+   * The formatter applies only when both image modules are enabled.
+   */
+  public function testIsApplicableRequiresBothImageModules() : void {
+    $field = FieldConfig::loadByName('node', 'page', 'field_image_path');
+    $this->assertNotNull($field);
+    $this->assertFalse(MultisiteImageFormatter::isApplicable($field));
+
+    $this->enableModules(['imagecache_external']);
+    $this->assertTrue(MultisiteImageFormatter::isApplicable($field));
+  }
+
+  /**
+   * The responsive image style setting defaults to empty.
+   */
+  public function testDefaultSettings() : void {
+    $this->assertSame('', MultisiteImageFormatter::defaultSettings()['responsive_image_style']);
+  }
+
+  /**
+   * The settings form offers only styles that have image style mappings.
+   */
+  public function testSettingsFormListsStylesWithMappings() : void {
+    $this->createResponsiveImageStyle('empty', 'Empty');
+    $this->createResponsiveImageStyle('card_teaser', 'Card teaser', TRUE);
+
+    $form = $this->formatter->settingsForm([], new FormState());
+
+    $this->assertSame('select', $form['responsive_image_style']['#type']);
+    $this->assertTrue($form['responsive_image_style']['#required']);
+    $this->assertSame('card_teaser', $form['responsive_image_style']['#default_value']);
+    $this->assertSame(['card_teaser' => 'Card teaser'], $form['responsive_image_style']['#options']);
+  }
+
+  /**
+   * The summary names the selected style, or asks for one.
+   */
+  public function testSettingsSummary() : void {
+    $this->assertSame('Select a responsive image style.', (string) $this->formatter->settingsSummary()[0]);
+
+    $this->createResponsiveImageStyle('card_teaser', 'Card teaser', TRUE);
+    $this->assertSame('Responsive image style: Card teaser', (string) $this->formatter->settingsSummary()[0]);
+  }
+
+  /**
    * A file on the current instance uses the local responsive image theme.
    */
   public function testCurrentInstanceExistingFileUsesResponsiveImage() : void {
@@ -166,6 +212,29 @@ final class MultisiteImageFormatterTest extends KernelTestBase {
     $node->save();
 
     return $this->formatter->viewElements($node->get('field_image_path'), 'fi');
+  }
+
+  /**
+   * Creates a responsive image style, optionally with one image style mapping.
+   */
+  private function createResponsiveImageStyle(string $id, string $label, bool $mapped = FALSE) : void {
+    $values = [
+      'id' => $id,
+      'label' => $label,
+      'breakpoint_group' => 'responsive_image',
+      'fallback_image_style' => '',
+    ];
+    if ($mapped) {
+      $values['image_style_mappings'] = [
+        [
+          'breakpoint_id' => 'responsive_image.viewport_sizing',
+          'multiplier' => '1x',
+          'image_mapping_type' => 'image_style',
+          'image_mapping' => 'thumbnail',
+        ],
+      ];
+    }
+    ResponsiveImageStyle::create($values)->save();
   }
 
   /**
