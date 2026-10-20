@@ -124,3 +124,11 @@ field.formatter.settings.multisite_image:
     responsive_image_style:
       type: string
       label: 'Responsive image style'
+
+linkit.matcher.helfi_multisite_content:
+  type: linkit.matcher.entity
+  label: 'Multisite content matcher settings'
+  mapping:
+    exclude_current_instance:
+      type: boolean
+      label: 'Exclude content from the current instance and language'
