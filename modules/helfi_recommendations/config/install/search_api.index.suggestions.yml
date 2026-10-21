@@ -134,8 +134,9 @@ processor_settings:
   suggested_topics_parent_status: {  }
   uuid_langcode: {  }
 tracker_settings:
-  default:
+  parallel:
     indexing_order: fifo
+    claim_timeout: 60
 options:
   cron_limit: 50
   delete_on_fail: true
