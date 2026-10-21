@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ai\Unit\Hook;
 
+use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Entity\ContentEntityFormInterface;
@@ -176,7 +177,7 @@ class FormHooksTest extends UnitTestCase {
    * Test that the tone-check plugin is removed when the feature is disabled.
    */
   public function testTonePluginRemovedWhenDisabled(): void {
-    $definitions = ['helfi_ai_tone_check' => 'definition'];
+    $definitions = ['helfi_ai_tone_check' => new CKEditor5PluginDefinition([])];
     $this->createHooks(TRUE, [], toneCheckEnabled: FALSE)->ckeditor5PluginInfoAlter($definitions);
     $this->assertArrayNotHasKey('helfi_ai_tone_check', $definitions);
 
