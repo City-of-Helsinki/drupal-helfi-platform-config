@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Controller;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Render\RendererInterface;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
@@ -19,7 +19,6 @@ final class ContentCardsHtmxController implements ContainerInjectionInterface {
 
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
-    private readonly RendererInterface $renderer,
   ) {
   }
 
@@ -40,11 +39,13 @@ final class ContentCardsHtmxController implements ContainerInjectionInterface {
         'contexts' => ['languages:language_content'],
       ],
     ];
-    $this->renderer->addCacheableDependency($build, $paragraph);
+    $cacheability = CacheableMetadata::createFromRenderArray($build)
+      ->merge(CacheableMetadata::createFromObject($paragraph));
     $parent = $paragraph->getParentEntity();
     if ($parent !== NULL) {
-      $this->renderer->addCacheableDependency($build, $parent);
+      $cacheability = $cacheability->merge(CacheableMetadata::createFromObject($parent));
     }
+    $cacheability->applyTo($build);
 
     $build['cards'] = $this->entityTypeManager
       ->getViewBuilder('paragraph')
