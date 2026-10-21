@@ -34,14 +34,19 @@ class EntityHooks {
    */
   #[Hook('entity_form_display_presave')]
   public function entityFormDisplayPresave(EntityFormDisplayInterface $display): void {
-    if ($display->id() !== 'tpr_service.tpr_service.default') {
+    $weights = [
+      'node.page.default' => 15,
+      'tpr_service.tpr_service.default' => 7,
+    ];
+
+    if (!isset($weights[$display->id()])) {
       return;
     }
 
-    // Add ai_summary field to TPR service form display.
+    // Add ai_summary field to the form display.
     $this->addAiSummaryComponent($display, [
       'type' => 'ai_summary',
-      'weight' => 7,
+      'weight' => $weights[$display->id()],
       'region' => 'content',
     ]);
   }

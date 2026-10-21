@@ -140,6 +140,20 @@ class HookTest extends UnitTestCase {
   }
 
   /**
+   * Test that the widget is added to the basic page form display.
+   */
+  public function testAddsWidgetToPageFormDisplay(): void {
+    $display = $this->prophesizeFormDisplay('node.page.default');
+    $display->setComponent('ai_summary', [
+      'type' => 'ai_summary',
+      'weight' => 15,
+      'region' => 'content',
+    ])->shouldBeCalled();
+
+    (new EntityHooks())->entityFormDisplayPresave($display->reveal());
+  }
+
+  /**
    * Test that the widget is added to the tpr_service form display.
    */
   public function testAddsWidgetToTprServiceFormDisplay(): void {
@@ -172,7 +186,7 @@ class HookTest extends UnitTestCase {
    * Test that other displays are left alone.
    */
   public function testIgnoresOtherDisplays(): void {
-    $formDisplay = $this->prophesizeFormDisplay('node.page.default');
+    $formDisplay = $this->prophesizeFormDisplay('node.landing_page.default');
     $formDisplay->setComponent(Argument::cetera())->shouldNotBeCalled();
 
     $viewDisplay = $this->prophesizeViewDisplay('tpr_service.tpr_service.teaser');
@@ -187,7 +201,7 @@ class HookTest extends UnitTestCase {
    * Test that a display being imported is left alone.
    */
   public function testIgnoresSyncingDisplay(): void {
-    $display = $this->prophesizeFormDisplay('tpr_service.tpr_service.default');
+    $display = $this->prophesizeFormDisplay('node.page.default');
     $display->isSyncing()->willReturn(TRUE);
     $display->setComponent(Argument::cetera())->shouldNotBeCalled();
 
@@ -198,7 +212,7 @@ class HookTest extends UnitTestCase {
    * Test that an existing component is not overridden.
    */
   public function testKeepsExistingComponent(): void {
-    $display = $this->prophesizeFormDisplay('tpr_service.tpr_service.default');
+    $display = $this->prophesizeFormDisplay('node.page.default');
     $display->getComponent('ai_summary')->willReturn(['type' => 'string_textarea']);
     $display->setComponent(Argument::cetera())->shouldNotBeCalled();
 
