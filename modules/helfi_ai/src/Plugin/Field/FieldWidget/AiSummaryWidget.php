@@ -7,7 +7,7 @@ namespace Drupal\helfi_ai\Plugin\Field\FieldWidget;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
-use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -17,6 +17,10 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_ai\PreviewEntityBuilder;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_ai\Service\AiGenerator;
 
 /**
@@ -35,6 +39,23 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
   private const string TEXT_FORMAT = 'minimal';
 
   /**
+   * Entity bundles, where AI summary is available.
+   */
+  private const array BUNDLES = [
+    'node' => ['news_item', 'news_article', 'page'],
+  ];
+
+  /**
+   * Environments where AI summary is enabled.
+   *
+   * @todo UHF-13833 Remove when AI summary is enabled in production.
+   */
+  private const array ENABLED_ENVIRONMENTS = [
+    EnvironmentEnum::Local,
+    EnvironmentEnum::Test,
+  ];
+
+  /**
    * The constructor.
    *
    * @phpstan-param array<mixed> $settings
@@ -46,8 +67,9 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
     FieldDefinitionInterface $field_definition,
     array $settings,
     array $third_party_settings,
-    private readonly ConfigFactoryInterface $configFactory,
-    private readonly AccountProxyInterface $currentUser,
+    protected readonly AccountProxyInterface $currentUser,
+    protected readonly ActiveProjectRoles $projectRoles,
+    protected readonly EnvironmentResolverInterface $environmentResolver,
   ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
   }
@@ -86,14 +108,42 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
   /**
    * Checks if the widget should be visible.
    *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity being edited.
+   *
    * @return bool
    *   TRUE if the widget should be shown.
    */
-  private function isVisible(): bool {
-    if (!$this->configFactory->get('helfi_ai.settings')->get('enable_ai_summary')) {
+  private function isVisible(EntityInterface $entity): bool {
+    if (!$this->currentUser->hasPermission('use helfi ai summary')) {
       return FALSE;
     }
-    return $this->currentUser->hasPermission('use helfi ai summary');
+    if (!in_array($entity->bundle(), self::BUNDLES[$entity->getEntityTypeId()] ?? [], TRUE)) {
+      return FALSE;
+    }
+    if (!$this->projectRoles->hasRole(ProjectRoleEnum::Core)) {
+      return FALSE;
+    }
+    return $this->shouldBeEnabled();
+  }
+
+  /**
+   * Checks if AI summary should be enabled in the active environment.
+   *
+   * @return bool
+   *   TRUE if AI summary should be enabled.
+   *
+   * @todo UHF-13833 Remove when AI summary is enabled in production.
+   */
+  private function shouldBeEnabled(): bool {
+    try {
+      $environment = EnvironmentEnum::tryFrom($this->environmentResolver->getActiveEnvironmentName());
+
+      return in_array($environment, self::ENABLED_ENVIRONMENTS, TRUE);
+    }
+    catch (\InvalidArgumentException) {
+      return FALSE;
+    }
   }
 
   /**
@@ -115,7 +165,7 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
     // Hide the widget when the AI summary feature is disabled.
-    if (!$this->isVisible()) {
+    if (!$this->isVisible($items->getEntity())) {
       $element['#access'] = FALSE;
       return $element;
     }
@@ -237,6 +287,8 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
    *
    * @return \Drupal\Core\Ajax\AjaxResponse
    *   Response replacing the widget wrapper.
+   *
+   * @param-out array<mixed> $form
    */
   public static function ajaxCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
     $trigger = $form_state->getTriggeringElement();
