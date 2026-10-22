@@ -87,3 +87,12 @@ function helfi_ai_update_11004(): void {
     $display?->removeComponent('ai_summary')->save();
   }
 }
+
+/**
+ * Remove the AI summary feature flag.
+ */
+function helfi_ai_update_11005(): void {
+  \Drupal::configFactory()->getEditable('helfi_ai.settings')
+    ->clear('enable_ai_summary')
+    ->save();
+}

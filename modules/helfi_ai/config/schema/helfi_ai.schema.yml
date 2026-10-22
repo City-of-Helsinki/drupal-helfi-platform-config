@@ -8,9 +8,6 @@ helfi_ai.settings:
     enable_tone_check:
       type: boolean
       label: 'Enable AI tone check'
-    enable_ai_summary:
-      type: boolean
-      label: 'Enable AI summary'
     seo_title_bundles:
       type: sequence
       label: 'Content types offering AI SEO title suggestions'

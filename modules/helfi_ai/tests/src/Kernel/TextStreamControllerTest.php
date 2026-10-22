@@ -46,11 +46,11 @@ class TextStreamControllerTest extends EntityKernelTestBase {
   ];
 
   /**
-   * The endpoint path, permission and feature flag of each feature.
+   * The endpoint path and permission of each feature.
    */
   private const array FEATURES = [
-    'tone' => ['/helfi-ai/tone-check', 'use helfi ai tone check', 'enable_tone_check'],
-    'summary' => ['/helfi-ai/summary', 'use helfi ai summary', 'enable_ai_summary'],
+    'tone' => ['/helfi-ai/tone-check', 'use helfi ai tone check'],
+    'summary' => ['/helfi-ai/summary', 'use helfi ai summary'],
   ];
 
   /**
@@ -69,7 +69,6 @@ class TextStreamControllerTest extends EntityKernelTestBase {
 
     $this->config('helfi_ai.settings')
       ->set('enable_tone_check', TRUE)
-      ->set('enable_ai_summary', TRUE)
       ->save();
 
     $this->controller = new TextStreamController(
@@ -126,20 +125,17 @@ class TextStreamControllerTest extends EntityKernelTestBase {
   }
 
   /**
-   * Each endpoint checks its own feature flag.
+   * The tone check endpoint checks the feature flag.
    */
-  #[TestWith(['tone'])]
-  #[TestWith(['summary'])]
-  public function testRouteChecksFeatureFlag(string $feature): void {
-    [, $permission, $flag] = self::FEATURES[$feature];
-    $this->drupalSetUpCurrentUser(permissions: [$permission]);
+  public function testToneRouteChecksFeatureFlag(): void {
+    $this->drupalSetUpCurrentUser(permissions: [self::FEATURES['tone'][1]]);
     $body = ['text' => ' ', 'langcode' => 'fi'];
 
     // The flag is enabled: the request reaches the empty text check.
-    $this->assertSame(400, $this->processRequest($this->request($feature, $body))->getStatusCode());
+    $this->assertSame(400, $this->processRequest($this->request('tone', $body))->getStatusCode());
 
-    $this->config('helfi_ai.settings')->set($flag, FALSE)->save();
-    $response = $this->processRequest($this->request($feature, $body));
+    $this->config('helfi_ai.settings')->set('enable_tone_check', FALSE)->save();
+    $response = $this->processRequest($this->request('tone', $body));
     $this->assertSame(403, $response->getStatusCode());
     $this->assertSame('{"error":"The feature is disabled."}', $response->getContent());
   }
