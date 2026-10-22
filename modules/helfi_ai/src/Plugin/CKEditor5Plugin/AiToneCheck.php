@@ -43,8 +43,8 @@ final class AiToneCheck extends CKEditor5PluginDefault implements ContainerFacto
     array $configuration,
     string $plugin_id,
     CKEditor5PluginDefinition $plugin_definition,
-    private readonly CsrfTokenGenerator $csrfToken,
-    private readonly LanguageManagerInterface $languageManager,
+    protected readonly CsrfTokenGenerator $csrfToken,
+    protected readonly LanguageManagerInterface $languageManager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }

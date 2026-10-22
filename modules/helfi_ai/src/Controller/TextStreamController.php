@@ -38,12 +38,12 @@ final class TextStreamController implements ContainerInjectionInterface {
    *   The event stream, or {error: string} with a 4xx code.
    */
   public function stream(Request $request, string $feature): Response {
-    [$flag, $generate] = match ($feature) {
-      'tone' => ['enable_tone_check', $this->generator->streamTone(...)],
-      'summary' => ['enable_ai_summary', $this->generator->streamSummary(...)],
+    $generate = match ($feature) {
+      'tone' => $this->generator->streamTone(...),
+      'summary' => $this->generator->streamSummary(...),
     };
 
-    if (!$this->configFactory->get('helfi_ai.settings')->get($flag)) {
+    if ($feature === 'tone' && !$this->configFactory->get('helfi_ai.settings')->get('enable_tone_check')) {
       return new JsonResponse(['error' => 'The feature is disabled.'], 403);
     }
     $data = json_decode($request->getContent(), TRUE);

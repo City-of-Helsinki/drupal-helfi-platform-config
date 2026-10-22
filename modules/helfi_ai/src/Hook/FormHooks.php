@@ -26,9 +26,9 @@ final class FormHooks {
   use DependencySerializationTrait;
 
   public function __construct(
-    private readonly AccountInterface $currentUser,
-    private readonly ConfigFactoryInterface $configFactory,
-    private readonly TextServicesGenerator $generator,
+    protected readonly AccountInterface $currentUser,
+    protected readonly ConfigFactoryInterface $configFactory,
+    protected readonly TextServicesGenerator $generator,
   ) {
   }
 

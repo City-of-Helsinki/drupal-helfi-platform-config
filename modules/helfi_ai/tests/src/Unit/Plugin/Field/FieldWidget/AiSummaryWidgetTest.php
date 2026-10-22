@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ai\Unit\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\ImmutableConfig;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\helfi_ai\Plugin\Field\FieldWidget\AiSummaryWidget;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Environment\ProjectMetadata;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -35,19 +41,27 @@ class AiSummaryWidgetTest extends UnitTestCase {
   /**
    * Creates a widget instance for the given field name.
    */
-  private function createWidget(string $fieldName = 'ai_summary', bool $enabled = TRUE, bool $access = TRUE): AiSummaryWidget {
+  private function createWidget(bool $access = TRUE, ?string $environment = 'test', bool $core = TRUE): AiSummaryWidget {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
-    $fieldDef->getName()->willReturn($fieldName);
-
-    $config = $this->prophesize(ImmutableConfig::class);
-    $config->get('enable_ai_summary')->willReturn($enabled);
-    $configFactory = $this->prophesize(ConfigFactoryInterface::class);
-    $configFactory->get('helfi_ai.settings')->willReturn($config->reveal());
+    $fieldDef->getName()->willReturn('ai_summary');
 
     $accountProxy = $this->prophesize(AccountProxyInterface::class);
     $accountProxy->hasPermission('use helfi ai summary')->willReturn($access);
 
-    $widget = new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], [], $configFactory->reveal(), $accountProxy->reveal());
+    $environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
+    if ($environment === NULL) {
+      $environmentResolver->getActiveEnvironmentName()->willThrow(new EnvironmentResolverException());
+    }
+    else {
+      $environmentResolver->getActiveEnvironmentName()->willReturn($environment);
+    }
+    $environmentResolver->getActiveProject()->willReturn(new Project(
+      'test',
+      new ProjectMetadata('https://github.com/City-of-Helsinki/test'),
+      roles: $core ? [ProjectRoleEnum::Core] : [],
+    ));
+
+    $widget = new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], [], $accountProxy->reveal(), new ActiveProjectRoles($environmentResolver->reveal()), $environmentResolver->reveal());
     $widget->setStringTranslation($this->getStringTranslationStub());
     return $widget;
   }
@@ -58,15 +72,24 @@ class AiSummaryWidgetTest extends UnitTestCase {
    * @return \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface>
    *   The field item list prophecy double.
    */
-  private function makeItems(string $savedValue, string $fieldName = 'ai_summary'): FieldItemListInterface {
+  private function makeItems(
+    string $savedValue,
+    string $entityTypeId = 'node',
+    string $bundle = 'page',
+  ): FieldItemListInterface {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
-    $fieldDef->getName()->willReturn($fieldName);
+    $fieldDef->getName()->willReturn('ai_summary');
+
+    $entity = $this->prophesize(EntityInterface::class);
+    $entity->getEntityTypeId()->willReturn($entityTypeId);
+    $entity->bundle()->willReturn($bundle);
 
     $item = new \stdClass();
     $item->value = $savedValue;
 
     $items = $this->prophesize(FieldItemListInterface::class);
     $items->getFieldDefinition()->willReturn($fieldDef->reveal());
+    $items->getEntity()->willReturn($entity->reveal());
     $items->offsetExists(Argument::any())->willReturn(TRUE);
     $items->offsetGet(Argument::any())->willReturn($item);
     return $items->reveal();
@@ -120,17 +143,91 @@ class AiSummaryWidgetTest extends UnitTestCase {
   }
 
   /**
-   * Test that the widget is hidden when the feature is disabled.
+   * Test widget visibility per content type.
    */
-  public function testFormElementHiddenWhenFeatureDisabled(): void {
-    $widget = $this->createWidget('ai_summary', FALSE);
+  #[DataProvider('bundleProvider')]
+  public function testFormElementVisibilityPerBundle(string $entityTypeId, string $bundle, bool $expected): void {
+    $widget = $this->createWidget();
 
     $form = [];
-    $formState = new FormState();
-    $result = $widget->formElement($this->makeItems('<ul><li>Saved</li></ul>'), 0, [], $form, $formState);
+    $result = $widget->formElement($this->makeItems('', $entityTypeId, $bundle), 0, [], $form, new FormState());
+
+    $this->assertSame($expected, isset($result['ajax_wrapper']), 'Widget visibility matches the content type.');
+  }
+
+  /**
+   * Data provider for content type visibility.
+   *
+   * @return array<string, array{0: string, 1: string, 2: bool}>
+   *   The entity type, bundle and expected visibility.
+   */
+  public static function bundleProvider(): array {
+    return [
+      'news item' => ['node', 'news_item', TRUE],
+      'news article' => ['node', 'news_article', TRUE],
+      'basic page' => ['node', 'page', TRUE],
+      'landing page' => ['node', 'landing_page', FALSE],
+      'tpr service' => ['tpr_service', 'tpr_service', FALSE],
+    ];
+  }
+
+  /**
+   * Test that the widget is hidden without permission.
+   */
+  public function testFormElementHiddenWithoutPermission(): void {
+    $widget = $this->createWidget(FALSE);
+
+    $form = [];
+    $result = $widget->formElement($this->makeItems(''), 0, [], $form, new FormState());
 
     $this->assertFalse($result['#access']);
-    $this->assertArrayNotHasKey('ajax_wrapper', $result);
+  }
+
+  /**
+   * Test that the widget is hidden on non-core sites.
+   */
+  public function testFormElementHiddenOnNonCoreSite(): void {
+    $widget = $this->createWidget(TRUE, 'test', FALSE);
+
+    $form = [];
+    $result = $widget->formElement($this->makeItems(''), 0, [], $form, new FormState());
+
+    $this->assertFalse($result['#access']);
+  }
+
+  /**
+   * Test widget visibility per environment.
+   *
+   * @todo UHF-13833 Remove when AI summary is enabled in production.
+   */
+  #[DataProvider('environmentProvider')]
+  public function testFormElementVisibilityPerEnvironment(?string $environment, bool $core, bool $expected): void {
+    $widget = $this->createWidget(TRUE, $environment, $core);
+
+    $form = [];
+    $result = $widget->formElement($this->makeItems(''), 0, [], $form, new FormState());
+
+    $this->assertSame($expected, isset($result['ajax_wrapper']), 'Widget visibility matches the environment.');
+  }
+
+  /**
+   * Data provider for environment visibility.
+   *
+   * @return array<string, array{0: ?string, 1: bool, 2: bool}>
+   *   The environment, core role and expected visibility.
+   *
+   * @todo UHF-13833 Remove when AI summary is enabled in production.
+   */
+  public static function environmentProvider(): array {
+    return [
+      'core local' => ['local', TRUE, TRUE],
+      'core dev' => ['dev', TRUE, FALSE],
+      'core test' => ['test', TRUE, TRUE],
+      'core stage' => ['stage', TRUE, FALSE],
+      'core prod' => ['prod', TRUE, FALSE],
+      'non-core test' => ['test', FALSE, FALSE],
+      'unknown environment' => [NULL, TRUE, FALSE],
+    ];
   }
 
   /**
