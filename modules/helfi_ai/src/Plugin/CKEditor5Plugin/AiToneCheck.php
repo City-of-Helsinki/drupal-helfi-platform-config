@@ -83,8 +83,7 @@ final class AiToneCheck extends CKEditor5PluginDefault implements ContainerFacto
     $static_plugin_config['aiToneCheck'] = [
       'endpoint' => Url::fromRoute('helfi_ai.tone_check')->toString(TRUE)->getGeneratedUrl(),
       'csrfToken' => $this->csrfToken->get(CsrfRequestHeaderAccessCheck::TOKEN_KEY),
-      // Use the content language, not the UI language, so the tone prompt is
-      // read in the language the content is authored in.
+      // Use the content language, not the UI language.
       'langcode' => $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
     ];
     return $static_plugin_config;

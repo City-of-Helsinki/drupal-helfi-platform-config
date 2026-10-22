@@ -11,8 +11,19 @@ helfi_ai.overview:
 helfi_ai.tone_check:
   path: '/helfi-ai/tone-check'
   defaults:
-    _controller: 'Drupal\helfi_ai\Controller\ToneCheckController::check'
+    _controller: 'Drupal\helfi_ai\Controller\TextStreamController::stream'
+    feature: tone
   methods: [POST]
   requirements:
     _permission: 'use helfi ai tone check'
+    _csrf_request_header_token: 'TRUE'
+
+helfi_ai.summary_stream:
+  path: '/helfi-ai/summary'
+  defaults:
+    _controller: 'Drupal\helfi_ai\Controller\TextStreamController::stream'
+    feature: summary
+  methods: [POST]
+  requirements:
+    _permission: 'use helfi ai summary'
     _csrf_request_header_token: 'TRUE'

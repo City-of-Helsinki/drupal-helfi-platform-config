@@ -113,7 +113,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $this->assertArrayHasKey('generate', $wrapper);
     $this->assertSame('ai_summary_generate_ai_summary_0', $wrapper['generate']['#name']);
     $this->assertSame('Generate AI summary', (string) $wrapper['generate']['#value']);
-    $this->assertContains('helfi_ai/ai_summary_confirm', $wrapper['generate']['#attached']['library']);
+    $this->assertContains('helfi_ai/ai_summary_stream', $wrapper['generate']['#attached']['library']);
     $this->assertArrayNotHasKey('data-ai-summary-confirm', $wrapper['generate']['#attributes'] ?? []);
     $this->assertArrayHasKey('description', $wrapper);
     $this->assertArrayNotHasKey('error', $wrapper);
@@ -148,7 +148,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $this->assertSame('<ul><li>Saved</li></ul>', $wrapper['summary']['value']['#default_value']);
     $this->assertSame('Regenerate AI summary', (string) $wrapper['generate']['#value']);
     $this->assertArrayHasKey('data-ai-summary-confirm', $wrapper['generate']['#attributes']);
-    $this->assertContains('helfi_ai/ai_summary_confirm', $wrapper['generate']['#attached']['library']);
+    $this->assertContains('helfi_ai/ai_summary_stream', $wrapper['generate']['#attached']['library']);
   }
 
   /**
