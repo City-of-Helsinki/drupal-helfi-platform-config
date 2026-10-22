@@ -89,13 +89,19 @@ final class KoroOverrides extends ConfigFormBase {
         $form_state->setErrorByName('koro_overrides', $this->t('Path @path must start with a slash.', ['@path' => $path]));
         continue;
       }
+      $path = rtrim($path, '/');
+
+      if ($path === '') {
+        $form_state->setErrorByName('koro_overrides', $this->t('Use the appearance settings to set the koro for the whole site.'));
+        continue;
+      }
 
       if (!array_key_exists($koro, $motifs)) {
         $form_state->setErrorByName('koro_overrides', $this->t('Wave motif @koro is not available.', ['@koro' => $koro]));
         continue;
       }
       $overrides[] = [
-        'path' => rtrim($path, '/'),
+        'path' => $path,
         'koro' => $koro,
       ];
     }

@@ -220,6 +220,9 @@ msgstr "Koromuodot"
 msgid "Path @path must start with a slash."
 msgstr "Polun @path pitää alkaa kautta-merkillä."
 
+msgid "Use the appearance settings to set the koro for the whole site."
+msgstr "Määritä koko sivuston koromuoto ulkoasun asetuksissa."
+
 msgid "Wave motif @koro is not available."
 msgstr "Koromuoto @koro ei ole käytettävissä."
 

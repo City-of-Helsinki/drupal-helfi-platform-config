@@ -76,7 +76,12 @@ final class KoroPathOverride implements ConfigFactoryOverrideInterface {
     $match = NULL;
 
     foreach ($overrides as $override) {
-      $pattern = rtrim(mb_strtolower($override['path']), '/');
+      $pattern = rtrim(mb_strtolower($override['path'] ?? ''), '/');
+
+      // Skip rules without a path.
+      if ($pattern === '') {
+        continue;
+      }
 
       // Match the configured path and everything under it.
       if ($path !== $pattern && !str_starts_with($path, $pattern . '/')) {
