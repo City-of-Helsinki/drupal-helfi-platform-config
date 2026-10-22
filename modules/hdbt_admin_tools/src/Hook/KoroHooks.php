@@ -7,6 +7,8 @@ namespace Drupal\hdbt_admin_tools\Hook;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\config_ignore\ConfigIgnoreConfig;
+use Drupal\hdbt_admin_tools\Config\KoroPathOverride;
 
 /**
  * Koro hook implementations for HDBT Admin tools.
@@ -39,6 +41,24 @@ class KoroHooks {
   public function paragraphViewAlter(array &$build, EntityInterface $paragraph, EntityViewDisplayInterface $display): void {
     // Hero and content cards render a koro of the current path.
     $build['#cache']['contexts'][] = 'koro';
+  }
+
+  /**
+   * Implements hook_config_ignore_ignored_alter().
+   *
+   * @param \Drupal\config_ignore\ConfigIgnoreConfig $ignored
+   *   Ignored configurations.
+   */
+  #[Hook('config_ignore_ignored_alter')]
+  public function configIgnoreIgnoredAlter(ConfigIgnoreConfig $ignored): void {
+    // Keep koro override paths only in the UI.
+    foreach (['create', 'update', 'delete'] as $operation) {
+      foreach (['import', 'export'] as $direction) {
+        $list = $ignored->getList($direction, $operation);
+        $list[] = KoroPathOverride::CONFIG_NAME . ':koro_overrides';
+        $ignored->setList($direction, $operation, $list);
+      }
+    }
   }
 
 }
