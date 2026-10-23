@@ -78,11 +78,6 @@ services:
     tags:
       - { name: service_collector, call: add, tag: helfi_platform_config.og_image_builder }
 
-  helfi_platform_config.og_image.default:
-    class: Drupal\helfi_platform_config\Token\DefaultImageBuilder
-    tags:
-      - { name: helfi_platform_config.og_image_builder, priority: -100 }
-
   Drupal\helfi_platform_config\Image\LiftupImageManager:
     tags:
       - { name: service_collector, call: add, tag: helfi_platform_config.liftup_image_builder }

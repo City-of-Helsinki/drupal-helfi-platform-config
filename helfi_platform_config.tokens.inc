@@ -77,8 +77,18 @@ function helfi_platform_config_tokens(
 
           $image_uri = $image_manager->buildUrl($entity);
 
-          $replacements[$original] = $image_uri ? \Drupal::service(FileUrlGeneratorInterface::class)
-            ->generateAbsoluteString($image_uri) : NULL;
+          // Fall back to the default image.
+          if (!$image_uri) {
+            $default_images = \Drupal::getContainer()->getParameter('helfi_platform_config.default_image');
+            $langcode = \Drupal::languageManager()
+              ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+              ->getId();
+
+            $image_uri = $default_images[$langcode] ?? $default_images['default'];
+          }
+
+          $replacements[$original] = \Drupal::service(FileUrlGeneratorInterface::class)
+            ->generateAbsoluteString($image_uri);
         }
         break;
 
