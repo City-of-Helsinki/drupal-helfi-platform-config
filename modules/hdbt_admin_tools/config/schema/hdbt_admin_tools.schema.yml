@@ -22,6 +22,19 @@ hdbt_admin_tools.site_settings:
         footer_color:
           label: 'Footer color'
           type: label
+    koro_overrides:
+      label: 'Koro overrides'
+      type: sequence
+      requiredKey: false
+      sequence:
+        type: mapping
+        mapping:
+          path:
+            label: Path
+            type: string
+          koro:
+            label: Koro
+            type: string
     path_to_json:
       type: string
 field.widget.settings.link_target_field_widget:
