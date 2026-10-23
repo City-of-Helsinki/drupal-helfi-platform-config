@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Unit;
 
-use Drupal\Core\Extension\Extension;
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
@@ -20,13 +18,6 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @group helfi_platform_config
  */
 class DefaultImageBuilderTest extends UnitTestCase {
-
-  /**
-   * The module handler mock.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface|\PHPUnit\Framework\MockObject\MockObject
-   */
-  protected ModuleHandlerInterface|MockObject $moduleHandler;
 
   /**
    * The language manager mock.
@@ -55,12 +46,14 @@ class DefaultImageBuilderTest extends UnitTestCase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->moduleHandler = $this->createMock(ModuleHandlerInterface::class);
     $this->languageManager = $this->createMock(LanguageManagerInterface::class);
     $this->fileUrlGenerator = $this->createMock(FileUrlGeneratorInterface::class);
 
     $this->defaultImageBuilder = new DefaultImageBuilder(
-      $this->moduleHandler,
+      [
+        'default' => 'modules/custom/helfi_platform_config/fixtures/og-global.png',
+        'sv' => 'modules/custom/helfi_platform_config/fixtures/og-global-sv.png',
+      ],
       $this->languageManager,
       $this->fileUrlGenerator
     );
@@ -77,17 +70,7 @@ class DefaultImageBuilderTest extends UnitTestCase {
    * @covers ::buildUri
    */
   public function testBuildUriReturnsCorrectUri(): void {
-    $module_path = '/modules/custom/helfi_platform_config';
-
-    $module_mock = $this->getMockBuilder(Extension::class)
-      ->disableOriginalConstructor()
-      ->getMock();
-    $module_mock->method('getPath')->willReturn($module_path);
-
-    $this->moduleHandler->expects($this->once())
-      ->method('getModule')
-      ->with('helfi_platform_config')
-      ->willReturn($module_mock);
+    $module_path = 'modules/custom/helfi_platform_config';
 
     $language_mock = $this->createMock(LanguageInterface::class);
     $language_mock->method('getId')->willReturn('fi');
@@ -110,17 +93,7 @@ class DefaultImageBuilderTest extends UnitTestCase {
    * Test the Swedish version of the default image.
    */
   public function testBuildUriForSwedishLanguage(): void {
-    $module_path = '/modules/custom/helfi_platform_config';
-
-    $module_mock = $this->getMockBuilder(Extension::class)
-      ->disableOriginalConstructor()
-      ->getMock();
-    $module_mock->method('getPath')->willReturn($module_path);
-
-    $this->moduleHandler->expects($this->once())
-      ->method('getModule')
-      ->with('helfi_platform_config')
-      ->willReturn($module_mock);
+    $module_path = 'modules/custom/helfi_platform_config';
 
     $language_mock = $this->createMock(LanguageInterface::class);
     $language_mock->method('getId')->willReturn('sv');
@@ -130,7 +103,7 @@ class DefaultImageBuilderTest extends UnitTestCase {
       ->with(LanguageInterface::TYPE_CONTENT)
       ->willReturn($language_mock);
 
-    $expected_uri = 'https://www.test.hel.ninja/modules/custom/helfi_platform_config//fixtures/og-global-sv.png';
+    $expected_uri = 'https://www.test.hel.ninja/modules/custom/helfi_platform_config/fixtures/og-global-sv.png';
     $this->fileUrlGenerator->expects($this->once())
       ->method('generateAbsoluteString')
       ->with("$module_path/fixtures/og-global-sv.png")

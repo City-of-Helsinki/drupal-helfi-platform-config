@@ -57,6 +57,16 @@ final class HelfiPlatformConfigServiceProvider extends ServiceProviderBase {
    * {@inheritdoc}
    */
   public function register(ContainerBuilder $container) : void {
+    /** @var array<string, array{pathname: string}> $modules */
+    $modules = $container->getParameter('container.modules');
+    $module_path = dirname($modules['helfi_platform_config']['pathname']);
+
+    // Default images keyed by langcode.
+    $container->setParameter('helfi_platform_config.default_image', [
+      'default' => "$module_path/fixtures/og-global.png",
+      'sv' => "$module_path/fixtures/og-global-sv.png",
+    ]);
+
     self::registerCspEventSubscribers($container, [
       CspCleanSubscriber::class,
       CspIbmChatAppSubscriber::class,
