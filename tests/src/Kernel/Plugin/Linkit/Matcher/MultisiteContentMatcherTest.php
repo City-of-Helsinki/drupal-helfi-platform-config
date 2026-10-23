@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\Linkit\Matcher;
 
 use Drupal\Core\Form\FormState;
-use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
@@ -15,12 +14,10 @@ use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\MultisiteContentId;
 use Drupal\helfi_platform_config\Plugin\ExternalEntities\StorageClient\SharedIndex;
 use Drupal\helfi_platform_config\Plugin\Linkit\Matcher\MultisiteContentMatcher;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
-use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticKernelTrait;
 use Drupal\Tests\helfi_platform_config\Traits\InstallConfigEntityTrait;
-use Elastic\Elasticsearch\ClientBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -34,8 +31,7 @@ use Psr\Http\Message\RequestInterface;
 #[RunTestsInSeparateProcesses]
 final class MultisiteContentMatcherTest extends KernelTestBase {
 
-  use ApiTestTrait;
-  use ElasticTrait;
+  use ElasticKernelTrait;
   use EnvironmentResolverTrait;
   use InstallConfigEntityTrait;
 
@@ -43,14 +39,10 @@ final class MultisiteContentMatcherTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'entity',
     'external_entities',
-    'field',
-    'language',
     'linkit',
     'serialization',
     'system',
-    'text',
     'user',
   ];
 
@@ -60,22 +52,10 @@ final class MultisiteContentMatcherTest extends KernelTestBase {
   protected function setUp() : void {
     parent::setUp();
 
-    $this->container
-      ->get(RouteProviderInterface::class)
-      ->getAllRoutes();
-
     $this->installConfig(['system', 'external_entities']);
     $this->installEntitySchema('user');
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
     $this->setEtusivuIndexRole(TRUE);
-
-    $history = [];
-    $this->container->set(
-      'helfi_platform_config.etusivu_elastic_client',
-      ClientBuilder::create()
-        ->setHttpClient($this->createMockHistoryMiddlewareHttpClient($history))
-        ->build(),
-    );
 
     $this->installConfigEntity('helfi_platform_config', 'external_entities.external_entity_type.helfi_multisite_content');
     $this->installEntitySchema(MultisiteContentId::ENTITY_TYPE_ID);
@@ -141,15 +121,9 @@ final class MultisiteContentMatcherTest extends KernelTestBase {
    */
   private function search(string $string, MultisiteContentMatcher $matcher) : array {
     $history = [];
-    $this->container->set(
-      'helfi_platform_config.etusivu_elastic_client',
-      ClientBuilder::create()
-        ->setHttpClient($this->createMockHistoryMiddlewareHttpClient($history, [
-          $this->createElasticsearchResponse([]),
-        ]))
-        ->build(),
-    );
-    $this->container->get('entity_type.manager')->clearCachedDefinitions();
+    $this->mockEtusivuElasticClient([
+      $this->createElasticsearchResponse([]),
+    ], $history);
 
     $suggestions = $matcher->execute($string);
     $this->assertSame([], $suggestions->getSuggestions());
