@@ -37,10 +37,6 @@ function helfi_platform_config_update_dependencies() : array {
   $dependencies['helfi_platform_config']['9328'] = [
     'redirect' => '8110',
   ];
-  // Add the parallel tracker columns before the indexes start using it.
-  $dependencies['helfi_platform_config']['11014'] = [
-    'search_api' => '8111',
-  ];
 
   return $dependencies;
 }
@@ -1117,32 +1113,5 @@ function helfi_platform_config_update_11013(): void {
 
   if (!$moduleHandler->moduleExists('quick_node_clone')) {
     \Drupal::service('module_installer')->install(['quick_node_clone']);
-  }
-}
-
-/**
- * UHF-13506: Use the parallel tracker on search indexes.
- */
-function helfi_platform_config_update_11014(): void {
-  if (!\Drupal::moduleHandler()->moduleExists('search_api')) {
-    return;
-  }
-  $configFactory = \Drupal::configFactory();
-  $configFactory->getEditable('search_api.settings')
-    ->set('default_tracker', 'parallel')
-    ->save();
-
-  // Both trackers use the same tracking table. Change the configuration
-  // directly, because saving the index would re-track all items.
-  foreach ($configFactory->listAll('search_api.index.') as $name) {
-    $config = $configFactory->getEditable($name);
-    $settings = $config->get('tracker_settings') ?? [];
-
-    if (!isset($settings['default'])) {
-      continue;
-    }
-    $config->set('tracker_settings', [
-      'parallel' => $settings['default'] + ['claim_timeout' => 60],
-    ])->save();
   }
 }
