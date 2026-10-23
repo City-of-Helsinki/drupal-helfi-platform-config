@@ -1,5 +1,5 @@
 diff --git a/config/install/search_api.settings.yml b/config/install/search_api.settings.yml
-index 91e69ea2e992a2da9cc33642d97c3962452d7d97..7ceffe8722725c6e36e361e4a71112c669aabfd7 100644
+index 91e69ea2..7ceffe87 100644
 --- a/config/install/search_api.settings.yml
 +++ b/config/install/search_api.settings.yml
 @@ -1,6 +1,6 @@
@@ -11,7 +11,7 @@ index 91e69ea2e992a2da9cc33642d97c3962452d7d97..7ceffe8722725c6e36e361e4a71112c6
  boost_factors:
    - 0.0
 diff --git a/config/schema/search_api.tracker.schema.yml b/config/schema/search_api.tracker.schema.yml
-index 3af3715dc3d89f103ded8e8bbd319bdd01d20dda..be09998dfb38412f5fc83f9cde782420d7508132 100644
+index 3af3715d..be09998d 100644
 --- a/config/schema/search_api.tracker.schema.yml
 +++ b/config/schema/search_api.tracker.schema.yml
 @@ -5,3 +5,10 @@ plugin.plugin_configuration.search_api_tracker.default:
@@ -26,7 +26,7 @@ index 3af3715dc3d89f103ded8e8bbd319bdd01d20dda..be09998dfb38412f5fc83f9cde782420
 +      type: integer
 +      label: 'Claim timeout'
 diff --git a/modules/search_api_db/tests/fixtures/update/search-api-db-base.php b/modules/search_api_db/tests/fixtures/update/search-api-db-base.php
-index fd5cbd4e5b181eb260a725481c6ee655625af109..8e03d2d2085d3a9109f0d086b66b04fcd0d3dc76 100644
+index fd5cbd4e..8e03d2d2 100644
 --- a/modules/search_api_db/tests/fixtures/update/search-api-db-base.php
 +++ b/modules/search_api_db/tests/fixtures/update/search-api-db-base.php
 @@ -14,7 +14,7 @@ $connection = Database::getConnection();
@@ -39,7 +39,7 @@ index fd5cbd4e5b181eb260a725481c6ee655625af109..8e03d2d2085d3a9109f0d086b66b04fc
  ];
  foreach ($versions as $name => $version) {
 diff --git a/search_api.install b/search_api.install
-index ae3737c3a46aa85dda3811f6a627fce7fd68db1f..4577b9bd6c535c6012345519232af5b827e798f4 100644
+index ae3737c3..4577b9bd 100644
 --- a/search_api.install
 +++ b/search_api.install
 @@ -43,13 +43,28 @@ function search_api_schema() {
@@ -137,7 +137,7 @@ index ae3737c3a46aa85dda3811f6a627fce7fd68db1f..4577b9bd6c535c6012345519232af5b8
 +  return t('Added parallel indexing support columns to search_api_item table.');
 +}
 diff --git a/src/Entity/Index.php b/src/Entity/Index.php
-index baf42e2319cb5dda69934e34df545e821726b4ad..376f29ee96fcf527b1b30690c440a00dd0d27288 100644
+index baf42e23..376f29ee 100644
 --- a/src/Entity/Index.php
 +++ b/src/Entity/Index.php
 @@ -1116,11 +1116,11 @@ class Index extends ConfigEntityBase implements IndexInterface {
@@ -175,10 +175,10 @@ index baf42e2319cb5dda69934e34df545e821726b4ad..376f29ee96fcf527b1b30690c440a00d
  
 diff --git a/src/Plugin/search_api/tracker/Parallel.php b/src/Plugin/search_api/tracker/Parallel.php
 new file mode 100644
-index 0000000000000000000000000000000000000000..d3d697fd6968677cb165bbc45025a3e87f28a1ee
+index 00000000..52c4e3fc
 --- /dev/null
 +++ b/src/Plugin/search_api/tracker/Parallel.php
-@@ -0,0 +1,308 @@
+@@ -0,0 +1,305 @@
 +<?php
 +
 +namespace Drupal\search_api\Plugin\search_api\tracker;
@@ -333,19 +333,16 @@ index 0000000000000000000000000000000000000000..d3d697fd6968677cb165bbc45025a3e8
 +      $index_id = $this->getIndex()->id();
 +      $lock_name = "search_api_parallel_claim:{$index_id}";
 +
-+      // Loop until we get the lock or timeout is reached.
++      $lock = \Drupal::service('lock');
++      $lock_acquired = $lock->acquire($lock_name, 5);
++
++      // If another worker is claiming items, wait for it to finish and try
++      // again until the timeout is reached. Only wait after a failed attempt,
++      // because waiting always sleeps first.
 +      $expiration_time = $this->getTimeService()->getCurrentTime() + $this->lockTimeout;
-+      $lock_acquired = FALSE;
-+
 +      while (!$lock_acquired && $this->getTimeService()->getCurrentTime() < $expiration_time) {
-+        // Wait for any other worker to finish claiming, then try to acquire the lock.
-+        \Drupal::service('lock')->wait($lock_name, 2);
-+        $lock_acquired = \Drupal::service('lock')->acquire($lock_name, 5);
-+
-+        if (!$lock_acquired) {
-+          // Sleep briefly before retrying to avoid busy waiting.
-+          usleep(100000);
-+        }
++        $lock->wait($lock_name, 2);
++        $lock_acquired = $lock->acquire($lock_name, 5);
 +      }
 +
 +      if (!$lock_acquired) {
@@ -367,7 +364,7 @@ index 0000000000000000000000000000000000000000..d3d697fd6968677cb165bbc45025a3e8
 +      }
 +      finally {
 +        // Always release the lock.
-+        \Drupal::service('lock')->release($lock_name);
++        $lock->release($lock_name);
 +      }
 +    }
 +    catch (\Exception $e) {
@@ -488,7 +485,7 @@ index 0000000000000000000000000000000000000000..d3d697fd6968677cb165bbc45025a3e8
 +
 +}
 diff --git a/src/Tracker/TrackerInterface.php b/src/Tracker/TrackerInterface.php
-index a8ef03a226994e2ed392dfe027e3ab258a120f9b..f099a0b5e281acab02bc781b861849d6b3fd1c4b 100644
+index a8ef03a2..f099a0b5 100644
 --- a/src/Tracker/TrackerInterface.php
 +++ b/src/Tracker/TrackerInterface.php
 @@ -121,4 +121,28 @@ interface TrackerInterface extends IndexPluginInterface {
@@ -521,7 +518,7 @@ index a8ef03a226994e2ed392dfe027e3ab258a120f9b..f099a0b5e281acab02bc781b861849d6
 +
  }
 diff --git a/src/Tracker/TrackerPluginBase.php b/src/Tracker/TrackerPluginBase.php
-index 893a6427f7e6d772e8e1a4ead1e8717ab15ed85c..bfa0a060d9633c072d04ba39a591aebf21aa5224 100644
+index 893a6427..bfa0a060 100644
 --- a/src/Tracker/TrackerPluginBase.php
 +++ b/src/Tracker/TrackerPluginBase.php
 @@ -49,6 +49,26 @@ abstract class TrackerPluginBase extends IndexPluginBase implements TrackerInter
@@ -759,7 +756,7 @@ index 893a6427f7e6d772e8e1a4ead1e8717ab15ed85c..bfa0a060d9633c072d04ba39a591aebf
 +
  }
 diff --git a/src/Utility/IndexingBatchHelper.php b/src/Utility/IndexingBatchHelper.php
-index 3b88c6759e7972e8c5c1d501d4c091ec56c833d6..40f98290fde5d9e404d1c249341900170b06d866 100644
+index 3b88c675..40f98290 100644
 --- a/src/Utility/IndexingBatchHelper.php
 +++ b/src/Utility/IndexingBatchHelper.php
 @@ -11,6 +11,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -961,7 +958,7 @@ index 3b88c6759e7972e8c5c1d501d4c091ec56c833d6..40f98290fde5d9e404d1c24934190017
      }
      else {
 diff --git a/tests/modules/search_api_test/src/Plugin/search_api/tracker/TestTracker.php b/tests/modules/search_api_test/src/Plugin/search_api/tracker/TestTracker.php
-index 5eac0ec737fd767f0024097cfe862cb53cb6292a..7b5e173a828c44b53f3bffa7574eac44e9959059 100644
+index 5eac0ec7..7b5e173a 100644
 --- a/tests/modules/search_api_test/src/Plugin/search_api/tracker/TestTracker.php
 +++ b/tests/modules/search_api_test/src/Plugin/search_api/tracker/TestTracker.php
 @@ -6,9 +6,9 @@ use Drupal\Core\Form\FormStateInterface;
@@ -994,7 +991,7 @@ index 5eac0ec737fd767f0024097cfe862cb53cb6292a..7b5e173a828c44b53f3bffa7574eac44
    }
  
 diff --git a/tests/src/Kernel/BasicTrackerTest.php b/tests/src/Kernel/BasicTrackerTest.php
-index 1e4d6f9d781906cbd30d4fbcd30f574539d85e2e..c99d49a5e4ce52787763833bd60b926d033bf73a 100644
+index 1e4d6f9d..c99d49a5 100644
 --- a/tests/src/Kernel/BasicTrackerTest.php
 +++ b/tests/src/Kernel/BasicTrackerTest.php
 @@ -7,6 +7,8 @@ use Drupal\Core\Database\Transaction;
@@ -1141,7 +1138,7 @@ index 1e4d6f9d781906cbd30d4fbcd30f574539d85e2e..c99d49a5e4ce52787763833bd60b926d
     * Asserts that the current tracking status is as expected.
     *
 diff --git a/tests/src/Kernel/ConfigEntity/DependencyRemovalTest.php b/tests/src/Kernel/ConfigEntity/DependencyRemovalTest.php
-index df256d7762c941fc6dac0a83a9b1c020b13bfe6f..9af9f099123fa1240961b4d81c05803ed568fbe3 100644
+index df256d77..9af9f099 100644
 --- a/tests/src/Kernel/ConfigEntity/DependencyRemovalTest.php
 +++ b/tests/src/Kernel/ConfigEntity/DependencyRemovalTest.php
 @@ -438,7 +438,7 @@ class DependencyRemovalTest extends KernelTestBase {
@@ -1164,7 +1161,7 @@ index df256d7762c941fc6dac0a83a9b1c020b13bfe6f..9af9f099123fa1240961b4d81c05803e
    /**
 diff --git a/tests/src/Kernel/ParallelTrackerTest.php b/tests/src/Kernel/ParallelTrackerTest.php
 new file mode 100644
-index 0000000000000000000000000000000000000000..1986e74aeec58f961e90e6d9a75320c929712fcb
+index 00000000..1986e74a
 --- /dev/null
 +++ b/tests/src/Kernel/ParallelTrackerTest.php
 @@ -0,0 +1,428 @@
@@ -1597,7 +1594,7 @@ index 0000000000000000000000000000000000000000..1986e74aeec58f961e90e6d9a75320c9
 +
 +}
 diff --git a/tests/src/Kernel/TestTimeService.php b/tests/src/Kernel/TestTimeService.php
-index 3964cf34d0eca81d6d5de949c3435d3ee90e0f48..e281a0cbe79314e138ea8c3d7bb6cffe01ace3e1 100644
+index 3964cf34..e281a0cb 100644
 --- a/tests/src/Kernel/TestTimeService.php
 +++ b/tests/src/Kernel/TestTimeService.php
 @@ -45,6 +45,13 @@ class TestTimeService extends Time {
