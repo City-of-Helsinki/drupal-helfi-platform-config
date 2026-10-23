@@ -109,7 +109,7 @@ final class KoroPathOverride implements ConfigFactoryOverrideInterface {
   private function stripPrefixes(string $path): string {
     $languagePrefixes = ($this->configStorage->read('language.negotiation') ?: [])['url']['prefixes'] ?? [];
     $sitePrefixes = ($this->configStorage->read('helfi_proxy.settings') ?: [])['prefixes'] ?? [];
-    $segments = array_filter(explode('/', $path), 'strlen');
+    $segments = array_filter(explode('/', $path), fn (string $segment): bool => $segment !== '');
 
     foreach ([$languagePrefixes, $sitePrefixes] as $prefixes) {
       if ($segments && in_array(reset($segments), array_filter($prefixes), TRUE)) {

@@ -175,7 +175,7 @@ class AppearanceSettings extends ConfigFormBase {
   /**
    * Get wave motifs.
    *
-   * @return array
+   * @return array<string, \Drupal\Core\StringTranslation\TranslatableMarkup>
    *   Returns wave motifs.
    */
   public static function getWaveMotifs(): array {

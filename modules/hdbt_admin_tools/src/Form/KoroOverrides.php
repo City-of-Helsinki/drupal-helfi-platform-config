@@ -15,6 +15,9 @@ final class KoroOverrides extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return string[]
+   *   The editable config names.
    */
   protected function getEditableConfigNames(): array {
     return [
@@ -31,6 +34,14 @@ final class KoroOverrides extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @param array<string, mixed> $form
+   *   The form structure.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return array<string, mixed>
+   *   The form structure.
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $form = parent::buildForm($form, $form_state);
@@ -70,6 +81,11 @@ final class KoroOverrides extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @param array<mixed> $form
+   *   The form structure.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
    */
   public function validateForm(array &$form, FormStateInterface $form_state): void {
     parent::validateForm($form, $form_state);
@@ -77,7 +93,7 @@ final class KoroOverrides extends ConfigFormBase {
     $motifs = AppearanceSettings::getWaveMotifs();
     $overrides = [];
 
-    foreach (preg_split('/\R/', (string) $form_state->getValue('koro_overrides')) as $line) {
+    foreach (preg_split('/\R/', (string) $form_state->getValue('koro_overrides')) ?: [] as $line) {
       $line = trim($line);
 
       if ($line === '') {
@@ -111,6 +127,11 @@ final class KoroOverrides extends ConfigFormBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @param array<mixed> $form
+   *   The form structure.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $this->config(KoroPathOverride::CONFIG_NAME)
