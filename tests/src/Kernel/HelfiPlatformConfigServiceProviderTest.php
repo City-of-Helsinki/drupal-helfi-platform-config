@@ -48,11 +48,6 @@ class HelfiPlatformConfigServiceProviderTest extends KernelTestBase {
       'default' => "$module_path/fixtures/og-global.png",
       'sv' => "$module_path/fixtures/og-global-sv.png",
     ], $this->container->getParameter('helfi_platform_config.default_image'));
-
-    $this->assertSame(
-      "$module_path/fixtures/og-global.png",
-      $this->container->get('helfi_platform_config.og_image.default')->buildUri(NULL),
-    );
   }
 
 }

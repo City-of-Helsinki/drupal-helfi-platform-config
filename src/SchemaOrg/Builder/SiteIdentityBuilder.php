@@ -12,7 +12,7 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_platform_config\SchemaOrg\EntityIdTrait;
 use Drupal\helfi_platform_config\SchemaOrg\SchemaBuilderInterface;
-use Drupal\helfi_platform_config\Token\OGImageManager;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Emits the City of Helsinki identity on every page.
@@ -21,11 +21,24 @@ final readonly class SiteIdentityBuilder implements SchemaBuilderInterface {
 
   use EntityIdTrait;
 
+  /**
+   * Constructs a new instance.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory.
+   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
+   *   The language manager.
+   * @param \Drupal\Core\File\FileUrlGeneratorInterface $fileUrlGenerator
+   *   The file url generator.
+   * @param array<string, string> $defaultImages
+   *   Default image paths keyed by langcode.
+   */
   public function __construct(
     private ConfigFactoryInterface $configFactory,
     private LanguageManagerInterface $languageManager,
-    private OGImageManager $ogImageManager,
     private FileUrlGeneratorInterface $fileUrlGenerator,
+    #[Autowire(param: 'helfi_platform_config.default_image')]
+    private array $defaultImages,
   ) {
   }
 
@@ -63,12 +76,11 @@ final readonly class SiteIdentityBuilder implements SchemaBuilderInterface {
     ];
 
     // Reuse the default OG image as the organization logo.
-    if ($logo = $this->ogImageManager->buildUrl(NULL)) {
-      $organization['logo'] = [
-        '@type' => 'ImageObject',
-        'url' => $this->fileUrlGenerator->generateAbsoluteString($logo),
-      ];
-    }
+    $logo = $this->defaultImages[$langcode] ?? $this->defaultImages['default'];
+    $organization['logo'] = [
+      '@type' => 'ImageObject',
+      'url' => $this->fileUrlGenerator->generateAbsoluteString($logo),
+    ];
 
     $website = [
       '@type' => 'WebSite',
