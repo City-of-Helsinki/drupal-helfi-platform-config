@@ -34,19 +34,6 @@ final class ContentCardsHtmxController implements ContainerInjectionInterface {
       return [];
     }
 
-    $build = [
-      '#cache' => [
-        'contexts' => ['languages:language_content'],
-      ],
-    ];
-    $cacheability = CacheableMetadata::createFromRenderArray($build)
-      ->merge(CacheableMetadata::createFromObject($paragraph));
-    $parent = $paragraph->getParentEntity();
-    if ($parent !== NULL) {
-      $cacheability = $cacheability->merge(CacheableMetadata::createFromObject($parent));
-    }
-    $cacheability->applyTo($build);
-
     $build['cards'] = $this->entityTypeManager
       ->getViewBuilder('paragraph')
       ->viewField($paragraph->get('field_content_cards_content_ext'), [
@@ -57,6 +44,15 @@ final class ContentCardsHtmxController implements ContainerInjectionInterface {
           'link' => FALSE,
         ],
       ]);
+
+    $cacheability = new CacheableMetadata();
+    $cacheability->addCacheContexts(['languages:language_content']);
+    $cacheability->addCacheableDependency($paragraph);
+    $parent = $paragraph->getParentEntity();
+    if ($parent !== NULL) {
+      $cacheability->addCacheableDependency($parent);
+    }
+    $cacheability->applyTo($build);
 
     return $build;
   }
