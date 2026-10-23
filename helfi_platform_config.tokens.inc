@@ -81,6 +81,7 @@ function helfi_platform_config_tokens(
           }
           else {
             // Fall back to the default image.
+            /** @var array<string, string> $default_images */
             $default_images = \Drupal::getContainer()->getParameter('helfi_platform_config.default_image');
             $langcode = \Drupal::languageManager()
               ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
