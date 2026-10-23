@@ -1,14 +1,16 @@
-uuid: b293b924-bf9d-4669-bb09-2a932bd867ad
+uuid: c38474a4-4d43-4ac5-b98d-54928a9cf16e
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.paragraph.content_cards.field_content_cards_content
+    - field.field.paragraph.content_cards.field_content_cards_content_ext
     - field.field.paragraph.content_cards.field_content_cards_desc
     - field.field.paragraph.content_cards.field_content_cards_design
     - field.field.paragraph.content_cards.field_content_cards_title
     - paragraphs.paragraphs_type.content_cards
   module:
+    - helfi_platform_config
     - options
     - text
 id: paragraph.content_cards.default
@@ -16,12 +18,10 @@ targetEntityType: paragraph
 bundle: content_cards
 mode: default
 content:
-  field_content_cards_content:
-    type: entity_reference_entity_view
+  field_content_cards_content_ext:
+    type: content_cards_htmx
     label: hidden
-    settings:
-      view_mode: teaser
-      link: false
+    settings: {  }
     third_party_settings: {  }
     weight: 2
     region: content
@@ -44,8 +44,10 @@ content:
     label: hidden
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings: {  }
     weight: 0
     region: content
 hidden:
+  field_content_cards_content: true
   search_api_excerpt: true

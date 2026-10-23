@@ -1,4 +1,4 @@
-uuid: 4b8b0817-96a0-42f1-bc31-e7623c25cd9f
+uuid: 980263c0-21a2-4268-af03-59c02689e5ac
 langcode: en
 status: true
 dependencies:
@@ -11,9 +11,9 @@ id: paragraph.content_cards.field_content_cards_content
 field_name: field_content_cards_content
 entity_type: paragraph
 bundle: content_cards
-label: Content
-description: 'Add here the content that you want to appear as cards to the block.'
-required: true
+label: 'DEPRECATED: Content'
+description: 'DEPRECATED: Can be removed when content is migrated to new field_content_cards_content_ext.'
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
