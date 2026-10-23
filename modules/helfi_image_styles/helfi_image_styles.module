@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\StreamWrapper\StreamWrapperManager;
 
 /**
  * Implements hook_og_image_uri_alter().
@@ -15,8 +16,9 @@ use Drupal\Component\Utility\UrlHelper;
  * @see \Drupal\helfi_platform_config\Token\OGImageManager::buildUrl()
  */
 function helfi_image_styles_og_image_uri_alter(&$image_uri) : void {
-  // Apply image style to internal uris.
-  if (!UrlHelper::isExternal($image_uri)) {
+  // Apply image style to stream wrapper uris. Other uris, such as external
+  // urls and paths to static files, cannot be processed by image styles.
+  if (!UrlHelper::isExternal($image_uri) && StreamWrapperManager::getScheme($image_uri)) {
     /** @var \Drupal\image\Entity\ImageStyle $image_style */
     $image_style = \Drupal::entityTypeManager()
       ->getStorage('image_style')

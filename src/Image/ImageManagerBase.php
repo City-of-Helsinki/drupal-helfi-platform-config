@@ -41,11 +41,15 @@ abstract class ImageManagerBase {
   /**
    * Builds image url for given entity.
    *
+   * The returned value is not necessarily an absolute URL. Callers that need
+   * one should pass it through
+   * \Drupal\Core\File\FileUrlGeneratorInterface::generateAbsoluteString().
+   *
    * @param \Drupal\Core\Entity\EntityInterface|null $entity
    *   The entity.
    *
    * @return string|null
-   *   Image url or NULL on failure.
+   *   Image uri or NULL on failure.
    */
   public function buildUrl(?EntityInterface $entity) : ?string {
     $image_uri = NULL;

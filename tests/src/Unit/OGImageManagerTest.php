@@ -6,7 +6,6 @@ namespace Drupal\Tests\helfi_platform_config\Unit;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\helfi_platform_config\Image\ImageBuilderInterface;
 use Drupal\helfi_platform_config\Token\OGImageManager;
 use Drupal\Tests\UnitTestCase;
@@ -52,25 +51,13 @@ class OGImageManagerTest extends UnitTestCase {
   /**
    * Gets service under test.
    *
-   * @param \Drupal\Core\File\FileUrlGeneratorInterface|null $fileUrlGenerator
-   *   File url generator mock.
-   *
    * @returns \Drupal\helfi_platform_config\Token\OGImageManager
    *   The open graph image manager.
    */
-  private function getSut(?FileUrlGeneratorInterface $fileUrlGenerator = NULL) : OGImageManager {
+  private function getSut() : OGImageManager {
     $moduleHandler = $this->prophesize(ModuleHandlerInterface::class);
 
-    if (!$fileUrlGenerator) {
-      $prophecy = $this->prophesize(FileUrlGeneratorInterface::class);
-      $prophecy->generateAbsoluteString(Argument::any())->willReturnArgument(0);
-      $fileUrlGenerator = $prophecy->reveal();
-    }
-
-    return new OGImageManager(
-      $moduleHandler->reveal(),
-      $fileUrlGenerator,
-    );
+    return new OGImageManager($moduleHandler->reveal());
   }
 
   /**

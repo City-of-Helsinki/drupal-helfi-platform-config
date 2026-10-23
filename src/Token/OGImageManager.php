@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Token;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\helfi_platform_config\Image\ImageManagerBase;
 
 /**
@@ -25,7 +23,6 @@ final class OGImageManager extends ImageManagerBase {
    */
   public function __construct(
     private readonly ModuleHandlerInterface $moduleHandler,
-    private readonly FileUrlGeneratorInterface $fileUrlGenerator,
   ) {
   }
 
@@ -36,7 +33,7 @@ final class OGImageManager extends ImageManagerBase {
    *   The entity.
    *
    * @return string|null
-   *   OG image url or NULL on failure.
+   *   OG image uri or NULL on failure.
    */
   public function buildUrl(?EntityInterface $entity) : ?string {
     $image_uri = parent::buildUrl($entity);
@@ -48,11 +45,7 @@ final class OGImageManager extends ImageManagerBase {
     // Let modules alter the final uri (like apply image styles).
     $this->moduleHandler->alter('og_image_uri', $image_uri);
 
-    if (UrlHelper::isExternal($image_uri)) {
-      return $image_uri;
-    }
-
-    return $this->fileUrlGenerator->generateAbsoluteString($image_uri);
+    return $image_uri;
   }
 
 }

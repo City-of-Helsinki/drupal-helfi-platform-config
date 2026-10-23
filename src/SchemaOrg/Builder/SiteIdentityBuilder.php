@@ -7,6 +7,7 @@ namespace Drupal\helfi_platform_config\SchemaOrg\Builder;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_platform_config\SchemaOrg\EntityIdTrait;
@@ -24,6 +25,7 @@ final readonly class SiteIdentityBuilder implements SchemaBuilderInterface {
     private ConfigFactoryInterface $configFactory,
     private LanguageManagerInterface $languageManager,
     private OGImageManager $ogImageManager,
+    private FileUrlGeneratorInterface $fileUrlGenerator,
   ) {
   }
 
@@ -64,7 +66,7 @@ final readonly class SiteIdentityBuilder implements SchemaBuilderInterface {
     if ($logo = $this->ogImageManager->buildUrl(NULL)) {
       $organization['logo'] = [
         '@type' => 'ImageObject',
-        'url' => $logo,
+        'url' => $this->fileUrlGenerator->generateAbsoluteString($logo),
       ];
     }
 

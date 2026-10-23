@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\Token;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\helfi_platform_config\Image\ImageBuilderInterface;
@@ -23,14 +22,11 @@ class DefaultImageBuilder implements ImageBuilderInterface {
    *   Default image paths keyed by langcode.
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
-   * @param \Drupal\Core\File\FileUrlGeneratorInterface $fileUrlGenerator
-   *   The file url generator.
    */
   public function __construct(
     #[Autowire(param: 'helfi_platform_config.default_image')]
     private readonly array $defaultImages,
     private readonly LanguageManagerInterface $languageManager,
-    private readonly FileUrlGeneratorInterface $fileUrlGenerator,
   ) {
   }
 
@@ -48,9 +44,7 @@ class DefaultImageBuilder implements ImageBuilderInterface {
     $current_language = $this->languageManager
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
 
-    $image_path = $this->defaultImages[$current_language] ?? $this->defaultImages['default'];
-
-    return $this->fileUrlGenerator->generateAbsoluteString($image_path);
+    return $this->defaultImages[$current_language] ?? $this->defaultImages['default'];
   }
 
 }

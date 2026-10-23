@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Kernel;
 
 use Drupal\Core\Extension\ModuleExtensionList;
-use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\helfi_platform_config\ConfigUpdate\ConfigRewriter;
 use Drupal\helfi_platform_config\HelfiPlatformConfigServiceProvider;
 use Drupal\helfi_platform_config\SearchAPI\Query\QueryResultParser;
@@ -51,7 +50,7 @@ class HelfiPlatformConfigServiceProviderTest extends KernelTestBase {
     ], $this->container->getParameter('helfi_platform_config.default_image'));
 
     $this->assertSame(
-      $this->container->get(FileUrlGeneratorInterface::class)->generateAbsoluteString("$module_path/fixtures/og-global.png"),
+      "$module_path/fixtures/og-global.png",
       $this->container->get('helfi_platform_config.og_image.default')->buildUri(NULL),
     );
   }

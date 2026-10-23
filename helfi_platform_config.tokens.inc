@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\helfi_paragraphs_hero\Entity\Hero;
 
@@ -74,7 +75,10 @@ function helfi_platform_config_tokens(
           /** @var \Drupal\helfi_platform_config\Token\OGImageManager $image_manager */
           $image_manager = \Drupal::service('helfi_platform_config.og_image_manager');
 
-          $replacements[$original] = $image_manager->buildUrl($entity);
+          $image_uri = $image_manager->buildUrl($entity);
+
+          $replacements[$original] = $image_uri ? \Drupal::service(FileUrlGeneratorInterface::class)
+            ->generateAbsoluteString($image_uri) : NULL;
         }
         break;
 
