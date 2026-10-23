@@ -272,7 +272,7 @@ The error gets fixed once the configurations have been added to Drupal repositor
 
 ## Tokens
 
-Helfi platform config implements `hook_tokens()`. With the help of `helfi_platform_config.og_image_manager` service, it provides `[*:shareable-image]` token. Modules may implement services that handle this token for their entity types.
+Helfi platform config implements `hook_tokens()`. With the help of `Drupal\helfi_platform_config\Image\LiftupImageManager` service, it provides `[*:shareable-image]` token. Modules may implement image builder services that handle this token for their entity types. The same builders are used for the liftup image search index field. If no builder provides an image, the default image from the `helfi_platform_config.default_image` service parameter is used.
 
 Modules that use this system should still implement `hook_tokens_info` to provide information about the implemented token.
 
@@ -286,7 +286,7 @@ Add a new service:
     class: Drupal\yourmodule\Token\YourEntityImageBuilder
     arguments: []
     tags:
-      - { name: helfi_platform_config.og_image_builder, priority: 100 }
+      - { name: helfi_platform_config.liftup_image_builder, priority: 100 }
 ```
 
 ```php

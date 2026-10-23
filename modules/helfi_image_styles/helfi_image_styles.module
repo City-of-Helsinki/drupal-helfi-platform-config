@@ -13,7 +13,7 @@ use Drupal\Core\StreamWrapper\StreamWrapperManager;
 /**
  * Implements hook_og_image_uri_alter().
  *
- * @see \Drupal\helfi_platform_config\Token\OGImageManager::buildUrl()
+ * @see helfi_platform_config_tokens()
  */
 function helfi_image_styles_og_image_uri_alter(&$image_uri) : void {
   // Apply image style to stream wrapper uris. Other uris, such as external
