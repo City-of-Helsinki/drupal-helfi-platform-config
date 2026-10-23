@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Unit;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\helfi_platform_config\Image\ImageBuilderInterface;
 use Drupal\helfi_platform_config\Image\LiftupImageManager;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\Group;
-use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Tests the liftup image builder collector.
@@ -21,13 +18,6 @@ use Prophecy\Prophecy\ObjectProphecy;
 class LiftupImageManagerTest extends UnitTestCase {
 
   use ProphecyTrait;
-
-  /**
-   * The file URL generator prophecy.
-   *
-   * @var \Prophecy\Prophecy\ObjectProphecy<\Drupal\Core\File\FileUrlGeneratorInterface>
-   */
-  private ObjectProphecy $fileUrlGenerator;
 
   /**
    * The liftup image manager under test.
@@ -45,82 +35,68 @@ class LiftupImageManagerTest extends UnitTestCase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->fileUrlGenerator = $this->prophesize(FileUrlGeneratorInterface::class);
-    $this->sut = new LiftupImageManager($this->fileUrlGenerator->reveal());
+    $this->sut = new LiftupImageManager();
     $this->entity = $this->prophesize(EntityInterface::class)->reveal();
   }
 
   /**
-   * Tests that a non-applicable builder produces no URL.
+   * Tests that a non-applicable builder produces no URI.
    */
   public function testBuildUrlReturnsNullWhenBuilderDoesNotApply() : void {
-    $this->sut->add($this->createImageBuilderMock('public://image.jpg', FALSE)->reveal());
+    $this->sut->add($this->createImageBuilder('public://image.jpg', FALSE));
 
     $this->assertNull($this->sut->buildUrl($this->entity));
-    $this->fileUrlGenerator->generateAbsoluteString(Argument::any())->shouldNotHaveBeenCalled();
   }
 
   /**
-   * Tests that a builder returning NULL produces no URL.
+   * Tests that a builder returning NULL produces no URI.
    */
   public function testBuildUrlReturnsNullWhenBuilderReturnsNull() : void {
-    $this->sut->add($this->createImageBuilderMock(NULL)->reveal());
+    $this->sut->add($this->createImageBuilder(NULL));
 
     $this->assertNull($this->sut->buildUrl($this->entity));
-    $this->fileUrlGenerator->generateAbsoluteString(Argument::any())->shouldNotHaveBeenCalled();
   }
 
   /**
-   * Tests that a stream URI is converted to an absolute URL.
-   */
-  public function testBuildUrlReturnsAbsoluteUrlForStreamUri() : void {
-    $this->fileUrlGenerator->generateAbsoluteString('public://image.jpg')
-      ->willReturn('https://example.com/sites/default/files/image.jpg')
-      ->shouldBeCalledOnce();
-    $this->sut->add($this->createImageBuilderMock('public://image.jpg')->reveal());
-
-    $this->assertSame('https://example.com/sites/default/files/image.jpg', $this->sut->buildUrl($this->entity));
-  }
-
-  /**
-   * Tests that an external URI is returned unchanged.
-   */
-  public function testBuildUrlReturnsExternalUriUnchanged() : void {
-    $this->sut->add($this->createImageBuilderMock('https://cdn.example.com/image.jpg')->reveal());
-
-    $this->assertSame('https://cdn.example.com/image.jpg', $this->sut->buildUrl($this->entity));
-    $this->fileUrlGenerator->generateAbsoluteString(Argument::any())->shouldNotHaveBeenCalled();
-  }
-
-  /**
-   * Tests that the highest-priority builder URI is the one converted.
+   * Tests that the highest-priority builder URI wins.
    */
   public function testBuildUrlUsesTheWinningBuilderUri() : void {
-    $this->fileUrlGenerator->generateAbsoluteString('public://later.jpg')
-      ->willReturn('https://example.com/sites/default/files/later.jpg')
-      ->shouldBeCalledOnce();
-    $this->sut->add($this->createImageBuilderMock('public://early.jpg')->reveal(), -10);
-    $this->sut->add($this->createImageBuilderMock('public://later.jpg')->reveal());
+    $this->sut->add($this->createImageBuilder('public://early.jpg'), -10);
+    $this->sut->add($this->createImageBuilder('public://later.jpg'));
 
-    $this->assertSame('https://example.com/sites/default/files/later.jpg', $this->sut->buildUrl($this->entity));
+    $this->assertSame('public://later.jpg', $this->sut->buildUrl($this->entity));
   }
 
   /**
-   * Creates a mock image builder.
+   * Creates an image builder.
    *
-   * @param string|null $uri
-   *   Return value for buildUri().
-   * @param bool $applies
-   *   Return value for applies().
-   *
-   * @return \Prophecy\Prophecy\ObjectProphecy<\Drupal\helfi_platform_config\Image\ImageBuilderInterface>
-   *   Builder mock.
+   * @return \Drupal\helfi_platform_config\Image\ImageBuilderInterface
+   *   The image builder.
    */
-  private function createImageBuilderMock(?string $uri, bool $applies = TRUE) : ObjectProphecy {
-    $builder = $this->prophesize(ImageBuilderInterface::class);
-    $builder->applies(Argument::any())->willReturn($applies);
-    $builder->buildUri(Argument::any())->willReturn($uri);
-    return $builder;
+  private function createImageBuilder(?string $uri, bool $applies = TRUE) : ImageBuilderInterface {
+    return new readonly class($uri, $applies) implements ImageBuilderInterface {
+
+      public function __construct(
+        private ?string $uri,
+        private bool $applies,
+      ) {
+      }
+
+      /**
+       * {@inheritdoc}
+       */
+      public function applies(?EntityInterface $entity) : bool {
+        return $this->applies;
+      }
+
+      /**
+       * {@inheritdoc}
+       */
+      public function buildUri(?EntityInterface $entity) : ?string {
+        return $this->uri;
+      }
+
+    };
   }
 
 }

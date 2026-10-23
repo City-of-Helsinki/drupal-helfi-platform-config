@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\Plugin\search_api\processor;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_platform_config\Image\LiftupImageManager;
 use Drupal\search_api\Attribute\SearchApiProcessor;
@@ -33,6 +34,11 @@ final class LiftupImageUrl extends ProcessorPluginBase {
   protected LiftupImageManager $liftupImageManager;
 
   /**
+   * The file url generator.
+   */
+  protected FileUrlGeneratorInterface $fileUrlGenerator;
+
+  /**
    * {@inheritdoc}
    *
    * @phpstan-param array<string, mixed> $configuration
@@ -45,6 +51,7 @@ final class LiftupImageUrl extends ProcessorPluginBase {
   ) : self {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->liftupImageManager = $container->get(LiftupImageManager::class);
+    $instance->fileUrlGenerator = $container->get(FileUrlGeneratorInterface::class);
     return $instance;
   }
 
@@ -77,10 +84,12 @@ final class LiftupImageUrl extends ProcessorPluginBase {
       return;
     }
 
-    $url = $this->liftupImageManager->buildUrl($entity);
-    if (!$url) {
+    $uri = $this->liftupImageManager->buildUrl($entity);
+    if (!$uri) {
       return;
     }
+
+    $url = $this->fileUrlGenerator->generateAbsoluteString($uri);
 
     $fields = $this->getFieldsHelper()
       ->filterForPropertyPath($item->getFields(FALSE), NULL, 'liftup_image_url');
