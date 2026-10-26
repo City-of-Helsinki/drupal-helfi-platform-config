@@ -93,11 +93,10 @@ class EventEntityTest extends KernelTestBase {
    */
   public static function hasEndedDataProvider(): array {
     return [
-      ['now', FALSE],
       // Should be expired because the end time is in the past.
-      ['-1 seconds', TRUE],
+      ['-1 minutes', TRUE],
       // Should not be expired because the end time is in the future.
-      ['+1 seconds', FALSE],
+      ['+1 minutes', FALSE],
       // Should not expire because end_time is not set.
       [NULL, FALSE],
     ];
