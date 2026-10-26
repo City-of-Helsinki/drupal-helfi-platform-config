@@ -1,0 +1,1613 @@
+diff --git a/config/install/search_api.settings.yml b/config/install/search_api.settings.yml
+index 91e69ea2..7ceffe87 100644
+--- a/config/install/search_api.settings.yml
++++ b/config/install/search_api.settings.yml
+@@ -1,6 +1,6 @@
+ default_cron_limit: 50
+ cron_worker_runtime: 15
+-default_tracker: 'default'
++default_tracker: parallel
+ tracking_page_size: 100
+ boost_factors:
+   - 0.0
+diff --git a/config/schema/search_api.tracker.schema.yml b/config/schema/search_api.tracker.schema.yml
+index 3af3715d..be09998d 100644
+--- a/config/schema/search_api.tracker.schema.yml
++++ b/config/schema/search_api.tracker.schema.yml
+@@ -5,3 +5,10 @@ plugin.plugin_configuration.search_api_tracker.default:
+     indexing_order:
+       type: string
+       label: 'Indexing order'
++
++plugin.plugin_configuration.search_api_tracker.parallel:
++  type: plugin.plugin_configuration.search_api_tracker.default
++  mapping:
++    claim_timeout:
++      type: integer
++      label: 'Claim timeout'
+diff --git a/modules/search_api_db/tests/fixtures/update/search-api-db-base.php b/modules/search_api_db/tests/fixtures/update/search-api-db-base.php
+index fd5cbd4e..8e03d2d2 100644
+--- a/modules/search_api_db/tests/fixtures/update/search-api-db-base.php
++++ b/modules/search_api_db/tests/fixtures/update/search-api-db-base.php
+@@ -14,7 +14,7 @@ $connection = Database::getConnection();
+ 
+ // Set the schema versions.
+ $versions = [
+-  'search_api' => 8104,
++  'search_api' => 8111,
+   'search_api_db' => 8101,
+ ];
+ foreach ($versions as $name => $version) {
+diff --git a/search_api.install b/search_api.install
+index ae3737c3..4577b9bd 100644
+--- a/search_api.install
++++ b/search_api.install
+@@ -43,13 +43,28 @@ function search_api_schema() {
+         'not null' => TRUE,
+       ],
+       'status' => [
+-        'description' => 'Boolean indicating the indexing status: "1" if item needs to be indexed, "0" otherwise',
++        'description' => 'The indexing status: "1" if item needs to be indexed, "2" while an indexing run claims it, "0" otherwise',
+         'type' => 'int',
+         'not null' => TRUE,
+       ],
++      'worker_id' => [
++        'description' => 'The UUID of the worker that has claimed this item for processing',
++        'type' => 'varchar',
++        'length' => 36,
++        'not null' => FALSE,
++        'default' => NULL,
++      ],
++      'expires_at' => [
++        'description' => 'A timestamp indicating when the worker claim expires',
++        'type' => 'int',
++        'unsigned' => TRUE,
++        'not null' => FALSE,
++        'default' => NULL,
++      ],
+     ],
+     'indexes' => [
+       'indexing' => ['index_id', 'status', 'changed', 'item_id'],
++      'parallel_processing' => ['index_id', 'worker_id', 'expires_at'],
+     ],
+     'primary key' => ['index_id', 'item_id'],
+   ];
+@@ -356,3 +371,63 @@ function search_api_update_8110() {
+   $entity_type->setHandlerClass('storage_schema', SqlContentEntityStorageSchema::class);
+   $manager->updateEntityType($entity_type);
+ }
++
++/**
++ * Add parallel indexing support columns to search_api_item table.
++ */
++function search_api_update_8111() {
++  $database = \Drupal::database();
++  $schema = $database->schema();
++
++  $spec = [
++    'fields' => [
++      'index_id' => [
++        'description' => 'The ID of the index this item belongs to',
++        'type' => 'varchar',
++        'length' => 50,
++        'not null' => TRUE,
++      ],
++      'status' => [
++        'description' => 'Boolean indicating the indexing status: "1" if item needs to be indexed, "0" otherwise',
++        'type' => 'int',
++        'not null' => TRUE,
++      ],
++      'worker_id' => [
++        'description' => 'The UUID of the worker that has claimed this item for processing',
++        'type' => 'varchar',
++        'length' => 36,
++        'not null' => FALSE,
++        'default' => NULL,
++      ],
++      'expires_at' => [
++        'description' => 'A timestamp indicating when the worker claim expires',
++        'type' => 'int',
++        'unsigned' => TRUE,
++        'not null' => FALSE,
++        'default' => NULL,
++      ],
++    ],
++  ];
++
++  // Add worker_id column.
++  if (!$schema->fieldExists('search_api_item', 'worker_id')) {
++    $schema->addField('search_api_item', 'worker_id', $spec['fields']['worker_id']);
++  }
++
++  // Add expires_at column.
++  if (!$schema->fieldExists('search_api_item', 'expires_at')) {
++    $schema->addField('search_api_item', 'expires_at', $spec['fields']['expires_at']);
++  }
++
++  // Add index for parallel processing queries.
++  if (!$schema->indexExists('search_api_item', 'parallel_processing')) {
++    $schema->addIndex(
++      'search_api_item',
++      'parallel_processing',
++      ['index_id', 'worker_id', 'expires_at'],
++      $spec,
++    );
++  }
++
++  return t('Added parallel indexing support columns to search_api_item table.');
++}
+diff --git a/src/Entity/Index.php b/src/Entity/Index.php
+index baf42e23..376f29ee 100644
+--- a/src/Entity/Index.php
++++ b/src/Entity/Index.php
+@@ -1116,11 +1116,11 @@ class Index extends ConfigEntityBase implements IndexInterface {
+    */
+   public function indexItems($limit = '-1', $datasource_id = NULL) {
+     if ($this->hasValidTracker() && !$this->isReadOnly()) {
+-      if (!\Drupal::lock()->acquire($this->getLockId(), 60)) {
++      $tracker = $this->getTrackerInstanceIfAvailable();
++      if (!$tracker->lock()) {
+         return 0;
+       }
+       try {
+-        $tracker = $this->getTrackerInstanceIfAvailable();
+         $next_set = $tracker->getRemainingItems($limit, $datasource_id);
+         if (!$next_set) {
+           return 0;
+@@ -1140,7 +1140,7 @@ class Index extends ConfigEntityBase implements IndexInterface {
+         }
+       }
+       finally {
+-        \Drupal::lock()->release($this->getLockId());
++        $tracker->unlock();
+       }
+     }
+     return 0;
+@@ -1439,6 +1439,9 @@ class Index extends ConfigEntityBase implements IndexInterface {
+    * {@inheritdoc}
+    */
+   public function getLockId(): string {
++    if ($this->hasValidTracker()) {
++      return $this->getTrackerInstance()->getLockId();
++    }
+     return "search_api:index:{$this->id}";
+   }
+ 
+diff --git a/src/Plugin/search_api/tracker/Parallel.php b/src/Plugin/search_api/tracker/Parallel.php
+new file mode 100644
+index 00000000..52c4e3fc
+--- /dev/null
++++ b/src/Plugin/search_api/tracker/Parallel.php
+@@ -0,0 +1,305 @@
++<?php
++
++namespace Drupal\search_api\Plugin\search_api\tracker;
++
++use Drupal\Component\Uuid\UuidInterface;
++use Drupal\Core\Database\Query\SelectInterface;
++use Drupal\Core\Form\FormStateInterface;
++use Drupal\Core\StringTranslation\TranslatableMarkup;
++use Drupal\search_api\Attribute\SearchApiTracker;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++
++/**
++ * Provides a tracker implementation which supports parallel indexing.
++ */
++#[SearchApiTracker(
++  id: 'parallel',
++  label: new TranslatableMarkup('Parallel indexing'),
++  description: new TranslatableMarkup('Tracker that supports parallel indexing.')
++)]
++class Parallel extends Basic {
++
++  /**
++   * The UUID service.
++   */
++  protected UuidInterface $uuidService;
++
++  /**
++   * The current worker ID for this instance.
++   */
++  protected ?string $currentWorkerId = NULL;
++
++  /**
++   * The lock timeout for this indexing session.
++   */
++  protected int $lockTimeout = 60;
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
++    /** @var static $tracker */
++    $tracker = parent::create($container, $configuration, $plugin_id, $plugin_definition);
++    $tracker->setUuidService($container->get('uuid'));
++    return $tracker;
++  }
++
++  /**
++   * Retrieves the UUID service.
++   *
++   * @return \Drupal\Component\Uuid\UuidInterface
++   *   The UUID service.
++   */
++  public function getUuidService(): UuidInterface {
++    return $this->uuidService ?? \Drupal::service('uuid');
++  }
++
++  /**
++   * Sets the UUID service.
++   *
++   * @param \Drupal\Component\Uuid\UuidInterface $uuid_service
++   *   The UUID service.
++   *
++   * @return $this
++   */
++  public function setUuidService(UuidInterface $uuid_service): static {
++    $this->uuidService = $uuid_service;
++    return $this;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function defaultConfiguration(): array {
++    return parent::defaultConfiguration() + [
++      'claim_timeout' => 60,
++    ];
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function buildConfigurationForm(array $form, FormStateInterface $form_state): array {
++    $form = parent::buildConfigurationForm($form, $form_state);
++
++    $form['claim_timeout'] = [
++      '#type' => 'number',
++      '#title' => $this->t('Claim timeout (in seconds)'),
++      '#description' => $this->t('The maximum amount of time to allow for the indexing of a single batch of items. In doubt, the default of 60 seconds should work well for most sites.'),
++      '#default_value' => $this->configuration['claim_timeout'],
++      '#min' => 30,
++      '#max' => 3600,
++    ];
++
++    return $form;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getLockId(): string {
++    // Use a different lock ID to avoid conflicts.
++    return "search_api:parallel_index:{$this->getIndex()->id()}";
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function lock($timeout = 60): bool {
++    // Store the timeout for use in claiming operations.
++    $this->lockTimeout = $timeout;
++
++    // For parallel tracker, the "lock" is really claiming items.
++    // We don't use a global lock, but we do clean up expired claims.
++    $this->releaseExpiredClaims();
++
++    // Initialize worker ID for this indexing session.
++    $this->currentWorkerId = $this->getUuidService()->generate();
++
++    return TRUE;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function unlock(): void {
++    // Release any items claimed by this worker.
++    if ($this->currentWorkerId) {
++      $this->releaseWorkerItems($this->currentWorkerId);
++      $this->currentWorkerId = NULL;
++    }
++    $this->claimedItemIds = [];
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function createRemainingItemsStatement($datasource_id = NULL): SelectInterface {
++    return parent::createRemainingItemsStatement($datasource_id)
++      ->isNull('worker_id');
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function getRemainingItems($limit = -1, $datasource_id = NULL): array {
++    try {
++      // If no worker ID is set, fall back to parent implementation.
++      if (!$this->currentWorkerId) {
++        return parent::getRemainingItems($limit, $datasource_id);
++      }
++
++      $index_id = $this->getIndex()->id();
++      $lock_name = "search_api_parallel_claim:{$index_id}";
++
++      $lock = \Drupal::service('lock');
++      $lock_acquired = $lock->acquire($lock_name, 5);
++
++      // If another worker is claiming items, wait for it to finish and try
++      // again until the timeout is reached. Only wait after a failed attempt,
++      // because waiting always sleeps first.
++      $expiration_time = $this->getTimeService()->getCurrentTime() + $this->lockTimeout;
++      while (!$lock_acquired && $this->getTimeService()->getCurrentTime() < $expiration_time) {
++        $lock->wait($lock_name, 2);
++        $lock_acquired = $lock->acquire($lock_name, 5);
++      }
++
++      if (!$lock_acquired) {
++        // Could not acquire lock within timeout - return empty array.
++        return [];
++      }
++
++      try {
++        // Get items using parent method (now selects only unclaimed items).
++        $item_ids = parent::getRemainingItems($limit, $datasource_id);
++
++        if (empty($item_ids)) {
++          return [];
++        }
++
++        $this->claimItems($item_ids);
++
++        return $item_ids;
++      }
++      finally {
++        // Always release the lock.
++        $lock->release($lock_name);
++      }
++    }
++    catch (\Exception $e) {
++      $this->logException($e);
++      return [];
++    }
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function claimItems(array $ids): void {
++    $current_time = $this->getTimeService()->getCurrentTime();
++    $expires_at = $current_time + $this->configuration['claim_timeout'];
++
++    foreach (array_chunk($ids, 1000) as $ids_chunk) {
++      $this->createUpdateStatement()
++        ->fields([
++          'status' => static::STATUS_CLAIMED,
++          'worker_id' => $this->currentWorkerId,
++          'expires_at' => $expires_at,
++        ])
++        ->condition('item_id', $ids_chunk, 'IN')
++        ->condition('status', static::STATUS_NOT_INDEXED)
++        ->isNull('worker_id')
++        ->execute();
++    }
++    $this->claimedItemIds += array_fill_keys($ids, TRUE);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function createClaimedItemsUpdateStatement() {
++    return parent::createClaimedItemsUpdateStatement()
++      ->condition('worker_id', $this->currentWorkerId);
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function createUnclaimedItemsUpdateStatement() {
++    // Items claimed by another worker are left to that worker.
++    return parent::createUnclaimedItemsUpdateStatement()
++      ->isNull('worker_id');
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  protected function trackClaimedItemsIndexed(array $ids): void {
++    parent::trackClaimedItemsIndexed($ids);
++
++    // Also release the items updated since being claimed, so they are queued.
++    foreach (array_chunk($ids, 1000) as $ids_chunk) {
++      $this->createUpdateStatement()
++        ->fields([
++          'worker_id' => NULL,
++          'expires_at' => NULL,
++        ])
++        ->condition('item_id', $ids_chunk, 'IN')
++        ->condition('worker_id', $this->currentWorkerId)
++        ->execute();
++    }
++  }
++
++  /**
++   * Releases expired claims so items can be processed by other workers.
++   */
++  protected function releaseExpiredClaims(): void {
++    try {
++      $current_time = $this->getTimeService()->getCurrentTime();
++
++      $this->createUpdateStatement()
++        ->fields(['status' => static::STATUS_NOT_INDEXED])
++        ->condition('expires_at', $current_time, '<')
++        ->condition('status', static::STATUS_CLAIMED)
++        ->execute();
++      $this->createUpdateStatement()
++        ->fields([
++          'worker_id' => NULL,
++          'expires_at' => NULL,
++        ])
++        ->condition('expires_at', $current_time, '<')
++        ->isNotNull('worker_id')
++        ->execute();
++    }
++    catch (\Exception $e) {
++      $this->logException($e);
++    }
++  }
++
++  /**
++   * Releases all items claimed by a specific worker.
++   *
++   * @param string $worker_id
++   *   The worker ID.
++   */
++  protected function releaseWorkerItems(string $worker_id): void {
++    try {
++      $this->createUpdateStatement()
++        ->fields(['status' => static::STATUS_NOT_INDEXED])
++        ->condition('worker_id', $worker_id)
++        ->condition('status', static::STATUS_CLAIMED)
++        ->execute();
++      $this->createUpdateStatement()
++        ->fields([
++          'worker_id' => NULL,
++          'expires_at' => NULL,
++        ])
++        ->condition('worker_id', $worker_id)
++        ->execute();
++    }
++    catch (\Exception $e) {
++      $this->logException($e);
++    }
++  }
++
++}
+diff --git a/src/Tracker/TrackerInterface.php b/src/Tracker/TrackerInterface.php
+index a8ef03a2..f099a0b5 100644
+--- a/src/Tracker/TrackerInterface.php
++++ b/src/Tracker/TrackerInterface.php
+@@ -121,4 +121,28 @@ interface TrackerInterface extends IndexPluginInterface {
+    */
+   public function getRemainingItemsCount($datasource_id = NULL);
+ 
++  /**
++   * Gets the lock ID for this tracker.
++   *
++   * @return string
++   *   The lock ID to use for this tracker.
++   */
++  public function getLockId(): string;
++
++  /**
++   * Acquires a lock for indexing operations.
++   *
++   * @param int $timeout
++   *   (optional) The lock timeout in seconds.
++   *
++   * @return bool
++   *   TRUE if the lock was acquired, FALSE otherwise.
++   */
++  public function lock(int $timeout = 60): bool;
++
++  /**
++   * Releases the lock for indexing operations.
++   */
++  public function unlock(): void;
++
+ }
+diff --git a/src/Tracker/TrackerPluginBase.php b/src/Tracker/TrackerPluginBase.php
+index 893a6427..bfa0a060 100644
+--- a/src/Tracker/TrackerPluginBase.php
++++ b/src/Tracker/TrackerPluginBase.php
+@@ -49,6 +49,26 @@ abstract class TrackerPluginBase extends IndexPluginBase implements TrackerInter
+    */
+   public const STATUS_NOT_INDEXED = 1;
+ 
++  /**
++   * Status value that represents items an indexing run is currently indexing.
++   *
++   * An update of a claimed item sets it back to STATUS_NOT_INDEXED, so the
++   * indexing run knows it indexed stale data and must not mark it as indexed.
++   */
++  public const STATUS_CLAIMED = 2;
++
++  /**
++   * The IDs of the items claimed by this tracker instance, as keys.
++   *
++   * @var array<string, true>
++   */
++  protected array $claimedItemIds = [];
++
++  /**
++   * Whether this tracker instance currently holds the index lock.
++   */
++  protected bool $hasLock = FALSE;
++
+   /**
+    * The database connection used by this plugin.
+    *
+@@ -284,6 +304,18 @@ abstract class TrackerPluginBase extends IndexPluginBase implements TrackerInter
+           $update->condition('status', self::STATUS_INDEXED);
+         }
+         $update->execute();
++
++        // Requeue items an indexing run has already loaded, keeping their
++        // position in the queue. For LIFO, the update above already did that.
++        if ($this->configuration['indexing_order'] === 'fifo') {
++          $update = $this->createUpdateStatement()
++            ->fields(['status' => $this::STATUS_NOT_INDEXED])
++            ->condition('status', $this::STATUS_CLAIMED);
++          if ($ids_chunk) {
++            $update->condition('item_id', $ids_chunk, 'IN');
++          }
++          $update->execute();
++        }
+       }
+     }
+     catch (\Exception $e) {
+@@ -316,21 +348,124 @@ abstract class TrackerPluginBase extends IndexPluginBase implements TrackerInter
+    */
+   public function trackItemsIndexed(array $ids) {
+     try {
++      $claimed_ids = array_keys(array_intersect_key($this->claimedItemIds, array_flip($ids)));
++      $unclaimed_ids = array_diff($ids, $claimed_ids);
++
+       // Process the IDs in chunks so we don't create an overly large UPDATE
+       // statement.
+-      $ids_chunks = array_chunk($ids, 1000);
++      $ids_chunks = array_chunk($unclaimed_ids, 1000);
+       foreach ($ids_chunks as $ids_chunk) {
+-        $update = $this->createUpdateStatement();
++        $update = $this->createUnclaimedItemsUpdateStatement();
+         $update->fields(['status' => $this::STATUS_INDEXED]);
+         $update->condition('item_id', $ids_chunk, 'IN');
+         $update->execute();
+       }
++
++      if ($claimed_ids) {
++        $this->trackClaimedItemsIndexed($claimed_ids);
++      }
+     }
+     catch (\Exception $e) {
+       $this->logException($e);
+     }
+   }
+ 
++  /**
++   * Marks items claimed by this instance as indexed, unless they changed.
++   *
++   * @param string[] $ids
++   *   The IDs of the indexed items, all claimed by this tracker instance.
++   */
++  protected function trackClaimedItemsIndexed(array $ids): void {
++    foreach (array_chunk($ids, 1000) as $ids_chunk) {
++      $this->createClaimedItemsUpdateStatement()
++        ->fields(['status' => $this::STATUS_INDEXED])
++        ->condition('item_id', $ids_chunk, 'IN')
++        ->execute();
++    }
++    $this->deleteItemsRemovedWhileClaimed($ids);
++    $this->claimedItemIds = array_diff_key($this->claimedItemIds, array_flip($ids));
++  }
++
++  /**
++   * Removes items from the server that were deleted while being indexed.
++   *
++   * @param string[] $ids
++   *   The IDs of the indexed items, all claimed by this tracker instance.
++   */
++  protected function deleteItemsRemovedWhileClaimed(array $ids): void {
++    $tracked_ids = [];
++    foreach (array_chunk($ids, 1000) as $ids_chunk) {
++      $select = $this->createSelectStatement()
++        ->fields('sai', ['item_id'])
++        ->condition('item_id', $ids_chunk, 'IN');
++      $tracked_ids = array_merge($tracked_ids, $select->execute()->fetchCol());
++    }
++    $deleted_ids = array_values(array_diff($ids, $tracked_ids));
++    if ($deleted_ids) {
++      $index = $this->getIndex();
++      $index->getServerInstanceIfAvailable()?->deleteItems($index, $deleted_ids);
++    }
++  }
++
++  /**
++   * Claims items for the indexing run of this tracker instance.
++   *
++   * @param string[] $ids
++   *   The IDs of the items to claim.
++   */
++  protected function claimItems(array $ids): void {
++    foreach (array_chunk($ids, 1000) as $ids_chunk) {
++      $this->createUpdateStatement()
++        ->fields(['status' => $this::STATUS_CLAIMED])
++        ->condition('item_id', $ids_chunk, 'IN')
++        ->condition('status', $this::STATUS_NOT_INDEXED)
++        ->execute();
++    }
++    $this->claimedItemIds += array_fill_keys($ids, TRUE);
++  }
++
++  /**
++   * Creates an UPDATE statement for the items claimed by this instance.
++   *
++   * @return \Drupal\Core\Database\Query\Update
++   *   An UPDATE statement.
++   */
++  protected function createClaimedItemsUpdateStatement() {
++    return $this->createUpdateStatement()
++      ->condition('status', $this::STATUS_CLAIMED);
++  }
++
++  /**
++   * Creates an UPDATE statement for items not claimed by this instance.
++   *
++   * @return \Drupal\Core\Database\Query\Update
++   *   An UPDATE statement.
++   */
++  protected function createUnclaimedItemsUpdateStatement() {
++    return $this->createUpdateStatement();
++  }
++
++  /**
++   * Returns claimed items to the queue.
++   *
++   * @param string[]|null $ids
++   *   (optional) The IDs of the items to release, or NULL to release all
++   *   claimed items of the index.
++   */
++  protected function releaseClaimedItems(?array $ids = NULL): void {
++    $ids_chunks = ($ids !== NULL ? array_chunk($ids, 1000) : [NULL]);
++    foreach ($ids_chunks as $ids_chunk) {
++      $update = $this->createUpdateStatement()
++        ->fields(['status' => $this::STATUS_NOT_INDEXED])
++        ->condition('status', $this::STATUS_CLAIMED);
++      if ($ids_chunk) {
++        $update->condition('item_id', $ids_chunk, 'IN');
++      }
++      $update->execute();
++    }
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -377,7 +512,11 @@ abstract class TrackerPluginBase extends IndexPluginBase implements TrackerInter
+       if ($limit >= 0) {
+         $select->range(0, $limit);
+       }
+-      return $select->execute()->fetchCol();
++      $item_ids = $select->execute()->fetchCol();
++      if ($this->hasLock && $item_ids) {
++        $this->claimItems($item_ids);
++      }
++      return $item_ids;
+     }
+     catch (\Exception $e) {
+       $this->logException($e);
+@@ -437,4 +576,47 @@ abstract class TrackerPluginBase extends IndexPluginBase implements TrackerInter
+     }
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getLockId(): string {
++    return "search_api:index:{$this->getIndex()->id()}";
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function lock($timeout = 60): bool {
++    $this->hasLock = \Drupal::lock()->acquire($this->getLockId(), $timeout);
++    if ($this->hasLock) {
++      try {
++        // While we hold the index lock, any remaining claim is left over from
++        // an indexing run that died before it could release it.
++        $this->releaseClaimedItems();
++      }
++      catch (\Exception $e) {
++        $this->logException($e);
++      }
++    }
++    return $this->hasLock;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function unlock(): void {
++    try {
++      // Items that weren't indexed, e.g. due to warnings, need another try.
++      if ($this->claimedItemIds) {
++        $this->releaseClaimedItems(array_keys($this->claimedItemIds));
++      }
++    }
++    catch (\Exception $e) {
++      $this->logException($e);
++    }
++    $this->claimedItemIds = [];
++    $this->hasLock = FALSE;
++    \Drupal::lock()->release($this->getLockId());
++  }
++
+ }
+diff --git a/src/Utility/IndexingBatchHelper.php b/src/Utility/IndexingBatchHelper.php
+index 3b88c675..40f98290 100644
+--- a/src/Utility/IndexingBatchHelper.php
++++ b/src/Utility/IndexingBatchHelper.php
+@@ -11,6 +11,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
+ use Drupal\Core\StringTranslation\TranslationInterface;
+ use Drupal\Core\Utility\Error;
+ use Drupal\search_api\IndexInterface;
++use Drupal\search_api\Plugin\search_api\tracker\Parallel;
+ use Drupal\search_api\SearchApiException;
+ use Psr\Log\LoggerInterface;
+ 
+@@ -84,69 +85,85 @@ class IndexingBatchHelper implements IndexingBatchHelperInterface {
+     int $time_limit,
+     array|\ArrayAccess &$context,
+   ): void {
++    // Catch any exception that may occur during indexing.
++    try {
++      $tracker = $index->hasValidTracker() ? $index->getTrackerInstance() : NULL;
+ 
+-    // Check if the sandbox should be initialized.
+-    if (!isset($context['sandbox']['limit'])) {
+-      // Initialize the sandbox with data which is shared among the batch runs.
+-      $context['sandbox']['limit'] = $limit;
+-      $context['sandbox']['batch_size'] = $batch_size;
+-      if ($time_limit >= 0) {
+-        $context['sandbox']['time_limit'] = $time_limit;
+-        $context['sandbox']['time_start'] = time();
++      // Check if the sandbox should be initialized.
++      if (!isset($context['sandbox']['limit'])) {
++        // Initialize the sandbox with data which is shared among the batch runs.
++        $context['sandbox']['limit'] = $limit;
++        $context['sandbox']['batch_size'] = $batch_size;
++        if ($time_limit >= 0) {
++          $context['sandbox']['time_limit'] = $time_limit;
++          $context['sandbox']['time_start'] = time();
++        }
+       }
+-    }
+-    // Check if the results should be initialized.
+-    if (!isset($context['results']['indexed'])) {
+-      // Initialize the results with data which is shared among the batch runs.
+-      $context['results']['indexed'] = 0;
+-      $context['results']['not indexed'] = 0;
+-    }
+-    // Get the remaining item count. When no valid tracker is available then
+-    // the value will be set to zero which will cause the batch process to
+-    // stop.
+-    $remaining_item_count = (int) $index->getTrackerInstanceIfAvailable()?->getRemainingItemsCount();
+-
+-    // Time limit check.
+-    if (($context['sandbox']['time_limit'] ?? -1) >= 0) {
+-      $elapsed_seconds = time() - $context['sandbox']['time_start'];
+-      if ($elapsed_seconds > $context['sandbox']['time_limit']) {
+-        $context['finished'] = 1;
+-        $context['message'] = $this->t('Time limit of @time_limit seconds reached during indexing on @index', [
+-          '@time_limit' => $context['sandbox']['time_limit'],
+-          '@index' => $index->label(),
+-        ]);
+-        return;
++      // Check if the results should be initialized.
++      if (!isset($context['results']['indexed'])) {
++        // Initialize the results with data which is shared among the batch runs.
++        $context['results']['indexed'] = 0;
++        $context['results']['not indexed'] = 0;
+       }
+-    }
++      // Get the remaining item count. When no valid tracker is available then
++      // the value will be set to zero which will cause the batch process to
++      // stop.
++      //
++      // Counting the remaining items scans every row tracked for the index,
++      // so it costs O(tracked items). Doing that on every batch run makes a
++      // full reindex quadratic. The exact value only changes the outcome once
++      // it drops below the batch size; above that the batch size is what caps
++      // $to_index. So seed the count once, then maintain it locally and only
++      // re-count when it gets low enough to matter.
++      $recount_threshold = max($context['sandbox']['batch_size'], 1);
++      if (!isset($context['sandbox']['remaining_item_count'])
++        || $context['sandbox']['remaining_item_count'] < $recount_threshold) {
++        $context['sandbox']['remaining_item_count'] = (int) $tracker?->getRemainingItemsCount();
++      }
++      $remaining_item_count = $context['sandbox']['remaining_item_count'];
+ 
+-    // Check if an explicit limit needs to be used.
+-    if ($context['sandbox']['limit'] > -1) {
+-      // Calculate the remaining amount of items that can be indexed. Note that
+-      // a minimum is taking between the allowed number of items and the
+-      // remaining item count to prevent incorrect reporting of not indexed
+-      // items.
+-      $actual_limit = min($context['sandbox']['limit'] - $context['results']['indexed'], $remaining_item_count);
+-    }
+-    else {
+-      // Use the remaining item count as actual limit.
+-      $actual_limit = $remaining_item_count;
+-    }
++      // Time limit check.
++      if (($context['sandbox']['time_limit'] ?? -1) >= 0) {
++        $elapsed_seconds = time() - $context['sandbox']['time_start'];
++        if ($elapsed_seconds > $context['sandbox']['time_limit']) {
++          $context['finished'] = 1;
++          $context['message'] = $this->t('Time limit of @time_limit seconds reached during indexing on @index', [
++            '@time_limit' => $context['sandbox']['time_limit'],
++            '@index' => $index->label(),
++          ]);
++          return;
++        }
++      }
+ 
+-    // Store original count of items to be indexed to show progress properly.
+-    if (empty($context['sandbox']['original_item_count'])) {
+-      $context['sandbox']['original_item_count'] = $actual_limit;
+-    }
++      // Check if an explicit limit needs to be used.
++      if ($context['sandbox']['limit'] > -1) {
++        // Calculate the remaining amount of items that can be indexed. Note that
++        // a minimum is taking between the allowed number of items and the
++        // remaining item count to prevent incorrect reporting of not indexed
++        // items.
++        $actual_limit = min($context['sandbox']['limit'] - $context['results']['indexed'], $remaining_item_count);
++      }
++      else {
++        // Use the remaining item count as actual limit.
++        $actual_limit = $remaining_item_count;
++      }
++
++      // Store original count of items to be indexed to show progress properly.
++      if (empty($context['sandbox']['original_item_count'])) {
++        $context['sandbox']['original_item_count'] = $actual_limit;
++      }
++
++      // Determine the number of items to index for this run according to the
++      // batch size.
++      $to_index = $actual_limit;
++      if ($context['sandbox']['batch_size'] > 0) {
++        $to_index = min($actual_limit, $context['sandbox']['batch_size']);
++      }
+ 
+-    // Determine the number of items to index for this run according to the
+-    // batch size.
+-    $to_index = $actual_limit;
+-    if ($context['sandbox']['batch_size'] > 0) {
+-      $to_index = min($actual_limit, $context['sandbox']['batch_size']);
+-    }
+-    // Catch any exception that may occur during indexing.
+-    try {
+       // Index items limited by the given count.
+       $indexed = $index->indexItems($to_index);
++      // Keep the local remaining count in sync.
++      $context['sandbox']['remaining_item_count'] -= $indexed;
+       // Increment the indexed result and progress.
+       $context['results']['indexed'] += $indexed;
+       // Display progress message.
+@@ -161,6 +178,12 @@ class IndexingBatchHelper implements IndexingBatchHelperInterface {
+       else {
+         $context['finished'] = ($context['results']['indexed'] / $context['sandbox']['original_item_count']);
+       }
++
++      // Parallel tracker handling.
++      if ($tracker instanceof Parallel && $context['finished'] === 1) {
++        $new_remaining_item_count = $tracker->getRemainingItemsCount();
++        $context['results']['parallel_handling'] = $remaining_item_count === 0 || $new_remaining_item_count === 0;
++      }
+     }
+     catch (\Exception $e) {
+       // Log exception to watchdog and abort the batch job.
+@@ -187,8 +210,16 @@ class IndexingBatchHelper implements IndexingBatchHelperInterface {
+         $indexed_message = $this->formatPlural($results['indexed'], 'Successfully indexed 1 item.', 'Successfully indexed @count items.');
+         // Notify user about indexed items.
+         $this->messenger->addStatus($indexed_message);
++        // Display information about items handled by other workers in parallel indexing.
++        if (!empty($results['not indexed']) && !empty($results['parallel_handling'])) {
++          $parallel_message = static::t(
++            'This worker indexed fewer items than initially planned (@count items were handled by other workers). This is normal for parallel indexing.',
++            ['@count' => $results['not indexed']],
++          );
++          $this->messenger->addStatus($parallel_message);
++        }
+         // Display the number of items not indexed.
+-        if (!empty($results['not indexed'])) {
++        elseif (!empty($results['not indexed'])) {
+           // Build the not indexed message. Concurrent indexing (e.g., by a cron
+           // job) could lead to a false warning here, so we need to phrase this
+           // carefully.
+@@ -201,8 +232,15 @@ class IndexingBatchHelper implements IndexingBatchHelperInterface {
+         }
+       }
+       else {
+-        // Notify user about failure to index items.
+-        $this->messenger->addError($this->t("Couldn't index items. Check the logs for details."));
++        // Check if this was a parallel indexing scenario where no items were available.
++        if (!empty($results['parallel_handling'])) {
++          // For parallel indexing, no items available means other workers handled everything.
++          $this->messenger->addStatus(static::t('No items were available for this worker to process. Other workers may have completed the indexing.'));
++        }
++        else {
++          // Notify user about failure to index items.
++          $this->messenger->addError($this->t("Couldn't index items. Check the logs for details."));
++        }
+       }
+     }
+     else {
+diff --git a/tests/modules/search_api_test/src/Plugin/search_api/tracker/TestTracker.php b/tests/modules/search_api_test/src/Plugin/search_api/tracker/TestTracker.php
+index 5eac0ec7..7b5e173a 100644
+--- a/tests/modules/search_api_test/src/Plugin/search_api/tracker/TestTracker.php
++++ b/tests/modules/search_api_test/src/Plugin/search_api/tracker/TestTracker.php
+@@ -6,9 +6,9 @@ use Drupal\Core\Form\FormStateInterface;
+ use Drupal\Core\Plugin\PluginFormInterface;
+ use Drupal\Core\StringTranslation\TranslatableMarkup;
+ use Drupal\search_api\Attribute\SearchApiTracker;
+-use Drupal\search_api\Plugin\IndexPluginBase;
+ use Drupal\search_api\Plugin\PluginFormTrait;
+ use Drupal\search_api\Tracker\TrackerInterface;
++use Drupal\search_api\Tracker\TrackerPluginBase;
+ use Drupal\search_api_test\TestPluginTrait;
+ 
+ /**
+@@ -19,7 +19,7 @@ use Drupal\search_api_test\TestPluginTrait;
+   label: new TranslatableMarkup('&quot;Test&quot; tracker'),
+   description: new TranslatableMarkup('This is the <em>test tracker</em> plugin description.'),
+ )]
+-class TestTracker extends IndexPluginBase implements TrackerInterface, PluginFormInterface {
++class TestTracker extends TrackerPluginBase implements TrackerInterface, PluginFormInterface {
+ 
+   use PluginFormTrait;
+   use TestPluginTrait;
+@@ -57,7 +57,7 @@ class TestTracker extends IndexPluginBase implements TrackerInterface, PluginFor
+   /**
+    * {@inheritdoc}
+    */
+-  public function trackItemsUpdated(array $ids) {
++  public function trackItemsUpdated(?array $ids = NULL) {
+     $this->logMethodCall(__FUNCTION__, func_get_args());
+   }
+ 
+diff --git a/tests/src/Kernel/BasicTrackerTest.php b/tests/src/Kernel/BasicTrackerTest.php
+index 1e4d6f9d..c99d49a5 100644
+--- a/tests/src/Kernel/BasicTrackerTest.php
++++ b/tests/src/Kernel/BasicTrackerTest.php
+@@ -7,6 +7,8 @@ use Drupal\Core\Database\Transaction;
+ use Drupal\Core\Database\Transaction\TransactionManagerBase;
+ use Drupal\KernelTests\KernelTestBase;
+ use Drupal\search_api\Entity\Index;
++use Drupal\search_api\Entity\Server;
++use Drupal\search_api\Tracker\TrackerPluginBase;
+ use Drupal\search_api\Utility\Utility;
+ use Psr\Log\LoggerInterface;
+ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+@@ -358,6 +360,133 @@ class BasicTrackerTest extends KernelTestBase {
+     ];
+   }
+ 
++  /**
++   * Tests that items updated during their indexing remain queued.
++   *
++   * @param string $indexing_order
++   *   The indexing order setting to use – "fifo" or "lifo".
++   *
++   * @covers ::trackItemsUpdated
++   * @covers ::trackItemsIndexed
++   *
++   * @dataProvider trackingDataProvider
++   */
++  public function testItemUpdatedWhileClaimed($indexing_order): void {
++    $this->tracker->setConfiguration(['indexing_order' => $indexing_order]);
++    $updated = Utility::createCombinedId('test', '1');
++    $unchanged = Utility::createCombinedId('test', '2');
++    $this->tracker->trackItemsInserted([$updated, $unchanged]);
++    $this->timeService->advanceTime();
++
++    $this->assertTrue($this->tracker->lock());
++    $claimed = $this->tracker->getRemainingItems();
++    $this->assertEquals(TrackerPluginBase::STATUS_CLAIMED, $this->getItemStatus($updated));
++
++    // Another process saves the item after the indexing run loaded it.
++    $this->createSecondTracker()->trackItemsUpdated([$updated]);
++    $this->tracker->trackItemsIndexed($claimed);
++    $this->tracker->unlock();
++
++    $this->assertEquals(TrackerPluginBase::STATUS_NOT_INDEXED, $this->getItemStatus($updated));
++    $this->assertEquals(TrackerPluginBase::STATUS_INDEXED, $this->getItemStatus($unchanged));
++    $this->assertEquals([$updated], $this->tracker->getRemainingItems());
++  }
++
++  /**
++   * Tests that claims are released when an indexing run doesn't finish them.
++   *
++   * @covers ::lock
++   * @covers ::unlock
++   */
++  public function testUnfinishedClaimsAreReleased(): void {
++    $ids = [];
++    foreach ([1, 2, 3] as $raw_id) {
++      $ids[] = Utility::createCombinedId('test', $raw_id);
++    }
++    $this->tracker->trackItemsInserted($ids);
++
++    // Only the first item gets processed, e.g. the others had warnings.
++    $this->tracker->lock();
++    $this->tracker->getRemainingItems();
++    $this->tracker->trackItemsIndexed([$ids[0]]);
++    $this->tracker->unlock();
++    $this->assertIndexingStatus(1, 3);
++
++    // A run that dies before unlocking leaves its claims behind, which the
++    // next run releases.
++    $this->tracker->lock();
++    $this->tracker->getRemainingItems();
++    $this->assertEquals(0, $this->tracker->getRemainingItemsCount());
++    $this->createSecondTracker()->lock();
++    $this->assertIndexingStatus(1, 3);
++  }
++
++  /**
++   * Tests that items deleted during their indexing are removed from the server.
++   *
++   * @covers ::trackItemsIndexed
++   */
++  public function testItemDeletedWhileClaimed(): void {
++    $this->enableModules(['search_api_test']);
++    $this->installEntitySchema('search_api_task');
++    $server = Server::create([
++      'id' => 'server',
++      'backend' => 'search_api_test',
++    ]);
++    $server->save();
++    $this->index->setServer($server);
++
++    $deleted = Utility::createCombinedId('test', '1');
++    $kept = Utility::createCombinedId('test', '2');
++    $this->tracker->trackItemsInserted([$deleted, $kept]);
++
++    $this->tracker->lock();
++    $claimed = $this->tracker->getRemainingItems();
++    // The item is deleted after the indexing run loaded it, so the run still
++    // sends it to the server.
++    $this->createSecondTracker()->trackItemsDeleted([$deleted]);
++    $key = 'search_api_test.backend.indexed.index';
++    \Drupal::state()->set($key, [$deleted => [], $kept => []]);
++    $this->tracker->trackItemsIndexed($claimed);
++    $this->tracker->unlock();
++
++    $this->assertEquals([$kept], array_keys(\Drupal::state()->get($key)));
++    $this->assertIndexingStatus(1, 1);
++  }
++
++  /**
++   * Creates a second tracker instance for the index, as another process would.
++   *
++   * @return \Drupal\search_api\Plugin\search_api\tracker\Basic
++   *   A fresh tracker instance sharing the same DB rows.
++   */
++  protected function createSecondTracker() {
++    /** @var \Drupal\search_api\Plugin\search_api\tracker\Basic $tracker */
++    $tracker = \Drupal::service('plugin.manager.search_api.tracker')
++      ->createInstance('default', ['#index' => $this->index]);
++    $tracker->setTimeService($this->timeService);
++    return $tracker;
++  }
++
++  /**
++   * Fetches the tracking status of a single item.
++   *
++   * @param string $item_id
++   *   The combined item ID.
++   *
++   * @return int
++   *   The item's status.
++   */
++  protected function getItemStatus(string $item_id): int {
++    return (int) \Drupal::database()
++      ->select('search_api_item', 'i')
++      ->fields('i', ['status'])
++      ->condition('index_id', 'index')
++      ->condition('item_id', $item_id)
++      ->execute()
++      ->fetchField();
++  }
++
+   /**
+    * Asserts that the current tracking status is as expected.
+    *
+diff --git a/tests/src/Kernel/ConfigEntity/DependencyRemovalTest.php b/tests/src/Kernel/ConfigEntity/DependencyRemovalTest.php
+index df256d77..9af9f099 100644
+--- a/tests/src/Kernel/ConfigEntity/DependencyRemovalTest.php
++++ b/tests/src/Kernel/ConfigEntity/DependencyRemovalTest.php
+@@ -438,7 +438,7 @@ class DependencyRemovalTest extends KernelTestBase {
+       $this->assertEmpty($tracker_config['dependencies'], 'Tracker settings adapted');
+     }
+     else {
+-      $this->assertEquals('default', $tracker_id, 'Tracker was reset');
++      $this->assertEquals('parallel', $tracker_id, 'Tracker was reset');
+       $this->assertEquals($tracker_instance->defaultConfiguration(), $tracker_config, 'Tracker settings were cleared');
+     }
+   }
+@@ -521,7 +521,7 @@ class DependencyRemovalTest extends KernelTestBase {
+     // Make sure all the plugins have been removed.
+     $this->assertNotContains('search_api_test', $this->index->getDatasources(), 'Datasource was removed');
+     $this->assertArrayNotHasKey('search_api_test', $this->index->getProcessors(), 'Processor was removed');
+-    $this->assertEquals('default', $this->index->getTrackerId(), 'Tracker was reset');
++    $this->assertEquals('parallel', $this->index->getTrackerId(), 'Tracker was reset');
+   }
+ 
+   /**
+diff --git a/tests/src/Kernel/ParallelTrackerTest.php b/tests/src/Kernel/ParallelTrackerTest.php
+new file mode 100644
+index 00000000..1986e74a
+--- /dev/null
++++ b/tests/src/Kernel/ParallelTrackerTest.php
+@@ -0,0 +1,428 @@
++<?php
++
++namespace Drupal\Tests\search_api\Kernel;
++
++use Drupal\KernelTests\KernelTestBase;
++use Drupal\search_api\Entity\Index;
++use Drupal\search_api\Plugin\search_api\tracker\Parallel;
++use Drupal\search_api\Tracker\TrackerPluginBase;
++use Drupal\search_api\Utility\Utility;
++use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
++
++/**
++ * Tests the "parallel" tracker plugin.
++ *
++ * @group search_api
++ *
++ * @coversDefaultClass \Drupal\search_api\Plugin\search_api\tracker\Parallel
++ */
++#[RunTestsInSeparateProcesses]
++class ParallelTrackerTest extends KernelTestBase {
++
++  /**
++   * {@inheritdoc}
++   */
++  protected static $modules = [
++    'user',
++    'search_api',
++    'system',
++  ];
++
++  /**
++   * The tracker plugin used for this test.
++   *
++   * @var \Drupal\search_api\Plugin\search_api\tracker\Parallel
++   */
++  protected Parallel $tracker;
++
++  /**
++   * The search index used for this test.
++   *
++   * @var \Drupal\search_api\IndexInterface
++   */
++  protected $index;
++
++  /**
++   * The test time service.
++   *
++   * @var \Drupal\Tests\search_api\Kernel\TestTimeService
++   */
++  protected TestTimeService $timeService;
++
++  /**
++   * {@inheritdoc}
++   */
++  public function setUp(): void {
++    parent::setUp();
++
++    $this->installSchema('search_api', ['search_api_item']);
++    $this->installConfig('search_api');
++
++    $this->index = Index::create([
++      'id' => 'index',
++      'tracker_settings' => [
++        'parallel' => [],
++      ],
++    ]);
++    $this->tracker = $this->index->getTrackerInstance();
++    $this->timeService = new TestTimeService();
++    $this->tracker->setTimeService($this->timeService);
++  }
++
++  /**
++   * Tests the single-worker claim cycle.
++   *
++   * @covers ::lock
++   * @covers ::getRemainingItems
++   * @covers ::trackItemsIndexed
++   * @covers ::unlock
++   */
++  public function testSingleWorkerClaimCycle(): void {
++    $this->insertItems(['a', 'b', 'c']);
++
++    $this->tracker->lock();
++    $claimed = $this->tracker->getRemainingItems(2);
++    $this->assertCount(2, $claimed);
++
++    // DB rows for claimed items should have worker_id and expires_at set.
++    foreach ($claimed as $id) {
++      $row = $this->getItemRow($id);
++      $this->assertEquals(TrackerPluginBase::STATUS_CLAIMED, $row->status);
++      $this->assertNotNull($row->worker_id, "worker_id should be set after claiming $id");
++      $this->assertNotNull($row->expires_at, "expires_at should be set after claiming $id");
++    }
++
++    // After indexing, rows should be cleared.
++    $this->tracker->trackItemsIndexed($claimed);
++    foreach ($claimed as $id) {
++      $row = $this->getItemRow($id);
++      $this->assertEquals(TrackerPluginBase::STATUS_INDEXED, $row->status);
++      $this->assertNull($row->worker_id);
++      $this->assertNull($row->expires_at);
++    }
++
++    // After unlock, no residual claims.
++    $this->tracker->unlock();
++    $this->assertClaimedCount(0);
++  }
++
++  /**
++   * Tests that an item updated while claimed stays queued for indexing.
++   *
++   * @covers ::trackItemsIndexed
++   */
++  public function testItemUpdatedWhileClaimedStaysQueued(): void {
++    [$updated, $unchanged] = $this->insertItems(['a', 'b']);
++
++    $this->tracker->lock();
++    $claimed = $this->tracker->getRemainingItems(2);
++    $this->assertCount(2, $claimed);
++
++    // Another process saves one of the items after the worker loaded it.
++    $this->createSecondTracker()->trackItemsUpdated([$updated]);
++    $this->tracker->trackItemsIndexed($claimed);
++
++    $this->assertEquals(TrackerPluginBase::STATUS_INDEXED, $this->getItemRow($unchanged)->status);
++    $row = $this->getItemRow($updated);
++    $this->assertEquals(TrackerPluginBase::STATUS_NOT_INDEXED, $row->status);
++    $this->assertNull($row->worker_id);
++    $this->assertNull($row->expires_at);
++
++    // Another worker picks the updated item up while the first one still runs.
++    $trackerB = $this->createSecondTracker();
++    $trackerB->lock();
++    $this->assertEquals([$updated], $trackerB->getRemainingItems());
++  }
++
++  /**
++   * Tests that indexing outside a claim does not clear a pending update.
++   *
++   * @covers ::trackItemsIndexed
++   */
++  public function testUnclaimedIndexingKeepsClaimedItemQueued(): void {
++    [$item] = $this->insertItems(['a']);
++
++    $this->tracker->lock();
++    $this->assertEquals([$item], $this->tracker->getRemainingItems());
++
++    // Another process saves the item, then indexes it without a claim, as
++    // post-request indexing does.
++    $this->createSecondTracker()->trackItemsUpdated([$item]);
++    $this->createSecondTracker()->trackItemsIndexed([$item]);
++    $row = $this->getItemRow($item);
++    $this->assertEquals(TrackerPluginBase::STATUS_NOT_INDEXED, $row->status);
++    $this->assertNotNull($row->worker_id);
++
++    $this->tracker->trackItemsIndexed([$item]);
++    $this->tracker->unlock();
++
++    $row = $this->getItemRow($item);
++    $this->assertEquals(TrackerPluginBase::STATUS_NOT_INDEXED, $row->status);
++    $this->assertNull($row->worker_id);
++    $this->assertNull($row->expires_at);
++
++    $trackerB = $this->createSecondTracker();
++    $trackerB->lock();
++    $this->assertEquals([$item], $trackerB->getRemainingItems());
++  }
++
++  /**
++   * Tests that a bulk requeue during a claim keeps the claimed items queued.
++   *
++   * @param string|null $datasource_id
++   *   The datasource ID passed to trackAllItemsUpdated(), or NULL for all.
++   *
++   * @covers ::trackItemsIndexed
++   *
++   * @dataProvider bulkRequeueDataProvider
++   */
++  public function testBulkRequeueWhileClaimedKeepsItemsQueued(?string $datasource_id): void {
++    $ids = $this->insertItems(['a', 'b']);
++
++    $this->tracker->lock();
++    $claimed = $this->tracker->getRemainingItems();
++    $this->assertCount(2, $claimed);
++
++    $this->createSecondTracker()->trackAllItemsUpdated($datasource_id);
++    $this->tracker->trackItemsIndexed($claimed);
++    $this->tracker->unlock();
++
++    foreach ($ids as $id) {
++      $row = $this->getItemRow($id);
++      $this->assertEquals(TrackerPluginBase::STATUS_NOT_INDEXED, $row->status);
++      $this->assertNull($row->worker_id);
++    }
++    $trackerB = $this->createSecondTracker();
++    $trackerB->lock();
++    $this->assertEqualsCanonicalizing($ids, $trackerB->getRemainingItems());
++  }
++
++  /**
++   * Provides test data for testBulkRequeueWhileClaimedKeepsItemsQueued().
++   *
++   * @return array
++   *   An array of argument arrays for
++   *   testBulkRequeueWhileClaimedKeepsItemsQueued().
++   */
++  public static function bulkRequeueDataProvider(): array {
++    return [
++      'All datasources' => [NULL],
++      'One datasource' => ['test'],
++    ];
++  }
++
++  /**
++   * Tests that two workers claim non-overlapping sets of items.
++   *
++   * @covers ::getRemainingItems
++   */
++  public function testTwoWorkersNonOverlappingClaims(): void {
++    $ids = $this->insertItems(['a', 'b', 'c', 'd', 'e', 'f']);
++
++    // Worker A claims 3 items.
++    $this->tracker->lock();
++    $claimedA = $this->tracker->getRemainingItems(3);
++    $this->assertCount(3, $claimedA);
++
++    // Worker B is a separate plugin instance pointing at the same index.
++    $trackerB = $this->createSecondTracker();
++    $trackerB->lock();
++    $claimedB = $trackerB->getRemainingItems(3);
++    $this->assertCount(3, $claimedB);
++
++    // The two sets must be disjoint.
++    $overlap = array_intersect($claimedA, $claimedB);
++    $this->assertEmpty($overlap, 'Workers A and B must claim different items.');
++
++    // Together they cover all 6 items.
++    $union = array_unique(array_merge($claimedA, $claimedB));
++    sort($union);
++    sort($ids);
++    $this->assertEquals($ids, $union);
++  }
++
++  /**
++   * Tests that expired claims are released and reclaimable.
++   *
++   * @covers ::lock
++   * @covers ::getRemainingItems
++   */
++  public function testClaimExpiryReleasesItems(): void {
++    $this->insertItems(['a', 'b', 'c']);
++
++    // Worker A claims all items.
++    $this->tracker->lock();
++    $claimedA = $this->tracker->getRemainingItems(3);
++    $this->assertCount(3, $claimedA);
++
++    // Advance time past the default 60-second claim_timeout.
++    $this->timeService->advanceTime(61);
++
++    // Worker B calls lock(), which triggers releaseExpiredClaims().
++    $trackerB = $this->createSecondTracker();
++    $trackerB->lock();
++
++    // Worker B should now be able to claim the expired items.
++    $claimedB = $trackerB->getRemainingItems(3);
++    $this->assertCount(3, $claimedB);
++
++    sort($claimedA);
++    sort($claimedB);
++    $this->assertEquals($claimedA, $claimedB, 'Worker B should reclaim the expired items from Worker A.');
++  }
++
++  /**
++   * Tests that a worker finishing after its claims expired leaves them alone.
++   *
++   * @covers ::trackItemsIndexed
++   * @covers ::unlock
++   */
++  public function testExpiredWorkerLeavesReclaimedItems(): void {
++    $ids = $this->insertItems(['a', 'b']);
++
++    $this->tracker->lock();
++    $claimedA = $this->tracker->getRemainingItems();
++    $this->assertCount(2, $claimedA);
++
++    $this->timeService->advanceTime(61);
++    $trackerB = $this->createSecondTracker();
++    $trackerB->lock();
++    $claimedB = $trackerB->getRemainingItems();
++    $this->assertEqualsCanonicalizing($claimedA, $claimedB);
++    $workerB = $this->getItemRow($ids[0])->worker_id;
++    $this->assertNotNull($workerB);
++
++    // Worker A was only slow: it still finishes its batch.
++    $this->tracker->trackItemsIndexed($claimedA);
++    $this->tracker->unlock();
++    foreach ($ids as $id) {
++      $row = $this->getItemRow($id);
++      $this->assertEquals(TrackerPluginBase::STATUS_CLAIMED, $row->status);
++      $this->assertEquals($workerB, $row->worker_id);
++    }
++
++    $trackerB->trackItemsIndexed($claimedB);
++    foreach ($ids as $id) {
++      $row = $this->getItemRow($id);
++      $this->assertEquals(TrackerPluginBase::STATUS_INDEXED, $row->status);
++      $this->assertNull($row->worker_id);
++    }
++  }
++
++  /**
++   * Tests that unlock() releases uncompleted claims.
++   *
++   * @covers ::unlock
++   */
++  public function testUnlockReleasesUncompletedClaims(): void {
++    $this->insertItems(['a', 'b', 'c']);
++
++    // Worker A claims items but does NOT call trackItemsIndexed().
++    $this->tracker->lock();
++    $claimedA = $this->tracker->getRemainingItems(3);
++    $this->assertCount(3, $claimedA);
++    $this->assertClaimedCount(3);
++
++    // Worker A unlocks without indexing.
++    $this->tracker->unlock();
++    $this->assertClaimedCount(0);
++
++    // Worker B can now claim the same items.
++    $trackerB = $this->createSecondTracker();
++    $trackerB->lock();
++    $claimedB = $trackerB->getRemainingItems(3);
++    $this->assertCount(3, $claimedB);
++  }
++
++  /**
++   * Tests the fallback behaviour when no lock() has been called.
++   *
++   * @covers ::getRemainingItems
++   */
++  public function testNoLockFallbackBehavesLikeBasic(): void {
++    $ids = $this->insertItems(['a', 'b', 'c']);
++
++    // Call getRemainingItems() without lock() — currentWorkerId is NULL.
++    $returned = $this->tracker->getRemainingItems(3);
++    $this->assertCount(3, $returned);
++
++    // No worker_id or expires_at should be set in the DB.
++    foreach ($ids as $id) {
++      $row = $this->getItemRow($id);
++      $this->assertNull($row->worker_id, "worker_id must remain NULL in fallback mode for $id");
++      $this->assertNull($row->expires_at, "expires_at must remain NULL in fallback mode for $id");
++    }
++  }
++
++  /**
++   * Inserts items into the tracker and returns their combined IDs.
++   *
++   * @param string[] $raw_ids
++   *   Raw item IDs to insert under the 'test' datasource.
++   *
++   * @return string[]
++   *   The combined item IDs.
++   */
++  protected function insertItems(array $raw_ids): array {
++    $ids = array_map(
++      fn($raw) => Utility::createCombinedId('test', $raw),
++      $raw_ids,
++    );
++    $this->tracker->trackItemsInserted($ids);
++    return $ids;
++  }
++
++  /**
++   * Creates a second independent tracker instance for the same index.
++   *
++   * Uses the plugin manager directly to avoid the cached $trackerInstance on
++   * the Index entity.
++   *
++   * @return \Drupal\search_api\Plugin\search_api\tracker\Parallel
++   *   A fresh Parallel tracker instance sharing the same DB rows.
++   */
++  protected function createSecondTracker(): Parallel {
++    /** @var \Drupal\search_api\Plugin\search_api\tracker\Parallel $tracker */
++    $tracker = \Drupal::service('plugin.manager.search_api.tracker')
++      ->createInstance('parallel', ['#index' => $this->index]);
++    $tracker->setTimeService($this->timeService);
++    return $tracker;
++  }
++
++  /**
++   * Fetches a single item row from the tracking table.
++   *
++   * @param string $item_id
++   *   The combined item ID.
++   *
++   * @return object
++   *   A stdClass with status, worker_id, and expires_at properties.
++   */
++  protected function getItemRow(string $item_id): object {
++    return \Drupal::database()
++      ->select('search_api_item', 'i')
++      ->fields('i', ['status', 'worker_id', 'expires_at'])
++      ->condition('index_id', 'index')
++      ->condition('item_id', $item_id)
++      ->execute()
++      ->fetchObject();
++  }
++
++  /**
++   * Asserts the number of rows currently holding an active worker claim.
++   *
++   * @param int $expected
++   *   Expected count of rows with a non-NULL worker_id.
++   */
++  protected function assertClaimedCount(int $expected): void {
++    $count = (int) \Drupal::database()
++      ->select('search_api_item', 'i')
++      ->condition('index_id', 'index')
++      ->isNotNull('worker_id')
++      ->countQuery()
++      ->execute()
++      ->fetchField();
++    $this->assertEquals($expected, $count, "Expected $expected claimed rows, found $count.");
++  }
++
++}
+diff --git a/tests/src/Kernel/TestTimeService.php b/tests/src/Kernel/TestTimeService.php
+index 3964cf34..e281a0cb 100644
+--- a/tests/src/Kernel/TestTimeService.php
++++ b/tests/src/Kernel/TestTimeService.php
+@@ -45,6 +45,13 @@ class TestTimeService extends Time {
+     return $this;
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getCurrentTime() {
++    return $this->requestTime;
++  }
++
+   /**
+    * Advances the reported request time.
+    *

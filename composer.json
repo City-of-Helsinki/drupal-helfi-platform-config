@@ -129,6 +129,9 @@
             "drupal/quick_node_clone": {
                 "[#UHF-13541] Use moved NodeForm namespace (https://www.drupal.org/i/3536484)": "./public/modules/contrib/helfi_platform_config/patches/quick_node_clone-node-form-namespace.patch"
             },
+            "drupal/search_api": {
+                "[#3527726, #UHF-13506] Parallel indexing": "./public/modules/contrib/helfi_platform_config/patches/3527726.patch"
+            },
             "drupal/view_unpublished": {
                 "[#UHF-9256] Fix missing dynamic permission dependencies.": "./public/modules/contrib/helfi_platform_config/patches/view_unpublished_permissions_missing_dependencies.patch"
             },
