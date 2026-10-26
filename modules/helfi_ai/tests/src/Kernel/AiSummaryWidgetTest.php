@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_ai\Kernel;
 
+use Drupal\Core\Access\CsrfRequestHeaderAccessCheck;
 use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Entity\ContentEntityFormInterface;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\Entity\EntityViewMode;
+use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\helfi_ai\Plugin\Field\FieldWidget\AiSummaryWidget;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
+use Drupal\Tests\helfi_ai\Traits\TextServicesTestTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Prophecy\Argument;
@@ -23,6 +26,8 @@ use Prophecy\Argument;
 #[Group('helfi_ai')]
 #[RunTestsInSeparateProcesses]
 class AiSummaryWidgetTest extends EntityKernelTestBase {
+
+  use TextServicesTestTrait;
 
   /**
    * {@inheritdoc}
@@ -36,7 +41,6 @@ class AiSummaryWidgetTest extends EntityKernelTestBase {
     'language',
     'key',
     'ai',
-    'ai_test',
     'helfi_ai',
   ];
 
@@ -46,8 +50,8 @@ class AiSummaryWidgetTest extends EntityKernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->installConfig(['ai', 'ai_test', 'helfi_ai']);
-    $this->installEntitySchema('ai_mock_provider_result');
+    $this->installConfig(['helfi_ai']);
+    $this->setUpTextServices();
 
     NodeType::create([
       'name' => 'Test',
@@ -124,50 +128,38 @@ class AiSummaryWidgetTest extends EntityKernelTestBase {
   }
 
   /**
-   * A generated summary is injected into the form and the button relabelled.
+   * Generating starts the summary stream with the text of the form state.
    */
-  public function testAjaxCallbackInjectsSummaryOnSuccess(): void {
-    // Resolve chat operations to the echoai test provider.
-    $this->config('ai.settings')
-      ->set('default_providers', [
-        'chat' => ['provider_id' => 'echoai', 'model_id' => 'test'],
-      ])
-      ->save();
-
+  public function testAjaxCallbackStartsSummaryStream(): void {
     $title = 'Widget kernel title ' . $this->randomMachineName();
     [$form, $formState] = $this->makeAjaxContext($title);
 
     $response = AiSummaryWidget::ajaxCallback($form, $formState);
 
+    // The summary itself is streamed by the browser, not requested here.
+    $this->assertNull($this->textServicesResponses->getLastRequest());
     $commands = $response->getCommands();
     $this->assertCount(1, $commands);
-    $this->assertSame('#ai-summary-ai-summary-0', $commands[0]['selector']);
-    $this->assertSame('replaceWith', $commands[0]['method']);
-    $rendered = (string) $commands[0]['data'];
-    // The summary markup is injected into a <textarea>, so it is HTML-escaped.
-    $this->assertStringContainsString('&lt;ul&gt;&lt;li&gt;', $rendered);
-    $this->assertStringContainsString($title, $rendered);
-    $this->assertStringContainsString('Regenerate AI summary', $rendered);
-    $this->assertStringContainsString('data-ai-summary-confirm', $rendered);
+    $this->assertSame('helfiAiSummaryStream', $commands[0]['command']);
+    $this->assertSame('ai-summary-ai-summary-0', $commands[0]['wrapperId']);
+    $this->assertStringContainsString($title, $commands[0]['text']);
+    $this->assertSame('en', $commands[0]['langcode']);
+    $this->assertStringEndsWith('/helfi-ai/summary', $commands[0]['url']);
+    $this->assertTrue($this->container->get('csrf_token')->validate($commands[0]['csrfToken'], CsrfRequestHeaderAccessCheck::TOKEN_KEY));
   }
 
   /**
-   * An error is shown when generation returns nothing.
+   * An error is shown when there is no content to summarize.
    */
-  public function testAjaxCallbackShowsErrorWhenGeneratorReturnsNull(): void {
-    // An unresolvable provider makes generation fail gracefully.
-    $this->config('ai.settings')
-      ->set('default_providers', [
-        'chat' => ['provider_id' => 'no_such_provider', 'model_id' => 'test'],
-      ])
-      ->save();
-
-    [$form, $formState] = $this->makeAjaxContext('Widget kernel title ' . $this->randomMachineName());
+  public function testAjaxCallbackShowsErrorWithoutContent(): void {
+    [$form, $formState] = $this->makeAjaxContext('Widget kernel title');
+    $formState->setFormObject($this->prophesize(FormInterface::class)->reveal());
 
     $response = AiSummaryWidget::ajaxCallback($form, $formState);
 
+    $this->assertNull($this->textServicesResponses->getLastRequest());
     $rendered = (string) $response->getCommands()[0]['data'];
-    $this->assertStringContainsString('Could not generate a summary.', $rendered);
+    $this->assertStringContainsString('Could not complete the AI request. Please try again.', $rendered);
   }
 
 }

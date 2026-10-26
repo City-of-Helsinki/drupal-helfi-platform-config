@@ -1155,36 +1155,6 @@ parameters:
 			path: modules/hdbt_cookie_banner/tests/src/Kernel/Services/CookieSettingsTest.php
 
 		-
-			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
-			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
-			count: 3
-			path: modules/helfi_ai/src/Hook/FormHooks.php
-
-		-
-			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
-			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
-			count: 2
-			path: modules/helfi_ai/src/Plugin/CKEditor5Plugin/AiToneCheck.php
-
-		-
-			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
-			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
-			count: 2
-			path: modules/helfi_ai/src/Plugin/Field/FieldWidget/AiSummaryWidget.php
-
-		-
-			message: '#^Parameter &\$form by\-ref type of method Drupal\\helfi_ai\\Plugin\\Field\\FieldWidget\\AiSummaryWidget\:\:ajaxCallback\(\) expects array\<string, mixed\>, array given\.$#'
-			identifier: parameterByRef.type
-			count: 1
-			path: modules/helfi_ai/src/Plugin/Field/FieldWidget/AiSummaryWidget.php
-
-		-
-			message: '#^Parameter \#1 \$plugin_definitions of method Drupal\\helfi_ai\\Hook\\FormHooks\:\:ckeditor5PluginInfoAlter\(\) expects array\<string, Drupal\\ckeditor5\\Plugin\\CKEditor5PluginDefinition\>, array\<string, string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: modules/helfi_ai/tests/src/Unit/Hook/FormHooksTest.php
-
-		-
 			message: '#^Function helfi_base_content_install\(\) has parameter \$is_syncing with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1

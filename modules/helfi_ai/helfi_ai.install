@@ -75,3 +75,24 @@ function helfi_ai_update_11002(): void {
 function helfi_ai_update_11003(): void {
   \Drupal::classResolver(ModuleHooks::class)->installAiSummaryField();
 }
+
+/**
+ * Place the ai_summary field after the lead-in on basic pages.
+ */
+function helfi_ai_update_11004(): void {
+  $entityTypeManager = \Drupal::entityTypeManager();
+
+  foreach (['entity_form_display', 'entity_view_display'] as $displayType) {
+    $display = $entityTypeManager->getStorage($displayType)->load('node.page.default');
+    $display?->removeComponent('ai_summary')->save();
+  }
+}
+
+/**
+ * Remove the AI summary feature flag.
+ */
+function helfi_ai_update_11005(): void {
+  \Drupal::configFactory()->getEditable('helfi_ai.settings')
+    ->clear('enable_ai_summary')
+    ->save();
+}
