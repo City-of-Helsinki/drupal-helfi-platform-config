@@ -11,6 +11,7 @@ use Drupal\helfi_users\Hook\UserDashboardHooks;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\user\UserInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -143,14 +144,18 @@ class UserDashboardHooksTest extends KernelTestBase {
   }
 
   /**
-   * Tests that users without roles see the access notice instead of views.
+   * Tests that users without editing roles see the access notice.
+   *
+   * @param list<string> $roles
+   *   The user roles.
    */
-  public function testInjectDashboardViewShowsAccessNoticeWithoutRoles(): void {
-    $this->currentUser->method('id')->willReturn('1');
+  #[DataProvider('accessNoticeRolesProvider')]
+  public function testInjectDashboardViewShowsAccessNoticeWithoutRoles(array $roles): void {
+    $this->currentUser->method('id')->willReturn('2');
 
     $account = $this->createMock(UserInterface::class);
-    $account->method('id')->willReturn('1');
-    $account->method('getRoles')->with(TRUE)->willReturn([]);
+    $account->method('id')->willReturn('2');
+    $account->method('getRoles')->with(TRUE)->willReturn($roles);
 
     $display = $this->createMock(EntityViewDisplayInterface::class);
     $display->expects($this->never())->method('getComponent');
@@ -162,6 +167,19 @@ class UserDashboardHooksTest extends KernelTestBase {
     foreach (self::EXTRA_FIELDS as $name) {
       $this->assertArrayNotHasKey($name, $build);
     }
+  }
+
+  /**
+   * Provides roles that show the access notice.
+   *
+   * @return array<string, array{list<string>}>
+   *   The test cases.
+   */
+  public static function accessNoticeRolesProvider(): array {
+    return [
+      'no roles' => [[]],
+      'read only' => [['read_only']],
+    ];
   }
 
   /**

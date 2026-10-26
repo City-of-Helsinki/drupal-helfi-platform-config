@@ -127,8 +127,14 @@ class UserDashboardHooks {
       return;
     }
 
-    // Show an access notice to users without roles.
-    if (!$account->getRoles(TRUE)) {
+    // Roles that cannot edit content.
+    $non_editing_roles = ['read_only', 'survey_editor'];
+
+    // Show an access notice to users without editing roles.
+    if (
+      !array_diff($account->getRoles(TRUE), $non_editing_roles) &&
+      (int) $account->id() !== 1
+    ) {
       $build['access_notice'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
