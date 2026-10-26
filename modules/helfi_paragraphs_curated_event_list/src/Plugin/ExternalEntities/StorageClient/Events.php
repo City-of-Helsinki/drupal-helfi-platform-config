@@ -176,7 +176,7 @@ class Events extends StorageClientBase {
       $event['id'] = sprintf('%s,%s', $originalId, $langcode);
       $event['name'] = $event['name'][$langcode];
       $event['title'] = $event['name'][$langcode];
-      if ($event['start_time']) {
+      if (isset($event['start_time'])) {
         $start = new \DateTime($event['start_time'])->format('d.m.Y H:i');
         $event['title'] .= " ($start)";
       }
