@@ -9,11 +9,17 @@
         'org-chart__item__title--level-' ~ organization_level,
       ]
     } %}
+    <div class="org-chart__item__wrapper">
     {% if organization.url %}
       {{ link(organization.title, organization.url, organization_name_attributes) }}
     {% else %}
       <span{{ create_attribute(organization_name_attributes) }}>{{ organization.title }}</span>
     {% endif %}
+    {% set organization_group = enum('Drupal\\helfi_api_base\\Ahjo\\OrganizationType').getGroupTypeFor(organization.type) %}
+    {% if organization_group %}
+      <span class="org-chart__item__type-{{ organization_group }}">{{ enum('Drupal\\helfi_api_base\\Ahjo\\OrganizationType').getGroupLabelFor(organization.type) }}</span>
+    {% endif %}
+    </div>
     {% if has_children %}
       <ul class="org-chart__container org-chart__container--inner">
         {% for child in organization.children %}
