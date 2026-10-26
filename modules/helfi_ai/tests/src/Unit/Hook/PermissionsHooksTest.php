@@ -31,6 +31,7 @@ class PermissionsHooksTest extends UnitTestCase {
         'manage ai prompts',
       ], $permissions[$role]);
     }
+    $this->assertSame(['use helfi ai summary'], $permissions['editor']);
   }
 
 }
