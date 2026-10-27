@@ -11,6 +11,7 @@ use Drupal\helfi_users\Hook\UserDashboardHooks;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\user\UserInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -127,6 +128,7 @@ class UserDashboardHooksTest extends KernelTestBase {
 
     $account = $this->createMock(UserInterface::class);
     $account->method('id')->willReturn('1');
+    $account->method('getRoles')->willReturn(['editor']);
 
     $display = $this->createMock(EntityViewDisplayInterface::class);
     $display->expects($this->exactly(count(self::EXTRA_FIELDS)))
@@ -139,6 +141,57 @@ class UserDashboardHooksTest extends KernelTestBase {
     foreach (self::EXTRA_FIELDS as $name) {
       $this->assertArrayNotHasKey($name, $build);
     }
+  }
+
+  /**
+   * Tests that users without editing roles see the access notice.
+   *
+   * @param list<string> $roles
+   *   The user roles.
+   */
+  #[DataProvider('accessNoticeRolesProvider')]
+  public function testInjectDashboardViewShowsAccessNoticeWithoutRoles(array $roles): void {
+    $this->currentUser->method('id')->willReturn('2');
+
+    $account = $this->createMock(UserInterface::class);
+    $account->method('id')->willReturn('2');
+    $account->method('getRoles')->with(TRUE)->willReturn($roles);
+
+    $display = $this->createMock(EntityViewDisplayInterface::class);
+    $display->expects($this->never())->method('getComponent');
+
+    $build = [];
+    $this->hooks->injectDashboardView($build, $account, $display);
+
+    $this->assertArrayHasKey('access_notice', $build);
+    foreach (self::EXTRA_FIELDS as $name) {
+      $this->assertArrayNotHasKey($name, $build);
+    }
+  }
+
+  /**
+   * Provides roles that show the access notice.
+   *
+   * @return array<string, array{list<string>}>
+   *   The test cases.
+   */
+  public static function accessNoticeRolesProvider(): array {
+    return [
+      'no roles' => [[]],
+      'read only' => [['read_only']],
+    ];
+  }
+
+  /**
+   * Tests that the dashboard tabs are hidden when the access notice is shown.
+   */
+  public function testFieldGroupPreRenderHidesTabsWithAccessNotice(): void {
+    $element = [];
+    $group = (object) ['group_name' => 'group_my_content'];
+
+    $this->hooks->fieldGroupPreRender($element, $group, ['access_notice' => []]);
+
+    $this->assertFalse($element['#access']);
   }
 
   /**

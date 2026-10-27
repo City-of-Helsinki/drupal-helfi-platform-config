@@ -126,6 +126,25 @@ class UserDashboardHooks {
     if ($this->currentUser->id() !== $account->id()) {
       return;
     }
+
+    // Roles that cannot edit content.
+    $non_editing_roles = ['read_only', 'survey_editor'];
+
+    // Show an access notice to users without editing roles.
+    if (
+      !array_diff($account->getRoles(TRUE), $non_editing_roles) &&
+      (int) $account->id() !== 1
+    ) {
+      $build['access_notice'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t("You don't have the required permissions to make edits. <a href=\":url\">Learn how to request access</a>.", [
+          ':url' => 'https://www.hel.fi/fi/paatoksenteko-ja-hallinto/sisallonhallinta/kaytto-oikeudet',
+        ]),
+      ];
+      return;
+    }
+
     foreach ($this->userContentExtraFields() as $name => $field) {
       if (!$display->getComponent($name)) {
         continue;
@@ -148,9 +167,19 @@ class UserDashboardHooks {
    *
    * @phpstan-param array<string, mixed> $element
    * @phpstan-param \stdClass $group
+   * @phpstan-param array<string, mixed> $rendering_object
    */
   #[Hook('field_group_pre_render')]
-  public function fieldGroupPreRender(array &$element, &$group): void {
+  public function fieldGroupPreRender(array &$element, &$group, array $rendering_object = []): void {
+    // Hide the dashboard tabs when the access notice is shown.
+    if (
+      $group->group_name === 'group_my_content' &&
+      isset($rendering_object['access_notice'])
+    ) {
+      $element['#access'] = FALSE;
+      return;
+    }
+
     // Hide user dashboard TPR content tab, if TPR integration isn't enabled.
     if (
       $group->group_name === 'group_my_tpr_content'

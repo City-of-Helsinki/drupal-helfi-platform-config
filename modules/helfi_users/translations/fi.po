@@ -35,3 +35,6 @@ msgstr "Viimeisin päivittäjä"
 msgctxt "Dashboard"
 msgid "My pages"
 msgstr "Omat sivut"
+
+msgid "You don't have the required permissions to make edits. <a href=\":url\">Learn how to request access</a>."
+msgstr "Tarvitset käyttöoikeudet, jos haluat tehdä muokkauksia. <a href=\":url\">Ohje oikeuksien hakemiseen</a>."
