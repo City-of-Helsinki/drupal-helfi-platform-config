@@ -8,6 +8,8 @@ display:
       fields:
         title:
           label: Titel
+        helfi_favorite:
+          label: Favorit
         type:
           label: Innehållstyp
         name:
