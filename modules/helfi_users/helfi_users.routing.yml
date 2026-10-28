@@ -7,7 +7,7 @@ helfi_users.favorite_toggle:
     # The entity_type requirement is set in RouteSubscriber.
     display: 'icon|label'
     _csrf_token: 'TRUE'
-    _custom_access: '\Drupal\helfi_users\Controller\FavoriteController::access'
+    _custom_access: 'Drupal\helfi_users\FavoriteToggleBuilder::access'
   options:
     _admin_route: TRUE
     _htmx_route: TRUE
