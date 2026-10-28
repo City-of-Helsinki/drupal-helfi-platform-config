@@ -6,6 +6,7 @@ namespace Drupal\helfi_users;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Htmx\Htmx;
@@ -39,16 +40,23 @@ final readonly class FavoriteToggleBuilder implements TrustedCallbackInterface {
    *
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
    *   The entity.
+   * @param string $langcode
+   *   The translation language code.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
    */
-  public function access(AccountInterface $account, EntityInterface $entity): AccessResultInterface {
+  public function access(AccountInterface $account, ContentEntityInterface $entity, string $langcode): AccessResultInterface {
+    // Deny access to missing translations.
+    if (!$entity->hasTranslation($langcode)) {
+      return AccessResult::forbidden()->addCacheableDependency($entity);
+    }
+
     // Allow favorites only for the content that user can edit.
     return AccessResult::allowedIfHasPermission($account, 'use favorites')
-      ->andIf($entity->access('update', $account, TRUE));
+      ->andIf($entity->getTranslation($langcode)->access('update', $account, TRUE));
   }
 
   /**
@@ -58,13 +66,15 @@ final readonly class FavoriteToggleBuilder implements TrustedCallbackInterface {
    *   The entity type ID.
    * @param string $entityId
    *   The entity ID.
+   * @param string $langcode
+   *   The translation language code.
    * @param string $display
    *   The button display variant.
    *
    * @return array<string, mixed>
    *   The favorite toggle render array.
    */
-  public function lazyBuild(string $entityType, string $entityId, string $display): array {
+  public function lazyBuild(string $entityType, string $entityId, string $langcode, string $display): array {
     $build = [
       '#cache' => [
         'contexts' => ['user'],
@@ -81,14 +91,14 @@ final readonly class FavoriteToggleBuilder implements TrustedCallbackInterface {
 
     // Return if the entity does not exist.
     $entity = $this->entityTypeManager->getStorage($entityType)->load($entityId);
-    if (!$entity) {
+    if (!$entity instanceof ContentEntityInterface) {
       return $build;
     }
 
     // Render nothing without access.
-    $access = $this->access($this->currentUser, $entity);
+    $access = $this->access($this->currentUser, $entity, $langcode);
     if ($access->isAllowed()) {
-      $build = $this->build($entity, $display);
+      $build = $this->build($entity->getTranslation($langcode), $display);
     }
     $this->renderer->addCacheableDependency($build, $access);
 
@@ -99,7 +109,7 @@ final readonly class FavoriteToggleBuilder implements TrustedCallbackInterface {
    * Builds the favorite toggle button.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity.
+   *   The entity translation.
    * @param string $display
    *   The button display variant.
    *
@@ -114,15 +124,12 @@ final readonly class FavoriteToggleBuilder implements TrustedCallbackInterface {
       '#attached' => [
         'library' => ['hdbt/hdbt-icons'],
       ],
-      '#cache' => [
-        'contexts' => ['user'],
-        'tags' => ['helfi_favorite:' . $this->currentUser->id()],
-      ],
     ];
 
     $url = Url::fromRoute('helfi_users.favorite_toggle', [
       'entity_type' => $entity->getEntityTypeId(),
       'entity' => $entity->id(),
+      'langcode' => $entity->language()->getId(),
       'display' => $display,
     ]);
 
@@ -139,6 +146,8 @@ final readonly class FavoriteToggleBuilder implements TrustedCallbackInterface {
     // so they can be correctly processed when rendering HTMX content.
     BubbleableMetadata::createFromRenderArray($build)
       ->merge($url->toString(TRUE))
+      ->addCacheContexts(['user'])
+      ->addCacheTags(['helfi_favorite:' . $this->currentUser->id()])
       ->applyTo($build);
 
     return $build;

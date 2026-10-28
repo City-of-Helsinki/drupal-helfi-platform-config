@@ -40,7 +40,6 @@ function helfi_users_schema(): array {
         'type' => 'varchar_ascii',
         'length' => 12,
         'not null' => TRUE,
-        'default' => 'und',
         'description' => 'The translation language code.',
       ],
       'created' => [

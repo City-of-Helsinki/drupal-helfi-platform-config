@@ -8,7 +8,6 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Session\AccountInterface;
 
 /**
@@ -28,9 +27,9 @@ final class FavoriteStorage {
   private const string TABLE = 'helfi_users_favorite';
 
   /**
-   * Favorite entity IDs keyed by user ID and entity type.
+   * Favorite translation keys keyed by user ID and entity type.
    *
-   * @var array<string, array<int|string, true>>
+   * @var array<string, array<string, true>>
    */
   private array $favorites = [];
 
@@ -41,51 +40,53 @@ final class FavoriteStorage {
   ) {}
 
   /**
-   * Checks whether the entity is a favorite of the user.
+   * Checks whether the entity translation is a favorite of the user.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity.
+   *   The entity translation.
    *
    * @return bool
-   *   TRUE if the entity is a favorite.
+   *   TRUE if the entity translation is a favorite.
    */
   public function isFavorite(AccountInterface $account, EntityInterface $entity): bool {
     $key = $account->id() . ':' . $entity->getEntityTypeId();
 
     // Load all favorites of the entity type once per request.
     if (!isset($this->favorites[$key])) {
-      $ids = $this->connection->select(self::TABLE, 'f')
-        ->fields('f', ['entity_id'])
+      $rows = $this->connection->select(self::TABLE, 'f')
+        ->fields('f', ['entity_id', 'langcode'])
         ->condition('uid', $account->id())
         ->condition('entity_type', $entity->getEntityTypeId())
-        ->condition('langcode', LanguageInterface::LANGCODE_NOT_SPECIFIED)
-        ->execute()
-        ->fetchCol();
-      $this->favorites[$key] = array_fill_keys($ids, TRUE);
+        ->execute();
+
+      $this->favorites[$key] = [];
+      foreach ($rows as $row) {
+        $this->favorites[$key][$row->entity_id . ':' . $row->langcode] = TRUE;
+      }
     }
 
-    return isset($this->favorites[$key][$entity->id()]);
+    return isset($this->favorites[$key][$entity->id() . ':' . $entity->language()->getId()]);
   }
 
   /**
-   * Adds or removes the entity from the user's favorites.
+   * Adds or removes the entity translation from the user's favorites.
    *
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account.
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity.
+   *   The entity translation.
    *
    * @return bool
-   *   TRUE if the entity is now a favorite.
+   *   TRUE if the entity translation is now a favorite.
    */
   public function toggle(AccountInterface $account, EntityInterface $entity): bool {
     $keys = [
       'uid' => $account->id(),
       'entity_type' => $entity->getEntityTypeId(),
       'entity_id' => $entity->id(),
-      'langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
+      'langcode' => $entity->language()->getId(),
     ];
 
     // Try to delete the favorite...
