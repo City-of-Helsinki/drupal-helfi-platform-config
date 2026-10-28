@@ -8,6 +8,58 @@
 declare(strict_types=1);
 
 /**
+ * Implements hook_schema().
+ *
+ * @phpstan-return array<string, mixed>
+ */
+function helfi_users_schema(): array {
+  $schema = [];
+
+  $schema['helfi_users_favorite'] = [
+    'description' => 'Content marked as favorite by users.',
+    'fields' => [
+      'uid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'The user ID.',
+      ],
+      'entity_type' => [
+        'type' => 'varchar_ascii',
+        'length' => 32,
+        'not null' => TRUE,
+        'description' => 'The entity type ID.',
+      ],
+      'entity_id' => [
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'description' => 'The entity ID.',
+      ],
+      'langcode' => [
+        'type' => 'varchar_ascii',
+        'length' => 12,
+        'not null' => TRUE,
+        'default' => 'und',
+        'description' => 'The translation language code.',
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Timestamp of when the favorite was added.',
+      ],
+    ],
+    'primary key' => ['uid', 'entity_type', 'entity_id', 'langcode'],
+    'indexes' => [
+      'entity' => ['entity_type', 'entity_id'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
  * Remove member_for field from user display.
  */
 function helfi_users_update_10001(): void {
@@ -15,4 +67,15 @@ function helfi_users_update_10001(): void {
     ->getViewDisplay('user', 'user', 'default')
     ->removeComponent('member_for')
     ->save();
+}
+
+/**
+ * Add the favorites table.
+ */
+function helfi_users_update_11001(): void {
+  $schema = \Drupal::database()->schema();
+
+  if (!$schema->tableExists('helfi_users_favorite')) {
+    $schema->createTable('helfi_users_favorite', helfi_users_schema()['helfi_users_favorite']);
+  }
 }
