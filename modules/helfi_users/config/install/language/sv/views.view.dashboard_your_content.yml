@@ -10,6 +10,8 @@ display:
             format_custom_true: föråldrad
         title:
           label: Titel
+        helfi_favorite:
+          label: Favorit
         type:
           label: Innehållstyp
         uid:
