@@ -1,0 +1,20 @@
+{#
+/**
+ * @file
+ * Favorite toggle button.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the button.
+ * - is_favorite: Whether the entity is a favorite.
+ * - show_label: Whether the label is visible.
+ */
+#}
+{% set classes = [
+  'favorite-toggle',
+  is_favorite ? 'favorite-toggle--active',
+] %}
+{% set label = is_favorite ? 'Added to favorites'|t : 'Add to favorites'|t %}
+<button{{ attributes.addClass(classes).setAttribute('type', 'button') }}>
+  <span class="hel-icon hel-icon--{{ is_favorite ? 'star-fill' : 'star' }} favorite-toggle__icon" aria-hidden="true"></span>
+  <span class="favorite-toggle__label{{ show_label ? '' : ' visually-hidden' }}">{{ label }}</span>
+</button>
