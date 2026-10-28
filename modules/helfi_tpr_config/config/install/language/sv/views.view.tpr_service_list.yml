@@ -26,6 +26,8 @@ display:
           action_title: Åtgärd
         name:
           label: Namn
+        helfi_favorite:
+          label: Favorit
         langcode:
           label: Språk
         content_translation_status:

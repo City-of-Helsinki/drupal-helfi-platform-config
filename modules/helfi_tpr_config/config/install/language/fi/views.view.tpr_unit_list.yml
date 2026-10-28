@@ -26,6 +26,8 @@ display:
       fields:
         name:
           label: Nimi
+        helfi_favorite:
+          label: Suosikki
         langcode:
           label: Kieli
         content_translation_status:
