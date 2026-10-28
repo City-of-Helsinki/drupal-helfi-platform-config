@@ -1,0 +1,16 @@
+helfi_users.favorite_toggle:
+  path: '/admin/favorite/{entity_type}/{entity}/{display}'
+  defaults:
+    _controller: '\Drupal\helfi_users\Controller\FavoriteController::toggle'
+  methods: [POST]
+  requirements:
+    # The entity_type requirement is set in RouteSubscriber.
+    display: 'icon|label'
+    _csrf_token: 'TRUE'
+    _custom_access: '\Drupal\helfi_users\Controller\FavoriteController::access'
+  options:
+    _admin_route: TRUE
+    _htmx_route: TRUE
+    parameters:
+      entity:
+        type: 'entity:{entity_type}'

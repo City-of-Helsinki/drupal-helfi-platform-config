@@ -88,12 +88,14 @@ final class FavoriteStorage {
       'langcode' => LanguageInterface::LANGCODE_NOT_SPECIFIED,
     ];
 
+    // Try to delete the favorite...
     $query = $this->connection->delete(self::TABLE);
     foreach ($keys as $field => $value) {
       $query->condition($field, $value);
     }
     $isFavorite = !$query->execute();
 
+    // ...and add the favorite when nothing was removed.
     if ($isFavorite) {
       $this->connection->merge(self::TABLE)
         ->keys($keys)
@@ -101,6 +103,7 @@ final class FavoriteStorage {
         ->execute();
     }
 
+    // Clear the request cache and the user's rendered favorites.
     unset($this->favorites[$account->id() . ':' . $entity->getEntityTypeId()]);
     $this->cacheTagsInvalidator->invalidateTags(['helfi_favorite:' . $account->id()]);
 
