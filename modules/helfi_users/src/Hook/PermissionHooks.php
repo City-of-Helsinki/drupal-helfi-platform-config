@@ -20,9 +20,6 @@ final readonly class PermissionHooks {
   #[Hook('platform_config_grant_permissions')]
   public function permissions(): array {
     return [
-      'super_administrator' => [
-        'use favorites',
-      ],
       'admin' => [
         'use favorites',
       ],
