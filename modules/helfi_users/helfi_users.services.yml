@@ -5,3 +5,4 @@ services:
 
   Drupal\helfi_users\Routing\RouteSubscriber: ~
   Drupal\helfi_users\FavoriteStorage: ~
+  Drupal\helfi_users\FavoriteToggleBuilder: ~
