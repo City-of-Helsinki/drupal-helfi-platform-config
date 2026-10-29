@@ -9,11 +9,23 @@
         'org-chart__item__title--level-' ~ organization_level,
       ]
     } %}
+    <div class="org-chart__item__wrapper">
     {% if organization.url %}
       {{ link(organization.title, organization.url, organization_name_attributes) }}
     {% else %}
       <span{{ create_attribute(organization_name_attributes) }}>{{ organization.title }}</span>
     {% endif %}
+    {% if organization.type.isElectedOfficials() %}
+      {% set organization_group = 'elected-officials' %}
+    {% elseif organization.type.isAdministration() %}
+      {% set organization_group = 'administration' %}
+    {% else %}
+      {% set organization_group = null %}
+    {% endif %}
+    {% if organization_group %}
+      <span class="org-chart__item__type-{{ organization_group }}">{{ organization.type.getGroupLabel() }}</span>
+    {% endif %}
+    </div>
     {% if has_children %}
       <ul class="org-chart__container org-chart__container--inner">
         {% for child in organization.children %}
