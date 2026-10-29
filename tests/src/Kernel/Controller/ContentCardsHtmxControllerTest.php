@@ -13,14 +13,14 @@ use Drupal\node\Entity\NodeType;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\Tests\user\Traits\UserCreationTrait;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests the content cards HTMX controller.
  */
-#[CoversClass(ContentCardsHtmxController::class)]
 #[Group('helfi_platform_config')]
+#[RunTestsInSeparateProcesses]
 final class ContentCardsHtmxControllerTest extends KernelTestBase {
 
   use UserCreationTrait;
@@ -34,8 +34,8 @@ final class ContentCardsHtmxControllerTest extends KernelTestBase {
     'field',
     'file',
     'node',
-    'paragraphs',
     'entity_reference_revisions',
+    'paragraphs',
   ];
 
   /**
@@ -47,7 +47,6 @@ final class ContentCardsHtmxControllerTest extends KernelTestBase {
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installEntitySchema('paragraph');
-    $this->installConfig(['field', 'node', 'paragraphs']);
 
     NodeType::create([
       'type' => 'page',
