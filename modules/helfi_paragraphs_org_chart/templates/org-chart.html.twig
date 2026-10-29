@@ -15,9 +15,15 @@
     {% else %}
       <span{{ create_attribute(organization_name_attributes) }}>{{ organization.title }}</span>
     {% endif %}
-    {% set organization_group = enum('Drupal\\helfi_api_base\\Ahjo\\OrganizationType').getGroupTypeFor(organization.type) %}
+    {% if organization.type.isElectedOfficials() %}
+      {% set organization_group = 'elected-officials' %}
+    {% elseif organization.type.isAdministration() %}
+      {% set organization_group = 'administration' %}
+    {% else %}
+      {% set organization_group = null %}
+    {% endif %}
     {% if organization_group %}
-      <span class="org-chart__item__type-{{ organization_group }}">{{ enum('Drupal\\helfi_api_base\\Ahjo\\OrganizationType').getGroupLabelFor(organization.type) }}</span>
+      <span class="org-chart__item__type-{{ organization_group }}">{{ organization.type.getGroupLabel() }}</span>
     {% endif %}
     </div>
     {% if has_children %}
