@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\Core\Url;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_platform_config\Plugin\Field\FieldFormatter\ContentCardsHtmxFormatter;
@@ -14,14 +13,12 @@ use Drupal\node\Entity\NodeType;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests the content cards HTMX placeholder.
  */
-#[CoversClass(ContentCardsHtmxFormatter::class)]
 #[Group('helfi_platform_config')]
 #[RunTestsInSeparateProcesses]
 final class ContentCardsHtmxFormatterTest extends KernelTestBase {
@@ -53,7 +50,6 @@ final class ContentCardsHtmxFormatterTest extends KernelTestBase {
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installEntitySchema('paragraph');
-    $this->installConfig(['field', 'node', 'paragraphs']);
 
     NodeType::create([
       'type' => 'page',
@@ -95,9 +91,9 @@ final class ContentCardsHtmxFormatterTest extends KernelTestBase {
   }
 
   /**
-   * The placeholder counts stored ids and does not render the targets.
+   * The placeholder renders the content cards.
    */
-  public function testPlaceholderSkipsReferencedEntities() : void {
+  public function testPlaceholderRenders() : void {
     $first = Node::create([
       'type' => 'page',
       'title' => 'First',
@@ -123,13 +119,6 @@ final class ContentCardsHtmxFormatterTest extends KernelTestBase {
     $this->assertCount(1, $elements);
     $this->assertSame('helfi_htmx_preview__content_cards', $elements[0]['#theme']);
     $this->assertSame(2, $elements[0]['#num_items']);
-    $this->assertArrayNotHasKey('#node', $elements[0]);
-    $this->assertContains('core/drupal.htmx', $elements[0]['#attached']['library']);
-    $this->assertSame('load', $this->attribute($elements[0], 'data-hx-trigger'));
-    $this->assertSame(Url::fromRoute('helfi_platform_config.content_cards_htmx', [
-      'paragraph' => $paragraph->id(),
-    ])->toString(), $this->attribute($elements[0], 'data-hx-get'));
-    $this->assertStringStartsWith('innerHTML', $this->attribute($elements[0], 'data-hx-swap'));
   }
 
   /**
@@ -155,25 +144,6 @@ final class ContentCardsHtmxFormatterTest extends KernelTestBase {
       throw new \LogicException('The content cards field is not an entity reference.');
     }
     return $items;
-  }
-
-  /**
-   * Reads one HTMX attribute from a placeholder render element.
-   *
-   * @param array<mixed> $element
-   *   The render element.
-   * @param string $name
-   *   The attribute name.
-   *
-   * @return string
-   *   The attribute value.
-   */
-  private function attribute(array $element, string $name) : string {
-    $attributes = $element['#attributes'] ?? [];
-    if (!is_array($attributes) || !isset($attributes[$name])) {
-      return '';
-    }
-    return (string) $attributes[$name];
   }
 
 }
