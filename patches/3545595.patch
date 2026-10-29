@@ -1,0 +1,13 @@
+diff --git a/core/modules/language/src/Entity/ConfigurableLanguage.php b/core/modules/language/src/Entity/ConfigurableLanguage.php
+index d5656745ad966ae672ee7170252d7f8fb7ee6ab2..ac270acd57764b2f34f25060b95f63b21ffa9375 100644
+--- a/core/modules/language/src/Entity/ConfigurableLanguage.php
++++ b/core/modules/language/src/Entity/ConfigurableLanguage.php
+@@ -155,7 +155,7 @@ public function postSave(EntityStorageInterface $storage, $update = TRUE) {
+     if (!$this->preSaveMultilingual && !$update && $language_manager instanceof ConfigurableLanguageManagerInterface) {
+       $language_manager::rebuildServices();
+     }
+-    if (!$update) {
++    if (!$update && !\Drupal::isConfigSyncing()) {
+       // Install any available language configuration overrides for the
+       // language.
+       \Drupal::service('language.config_factory_override')->installLanguageOverrides($this->id());
