@@ -5,13 +5,8 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\Linkit\Matcher;
 
 use Drupal\Core\Form\FormState;
-use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_api_base\Environment\ProjectMetadata;
-use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
-use Drupal\helfi_platform_config\MultisiteContentId;
 use Drupal\helfi_platform_config\Plugin\ExternalEntities\StorageClient\SharedIndex;
 use Drupal\helfi_platform_config\Plugin\Linkit\Matcher\MultisiteContentMatcher;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
@@ -52,15 +47,9 @@ final class MultisiteContentMatcherTest extends KernelTestBase {
   protected function setUp() : void {
     parent::setUp();
 
-    $this->installConfig(['system', 'external_entities']);
-    $this->installEntitySchema('user');
+    $this->installConfig(['system']);
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
-    $this->setEtusivuIndexRole(TRUE);
-
     $this->installConfigEntity('helfi_platform_config', 'external_entities.external_entity_type.helfi_multisite_content');
-    $this->installEntitySchema(MultisiteContentId::ENTITY_TYPE_ID);
-    $this->container->get('entity_type.manager')->clearCachedDefinitions();
-    $this->container->get('entity_type.bundle.info')->clearCachedBundles();
   }
 
   /**
@@ -132,20 +121,6 @@ final class MultisiteContentMatcherTest extends KernelTestBase {
     $request = $history[0]['request'] ?? NULL;
     $this->assertInstanceOf(RequestInterface::class, $request);
     return $this->requestBody($request);
-  }
-
-  /**
-   * Stubs whether the active project has the etusivu index role.
-   */
-  private function setEtusivuIndexRole(bool $enabled) : void {
-    $project = new Project(
-      'example',
-      new ProjectMetadata('https://example.com/example'),
-      roles: $enabled ? [ProjectRoleEnum::HasEtusivuIndex] : [],
-    );
-    $resolver = $this->createMock(EnvironmentResolverInterface::class);
-    $resolver->method('getActiveProject')->willReturn($project);
-    $this->container->set(ActiveProjectRoles::class, new ActiveProjectRoles($resolver));
   }
 
   /**
