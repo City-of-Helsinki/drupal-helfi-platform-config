@@ -151,11 +151,15 @@ class EntityHooks {
     /** @var \Drupal\Core\Entity\EntityTypeInterface $entity_type */
     $entity_type = $entity_types[MultisiteContentId::ENTITY_TYPE_ID];
 
-    // Views keys the reverse relationship of an entity reference by the
-    // target base table. This entity is not stored in SQL, so without a
-    // table name that key is null and views data rebuilds fail on PHP 8.5.
+    // Views tries to prebuild reverse relationship data for all entities that
+    // are used as entity reference field targets. This comes with an
+    // assumption that the target entity type has a base table, which is not
+    // the case with external entities. This fix is only needed beacuse we have
+    // an entity reference field field_content_cards_content_ext that targets
+    // the 'Helfi: multisite content' external entity type, to silence the
+    // deprecation notices it would otherwise produce.
     if ($entity_type->getBaseTable() === NULL) {
-      $entity_type->set('base_table', MultisiteContentId::ENTITY_TYPE_ID);
+      $entity_type->set('base_table', '');
     }
 
     // Entity type label is used as the group label in the autocomplete
