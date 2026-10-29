@@ -68,4 +68,19 @@ final readonly class MetatagHooks {
     }
   }
 
+  /**
+   * Implements hook_config_schema_info_alter().
+   *
+   * @phpstan-param array<string, mixed> $definitions
+   */
+  #[Hook('config_schema_info_alter')]
+  public function configSchemaInfoAlter(array &$definitions): void {
+    // Exclude URL tags from interface translation.
+    foreach (['canonical_url', 'shortlink'] as $tag) {
+      if (isset($definitions["metatag.metatag_tag.$tag"])) {
+        $definitions["metatag.metatag_tag.$tag"]['translatable'] = FALSE;
+      }
+    }
+  }
+
 }
