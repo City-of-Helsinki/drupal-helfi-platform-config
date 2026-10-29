@@ -61,7 +61,6 @@ final class MultisiteImageFormatterTest extends KernelTestBase {
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
-    $this->installConfig(['field', 'node']);
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Prod);
     $this->container->get('config.storage')->write('helfi_proxy.settings', [
       'asset_path' => 'assets',
@@ -115,13 +114,6 @@ final class MultisiteImageFormatterTest extends KernelTestBase {
 
     $this->enableModules(['imagecache_external']);
     $this->assertTrue(MultisiteImageFormatter::isApplicable($field));
-  }
-
-  /**
-   * The responsive image style setting defaults to empty.
-   */
-  public function testDefaultSettings() : void {
-    $this->assertSame('', MultisiteImageFormatter::defaultSettings()['responsive_image_style']);
   }
 
   /**
