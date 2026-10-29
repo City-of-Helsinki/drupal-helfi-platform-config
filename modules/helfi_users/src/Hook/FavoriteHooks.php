@@ -72,4 +72,44 @@ final class FavoriteHooks {
     }
   }
 
+  /**
+   * Implements hook_preprocess_page().
+   *
+   * @phpstan-param array<string, mixed> $variables
+   */
+  #[Hook('preprocess_page')]
+  public function preprocessPage(array &$variables): void {
+    // Show the favorite toggle only on the edit pages.
+    $entityType = NULL;
+    foreach (FavoriteStorage::ENTITY_TYPES as $type) {
+      if ($this->routeMatch->getRouteName() === "entity.$type.edit_form") {
+        $entityType = $type;
+        break;
+      }
+    }
+
+    if (!$entityType) {
+      return;
+    }
+
+    $entity = $this->routeMatch->getParameter($entityType);
+    if (!$entity instanceof ContentEntityInterface) {
+      return;
+    }
+
+    // Set the favorite_toggle variable to the page template.
+    $variables['favorite_toggle'] = [
+      '#lazy_builder' => [
+        FavoriteToggleBuilder::class . ':lazyBuild',
+        [
+          $entityType,
+          (string) $entity->id(),
+          $entity->language()->getId(),
+          'label',
+        ],
+      ],
+      '#create_placeholder' => TRUE,
+    ];
+  }
+
 }
