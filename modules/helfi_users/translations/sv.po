@@ -39,10 +39,10 @@ msgstr "Mina sidor"
 msgid "You don't have the required permissions to make edits. <a href=\":url\">Learn how to request access</a>."
 msgstr "Du behöver behörighet för att kunna redigera. <a href=\":url\">Så här ansöker du om behörighet</a>."
 
-msgid "Add to favorites"
+msgid "Add to favourites"
 msgstr "Lägg till som favorit"
 
-msgid "Added to favorites"
+msgid "Added to favourites"
 msgstr "Tillagd som favorit"
 
 msgid "Favorite"
@@ -56,3 +56,6 @@ msgstr "Använd favoriter"
 
 msgid "Mark editable content as a favorite."
 msgstr "Markera redigerbart innehåll som favorit."
+
+msgid "Remove from favourites"
+msgstr "Ta bort från favoriter"

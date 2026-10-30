@@ -39,10 +39,10 @@ msgstr "Omat sivut"
 msgid "You don't have the required permissions to make edits. <a href=\":url\">Learn how to request access</a>."
 msgstr "Tarvitset käyttöoikeudet, jos haluat tehdä muokkauksia. <a href=\":url\">Ohje oikeuksien hakemiseen</a>."
 
-msgid "Add to favorites"
+msgid "Add to favourites"
 msgstr "Lisää suosikiksi"
 
-msgid "Added to favorites"
+msgid "Added to favourites"
 msgstr "Lisätty suosikiksi"
 
 msgid "Favorite"
@@ -56,3 +56,6 @@ msgstr "Käytä suosikkeja"
 
 msgid "Mark editable content as a favorite."
 msgstr "Merkitse muokattava sisältö suosikiksi."
+
+msgid "Remove from favourites"
+msgstr "Poista suosikeista"
