@@ -11,9 +11,9 @@ id: paragraph.content_cards.field_content_cards_content
 field_name: field_content_cards_content
 entity_type: paragraph
 bundle: content_cards
-label: 'DEPRECATED: Content'
-description: 'DEPRECATED: Can be removed when content is migrated to new field_content_cards_content_ext.'
-required: false
+label: Content
+description: 'Add here the content that you want to appear as cards to the block.'
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

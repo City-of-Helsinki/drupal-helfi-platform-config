@@ -54,7 +54,6 @@ class LiftupImageUrlProcessorTest extends ProcessorTestBase {
     $this->installEntitySchema('file');
     $this->installSchema('file', 'file_usage');
     $this->installEntitySchema('media');
-    $this->installConfig(['system', 'image', 'media', 'user']);
 
     MediaType::create([
       'id' => 'image',

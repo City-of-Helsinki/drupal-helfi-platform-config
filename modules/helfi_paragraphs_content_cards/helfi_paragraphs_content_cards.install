@@ -7,8 +7,19 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\Exception\FieldStorageDefinitionUpdateForbiddenException;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
+
+/**
+ * Implements hook_install().
+ */
+function helfi_paragraphs_content_cards_install(): void {
+  helfi_paragraphs_content_cards_configure_displays();
+}
 
 /**
  * UHF-9088: Updated config translations for helfi_paragraphs_content_cards.
@@ -78,4 +89,140 @@ function helfi_paragraphs_content_cards_update_9002(): void {
     // We know the database values are different what we are trying to write,
     // but we are only replacing the values with an allowed_values_function.
   }
+}
+
+/**
+ * Chooses the content cards reference field for the active project.
+ */
+function helfi_paragraphs_content_cards_update_9003(): void {
+  helfi_paragraphs_content_cards_configure_displays();
+}
+
+/**
+ * Saves content cards displays based on active project's index role.
+ *
+ * Instances that have access to the frontpage index should use the external
+ * entity based entity reference field for content cards, while the rest should
+ * stick to the node based one.
+ */
+function helfi_paragraphs_content_cards_configure_displays(): void {
+  $roles = \Drupal::service(ActiveProjectRoles::class);
+  assert($roles instanceof ActiveProjectRoles);
+  $has_index = $roles->hasRole(ProjectRoleEnum::HasEtusivuIndex);
+  $node_reference_field = 'field_content_cards_content';
+  $external_entity_reference_field = 'field_content_cards_content_ext';
+  $visible = $has_index ? $external_entity_reference_field : $node_reference_field;
+  $hidden = $has_index ? $node_reference_field : $external_entity_reference_field;
+
+  $form_display = EntityFormDisplay::load('paragraph.content_cards.default');
+  if (!$form_display instanceof EntityFormDisplay) {
+    $form_display = EntityFormDisplay::create([
+      'targetEntityType' => 'paragraph',
+      'bundle' => 'content_cards',
+      'mode' => 'default',
+      'status' => TRUE,
+    ]);
+  }
+  $form_display
+    ->setComponent('field_content_cards_title', [
+      'type' => 'string_textfield',
+      'weight' => 0,
+      'region' => 'content',
+      'settings' => [
+        'size' => 60,
+        'placeholder' => '',
+      ],
+      'third_party_settings' => [],
+    ])
+    ->setComponent('field_content_cards_desc', [
+      'type' => 'text_textarea',
+      'weight' => 1,
+      'region' => 'content',
+      'settings' => [
+        'rows' => 5,
+        'placeholder' => '',
+      ],
+      'third_party_settings' => [],
+    ])
+    ->setComponent('field_content_cards_design', [
+      'type' => 'design_field_widget',
+      'weight' => 2,
+      'region' => 'content',
+      'settings' => [],
+      'third_party_settings' => [],
+    ])
+    ->setComponent($visible, [
+      'type' => 'entity_reference_autocomplete',
+      'weight' => 3,
+      'region' => 'content',
+      'settings' => [
+        'match_operator' => 'CONTAINS',
+        'match_limit' => 10,
+        'size' => 60,
+        'placeholder' => '',
+      ],
+      'third_party_settings' => [],
+    ])
+    ->removeComponent($hidden)
+    ->removeComponent('created')
+    ->removeComponent('status')
+    ->save();
+
+  $display_options = [
+    'type' => 'entity_reference_entity_view',
+    'label' => 'hidden',
+    'settings' => [
+      'view_mode' => 'teaser',
+      'link' => FALSE,
+    ],
+    'third_party_settings' => [],
+    'weight' => 2,
+    'region' => 'content',
+  ];
+  if ($has_index) {
+    $display_options['type'] = 'content_cards_htmx';
+    $display_options['settings'] = [];
+  }
+
+  $view_display = EntityViewDisplay::load('paragraph.content_cards.default');
+  if (!$view_display instanceof EntityViewDisplay) {
+    $view_display = EntityViewDisplay::create([
+      'targetEntityType' => 'paragraph',
+      'bundle' => 'content_cards',
+      'mode' => 'default',
+      'status' => TRUE,
+    ]);
+  }
+  $view_display
+    ->setComponent('field_content_cards_title', [
+      'type' => 'string',
+      'label' => 'hidden',
+      'settings' => [
+        'link_to_entity' => FALSE,
+        'link_rel' => 'canonical',
+      ],
+      'third_party_settings' => [],
+      'weight' => 0,
+      'region' => 'content',
+    ])
+    ->setComponent('field_content_cards_design', [
+      'type' => 'list_key',
+      'label' => 'inline',
+      'settings' => [],
+      'third_party_settings' => [],
+      'weight' => 1,
+      'region' => 'content',
+    ])
+    ->setComponent($visible, $display_options)
+    ->setComponent('field_content_cards_desc', [
+      'type' => 'text_default',
+      'label' => 'hidden',
+      'settings' => [],
+      'third_party_settings' => [],
+      'weight' => 3,
+      'region' => 'content',
+    ])
+    ->removeComponent($hidden)
+    ->removeComponent('search_api_excerpt')
+    ->save();
 }

@@ -8,6 +8,8 @@
 declare(strict_types=1);
 
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\MultisiteSearch;
 use Drupal\paragraphs\ParagraphInterface;
 
@@ -15,6 +17,7 @@ use Drupal\paragraphs\ParagraphInterface;
  * Copies node references onto the multisite content field.
  *
  * Runs after config import, once the target field storage exists.
+ * Sites without the etusivu index role keep their local node references.
  * A node id 9180 in etusivu and in Finnish becomes
  * site_etusivu/entity:node/9180:fi.
  *
@@ -23,6 +26,13 @@ use Drupal\paragraphs\ParagraphInterface;
  * they will appear empty both in the edit form and in the view mode.
  */
 function helfi_paragraphs_content_cards_deploy_migrate_content_field() : void {
+  $roles = \Drupal::service(ActiveProjectRoles::class);
+  assert($roles instanceof ActiveProjectRoles);
+  // Sites without the shared index keep using the local node field.
+  if (!$roles->hasRole(ProjectRoleEnum::HasEtusivuIndex)) {
+    return;
+  }
+
   $prefix = \Drupal::service(MultisiteSearch::class)->getInstanceIndexPrefix();
   if ($prefix === NULL) {
     throw new \RuntimeException('Cannot migrate content card references without the current instance.');

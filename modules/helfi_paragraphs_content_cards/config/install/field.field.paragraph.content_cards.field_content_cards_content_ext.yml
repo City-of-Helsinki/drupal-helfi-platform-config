@@ -10,7 +10,7 @@ field_name: field_content_cards_content_ext
 entity_type: paragraph
 bundle: content_cards
 label: Content
-description: ''
+description: 'Add here the content that you want to appear as cards to the block.'
 required: true
 translatable: false
 default_value: {  }
