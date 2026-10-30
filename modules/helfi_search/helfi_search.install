@@ -544,3 +544,38 @@ function helfi_search_update_11026(): void {
   $index->addField($field);
   $index->save();
 }
+
+/**
+ * Add the liftup image URL field to the embeddings index.
+ */
+function helfi_search_update_11027(): void {
+  $index = Index::load('embeddings');
+
+  if (!$index) {
+    return;
+  }
+
+  $changed = FALSE;
+
+  if (!$index->isValidProcessor('liftup_image_url')) {
+    $plugin_helper = \Drupal::service('search_api.plugin_helper');
+    $index->addProcessor(
+      $plugin_helper->createProcessorPlugin($index, 'liftup_image_url')
+    );
+    $changed = TRUE;
+  }
+
+  if (!$index->getField('liftup_image_url')) {
+    $field = (new Field($index, 'liftup_image_url'))
+      ->setType('string')
+      ->setPropertyPath('liftup_image_url')
+      ->setLabel('Liftup image URL');
+    $index->addField($field);
+    $changed = TRUE;
+  }
+
+  if ($changed) {
+    $index->save();
+    $index->reindex();
+  }
+}

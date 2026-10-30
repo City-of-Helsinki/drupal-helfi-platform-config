@@ -1,0 +1,26 @@
+uuid: 87ea2bbf-5819-465e-a3f6-db992228cdca
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_content_cards_content_ext
+    - paragraphs.paragraphs_type.content_cards
+id: paragraph.content_cards.field_content_cards_content_ext
+field_name: field_content_cards_content_ext
+entity_type: paragraph
+bundle: content_cards
+label: Content
+description: 'Add here the content that you want to appear as cards to the block.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:helfi_multisite_content'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+field_type: entity_reference

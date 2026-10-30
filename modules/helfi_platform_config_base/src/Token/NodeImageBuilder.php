@@ -7,14 +7,14 @@ namespace Drupal\helfi_platform_config_base\Token;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\file\FileInterface;
 use Drupal\helfi_paragraphs_hero\Entity\Hero;
-use Drupal\helfi_platform_config\Token\OGImageBuilderInterface;
+use Drupal\helfi_platform_config\Image\ImageBuilderInterface;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 
 /**
  * OG image for nodes.
  */
-class NodeImageBuilder implements OGImageBuilderInterface {
+class NodeImageBuilder implements ImageBuilderInterface {
 
   /**
    * {@inheritDoc}

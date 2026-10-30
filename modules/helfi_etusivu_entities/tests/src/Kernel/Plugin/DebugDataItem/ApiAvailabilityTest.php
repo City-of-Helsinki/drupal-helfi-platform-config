@@ -9,9 +9,9 @@ use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_etusivu_entities\Plugin\DebugDataItem\ApiAvailabilityBase;
 use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\EtusivuJsonApiEntityBase;
+use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
-use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Response;
 
@@ -30,8 +30,15 @@ class ApiAvailabilityTest extends KernelTestBase {
   protected static $modules = [
     'user',
     'diff',
+    'field',
+    'text',
+    'node',
+    'language',
+    'content_translation',
+    'config_rewrite',
     'helfi_api_base',
     'external_entities',
+    'helfi_platform_config',
     'helfi_etusivu_entities',
   ];
 
@@ -51,8 +58,7 @@ class ApiAvailabilityTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->installEntitySchema('user');
-    $this->installConfig(['helfi_etusivu_entities']);
+    $this->installConfig(['helfi_platform_config', 'helfi_etusivu_entities']);
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
   }
 

@@ -1,0 +1,13 @@
+uuid: f3aef434-3dbf-4c9b-b8c5-088f15670e08
+langcode: en
+status: true
+dependencies:
+  config:
+    - external_entities.external_entity_type.helfi_multisite_content
+  module:
+    - external_entities
+id: helfi_multisite_content.teaser
+label: Teaser
+description: null
+targetEntityType: helfi_multisite_content
+cache: true
