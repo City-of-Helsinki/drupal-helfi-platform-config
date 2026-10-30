@@ -144,6 +144,20 @@ display:
                 confirm_help_text: ''
                 label_override: 'Publish unit'
                 message_override: ''
+            -
+              action_id: 'helfi_favorite_add:tpr_unit'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
+            -
+              action_id: 'helfi_favorite_remove:tpr_unit'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
         id:
           id: id
           table: tpr_unit_field_data

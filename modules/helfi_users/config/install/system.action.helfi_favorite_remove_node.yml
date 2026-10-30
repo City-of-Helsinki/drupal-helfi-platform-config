@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_users
+    - node
+id: helfi_favorite_remove_node
+label: 'Remove from favourites'
+type: node
+plugin: 'helfi_favorite_remove:node'
+configuration: {  }

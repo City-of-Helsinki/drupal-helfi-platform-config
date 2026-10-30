@@ -118,6 +118,20 @@ display:
                 confirm_help_text: ''
                 label_override: ''
                 message_override: ''
+            -
+              action_id: 'helfi_favorite_add:node'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
+            -
+              action_id: 'helfi_favorite_remove:node'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
         content_translation_outdated:
           id: content_translation_outdated
           table: node_field_data
