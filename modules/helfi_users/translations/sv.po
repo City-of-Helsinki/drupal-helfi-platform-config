@@ -1,0 +1,58 @@
+msgid ""
+msgstr ""
+
+msgid "My pages"
+msgstr "Mina sidor"
+
+msgid "Ban the account and keep their content."
+msgstr "Blockera kontot och behåll dess innehåll."
+
+msgid "Ban the account and unpublish their content."
+msgstr "Blockera kontot och avpublicera dess innehåll."
+
+msgid "Delete the account and make their content belong to %uid1. This action cannot be undone."
+msgstr "Radera kontot och överför dess innehåll till användaren %uid1. Åtgärden kan inte ångras."
+
+msgid "Banning accounts prevents them from logging in. If the account is no longer needed, it should be deleted."
+msgstr "Ett blockerat konto kan inte logga in. Kontot ska raderas om det inte längre behövs."
+
+msgctxt "Node authorship filter"
+msgid "Show content"
+msgstr "Visa innehåll"
+
+msgctxt "Node authorship filter"
+msgid "Authored or last edited"
+msgstr "Författare eller senaste redigerare"
+
+msgctxt "Node authorship filter"
+msgid "Authored"
+msgstr "Författare"
+
+msgctxt "Node authorship filter"
+msgid "Last edited"
+msgstr "Senaste redigerare"
+
+msgctxt "Dashboard"
+msgid "My pages"
+msgstr "Mina sidor"
+
+msgid "You don't have the required permissions to make edits. <a href=\":url\">Learn how to request access</a>."
+msgstr "Du behöver behörighet för att kunna redigera. <a href=\":url\">Så här ansöker du om behörighet</a>."
+
+msgid "Add to favorites"
+msgstr "Lägg till som favorit"
+
+msgid "Added to favorites"
+msgstr "Tillagd som favorit"
+
+msgid "Favorite"
+msgstr "Favorit"
+
+msgid "Favorite toggle for the current user."
+msgstr "Favoritval för den aktuella användaren."
+
+msgid "Use favorites"
+msgstr "Använd favoriter"
+
+msgid "Mark editable content as a favorite."
+msgstr "Markera redigerbart innehåll som favorit."
