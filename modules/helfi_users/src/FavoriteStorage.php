@@ -82,33 +82,84 @@ final class FavoriteStorage {
    *   TRUE if the entity translation is now a favorite.
    */
   public function toggle(AccountInterface $account, EntityInterface $entity): bool {
-    $keys = [
+    if ($this->remove($account, $entity)) {
+      return FALSE;
+    }
+    $this->add($account, $entity);
+    return TRUE;
+  }
+
+  /**
+   * Adds the entity translation to the user's favorites.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity translation.
+   */
+  public function add(AccountInterface $account, EntityInterface $entity): void {
+    // Keep the original creation time of an existing favorite.
+    $this->connection->merge(self::TABLE)
+      ->insertFields(['created' => $this->time->getRequestTime()])
+      ->keys($this->getKeys($account, $entity))
+      ->execute();
+    $this->clearCache($account, $entity);
+  }
+
+  /**
+   * Removes the entity translation from the user's favorites.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity translation.
+   *
+   * @return bool
+   *   TRUE if the favorite was removed.
+   */
+  public function remove(AccountInterface $account, EntityInterface $entity): bool {
+    $query = $this->connection->delete(self::TABLE);
+    foreach ($this->getKeys($account, $entity) as $field => $value) {
+      $query->condition($field, $value);
+    }
+    if (!$query->execute()) {
+      return FALSE;
+    }
+    $this->clearCache($account, $entity);
+    return TRUE;
+  }
+
+  /**
+   * Gets the favorite table keys.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity translation.
+   *
+   * @return array<string, mixed>
+   *   The keys.
+   */
+  private function getKeys(AccountInterface $account, EntityInterface $entity): array {
+    return [
       'uid' => $account->id(),
       'entity_type' => $entity->getEntityTypeId(),
       'entity_id' => $entity->id(),
       'langcode' => $entity->language()->getId(),
     ];
+  }
 
-    // Try to delete the favorite...
-    $query = $this->connection->delete(self::TABLE);
-    foreach ($keys as $field => $value) {
-      $query->condition($field, $value);
-    }
-    $isFavorite = !$query->execute();
-
-    // ...and add the favorite when nothing was removed.
-    if ($isFavorite) {
-      $this->connection->merge(self::TABLE)
-        ->keys($keys)
-        ->fields(['created' => $this->time->getRequestTime()])
-        ->execute();
-    }
-
-    // Clear the request cache and the user's rendered favorites.
+  /**
+   * Clears the request cache and the user's rendered favorites.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity translation.
+   */
+  private function clearCache(AccountInterface $account, EntityInterface $entity): void {
     unset($this->favorites[$account->id() . ':' . $entity->getEntityTypeId()]);
     $this->cacheTagsInvalidator->invalidateTags(['helfi_favorite:' . $account->id()]);
-
-    return $isFavorite;
   }
 
   /**
