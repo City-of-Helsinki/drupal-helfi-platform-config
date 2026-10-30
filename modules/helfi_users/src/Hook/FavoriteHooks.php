@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Drupal\helfi_users\Hook;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\helfi_users\FavoriteStorage;
 use Drupal\helfi_users\FavoriteToggleBuilder;
+use Drupal\user\UserInterface;
 
 /**
  * Favorite hooks.
@@ -22,6 +24,7 @@ final class FavoriteHooks {
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly RouteMatchInterface $routeMatch,
+    private readonly FavoriteStorage $favoriteStorage,
   ) {}
 
   /**
@@ -110,6 +113,34 @@ final class FavoriteHooks {
       ],
       '#create_placeholder' => TRUE,
     ];
+  }
+
+  /**
+   * Implements hook_entity_delete().
+   */
+  #[Hook('entity_delete')]
+  public function entityDelete(EntityInterface $entity): void {
+    if (in_array($entity->getEntityTypeId(), FavoriteStorage::ENTITY_TYPES, TRUE)) {
+      $this->favoriteStorage->deleteByEntity($entity);
+    }
+  }
+
+  /**
+   * Implements hook_entity_translation_delete().
+   */
+  #[Hook('entity_translation_delete')]
+  public function entityTranslationDelete(EntityInterface $translation): void {
+    if (in_array($translation->getEntityTypeId(), FavoriteStorage::ENTITY_TYPES, TRUE)) {
+      $this->favoriteStorage->deleteByEntity($translation, $translation->language()->getId());
+    }
+  }
+
+  /**
+   * Implements hook_user_delete().
+   */
+  #[Hook('user_delete')]
+  public function userDelete(UserInterface $account): void {
+    $this->favoriteStorage->deleteByUser($account);
   }
 
 }

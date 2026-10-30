@@ -111,4 +111,37 @@ final class FavoriteStorage {
     return $isFavorite;
   }
 
+  /**
+   * Deletes the favorites of the entity from all users.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity.
+   * @param string|null $langcode
+   *   The translation langcode or NULL for all translations.
+   */
+  public function deleteByEntity(EntityInterface $entity, ?string $langcode = NULL): void {
+    $query = $this->connection->delete(self::TABLE)
+      ->condition('entity_type', $entity->getEntityTypeId())
+      ->condition('entity_id', $entity->id());
+
+    if ($langcode) {
+      $query->condition('langcode', $langcode);
+    }
+    $query->execute();
+    $this->favorites = [];
+  }
+
+  /**
+   * Deletes all favorites of the user.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account.
+   */
+  public function deleteByUser(AccountInterface $account): void {
+    $this->connection->delete(self::TABLE)
+      ->condition('uid', $account->id())
+      ->execute();
+    $this->favorites = [];
+  }
+
 }
