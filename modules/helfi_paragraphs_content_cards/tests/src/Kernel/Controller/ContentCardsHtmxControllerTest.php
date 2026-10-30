@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_platform_config\Kernel\Controller;
+namespace Drupal\Tests\helfi_paragraphs_content_cards\Kernel\Controller;
 
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\helfi_platform_config\Controller\ContentCardsHtmxController;
+use Drupal\helfi_paragraphs_content_cards\Controller\ContentCardsHtmxController;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -19,7 +19,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 /**
  * Tests the content cards HTMX controller.
  */
-#[Group('helfi_platform_config')]
+#[Group('helfi_paragraphs_content_cards')]
 #[RunTestsInSeparateProcesses]
 final class ContentCardsHtmxControllerTest extends KernelTestBase {
 

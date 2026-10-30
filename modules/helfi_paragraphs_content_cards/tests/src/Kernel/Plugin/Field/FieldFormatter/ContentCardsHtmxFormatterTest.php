@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\helfi_platform_config\Kernel\Plugin\Field\FieldFormatter;
+namespace Drupal\Tests\helfi_paragraphs_content_cards\Kernel\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\helfi_platform_config\Plugin\Field\FieldFormatter\ContentCardsHtmxFormatter;
+use Drupal\helfi_paragraphs_content_cards\Plugin\Field\FieldFormatter\ContentCardsHtmxFormatter;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -19,7 +19,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 /**
  * Tests the content cards HTMX placeholder.
  */
-#[Group('helfi_platform_config')]
+#[Group('helfi_paragraphs_content_cards')]
 #[RunTestsInSeparateProcesses]
 final class ContentCardsHtmxFormatterTest extends KernelTestBase {
 
@@ -34,6 +34,7 @@ final class ContentCardsHtmxFormatterTest extends KernelTestBase {
     'file',
     'paragraphs',
     'entity_reference_revisions',
+    'helfi_paragraphs_content_cards',
   ];
 
   /**

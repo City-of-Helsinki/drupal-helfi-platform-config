@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_platform_config\Plugin\Field\FieldFormatter;
+namespace Drupal\helfi_paragraphs_content_cards\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -51,7 +51,7 @@ final class ContentCardsHtmxFormatter extends FormatterBase {
     }
 
     $htmx = new Htmx();
-    $htmx->get(Url::fromRoute('helfi_platform_config.content_cards_htmx', [
+    $htmx->get(Url::fromRoute('helfi_paragraphs_content_cards.content_cards_htmx', [
       'paragraph' => $id,
     ]))
       ->trigger('load')
