@@ -29,6 +29,7 @@ class FavoriteCleanupTest extends FavoriteKernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
+    $this->installSchema('user', ['users_data']);
     $this->storage = $this->container->get(FavoriteStorage::class);
   }
 

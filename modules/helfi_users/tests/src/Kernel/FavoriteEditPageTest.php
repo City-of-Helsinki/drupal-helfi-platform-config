@@ -58,7 +58,7 @@ class FavoriteEditPageTest extends FavoriteKernelTestBase {
 
     $variables = $this->preprocessPage('entity.node.edit_form', ['node' => $translation]);
     $html = $this->clickFavoriteToggle((string) $this->container->get('renderer')->renderRoot($variables['favorite_toggle']));
-    $this->assertStringContainsString('Added to favorites', $html, 'The swapped toggle has the added label.');
+    $this->assertStringContainsString('Added to favourites', $html, 'The swapped toggle has the added label.');
     $this->assertTrue($storage->isFavorite($user, $translation), 'The first click adds the edited translation.');
 
     $this->clickFavoriteToggle($html);
