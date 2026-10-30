@@ -70,7 +70,14 @@ class RouteSubscriberTest extends UnitTestCase {
 
     $this->createSubscriber(['node', 'tpr_unit'])->onAlterRoutes(new RouteBuildEvent($collection));
 
-    $this->assertEquals('node|tpr_unit', $route->getRequirement('entity_type'));
+    $this->assertEquals('node|tpr_unit', $route->getRequirement('entity_type'), 'The route allows the installed entity types.');
+
+    $collection = new RouteCollection();
+    $collection->add('helfi_users.favorite_toggle', new Route('/admin/favorite/{entity_type}/{entity}/{display}'));
+
+    $this->createSubscriber([])->onAlterRoutes(new RouteBuildEvent($collection));
+
+    $this->assertNull($collection->get('helfi_users.favorite_toggle'), 'The route is removed without installed entity types.');
   }
 
 }

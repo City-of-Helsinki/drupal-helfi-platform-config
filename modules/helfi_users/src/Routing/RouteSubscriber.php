@@ -35,7 +35,12 @@ class RouteSubscriber extends RouteSubscriberBase {
           $entityTypes[] = $entityType;
         }
       }
-      $route->setRequirement('entity_type', implode('|', $entityTypes));
+      if ($entityTypes) {
+        $route->setRequirement('entity_type', implode('|', $entityTypes));
+      }
+      else {
+        $collection->remove('helfi_users.favorite_toggle');
+      }
     }
   }
 

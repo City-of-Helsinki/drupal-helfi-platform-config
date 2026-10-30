@@ -272,14 +272,14 @@ class UserDashboardHooksTest extends KernelTestBase {
   public function testViewsFormAlterSubmitsBulkFormToOriginalPage(): void {
     $this->container->get('router.builder')->rebuild();
     $this->routeMatch->method('getRouteName')->willReturn('views.ajax');
-    $this->redirectDestination->method('get')->willReturn('/user/2?title=foo');
+    $this->redirectDestination->method('get')->willReturn('/admin?title=foo');
 
     $form = [
       '#action' => '/views/ajax?title=foo',
       '#attributes' => ['class' => ['vbo-view-form']],
     ];
     $this->hooks->viewsFormAlter($form, new FormState(), 'views_form_dashboard_your_content_your_content_block');
-    $this->assertEquals('/user/2?title=foo', $form['#action'], 'The bulk form submits to the original page.');
+    $this->assertEquals('/admin?title=foo', $form['#action'], 'The bulk form submits to the original page.');
 
     $form = ['#action' => '/views/ajax?title=foo'];
     $this->hooks->viewsFormAlter($form, new FormState(), 'views_form_media_library_widget');
