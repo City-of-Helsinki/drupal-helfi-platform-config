@@ -51,10 +51,10 @@ msgstr "Suosikki"
 msgid "Favorite toggle for the current user."
 msgstr "Nykyisen käyttäjän suosikkivalinta."
 
-msgid "Use favorites"
+msgid "Use favourites"
 msgstr "Käytä suosikkeja"
 
-msgid "Mark editable content as a favorite."
+msgid "Mark editable content as a favourite."
 msgstr "Merkitse muokattava sisältö suosikiksi."
 
 msgid "Remove from favourites"

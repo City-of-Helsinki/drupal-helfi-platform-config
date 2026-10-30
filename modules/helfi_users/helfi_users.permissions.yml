@@ -1,5 +1,5 @@
 allow all user cancel methods:
   title: All access to all user cancel methods
 use favorites:
-  title: Use favorites
-  description: 'Mark editable content as a favorite.'
+  title: Use favourites
+  description: 'Mark editable content as a favourite.'
