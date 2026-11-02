@@ -10,6 +10,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Htmx\Htmx;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Security\TrustedCallbackInterface;
@@ -26,6 +27,7 @@ final readonly class FavoriteToggleBuilder implements TrustedCallbackInterface {
     private EntityTypeManagerInterface $entityTypeManager,
     private RendererInterface $renderer,
     private AccountInterface $currentUser,
+    private LanguageManagerInterface $languageManager,
   ) {}
 
   /**
@@ -131,6 +133,9 @@ final readonly class FavoriteToggleBuilder implements TrustedCallbackInterface {
       'entity' => $entity->id(),
       'langcode' => $entity->language()->getId(),
       'display' => $display,
+    ], [
+      // Keep the admin UI language in the response.
+      'language' => $this->languageManager->getCurrentLanguage(),
     ]);
 
     // Post without form values and replace the button with the response.
