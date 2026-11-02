@@ -2,55 +2,38 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_platform_config\Token;
+namespace Drupal\helfi_platform_config\Image;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\File\FileUrlGeneratorInterface;
 
 /**
- * Open graph image manager.
- *
- * Modules using this service should still implement
- * hook_token_info() for [your-type:shareable-image] token.
- *
- * @see helfi_platform_config_tokens()
+ * Builds a liftup image URI for an entity.
  */
-final class OGImageManager {
+final class LiftupImageManager {
 
   /**
-   * Builders.
+   * Builders, grouped by priority.
    *
-   * @var array
+   * @var array<int, list<\Drupal\helfi_platform_config\Image\ImageBuilderInterface>>
    */
   private array $builders = [];
 
   /**
-   * Sorted builders.
+   * Builders sorted by priority.
    *
-   * @var array
+   * @var list<\Drupal\helfi_platform_config\Image\ImageBuilderInterface>
    */
-  private array $sortedBuilders;
-
-  /**
-   * Constructs a new instance.
-   */
-  public function __construct(
-    private readonly ModuleHandlerInterface $moduleHandler,
-    private readonly FileUrlGeneratorInterface $fileUrlGenerator,
-  ) {
-  }
+  private array $sortedBuilders = [];
 
   /**
    * Adds image builder.
    *
-   * @param \Drupal\helfi_platform_config\Token\OGImageBuilderInterface $builder
+   * @param \Drupal\helfi_platform_config\Image\ImageBuilderInterface $builder
    *   Builder to add.
    * @param int $priority
    *   Builder priority.
    */
-  public function add(OGImageBuilderInterface $builder, int $priority = 0) : void {
+  public function add(ImageBuilderInterface $builder, int $priority = 0) : void {
     $this->builders[$priority][] = $builder;
     $this->sortedBuilders = [];
   }
@@ -58,11 +41,15 @@ final class OGImageManager {
   /**
    * Builds image url for given entity.
    *
+   * The returned value is not necessarily an absolute URL. Callers that need
+   * one should pass it through
+   * \Drupal\Core\File\FileUrlGeneratorInterface::generateAbsoluteString().
+   *
    * @param \Drupal\Core\Entity\EntityInterface|null $entity
    *   The entity.
    *
    * @return string|null
-   *   OG image url or NULL on failure.
+   *   Image uri or NULL on failure.
    */
   public function buildUrl(?EntityInterface $entity) : ?string {
     $image_uri = NULL;
@@ -78,24 +65,13 @@ final class OGImageManager {
       }
     }
 
-    if (!$image_uri) {
-      return NULL;
-    }
-
-    // Let modules alter the final uri (like apply image styles).
-    $this->moduleHandler->alter('og_image_uri', $image_uri);
-
-    if (UrlHelper::isExternal($image_uri)) {
-      return $image_uri;
-    }
-
-    return $this->fileUrlGenerator->generateAbsoluteString($image_uri);
+    return $image_uri ?? NULL;
   }
 
   /**
    * Gets sorted list of image builders.
    *
-   * @return \Drupal\helfi_platform_config\Token\OGImageBuilderInterface[]
+   * @return \Drupal\helfi_platform_config\Image\ImageBuilderInterface[]
    *   Image builders sorted according to priority.
    */
   private function getBuilders() : array {

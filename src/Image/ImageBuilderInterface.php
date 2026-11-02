@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Drupal\helfi_platform_config\Token;
+namespace Drupal\helfi_platform_config\Image;
 
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Open graph image builder.
+ * Image builder.
  */
-interface OGImageBuilderInterface {
+interface ImageBuilderInterface {
 
   /**
    * Checks whether this builder is applicable for given entity.

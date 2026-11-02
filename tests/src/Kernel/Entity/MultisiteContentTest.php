@@ -7,11 +7,8 @@ namespace Drupal\Tests\helfi_platform_config\Kernel\Entity;
 use Drupal\helfi_platform_config\Entity\ExternalEntity\MultisiteContent;
 use Drupal\helfi_platform_config\MultisiteContentId;
 use Drupal\helfi_platform_config\Plugin\Linkit\Substitution\Multisite;
-use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use Drupal\Tests\helfi_platform_config\Traits\InstallConfigEntityTrait;
-use Elastic\Elasticsearch\ClientBuilder;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -19,12 +16,10 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 /**
  * Tests the MultisiteContent external entity bundle class.
  */
-#[CoversClass(MultisiteContent::class)]
 #[Group('helfi_platform_config')]
 #[RunTestsInSeparateProcesses]
 final class MultisiteContentTest extends KernelTestBase {
 
-  use ApiTestTrait;
   use InstallConfigEntityTrait;
 
   /**
@@ -33,11 +28,8 @@ final class MultisiteContentTest extends KernelTestBase {
   protected static $modules = [
     'entity',
     'external_entities',
-    'field',
-    'language',
     'serialization',
     'system',
-    'text',
     'user',
   ];
 
@@ -47,20 +39,7 @@ final class MultisiteContentTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->installConfig(['system', 'external_entities']);
-    $this->installEntitySchema('user');
-
-    $history = [];
-    $client = ClientBuilder::create()
-      ->setHttpClient($this->createMockHistoryMiddlewareHttpClient($history))
-      ->build();
-    $this->container->set('helfi_platform_config.etusivu_elastic_client', $client);
-
     $this->installConfigEntity('helfi_platform_config', 'external_entities.external_entity_type.helfi_multisite_content');
-
-    $this->installEntitySchema(MultisiteContentId::ENTITY_TYPE_ID);
-    $this->container->get('entity_type.manager')->clearCachedDefinitions();
-    $this->container->get('entity_type.bundle.info')->clearCachedBundles();
   }
 
   /**

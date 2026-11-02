@@ -116,3 +116,19 @@ field.widget.settings.helfi_linkit:
 plugin.plugin_configuration.search_api_processor.helfi_resolve_link_uri:
   type: search_api.fields_processor_configuration
   label: 'Resolve link URI processor configuration'
+
+field.formatter.settings.multisite_image:
+  type: mapping
+  label: 'Multisite image formatter settings'
+  mapping:
+    responsive_image_style:
+      type: string
+      label: 'Responsive image style'
+
+linkit.matcher.helfi_multisite_content:
+  type: linkit.matcher.entity
+  label: 'Multisite content matcher settings'
+  mapping:
+    exclude_current_instance:
+      type: boolean
+      label: 'Exclude content from the current instance and language'

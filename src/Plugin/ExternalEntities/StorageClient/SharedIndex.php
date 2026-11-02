@@ -38,6 +38,11 @@ final class SharedIndex extends StorageClientBase {
   private const string INDEX = 'embeddings';
 
   /**
+   * Query field set by the Linkit matcher to hide current-instance content.
+   */
+  public const string EXCLUDE_CURRENT_INSTANCE = 'exclude_current_instance';
+
+  /**
    * Elasticsearch client built by ClientBuilder.
    */
   protected Client $elasticsearchClient;
@@ -198,6 +203,7 @@ final class SharedIndex extends StorageClientBase {
     $must = [];
     $filter = [];
     $must_not = [];
+    $exclude_current_instance = $this->excludesCurrentInstance($parameters);
 
     foreach ($parameters as $parameter) {
       $field = $parameter['field'] ?? '';
@@ -231,11 +237,13 @@ final class SharedIndex extends StorageClientBase {
           ],
         ];
 
-        // Exclude content from current instance and language, as they are
-        // already suggested by the regular content entity matcher.
-        $exclusion = $this->getCurrentInstanceCurrentLanguageExclusion();
-        if ($exclusion !== NULL) {
-          $must_not[] = $exclusion;
+        // The Linkit matcher opts in when local content is already suggested
+        // by the regular content entity matcher.
+        if ($exclude_current_instance) {
+          $exclusion = $this->getCurrentInstanceCurrentLanguageExclusion();
+          if ($exclusion !== NULL) {
+            $must_not[] = $exclusion;
+          }
         }
       }
       elseif ($field === '_id' && $value !== NULL && $value !== []) {
@@ -279,6 +287,24 @@ final class SharedIndex extends StorageClientBase {
     }
 
     return $this->search($body);
+  }
+
+  /**
+   * Whether the query asked to hide current-instance content.
+   *
+   * @param array<mixed> $parameters
+   *   Source query parameters.
+   */
+  private function excludesCurrentInstance(array $parameters): bool {
+    foreach ($parameters as $parameter) {
+      if (!is_array($parameter)) {
+        continue;
+      }
+      if (($parameter['field'] ?? '') === self::EXCLUDE_CURRENT_INSTANCE && !empty($parameter['value'])) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**
@@ -369,6 +395,15 @@ final class SharedIndex extends StorageClientBase {
           'field' => 'search',
           'operator' => 'CONTAINS',
           'value' => $value,
+        ];
+        continue;
+      }
+
+      if ($field === self::EXCLUDE_CURRENT_INSTANCE && $value) {
+        $source[] = [
+          'field' => self::EXCLUDE_CURRENT_INSTANCE,
+          'operator' => '=',
+          'value' => TRUE,
         ];
         continue;
       }
