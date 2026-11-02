@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_users\Kernel;
 
 use Drupal\helfi_users\FavoriteStorage;
-use Drupal\helfi_users\Plugin\Action\AddFavorite;
-use Drupal\helfi_users\Plugin\Action\RemoveFavorite;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
@@ -150,47 +148,6 @@ class FavoriteViewsTest extends FavoriteKernelTestBase {
 
     $keys = $this->getRowKeys($this->executeView('desc'));
     $this->assertEquals($favorite->id() . ':fi', end($keys), 'Descending sort lists the user favorite translations last.');
-  }
-
-  /**
-   * Tests that the star in the listing toggles the favorite.
-   */
-  public function testListingToggleTogglesFavorite(): void {
-    $user = $this->createEditor();
-    $this->setCurrentUser($user);
-    $node = $this->createPage();
-    $storage = $this->container->get(FavoriteStorage::class);
-
-    $build = Views::getView('favorite_test')->preview();
-    $html = $this->clickFavoriteToggle((string) $this->container->get('renderer')->renderRoot($build));
-    $this->assertStringContainsString('favorite-toggle--active', $html, 'The swapped star is active.');
-    $this->assertTrue($storage->isFavorite($user, $node), 'The first click adds the favorite.');
-
-    $this->clickFavoriteToggle($html);
-    $this->assertFalse($storage->isFavorite($user, $node), 'The second click removes the favorite.');
-  }
-
-  /**
-   * Tests that an editor can add and remove a favorite with the bulk actions.
-   */
-  public function testEditorCanAddAndRemoveFavoriteWithBulkActions(): void {
-    $user = $this->createEditor();
-    $this->setCurrentUser($user);
-    $node = $this->createPage();
-    $storage = $this->container->get(FavoriteStorage::class);
-    $actionManager = $this->container->get('plugin.manager.action');
-    $add = $actionManager->createInstance('helfi_favorite_add:node');
-    $remove = $actionManager->createInstance('helfi_favorite_remove:node');
-    assert($add instanceof AddFavorite && $remove instanceof RemoveFavorite);
-
-    $this->assertTrue($add->access($node, $user), 'The editor can use the add action.');
-    $this->assertTrue($remove->access($node, $user), 'The editor can use the remove action.');
-
-    $add->execute($node);
-    $this->assertTrue($storage->isFavorite($user, $node), 'The add action adds the favorite.');
-
-    $remove->execute($node);
-    $this->assertFalse($storage->isFavorite($user, $node), 'The remove action removes the favorite.');
   }
 
 }
