@@ -6,6 +6,7 @@ namespace Drupal\helfi_platform_config\Hook;
 
 use Drupal\Core\Config\ConfigInstallerInterface;
 use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Field\FieldConfigBase;
@@ -16,6 +17,7 @@ use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\helfi_platform_config\Entity\ExternalEntity\MultisiteContent;
 use Drupal\helfi_platform_config\MultisiteContentId;
+use Drupal\helfi_platform_config\SearchApi\PathAliasReindexer;
 use Drupal\paragraphs\Entity\ParagraphsType;
 
 /**
@@ -28,6 +30,7 @@ class EntityHooks {
   public function __construct(
     private readonly ModuleHandlerInterface $moduleHandler,
     private readonly ConfigInstallerInterface $configInstaller,
+    private readonly PathAliasReindexer $pathAliasReindexer,
   ) {
   }
 
@@ -97,6 +100,14 @@ class EntityHooks {
       ];
     }
     $field->setSetting('handler_settings', $handlerSettings);
+  }
+
+  /**
+   * Implements hook_entity_update().
+   */
+  #[Hook('entity_update')]
+  public function entityUpdate(EntityInterface $entity): void {
+    $this->pathAliasReindexer->reindex($entity);
   }
 
   /**
