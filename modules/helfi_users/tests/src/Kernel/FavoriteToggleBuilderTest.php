@@ -6,13 +6,11 @@ namespace Drupal\Tests\helfi_users\Kernel;
 
 use Drupal\helfi_users\FavoriteStorage;
 use Drupal\helfi_users\FavoriteToggleBuilder;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests FavoriteToggleBuilder.
  */
-#[CoversClass(FavoriteToggleBuilder::class)]
 #[Group('helfi_users')]
 class FavoriteToggleBuilderTest extends FavoriteKernelTestBase {
 

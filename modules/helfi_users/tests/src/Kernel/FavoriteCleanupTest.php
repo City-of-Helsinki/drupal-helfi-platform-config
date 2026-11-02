@@ -5,15 +5,11 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_users\Kernel;
 
 use Drupal\helfi_users\FavoriteStorage;
-use Drupal\helfi_users\Hook\FavoriteHooks;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests favorite cleanup on entity and user deletion.
  */
-#[CoversClass(FavoriteHooks::class)]
-#[CoversClass(FavoriteStorage::class)]
 #[Group('helfi_users')]
 class FavoriteCleanupTest extends FavoriteKernelTestBase {
 

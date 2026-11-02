@@ -13,7 +13,6 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\helfi_users\Hook\UserDashboardHooks;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\user\UserInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,7 +20,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Tests for UserDashboardHooks.
  */
-#[CoversClass(UserDashboardHooks::class)]
 #[Group('helfi_users')]
 class UserDashboardHooksTest extends KernelTestBase {
 

@@ -7,13 +7,11 @@ namespace Drupal\Tests\helfi_users\Kernel;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Database\Statement\FetchAs;
 use Drupal\helfi_users\FavoriteStorage;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests FavoriteStorage.
  */
-#[CoversClass(FavoriteStorage::class)]
 #[Group('helfi_users')]
 class FavoriteStorageTest extends FavoriteKernelTestBase {
 

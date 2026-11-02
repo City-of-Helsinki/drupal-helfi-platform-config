@@ -5,28 +5,17 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_users\Kernel;
 
 use Drupal\helfi_users\FavoriteStorage;
-use Drupal\helfi_users\Hook\FavoriteHooks;
 use Drupal\helfi_users\Plugin\Action\AddFavorite;
-use Drupal\helfi_users\Plugin\Action\FavoriteActionBase;
 use Drupal\helfi_users\Plugin\Action\RemoveFavorite;
-use Drupal\helfi_users\Plugin\Derivative\FavoriteActionDeriver;
-use Drupal\helfi_users\Plugin\views\field\Favorite;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Tests the favorite views field and bulk actions.
  */
-#[CoversClass(Favorite::class)]
-#[CoversClass(FavoriteHooks::class)]
-#[CoversClass(AddFavorite::class)]
-#[CoversClass(RemoveFavorite::class)]
-#[CoversClass(FavoriteActionBase::class)]
-#[CoversClass(FavoriteActionDeriver::class)]
 #[Group('helfi_users')]
 class FavoriteViewsTest extends FavoriteKernelTestBase {
 

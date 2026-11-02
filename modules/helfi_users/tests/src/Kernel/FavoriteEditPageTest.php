@@ -8,13 +8,11 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\helfi_users\FavoriteStorage;
 use Drupal\helfi_users\Hook\FavoriteHooks;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the favorite toggle on entity edit pages.
  */
-#[CoversClass(FavoriteHooks::class)]
 #[Group('helfi_users')]
 class FavoriteEditPageTest extends FavoriteKernelTestBase {
 

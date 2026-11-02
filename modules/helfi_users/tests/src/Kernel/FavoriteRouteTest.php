@@ -7,7 +7,6 @@ namespace Drupal\Tests\helfi_users\Kernel;
 use Drupal\helfi_users\Controller\FavoriteController;
 use Drupal\helfi_users\FavoriteStorage;
 use Drupal\user\UserInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +19,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 /**
  * Tests the favorite toggle route.
  */
-#[CoversClass(FavoriteController::class)]
 #[Group('helfi_users')]
 class FavoriteRouteTest extends FavoriteKernelTestBase {
 
