@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_users\Kernel;
 
-use Drupal\helfi_users\Controller\FavoriteController;
 use Drupal\helfi_users\FavoriteStorage;
 use Drupal\user\UserInterface;
 use PHPUnit\Framework\Attributes\Group;
