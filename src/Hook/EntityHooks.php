@@ -17,7 +17,7 @@ use Drupal\entity\BundleFieldDefinition;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 use Drupal\helfi_platform_config\Entity\ExternalEntity\MultisiteContent;
 use Drupal\helfi_platform_config\MultisiteContentId;
-use Drupal\helfi_platform_config\SearchApi\PathAliasReindexer;
+use Drupal\helfi_platform_config\SearchAPI\PathAliasReindexer;
 use Drupal\paragraphs\Entity\ParagraphsType;
 
 /**

@@ -28,7 +28,7 @@ services:
 
   Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber: ~
 
-  Drupal\helfi_platform_config\SearchApi\PathAliasReindexer: ~
+  Drupal\helfi_platform_config\SearchAPI\PathAliasReindexer: ~
 
   Drupal\helfi_platform_config\EventSubscriber\ElasticsearchParamsSubscriber: ~
 
