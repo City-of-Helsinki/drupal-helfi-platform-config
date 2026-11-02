@@ -1,0 +1,12 @@
+uuid: 63bf620b-3806-4201-85a3-49147ee521a9
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_users
+    - node
+id: helfi_favorite_remove_node
+label: 'Remove from favourites'
+type: node
+plugin: 'helfi_favorite_remove:node'
+configuration: {  }

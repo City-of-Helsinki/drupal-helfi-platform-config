@@ -6,9 +6,13 @@ namespace Drupal\helfi_users\Hook;
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Routing\RedirectDestinationInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\user\UserInterface;
 use Drupal\views\Views;
 
@@ -22,6 +26,8 @@ class UserDashboardHooks {
   public function __construct(
     private readonly AccountProxyInterface $currentUser,
     private readonly ModuleHandlerInterface $moduleHandler,
+    private readonly RouteMatchInterface $routeMatch,
+    private readonly RedirectDestinationInterface $redirectDestination,
   ) {}
 
   /**
@@ -187,6 +193,25 @@ class UserDashboardHooks {
     ) {
       $element['#access'] = FALSE;
     }
+  }
+
+  /**
+   * Implements hook_form_alter().
+   *
+   * @phpstan-param array<string, mixed> $form
+   */
+  #[Hook('form_alter')]
+  public function viewsFormAlter(array &$form, FormStateInterface $form_state, string $form_id): void {
+    if (
+      !str_starts_with($form_id, 'views_form_') ||
+      !in_array('vbo-view-form', $form['#attributes']['class'] ?? [], TRUE) ||
+      $this->routeMatch->getRouteName() !== 'views.ajax'
+    ) {
+      return;
+    }
+
+    // Submit the AJAX refreshed bulk form to the page, so the action runs.
+    $form['#action'] = Url::fromUserInput($this->redirectDestination->get())->toString();
   }
 
 }

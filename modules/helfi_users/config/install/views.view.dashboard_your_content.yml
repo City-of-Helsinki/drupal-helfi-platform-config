@@ -118,6 +118,20 @@ display:
                 confirm_help_text: ''
                 label_override: ''
                 message_override: ''
+            -
+              action_id: 'helfi_favorite_add:node'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
+            -
+              action_id: 'helfi_favorite_remove:node'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: ''
+                message_override: ''
         content_translation_outdated:
           id: content_translation_outdated
           table: node_field_data
@@ -280,6 +294,56 @@ display:
           element_default_classes: true
           empty: ''
           hide_empty: true
+          empty_zero: false
+          hide_alter_empty: true
+        helfi_favorite:
+          id: helfi_favorite
+          table: node_field_data
+          field: helfi_favorite
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          plugin_id: helfi_favorite
+          label: Favorite
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
           empty_zero: false
           hide_alter_empty: true
         type:
@@ -1035,6 +1099,7 @@ display:
             content_translation_outdated: content_translation_outdated
             title: title
             helfi_entity_notifications: title
+            helfi_favorite: helfi_favorite
             type: type
             uid: uid
             revision_uid: revision_uid
@@ -1064,6 +1129,13 @@ display:
               empty_column: false
               responsive: ''
             helfi_entity_notifications:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            helfi_favorite:
+              sortable: true
+              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false

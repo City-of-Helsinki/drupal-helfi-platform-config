@@ -8,6 +8,8 @@ display:
       fields:
         title:
           label: Otsikko
+        helfi_favorite:
+          label: Suosikki
         type:
           label: Sisältötyyppi
         name:

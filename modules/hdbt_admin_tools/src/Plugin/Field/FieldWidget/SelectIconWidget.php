@@ -130,7 +130,7 @@ final class SelectIconWidget extends WidgetBase {
 
     $selected_options = [];
     foreach ($items as $item) {
-      $value = $item->icon;
+      $value = (string) $item->icon;
       if (isset($flat_options[$value])) {
         $selected_options[] = $value;
       }
