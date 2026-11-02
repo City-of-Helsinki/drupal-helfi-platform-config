@@ -23,7 +23,7 @@
       {% set organization_group = null %}
     {% endif %}
     {% if organization_group %}
-      <span class="org-chart__item__type-{{ organization_group }}">{{ organization.type.getGroupLabel() }}</span>
+      <span class="org-chart__item__type-{{ organization_group }} hds-tag">{{ organization.type.getGroupLabel() }}</span>
     {% endif %}
     </div>
     {% if has_children %}
