@@ -104,9 +104,7 @@ abstract class FavoriteKernelTestBase extends KernelTestBase {
    *   The editor.
    */
   protected function createEditor(): UserInterface {
-    $user = $this->createUser(self::EDITOR_PERMISSIONS);
-    assert($user instanceof UserInterface);
-    return $user;
+    return $this->createUser(self::EDITOR_PERMISSIONS);
   }
 
   /**
@@ -119,8 +117,9 @@ abstract class FavoriteKernelTestBase extends KernelTestBase {
    *   The swapped toggle markup.
    */
   protected function clickFavoriteToggle(string $html): string {
-    $this->assertMatchesRegularExpression('/data-hx-post="([^"]+)"/', $html, 'The markup has the favorite toggle.');
-    preg_match('/data-hx-post="([^"]+)"/', $html, $matches);
+    if (!preg_match('/data-hx-post="([^"]+)"/', $html, $matches)) {
+      $this->fail('The markup has the favorite toggle.');
+    }
 
     $request = Request::create(html_entity_decode($matches[1]), 'POST');
     $request->setSession($this->container->get('request_stack')->getCurrentRequest()->getSession());

@@ -103,10 +103,29 @@ class FavoriteRouteTest extends FavoriteKernelTestBase {
     $path = 'admin/favorite/node/' . $node->id() . '/en/icon';
 
     $cases = [
-      'A GET request is not allowed.' => [$editor, 'GET', TRUE, MethodNotAllowedHttpException::class],
-      'A request without a CSRF token is denied.' => [$editor, 'POST', FALSE, AccessDeniedHttpException::class],
-      'A user without the favorites permission is denied.' => [$this->createUser(['access content', 'edit any page content']), 'POST', TRUE, AccessDeniedHttpException::class],
-      'A user without update access is denied.' => [$this->createUser(['access content', 'use favorites']), 'POST', TRUE, AccessDeniedHttpException::class],
+      'A GET request is not allowed.' => [
+        $editor,
+        'GET', TRUE,
+        MethodNotAllowedHttpException::class,
+      ],
+      'A request without a CSRF token is denied.' => [
+        $editor,
+        'POST',
+        FALSE,
+        AccessDeniedHttpException::class,
+      ],
+      'A user without the favorites permission is denied.' => [
+        $this->createUser(['access content', 'edit any page content']),
+        'POST',
+        TRUE,
+        AccessDeniedHttpException::class,
+      ],
+      'A user without update access is denied.' => [
+        $this->createUser(['access content', 'use favorites']),
+        'POST',
+        TRUE,
+        AccessDeniedHttpException::class,
+      ],
     ];
 
     foreach ($cases as $message => [$account, $method, $withToken, $exception]) {

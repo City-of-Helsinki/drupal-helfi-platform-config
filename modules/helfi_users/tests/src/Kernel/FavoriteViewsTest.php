@@ -192,6 +192,7 @@ class FavoriteViewsTest extends FavoriteKernelTestBase {
     $actionManager = $this->container->get('plugin.manager.action');
     $add = $actionManager->createInstance('helfi_favorite_add:node');
     $remove = $actionManager->createInstance('helfi_favorite_remove:node');
+    assert($add instanceof AddFavorite && $remove instanceof RemoveFavorite);
 
     $this->assertTrue($add->access($node, $user), 'The editor can use the add action.');
     $this->assertTrue($remove->access($node, $user), 'The editor can use the remove action.');

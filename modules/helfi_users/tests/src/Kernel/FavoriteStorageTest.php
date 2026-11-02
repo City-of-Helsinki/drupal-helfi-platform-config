@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_users\Kernel;
 
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Database\Statement\FetchAs;
 use Drupal\helfi_users\FavoriteStorage;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -56,7 +57,7 @@ class FavoriteStorageTest extends FavoriteKernelTestBase {
       ->select('helfi_users_favorite', 'f')
       ->fields('f', ['uid', 'entity_type', 'entity_id', 'langcode'])
       ->execute()
-      ->fetchAll(\PDO::FETCH_ASSOC);
+      ->fetchAll(FetchAs::Associative);
     $this->assertEquals([
       [
         'uid' => $user->id(),

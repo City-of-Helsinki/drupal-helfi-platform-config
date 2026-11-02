@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_users\Plugin\views\field;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_users\FavoriteToggleBuilder;
 use Drupal\views\Attribute\ViewsField;
@@ -44,8 +45,8 @@ final class Favorite extends FieldPluginBase {
     array $configuration,
     string $plugin_id,
     $plugin_definition,
-    private readonly AccountInterface $currentUser,
-    private readonly PluginManagerInterface $joinPluginManager,
+    protected readonly AccountInterface $currentUser,
+    protected readonly PluginManagerInterface $joinPluginManager,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -116,17 +117,14 @@ final class Favorite extends FieldPluginBase {
 
   /**
    * {@inheritdoc}
-   *
-   * @return array<string, mixed>
-   *   The favorite toggle placeholder.
    */
-  public function render(ResultRow $values): array {
+  public function render(ResultRow $values): MarkupInterface|string {
     $entity = $this->getEntity($values);
     if (!$entity) {
-      return [];
+      return '';
     }
 
-    return [
+    $build = [
       '#lazy_builder' => [
         FavoriteToggleBuilder::class . ':lazyBuild',
         [
@@ -138,6 +136,7 @@ final class Favorite extends FieldPluginBase {
       ],
       '#create_placeholder' => TRUE,
     ];
+    return $this->getRenderer()->render($build);
   }
 
 }

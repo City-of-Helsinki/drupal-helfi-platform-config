@@ -29,6 +29,8 @@ final class FavoriteActionDeriver extends DeriverBase implements ContainerDerive
   /**
    * {@inheritdoc}
    *
+   * @phpstan-param array<string, mixed> $base_plugin_definition
+   *
    * @return array<string, array<string, mixed>>
    *   The derivative definitions.
    */
