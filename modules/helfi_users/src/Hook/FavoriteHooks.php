@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\helfi_users\Hook;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
@@ -73,8 +74,15 @@ final class FavoriteHooks {
         ],
       ];
 
+      if (
+        !$entityType instanceof ContentEntityTypeInterface ||
+        !$entityType->getRevisionTable()
+      ) {
+        continue;
+      }
+
       $revisionUserField = $entityType->getRevisionMetadataKey('revision_user');
-      if (!$entityType->getRevisionTable() || !$revisionUserField) {
+      if (!$revisionUserField) {
         continue;
       }
 

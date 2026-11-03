@@ -38,7 +38,7 @@ final class UserContent extends NumericArgument {
     array $configuration,
     string $plugin_id,
     $plugin_definition,
-    private readonly AccountInterface $currentUser,
+    protected readonly AccountInterface $currentUser,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -61,6 +61,9 @@ final class UserContent extends NumericArgument {
 
   /**
    * {@inheritdoc}
+   *
+   * @param mixed $arg
+   *   The argument value.
    */
   public function validateArgument($arg): bool {
     // Allow only the current user's content.
@@ -72,6 +75,9 @@ final class UserContent extends NumericArgument {
 
   /**
    * {@inheritdoc}
+   *
+   * @param bool $group_by
+   *   Whether the query uses aggregation.
    */
   public function query($group_by = FALSE): void {
     $this->ensureMyTable();

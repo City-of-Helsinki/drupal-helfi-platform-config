@@ -66,7 +66,7 @@ class FavoriteUserContentTest extends BrowserTestBase {
     $dashboardPath = 'user/' . $user->id();
 
     $this->drupalGet($dashboardPath);
-    $this->assertSession()->pageTextNotContains($entity->label());
+    $this->assertSession()->pageTextNotContains((string) $entity->label());
 
     $this->drupalGet($listingPath);
     $path = $this->assertSession()->elementExists('css', '.favorite-toggle', $this->getRow($entity))->getAttribute('data-hx-post');

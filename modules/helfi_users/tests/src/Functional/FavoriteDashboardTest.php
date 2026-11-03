@@ -6,7 +6,6 @@ namespace Drupal\Tests\helfi_users\Functional;
 
 use Behat\Mink\Element\NodeElement;
 use Drupal\node\NodeInterface;
-use Drupal\user\UserInterface;
 use Drupal\views\Entity\View;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -17,11 +16,6 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[Group('helfi_users')]
 #[RunTestsInSeparateProcesses]
 class FavoriteDashboardTest extends FavoriteBrowserTestBase {
-
-  /**
-   * The editor.
-   */
-  private UserInterface $user;
 
   /**
    * The page node.
@@ -155,7 +149,7 @@ class FavoriteDashboardTest extends FavoriteBrowserTestBase {
     ]);
 
     $this->drupalGet($this->dashboardPath);
-    $this->assertSession()->pageTextNotContains($node->label());
+    $this->assertSession()->pageTextNotContains((string) $node->label());
 
     $this->drupalGet('admin/content');
     $html = $this->clickFavoriteToggle($this->assertSession()->elementExists('css', '.favorite-toggle', $this->getRow($node)));
