@@ -72,6 +72,25 @@ final class FavoriteHooks {
           'click sortable' => TRUE,
         ],
       ];
+
+      $revisionUserField = $entityType->getRevisionMetadataKey('revision_user');
+      if (!$entityType->getRevisionTable() || !$revisionUserField) {
+        continue;
+      }
+
+      $data[$table]['helfi_user_content'] = [
+        'title' => $this->t('Edited or favorite content'),
+        'help' => $this->t('Content last edited or marked as favorite by the user.'),
+        'argument' => [
+          'id' => 'helfi_user_content',
+          'entity_type' => $entityTypeId,
+          'id_field' => $entityType->getKey('id'),
+          'langcode_field' => $entityType->getKey('langcode'),
+          'revision_field' => $entityType->getKey('revision'),
+          'revision_table' => $entityType->getRevisionTable(),
+          'revision_user_field' => $revisionUserField,
+        ],
+      ];
     }
   }
 
