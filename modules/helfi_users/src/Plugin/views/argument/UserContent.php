@@ -6,14 +6,14 @@ namespace Drupal\helfi_users\Plugin\views\argument;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\views\Attribute\ViewsArgument;
-use Drupal\views\Plugin\views\argument\NumericArgument;
+use Drupal\views\Plugin\views\argument\ArgumentPluginBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Filters entities last edited or marked as favorite by the user.
  */
 #[ViewsArgument('helfi_user_content')]
-final class UserContent extends NumericArgument {
+final class UserContent extends ArgumentPluginBase {
 
   /**
    * The views query object typed as SQL for method availability.

@@ -7,5 +7,5 @@ action.configuration.helfi_favorite_remove:*:
   label: 'Remove from favourites configuration'
 
 views.argument.helfi_user_content:
-  type: views.argument.numeric
+  type: views_argument
   label: 'Edited or favorite content'
