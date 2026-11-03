@@ -8,6 +8,7 @@ use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Features\FeatureManagerInterface;
+use Drupal\helfi_paragraphs_org_chart\DTO\OrgChartItem;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\InvalidArgumentException;
@@ -72,43 +73,40 @@ class OrgChartImporter {
    * @param int $depth
    *   The chart depth.
    *
-   * @return array<mixed>
-   *   The data.
+   * @return \Drupal\helfi_paragraphs_org_chart\DTO\OrgChartItem|null
+   *   The org chart, or NULL on failure.
    */
-  public function fetch(string $langcode, string $start, int $depth) : array {
+  public function fetch(string $langcode, string $start, int $depth) : ?OrgChartItem {
     // Return mock response if the use mock feature is enabled.
     if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
       $data = file_get_contents(__DIR__ . "/../tests/fixtures/org-chart-$depth.json");
-      if (!$data) {
-        return [];
-      }
-
+    }
+    else {
       try {
-        return json_decode(
-          json: $data,
-          associative:TRUE,
-          flags: JSON_THROW_ON_ERROR
-        );
+        $data = $this->client->request('GET', $this->getUri($langcode, $start, $depth))
+          ->getBody()
+          ->getContents();
       }
-      catch (\Exception) {
-        return [];
+      catch (GuzzleException | InvalidArgumentException) {
+        return NULL;
       }
+    }
+
+    if (!$data) {
+      return NULL;
     }
 
     try {
-      $data = $this->client->request('GET', $this->getUri($langcode, $start, $depth))
-        ->getBody()
-        ->getContents();
-
-      return json_decode(
+      $response = json_decode(
         json: $data,
-        associative:TRUE,
         flags: JSON_THROW_ON_ERROR
       );
     }
-    catch (GuzzleException | InvalidArgumentException | \JsonException) {
-      return [];
+    catch (\JsonException) {
+      return NULL;
     }
+
+    return $response instanceof \stdClass ? OrgChartItem::fromResponse($response) : NULL;
   }
 
 }
