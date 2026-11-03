@@ -52,7 +52,7 @@ final class TopicsManager implements TopicsManagerInterface {
    * {@inheritDoc}
    */
   public function queueEntity(ContentEntityInterface $entity, bool $overwriteExisting = FALSE) : void {
-    $topics = $this->getSuggestedTopicsFiltered($entity, !$overwriteExisting);
+    $topics = $this->getSuggestedTopicsEntities($entity, !$overwriteExisting);
 
     // Skip if the entity does not have topics or
     // entity was already processed in this request.
@@ -118,7 +118,7 @@ final class TopicsManager implements TopicsManagerInterface {
           continue;
         }
 
-        $topics = $this->getSuggestedTopicsFiltered($batch[$id], !$overwriteExisting);
+        $topics = $this->getSuggestedTopicsEntities($batch[$id], !$overwriteExisting);
         $this->saveKeywords($topics, $keywords, $batch[$id]->language());
 
         // Mark as processed so the same entity is bombarding the
@@ -133,7 +133,7 @@ final class TopicsManager implements TopicsManagerInterface {
    */
   public function getKeywords(ContentEntityInterface $entity): array {
     $keywords = [];
-    $topics = $this->getSuggestedTopicsFiltered($entity, FALSE);
+    $topics = $this->getSuggestedTopicsEntities($entity, FALSE);
 
     foreach ($topics as $topic) {
       assert($topic instanceof SuggestedTopicsInterface);
@@ -179,7 +179,7 @@ final class TopicsManager implements TopicsManagerInterface {
     $buckets = [];
 
     foreach ($entities as $key => $entity) {
-      $topics = $this->getSuggestedTopicsFiltered($entity, !$overwriteExisting);
+      $topics = $this->getSuggestedTopicsEntities($entity, !$overwriteExisting);
 
       // Skip if the entity does not have topics or
       // entity was already processed in this request.
@@ -303,22 +303,6 @@ final class TopicsManager implements TopicsManagerInterface {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function getSuggestedTopics(ContentEntityInterface $entity): array {
-    $topics = [];
-
-    foreach ($this->getTopicsReferenceFields($entity) as $field) {
-      foreach ($field->referencedEntities() as $topic) {
-        assert($topic instanceof SuggestedTopicsInterface);
-        $topics[$topic->id()] = $topic;
-      }
-    }
-
-    return $topics;
-  }
-
-  /**
    * Get SuggestedTopics entities linked to a content entity.
    *
    * @param \Drupal\Core\Entity\ContentEntityInterface $entity
@@ -329,8 +313,18 @@ final class TopicsManager implements TopicsManagerInterface {
    * @return \Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface[]
    *   Linked topics entities.
    */
-  private function getSuggestedTopicsFiltered(ContentEntityInterface $entity, bool $filterEmpty): array {
-    $topics = $this->getSuggestedTopics($entity);
+  private function getSuggestedTopicsEntities(ContentEntityInterface $entity, bool $filterEmpty): array {
+    $fields = $this->getTopicsReferenceFields($entity);
+    $topics = [];
+
+    foreach ($fields as $field) {
+      // Get all referenced topic entities from all
+      // suggested_topics_reference fields.
+      foreach ($field->referencedEntities() as $topic) {
+        assert($topic instanceof SuggestedTopicsInterface);
+        $topics[$topic->id()] = $topic;
+      }
+    }
 
     return array_filter($topics, static fn (SuggestedTopicsInterface $topic) => !$filterEmpty || !$topic->hasKeywords());
   }
