@@ -16,7 +16,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
- * Tests reindexing when a path alias is updated.
+ * Tests reindexing when a path alias changes.
  */
 #[Group('helfi_platform_config')]
 #[RunTestsInSeparateProcesses]
@@ -125,19 +125,12 @@ final class PathAliasReindexTest extends KernelTestBase {
   }
 
   /**
-   * A path alias update reindexes the node on indexes that include it.
+   * Path alias changes reindex the node on the indexes that include it.
    */
-  public function testPathAliasUpdateReindexesIndexedEntity(): void {
-    $node = Node::create([
-      'type' => 'page',
-      'title' => 'Page',
-    ]);
-    $node->save();
-
-    $this->markIndexed($this->contentIndex);
-    $this->markIndexed($this->articleIndex);
-    $this->assertSame([], $this->remainingItemIds($this->contentIndex));
-    $this->assertSame([], $this->remainingItemIds($this->articleIndex));
+  public function testPathAliasChangesReindexIndexedEntity(): void {
+    $node = $this->createNode('page');
+    $item_id = $this->itemId($node);
+    $this->markIndexed();
 
     $alias = PathAlias::create([
       'path' => '/node/' . $node->id(),
@@ -145,25 +138,48 @@ final class PathAliasReindexTest extends KernelTestBase {
       'langcode' => $node->language()->getId(),
     ]);
     $alias->save();
-    $this->assertSame([], $this->remainingItemIds($this->contentIndex));
-
-    $alias->setAlias('/updated')->save();
-
-    $item_id = Utility::createCombinedId('entity:node', $node->id() . ':' . $node->language()->getId());
     $this->assertContains($item_id, $this->remainingItemIds($this->contentIndex));
     $this->assertNotContains($item_id, $this->remainingItemIds($this->articleIndex));
+    $this->markIndexed();
+
+    $alias->setAlias('/updated')->save();
+    $this->assertContains($item_id, $this->remainingItemIds($this->contentIndex));
+    $this->assertNotContains($item_id, $this->remainingItemIds($this->articleIndex));
+    $this->markIndexed();
+
+    $alias->delete();
+    $this->assertContains($item_id, $this->remainingItemIds($this->contentIndex));
+    $this->assertNotContains($item_id, $this->remainingItemIds($this->articleIndex));
+  }
+
+  /**
+   * Moving an alias to another path reindexes both entities.
+   */
+  public function testMovedPathAliasReindexesBothEntities(): void {
+    $first = $this->createNode('page');
+    $second = $this->createNode('page');
+
+    $alias = PathAlias::create([
+      'path' => '/node/' . $first->id(),
+      'alias' => '/alias',
+      'langcode' => $first->language()->getId(),
+    ]);
+    $alias->save();
+    $this->markIndexed();
+
+    $alias->setPath('/node/' . $second->id())->save();
+
+    $remaining = $this->remainingItemIds($this->contentIndex);
+    $this->assertContains($this->itemId($first), $remaining);
+    $this->assertContains($this->itemId($second), $remaining);
   }
 
   /**
    * An alias for a route that is not a content entity is ignored.
    */
   public function testNonEntityPathIsIgnored(): void {
-    $node = Node::create([
-      'type' => 'page',
-      'title' => 'Page',
-    ]);
-    $node->save();
-    $this->markIndexed($this->contentIndex);
+    $node = $this->createNode('page');
+    $this->markIndexed();
 
     $alias = PathAlias::create([
       'path' => '/user/login',
@@ -177,11 +193,32 @@ final class PathAliasReindexTest extends KernelTestBase {
   }
 
   /**
+   * Creates a node.
+   */
+  private function createNode(string $type): Node {
+    $node = Node::create([
+      'type' => $type,
+      'title' => $this->randomString(),
+    ]);
+    $node->save();
+    return $node;
+  }
+
+  /**
+   * Returns the Search API item ID of the given node.
+   */
+  private function itemId(Node $node): string {
+    return Utility::createCombinedId('entity:node', $node->id() . ':' . $node->language()->getId());
+  }
+
+  /**
    * Marks every currently tracked item as indexed.
    */
-  private function markIndexed(IndexInterface $index): void {
-    $tracker = $index->getTrackerInstance();
-    $tracker->trackItemsIndexed($tracker->getRemainingItems());
+  private function markIndexed(): void {
+    foreach ([$this->contentIndex, $this->articleIndex] as $index) {
+      $tracker = $index->getTrackerInstance();
+      $tracker->trackItemsIndexed($tracker->getRemainingItems());
+    }
   }
 
   /**

@@ -75,15 +75,4 @@ interface TopicsManagerInterface {
    */
   public function getTopicsReferenceFields(ContentEntityInterface $entity): array;
 
-  /**
-   * Returns every suggested topic referenced by the entity.
-   *
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The parent entity.
-   *
-   * @return \Drupal\helfi_recommendations\Entity\SuggestedTopicsInterface[]
-   *   Suggested topics referenced by the entity, keyed by entity ID.
-   */
-  public function getSuggestedTopics(ContentEntityInterface $entity): array;
-
 }

@@ -80,7 +80,7 @@ final class PathAliasReindexTest extends AnnifKernelTestBase {
   }
 
   /**
-   * An alias update reindexes the parent's suggested topics only.
+   * Alias changes reindex the parent's suggested topics only.
    */
   public function testPathAliasUpdateReindexesReferencedTopics(): void {
     $unrelated = SuggestedTopics::create();
@@ -105,10 +105,21 @@ final class PathAliasReindexTest extends AnnifKernelTestBase {
       'langcode' => $node->language()->getId(),
     ]);
     $alias->save();
-    $this->assertSame([], $this->remainingItemIds($this->topicsIndex));
+    $this->assertReindexed($referenced, $unrelated);
+    $this->markIndexed($this->topicsIndex);
 
     $alias->setAlias('/updated')->save();
+    $this->assertReindexed($referenced, $unrelated);
+    $this->markIndexed($this->topicsIndex);
 
+    $alias->delete();
+    $this->assertReindexed($referenced, $unrelated);
+  }
+
+  /**
+   * Asserts that only the given topic is waiting to be indexed.
+   */
+  private function assertReindexed(SuggestedTopicsInterface $referenced, SuggestedTopicsInterface $unrelated): void {
     $remaining = $this->remainingItemIds($this->topicsIndex);
     $this->assertContains($this->itemId($referenced), $remaining);
     $this->assertNotContains($this->itemId($unrelated), $remaining);
