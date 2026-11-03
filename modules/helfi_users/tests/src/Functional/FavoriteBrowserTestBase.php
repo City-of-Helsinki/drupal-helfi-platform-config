@@ -48,6 +48,7 @@ abstract class FavoriteBrowserTestBase extends BrowserTestBase {
   protected function loginEditor(): UserInterface {
     $user = $this->drupalCreateUser([
       'access content',
+      'access content overview',
       'create page content',
       'edit any page content',
       'use favorites',
