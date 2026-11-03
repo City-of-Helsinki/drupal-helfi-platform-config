@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_users\Functional;
 
 use Behat\Mink\Element\NodeElement;
 use Drupal\node\NodeInterface;
+use Drupal\views\Entity\View;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -124,6 +125,38 @@ class FavoriteDashboardTest extends FavoriteBrowserTestBase {
     $this->drupalGet($this->dashboardPath);
     $this->assertFavorite($this->node, TRUE, 'The remove action keeps the unselected English row.');
     $this->assertFavorite($this->translation, FALSE, 'The remove action removes the Finnish row.');
+  }
+
+  /**
+   * Tests that a favorite added in the content listing is listed.
+   */
+  public function testContentListingFavoriteIsListed(): void {
+    // Add the favorite field to the content listing.
+    $view = View::load('content');
+    $displays = $view->get('display');
+    $displays['default']['display_options']['fields']['helfi_favorite'] = [
+      'id' => 'helfi_favorite',
+      'table' => 'node_field_data',
+      'field' => 'helfi_favorite',
+      'entity_type' => 'node',
+      'plugin_id' => 'helfi_favorite',
+    ];
+    $view->set('display', $displays)->save();
+
+    $node = $this->drupalCreateNode([
+      'type' => 'page',
+      'uid' => $this->drupalCreateUser()->id(),
+    ]);
+
+    $this->drupalGet($this->dashboardPath);
+    $this->assertSession()->pageTextNotContains((string) $node->label());
+
+    $this->drupalGet('admin/content');
+    $html = $this->clickFavoriteToggle($this->assertSession()->elementExists('css', '.favorite-toggle', $this->getRow($node)));
+    $this->assertStringContainsString('favorite-toggle--active', $html, 'The content listing click adds the favorite.');
+
+    $this->drupalGet($this->dashboardPath);
+    $this->assertFavorite($node, TRUE, 'The favorite of another author is listed.');
   }
 
 }

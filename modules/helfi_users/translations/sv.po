@@ -21,8 +21,8 @@ msgid "Show content"
 msgstr "Visa innehåll"
 
 msgctxt "Node authorship filter"
-msgid "Authored or last edited"
-msgstr "Författare eller senaste redigerare"
+msgid "Authored, last edited or favorite"
+msgstr "Författare, senaste redigerare eller favorit"
 
 msgctxt "Node authorship filter"
 msgid "Authored"
@@ -59,3 +59,9 @@ msgstr "Markera redigerbart innehåll som favorit."
 
 msgid "Remove from favourites"
 msgstr "Ta bort från favoriter"
+
+msgid "Edited or favorite content"
+msgstr "Redigerat eller favoritinnehåll"
+
+msgid "Content last edited or marked as favorite by the user."
+msgstr "Innehåll som användaren senast redigerat eller markerat som favorit."

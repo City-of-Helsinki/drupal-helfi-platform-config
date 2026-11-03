@@ -939,16 +939,15 @@ display:
     position: 2
     display_options:
       arguments:
-        revision_user:
-          id: revision_user
-          table: tpr_unit_revision
-          field: revision_user
+        helfi_user_content:
+          id: helfi_user_content
+          table: tpr_unit_field_data
+          field: helfi_user_content
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: tpr_unit
-          entity_field: revision_user
-          plugin_id: entity_target_id
+          plugin_id: helfi_user_content
           default_action: default
           exception:
             value: all
@@ -973,7 +972,6 @@ display:
             fail: 'not found'
           validate_options: {  }
           break_phrase: false
-          not: false
       style:
         type: table
         options:
