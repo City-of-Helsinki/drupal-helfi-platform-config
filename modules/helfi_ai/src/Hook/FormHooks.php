@@ -124,6 +124,7 @@ final class FormHooks {
       [
         '#theme' => 'ai_title_suggestions',
         '#suggestions' => array_values($suggestions),
+        '#original_title' => $form_state->getValue(['title', 0, 'value']),
         '#attached' => ['library' => ['helfi_ai/title_suggest']],
       ],
       $dialogOptions,
@@ -178,7 +179,7 @@ final class FormHooks {
           'event' => 'click',
           'progress' => [
             'type' => 'throbber',
-            'message' => new TranslatableMarkup('Generating title suggestions…', options: ['context' => 'Helfi AI']),
+            'message' => new TranslatableMarkup('Generating suggestions…', options: ['context' => 'Helfi AI']),
           ],
         ],
         '#attached' => ['library' => ['helfi_ai/title_suggest']],

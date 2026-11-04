@@ -12,16 +12,24 @@ msgid "Suggest a title"
 msgstr "Ehdota otsikkoa"
 
 msgctxt "Helfi AI"
-msgid "Generating title suggestions…"
-msgstr "Luodaan otsikkoehdotuksia…"
+msgid "Generating suggestions…"
+msgstr "Luodaan ehdotuksia…"
 
 msgctxt "Helfi AI"
 msgid "Suggested titles"
-msgstr "Ehdotetut otsikot"
+msgstr "Otsikkoehdotukset"
 
 msgctxt "Helfi AI"
-msgid "Apply"
-msgstr "Käytä"
+msgid "Select suggestion"
+msgstr "Valitse ehdotus"
+
+msgctxt "Helfi AI"
+msgid "Original title:"
+msgstr "Alkuperäinen otsikko:"
+
+msgctxt "Helfi AI"
+msgid "AI suggestions:"
+msgstr "Tekoälyn ehdotukset:"
 
 msgctxt "Helfi AI"
 msgid "Cancel"
@@ -102,7 +110,3 @@ msgstr "Ehdotettu sisältö"
 msgctxt "Helfi AI"
 msgid "Differences"
 msgstr "Erot"
-
-msgctxt "Helfi AI"
-msgid "characters"
-msgstr "merkkiä"

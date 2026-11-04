@@ -6,16 +6,24 @@ msgid "Suggest a title"
 msgstr "Föreslå en rubrik"
 
 msgctxt "Helfi AI"
-msgid "Generating title suggestions…"
-msgstr "Skapar rubrikförslag…"
+msgid "Generating suggestions…"
+msgstr "Skapar förslag…"
 
 msgctxt "Helfi AI"
 msgid "Suggested titles"
-msgstr "Föreslagna rubriker"
+msgstr "Rubrikförslag"
 
 msgctxt "Helfi AI"
-msgid "Apply"
-msgstr "Använd"
+msgid "Select suggestion"
+msgstr "Välj förslag"
+
+msgctxt "Helfi AI"
+msgid "Original title:"
+msgstr "Ursprunglig rubrik:"
+
+msgctxt "Helfi AI"
+msgid "AI suggestions:"
+msgstr "AI-förslag:"
 
 msgctxt "Helfi AI"
 msgid "Cancel"
@@ -96,7 +104,3 @@ msgstr "Föreslagen innehåll"
 msgctxt "Helfi AI"
 msgid "Differences"
 msgstr "Skillnader"
-
-msgctxt "Helfi AI"
-msgid "characters"
-msgstr "tecken"
