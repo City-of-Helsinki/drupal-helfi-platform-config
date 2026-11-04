@@ -8,8 +8,8 @@ msgid "AI related settings."
 msgstr "Tekoälyyn liittyvät asetukset"
 
 msgctxt "Helfi AI"
-msgid "Generate SEO title with AI"
-msgstr "Luo SEO-otsikko tekoälyllä"
+msgid "Suggest a title"
+msgstr "Ehdota otsikkoa"
 
 msgctxt "Helfi AI"
 msgid "Generating title suggestions…"

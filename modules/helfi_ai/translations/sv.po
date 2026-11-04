@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 
 msgctxt "Helfi AI"
-msgid "Generate SEO title with AI"
-msgstr "Skapa SEO-rubrik med AI"
+msgid "Suggest a title"
+msgstr "Föreslå en rubrik"
 
 msgctxt "Helfi AI"
 msgid "Generating title suggestions…"

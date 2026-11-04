@@ -170,7 +170,7 @@ final class FormHooks {
       '#weight' => ($form['title']['widget'][0]['value']['#weight'] ?? 0) + 0.5,
       'button' => [
         '#type' => 'button',
-        '#value' => new TranslatableMarkup('Generate SEO title with AI', options: ['context' => 'Helfi AI']),
+        '#value' => new TranslatableMarkup('Suggest a title', options: ['context' => 'Helfi AI']),
         '#name' => 'helfi_ai_suggest_title',
         '#attributes' => ['class' => ['button--small']],
         '#ajax' => [
