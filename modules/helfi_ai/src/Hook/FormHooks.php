@@ -103,7 +103,7 @@ final class FormHooks {
     $response = new AjaxResponse();
 
     $dialogOptions = [
-      'width' => '40rem',
+      'width' => '45rem',
       'classes' => ['ui-dialog' => 'helfi-ai-dialog'],
     ];
 
