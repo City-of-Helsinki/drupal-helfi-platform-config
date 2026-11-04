@@ -167,13 +167,12 @@ final class FormHooks {
 
     $form['title']['helfi_ai_suggest'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['ai-suggest']],
+      '#attributes' => ['class' => ['ai-title__suggest']],
       '#weight' => ($form['title']['widget'][0]['value']['#weight'] ?? 0) + 0.5,
       'button' => [
         '#type' => 'button',
         '#value' => new TranslatableMarkup('Suggest a title', options: ['context' => 'Helfi AI']),
         '#name' => 'helfi_ai_suggest_title',
-        '#attributes' => ['class' => ['button--small']],
         '#ajax' => [
           'callback' => [$this, 'buildSuggestionResponse'],
           'event' => 'click',
