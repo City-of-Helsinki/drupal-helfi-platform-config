@@ -4,7 +4,8 @@ helfi_ai.overview:
     _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
     _title: 'AI'
   requirements:
-    _permission: 'manage ai prompts'
+    _permission: 'administer site configuration'
+    _access_admin_menu_block_page: 'TRUE'
   options:
     _admin_route: TRUE
 

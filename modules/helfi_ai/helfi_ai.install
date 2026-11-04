@@ -96,3 +96,29 @@ function helfi_ai_update_11005(): void {
     ->clear('enable_ai_summary')
     ->save();
 }
+
+/**
+ * Uninstall the AI module and its provider.
+ */
+function helfi_ai_update_11006(): void {
+  $moduleHandler = \Drupal::moduleHandler();
+  $moduleInstaller = \Drupal::service('module_installer');
+
+  foreach (['ai_provider_azure', 'ai'] as $module) {
+    if ($moduleHandler->moduleExists($module)) {
+      $moduleInstaller->uninstall([$module], FALSE);
+    }
+  }
+
+  \Drupal::configFactory()->getEditable('helfi_ai.settings')
+    ->clear('model_tiers')
+    ->save();
+
+  // Delete the Azure OpenAI API key.
+  if ($moduleHandler->moduleExists('key')) {
+    \Drupal::entityTypeManager()
+      ->getStorage('key')
+      ->load('helfi_azure_openai')
+      ?->delete();
+  }
+}

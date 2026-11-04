@@ -39,8 +39,6 @@ class AiSummaryWidgetTest extends EntityKernelTestBase {
     'config_rewrite',
     'node',
     'language',
-    'key',
-    'ai',
     'helfi_ai',
   ];
 

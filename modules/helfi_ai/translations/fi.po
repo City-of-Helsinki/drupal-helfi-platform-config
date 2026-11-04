@@ -4,14 +4,8 @@ msgstr ""
 msgid "AI"
 msgstr "Tekoäly"
 
-msgid "AI prompts and related settings."
-msgstr "Tekoälykehotteet ja muut tekoälyyn liittyvät asetukset"
-
-msgid "AI prompts"
-msgstr "Tekoälykehotteet"
-
-msgid "Create and manage reusable AI prompts."
-msgstr "Hallinnoi tekoälykehotteita."
+msgid "AI related settings."
+msgstr "Tekoälyyn liittyvät asetukset"
 
 msgctxt "Helfi AI"
 msgid "Generate SEO title with AI"
