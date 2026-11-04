@@ -1,9 +1,6 @@
 msgid ""
 msgstr ""
 
-msgid "AI prompts"
-msgstr "AI-instruktioner"
-
 msgctxt "Helfi AI"
 msgid "Generate SEO title with AI"
 msgstr "Skapa SEO-rubrik med AI"
