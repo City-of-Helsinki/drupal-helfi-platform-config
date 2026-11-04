@@ -1,0 +1,19 @@
+uuid: f14e91e5-ccf8-423c-9190-c52de6886d80
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_announcement_page_paths
+    - node.type.announcement
+id: node.announcement.field_announcement_page_paths
+field_name: field_announcement_page_paths
+entity_type: node
+bundle: announcement
+label: 'Show on page paths'
+description: "Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. An example path is /user/* for every user page. <front> is the front page. Leave the language and site prefixes out of the path and add a rule per language."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

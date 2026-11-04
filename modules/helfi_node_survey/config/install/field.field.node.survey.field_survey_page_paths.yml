@@ -1,0 +1,19 @@
+uuid: d98607ea-952a-479a-8e23-aaf4cfd8d46c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_survey_page_paths
+    - node.type.survey
+id: node.survey.field_survey_page_paths
+field_name: field_survey_page_paths
+entity_type: node
+bundle: survey
+label: 'Show on page paths'
+description: "Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. An example path is /user/* for every user page. <front> is the front page. Leave the language and site prefixes out of the path and add a rule per language."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long
