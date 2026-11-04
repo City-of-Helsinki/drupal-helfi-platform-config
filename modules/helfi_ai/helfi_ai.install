@@ -104,7 +104,7 @@ function helfi_ai_update_11006(): void {
   $moduleHandler = \Drupal::moduleHandler();
   $moduleInstaller = \Drupal::service('module_installer');
 
-  foreach (['ai_provider_azure', 'ai', 'key'] as $module) {
+  foreach (['ai_provider_azure', 'ai'] as $module) {
     if ($moduleHandler->moduleExists($module)) {
       $moduleInstaller->uninstall([$module], FALSE);
     }
@@ -113,4 +113,20 @@ function helfi_ai_update_11006(): void {
   \Drupal::configFactory()->getEditable('helfi_ai.settings')
     ->clear('model_tiers')
     ->save();
+
+  if (!$moduleHandler->moduleExists('key')) {
+    return;
+  }
+
+  // Keep the key module if some other module uses it.
+  $keys = \Drupal::entityTypeManager()
+    ->getStorage('key')
+    ->getQuery()
+    ->accessCheck(FALSE)
+    ->count()
+    ->execute();
+
+  if (!$keys) {
+    $moduleInstaller->uninstall(['key'], FALSE);
+  }
 }
