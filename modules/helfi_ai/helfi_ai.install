@@ -113,4 +113,12 @@ function helfi_ai_update_11006(): void {
   \Drupal::configFactory()->getEditable('helfi_ai.settings')
     ->clear('model_tiers')
     ->save();
+
+  // Delete the Azure OpenAI API key.
+  if ($moduleHandler->moduleExists('key')) {
+    \Drupal::entityTypeManager()
+      ->getStorage('key')
+      ->load('helfi_azure_openai')
+      ?->delete();
+  }
 }
