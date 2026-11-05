@@ -101,6 +101,13 @@ function helfi_node_announcement_form_node_form_alter(&$form, &$form_state, $for
         $pagePathElement = &$form['field_announcement_page_paths']['widget'][0]['value'];
         $pagePathElement['#element_validate'][] = PagePathValidator::class . '::validate';
       }
+      $form['group_visibility']['#states'] = $contentPageStates;
+      $node = $form_state->getFormObject()->getEntity();
+      $hasVisibilityRules = !$node->get('field_announcement_content_pages')->isEmpty()
+        || !$node->get('field_announcement_page_paths')->isEmpty();
+      if ($hasVisibilityRules) {
+        $form['group_visibility']['#open'] = TRUE;
+      }
       break;
   }
 }

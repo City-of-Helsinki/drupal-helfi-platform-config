@@ -13,12 +13,32 @@ dependencies:
     - node.type.announcement
   module:
     - allowed_formats
+    - field_group
     - hdbt_admin_tools
     - link
     - path
     - publication_date
     - scheduler
     - select2
+third_party_settings:
+  field_group:
+    group_visibility:
+      children:
+        - field_announcement_content_pages
+        - field_announcement_page_paths
+      label: 'Show only on selected pages'
+      region: content
+      parent_name: ''
+      weight: 14
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
 id: node.announcement.default
 targetEntityType: node
 bundle: announcement
@@ -26,7 +46,7 @@ mode: default
 content:
   body:
     type: formatted_text_character_counter
-    weight: 17
+    weight: 16
     region: content
     settings:
       counter_max: 0
@@ -43,7 +63,7 @@ content:
     third_party_settings: {  }
   field_announcement_all_pages:
     type: boolean_checkbox
-    weight: 12
+    weight: 13
     region: content
     settings:
       display_label: true
@@ -60,7 +80,7 @@ content:
     third_party_settings: {  }
   field_announcement_link:
     type: link_default
-    weight: 18
+    weight: 17
     region: content
     settings:
       placeholder_url: ''
@@ -86,7 +106,7 @@ content:
     third_party_settings: {  }
   field_announcement_title:
     type: textfield_character_counter
-    weight: 16
+    weight: 15
     region: content
     settings:
       counter_max: 125
