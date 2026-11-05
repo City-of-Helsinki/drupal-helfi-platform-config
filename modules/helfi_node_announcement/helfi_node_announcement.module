@@ -7,9 +7,10 @@
 
 declare(strict_types=1);
 
-use Drupal\helfi_node_announcement\Entity\Announcement;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\helfi_node_announcement\Entity\Announcement;
+use Drupal\helfi_platform_config\Form\PagePathValidator;
 
 /**
  * Implements hook_platform_config_grant_permissions().
@@ -95,6 +96,11 @@ function helfi_node_announcement_form_node_form_alter(&$form, &$form_state, $for
       }
 
       $form['field_announcement_content_pages']['#states'] = $contentPageStates;
+      if (isset($form['field_announcement_page_paths']['widget'][0]['value'])) {
+        $form['field_announcement_page_paths']['#states'] = $contentPageStates;
+        $pagePathElement = &$form['field_announcement_page_paths']['widget'][0]['value'];
+        $pagePathElement['#element_validate'][] = PagePathValidator::class . '::validate';
+      }
       break;
   }
 }
