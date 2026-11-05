@@ -10,7 +10,7 @@ field_name: field_announcement_page_paths
 entity_type: node
 bundle: announcement
 label: 'Show on page paths'
-description: "<ul>\r\n<li>Shown on all pages if left empty.\r\n<li>Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. An example path is /user/* for every user page. &lt;front&gt; is the front page. Leave the language and site prefixes out of the path and add a rule per language.\r\n</ul>"
+description: "Specify pages by using their paths. Enter one path per line. The '*' character is a wildcard. An example path is /user/* for every user page. &lt;front&gt; is the front page. Leave the language and site prefixes out of the path and add a rule per language."
 required: false
 translatable: false
 default_value: {  }

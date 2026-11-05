@@ -21,7 +21,8 @@ final class PagePathValidator {
    * Validates page path patterns.
    *
    * Each line must be the front page token or start with a slash, and must
-   * not include a language or site prefix.
+   * not include a language or site prefix. Patterns that match every page
+   * are rejected.
    *
    * @param array<string, mixed> $element
    *   The path textarea element.
@@ -29,6 +30,9 @@ final class PagePathValidator {
    *   The form state.
    * @param array<string, mixed> $complete_form
    *   The complete form. Required by the element validate callback signature.
+   *
+   * @param-out array<mixed, mixed> $element
+   *   The same element. Form error handling accepts any array shape.
    */
   public function validate(array &$element, FormStateInterface $form_state, array &$complete_form): void {
     $value = $element['#value'] ?? '';
@@ -42,6 +46,12 @@ final class PagePathValidator {
     foreach (array_map('trim', explode("\n", $value)) as $path) {
       if ($path === '' || $path === '<front>') {
         continue;
+      }
+      if ($path === '*' || $path === '/*') {
+        $form_state->setError($element, new TranslatableMarkup('The path %path matches every page. Leave the field empty instead.', [
+          '%path' => $path,
+        ]));
+        return;
       }
       if (!str_starts_with($path, '/')) {
         $form_state->setError($element, new TranslatableMarkup('The path %path requires a leading forward slash.', [

@@ -27,6 +27,7 @@ final class LocalEntitiesTest extends BrowserTestBase {
    * @var string[]
    */
   protected static $modules = [
+    'field_group',
     'helfi_etusivu_entities',
   ];
 
@@ -124,10 +125,45 @@ final class LocalEntitiesTest extends BrowserTestBase {
       'langcode' => 'uk',
     ]);
 
+    // Pathauto would replace a manually entered alias.
+    $this->createNode([
+      'status' => NodeInterface::PUBLISHED,
+      'type' => 'page',
+      'title' => 'Feedback page',
+      'langcode' => 'en',
+      'path' => [
+        'alias' => '/feedback',
+        'pathauto' => 0,
+      ],
+    ]);
+    $this->createNode([
+      'status' => NodeInterface::PUBLISHED,
+      'type' => 'announcement',
+      'title' => 'Feedback announcement',
+      'body' => 'Announcement content',
+      'field_announcement_type' => 'notification',
+      'field_announcement_all_pages' => 0,
+      'field_announcement_page_paths' => '/feedback',
+      'langcode' => 'en',
+    ]);
+    $this->createNode([
+      'status' => NodeInterface::PUBLISHED,
+      'type' => 'survey',
+      'title' => 'Feedback survey',
+      'body' => 'Feedback survey content',
+      'langcode' => 'en',
+      'field_survey_link' => 'https://example.com',
+      'field_survey_page_paths' => '/feedback',
+      // Newer than the content-page survey, so it is considered first.
+      'published_at' => 2000000000,
+    ]);
+
     $this->drupalGet('/');
     $this->assertSession()->pageTextContains('Old test survey');
     $this->assertSession()->pageTextNotContains('New test survey');
     $this->assertSession()->pageTextContains('Test announcement');
+    $this->assertSession()->pageTextNotContains('Feedback announcement');
+    $this->assertSession()->pageTextNotContains('Feedback survey');
 
     // Local announcements can be translated.pages
     // English announcements are shown on alt language pages.
@@ -140,6 +176,24 @@ final class LocalEntitiesTest extends BrowserTestBase {
     $this->assertSession()->pageTextContains('New test survey');
     $this->assertSession()->pageTextNotContains('Old test survey');
     $this->assertSession()->pageTextContains('Test announcement');
+    $this->assertSession()->pageTextNotContains('Feedback announcement');
+    $this->assertSession()->pageTextNotContains('Feedback survey');
+
+    // The alias is resolved by routing before the path pattern is compared.
+    $this->drupalGet('/feedback');
+    $this->assertSession()->pageTextContains('Feedback announcement');
+    $this->assertSession()->pageTextContains('Feedback survey');
+    $this->assertSession()->pageTextNotContains('Old test survey');
+    $this->assertSession()->pageTextNotContains('New test survey');
+
+    // A path rule does not match a real 404. An unrestricted survey still
+    // does, because it has no path rules to evaluate.
+    $this->drupalGet('/no-such-page');
+    $this->assertSession()->statusCodeEquals(404);
+    $this->assertSession()->pageTextContains('Old test survey');
+    $this->assertSession()->pageTextContains('Test announcement');
+    $this->assertSession()->pageTextNotContains('Feedback survey');
+    $this->assertSession()->pageTextNotContains('Feedback announcement');
   }
 
 }
