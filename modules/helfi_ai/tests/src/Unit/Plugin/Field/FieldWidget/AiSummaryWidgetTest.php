@@ -11,7 +11,6 @@ use Drupal\Core\Form\FormState;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\helfi_ai\Plugin\Field\FieldWidget\AiSummaryWidget;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectMetadata;
@@ -41,7 +40,7 @@ class AiSummaryWidgetTest extends UnitTestCase {
   /**
    * Creates a widget instance for the given field name.
    */
-  private function createWidget(bool $access = TRUE, ?string $environment = 'test', bool $core = TRUE): AiSummaryWidget {
+  private function createWidget(bool $access = TRUE, bool $core = TRUE): AiSummaryWidget {
     $fieldDef = $this->prophesize(FieldDefinitionInterface::class);
     $fieldDef->getName()->willReturn('ai_summary');
 
@@ -49,19 +48,13 @@ class AiSummaryWidgetTest extends UnitTestCase {
     $accountProxy->hasPermission('use helfi ai summary')->willReturn($access);
 
     $environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
-    if ($environment === NULL) {
-      $environmentResolver->getActiveEnvironmentName()->willThrow(new EnvironmentResolverException());
-    }
-    else {
-      $environmentResolver->getActiveEnvironmentName()->willReturn($environment);
-    }
     $environmentResolver->getActiveProject()->willReturn(new Project(
       'test',
       new ProjectMetadata('https://github.com/City-of-Helsinki/test'),
       roles: $core ? [ProjectRoleEnum::Core] : [],
     ));
 
-    $widget = new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], [], $accountProxy->reveal(), new ActiveProjectRoles($environmentResolver->reveal()), $environmentResolver->reveal());
+    $widget = new AiSummaryWidget('ai_summary', [], $fieldDef->reveal(), [], [], $accountProxy->reveal(), new ActiveProjectRoles($environmentResolver->reveal()));
     $widget->setStringTranslation($this->getStringTranslationStub());
     return $widget;
   }
@@ -187,47 +180,12 @@ class AiSummaryWidgetTest extends UnitTestCase {
    * Test that the widget is hidden on non-core sites.
    */
   public function testFormElementHiddenOnNonCoreSite(): void {
-    $widget = $this->createWidget(TRUE, 'test', FALSE);
+    $widget = $this->createWidget(TRUE, FALSE);
 
     $form = [];
     $result = $widget->formElement($this->makeItems(''), 0, [], $form, new FormState());
 
     $this->assertFalse($result['#access']);
-  }
-
-  /**
-   * Test widget visibility per environment.
-   *
-   * @todo UHF-13833 Remove when AI summary is enabled in production.
-   */
-  #[DataProvider('environmentProvider')]
-  public function testFormElementVisibilityPerEnvironment(?string $environment, bool $core, bool $expected): void {
-    $widget = $this->createWidget(TRUE, $environment, $core);
-
-    $form = [];
-    $result = $widget->formElement($this->makeItems(''), 0, [], $form, new FormState());
-
-    $this->assertSame($expected, isset($result['ajax_wrapper']), 'Widget visibility matches the environment.');
-  }
-
-  /**
-   * Data provider for environment visibility.
-   *
-   * @return array<string, array{0: ?string, 1: bool, 2: bool}>
-   *   The environment, core role and expected visibility.
-   *
-   * @todo UHF-13833 Remove when AI summary is enabled in production.
-   */
-  public static function environmentProvider(): array {
-    return [
-      'core local' => ['local', TRUE, TRUE],
-      'core dev' => ['dev', TRUE, FALSE],
-      'core test' => ['test', TRUE, TRUE],
-      'core stage' => ['stage', TRUE, FALSE],
-      'core prod' => ['prod', TRUE, FALSE],
-      'non-core test' => ['test', FALSE, FALSE],
-      'unknown environment' => [NULL, TRUE, FALSE],
-    ];
   }
 
   /**
