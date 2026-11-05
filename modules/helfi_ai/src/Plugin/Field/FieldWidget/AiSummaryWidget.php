@@ -22,8 +22,6 @@ use Drupal\helfi_ai\Ajax\SummaryStreamCommand;
 use Drupal\helfi_ai\PreviewEntityBuilder;
 use Drupal\helfi_ai\Service\TextServicesGenerator;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
-use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 
 /**
@@ -49,16 +47,6 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
   ];
 
   /**
-   * Environments where AI summary is enabled.
-   *
-   * @todo UHF-13833 Remove when AI summary is enabled in production.
-   */
-  private const array ENABLED_ENVIRONMENTS = [
-    EnvironmentEnum::Local,
-    EnvironmentEnum::Test,
-  ];
-
-  /**
    * The constructor.
    *
    * @phpstan-param array<mixed> $settings
@@ -72,7 +60,6 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
     array $third_party_settings,
     protected readonly AccountProxyInterface $currentUser,
     protected readonly ActiveProjectRoles $projectRoles,
-    protected readonly EnvironmentResolverInterface $environmentResolver,
   ) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
   }
@@ -124,29 +111,7 @@ final class AiSummaryWidget extends WidgetBase implements ContainerFactoryPlugin
     if (!in_array($entity->bundle(), self::BUNDLES[$entity->getEntityTypeId()] ?? [], TRUE)) {
       return FALSE;
     }
-    if (!$this->projectRoles->hasRole(ProjectRoleEnum::Core)) {
-      return FALSE;
-    }
-    return $this->shouldBeEnabled();
-  }
-
-  /**
-   * Checks if AI summary should be enabled in the active environment.
-   *
-   * @return bool
-   *   TRUE if AI summary should be enabled.
-   *
-   * @todo UHF-13833 Remove when AI summary is enabled in production.
-   */
-  private function shouldBeEnabled(): bool {
-    try {
-      $environment = EnvironmentEnum::tryFrom($this->environmentResolver->getActiveEnvironmentName());
-
-      return in_array($environment, self::ENABLED_ENVIRONMENTS, TRUE);
-    }
-    catch (\InvalidArgumentException) {
-      return FALSE;
-    }
+    return $this->projectRoles->hasRole(ProjectRoleEnum::Core);
   }
 
   /**
