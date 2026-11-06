@@ -1,0 +1,11 @@
+charts-js:
+  version: 1.0.0
+  header: true
+  js:
+    assets/js/charts-v4.5.1-umd.min.js: {}
+
+helfi-charts-js:
+  version: 1.0.0
+  header: true
+  js:
+    assets/js/helfi-chart.js: {}
