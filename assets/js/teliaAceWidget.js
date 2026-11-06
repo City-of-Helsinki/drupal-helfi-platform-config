@@ -49,6 +49,7 @@ class TeliaAceWidget {
       selector: `leijuke_${chatSettings.chat_id}`,
       chatTitle: chatSettings.chat_title,
       scriptUrl: chatSettings.script_url,
+      dismissedKey: `telia-ace-dismissed-${chatSettings.chat_id}`,
     };
     this.state = {
       cookies: this.cookieCheck(),
@@ -101,7 +102,10 @@ class TeliaAceWidget {
     }
 
     footer.append(footerButton);
-    footerButton.addEventListener('click', this.openCallback);
+    footerButton.addEventListener('click', () => {
+      toast.hidden = true;
+      this.openCallback();
+    });
 
     const dismissButton = document.createElement('button');
     dismissButton.type = 'button';
@@ -127,6 +131,13 @@ class TeliaAceWidget {
     this.toast = toast;
     this.footerButton = footerButton;
     this.dismissButton = dismissButton;
+
+    // Restore the closed state of this chat for the session.
+    try {
+      this.state.chatDismissed = sessionStorage.getItem(this.static.dismissedKey) === '1';
+    } catch (e) {
+      // Ignore unavailable session storage.
+    }
   };
 
   /**
@@ -151,9 +162,14 @@ class TeliaAceWidget {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     wrapper
-      .animate([{ opacity: 1 }, { opacity: 0 }], { duration: reducedMotion ? 0 : 85, easing: 'ease-out' })
+      .animate([{ opacity: 1 }, { opacity: 0 }], { duration: reducedMotion ? 0 : 300 })
       .finished.then(() => {
         this.state.chatDismissed = true;
+        try {
+          sessionStorage.setItem(this.static.dismissedKey, '1');
+        } catch (e) {
+          // Ignore unavailable session storage.
+        }
         this.render();
         this.toast.hidden = false;
         this.toast.focus();
