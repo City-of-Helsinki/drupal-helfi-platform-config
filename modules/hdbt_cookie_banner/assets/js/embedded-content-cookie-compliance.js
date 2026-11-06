@@ -36,7 +36,7 @@
         const iframeElement = document.createElement('iframe');
         iframeElement.classList.add('media-oembed-content');
         iframeElement.src = attributes.src;
-        iframeElement.title = attributes.title;
+        iframeElement.title = attributes.title || '';
 
         if (attributes.allow) {
           iframeElement.allow = attributes.allow;
@@ -72,7 +72,7 @@
 
         // Use iframe title if paragraph (or video) doesn't have a title
         if(!mediaName || mediaName === '') {
-          mediaName = attributes.skipLinkDefaultTitle;
+          mediaName = attributes.skipLinkDefaultTitle || '';
         }
 
         // Initialize skip links elements.

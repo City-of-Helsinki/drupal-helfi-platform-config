@@ -73,7 +73,7 @@ final class TextPipelineCommands extends Command {
         $entity = $entity->getTranslation($language);
       }
 
-      $chunks = $this->textPipeline->process($entity);
+      $chunks = $this->textPipeline->process($entity)->chunks;
 
       if (empty($chunks)) {
         $output->writeln("Failed to find text converter for $entity_type:$id");

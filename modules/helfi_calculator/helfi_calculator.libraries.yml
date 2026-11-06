@@ -1,6 +1,6 @@
 # Base calculator library with common dependencies.
 helfi_calculator.base:
-  version: 1.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/helfiCalculatorBase.min.js: {}
   dependencies:
@@ -10,7 +10,7 @@ helfi_calculator.base:
 
 # Calculator loader library.
 helfi_calculator.loader:
-  version: 1.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/helfiCalculatorLoader.min.js: {}
   dependencies:
@@ -21,7 +21,7 @@ helfi_calculator.loader:
 
 # Individual calculator libraries.
 continuous_housing_service_voucher:
-  version: 1.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/continuousHousingServiceVoucher.min.js: {}
   dependencies:
@@ -29,7 +29,7 @@ continuous_housing_service_voucher:
     - helfi_calculator/helfi_calculator.base
 
 early_childhood_education_fee:
-  version: 1.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/earlyChildhoodEducationFee.min.js: {}
   dependencies:
@@ -37,7 +37,7 @@ early_childhood_education_fee:
     - helfi_calculator/helfi_calculator.base
 
 families_home_services_client_fee:
-  version: 1.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/familiesHomeServicesClientFee.min.js: {}
   dependencies:
@@ -45,7 +45,7 @@ families_home_services_client_fee:
     - helfi_calculator/helfi_calculator.base
 
 helsinki_benefit_amount_estimate:
-  version: 1.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/helsinkiBenefitAmountEstimate.min.js: {}
   dependencies:
@@ -53,7 +53,7 @@ helsinki_benefit_amount_estimate:
     - helfi_calculator/helfi_calculator.base
 
 home_care_client_fee:
-  version: 1.0.1
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/homeCareClientFee.min.js: {}
   dependencies:
@@ -61,7 +61,7 @@ home_care_client_fee:
     - helfi_calculator/helfi_calculator.base
 
 home_care_service_voucher:
-  version: 1.0.1
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/homeCareServiceVoucher.min.js: {}
   dependencies:
@@ -69,7 +69,7 @@ home_care_service_voucher:
     - helfi_calculator/helfi_calculator.base
 
 communal_and_supported_housing_fee:
-  version: 1.0.1
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/communalAndSupportedHousingFee.min.js: {}
   dependencies:
@@ -77,7 +77,7 @@ communal_and_supported_housing_fee:
     - helfi_calculator/helfi_calculator.base
 
 long_term_institutional_care_fee:
-  version: 1.0.2
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/longtermInstitutionalCareFee.min.js: {}
   dependencies:
@@ -85,7 +85,7 @@ long_term_institutional_care_fee:
     - helfi_calculator/helfi_calculator.base
 
 long_term_assisted_living_fee:
-  version: 1.0.2
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     dist/js/longtermAssistedLivingFee.min.js: {}
   dependencies:

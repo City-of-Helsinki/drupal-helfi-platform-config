@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Config\Config;
 use Drupal\helfi_api_base\Environment\Project;
 
 /**
@@ -42,15 +43,8 @@ function _helfi_csp_set_reporting_uri() : void {
   $config = \Drupal::configFactory()->getEditable('csp.settings');
 
   // Enable csp_log on etusivu.
-  if ($projectName === Project::ETUSIVU && !\Drupal::moduleHandler()->moduleExists('csp_log')) {
-    \Drupal::service('module_installer')->install(['csp_log']);
-
-    // Enable csp_log reporting handler.
-    $config->set('enforce.reporting.plugin', 'csp_log');
-
-    // Keep logs for 2 days.
-    $config->set('enforce.reporting.options.cleanup', 2);
-    $config->save();
+  if ($projectName === Project::ETUSIVU) {
+    _helfi_csp_enable_csp_log($config);
   }
   // Enable csp reporting by uri on all other instances.
   elseif ($etusivuCspLogEndpoint) {
@@ -64,6 +58,29 @@ function _helfi_csp_set_reporting_uri() : void {
     $config->set('enforce.reporting.options.uri', $etusivuCspLogEndpoint);
     $config->save();
   }
+}
+
+/**
+ * Enables the csp_log reporting handler.
+ *
+ * The csp_log module only removes the old reports and helfi_csp only sends
+ * the aggregated reports when the csp_log reporting handler is used.
+ *
+ * @param \Drupal\Core\Config\Config $config
+ *   The editable csp.settings config.
+ */
+function _helfi_csp_enable_csp_log(Config $config) : void {
+  if (!\Drupal::moduleHandler()->moduleExists('csp_log')) {
+    \Drupal::service('module_installer')->install(['csp_log']);
+  }
+  $config->set('enforce.reporting.plugin', 'csp_log');
+
+  // Clear the uri option to comply with csp_log reporting plugin schema.
+  $config->clear('enforce.reporting.options.uri');
+
+  // Keep logs for 2 days.
+  $config->set('enforce.reporting.options.cleanup', 2);
+  $config->save();
 }
 
 /**
@@ -114,4 +131,27 @@ function helfi_csp_update_11001() : void {
   $config->set('time_window', 3600);
   $config->set('treshold', 100);
   $config->save();
+}
+
+/**
+ * Enable the csp_log reporting handler on etusivu and limit the reports.
+ *
+ * The csp_log reporting handler was replaced with the uri reporting handler
+ * on etusivu, so the old reports were never removed.
+ */
+function helfi_csp_update_11002() : void {
+  \Drupal::configFactory()->getEditable('helfi_csp.settings')
+    ->set('rate_limit', 60)
+    ->save();
+
+  try {
+    $project = \Drupal::service('helfi_api_base.environment_resolver')
+      ->getActiveProject();
+  }
+  catch (\InvalidArgumentException) {
+    return;
+  }
+  if ($project->getName() === Project::ETUSIVU) {
+    _helfi_csp_enable_csp_log(\Drupal::configFactory()->getEditable('csp.settings'));
+  }
 }

@@ -65,6 +65,7 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
    */
   public function testHelfiPlugins(): void {
     $this->assertLinkPlugin();
+    $this->assertLegacyButtonLinks();
     $this->assertLanguageSelection();
     $this->assertLanguageUnSelection();
     $this->assertAddingQuote();
@@ -253,6 +254,39 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
 
     // Make sure the anchor tag duplication doesn't happen.
     $this->assertSame($handled_content, $this->getEditorDataAsHtmlString());
+  }
+
+  /**
+   * Tests CKEditor 4 button links are converted to HDS button links.
+   */
+  protected function assertLegacyButtonLinks(): void {
+    $cases = [
+      'primary' => [
+        'content' => '<p><a class="hds-button hds-button--primary" data-design="hds-button hds-button--primary" data-link-text="Test" data-protocol="https" href="#test">Test</a></p>',
+        'variant' => NULL,
+        'icon' => NULL,
+      ],
+      'secondary with icon' => [
+        'content' => '<p><a class="hds-button hds-button--secondary" data-design="hds-button hds-button--secondary" data-link-text="Test" data-protocol="https" data-selected-icon="download" href="#test"><span class="hel-icon hel-icon--download" role="img" aria-hidden="true"></span><span class="hds-button__label">Test</span></a></p>',
+        'variant' => 'secondary',
+        'icon' => 'download',
+      ],
+    ];
+
+    foreach ($cases as $name => $case) {
+      $this->initializeEditor($case['content']);
+
+      $link = $this->assertSession()->waitForElementVisible('css', '.ck-content a');
+      $this->assertNotNull($link, "The editor loads a $name button link.");
+      $this->assertSame('#test', $link->getAttribute('href'), "The $name button link keeps its href.");
+      $this->assertSame('Test', $link->getText(), "The $name button link keeps its text.");
+      $this->assertSame('button', $link->getAttribute('data-hds-component'), "The $name button link is an HDS button.");
+      $this->assertSame($case['variant'], $link->getAttribute('data-hds-variant'), "The $name button link has the correct variant.");
+      $this->assertSame($case['icon'], $link->getAttribute('data-hds-icon-start'), "The $name button link has the correct icon.");
+      $this->assertNull($link->getAttribute('data-design'), "The $name button link has no data-design attribute.");
+      $this->assertNull($link->getAttribute('data-protocol'), "The $name button link has no data-protocol attribute.");
+      $this->assertNull($link->find('css', 'span'), "The $name button link has no spans.");
+    }
   }
 
   /**

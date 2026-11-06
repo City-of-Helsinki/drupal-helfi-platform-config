@@ -9,4 +9,6 @@ helfi_paragraphs_curated_event_list.htmx:
     parameters:
       paragraph:
         type: 'entity:paragraph'
+        bundle:
+          - curated_event_list
 

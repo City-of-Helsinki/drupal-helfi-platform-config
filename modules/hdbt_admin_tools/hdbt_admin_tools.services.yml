@@ -8,3 +8,15 @@ services:
     arguments: [ '@module_handler', '@file_url_generator' ]
 
   Drupal\hdbt_admin_tools\DesignSelectionManager: '@hdbt_admin_tools.design_selection_manager'
+
+  Drupal\hdbt_admin_tools\Config\KoroPathOverride:
+    arguments:
+      - '@config.storage'
+      - '@request_stack'
+    tags:
+      - { name: config.factory.override }
+
+  cache_context.koro:
+    class: Drupal\hdbt_admin_tools\Cache\Context\KoroCacheContext
+    tags:
+      - { name: cache.context }

@@ -11,6 +11,8 @@ use Drupal\Core\Utility\Error;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
 use Drupal\external_entities\StorageClient\StorageClientBase;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\helfi_platform_config\MultisiteContentId;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
@@ -36,6 +38,11 @@ final class SharedIndex extends StorageClientBase {
   private const string INDEX = 'embeddings';
 
   /**
+   * Query field set by the Linkit matcher to hide current-instance content.
+   */
+  public const string EXCLUDE_CURRENT_INSTANCE = 'exclude_current_instance';
+
+  /**
    * Elasticsearch client built by ClientBuilder.
    */
   protected Client $elasticsearchClient;
@@ -51,6 +58,11 @@ final class SharedIndex extends StorageClientBase {
   protected LanguageManagerInterface $languageManager;
 
   /**
+   * The active project roles.
+   */
+  protected ActiveProjectRoles $projectRoles;
+
+  /**
    * {@inheritdoc}
    *
    * @phpstan-param array<string, mixed> $configuration
@@ -60,11 +72,12 @@ final class SharedIndex extends StorageClientBase {
     array $configuration,
     $plugin_id,
     $plugin_definition,
-  ) : self {
+  ) : static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->elasticsearchClient = $container->get('helfi_platform_config.etusivu_elastic_client');
     $instance->environmentResolver = $container->get('helfi_api_base.environment_resolver');
     $instance->languageManager = $container->get('language_manager');
+    $instance->projectRoles = $container->get(ActiveProjectRoles::class);
     return $instance;
   }
 
@@ -82,6 +95,16 @@ final class SharedIndex extends StorageClientBase {
   }
 
   /**
+   * Checks if multisite linking is enabled.
+   *
+   * @return bool
+   *   TRUE if multisite linking is enabled, FALSE otherwise.
+   */
+  private function isEnabled(): bool {
+    return $this->projectRoles->hasRole(ProjectRoleEnum::HasEtusivuIndex);
+  }
+
+  /**
    * Executes a search against the embeddings index.
    *
    * @param array<string, mixed> $body
@@ -91,6 +114,10 @@ final class SharedIndex extends StorageClientBase {
    *   Raw Elasticsearch hits.
    */
   private function search(array $body): array {
+    if (!$this->isEnabled()) {
+      return [];
+    }
+
     try {
       $response = $this->elasticsearchClient->search([
         'index' => self::INDEX,
@@ -176,6 +203,7 @@ final class SharedIndex extends StorageClientBase {
     $must = [];
     $filter = [];
     $must_not = [];
+    $exclude_current_instance = $this->excludesCurrentInstance($parameters);
 
     foreach ($parameters as $parameter) {
       $field = $parameter['field'] ?? '';
@@ -209,11 +237,13 @@ final class SharedIndex extends StorageClientBase {
           ],
         ];
 
-        // Exclude content from current instance and language, as they are
-        // already suggested by the regular content entity matcher.
-        $exclusion = $this->getCurrentInstanceCurrentLanguageExclusion();
-        if ($exclusion !== NULL) {
-          $must_not[] = $exclusion;
+        // The Linkit matcher opts in when local content is already suggested
+        // by the regular content entity matcher.
+        if ($exclude_current_instance) {
+          $exclusion = $this->getCurrentInstanceCurrentLanguageExclusion();
+          if ($exclusion !== NULL) {
+            $must_not[] = $exclusion;
+          }
         }
       }
       elseif ($field === '_id' && $value !== NULL && $value !== []) {
@@ -257,6 +287,24 @@ final class SharedIndex extends StorageClientBase {
     }
 
     return $this->search($body);
+  }
+
+  /**
+   * Whether the query asked to hide current-instance content.
+   *
+   * @param array<mixed> $parameters
+   *   Source query parameters.
+   */
+  private function excludesCurrentInstance(array $parameters): bool {
+    foreach ($parameters as $parameter) {
+      if (!is_array($parameter)) {
+        continue;
+      }
+      if (($parameter['field'] ?? '') === self::EXCLUDE_CURRENT_INSTANCE && !empty($parameter['value'])) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**
@@ -347,6 +395,15 @@ final class SharedIndex extends StorageClientBase {
           'field' => 'search',
           'operator' => 'CONTAINS',
           'value' => $value,
+        ];
+        continue;
+      }
+
+      if ($field === self::EXCLUDE_CURRENT_INSTANCE && $value) {
+        $source[] = [
+          'field' => self::EXCLUDE_CURRENT_INSTANCE,
+          'operator' => '=',
+          'value' => TRUE,
         ];
         continue;
       }

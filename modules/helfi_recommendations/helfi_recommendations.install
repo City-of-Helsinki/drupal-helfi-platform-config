@@ -61,14 +61,12 @@ function helfi_recommendations_install($is_syncing) : void {
     'field_content',
     'field_lead_in',
     'field_lower_content',
-    'field_sidebar_content',
   ]);
 
   if ($moduleHandler->moduleExists('helfi_tpr_config')) {
     helfi_recommendations_set_text_converter_view_display('tpr_service', 'tpr_service', [
       'field_content',
       'field_lower_content',
-      'field_sidebar_content',
     ]);
   }
 

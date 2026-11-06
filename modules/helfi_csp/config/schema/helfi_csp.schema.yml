@@ -14,3 +14,6 @@ helfi_csp.settings:
     stop_sending:
       type: boolean
       label: 'Stop sending aggregated reports in cron runs.'
+    rate_limit:
+      type: integer
+      label: 'Maximum number of reports per client per minute, 0 to disable the rate limiting.'

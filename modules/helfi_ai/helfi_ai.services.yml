@@ -7,7 +7,10 @@ services:
     parent: logger.channel_base
     arguments: ['helfi_ai']
 
-  Drupal\helfi_ai\Service\AiGenerator: ~
+  Drupal\helfi_ai\TextServices\TextServicesClientInterface:
+    class: Drupal\helfi_ai\TextServices\TextServicesClient
+
+  Drupal\helfi_ai\Service\TextServicesGenerator: ~
 
   Drupal\helfi_ai\Config\ToneCheckToolbarOverride:
     arguments:

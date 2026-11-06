@@ -24,9 +24,6 @@ class ThemeHooksTest extends KernelTestBase {
     'config_rewrite',
     'node',
     'language',
-    'key',
-    'ai',
-    'ai_test',
     'helfi_ai',
   ];
 

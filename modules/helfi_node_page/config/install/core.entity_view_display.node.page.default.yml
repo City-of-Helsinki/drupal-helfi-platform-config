@@ -10,7 +10,6 @@ dependencies:
     - field.field.node.page.field_liftup_image
     - field.field.node.page.field_lower_content
     - field.field.node.page.field_metatags
-    - field.field.node.page.field_sidebar_content
     - node.type.page
   module:
     - entity_reference_revisions
@@ -52,15 +51,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 4
-    region: content
-  field_sidebar_content:
-    type: entity_reference_revisions_entity_view
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    weight: 5
     region: content
   links:
     settings: {  }

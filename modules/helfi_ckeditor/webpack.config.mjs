@@ -1,7 +1,6 @@
 import path from 'path';
 import fs from 'fs';
 import webpack from 'webpack';
-import { styles, builds } from '@ckeditor/ckeditor5-dev-utils';
 import TerserPlugin from 'terser-webpack-plugin';
 import FriendlyErrorsWebpackPlugin from '@nuxt/friendly-errors-webpack-plugin';
 import { CKEditorTranslationsPlugin } from '@ckeditor/ckeditor5-dev-translations';

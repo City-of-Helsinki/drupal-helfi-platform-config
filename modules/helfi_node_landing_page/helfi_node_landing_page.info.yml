@@ -6,3 +6,4 @@ dependencies:
   - 'helfi_media:helfi_media'
   - 'helfi_base_content:helfi_base_content'
   - publication_date:publication_date
+  - quick_node_clone:quick_node_clone

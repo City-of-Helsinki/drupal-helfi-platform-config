@@ -30,8 +30,11 @@ Helfi Calculator provides configurable calculator functionality for various fina
 1. Set up Node.js environment:
    ```bash
    nvm use
+   npm install --global npm@12
    npm install
    ```
+
+   The `preinstall` script refreshes the theme builder from hdbt.
 
 2. Available development commands:
   - `npm run dev`: Build non-minified assets and watch file changes

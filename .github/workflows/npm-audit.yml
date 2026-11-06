@@ -11,11 +11,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          path: modules/contrib/helfi_platform_config
 
-      - name: Use Node.js from .nvmrc in modules
+      # HDBT is needed for the @hdbt/theme-builder local dependency.
+      - name: Checkout HDBT
+        uses: actions/checkout@v5
+        with:
+          repository: City-of-Helsinki/drupal-hdbt
+          path: themes/contrib/hdbt
+
+      - name: Use Node.js from .nvmrc in the module and its submodules
         id: npm_audit_modules
+        working-directory: modules/contrib/helfi_platform_config
         run: |
-          find modules -type f -name ".nvmrc" -exec sh -c '
+          find . -path ./node_modules -prune -o -type f -name ".nvmrc" -exec sh -c '
             dir=$(dirname "$1")
             node_version=$(cat "$1")
             echo "Using Node.js version $node_version in $dir"
@@ -23,6 +33,7 @@ jobs:
             export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm install $node_version
             nvm use $node_version
+            npm install --global npm@12 --loglevel=error
             set +e
             npm audit --package-lock-only --loglevel=error;
             # The npm audit command will exit with a 0 exit code if no vulnerabilities were found.
@@ -40,6 +51,7 @@ jobs:
         if: steps.npm_audit_modules.outputs.CREATE_PR == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
+          path: modules/contrib/helfi_platform_config
           committer: GitHub <noreply@github.com>
           author: actions-bot <actions-bot@users.noreply.github.com>
           commit-message: Updated node modules based on npm audit fix

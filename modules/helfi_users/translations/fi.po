@@ -21,8 +21,8 @@ msgid "Show content"
 msgstr "Näytä sisältö"
 
 msgctxt "Node authorship filter"
-msgid "Authored or last edited"
-msgstr "Kirjoittaja tai viimeisin päivittäjä"
+msgid "Authored, last edited or favorite"
+msgstr "Kirjoittaja, viimeisin päivittäjä tai suosikki"
 
 msgctxt "Node authorship filter"
 msgid "Authored"
@@ -35,3 +35,33 @@ msgstr "Viimeisin päivittäjä"
 msgctxt "Dashboard"
 msgid "My pages"
 msgstr "Omat sivut"
+
+msgid "You don't have the required permissions to make edits. <a href=\":url\">Learn how to request access</a>."
+msgstr "Tarvitset käyttöoikeudet, jos haluat tehdä muokkauksia. <a href=\":url\">Ohje oikeuksien hakemiseen</a>."
+
+msgid "Add to favourites"
+msgstr "Lisää suosikiksi"
+
+msgid "Added to favourites"
+msgstr "Lisätty suosikiksi"
+
+msgid "Favorite"
+msgstr "Suosikki"
+
+msgid "Favorite toggle for the current user."
+msgstr "Nykyisen käyttäjän suosikkivalinta."
+
+msgid "Use favourites"
+msgstr "Käytä suosikkeja"
+
+msgid "Mark editable content as a favourite."
+msgstr "Merkitse muokattava sisältö suosikiksi."
+
+msgid "Remove from favourites"
+msgstr "Poista suosikeista"
+
+msgid "Edited or favorite content"
+msgstr "Muokattu tai suosikkisisältö"
+
+msgid "Content last edited or marked as favorite by the user."
+msgstr "Käyttäjän viimeksi muokkaama tai suosikiksi merkitsemä sisältö."

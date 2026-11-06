@@ -9,7 +9,6 @@ _meta:
     329149fd-3e4b-40b9-a7d4-59fb34234320: node
     482655a9-4767-4564-9edb-68ce6a668674: node
     a23b06b0-090b-46a1-b761-b86f04e61f7e: node
-    e9d60c2c-0f51-411b-bde2-56dc9d30c11b: node
     36f0547c-e7e1-4cf6-b196-32d6d14988fd: node
     42eba98a-6141-4201-bb8c-244ee8d1905d: node
     8ab5397e-2ddd-43e9-b9e4-b9e7dcb34cd1: node
@@ -207,7 +206,7 @@ default:
               value: true
           field_content_cards_content:
             -
-              entity: e9d60c2c-0f51-411b-bde2-56dc9d30c11b
+              entity: 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
           field_content_cards_design:
             -
               value: small-cards
@@ -258,8 +257,6 @@ default:
             -
               value: true
           field_content_cards_content:
-            -
-              entity: e9d60c2c-0f51-411b-bde2-56dc9d30c11b
             -
               entity: 18345d84-b4f9-4d5f-bdf0-f1f518411a7b
             -

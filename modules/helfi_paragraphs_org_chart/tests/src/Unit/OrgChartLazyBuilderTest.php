@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_org_chart\Unit;
 
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Features\FeatureManagerInterface;
+use Drupal\helfi_paragraphs_org_chart\DTO\OrgChartItem;
 use Drupal\helfi_paragraphs_org_chart\OrgChartImporter;
 use Drupal\helfi_paragraphs_org_chart\OrgChartLazyBuilder;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
@@ -37,7 +39,7 @@ class OrgChartLazyBuilderTest extends UnitTestCase {
 
     $importer = new OrgChartImporter(
       $this->createMockHttpClient([
-        new Response(body: '["test-response"]'),
+        new Response(body: '{"id":"00400","title":"test-response","type":2,"url":"https://example.com"}'),
         new ClientException('test-error', new Request('GET', '/test'), new Response()),
       ]),
       $featureManager->reveal(),
@@ -47,11 +49,14 @@ class OrgChartLazyBuilderTest extends UnitTestCase {
 
     // Successful requests should be cached.
     $response = $sut->build('fi', '00400', 3);
-    $this->assertEquals('test-response', $response['#chart'][0] ?? NULL);
+    $this->assertInstanceOf(OrgChartItem::class, $response['#chart']);
+    $this->assertEquals('test-response', $response['#chart']->title);
+    $this->assertEquals(OrganizationType::BOARD, $response['#chart']->type);
     $this->assertGreaterThan(60, $response['#cache']['max-age'] ?? 0);
 
     // Exceptions should not be cached.
     $response = $sut->build('fi', '00400', 3);
+    $this->assertEquals(['error' => TRUE], $response['#chart']);
     $this->assertLessThanOrEqual(60, $response['#cache']['max-age'] ?? 0);
   }
 

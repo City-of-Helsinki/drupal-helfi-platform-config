@@ -61,6 +61,22 @@ final class SearchController extends ControllerBase {
       );
     }
 
+    $page = max(1, $request->query->getInt('page', 1));
+    $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
+
+    // The KNN search returns at most KNN_K results, so the later pages would
+    // be empty.
+    if (($page - 1) * $size > QueryBuilder::KNN_K) {
+      return new JsonResponse(
+        ['error' => 'Page is out of range.'],
+        400,
+      );
+    }
+
+    // The debug output returns every matching chunk, so it's only available
+    // for the users who can tune the search.
+    $debug = $request->query->getBoolean('debug') && $this->currentUser()->hasPermission('administer helfi_search');
+
     if (!$this->flood->isAllowed(self::FLOOD_EVENT, self::FLOOD_THRESHOLD, self::FLOOD_WINDOW)) {
       return new JsonResponse(
         ['error' => 'Too many requests. Please try again later.'],
@@ -84,10 +100,6 @@ final class SearchController extends ControllerBase {
 
       $currentLanguage = $this->languageManager()->getCurrentLanguage()->getId();
       [$bundles, $excludeBundles] = $this->resolveBundleFilters($request);
-
-      $page = max(1, $request->query->getInt('page', 1));
-      $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
-      $debug = $request->query->getBoolean('debug');
 
       $knnQuery = $this->queryBuilder->buildKnnQuery(
         $embeddings,

@@ -14,6 +14,8 @@ display:
           label: 'Käännös vanhentunut'
         title:
           label: Otsikko
+        helfi_favorite:
+          label: Suosikki
         type:
           label: Sisältötyyppi
         uid:
@@ -27,10 +29,10 @@ display:
           settings:
             format_custom_false: Julkaisematon
             format_custom_true: Julkaistu
-        changed:
-          label: Päivitetty
         operations:
           label: Toimenpiteet
+        changed_at:
+          label: 'Käyttäjän tallentama'
       pager:
         options:
           tags:

@@ -1,0 +1,6 @@
+name: 'HELfi users test theme'
+type: theme
+description: 'Renders the favorite toggle on the page.'
+base theme: stark
+package: Testing
+core_version_requirement: ^11

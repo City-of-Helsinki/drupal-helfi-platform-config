@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Side-by-side view of a page's markdown and the markdown of similar pages.
+ *
+ * Available variables:
+ * - markdown: Markdown of the current page.
+ * - documents: List of \Drupal\helfi_search\SimilarContent\SimilarDocument
+ *   objects
+ */
+#}
+<div class="similar-content" data-similar-content>
+  {% if documents %}
+    <div class="similar-content__tabs" role="tablist">
+      {% for document in documents %}
+        <button type="button" class="similar-content__tab" role="tab" data-similar-content-tab="{{ loop.index0 }}" aria-selected="{{ loop.first ? 'true' : 'false' }}" title="{{ document.label }}">{{ 'Hit #@number'|t({'@number': loop.index}, {'context': 'Helfi search'}) }}</button>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <div class="similar-content__columns">
+    <div class="similar-content__column">
+      <h3 class="similar-content__heading">{{ 'This page'|t({}, {'context': 'Helfi search'}) }}</h3>
+      <pre class="similar-content__markdown">{{ markdown }}</pre>
+      {% if edit_url %}
+        {{ link('Go to edit page (opens in a new tab)' | t({}, {'context': 'Helfi search'}), edit_url, { target: '_blank' }) }}
+      {% endif %}
+    </div>
+    <div class="similar-content__column">
+      {% if documents %}
+        {% for document in documents %}
+          <section class="similar-content__panel" role="tabpanel" data-similar-content-panel="{{ loop.index0 }}"{{ loop.first ? '' : ' hidden' }}>
+            <h3 class="similar-content__heading">{{ document.label }}</h3>
+            <pre class="similar-content__markdown">{{ document.markdown }}</pre>
+            <a href="{{ document.url }}" target="_blank">{{ 'Go to page (opens in a new tab)' | t({}, {'context': 'Helfi search'}) }}</a>
+          </section>
+        {% endfor %}
+      {% else %}
+        <p>{{ 'No similar content found.'|t({}, {'context': 'Helfi search'}) }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>

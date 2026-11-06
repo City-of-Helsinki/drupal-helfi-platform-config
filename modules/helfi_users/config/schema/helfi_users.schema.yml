@@ -1,0 +1,11 @@
+action.configuration.helfi_favorite_add:*:
+  type: action_configuration_default
+  label: 'Add to favourites configuration'
+
+action.configuration.helfi_favorite_remove:*:
+  type: action_configuration_default
+  label: 'Remove from favourites configuration'
+
+views.argument.helfi_user_content:
+  type: views_argument
+  label: 'Edited or favorite content'

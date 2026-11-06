@@ -124,6 +124,9 @@ final class ReactSearchHooks {
       'field_event_count' => [
         'disabled' => $lifts,
       ],
+      'field_event_list_all_events_link' => [
+        'visible' => $lifts,
+      ],
       'field_event_location' => [
         'disabled' => [
           [$select('[field_remote_events][value]') => ['checked' => TRUE]],

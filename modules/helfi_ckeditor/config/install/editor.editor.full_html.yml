@@ -28,7 +28,6 @@ settings:
       - insertTable
       - helfiLanguageSelector
       - specialCharacters
-      - helfiNbsp
       - '|'
       - undo
       - redo

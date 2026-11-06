@@ -8,9 +8,10 @@ use Drupal\helfi_api_base\DebugDataItemPluginManager;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_etusivu_entities\Plugin\DebugDataItem\ApiAvailabilityBase;
+use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\EtusivuJsonApiEntityBase;
+use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
-use Drupal\Tests\helfi_paragraphs_news_list\Kernel\KernelTestBase;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Response;
 
@@ -29,8 +30,15 @@ class ApiAvailabilityTest extends KernelTestBase {
   protected static $modules = [
     'user',
     'diff',
+    'field',
+    'text',
+    'node',
+    'language',
+    'content_translation',
+    'config_rewrite',
     'helfi_api_base',
     'external_entities',
+    'helfi_platform_config',
     'helfi_etusivu_entities',
   ];
 
@@ -50,8 +58,7 @@ class ApiAvailabilityTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    $this->installEntitySchema('user');
-    $this->installConfig(['helfi_etusivu_entities']);
+    $this->installConfig(['helfi_platform_config', 'helfi_etusivu_entities']);
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
   }
 
@@ -60,18 +67,22 @@ class ApiAvailabilityTest extends KernelTestBase {
    *
    * @param string $plugin
    *   The plugin id.
-   * @param array $responses
+   * @param array<\GuzzleHttp\Psr7\Response|\GuzzleHttp\Exception\GuzzleException> $responses
    *   The responses.
+   * @param array<mixed> $history
+   *   The HTTP history.
    *
    * @return \Drupal\helfi_etusivu_entities\Plugin\DebugDataItem\ApiAvailabilityBase
    *   The SUT.
    */
-  public function getSut(string $plugin, array $responses) : ApiAvailabilityBase {
-    $client = $this->createMockHttpClient($responses);
+  public function getSut(string $plugin, array $responses, array &$history = []) : ApiAvailabilityBase {
+    $client = $this->createMockHistoryMiddlewareHttpClient($history, $responses);
     $this->container->set('http_client', $client);
 
-    return $this->container->get(DebugDataItemPluginManager::class)
+    $instance = $this->container->get(DebugDataItemPluginManager::class)
       ->createInstance($plugin);
+    $this->assertInstanceOf(ApiAvailabilityBase::class, $instance);
+    return $instance;
   }
 
   /**
@@ -89,8 +100,11 @@ class ApiAvailabilityTest extends KernelTestBase {
    */
   public function testCheck(): void {
     foreach ($this->plugins as $plugin) {
-      $sut = $this->getSut($plugin, [new Response(body: json_encode(['meta' => 1]))]);
+      $history = [];
+      $sut = $this->getSut($plugin, [new Response(body: json_encode(['meta' => 1]))], $history);
+
       $this->assertTrue($sut->check());
+      $this->assertSame(EtusivuJsonApiEntityBase::TIMEOUT, $history[0]['options']['timeout']);
     }
   }
 

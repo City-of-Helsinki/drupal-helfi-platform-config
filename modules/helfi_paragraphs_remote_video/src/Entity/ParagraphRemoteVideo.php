@@ -61,7 +61,13 @@ class ParagraphRemoteVideo extends Paragraph implements ParagraphInterface {
       return NULL;
     }
     $media = reset($referencedEntities);
-    return $media instanceof RemoteVideo ? $media : NULL;
+    if (!$media instanceof RemoteVideo) {
+      return NULL;
+    }
+    $langcode = $this->language()->getId();
+    return $media->hasTranslation($langcode)
+      ? $media->getTranslation($langcode)
+      : $media;
   }
 
   /**

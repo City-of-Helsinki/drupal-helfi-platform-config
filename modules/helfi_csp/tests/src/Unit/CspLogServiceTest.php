@@ -8,8 +8,7 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Lock\LockBackendInterface;
-use Drupal\Core\State\StateInterface;
+use Drupal\Core\Flood\FloodInterface;
 use Drupal\csp_log\CspLogServiceInterface;
 use Drupal\helfi_csp\CspLogService;
 use Drupal\Tests\UnitTestCase;
@@ -21,11 +20,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Unit tests for CspLogService filtering, locking, and rate limiting.
+ * Unit tests for CspLogService filtering, size limits and rate limiting.
  */
-#[Group('helfi_csp')]
 #[CoversClass(CspLogService::class)]
-class CspLogServiceTest extends UnitTestCase {
+#[Group('helfi_csp')]
+final class CspLogServiceTest extends UnitTestCase {
+
+  /**
+   * The fields of the inserted rows.
+   *
+   * @var \ArrayObject<int, array<string, mixed>>
+   */
+  private \ArrayObject $inserted;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    $this->inserted = new \ArrayObject();
+  }
 
   /**
    * Builds a valid CSP report object (required keys for base service).
@@ -82,11 +96,22 @@ class CspLogServiceTest extends UnitTestCase {
   /**
    * Creates a connection mock expecting one insert() and returning a chain.
    *
+   * The inserted fields are collected to $this->inserted.
+   *
    * @return \Drupal\Core\Database\Connection
    *   Connection mock.
    */
   private function createConnectionMockInsertOnce(): Connection {
-    $insertStub = new class() {
+    $insertStub = new class($this->inserted) {
+
+      /**
+       * Constructs a new instance.
+       *
+       * @param \ArrayObject<int, array<string, mixed>> $inserted
+       *   The inserted fields.
+       */
+      public function __construct(private \ArrayObject $inserted) {
+      }
 
       /**
        * Stub for Insert::fields().
@@ -94,6 +119,7 @@ class CspLogServiceTest extends UnitTestCase {
        * @phpstan-param array<mixed> $f
        */
       public function fields(array $f): self {
+        $this->inserted->append($f);
         return $this;
       }
 
@@ -132,15 +158,19 @@ class CspLogServiceTest extends UnitTestCase {
    *
    * @param bool $stopRecieving
    *   Value for helfi_csp.settings stop_recieving.
+   * @param int $rateLimit
+   *   Value for helfi_csp.settings rate_limit.
    *
    * @return \Drupal\Core\Config\ConfigFactoryInterface
    *   Config factory mock.
    */
-  private function createConfigFactory(bool $stopRecieving = FALSE): ConfigFactoryInterface {
+  private function createConfigFactory(bool $stopRecieving = FALSE, int $rateLimit = 0): ConfigFactoryInterface {
     $helfiConfig = $this->createMock(ImmutableConfig::class);
     $helfiConfig->method('get')
-      ->with('stop_recieving')
-      ->willReturn($stopRecieving);
+      ->willReturnMap([
+        ['stop_recieving', $stopRecieving],
+        ['rate_limit', $rateLimit],
+      ]);
 
     $configFactory = $this->createMock(ConfigFactoryInterface::class);
     $configFactory->method('get')
@@ -151,28 +181,38 @@ class CspLogServiceTest extends UnitTestCase {
   }
 
   /**
+   * Creates a flood mock that expects not to be used.
+   *
+   * @return \Drupal\Core\Flood\FloodInterface
+   *   Flood mock.
+   */
+  private function createFloodMockNeverUsed(): FloodInterface {
+    $flood = $this->createMock(FloodInterface::class);
+    $flood->expects($this->never())->method('isAllowed');
+    $flood->expects($this->never())->method('register');
+    return $flood;
+  }
+
+  /**
    * Creates the service under test with the given mocks.
    *
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   Request stack.
-   * @param \Drupal\Core\Lock\LockBackendInterface $lock
-   *   Lock backend.
-   * @param \Drupal\Core\State\StateInterface $state
-   *   State.
+   * @param \Drupal\Core\Flood\FloodInterface $flood
+   *   Flood.
    * @param \Drupal\Core\Database\Connection $connection
    *   Database connection.
    * @param \Drupal\Component\Datetime\TimeInterface|null $time
    *   Time service; defaults to a fixed request time.
    * @param \Drupal\Core\Config\ConfigFactoryInterface|null $configFactory
-   *   Config factory; defaults to stop_recieving disabled.
+   *   Config factory; defaults to stop_recieving and rate limit disabled.
    *
    * @return \Drupal\helfi_csp\CspLogService
    *   Service under test.
    */
   private function createSut(
     RequestStack $requestStack,
-    LockBackendInterface $lock,
-    StateInterface $state,
+    FloodInterface $flood,
     Connection $connection,
     ?TimeInterface $time = NULL,
     ?ConfigFactoryInterface $configFactory = NULL,
@@ -180,8 +220,7 @@ class CspLogServiceTest extends UnitTestCase {
     $logger = $this->createMock(LoggerInterface::class);
     return new CspLogService(
       $requestStack,
-      $lock,
-      $state,
+      $flood,
       $connection,
       $logger,
       $time ?? $this->createTimeMock(),
@@ -232,6 +271,11 @@ class CspLogServiceTest extends UnitTestCase {
         'https://sub.hel.ninja/script.js',
         'hel.fi',
       ],
+      'document-uri host only ends with the root domain' => [
+        'https://evilhel.fi/page',
+        'https://evilhel.fi/script.js',
+        'www.hel.fi',
+      ],
     ];
   }
 
@@ -244,16 +288,10 @@ class CspLogServiceTest extends UnitTestCase {
     string $blockedUri,
     ?string $requestHost,
   ): void {
-    $connection = $this->createConnectionMockNeverInsert();
-    $lock = $this->createMock(LockBackendInterface::class);
-    $state = $this->createMock(StateInterface::class);
-    $state->method('get')->willReturn(FALSE);
-
     $sut = $this->createSut(
       $this->createRequestStack($requestHost),
-      $lock,
-      $state,
-      $connection,
+      $this->createFloodMockNeverUsed(),
+      $this->createConnectionMockNeverInsert(),
     );
 
     $report = self::report($documentUri, $blockedUri);
@@ -264,19 +302,12 @@ class CspLogServiceTest extends UnitTestCase {
    * Stops logging when stop_recieving is enabled.
    */
   public function testStopsReceivingWhenConfigured(): void {
-    $connection = $this->createConnectionMockNeverInsert();
-    $lock = $this->createMock(LockBackendInterface::class);
-    $lock->expects($this->never())->method('acquire');
-    $state = $this->createMock(StateInterface::class);
-    $state->expects($this->never())->method('get');
-
     $sut = $this->createSut(
       $this->createRequestStack('hel.fi'),
-      $lock,
-      $state,
-      $connection,
+      $this->createFloodMockNeverUsed(),
+      $this->createConnectionMockNeverInsert(),
       NULL,
-      $this->createConfigFactory(TRUE),
+      $this->createConfigFactory(TRUE, 60),
     );
 
     $report = self::report('https://hel.fi/page', 'https://hel.fi/script.js');
@@ -287,19 +318,10 @@ class CspLogServiceTest extends UnitTestCase {
    * Report that passes all filters is logged when rate limit is disabled.
    */
   public function testPassesFiltersReportIsLogged(): void {
-    $connection = $this->createConnectionMockInsertOnce();
-    $lock = $this->createMock(LockBackendInterface::class);
-    $lock->expects($this->never())->method('acquire');
-    $state = $this->createMock(StateInterface::class);
-    $state->method('get')
-      ->with('helfi_csp.rate_limit_enabled', FALSE)
-      ->willReturn(FALSE);
-
     $sut = $this->createSut(
       $this->createRequestStack('hel.fi'),
-      $lock,
-      $state,
-      $connection,
+      $this->createFloodMockNeverUsed(),
+      $this->createConnectionMockInsertOnce(),
     );
 
     $report = self::report('https://foo.hel.fi/page', 'https://foo.hel.fi/script.js');
@@ -307,49 +329,77 @@ class CspLogServiceTest extends UnitTestCase {
   }
 
   /**
-   * Data provider for rate limit (enabled): lock result and expect insert flag.
-   *
-   * @return array<string, array{bool, bool}>
-   *   Each element: lock acquired (bool), expect insert (bool).
+   * The large fields are not stored.
    */
-  public static function providerRateLimitWhenEnabled(): array {
+  public function testLargeFieldsAreNotStored(): void {
+    $sut = $this->createSut(
+      $this->createRequestStack('hel.fi'),
+      $this->createFloodMockNeverUsed(),
+      $this->createConnectionMockInsertOnce(),
+    );
+
+    $report = self::report('https://hel.fi/page', 'https://hel.fi/script.js');
+    $report->{'original-policy'} = str_repeat('script-src https://example.com; ', 1000);
+    $report->{'script-sample'} = 'alert(1)';
+    $sut->insertLog($report, 'report-only');
+
+    $stored = json_decode($this->inserted[0]['report'], TRUE);
+    $this->assertSame('https://hel.fi/script.js', $stored['blocked-uri']);
+    $this->assertArrayNotHasKey('original-policy', $stored);
+    $this->assertArrayNotHasKey('script-sample', $stored);
+  }
+
+  /**
+   * The oversized reports are not stored.
+   */
+  public function testOversizedReportIsNotStored(): void {
+    $sut = $this->createSut(
+      $this->createRequestStack('hel.fi'),
+      $this->createFloodMockNeverUsed(),
+      $this->createConnectionMockNeverInsert(),
+    );
+
+    $report = self::report('https://hel.fi/page', 'https://hel.fi/script.js');
+    $report->{'source-file'} = 'https://hel.fi/' . str_repeat('a', CspLogService::MAX_REPORT_SIZE);
+    $sut->insertLog($report, 'report-only');
+  }
+
+  /**
+   * Data provider for the rate limit: flood result and expect insert flag.
+   *
+   * @return array<string, array{bool}>
+   *   Each element: whether the flood allows the report.
+   */
+  public static function providerRateLimit(): array {
     return [
-      'lock fails, not logged' => [FALSE, FALSE],
-      'lock acquired, logged' => [TRUE, TRUE],
+      'limit reached, not logged' => [FALSE],
+      'limit not reached, logged' => [TRUE],
     ];
   }
 
   /**
-   * With rate limit enabled, logging depends on lock acquisition.
+   * With the rate limit enabled, logging depends on the flood control.
    */
-  #[DataProvider('providerRateLimitWhenEnabled')]
-  public function testRateLimitWhenEnabled(bool $lockAcquired, bool $expectInsert): void {
-    $connection = $expectInsert
-      ? $this->createConnectionMockInsertOnce()
-      : $this->createConnectionMockNeverInsert();
-
-    $lock = $this->createMock(LockBackendInterface::class);
-    $lock->expects($this->once())
-      ->method('acquire')
-      ->with('helfi_csp_log_rate_limit', 1)
-      ->willReturn($lockAcquired);
-
-    $state = $this->createMock(StateInterface::class);
-    $state->method('get')
-      ->with('helfi_csp.rate_limit_enabled', FALSE)
-      ->willReturn(TRUE);
+  #[DataProvider('providerRateLimit')]
+  public function testRateLimit(bool $allowed): void {
+    $flood = $this->createMock(FloodInterface::class);
+    $flood->expects($this->once())
+      ->method('isAllowed')
+      ->with('helfi_csp.report', 60, 60)
+      ->willReturn($allowed);
+    $flood->expects($allowed ? $this->once() : $this->never())
+      ->method('register')
+      ->with('helfi_csp.report', 60);
 
     $sut = $this->createSut(
       $this->createRequestStack('hel.fi'),
-      $lock,
-      $state,
-      $connection,
+      $flood,
+      $allowed ? $this->createConnectionMockInsertOnce() : $this->createConnectionMockNeverInsert(),
+      NULL,
+      $this->createConfigFactory(FALSE, 60),
     );
 
-    $report = self::report(
-      'https://hel.fi/page',
-      'https://hel.fi/script.js',
-    );
+    $report = self::report('https://hel.fi/page', 'https://hel.fi/script.js');
     $sut->insertLog($report, 'report-only');
   }
 

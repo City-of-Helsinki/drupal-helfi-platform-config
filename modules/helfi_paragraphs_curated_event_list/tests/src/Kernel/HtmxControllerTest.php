@@ -159,6 +159,30 @@ class HtmxControllerTest extends KernelTestBase {
   }
 
   /**
+   * Tests other paragraph types.
+   */
+  #[Test]
+  public function testOtherParagraphType(): void {
+    $this->addParagraphsType('text');
+
+    $paragraph = Paragraph::create([
+      'type' => 'text',
+    ]);
+    $paragraph->setPublished();
+    $paragraph->save();
+    $node = Node::create([
+      'title' => 'Text',
+      'type' => 'article',
+      'field_paragraphs' => [$paragraph],
+    ]);
+    $node->setPublished();
+    $node->save();
+
+    $response = $this->createHtmxRequest($paragraph);
+    $this->assertEquals(404, $response->getStatusCode());
+  }
+
+  /**
    * Make sure expired items are not shown.
    */
   #[Test]

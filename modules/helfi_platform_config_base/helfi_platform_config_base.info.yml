@@ -30,7 +30,6 @@ dependencies:
   - helfi_paragraphs_phasing:helfi_paragraphs_phasing
   - helfi_paragraphs_popular_services:helfi_paragraphs_popular_services
   - helfi_paragraphs_remote_video:helfi_paragraphs_remote_video
-  - helfi_paragraphs_sidebar_text:helfi_paragraphs_sidebar_text
   - helfi_paragraphs_target_group_links:helfi_paragraphs_target_group_links
   - helfi_paragraphs_text:helfi_paragraphs_text
   - helfi_react_search:helfi_react_search

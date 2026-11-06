@@ -30,7 +30,11 @@ class Map extends Paragraph implements ParagraphInterface {
     }
 
     $target = reset($referenced_entities);
-    $target->iframeTitle = $iframe_title ? $iframe_title : $this->t('Location on map');
+    $langcode = $this->language()->getId();
+    if ($target->hasTranslation($langcode)) {
+      $target = $target->getTranslation($langcode);
+    }
+    $target->iframeTitle = $iframe_title ?: $this->t('Location on map');
   }
 
   /**

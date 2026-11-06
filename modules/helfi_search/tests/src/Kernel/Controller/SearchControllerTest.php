@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_search\Kernel\Controller;
 use Drupal\helfi_search\Controller\SearchController;
 use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EmbeddingApiInterface;
+use Drupal\helfi_search\QueryBuilder;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use Drupal\Tests\helfi_platform_config\Traits\ElasticKernelTrait;
@@ -64,6 +65,33 @@ class SearchControllerTest extends KernelTestBase {
     $response = $this->processRequest($request);
 
     $this->assertEquals(429, $response->getStatusCode());
+  }
+
+  /**
+   * Tests that the page is validated before the embedding API is called.
+   */
+  public function testPageOutOfRange(): void {
+    $embeddingsModel = $this->prophesize(EmbeddingApiInterface::class);
+    $embeddingsModel->getEmbedding(Argument::cetera())->shouldNotBeCalled();
+    $this->container->set(EmbeddingApiInterface::class, $embeddingsModel->reveal());
+
+    $request = $this->getMockedRequest('/api/v1/search', parameters: [
+      'q' => 'test query',
+      'page' => '99999999999999999999',
+    ]);
+    $response = $this->processRequest($request);
+    $this->assertEquals(400, $response->getStatusCode());
+
+    // The page is out of range when it starts after the last KNN result.
+    $request = $this->getMockedRequest('/api/v1/search', parameters: [
+      'q' => 'test query',
+      'page' => (string) (QueryBuilder::KNN_K / QueryBuilder::KNN_DEFAULT_SIZE + 2),
+    ]);
+    $response = $this->processRequest($request);
+    $this->assertEquals(400, $response->getStatusCode());
+
+    // The flood event is not registered for invalid requests.
+    $this->assertTrue($this->container->get('flood')->isAllowed(SearchController::FLOOD_EVENT, 1, SearchController::FLOOD_WINDOW));
   }
 
   /**
@@ -252,7 +280,21 @@ class SearchControllerTest extends KernelTestBase {
       $this->createElasticsearchResponse($hits),
     ]);
 
-    // 1) ?bundle=others&debug=1 in a non-prod env → debug payload returned.
+    // Users without the permission to tune the search get no debug payload.
+    $request = $this->getMockedRequest('/api/v1/search', parameters: [
+      'q' => 'test query',
+      'bundle' => 'others',
+      'debug' => '1',
+    ]);
+    $response = $this->processRequest($request);
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = json_decode((string) $response->getContent(), TRUE);
+    $this->assertCount(1, $data['results']);
+    $this->assertArrayNotHasKey('debug', $data);
+
+    $this->setUpCurrentUser(permissions: ['access content', 'administer helfi_search']);
+
+    // 1) ?bundle=others&debug=1 → debug payload returned.
     $request = $this->getMockedRequest('/api/v1/search', parameters: [
       'q' => 'test query',
       'bundle' => 'others',

@@ -10,9 +10,8 @@ use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Database\Statement\FetchAs;
+use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Database\StatementInterface;
-use Drupal\Core\Lock\LockBackendInterface;
-use Drupal\Core\State\StateInterface;
 use Drupal\helfi_csp\CspLogService;
 use Drupal\helfi_csp\Hook\CronHook;
 use Drupal\Tests\UnitTestCase;
@@ -130,8 +129,7 @@ class CronHookTest extends UnitTestCase {
 
     return new CspLogService(
       $this->createMock(RequestStack::class),
-      $this->createMock(LockBackendInterface::class),
-      $this->createMock(StateInterface::class),
+      $this->createMock(FloodInterface::class),
       $connection,
       $this->createMock(LoggerInterface::class),
       $this->createTimeMock(),
@@ -151,8 +149,7 @@ class CronHookTest extends UnitTestCase {
 
     return new CspLogService(
       $this->createMock(RequestStack::class),
-      $this->createMock(LockBackendInterface::class),
-      $this->createMock(StateInterface::class),
+      $this->createMock(FloodInterface::class),
       $connection,
       $this->createMock(LoggerInterface::class),
       $this->createTimeMock(),

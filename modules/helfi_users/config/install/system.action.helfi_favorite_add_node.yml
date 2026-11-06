@@ -1,0 +1,12 @@
+uuid: acc785ee-c808-4f64-a2ca-946438925be7
+langcode: en
+status: true
+dependencies:
+  module:
+    - helfi_users
+    - node
+id: helfi_favorite_add_node
+label: 'Add to favourites'
+type: node
+plugin: 'helfi_favorite_add:node'
+configuration: {  }

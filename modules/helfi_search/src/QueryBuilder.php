@@ -19,6 +19,9 @@ final class QueryBuilder {
   const int KNN_DEFAULT_SIZE = 10;
   const int KNN_MAX_SIZE = 50;
 
+  // The number of nearest neighbours returned by the KNN search.
+  const int KNN_K = 150;
+
   public function __construct(
     private readonly ?ConfigFactoryInterface $configFactory = NULL,
   ) {
@@ -439,7 +442,7 @@ final class QueryBuilder {
     $entry = [
       'field' => $fieldPrefix . '.vector',
       'query_vector' => $embeddings,
-      'k' => 150,
+      'k' => self::KNN_K,
       'num_candidates' => 200,
       'filter' => $filter,
       'inner_hits' => $innerHits,

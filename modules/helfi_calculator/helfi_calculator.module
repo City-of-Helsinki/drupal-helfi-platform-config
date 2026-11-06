@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\helfi_calculator\Entity\Calculator;
+use Drupal\helfi_calculator\SettingsJson;
 use Drupal\helfi_platform_config\DTO\ParagraphTypeCollection;
 
 /**
@@ -51,12 +52,16 @@ function helfi_calculator_preprocess_paragraph__calculator(array &$variables): v
     ->getOriginal('calculators', FALSE) ?? [];
   $calculator_settings = $calculators[$paragraph->getCalculatorName()] ?? NULL;
 
+  // The browser inserts some of the settings into HTML, so filter the text
+  // values for XSS. Invalid settings are not output.
   foreach ($calculators as $calculator => $data) {
-    $variables['#attached']['drupalSettings']['helfiCalculator'][$calculator] = $data['json'];
+    $variables['#attached']['drupalSettings']['helfiCalculator'][$calculator] = SettingsJson::sanitize($data['json'] ?? '') ?? '{}';
   }
+  $json = SettingsJson::sanitize($calculator_settings['json'] ?? '');
 
-  // Check if the current calculator is active and return if not.
-  $variables['is_active'] = !empty($calculator_settings['active']);
+  // Check if the current calculator is active and has valid settings, and
+  // return if not.
+  $variables['is_active'] = !empty($calculator_settings['active']) && $json !== NULL;
   if (!$variables['is_active']) {
     return;
   }
@@ -71,7 +76,7 @@ function helfi_calculator_preprocess_paragraph__calculator(array &$variables): v
   $variables['#attached']['drupalSettings']['helfiCalculator'][$paragraph->getCalculatorInstanceId()] = [
     'id' => $paragraph->getCalculatorInstanceId(),
     'type' => $paragraph->getCalculatorName(),
-    'data' => $calculator_settings['json'] ?? '{}',
+    'data' => $json ?: '{}',
   ];
 
   // Set id for Twig.

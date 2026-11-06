@@ -143,12 +143,6 @@ parameters:
 			path: helfi_platform_config.module
 
 		-
-			message: '#^Function helfi_platform_config_theme\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: helfi_platform_config.module
-
-		-
 			message: '#^Call to an undefined method Drupal\\Core\\TypedData\\TypedDataInterface\:\:getTarget\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -1011,18 +1005,6 @@ parameters:
 			path: modules/hdbt_admin_tools/tests/src/Unit/Hook/ModuleHooksTest.php
 
 		-
-			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Drupal\\\\hdbt_admin_tools\\\\Plugin\\\\Validation\\\\Constraint\\\\SidebarContentConstraintValidator'' and Drupal\\hdbt_admin_tools\\Plugin\\Validation\\Constraint\\SidebarContentConstraintValidator will always evaluate to true\.$#'
-			identifier: method.alreadyNarrowedType
-			count: 1
-			path: modules/hdbt_admin_tools/tests/src/Unit/Plugin/Validation/Constraint/SidebarContentConstraintValidatorTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\hdbt_admin_tools\\Unit\\Plugin\\Validation\\Constraint\\SidebarContentConstraintValidatorTest\:\:providerValidate\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/hdbt_admin_tools/tests/src/Unit/Plugin/Validation/Constraint/SidebarContentConstraintValidatorTest.php
-
-		-
 			message: '#^Function hdbt_cookie_banner_page_attachments\(\) has parameter \$attachments with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1171,36 +1153,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: modules/hdbt_cookie_banner/tests/src/Kernel/Services/CookieSettingsTest.php
-
-		-
-			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
-			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
-			count: 3
-			path: modules/helfi_ai/src/Hook/FormHooks.php
-
-		-
-			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
-			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
-			count: 2
-			path: modules/helfi_ai/src/Plugin/CKEditor5Plugin/AiToneCheck.php
-
-		-
-			message: '#^Drupal\\Core\\DependencyInjection\\DependencySerializationTrait does not support private properties\.$#'
-			identifier: dependencySerializationTraitProperty.unsupportedPrivateProperty
-			count: 2
-			path: modules/helfi_ai/src/Plugin/Field/FieldWidget/AiSummaryWidget.php
-
-		-
-			message: '#^Parameter &\$form by\-ref type of method Drupal\\helfi_ai\\Plugin\\Field\\FieldWidget\\AiSummaryWidget\:\:ajaxCallback\(\) expects array\<string, mixed\>, array given\.$#'
-			identifier: parameterByRef.type
-			count: 1
-			path: modules/helfi_ai/src/Plugin/Field/FieldWidget/AiSummaryWidget.php
-
-		-
-			message: '#^Parameter \#1 \$plugin_definitions of method Drupal\\helfi_ai\\Hook\\FormHooks\:\:ckeditor5PluginInfoAlter\(\) expects array\<string, Drupal\\ckeditor5\\Plugin\\CKEditor5PluginDefinition\>, array\<string, string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: modules/helfi_ai/tests/src/Unit/Hook/FormHooksTest.php
 
 		-
 			message: '#^Function helfi_base_content_install\(\) has parameter \$is_syncing with no type specified\.$#'
@@ -1805,18 +1757,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: modules/helfi_etusivu_entities/tests/src/Kernel/Plugin/Block/SurveyBlockTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\helfi_etusivu_entities\\Kernel\\Plugin\\DebugDataItem\\ApiAvailabilityTest\:\:getSut\(\) has parameter \$responses with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/helfi_etusivu_entities/tests/src/Kernel/Plugin/DebugDataItem/ApiAvailabilityTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\helfi_etusivu_entities\\Kernel\\Plugin\\DebugDataItem\\ApiAvailabilityTest\:\:getSut\(\) should return Drupal\\helfi_etusivu_entities\\Plugin\\DebugDataItem\\ApiAvailabilityBase but returns object\.$#'
-			identifier: return.type
-			count: 1
-			path: modules/helfi_etusivu_entities/tests/src/Kernel/Plugin/DebugDataItem/ApiAvailabilityTest.php
 
 		-
 			message: '#^Parameter \$body of class GuzzleHttp\\Psr7\\Response constructor expects Psr\\Http\\Message\\StreamInterface\|resource\|string\|null, string\|false given\.$#'
@@ -2593,12 +2533,6 @@ parameters:
 			path: modules/helfi_node_landing_page/helfi_node_landing_page.module
 
 		-
-			message: '#^Function helfi_node_landing_page_platform_config_grant_permissions\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/helfi_node_landing_page/helfi_node_landing_page.module
-
-		-
 			message: '#^Function helfi_node_news_item_update_9008\(\) has parameter \$sandbox with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -2660,12 +2594,6 @@ parameters:
 
 		-
 			message: '#^Function helfi_node_page_helfi_paragraph_types\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/helfi_node_page/helfi_node_page.module
-
-		-
-			message: '#^Function helfi_node_page_platform_config_grant_permissions\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: modules/helfi_node_page/helfi_node_page.module
@@ -3731,12 +3659,6 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: modules/helfi_paragraphs_remote_video/tests/src/Kernel/Entity/RemoteVideoParagraphTest.php
-
-		-
-			message: '#^Function helfi_paragraphs_sidebar_text_helfi_paragraph_types\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: modules/helfi_paragraphs_sidebar_text/helfi_paragraphs_sidebar_text.module
 
 		-
 			message: '#^Function helfi_paragraphs_target_group_links_helfi_paragraph_types\(\) return type has no value type specified in iterable type array\.$#'
@@ -5953,12 +5875,6 @@ parameters:
 			path: src/Plugin/Block/ReactAndShare.php
 
 		-
-			message: '#^Method Drupal\\helfi_platform_config\\Plugin\\Block\\SidebarContentBlock\:\:build\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Plugin/Block/SidebarContentBlock.php
-
-		-
 			message: '#^Method Drupal\\helfi_platform_config\\Plugin\\Block\\SocialMediaSharingBlock\:\:build\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -6247,12 +6163,6 @@ parameters:
 			path: src/TextConverter/Document.php
 
 		-
-			message: '#^Method Drupal\\helfi_platform_config\\TextConverter\\Document\:\:__toString\(\) should return string but returns string\|false\.$#'
-			identifier: return.type
-			count: 1
-			path: src/TextConverter/Document.php
-
-		-
 			message: '#^Property Drupal\\helfi_platform_config\\TextConverter\\TextConverterManager\:\:\$converters type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -6263,18 +6173,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/TextConverter/TextConverterManager.php
-
-		-
-			message: '#^Property Drupal\\helfi_platform_config\\Token\\OGImageManager\:\:\$builders type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Token/OGImageManager.php
-
-		-
-			message: '#^Property Drupal\\helfi_platform_config\\Token\\OGImageManager\:\:\$sortedBuilders type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Token/OGImageManager.php
 
 		-
 			message: '#^Method Drupal\\helfi_platform_config\\TwigExtension\\DrupalEntityRevision\:\:entityRevision\(\) return type has no value type specified in iterable type array\.$#'
@@ -6617,36 +6515,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: tests/src/Unit/MultisiteSearchTest.php
-
-		-
-			message: '#^Call to an undefined method Drupal\\helfi_platform_config\\Token\\OGImageBuilderInterface\|Prophecy\\Prophecy\\ObjectProphecy\:\:reveal\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: tests/src/Unit/OGImageManagerTest.php
-
-		-
-			message: '#^Cannot call method shouldHaveBeenCalled\(\) on Prophecy\\Prophecy\\MethodProphecy\|string\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: tests/src/Unit/OGImageManagerTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\helfi_platform_config\\Unit\\OGImageManagerTest\:\:createImageBuilderMock\(\) return type with generic class Prophecy\\Prophecy\\ObjectProphecy does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: tests/src/Unit/OGImageManagerTest.php
-
-		-
-			message: '#^Parameter \#1 \$builder of method Drupal\\helfi_platform_config\\Token\\OGImageManager\:\:add\(\) expects Drupal\\helfi_platform_config\\Token\\OGImageBuilderInterface, object given\.$#'
-			identifier: argument.type
-			count: 4
-			path: tests/src/Unit/OGImageManagerTest.php
-
-		-
-			message: '#^Parameter \#1 \$entity of method Drupal\\helfi_platform_config\\Token\\OGImageBuilderInterface\:\:buildUri\(\) expects Drupal\\Core\\Entity\\EntityInterface\|null, Prophecy\\Argument\\Token\\AnyValueToken given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/src/Unit/OGImageManagerTest.php
 
 		-
 			message: '#^Access to an undefined property object\:\:\$coordinates\.$#'

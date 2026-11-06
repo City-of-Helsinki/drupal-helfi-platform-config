@@ -8,6 +8,8 @@ display:
       fields:
         title:
           label: Otsikko
+        helfi_favorite:
+          label: Suosikki
         type:
           label: Sisältötyyppi
         name:
@@ -17,12 +19,12 @@ display:
           settings:
             format_custom_false: Julkaisematon
             format_custom_true: Julkaistu
-        changed:
-          label: Päivitetty
         langcode:
           label: Kieli
         operations:
           label: Toimenpiteet
+        changed_at:
+          label: 'Käyttäjän tallentama'
       pager:
         options:
           tags:

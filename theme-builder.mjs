@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import { buildAll, watchAndBuild } from '@hdbt/theme-builder/builder';
 
 const __dirname = path.resolve();
@@ -15,7 +15,6 @@ const reactApps = {
 // Vanilla JS files.
 const jsFiles = {
   autocomplete: 'assets/js/autocomplete.js',
-  headingIdInjector: 'assets/js/headingIdInjector.js',
   headingAnchorButtons: 'assets/js/headingAnchorButtons.js',
   reactAndShareSettings: 'assets/js/reactAndShareSettings.js',
   sentryIgnore: 'assets/js/sentryIgnore.js',

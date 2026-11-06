@@ -140,6 +140,69 @@ class HookTest extends UnitTestCase {
   }
 
   /**
+   * Test that the widget is placed after the lead-in on the basic page form.
+   */
+  public function testAddsWidgetAfterLeadInToPageFormDisplay(): void {
+    $display = $this->prophesizeFormDisplay('node.page.default');
+    $display->getComponent('field_lead_in')->willReturn(['weight' => 13]);
+    $display->getComponents()->willReturn([
+      'title' => ['weight' => 1],
+      'field_lead_in' => ['weight' => 13],
+      'field_content' => ['weight' => 14],
+    ]);
+    $display->setComponent('field_content', ['weight' => 15])->shouldBeCalled();
+    $display->setComponent('title', Argument::any())->shouldNotBeCalled();
+    $display->setComponent('field_lead_in', Argument::any())->shouldNotBeCalled();
+    $display->setComponent('ai_summary', [
+      'type' => 'ai_summary',
+      'region' => 'content',
+      'weight' => 14,
+    ])->shouldBeCalled();
+
+    (new EntityHooks())->entityFormDisplayPresave($display->reveal());
+  }
+
+  /**
+   * Test that the formatter is placed after the lead-in on the basic page view.
+   */
+  public function testAddsFormatterAfterLeadInToPageViewDisplay(): void {
+    $display = $this->prophesizeViewDisplay('node.page.default');
+    $display->getComponent('field_lead_in')->willReturn(['weight' => 1]);
+    $display->getComponents()->willReturn([
+      'links' => ['weight' => 0],
+      'field_lead_in' => ['weight' => 1],
+      'toc_enabled' => ['weight' => 2],
+      'field_content' => ['weight' => 3],
+    ]);
+    $display->setComponent('toc_enabled', ['weight' => 3])->shouldBeCalled();
+    $display->setComponent('field_content', ['weight' => 4])->shouldBeCalled();
+    $display->setComponent('links', Argument::any())->shouldNotBeCalled();
+    $display->setComponent('field_lead_in', Argument::any())->shouldNotBeCalled();
+    $display->setComponent('ai_summary', [
+      'type' => 'text_default',
+      'label' => 'hidden',
+      'region' => 'content',
+      'weight' => 2,
+    ])->shouldBeCalled();
+
+    (new EntityHooks())->entityViewDisplayPresave($display->reveal());
+  }
+
+  /**
+   * Test that the widget is placed last when the lead-in is missing.
+   */
+  public function testAddsWidgetLastWithoutLeadIn(): void {
+    $display = $this->prophesizeFormDisplay('node.page.default');
+    $display->getComponent('field_lead_in')->willReturn(NULL);
+    $display->setComponent('ai_summary', [
+      'type' => 'ai_summary',
+      'region' => 'content',
+    ])->shouldBeCalled();
+
+    (new EntityHooks())->entityFormDisplayPresave($display->reveal());
+  }
+
+  /**
    * Test that the widget is added to the tpr_service form display.
    */
   public function testAddsWidgetToTprServiceFormDisplay(): void {
@@ -172,7 +235,7 @@ class HookTest extends UnitTestCase {
    * Test that other displays are left alone.
    */
   public function testIgnoresOtherDisplays(): void {
-    $formDisplay = $this->prophesizeFormDisplay('node.page.default');
+    $formDisplay = $this->prophesizeFormDisplay('node.landing_page.default');
     $formDisplay->setComponent(Argument::cetera())->shouldNotBeCalled();
 
     $viewDisplay = $this->prophesizeViewDisplay('tpr_service.tpr_service.teaser');
@@ -187,7 +250,7 @@ class HookTest extends UnitTestCase {
    * Test that a display being imported is left alone.
    */
   public function testIgnoresSyncingDisplay(): void {
-    $display = $this->prophesizeFormDisplay('tpr_service.tpr_service.default');
+    $display = $this->prophesizeFormDisplay('node.page.default');
     $display->isSyncing()->willReturn(TRUE);
     $display->setComponent(Argument::cetera())->shouldNotBeCalled();
 
@@ -198,7 +261,7 @@ class HookTest extends UnitTestCase {
    * Test that an existing component is not overridden.
    */
   public function testKeepsExistingComponent(): void {
-    $display = $this->prophesizeFormDisplay('tpr_service.tpr_service.default');
+    $display = $this->prophesizeFormDisplay('node.page.default');
     $display->getComponent('ai_summary')->willReturn(['type' => 'string_textarea']);
     $display->setComponent(Argument::cetera())->shouldNotBeCalled();
 
