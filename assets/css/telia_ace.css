@@ -14,3 +14,7 @@
 .region--attachments > div > h2 {
   display: none;
 }
+/* Hide the Telia's own chat button when the chat is closed. */
+.humany-trigger:not(.humany-active) {
+  display: none;
+}
