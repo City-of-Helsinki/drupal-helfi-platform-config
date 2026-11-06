@@ -96,15 +96,34 @@ function helfi_node_announcement_form_node_form_alter(&$form, &$form_state, $for
       }
 
       $form['field_announcement_content_pages']['#states'] = $contentPageStates;
+      if (isset($form['field_announcement_unit_pages'])) {
+        $form['field_announcement_unit_pages']['#states'] = $contentPageStates;
+      }
+      if (isset($form['field_announcement_service_pages'])) {
+        $form['field_announcement_service_pages']['#states'] = $contentPageStates;
+      }
       if (isset($form['field_announcement_page_paths']['widget'][0]['value'])) {
         $form['field_announcement_page_paths']['#states'] = $contentPageStates;
         $pagePathElement = &$form['field_announcement_page_paths']['widget'][0]['value'];
         $pagePathElement['#element_validate'][] = PagePathValidator::class . '::validate';
       }
       $form['group_visibility']['#states'] = $contentPageStates;
+
+      // Open the visibility field group if any of the fields have content.
       $node = $form_state->getFormObject()->getEntity();
-      $hasVisibilityRules = !$node->get('field_announcement_content_pages')->isEmpty()
-        || !$node->get('field_announcement_page_paths')->isEmpty();
+      $visibilityFields = [
+        'field_announcement_content_pages',
+        'field_announcement_page_paths',
+        'field_announcement_unit_pages',
+        'field_announcement_service_pages',
+      ];
+      $hasVisibilityRules = FALSE;
+      foreach ($visibilityFields as $fieldName) {
+        if ($node->hasField($fieldName) && !$node->get($fieldName)->isEmpty()) {
+          $hasVisibilityRules = TRUE;
+          break;
+        }
+      }
       if ($hasVisibilityRules) {
         $form['group_visibility']['#open'] = TRUE;
       }
