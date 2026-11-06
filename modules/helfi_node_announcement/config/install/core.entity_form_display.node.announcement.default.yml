@@ -1,4 +1,4 @@
-uuid: f7df631b-ba7d-497f-810b-8db4744d5056
+uuid: 13c9b4f2-e382-4ad3-9a4d-32fdcda8e9e7
 langcode: en
 status: true
 dependencies:
@@ -7,17 +7,40 @@ dependencies:
     - field.field.node.announcement.field_announcement_all_pages
     - field.field.node.announcement.field_announcement_content_pages
     - field.field.node.announcement.field_announcement_link
+    - field.field.node.announcement.field_announcement_page_paths
     - field.field.node.announcement.field_announcement_title
     - field.field.node.announcement.field_announcement_type
     - node.type.announcement
   module:
     - allowed_formats
+    - field_group
     - hdbt_admin_tools
     - link
     - path
     - publication_date
     - scheduler
     - select2
+third_party_settings:
+  field_group:
+    group_visibility:
+      children:
+        - field_announcement_content_pages
+        - field_announcement_page_paths
+        - field_announcement_unit_pages
+        - field_announcement_service_pages
+      label: 'Show only on selected pages'
+      region: content
+      parent_name: ''
+      weight: 14
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
 id: node.announcement.default
 targetEntityType: node
 bundle: announcement
@@ -25,12 +48,12 @@ mode: default
 content:
   body:
     type: formatted_text_character_counter
-    weight: 18
+    weight: 16
     region: content
     settings:
       counter_max: 0
-      counter_total: 250
       counter_step: 0
+      counter_total: 250
       rows: 9
       placeholder: ''
     third_party_settings: {  }
@@ -49,7 +72,7 @@ content:
     third_party_settings: {  }
   field_announcement_content_pages:
     type: select2_entity_reference
-    weight: 14
+    weight: 13
     region: content
     settings:
       width: 100%
@@ -59,15 +82,23 @@ content:
     third_party_settings: {  }
   field_announcement_link:
     type: link_default
-    weight: 19
+    weight: 17
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
+  field_announcement_page_paths:
+    type: string_textarea
+    weight: 16
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_announcement_service_pages:
     type: select2_entity_reference
-    weight: 16
+    weight: 15
     region: content
     settings:
       width: 100%
@@ -77,25 +108,25 @@ content:
     third_party_settings: {  }
   field_announcement_title:
     type: textfield_character_counter
-    weight: 17
+    weight: 15
     region: content
     settings:
-      counter_step: 0
       counter_max: 125
+      counter_step: 0
       counter_total: 55
       size: 60
       placeholder: ''
     third_party_settings: {  }
   field_announcement_type:
     type: select2
-    weight: 11
+    weight: 10
     region: content
     settings:
       width: 100%
     third_party_settings: {  }
   field_announcement_unit_pages:
     type: select2_entity_reference
-    weight: 15
+    weight: 14
     region: content
     settings:
       width: 100%
@@ -112,35 +143,35 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 6
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   publish_on:
     type: datetime_timestamp_no_default
-    weight: 7
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   published_at:
     type: publication_date_timestamp
-    weight: 10
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   scheduler_settings:
-    weight: 5
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   simple_sitemap:
-    weight: 12
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 9
+    weight: 8
     region: content
     settings:
       display_label: true
@@ -170,7 +201,7 @@ content:
     third_party_settings: {  }
   unpublish_on:
     type: datetime_timestamp_no_default
-    weight: 8
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }

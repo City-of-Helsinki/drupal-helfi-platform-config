@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_etusivu_entities;
 
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -14,6 +15,8 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\external_entities\ExternalEntityStorageInterface;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Base class for lazy builder.
@@ -25,8 +28,11 @@ class LazyBuilderBase implements TrustedCallbackInterface {
     protected RouteMatchInterface $routeMatch,
     protected LanguageManagerInterface $languageManager,
     protected DefaultLanguageResolver $defaultLanguageResolver,
-  ) {
-  }
+    protected PagePathMatcher $pagePathMatcher,
+    #[Autowire(service: 'logger.channel.helfi_etusivu_entities')]
+    protected LoggerInterface $logger,
+    protected EntityFieldManagerInterface $entityFieldManager,
+  ) {}
 
   /**
    * Get global entity storage.
@@ -95,6 +101,24 @@ class LazyBuilderBase implements TrustedCallbackInterface {
     }
 
     return FALSE;
+  }
+
+  /**
+   * Checks whether the current path matches a page path pattern field.
+   *
+   * Patterns use the same syntax as the core request path condition: one path
+   * per line, "*" as a wildcard, and "<front>" for the front page.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The announcement or survey.
+   * @param string $fieldName
+   *   The string field that stores the patterns.
+   *
+   * @return bool
+   *   TRUE when the current alias or internal path matches.
+   */
+  protected function matchesPagePaths(FieldableEntityInterface $entity, string $fieldName): bool {
+    return $this->pagePathMatcher->matches($entity, $fieldName);
   }
 
   /**

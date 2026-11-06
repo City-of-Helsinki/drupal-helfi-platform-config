@@ -5,20 +5,14 @@ declare(strict_types=1);
 namespace Drupal\helfi_etusivu_entities;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\helfi_api_base\Features\FeatureManagerInterface;
-use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\helfi_etusivu_entities\Plugin\Block\AnnouncementsBlock;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * The announcement lazy builder.
@@ -33,39 +27,19 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
   public static $announcementTypeWeights = ['notification' => 0, 'attention' => 1, 'alert' => 2];
 
   /**
-   * The constructor.
-   *
-   * @param \Psr\Log\LoggerInterface $logger
-   *   The logger.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
-   *   The current route match.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
-   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager
-   *   The entity field manager.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
-   *   The language manager.
-   * @param \Drupal\helfi_api_base\Language\DefaultLanguageResolver $defaultLanguageResolver
-   *   Default language resolver.
-   * @param \Drupal\helfi_api_base\Features\FeatureManagerInterface $featureManager
-   *   Default language resolver.
+   * The feature manager.
    */
-  public function __construct(
-    #[Autowire(service: 'logger.channel.helfi_etusivu_entities')]
-    protected LoggerInterface $logger,
-    protected RouteMatchInterface $routeMatch,
-    protected EntityTypeManagerInterface $entityTypeManager,
-    protected EntityFieldManagerInterface $entityFieldManager,
-    protected LanguageManagerInterface $languageManager,
-    protected DefaultLanguageResolver $defaultLanguageResolver,
-    protected FeatureManagerInterface $featureManager,
-  ) {
-    parent::__construct(
-      $this->entityTypeManager,
-      $this->routeMatch,
-      $this->languageManager,
-      $this->defaultLanguageResolver,
-    );
+  private FeatureManagerInterface $featureManager;
+
+  /**
+   * Injects dependencies not available via the base class.
+   *
+   * @param \Drupal\helfi_api_base\Features\FeatureManagerInterface $featureManager
+   *   The feature manager.
+   */
+  #[Required]
+  public function setFeatureManager(FeatureManagerInterface $featureManager): void {
+    $this->featureManager = $featureManager;
   }
 
   /**
@@ -217,9 +191,10 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
         continue;
       }
 
-      if (!empty($referenceField) && $this->hasReference($referenceField, $announcementNode, $currentEntity)) {
-        // Add announcement to showed announcements if current page's entity
-        // is found from the list of referenced entities.
+      $matchesReference = !empty($referenceField)
+        && $this->hasReference($referenceField, $announcementNode, $currentEntity);
+      $matchesPath = $this->matchesPagePaths($announcementNode, 'field_announcement_page_paths');
+      if ($matchesReference || $matchesPath) {
         $localAnnouncements[] = $announcementNode;
       }
     }
@@ -295,8 +270,10 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
     }
 
     if (
-      $announcement->hasField('field_announcement_content_pages') &&
-      !$announcement->get('field_announcement_content_pages')->isEmpty()
+      ($announcement->hasField('field_announcement_content_pages') &&
+        !$announcement->get('field_announcement_content_pages')->isEmpty()) ||
+      ($announcement->hasField('field_announcement_page_paths') &&
+        !$announcement->get('field_announcement_page_paths')->isEmpty())
     ) {
       return AnnouncementsBlock::VISIBILITY_PAGE_WEIGHT;
     }

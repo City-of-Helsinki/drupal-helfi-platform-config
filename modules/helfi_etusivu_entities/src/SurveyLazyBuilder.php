@@ -5,55 +5,15 @@ declare(strict_types=1);
 namespace Drupal\helfi_etusivu_entities;
 
 use Drupal\Component\Utility\Xss;
-use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Utility\Error;
-use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use Drupal\helfi_etusivu_entities\Plugin\Block\SurveyBlock;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Lazy builder for survey.
  */
 final class SurveyLazyBuilder extends LazyBuilderBase {
-
-  /**
-   * The constructor.
-   *
-   * @param \Psr\Log\LoggerInterface $logger
-   *   The logger.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
-   *   The current route match.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
-   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager
-   *   The entity field manager.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
-   *   The language manager.
-   * @param \Drupal\helfi_api_base\Language\DefaultLanguageResolver $defaultLanguageResolver
-   *   Default language resolver.
-   */
-  public function __construct(
-    #[Autowire(service: 'logger.channel.helfi_etusivu_entities')]
-    protected LoggerInterface $logger,
-    protected RouteMatchInterface $routeMatch,
-    protected EntityTypeManagerInterface $entityTypeManager,
-    protected EntityFieldManagerInterface $entityFieldManager,
-    protected LanguageManagerInterface $languageManager,
-    protected DefaultLanguageResolver $defaultLanguageResolver,
-  ) {
-    parent::__construct(
-      $this->entityTypeManager,
-      $this->routeMatch,
-      $this->languageManager,
-      $this->defaultLanguageResolver,
-    );
-  }
 
   /**
    * Lazy builder callback function.
@@ -188,14 +148,23 @@ final class SurveyLazyBuilder extends LazyBuilderBase {
 
     // Pick which survey to show.
     foreach ($surveys as $node) {
-      // Check if the node should be shown at all pages.
-      if ($node->get('field_survey_content_pages')->isEmpty()) {
+      $contentPagesEmpty = !$node->hasField('field_survey_content_pages')
+        || $node->get('field_survey_content_pages')->isEmpty();
+      $pagePathsEmpty = !$node->hasField('field_survey_page_paths')
+        || $node->get('field_survey_page_paths')->isEmpty();
+
+      // Shown on all pages when neither restriction is set.
+      if ($contentPagesEmpty && $pagePathsEmpty) {
         return [$node];
       }
 
       // Show survey if current page's entity is found
       // from the list of referenced entities.
       if (!empty($referenceField) && $this->hasReference($referenceField, $node, $currentEntity)) {
+        return [$node];
+      }
+
+      if ($this->matchesPagePaths($node, 'field_survey_page_paths')) {
         return [$node];
       }
     }

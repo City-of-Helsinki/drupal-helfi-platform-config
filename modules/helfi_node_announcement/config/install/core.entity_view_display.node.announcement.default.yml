@@ -1,4 +1,4 @@
-uuid: 4e0a02f2-f3ff-402b-9bc9-1cb66811b0b3
+uuid: 4786fe46-35a4-4f1f-831c-b16469973ebf
 langcode: en
 status: true
 dependencies:
@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.announcement.field_announcement_all_pages
     - field.field.node.announcement.field_announcement_content_pages
     - field.field.node.announcement.field_announcement_link
+    - field.field.node.announcement.field_announcement_page_paths
     - field.field.node.announcement.field_announcement_title
     - field.field.node.announcement.field_announcement_type
     - node.type.announcement
@@ -44,6 +45,7 @@ content:
     label: hidden
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings: {  }
     weight: 4
     region: content
@@ -62,6 +64,7 @@ content:
 hidden:
   field_announcement_all_pages: true
   field_announcement_content_pages: true
+  field_announcement_page_paths: true
   field_announcement_service_pages: true
   field_announcement_unit_pages: true
   langcode: true
