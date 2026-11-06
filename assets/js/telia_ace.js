@@ -35,10 +35,10 @@
  * 2.2 Custom button state is changed.
  * 2.3 The ACE-chat is loaded dynamically with onload-callback attached to it.
  * 2.4 Wait for onload-callback to trigger.
- * 3. The onload-functionality opens the chat and adds one-use event listener for closing.
- * 4. Close button closes the chat window and adds one-use event listener for opening.
- *
- * {once: true} option is added to all event listeners to get rid of debounce-code.
+ * 3. The onload-functionality opens the chat and starts observing
+ *    the chat trigger.
+ * 4. The custom button is shown and hidden based on the chat trigger state.
+ * 5. Clicking the custom button after the chat has loaded will reopen the chat.
  */
 class TeliaAceWidget {
   constructor(chatSettings) {
@@ -106,25 +106,6 @@ class TeliaAceWidget {
     head.appendChild(chatScript);
 
     this.state.chatLoading = true;
-    this.render();
-  };
-
-  /**
-   * Open button click event callback.
-   */
-  openCallback = () => {
-    this.state.chatOpened = true;
-    this.openChat(true);
-    this.closeButton.addEventListener('click', this.closeCallback, { once: true });
-    this.render();
-  };
-
-  /**
-   * Close button click event callback.
-   */
-  closeCallback = () => {
-    this.state.chatOpened = false;
-    this.customChatButton.addEventListener('click', this.openChat, { once: true });
     this.render();
   };
 
@@ -217,12 +198,19 @@ class TeliaAceWidget {
       close = humany_widget.getElementsByClassName('humany-close')[0];
 
       if (humany_widget && close) {
-        this.closeButton = close;
         this.state.chatLoading = false;
         this.state.chatLoaded = true;
         this.state.chatOpened = true;
 
-        this.closeButton.addEventListener('click', this.closeCallback, { once: true });
+        // Copy the open state from the Telia chat trigger
+        // whenever its classes change.
+        new MutationObserver(() => {
+          this.state.chatOpened = humany_widget.classList.contains('humany-active');
+          this.render();
+        }).observe(humany_widget, { attributes: true, attributeFilter: ['class'] });
+
+        // Add a permanent click listener that can be used to reopen the chat.
+        this.customChatButton.addEventListener('click', () => this.openChat(true));
         this.openChat(true);
         clearInterval(loaded);
       }
