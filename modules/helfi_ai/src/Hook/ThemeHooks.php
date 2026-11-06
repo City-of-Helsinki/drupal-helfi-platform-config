@@ -21,7 +21,7 @@ class ThemeHooks {
   public function theme(): array {
     return [
       'ai_title_suggestions' => [
-        'variables' => ['suggestions' => []],
+        'variables' => ['suggestions' => [], 'original_title' => NULL],
         'template' => 'ai-title-suggestions',
       ],
       'ai_message' => [

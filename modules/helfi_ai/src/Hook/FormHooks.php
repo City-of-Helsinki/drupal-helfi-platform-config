@@ -103,7 +103,7 @@ final class FormHooks {
     $response = new AjaxResponse();
 
     $dialogOptions = [
-      'width' => '40rem',
+      'width' => '45rem',
       'classes' => ['ui-dialog' => 'helfi-ai-dialog'],
     ];
 
@@ -124,6 +124,7 @@ final class FormHooks {
       [
         '#theme' => 'ai_title_suggestions',
         '#suggestions' => array_values($suggestions),
+        '#original_title' => $form_state->getValue(['title', 0, 'value']),
         '#attached' => ['library' => ['helfi_ai/title_suggest']],
       ],
       $dialogOptions,
@@ -166,19 +167,18 @@ final class FormHooks {
 
     $form['title']['helfi_ai_suggest'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['ai-suggest']],
+      '#attributes' => ['class' => ['ai-title__suggest']],
       '#weight' => ($form['title']['widget'][0]['value']['#weight'] ?? 0) + 0.5,
       'button' => [
         '#type' => 'button',
-        '#value' => new TranslatableMarkup('Generate SEO title with AI', options: ['context' => 'Helfi AI']),
+        '#value' => new TranslatableMarkup('Suggest a title', options: ['context' => 'Helfi AI']),
         '#name' => 'helfi_ai_suggest_title',
-        '#attributes' => ['class' => ['button--small']],
         '#ajax' => [
           'callback' => [$this, 'buildSuggestionResponse'],
           'event' => 'click',
           'progress' => [
             'type' => 'throbber',
-            'message' => new TranslatableMarkup('Generating title suggestions…', options: ['context' => 'Helfi AI']),
+            'message' => new TranslatableMarkup('Generating suggestions…', options: ['context' => 'Helfi AI']),
           ],
         ],
         '#attached' => ['library' => ['helfi_ai/title_suggest']],
