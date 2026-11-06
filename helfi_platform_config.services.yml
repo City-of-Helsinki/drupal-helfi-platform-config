@@ -28,6 +28,8 @@ services:
 
   Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber: ~
 
+  Drupal\helfi_platform_config\PathAliasEntityResolver: ~
+
   Drupal\helfi_platform_config\EventSubscriber\ElasticsearchParamsSubscriber: ~
 
   Drupal\helfi_platform_config\EntityVersionMatcher: '@helfi_platform_config.entity_version_matcher'
