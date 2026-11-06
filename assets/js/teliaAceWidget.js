@@ -49,7 +49,6 @@ class TeliaAceWidget {
       selector: `leijuke_${chatSettings.chat_id}`,
       chatTitle: chatSettings.chat_title,
       scriptUrl: chatSettings.script_url,
-      dismissedKey: `telia-ace-dismissed-${chatSettings.chat_id}`,
     };
     this.state = {
       cookies: this.cookieCheck(),
@@ -133,10 +132,17 @@ class TeliaAceWidget {
     this.dismissButton = dismissButton;
 
     // Restore the closed state of this chat for the session.
+    this.state.chatDismissed = this.getDismissedChats()[this.static.chatId] === true;
+  };
+
+  /**
+   * Get the closed chats of the session.
+   */
+  getDismissedChats = () => {
     try {
-      this.state.chatDismissed = sessionStorage.getItem(this.static.dismissedKey) === '1';
+      return JSON.parse(sessionStorage.getItem('chat-dismissed')) ?? {};
     } catch (e) {
-      // Ignore unavailable session storage.
+      return {};
     }
   };
 
@@ -161,19 +167,20 @@ class TeliaAceWidget {
     const wrapper = document.getElementById('telia-ace-leijuke');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    wrapper
-      .animate([{ opacity: 1 }, { opacity: 0 }], { duration: reducedMotion ? 0 : 300 })
-      .finished.then(() => {
-        this.state.chatDismissed = true;
-        try {
-          sessionStorage.setItem(this.static.dismissedKey, '1');
-        } catch (e) {
-          // Ignore unavailable session storage.
-        }
-        this.render();
-        this.toast.hidden = false;
-        this.toast.focus();
-      });
+    wrapper.animate([{ opacity: 1 }, { opacity: 0 }], { duration: reducedMotion ? 0 : 300 }).finished.then(() => {
+      this.state.chatDismissed = true;
+      try {
+        sessionStorage.setItem(
+          'chat-dismissed',
+          JSON.stringify({ ...this.getDismissedChats(), [this.static.chatId]: true }),
+        );
+      } catch (_e) {
+        // Ignore unavailable session storage.
+      }
+      this.render();
+      this.toast.hidden = false;
+      this.toast.focus();
+    });
   };
 
   /**
