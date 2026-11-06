@@ -39,6 +39,8 @@
  *    the chat trigger.
  * 4. The custom button is shown and hidden based on the chat trigger state.
  * 5. Clicking the custom button after the chat has loaded will reopen the chat.
+ * 6. The close button fades out the custom button, shows a toast and
+ *    reveals the footer button that opens the chat.
  */
 class TeliaAceWidget {
   constructor(chatSettings) {
@@ -54,11 +56,13 @@ class TeliaAceWidget {
       chatLoaded: false,
       chatOpened: false,
       chatInitialized: false,
+      chatDismissed: false,
       busy: false,
     };
 
     const button = this.createChatButton();
-    button.addEventListener('click', this.firstClickCallback, { once: true });
+    button.addEventListener('click', this.openCallback);
+    this.createDismiss();
     this.render();
   }
 
@@ -83,6 +87,89 @@ class TeliaAceWidget {
     this.customChatButton = button;
 
     return button;
+  };
+
+  /**
+   * Create the close button, connect the toast and the footer button.
+   */
+  createDismiss = () => {
+    const toast = document.getElementById('telia-ace-toast');
+    const footerButton = document.getElementById('telia-ace-footer-button');
+    const footer = document.querySelector('.footer .footer-top');
+    if (!toast || !footerButton || !footer) {
+      return;
+    }
+
+    footer.append(footerButton);
+    footerButton.addEventListener('click', this.openCallback);
+
+    const dismissButton = document.createElement('button');
+    dismissButton.type = 'button';
+    dismissButton.classList.add('telia-chat-leijuke__dismiss');
+    dismissButton.setAttribute('aria-label', Drupal.t('Hide the chat', {}, { context: 'Telia ACE chat' }));
+    dismissButton.innerHTML = '<span class="hel-icon hel-icon--cross" aria-hidden="true"></span>';
+    dismissButton.addEventListener('click', this.dismissCallback);
+    this.customChatButton.after(dismissButton);
+
+    toast.setAttribute('tabindex', '-1');
+    toast.querySelector('.toast__close').addEventListener('click', this.closeToast);
+    toast.querySelector('.toast__link')?.addEventListener('click', (event) => {
+      event.preventDefault();
+      footerButton.focus();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !toast.hidden) {
+        this.closeToast();
+      }
+    });
+
+    this.toast = toast;
+    this.footerButton = footerButton;
+    this.dismissButton = dismissButton;
+  };
+
+  /**
+   * Open the chat, or load it on the first click.
+   */
+  openCallback = () => {
+    if (this.state.chatLoaded) {
+      this.openChat(true);
+      return;
+    }
+
+    if (!this.state.chatInitialized) {
+      this.firstClickCallback();
+    }
+  };
+
+  /**
+   * Fade out the button and show the toast.
+   */
+  dismissCallback = () => {
+    const wrapper = document.getElementById('telia-ace-leijuke');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    wrapper
+      .animate([{ opacity: 1 }, { opacity: 0 }], { duration: reducedMotion ? 0 : 85, easing: 'ease-out' })
+      .finished.then(() => {
+        this.state.chatDismissed = true;
+        this.render();
+        this.toast.hidden = false;
+        this.toast.focus();
+      });
+  };
+
+  /**
+   * Hide the toast.
+   */
+  closeToast = () => {
+    this.toast.hidden = true;
+
+    // Move focus to the start of the page.
+    document.body.setAttribute('tabindex', '-1');
+    document.body.addEventListener('blur', () => document.body.removeAttribute('tabindex'), { once: true });
+    document.body.focus({ preventScroll: true });
   };
 
   /**
@@ -159,9 +246,15 @@ class TeliaAceWidget {
       element.innerHTML = innerHTML;
     }
 
-    // Hide and show the button based on this.state
+    // Hide and show the buttons based on this.state.
+    const buttonHidden = this.state.chatOpened || this.state.chatDismissed;
     element.classList.toggle('loading', this.state.chatLoading);
-    element.classList.toggle('hidden', this.state.chatOpened);
+    element.classList.toggle('hidden', buttonHidden);
+
+    if (this.dismissButton) {
+      this.dismissButton.hidden = buttonHidden;
+      this.footerButton.hidden = !this.state.chatDismissed;
+    }
   };
 
   /**
@@ -209,8 +302,6 @@ class TeliaAceWidget {
           this.render();
         }).observe(humany_widget, { attributes: true, attributeFilter: ['class'] });
 
-        // Add a permanent click listener that can be used to reopen the chat.
-        this.customChatButton.addEventListener('click', () => this.openChat(true));
         this.openChat(true);
         clearInterval(loaded);
       }
