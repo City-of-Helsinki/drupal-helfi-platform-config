@@ -14,6 +14,10 @@ function helfi_user_roles_platform_config_grant_permissions() : array {
   return [
     'anonymous' => [
       'access content',
+      'view helfi_multisite_content external entity',
+    ],
+    'authenticated' => [
+      'view helfi_multisite_content external entity',
     ],
     'admin' => [
       // @user.
@@ -21,19 +25,16 @@ function helfi_user_roles_platform_config_grant_permissions() : array {
       'administer users',
       'cancel account',
       'change own username',
-      'view helfi_multisite_content external entity',
     ],
     'content_producer' => [
       // @user.
       'cancel account',
       'change own username',
-      'view helfi_multisite_content external entity',
     ],
     'editor' => [
       // @user.
       'cancel account',
       'change own username',
-      'view helfi_multisite_content external entity',
     ],
   ];
 }
