@@ -19,6 +19,10 @@ final class QueryBuilder {
   const int KNN_DEFAULT_SIZE = 10;
   const int KNN_MAX_SIZE = 50;
 
+  // Elasticsearch's default index.max_result_window: from + size of a
+  // regular (non-KNN) search must not exceed this.
+  const int MAX_RESULT_WINDOW = 10000;
+
   // The number of nearest neighbours returned by the KNN search.
   const int KNN_K = 150;
 
@@ -121,13 +125,17 @@ final class QueryBuilder {
    *   The search query string.
    * @param string $language
    *   The language code.
+   * @param int $size
+   *   Number of contacts to return.
+   * @param int $from
+   *   Offset for pagination.
    *
    * @return array<mixed>
    *   An array with 'index' and 'body' keys for Elasticsearch.
    *
    * @see \Drupal\Tests\helfi_etusivu\Kernel\Search\Numerot\ContactQueryTest
    */
-  public function buildContactQuery(string $query, string $language): array {
+  public function buildContactQuery(string $query, string $language, int $size = self::CONTACTS_LIMIT, int $from = 0): array {
     $language = match ($language) {
       "fi", "sv", "en" => $language,
       default => "en",
@@ -177,7 +185,8 @@ final class QueryBuilder {
             ],
           ],
         ],
-        'size' => self::CONTACTS_LIMIT,
+        'size' => $size,
+        'from' => $from,
         '_source' => [
           'name_parts',
           'email',
