@@ -108,7 +108,7 @@ final class PagePathMatcherTest extends EntityKernelTestBase {
    * Tests that client error pages never match.
    *
    * @param string|null $route
-   *   The route name, when the request is a system error page.
+   *   The route name. NULL when the request never matched a route.
    * @param int|null $status
    *   The exception status code, when the error uses a custom page.
    * @param string $method
@@ -133,10 +133,11 @@ final class PagePathMatcherTest extends EntityKernelTestBase {
       'system 403' => ['system.403', NULL, 'GET'],
       'system 404' => ['system.404', NULL, 'GET'],
       'system 4xx' => ['system.4xx', NULL, 'GET'],
-      'custom page 400' => [NULL, 400, 'GET'],
-      'custom page 403' => [NULL, 403, 'GET'],
-      'custom page 499' => [NULL, 499, 'GET'],
-      'custom page 404 on POST' => [NULL, 404, 'POST'],
+      'custom page 400' => ['entity.node.canonical', 400, 'GET'],
+      'custom page 403' => ['entity.node.canonical', 403, 'GET'],
+      'custom page 499' => ['entity.node.canonical', 499, 'GET'],
+      'custom page 404 on POST' => ['entity.node.canonical', 404, 'POST'],
+      'unmatched url' => [NULL, NULL, 'GET'],
     ];
   }
 
@@ -202,14 +203,14 @@ final class PagePathMatcherTest extends EntityKernelTestBase {
    * @param string $method
    *   The request method.
    * @param string|null $route
-   *   The route name.
+   *   The route name. Defaults to a normal page route. NULL leaves _route unset.
    * @param int|null $status
    *   The exception status code.
    *
    * @return bool
    *   TRUE when the patterns match the request.
    */
-  private function pathMatches(EntityTest $entity, string $path, string $method = 'GET', ?string $route = NULL, ?int $status = NULL): bool {
+  private function pathMatches(EntityTest $entity, string $path, string $method = 'GET', ?string $route = 'entity.node.canonical', ?int $status = NULL): bool {
     $parameters = $status === NULL ? [] : ['_exception_statuscode' => $status];
     $request = Request::create($path, $method, $parameters);
     if ($route !== NULL) {

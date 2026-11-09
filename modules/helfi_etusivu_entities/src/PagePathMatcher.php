@@ -92,9 +92,15 @@ final class PagePathMatcher {
    *   TRUE when the request is a 4xx page.
    */
   private function isErrorPage(Request $request): bool {
+    // The router leaves _route unset when nothing matches. That original
+    // request keeps the missing path, so a wildcard would match it.
+    $route = $request->attributes->get('_route');
+    if (!is_string($route) || $route === '') {
+      return TRUE;
+    }
+
     // Check if we're on a system 4xx route. This covers direct system/4xx calls
     // and errors on other routes when the default Drupal error pages are used.
-    $route = $request->attributes->get('_route');
     $routes = array_map(static fn (string $code): string => 'system.' . $code, self::ERROR_CODES);
     if (in_array($route, $routes, TRUE)) {
       return TRUE;
