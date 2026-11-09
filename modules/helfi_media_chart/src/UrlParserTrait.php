@@ -14,6 +14,11 @@ use Psr\Http\Message\UriInterface;
 trait UrlParserTrait {
 
   /**
+   * Allowed paths for the media chart url.
+   */
+  public const array ALLOWED_PATHS = ['/view', '/sampleReportEmbed'];
+
+  /**
    * Check that given URL has correct properties.
    *
    * @param \Psr\Http\Message\UriInterface $uri
@@ -22,7 +27,7 @@ trait UrlParserTrait {
   protected function assertMediaLink(UriInterface $uri) : void {
     if (in_array($uri->getHost(), Chart::CHART_POWERBI_URL)) {
       // Let the test content sample report through as well.
-      foreach (['/view', '/sampleReportEmbed'] as $needle) {
+      foreach (self::ALLOWED_PATHS as $needle) {
         if (str_contains($uri->getPath(), $needle)) {
           return;
         }
