@@ -35,7 +35,7 @@ class UrlParserTraitTest extends UnitTestCase {
    *   The url.
    */
   #[DataProvider('getInvalidPathUrlData')]
-  public function testInvalidPath(string $url) {
+  public function testInvalidPath(string $url) : void {
     $this->expectException(\Exception::class);
     $this->mediaUrlToUri($url);
   }
@@ -58,10 +58,10 @@ class UrlParserTraitTest extends UnitTestCase {
   /**
    * The data provider for testInvalidPath().
    *
-   * @return string[]
+   * @return array<int, array<int, string>>
    *   The test data.
    */
-  public static function getInvalidPathUrlData(): array {
+  public static function getInvalidPathUrlData() : array {
     return [
       [
         'https://playground.powerbi.com/reportEmbed',
