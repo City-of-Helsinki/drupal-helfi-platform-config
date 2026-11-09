@@ -50,6 +50,51 @@ final class PagePathValidatorTest extends UnitTestCase {
   }
 
   /**
+   * Tests that valid lines are stored without surrounding whitespace.
+   *
+   * @param string $value
+   *   The submitted textarea value.
+   * @param string $expected
+   *   The value written back to form state.
+   */
+  #[DataProvider('trimmedPaths')]
+  public function testValidPathsAreStoredTrimmed(string $value, string $expected): void {
+    $stored = NULL;
+    $this->assertNull($this->validate($this->validatorWithDefaultPrefixes(), $value, $stored));
+    $this->assertSame($expected, $stored);
+  }
+
+  /**
+   * Data provider for testValidPathsAreStoredTrimmed().
+   *
+   * @return array<string, array{string, string}>
+   *   Submitted values and the expected stored value.
+   */
+  public static function trimmedPaths(): array {
+    return [
+      'already clean' => ["/feedback\n/user/*", "/feedback\n/user/*"],
+      'surrounding space' => ["  /feedback  \n\t/user/*\t", "/feedback\n/user/*"],
+      'front page with carriage return' => ["  <front>  \r", '<front>'],
+      'windows line endings' => ["  /feedback  \r\n  <front>  \r\n", "/feedback\n<front>\n"],
+      'blank lines stay blank' => ["\n  \n/feedback\n", "\n\n/feedback\n"],
+      'whitespace only' => ['   ', ''],
+    ];
+  }
+
+  /**
+   * Tests that an invalid value is left unchanged.
+   */
+  public function testInvalidValueIsNotNormalized(): void {
+    $stored = NULL;
+    $error = $this->validate($this->validatorWithDefaultPrefixes(), "  /feedback  \nnope", $stored);
+
+    $this->assertInstanceOf(TranslatableMarkup::class, $error);
+    $this->assertSame('The path %path requires a leading forward slash.', $error->getUntranslatedString());
+    $this->assertSame(['%path' => 'nope'], $error->getArguments());
+    $this->assertNull($stored);
+  }
+
+  /**
    * Tests paths that are rejected.
    *
    * @param string $value
@@ -199,11 +244,13 @@ final class PagePathValidatorTest extends UnitTestCase {
    *   The validator under test.
    * @param mixed $value
    *   The submitted textarea value.
+   * @param mixed $stored
+   *   The value written back to form state, or NULL when it is unchanged.
    *
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup|null
    *   The recorded error, if any.
    */
-  private function validate(PagePathValidator $validator, mixed $value): ?TranslatableMarkup {
+  private function validate(PagePathValidator $validator, mixed $value, mixed &$stored = NULL): ?TranslatableMarkup {
     $element = [
       '#parents' => ['field_page_paths', 0, 'value'],
       '#value' => $value,
@@ -211,6 +258,7 @@ final class PagePathValidatorTest extends UnitTestCase {
     $formState = new FormState();
     $completeForm = [];
     $validator->validate($element, $formState, $completeForm);
+    $stored = $formState->getValue(['field_page_paths', 0, 'value']);
     $errors = $formState->getErrors();
     $error = $errors['field_page_paths][0][value'] ?? NULL;
     return $error instanceof TranslatableMarkup ? $error : NULL;

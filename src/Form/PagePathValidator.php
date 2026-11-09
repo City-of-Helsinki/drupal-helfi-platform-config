@@ -9,7 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
- * Validates page path pattern fields.
+ * Validates and normalizes page path pattern fields.
  */
 final class PagePathValidator {
 
@@ -22,7 +22,7 @@ final class PagePathValidator {
    *
    * Each line must be the front page token or start with a slash, and must
    * not include a language or site prefix. Patterns that match every page
-   * are rejected.
+   * are rejected. Surrounding whitespace is removed from each stored line.
    *
    * @param array<string, mixed> $element
    *   The path textarea element.
@@ -43,7 +43,8 @@ final class PagePathValidator {
     $languagePrefixes = $this->configuredPrefixes('language.negotiation', 'url.prefixes');
     $sitePrefixes = $this->configuredPrefixes('helfi_proxy.settings', 'prefixes');
 
-    foreach (array_map('trim', explode("\n", $value)) as $path) {
+    $paths = array_map('trim', explode("\n", $value));
+    foreach ($paths as $path) {
       if ($path === '' || $path === '<front>') {
         continue;
       }
@@ -70,6 +71,12 @@ final class PagePathValidator {
       ]));
       return;
     }
+
+    // The submitted value is copied into form state before this callback.
+    // Write the trimmed lines back so the stored value matches validation.
+    $normalized = implode("\n", $paths);
+    $element['#value'] = $normalized;
+    $form_state->setValueForElement($element, $normalized);
   }
 
   /**
