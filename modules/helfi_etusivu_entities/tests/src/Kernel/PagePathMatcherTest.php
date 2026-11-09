@@ -203,7 +203,8 @@ final class PagePathMatcherTest extends EntityKernelTestBase {
    * @param string $method
    *   The request method.
    * @param string|null $route
-   *   The route name. Defaults to a normal page route. NULL leaves _route unset.
+   *   The route name. Defaults to a normal page route. NULL leaves _route
+   *   unset.
    * @param int|null $status
    *   The exception status code.
    *
