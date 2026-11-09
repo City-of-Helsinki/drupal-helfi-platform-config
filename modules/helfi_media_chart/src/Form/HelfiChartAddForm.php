@@ -8,12 +8,17 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\helfi_media_chart\Plugin\media\Source\Chart;
+use Drupal\helfi_media_chart\Plugin\Validation\Constraint\ValidHelfiChartLinkConstraintValidator;
+use Drupal\helfi_media_chart\UrlParserTrait;
 use Drupal\media_library\Form\AddFormBase;
 
 /**
  * {@inheritDoc}
  */
 class HelfiChartAddForm extends AddFormBase {
+
+  use UrlParserTrait;
 
   /**
    * {@inheritDoc}
@@ -29,6 +34,7 @@ class HelfiChartAddForm extends AddFormBase {
         '@powerbi' => Link::fromTextAndUrl('https://app.powerbi.com/', Url::fromUri('https://app.powerbi.com/', ['attributes' => ['target' => '_blank']]))->toString(),
       ]),
       '#maxlength' => 2048,
+      '#element_validate' => ['::validateMediaChartUrl'],
     ];
 
     $container['submit'] = [
@@ -52,6 +58,27 @@ class HelfiChartAddForm extends AddFormBase {
     $form['container'] = $container;
 
     return $form;
+  }
+
+  /**
+   * Validate the chart url before creating the media entity.
+   *
+   * @param array $element
+   *   The element.
+   * @param FormStateInterface $form_state
+   *   The form state.
+   */
+  public function validateMediaChartUrl(array &$element, FormStateInterface $form_state): void {
+    $uri = trim((string) $element['#value']);
+    try {
+      $this->mediaUrlToUri($uri);
+    }
+    catch (\Exception $e) {
+      $form_state->setError($element, $this->t('Given host (%value) is not valid, must be one of: %domains', [
+        '%value' => $uri,
+        '%domains' => implode(', ', Chart::CHART_POWERBI_URL),
+      ]));
+    }
   }
 
   /**
