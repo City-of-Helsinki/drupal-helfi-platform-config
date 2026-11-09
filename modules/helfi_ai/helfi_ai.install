@@ -122,3 +122,12 @@ function helfi_ai_update_11006(): void {
       ?->delete();
   }
 }
+
+/**
+ * Remove the AI title suggestion feature flag.
+ */
+function helfi_ai_update_11007(): void {
+  \Drupal::configFactory()->getEditable('helfi_ai.settings')
+    ->clear('enable_seo_title')
+    ->save();
+}

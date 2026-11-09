@@ -16,6 +16,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_ai\Hook\FormHooks;
 use Drupal\helfi_ai\Service\TextServicesGenerator;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -93,6 +95,8 @@ class FormHooksTest extends EntityKernelTestBase {
       $this->prophesize(AccountInterface::class)->reveal(),
       $this->container->get(ConfigFactoryInterface::class),
       $this->container->get(TextServicesGenerator::class),
+      $this->container->get(ActiveProjectRoles::class),
+      $this->container->get(EnvironmentResolverInterface::class),
     );
   }
 
