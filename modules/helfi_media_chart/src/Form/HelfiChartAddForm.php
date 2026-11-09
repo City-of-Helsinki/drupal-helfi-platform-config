@@ -9,7 +9,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\helfi_media_chart\Plugin\media\Source\Chart;
-use Drupal\helfi_media_chart\Plugin\Validation\Constraint\ValidHelfiChartLinkConstraintValidator;
 use Drupal\helfi_media_chart\UrlParserTrait;
 use Drupal\media_library\Form\AddFormBase;
 
@@ -63,9 +62,9 @@ class HelfiChartAddForm extends AddFormBase {
   /**
    * Validate the chart url before creating the media entity.
    *
-   * @param array $element
+   * @param array<mixed> $element
    *   The element.
-   * @param FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
    */
   public function validateMediaChartUrl(array &$element, FormStateInterface $form_state): void {
@@ -80,7 +79,7 @@ class HelfiChartAddForm extends AddFormBase {
           '%value' => $uri,
           '%domains' => implode(', ', Chart::CHART_POWERBI_URL),
           '%paths' => implode(', ', self::ALLOWED_PATHS),
-      ]));
+        ]));
     }
   }
 
