@@ -28,6 +28,12 @@ class UrlParserTraitTest extends UnitTestCase {
     $this->assertEquals($expected, (string) $this->mediaUrlToUri($expected));
   }
 
+  #[DataProvider('getInvalidPathUrlData')]
+  public function testInvalidPath(string $url) {
+    $this->expectException(\Exception::class);
+    $this->mediaUrlToUri($url);
+  }
+
   /**
    * The data provider for testChartUrl().
    *
@@ -39,6 +45,19 @@ class UrlParserTraitTest extends UnitTestCase {
       [
         'https://app.powerbi.com/view?r=eyJrIjoiYjE5OTFhMmEtMWYzNC00YjY2LTllODMtMzhhZDRiNTJiMDQ5IiwidCI6IjNmZWI2YmMxLWQ3MjItNDcyNi05NjZjLTViNThiNjRkZjc1MiIsImMiOjh9',
         'https://playground.powerbi.com/sampleReportEmbed',
+      ],
+    ];
+  }
+
+  /**
+   * The data provider for testInvalidPath().
+   *
+   * @return string[]
+   */
+  public static function getInvalidPathUrlData(): array {
+    return [
+      [
+        'https://playground.powerbi.com/reportEmbed',
       ],
     ];
   }
