@@ -73,11 +73,13 @@ class HelfiChartAddForm extends AddFormBase {
     try {
       $this->mediaUrlToUri($uri);
     }
-    catch (\Exception $e) {
-      $form_state->setError($element, $this->t('Given host (%value) is not valid, must be one of: %domains', [
-        '%value' => $uri,
-        '%domains' => implode(', ', Chart::CHART_POWERBI_URL),
-        '%paths' => implode(', ', self::ALLOWED_PATHS),
+    catch (\Exception) {
+      $form_state->setError(
+        $element,
+        $this->t('Given host (%value) is not valid, must be one of: %domains. The path must be one of: %paths', [
+          '%value' => $uri,
+          '%domains' => implode(', ', Chart::CHART_POWERBI_URL),
+          '%paths' => implode(', ', self::ALLOWED_PATHS),
       ]));
     }
   }
