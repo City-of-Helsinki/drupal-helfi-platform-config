@@ -76,14 +76,16 @@ class TeliaAceWidget {
       wrapper.id = 'telia-ace-leijuke';
       document.body.append(wrapper);
     }
+    wrapper.classList.add('chat-widget');
 
     // The custom chat-button.
     const button = document.createElement('button');
     button.id = this.static.selector;
-    button.classList.add('chat-leijuke');
-    button.classList.add('telia-chat-leijuke');
+    button.type = 'button';
+    button.classList.add('chat-widget__open');
 
     wrapper.append(button);
+    this.wrapper = wrapper;
     this.customChatButton = button;
 
     return button;
@@ -108,7 +110,7 @@ class TeliaAceWidget {
 
     const dismissButton = document.createElement('button');
     dismissButton.type = 'button';
-    dismissButton.classList.add('telia-chat-leijuke__dismiss');
+    dismissButton.classList.add('chat-widget__dismiss');
     dismissButton.setAttribute('aria-label', Drupal.t('Hide the chat', {}, { context: 'Telia ACE chat' }));
     dismissButton.innerHTML = '<span class="hel-icon hel-icon--cross" aria-hidden="true"></span>';
     dismissButton.addEventListener('click', this.dismissCallback);
@@ -129,7 +131,6 @@ class TeliaAceWidget {
 
     this.toast = toast;
     this.footerButton = footerButton;
-    this.dismissButton = dismissButton;
 
     // Restore the closed state of this chat for the session.
     this.state.chatDismissed = this.getDismissedChats()[this.static.chatId] === true;
@@ -141,7 +142,7 @@ class TeliaAceWidget {
   getDismissedChats = () => {
     try {
       return JSON.parse(sessionStorage.getItem('chat-dismissed')) ?? {};
-    } catch (e) {
+    } catch (_e) {
       return {};
     }
   };
@@ -164,10 +165,9 @@ class TeliaAceWidget {
    * Fade out the button and show the toast.
    */
   dismissCallback = () => {
-    const wrapper = document.getElementById('telia-ace-leijuke');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    wrapper.animate([{ opacity: 1 }, { opacity: 0 }], { duration: reducedMotion ? 0 : 300 }).finished.then(() => {
+    this.wrapper.animate([{ opacity: 1 }, { opacity: 0 }], { duration: reducedMotion ? 0 : 300 }).finished.then(() => {
       this.state.chatDismissed = true;
       try {
         sessionStorage.setItem(
@@ -260,9 +260,8 @@ class TeliaAceWidget {
     }
 
     const innerHTML = `
-      <span class="hel-icon hel-icon--speechbubble-text"></span>
+      <span class="hel-icon hel-icon--customer-bot-neutral" aria-hidden="true"></span>
       <span>${label}</span>
-      <span class="hel-icon hel-icon--angle-up"></span>
     `;
 
     if (element.innerHTML !== innerHTML) {
@@ -270,12 +269,10 @@ class TeliaAceWidget {
     }
 
     // Hide and show the buttons based on this.state.
-    const buttonHidden = this.state.chatOpened || this.state.chatDismissed;
     element.classList.toggle('loading', this.state.chatLoading);
-    element.classList.toggle('hidden', buttonHidden);
+    this.wrapper.hidden = this.state.chatOpened || this.state.chatDismissed;
 
-    if (this.dismissButton) {
-      this.dismissButton.hidden = buttonHidden;
+    if (this.footerButton) {
       this.footerButton.hidden = !this.state.chatDismissed;
     }
   };
