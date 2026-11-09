@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_media_chart\Kernel\Entity;
 
+use Drupal\Core\Form\FormState;
 use Drupal\helfi_media_chart\Entity\HelfiChart;
+use Drupal\helfi_media_chart\Form\HelfiChartAddForm;
+use Drupal\media_library\MediaLibraryState;
 use Drupal\Tests\helfi_media\Kernel\HelfiMediaKernelTestBase;
 
 /**
@@ -55,6 +58,31 @@ class HelfiChartTest extends HelfiMediaKernelTestBase {
     $entity->save();
 
     $this->assertEquals('Test title', $entity->getMediaTitle());
+  }
+
+  /**
+   * Test invalid url submit.
+   */
+  public function testSubmitInvalidUrl() : void {
+    $formState = new FormState()->set('media_library_state',
+      MediaLibraryState::create(
+        'media_library.opener.field_widget',
+        ['helfi_chart'],
+        'helfi_chart',
+        1,
+      ));
+    $formState->setValues(['helfi_chart_url' => 'https://example.com']);
+
+    $form = $this->container
+      ->get('class_resolver')
+      ->getInstanceFromDefinition(HelfiChartAddForm::class);
+
+    $this->container->get('form_builder')->submitForm($form, $formState);
+
+    $errors = $formState->getErrors();
+    $this->assertArrayHasKey('helfi_chart_url', $errors);
+    $this->assertStringContainsString('https://example.com', strip_tags((string) $errors['helfi_chart_url']));
+    $this->assertEmpty($formState->get('media'));
   }
 
 }
