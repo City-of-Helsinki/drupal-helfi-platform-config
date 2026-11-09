@@ -9,12 +9,14 @@ use Drupal\helfi_media_chart\Entity\HelfiChart;
 use Drupal\helfi_media_chart\Form\HelfiChartAddForm;
 use Drupal\media_library\MediaLibraryState;
 use Drupal\Tests\helfi_media\Kernel\HelfiMediaKernelTestBase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests HelfiChart entity bundle class.
- *
- * @group helfi_media_chart
  */
+#[Group('helfi_media_chart')]
+#[RunTestsInSeparateProcesses]
 class HelfiChartTest extends HelfiMediaKernelTestBase {
 
   /**

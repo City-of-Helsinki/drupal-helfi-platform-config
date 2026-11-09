@@ -7,12 +7,14 @@ namespace Drupal\Tests\helfi_media_chart\Unit;
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_media_chart\UrlParserTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests UrlParserTrait.
- *
- * @group helfi_media_chart
  */
+#[Group('helfi_media_chart')]
+#[RunTestsInSeparateProcesses]
 class UrlParserTraitTest extends UnitTestCase {
 
   use UrlParserTrait;
