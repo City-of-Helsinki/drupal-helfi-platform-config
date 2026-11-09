@@ -28,6 +28,12 @@ class UrlParserTraitTest extends UnitTestCase {
     $this->assertEquals($expected, (string) $this->mediaUrlToUri($expected));
   }
 
+  /**
+   * Test invalid path.
+   *
+   * @param string $url
+   *   The url.
+   */
   #[DataProvider('getInvalidPathUrlData')]
   public function testInvalidPath(string $url) {
     $this->expectException(\Exception::class);
@@ -53,6 +59,7 @@ class UrlParserTraitTest extends UnitTestCase {
    * The data provider for testInvalidPath().
    *
    * @return string[]
+   *   The test data.
    */
   public static function getInvalidPathUrlData(): array {
     return [
