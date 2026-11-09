@@ -260,7 +260,7 @@ class TeliaAceWidget {
     }
 
     const innerHTML = `
-      <span class="hel-icon hel-icon--customer-bot-neutral" aria-hidden="true"></span>
+      <span class="hel-icon hel-icon--speechbubble-text" aria-hidden="true"></span>
       <span>${label}</span>
     `;
 
