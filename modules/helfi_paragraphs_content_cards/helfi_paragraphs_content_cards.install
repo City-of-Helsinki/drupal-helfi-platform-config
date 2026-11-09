@@ -17,7 +17,12 @@ use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 /**
  * Implements hook_install().
  */
-function helfi_paragraphs_content_cards_install(): void {
+function helfi_paragraphs_content_cards_install(bool $is_syncing): void {
+  // Do not perform following steps if the module is being installed as part
+  // of a configuration import.
+  if ($is_syncing) {
+    return;
+  }
   helfi_paragraphs_content_cards_configure_displays();
 }
 

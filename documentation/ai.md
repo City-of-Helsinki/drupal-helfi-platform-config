@@ -58,7 +58,7 @@ Failed requests throw `\Drupal\helfi_ai\TextServices\TextServicesException`, wit
 
 ## SEO title suggestions
 
-The `helfi_ai` module adds an AI **Generate SEO title with AI** button next to the node title field. It builds the unsaved node from the current form values, strips it to plain text, and asks [Helfi Text Services](#helfi-text-services) for up to three title candidates, shown in a modal for the editor to pick from. The chosen title fills the title field and can still be edited before saving.
+The `helfi_ai` module adds an AI **Suggest a title** button next to the node title field. It builds the unsaved node from the current form values, strips it to plain text, and asks [Helfi Text Services](#helfi-text-services) for up to three title candidates, shown in a modal for the editor to pick from. The chosen title fills the title field and can still be edited before saving.
 
 | Aspect | Value |
 |---|---|

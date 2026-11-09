@@ -60,13 +60,21 @@ class ThemeHooksTest extends KernelTestBase {
     $markup = $this->renderBuild([
       '#theme' => 'ai_title_suggestions',
       '#suggestions' => ['First title', 'Second title'],
+      '#original_title' => 'Original page title',
     ]);
 
-    $this->assertStringContainsString('ai-suggestions', $markup);
+    $this->assertStringContainsString('ai-title-suggestions', $markup);
+    $this->assertStringContainsString('Original page title', $markup);
     $this->assertStringContainsString('value="First title"', $markup);
     $this->assertStringContainsString('value="Second title"', $markup);
-    $this->assertStringContainsString('checked', $markup);
-    $this->assertStringContainsString('(11 ', $markup);
+    $this->assertMatchesRegularExpression('/<button[^>]*ai-title-suggestions__apply[^>]*disabled/', $markup, 'The apply button is disabled until a suggestion is selected.');
+
+    $markup = $this->renderBuild([
+      '#theme' => 'ai_title_suggestions',
+      '#suggestions' => ['First title'],
+    ]);
+
+    $this->assertStringContainsString('<p class="ai-title-suggestions__original-value">–</p>', $markup, 'A missing original title is shown as a dash.');
 
     $markup = $this->renderBuild([
       '#theme' => 'ai_message',

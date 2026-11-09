@@ -14,15 +14,12 @@
 
   Drupal.behaviors.helfiAiTitleSuggest = {
     attach(context) {
-      once('ai-title-reorder', '.ai-title', context).forEach((field) => {
-        const input = field.querySelector('input[name="title[0][value]"]');
-        const suggest = field.querySelector('.ai-suggest');
-        if (input && suggest) {
-          input.after(suggest);
-        }
-      });
+      once('ai-title-suggestions-apply', '.ai-title-suggestions__apply', context).forEach((button) => {
+        // Enable the apply button once a suggestion is selected.
+        button.closest('.ai-title-suggestions').addEventListener('change', () => {
+          button.disabled = !document.querySelector('input[name="helfi_ai_title"]:checked');
+        });
 
-      once('ai-suggestions-apply', '.ai-suggestions__apply', context).forEach((button) => {
         button.addEventListener('click', () => {
           const selected = document.querySelector('input[name="helfi_ai_title"]:checked');
           const input = document.querySelector('input[name="title[0][value]"]');
@@ -35,7 +32,7 @@
         });
       });
 
-      once('ai-suggestions-cancel', '.ai-suggestions__cancel', context).forEach((button) => {
+      once('ai-title-suggestions-cancel', '.ai-title-suggestions__cancel', context).forEach((button) => {
         button.addEventListener('click', closeModal);
       });
     },
