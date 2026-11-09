@@ -62,8 +62,8 @@ function helfi_node_survey_form_node_form_alter(&$form, &$form_state, $form_id) 
         $pagePathElement['#element_validate'][] = PagePathValidator::class . '::validate';
       }
       $node = $form_state->getFormObject()->getEntity();
-      $hasVisibilityRules = !$node->get('field_survey_content_pages')->isEmpty()
-        || !$node->get('field_survey_page_paths')->isEmpty();
+      $hasVisibilityRules = ($node->hasField('field_survey_content_pages') && !$node->get('field_survey_content_pages')->isEmpty())
+        || ($node->hasField('field_survey_page_paths') && !$node->get('field_survey_page_paths')->isEmpty());
       if ($hasVisibilityRules) {
         $form['group_visibility']['#open'] = TRUE;
       }

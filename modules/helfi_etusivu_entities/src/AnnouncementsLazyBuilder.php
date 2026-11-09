@@ -98,7 +98,7 @@ final class AnnouncementsLazyBuilder extends LazyBuilderBase {
       ->condition('status', NodeInterface::PUBLISHED)
       ->condition('langcode', $langcodes, 'IN');
 
-    $fields = $this->entityFieldManager->getFieldDefinitions('node', 'survey');
+    $fields = $this->entityFieldManager->getFieldDefinitions('node', 'announcement');
 
     // Query only local nodes.
     if (isset($fields['field_publish_externally'])) {
