@@ -27,10 +27,6 @@ msgstr "Halvdagsgrupp"
 msgid "Start a chat"
 msgstr "Starta chatten"
 
-msgctxt "Floating chat title"
-msgid "Chat"
-msgstr "Chatt"
-
 msgctxt "Chat widget"
 msgid "Loading chat..."
 msgstr "Laddar..."
@@ -38,6 +34,10 @@ msgstr "Laddar..."
 msgctxt "Chat widget"
 msgid "Hide the chat"
 msgstr "Göm chatten"
+
+msgctxt "Chat widget"
+msgid "Open chat"
+msgstr "Öppna chatten"
 
 msgctxt "Location autocomplete"
 msgid "Type @count or more characters for results"

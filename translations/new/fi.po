@@ -453,10 +453,6 @@ msgstr "Osapäiväryhmä"
 msgid "Start a chat"
 msgstr "Aloita chat"
 
-msgctxt "Floating chat title"
-msgid "Chat"
-msgstr "Chat"
-
 msgid ""
 "This must be an internal path such as %add-node. "
 "You can also start typing the title of a piece of content to select it. "
@@ -490,6 +486,10 @@ msgstr "Ladataan..."
 msgctxt "Chat widget"
 msgid "Hide the chat"
 msgstr "Piilota chat"
+
+msgctxt "Chat widget"
+msgid "Open chat"
+msgstr "Avaa chat"
 
 msgctxt "Location autocomplete"
 msgid "Type @count or more characters for results"
