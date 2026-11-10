@@ -48,6 +48,7 @@ class ChatWidget {
       chatId: chatSettings.chatId,
       selector: `chat-widget-trigger-${chatSettings.chatId}`,
       chatTitle: chatSettings.chatTitle,
+      chatIcon: chatSettings.chatIcon,
       scriptUrl: chatSettings.scriptUrl,
     };
     this.state = {
@@ -262,7 +263,7 @@ class ChatWidget {
     }
 
     const innerHTML = `
-      <span class="hel-icon hel-icon--speechbubble-text" aria-hidden="true"></span>
+      <span class="hel-icon hel-icon--${this.static.chatIcon}" aria-hidden="true"></span>
       <span>${label}</span>
     `;
 
@@ -351,5 +352,6 @@ class ChatSettings {
     this.chatTitle = settings.chatTitle;
     this.chatId = settings.chatId;
     this.scriptUrl = settings.scriptUrl;
+    this.chatIcon = settings.chatIcon ?? 'speechbubble-text';
   }
 }
