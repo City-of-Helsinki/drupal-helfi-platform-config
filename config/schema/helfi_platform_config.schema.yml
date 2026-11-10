@@ -36,6 +36,29 @@ block.settings.telia_ace_widget:
       type: string
       label: 'Chat button icon'
 
+block.settings.ibm_chat_app:
+  type: block_settings
+  label: 'Block config translation for IBM Chat App'
+  mapping:
+    hostname:
+      type: string
+      label: 'Chat Hostname'
+    engagementId:
+      type: string
+      label: 'Chat Engagement Id'
+    tenantId:
+      type: string
+      label: 'Chat Tenant Id'
+    assistantId:
+      type: string
+      label: 'Chat Assistant Id'
+    chat_title:
+      type: text
+      label: 'Chat button label'
+    chat_icon:
+      type: string
+      label: 'Chat button icon'
+
 helfi_platform_config.redirect_cleaner:
   type: config_object
   label: 'Redirect cleaner'

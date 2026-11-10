@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_platform_config\Plugin\Block;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Block\Attribute\Block;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -52,7 +53,7 @@ class IbmChatApp extends ChatBlockBase {
       '#default_value' => $config['assistantId'] ?? '',
     ];
 
-    return $form;
+    return $this->chatButtonForm($form);
   }
 
   /**
@@ -63,46 +64,42 @@ class IbmChatApp extends ChatBlockBase {
     $this->configuration['engagementId'] = $form_state->getValue('engagementId');
     $this->configuration['tenantId'] = $form_state->getValue('tenantId');
     $this->configuration['assistantId'] = $form_state->getValue('assistantId');
+    $this->configuration['chat_title'] = $form_state->getValue('chat_title');
+    $this->configuration['chat_icon'] = $form_state->getValue('chat_icon');
   }
 
   /**
    * {@inheritdoc}
    */
   public function build(): array {
-
-    $library = ['helfi_platform_config/chat_enhancer'];
-
-    $build = [];
-
     $config = $this->getConfiguration();
 
-    $hostname = $config['hostname'];
-    $engagementId = $config['engagementId'];
-    $tenantId = $config['tenantId'];
-    $assistantId = $config['assistantId'];
+    $buttonSrc = sprintf(
+      '%s/get-widget-button?tenantId=%s&assistantId=%s&engagementId=%s',
+      $config['hostname'],
+      $config['tenantId'],
+      $config['assistantId'],
+      $config['engagementId'],
+    );
 
-    $buttonSrc = sprintf('%s/get-widget-button?tenantId=%s&assistantId=%s&engagementId=%s', $hostname, $tenantId, $assistantId, $engagementId);
-
-    $build['ibm_chat_app'] = [
-      '#title' => $this->t('IBM Chat App'),
-      '#attached' => [
-        'library' => $library,
-        'html_head' => [
-          [
-            [
-              '#tag' => 'script',
-              '#attributes' => [
-                'async' => TRUE,
-                'type' => 'text/javascript',
-                'src' => $buttonSrc,
-              ],
-            ], 'chat_app_button',
+    return [
+      'ibm_chat_app' => [
+        '#attached' => [
+          'library' => [
+            'helfi_platform_config/chat_enhancer',
+            'helfi_platform_config/chat_widget',
+          ],
+          'drupalSettings' => [
+            'chatWidgetData' => [
+              'scriptUrl' => $buttonSrc,
+              'chatId' => Xss::filter($config['engagementId']),
+              'provider' => 'ibm',
+              ...$this->getChatButtonSettings(),
+            ],
           ],
         ],
       ],
     ];
-
-    return $build;
   }
 
 }

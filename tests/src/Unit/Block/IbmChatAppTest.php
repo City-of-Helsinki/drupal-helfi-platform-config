@@ -55,12 +55,16 @@ class IbmChatAppTest extends BlockUnitTestBase {
     $this->assertArrayHasKey('engagementId', $form);
     $this->assertArrayHasKey('tenantId', $form);
     $this->assertArrayHasKey('assistantId', $form);
+    $this->assertArrayHasKey('chat_title', $form);
+    $this->assertArrayHasKey('chat_icon', $form);
 
     // Verify default values.
     $this->assertSame('', $form['hostname']['#default_value']);
     $this->assertSame('', $form['engagementId']['#default_value']);
     $this->assertSame('', $form['tenantId']['#default_value']);
     $this->assertSame('', $form['assistantId']['#default_value']);
+    $this->assertSame('', $form['chat_title']['#default_value']);
+    $this->assertSame('speechbubble-text', $form['chat_icon']['#default_value']);
 
     // Verify titles are translated.
     $this->assertEquals($this->translate('Chat Hostname'), $form['hostname']['#title']);
@@ -84,6 +88,8 @@ class IbmChatAppTest extends BlockUnitTestBase {
         'engagementId' => '12345',
         'tenantId' => 'tenantID',
         'assistantId' => 'assistantID',
+        'chat_title' => 'Parking bot',
+        'chat_icon' => 'customer-bot-positive',
         default => NULL,
       });
 
@@ -95,25 +101,25 @@ class IbmChatAppTest extends BlockUnitTestBase {
     $this->assertSame('12345', $this->ibmChatApp->getConfiguration()['engagementId']);
     $this->assertSame('tenantID', $this->ibmChatApp->getConfiguration()['tenantId']);
     $this->assertSame('assistantID', $this->ibmChatApp->getConfiguration()['assistantId']);
+    $this->assertSame('Parking bot', $this->ibmChatApp->getConfiguration()['chat_title']);
+    $this->assertSame('customer-bot-positive', $this->ibmChatApp->getConfiguration()['chat_icon']);
 
     $expectedButtonSrc = 'https://www.test.hel.ninja/chat/get-widget-button?tenantId=tenantID&assistantId=assistantID&engagementId=12345';
 
     $expected = [
       'ibm_chat_app' => [
-        '#title' => $this->translate('IBM Chat App'),
         '#attached' => [
-          'library' => ['helfi_platform_config/chat_enhancer'],
-          'html_head' => [
-            [
-              [
-                '#tag' => 'script',
-                '#attributes' => [
-                  'async' => TRUE,
-                  'type' => 'text/javascript',
-                  'src' => $expectedButtonSrc,
-                ],
-              ],
-              'chat_app_button',
+          'library' => [
+            'helfi_platform_config/chat_enhancer',
+            'helfi_platform_config/chat_widget',
+          ],
+          'drupalSettings' => [
+            'chatWidgetData' => [
+              'scriptUrl' => $expectedButtonSrc,
+              'chatId' => '12345',
+              'provider' => 'ibm',
+              'chatTitle' => 'Parking bot',
+              'chatIcon' => 'customer-bot-positive',
             ],
           ],
         ],
