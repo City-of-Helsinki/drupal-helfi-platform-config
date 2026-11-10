@@ -574,6 +574,7 @@ final class QueryBuilder {
     foreach ($response['hits']['hits'] ?? [] as $hit) {
       $source = $hit['_source'] ?? [];
       $contacts[] = [
+        'id' => (string) ($hit['_id'] ?? ''),
         'name' => implode(' ', $source['name_parts'] ?? []),
         'email' => array_first($source['email'] ?? []),
         'job_title' => array_first($source['job_title'] ?? []),
