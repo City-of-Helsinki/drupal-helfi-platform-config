@@ -30,6 +30,13 @@ final class PathAliasFormHooks {
    *
    * Runs after the path module, which sets the description and the full
    * base URL as the prefix of the path field.
+   *
+   * @param array<string, mixed> $element
+   *   The field widget form element.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   * @param array<string, mixed> $context
+   *   The widget context.
    */
   #[Hook('field_widget_single_element_form_alter', order: new OrderAfter(modules: ['path']))]
   public function fieldWidgetSingleElementFormAlter(array &$element, FormStateInterface $form_state, array $context): void {
