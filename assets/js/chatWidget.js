@@ -1,32 +1,32 @@
 ((Drupal, drupalSettings) => {
-  Drupal.behaviors.telia_ace = {
+  Drupal.behaviors.chatWidget = {
     attach: function attach() {
       setTimeout(() => {
-        if (drupalSettings.telia_ace_data.initialized) {
+        if (drupalSettings.chatWidgetData.initialized) {
           return;
         }
 
         // Make sure the chat is configured properly.
         let chatSettings = {};
         try {
-          chatSettings = new ChatSettings(drupalSettings.telia_ace_data ?? {});
+          chatSettings = new ChatSettings(drupalSettings.chatWidgetData ?? {});
         } catch (e) {
           console.error(e);
           return;
         }
 
         // Initialize the chat.
-        new TeliaAceWidget(chatSettings);
-        drupalSettings.telia_ace_data.initialized = true;
+        new ChatWidget(chatSettings);
+        drupalSettings.chatWidgetData.initialized = true;
       });
     },
   };
 })(Drupal, drupalSettings);
 
 /**
- * Telia ace widget.
+ * Chat widget.
  *
- * Wrapper for the actual telia ace chat implementation.
+ * Wrapper for the actual chat implementation.
  *
  * How it works:
  * 1. On page load, only a custom chat button is added to a page.
@@ -42,7 +42,7 @@
  * 6. The close button fades out the custom button, shows a toast and
  *    reveals the footer button that opens the chat.
  */
-class TeliaAceWidget {
+class ChatWidget {
   constructor(chatSettings) {
     this.static = {
       chatId: chatSettings.chat_id,
@@ -70,10 +70,10 @@ class TeliaAceWidget {
    * Create the custom chat button.
    */
   createChatButton = () => {
-    let wrapper = document.getElementById('telia-ace-leijuke');
+    let wrapper = document.getElementById('chat-widget');
     if (!wrapper) {
       wrapper = document.createElement('aside');
-      wrapper.id = 'telia-ace-leijuke';
+      wrapper.id = 'chat-widget';
       document.body.append(wrapper);
     }
     wrapper.classList.add('chat-widget');
@@ -95,14 +95,15 @@ class TeliaAceWidget {
    * Create the close button, connect the toast and the footer button.
    */
   createDismiss = () => {
-    const toast = document.getElementById('telia-ace-toast');
-    const footerButton = document.getElementById('telia-ace-footer-button');
+    const toast = document.getElementById('chat-toast');
+    const footerChat = document.getElementById('chat-footer');
+    const footerButton = document.getElementById('chat-footer-button');
     const footer = document.querySelector('.footer .footer-top');
-    if (!toast || !footerButton || !footer) {
+    if (!toast || !footerChat || !footerButton || !footer) {
       return;
     }
 
-    footer.append(footerButton);
+    footer.append(footerChat);
     footerButton.addEventListener('click', () => {
       toast.hidden = true;
       this.openCallback();
@@ -111,7 +112,7 @@ class TeliaAceWidget {
     const dismissButton = document.createElement('button');
     dismissButton.type = 'button';
     dismissButton.classList.add('chat-widget__dismiss');
-    dismissButton.setAttribute('aria-label', Drupal.t('Hide the chat', {}, { context: 'Telia ACE chat' }));
+    dismissButton.setAttribute('aria-label', Drupal.t('Hide the chat', {}, { context: 'Chat widget' }));
     dismissButton.innerHTML = '<span class="hel-icon hel-icon--cross" aria-hidden="true"></span>';
     dismissButton.addEventListener('click', this.dismissCallback);
     this.customChatButton.after(dismissButton);
@@ -130,7 +131,7 @@ class TeliaAceWidget {
     });
 
     this.toast = toast;
-    this.footerButton = footerButton;
+    this.footerChat = footerChat;
 
     // Restore the closed state of this chat for the session.
     this.state.chatDismissed = this.getDismissedChats()[this.static.chatId] === true;
@@ -251,7 +252,7 @@ class TeliaAceWidget {
    */
   render = () => {
     const label = this.state.chatLoading
-      ? Drupal.t('Loading chat...', {}, { context: 'Telia ACE chat' })
+      ? Drupal.t('Loading chat...', {}, { context: 'Chat widget' })
       : this.static.chatTitle;
 
     const element = document.getElementById(this.static.selector);
@@ -272,8 +273,8 @@ class TeliaAceWidget {
     element.classList.toggle('loading', this.state.chatLoading);
     this.wrapper.hidden = this.state.chatOpened || this.state.chatDismissed;
 
-    if (this.footerButton) {
-      this.footerButton.hidden = !this.state.chatDismissed;
+    if (this.footerChat) {
+      this.footerChat.hidden = !this.state.chatDismissed;
     }
   };
 

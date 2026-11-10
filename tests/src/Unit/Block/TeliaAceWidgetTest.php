@@ -102,7 +102,7 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
     ]);
 
     $expected = [
-      'telia_chat_widget' => [
+      'chat_widget' => [
         'button' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
@@ -114,9 +114,9 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
           ],
         ],
         '#attached' => [
-          'library' => ['helfi_platform_config/telia_ace_widget_loadjs'],
+          'library' => ['helfi_platform_config/chat_widget'],
           'drupalSettings' => [
-            'telia_ace_data' => [
+            'chatWidgetData' => [
               'script_url' => TeliaAceWidget::SDK_URL,
               'script_sri' => NULL,
               'chat_id' => Xss::filter('ninja-chat'),
@@ -147,11 +147,11 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
     // Ensure XSS is filtered.
     $this->assertSame(
       Xss::filter('<script>alert("XSS")</script>'),
-      $build['telia_chat_widget']['#attached']['drupalSettings']['telia_ace_data']['chat_id']
+      $build['chat_widget']['#attached']['drupalSettings']['chatWidgetData']['chat_id']
     );
     $this->assertSame(
       Xss::filter('<img src="x" onerror="alert(\'XSS\')">'),
-      $build['telia_chat_widget']['#attached']['drupalSettings']['telia_ace_data']['chat_title']
+      $build['chat_widget']['#attached']['drupalSettings']['chatWidgetData']['chat_title']
     );
   }
 

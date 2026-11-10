@@ -67,9 +67,9 @@ class TeliaAceWidget extends ChatBlockBase {
     $config = $this->getConfiguration();
     $chat_id = 'humany_' . $config['chat_id'];
     $attached = [
-      'library' => ['helfi_platform_config/telia_ace_widget_loadjs'],
+      'library' => ['helfi_platform_config/chat_widget'],
       'drupalSettings' => [
-        'telia_ace_data' => [
+        'chatWidgetData' => [
           'script_url' => self::SDK_URL,
           'script_sri' => NULL,
           'chat_id' => Xss::filter($config['chat_id']),
@@ -78,7 +78,7 @@ class TeliaAceWidget extends ChatBlockBase {
       ],
     ];
 
-    $build['telia_chat_widget'] = [
+    $build['chat_widget'] = [
       'button' => [
         '#type' => 'html_tag',
         '#tag' => 'div',

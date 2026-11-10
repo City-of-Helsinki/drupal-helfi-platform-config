@@ -18,12 +18,12 @@ const jsFiles = {
   headingAnchorButtons: 'assets/js/headingAnchorButtons.js',
   reactAndShareSettings: 'assets/js/reactAndShareSettings.js',
   sentryIgnore: 'assets/js/sentryIgnore.js',
-  teliaAceWidget: 'assets/js/teliaAceWidget.js',
+  chatWidget: 'assets/js/chatWidget.js',
 };
 
 // SCSS files.
 const styles = [
-  ['assets/scss/teliaAceWidget.scss', 'css/teliaAceWidget.min.css'],
+  ['assets/scss/chatWidget.scss', 'css/chatWidget.min.css'],
 ];
 
 // Static files.
