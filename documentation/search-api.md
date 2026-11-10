@@ -29,4 +29,17 @@ The feature utilises Elasticsearch Connector event subscribers to add the prefix
 ### Good to know
 
 * The id prefix should have no side effects when elasticsearch queries are executed directly from React applications or custom code.
-* A use case where multisite index is used as source in Views and results are rendered using the matching content entities might have unexpected results (results from other sites might cause a totally unrelated local entity to be rendered if a matching entity type & id combination is found). If such a setup is needed, a new index field with some kind of site identification should be added and then used to filter only results from current site. 
+* A use case where multisite index is used as source in Views and results are rendered using the matching content entities might have unexpected results (results from other sites might cause a totally unrelated local entity to be rendered if a matching entity type & id combination is found). If such a setup is needed, a new index field with some kind of site identification should be added and then used to filter only results from current site.
+
+## Path alias updates
+
+Quite a few indexes contain fields with url aliases, and usually this data stays up-to-date via regular content updates that trigger reindexing. However additional update hooks are needed to cover path alias operations that happen outside the content entity update context, like:
+
+* Drupal bulk generate tool in `/admin/config/search/path/update_bulk`
+* Update hook batch updates (like in `helfi_platform_config_update_11009()`)
+
+See for example:
+
+* Generic hooks that cover regular routed content entities: `Drupal\helfi_platform_config\Hook\PathAliasHooks`
+* Special handling for suggested topics: `Drupal\helfi_recommendations\Hook\PathAliasHooks`
+  * `suggestions`-index contains `suggested_topics`-entities, which are entity reference field targets from content entities (`node`, `tpr_service` etc.). The index contains url fields that come from the parent entity, so a suggested topics entity needs to be reindexed if the url alias for the parent entity changes.

@@ -11,10 +11,13 @@ use Drupal\Core\Entity\ContentEntityFormInterface;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\Entity\EntityViewMode;
 use Drupal\Core\Form\FormInterface;
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_ai\Hook\FormHooks;
 use Drupal\helfi_ai\Service\TextServicesGenerator;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
@@ -92,6 +95,8 @@ class FormHooksTest extends EntityKernelTestBase {
       $this->prophesize(AccountInterface::class)->reveal(),
       $this->container->get(ConfigFactoryInterface::class),
       $this->container->get(TextServicesGenerator::class),
+      $this->container->get(ActiveProjectRoles::class),
+      $this->container->get(EnvironmentResolverInterface::class),
     );
   }
 
@@ -113,9 +118,9 @@ class FormHooksTest extends EntityKernelTestBase {
   private function formStateFor(Node $node): FormStateInterface {
     $formObject = $this->prophesize(ContentEntityFormInterface::class);
     $formObject->buildEntity(Argument::cetera())->willReturn($node);
-    $formState = $this->prophesize(FormStateInterface::class);
-    $formState->getFormObject()->willReturn($formObject->reveal());
-    return $formState->reveal();
+    return (new FormState())
+      ->setFormObject($formObject->reveal())
+      ->setValue(['title', 0, 'value'], $node->getTitle());
   }
 
   /**
@@ -155,7 +160,8 @@ class FormHooksTest extends EntityKernelTestBase {
     $this->assertSame('openDialog', $command['command']);
     $this->assertSame('#drupal-modal', $command['selector']);
     $this->assertSame('helfi-ai-dialog', $command['dialogOptions']['classes']['ui-dialog']);
-    $this->assertStringContainsString('ai-suggestions', (string) $command['data']);
+    $this->assertStringContainsString('ai-title-suggestions', (string) $command['data']);
+    $this->assertStringContainsString($node->getTitle(), (string) $command['data']);
     $this->assertStringContainsString('Helsingin asukaspysäköintitunnuksen hinta ja voimassaolo', (string) $command['data']);
   }
 

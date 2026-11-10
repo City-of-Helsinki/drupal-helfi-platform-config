@@ -7,12 +7,14 @@ namespace Drupal\Tests\helfi_media_chart\Unit;
 use Drupal\Tests\UnitTestCase;
 use Drupal\helfi_media_chart\UrlParserTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests UrlParserTrait.
- *
- * @group helfi_media_chart
  */
+#[Group('helfi_media_chart')]
+#[RunTestsInSeparateProcesses]
 class UrlParserTraitTest extends UnitTestCase {
 
   use UrlParserTrait;
@@ -29,6 +31,18 @@ class UrlParserTraitTest extends UnitTestCase {
   }
 
   /**
+   * Test invalid path.
+   *
+   * @param string $url
+   *   The url.
+   */
+  #[DataProvider('getInvalidPathUrlData')]
+  public function testInvalidPath(string $url) : void {
+    $this->expectException(\Exception::class);
+    $this->mediaUrlToUri($url);
+  }
+
+  /**
    * The data provider for testChartUrl().
    *
    * @return array
@@ -39,6 +53,20 @@ class UrlParserTraitTest extends UnitTestCase {
       [
         'https://app.powerbi.com/view?r=eyJrIjoiYjE5OTFhMmEtMWYzNC00YjY2LTllODMtMzhhZDRiNTJiMDQ5IiwidCI6IjNmZWI2YmMxLWQ3MjItNDcyNi05NjZjLTViNThiNjRkZjc1MiIsImMiOjh9',
         'https://playground.powerbi.com/sampleReportEmbed',
+      ],
+    ];
+  }
+
+  /**
+   * The data provider for testInvalidPath().
+   *
+   * @return array<int, array<int, string>>
+   *   The test data.
+   */
+  public static function getInvalidPathUrlData() : array {
+    return [
+      [
+        'https://playground.powerbi.com/reportEmbed',
       ],
     ];
   }
