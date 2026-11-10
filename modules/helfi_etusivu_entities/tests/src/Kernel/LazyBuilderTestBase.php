@@ -80,7 +80,7 @@ abstract class LazyBuilderTestBase extends EntityKernelTestBase {
   /**
    * The lazy builder class under test.
    *
-   * @return class-string<\Drupal\helfi_etusivu_entities\LazyBuilderBase>
+   * @return class-string<\Drupal\Core\Security\TrustedCallbackInterface>
    *   The builder class.
    */
   abstract protected function builderClass(): string;

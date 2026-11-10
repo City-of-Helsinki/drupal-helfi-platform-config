@@ -9,6 +9,10 @@ services:
 
   Drupal\helfi_etusivu_entities\PagePathMatcher: ~
 
+  Drupal\helfi_etusivu_entities\PageVisibility: ~
+
+  Drupal\helfi_etusivu_entities\LocalNodeLoader: ~
+
   Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder: ~
 
   Drupal\helfi_etusivu_entities\SurveyLazyBuilder: ~
