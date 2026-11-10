@@ -222,6 +222,7 @@ class ChatWidget {
    * Handle the cookies and load the third party js-script.
    *
    * @param openOnLoad
+   *   Open the chat after it has loaded.
    */
   firstClickCallback = (openOnLoad = true) => {
     if (!this.cookieCheck()) {
@@ -247,6 +248,7 @@ class ChatWidget {
    * Open the chat after the chat has been loaded.
    *
    * @param openWidget
+   *   Open the chat window.
    */
   openChat = (openWidget) => {
     if (this.static.provider === 'ibm') {
@@ -259,12 +261,9 @@ class ChatWidget {
       return;
     }
 
-    const widgetInitialized = setInterval(() => {
-      if (
-        typeof window.humany !== 'undefined' &&
-        typeof window.humany.widgets !== 'undefined' &&
-        window.humany.widgets.find(this.static.chatId)
-      ) {
+    this.waitFor(
+      () => window.humany?.widgets?.find(this.static.chatId),
+      () => {
         if (openWidget) {
           const widget = window.humany.widgets.find(this.static.chatId);
           widget.activate();
@@ -272,7 +271,33 @@ class ChatWidget {
         }
         this.state = { ...this.state, chatLoading: false, chatOpened: true, busy: false };
         this.render();
-        clearInterval(widgetInitialized);
+      },
+    );
+  };
+
+  /**
+   * Run the callback once the check passes.
+   *
+   * @param check
+   *   The check to run.
+   * @param callback
+   *   The callback to run.
+   */
+  waitFor = (check, callback) => {
+    let attempts = 0;
+    const interval = setInterval(() => {
+      if (check()) {
+        clearInterval(interval);
+        callback();
+        return;
+      }
+
+      // Stop waiting after ten seconds.
+      attempts += 1;
+      if (attempts >= 100) {
+        clearInterval(interval);
+        this.state = { ...this.state, chatLoading: false };
+        this.render();
       }
     }, 100);
   };
@@ -338,19 +363,11 @@ class ChatWidget {
       return;
     }
 
-    // Interval must be set because onload triggers too soon.
-    // This caused the chat not to open when cache was disabled.
-    const loaded = setInterval(() => {
-      // The close button seems to be the best way to figure out
-      // if the chat has actually ready to be used.
-      const humany_widget = document.getElementsByClassName('humany-trigger')[0];
-      let close = null;
-      if (!humany_widget) {
-        return;
-      }
-      close = humany_widget.getElementsByClassName('humany-close')[0];
-
-      if (humany_widget && close) {
+    // Wait for the close button, onload triggers before the chat is ready.
+    this.waitFor(
+      () => document.querySelector('.humany-trigger .humany-close'),
+      () => {
+        const humany_widget = document.querySelector('.humany-trigger');
         this.state.chatLoading = false;
         this.state.chatLoaded = true;
         this.state.chatOpened = true;
@@ -363,9 +380,8 @@ class ChatWidget {
         }).observe(humany_widget, { attributes: true, attributeFilter: ['class'] });
 
         this.openChat(this.state.openOnLoad);
-        clearInterval(loaded);
-      }
-    }, 100);
+      },
+    );
   };
 
   /**
@@ -380,24 +396,23 @@ class ChatWidget {
    * Onload-callback for the IBM chat.
    */
   onloadIbm = () => {
-    const loaded = setInterval(() => {
-      if (!document.getElementById('chat-app-button') && !this.isIbmChatOpen()) {
-        return;
-      }
-      clearInterval(loaded);
-      this.state.chatLoaded = true;
+    this.waitFor(
+      () => document.getElementById('chat-app-button') || this.isIbmChatOpen(),
+      () => {
+        this.state.chatLoaded = true;
 
-      // Show the custom button only when the IBM chat window is closed.
-      window.addEventListener('message', (event) => {
-        if (event.origin !== window.location.origin || event.data?.type !== 'aiapChatButtonShow') {
-          return;
-        }
-        this.state.chatOpened = !event.data.data;
-        this.render();
-      });
+        // Show the custom button only when the IBM chat window is closed.
+        window.addEventListener('message', (event) => {
+          if (event.origin !== window.location.origin || event.data?.type !== 'aiapChatButtonShow') {
+            return;
+          }
+          this.state.chatOpened = !event.data.data;
+          this.render();
+        });
 
-      this.openChat(this.state.openOnLoad && !this.isIbmChatOpen());
-    }, 100);
+        this.openChat(this.state.openOnLoad && !this.isIbmChatOpen());
+      },
+    );
   };
 }
 
@@ -413,7 +428,7 @@ class ChatSettings {
     // Check that the required settings exist.
     requiredSettings.forEach((value) => {
       if (!Object.hasOwn(settings, value) || !settings[value]) {
-        throw new Error(`Missing expected ace chat setting ${value}`);
+        throw new Error(`Missing expected chat setting ${value}`);
       }
     });
 
