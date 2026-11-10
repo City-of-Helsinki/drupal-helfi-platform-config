@@ -33,7 +33,7 @@
  * 2. User clicks the custom chat button, perform firstClickCallback().
  * 2.1 Chat cookies are set as accepted.
  * 2.2 Custom button state is changed.
- * 2.3 The ACE-chat is loaded dynamically with onload-callback attached to it.
+ * 2.3 The chat is loaded dynamically with onload-callback attached to it.
  * 2.4 Wait for onload-callback to trigger.
  * 3. The onload-functionality opens the chat and starts observing
  *    the chat trigger.
