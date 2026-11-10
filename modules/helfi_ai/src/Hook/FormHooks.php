@@ -16,6 +16,10 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\helfi_ai\PreviewEntityBuilder;
 use Drupal\helfi_ai\Service\TextServicesGenerator;
+use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\node\NodeInterface;
 
 /**
@@ -25,10 +29,22 @@ final class FormHooks {
 
   use DependencySerializationTrait;
 
+  /**
+   * Environments where AI title suggestion is enabled.
+   *
+   * @todo UHF-13643 Remove when AI title suggestion is enabled in production.
+   */
+  private const array ENABLED_ENVIRONMENTS = [
+    EnvironmentEnum::Local,
+    EnvironmentEnum::Test,
+  ];
+
   public function __construct(
     protected readonly AccountInterface $currentUser,
     protected readonly ConfigFactoryInterface $configFactory,
     protected readonly TextServicesGenerator $generator,
+    protected readonly ActiveProjectRoles $projectRoles,
+    protected readonly EnvironmentResolverInterface $environmentResolver,
   ) {
   }
 
@@ -63,10 +79,6 @@ final class FormHooks {
       return FALSE;
     }
 
-    if (!$this->featureEnabled('enable_seo_title')) {
-      return FALSE;
-    }
-
     $entity = $form_object->getEntity();
 
     if (!$entity instanceof NodeInterface) {
@@ -84,7 +96,29 @@ final class FormHooks {
     if (!$this->currentUser->hasPermission('use helfi ai title suggestion')) {
       return FALSE;
     }
-    return TRUE;
+    if (!$this->projectRoles->hasRole(ProjectRoleEnum::Core)) {
+      return FALSE;
+    }
+    return $this->titleSuggestionEnabled();
+  }
+
+  /**
+   * Checks if AI title suggestion should be enabled in the active environment.
+   *
+   * @return bool
+   *   TRUE if AI title suggestion should be enabled.
+   *
+   * @todo UHF-13643 Remove when AI title suggestion is enabled in production.
+   */
+  private function titleSuggestionEnabled(): bool {
+    try {
+      $environment = EnvironmentEnum::tryFrom($this->environmentResolver->getActiveEnvironmentName());
+
+      return in_array($environment, self::ENABLED_ENVIRONMENTS, TRUE);
+    }
+    catch (\InvalidArgumentException) {
+      return FALSE;
+    }
   }
 
   /**

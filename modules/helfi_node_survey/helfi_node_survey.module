@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\helfi_platform_config\Form\PagePathValidator;
 
 /**
  * Implements hook_platform_config_grant_permissions().
@@ -44,11 +45,27 @@ function helfi_node_survey_form_node_form_alter(&$form, &$form_state, $form_id) 
       }
 
       if (isset($form['field_publish_externally'])) {
-        $form['field_survey_content_pages']['#states'] = [
+        $pageStates = [
           'visible' => [
             ':input[name="field_publish_externally[value]"]' => ['checked' => FALSE],
           ],
         ];
+        $form['field_survey_content_pages']['#states'] = $pageStates;
+        if (isset($form['field_survey_page_paths'])) {
+          $form['field_survey_page_paths']['#states'] = $pageStates;
+        }
+        $form['group_visibility']['#states'] = $pageStates;
+      }
+
+      if (isset($form['field_survey_page_paths']['widget'][0]['value'])) {
+        $pagePathElement = &$form['field_survey_page_paths']['widget'][0]['value'];
+        $pagePathElement['#element_validate'][] = PagePathValidator::class . '::validate';
+      }
+      $node = $form_state->getFormObject()->getEntity();
+      $hasVisibilityRules = ($node->hasField('field_survey_content_pages') && !$node->get('field_survey_content_pages')->isEmpty())
+        || ($node->hasField('field_survey_page_paths') && !$node->get('field_survey_page_paths')->isEmpty());
+      if ($hasVisibilityRules) {
+        $form['group_visibility']['#open'] = TRUE;
       }
 
       break;
