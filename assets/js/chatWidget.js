@@ -132,6 +132,7 @@ class ChatWidget {
 
     this.toast = toast;
     this.footerChat = footerChat;
+    this.footerLabel = footerButton.querySelector('.chat-widget__footer-label');
 
     // Restore the closed state of this chat for the session.
     this.state.chatDismissed = this.getDismissedChats()[this.static.chatId] === true;
@@ -275,6 +276,7 @@ class ChatWidget {
 
     if (this.footerChat) {
       this.footerChat.hidden = !this.state.chatDismissed;
+      this.footerLabel.textContent = label;
     }
   };
 
