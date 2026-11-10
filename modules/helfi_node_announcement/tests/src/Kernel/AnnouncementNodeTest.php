@@ -39,6 +39,7 @@ class AnnouncementNodeTest extends KernelTestBase {
     'text',
     'user',
     'external_entities',
+    'field_group',
   ];
 
   /**

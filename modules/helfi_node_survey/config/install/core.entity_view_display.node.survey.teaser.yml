@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.survey.body
     - field.field.node.survey.field_survey_content_pages
     - field.field.node.survey.field_survey_link
+    - field.field.node.survey.field_survey_page_paths
     - node.type.survey
   module:
     - text
@@ -32,6 +33,7 @@ content:
 hidden:
   field_survey_content_pages: true
   field_survey_link: true
+  field_survey_page_paths: true
   langcode: true
   published_at: true
   toc_enabled: true

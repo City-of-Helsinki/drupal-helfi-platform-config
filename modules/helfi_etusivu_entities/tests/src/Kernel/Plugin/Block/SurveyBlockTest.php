@@ -15,21 +15,6 @@ use Drupal\helfi_etusivu_entities\SurveyLazyBuilder;
 class SurveyBlockTest extends BlockTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'helfi_node_survey',
-    'publication_date',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp(array $modules = []): void {
-    parent::setUp(['helfi_node_survey']);
-  }
-
-  /**
    * Make sure build() works.
    */
   public function testBuild(): void {
