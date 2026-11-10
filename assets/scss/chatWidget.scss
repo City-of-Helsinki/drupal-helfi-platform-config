@@ -12,3 +12,8 @@
 .humany-trigger:not(.humany-active) {
   display: none;
 }
+
+// Hide the IBM's own chat button.
+#aca-wbc-chat-app-button {
+  display: none;
+}

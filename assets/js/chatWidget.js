@@ -50,6 +50,7 @@ class ChatWidget {
       chatTitle: chatSettings.chatTitle,
       chatIcon: chatSettings.chatIcon,
       scriptUrl: chatSettings.scriptUrl,
+      provider: chatSettings.provider,
     };
     this.state = {
       cookies: this.cookieCheck(),
@@ -58,6 +59,7 @@ class ChatWidget {
       chatOpened: false,
       chatInitialized: false,
       chatDismissed: false,
+      openOnLoad: true,
       busy: false,
     };
 
@@ -65,7 +67,23 @@ class ChatWidget {
     button.addEventListener('click', this.openCallback);
     this.createDismiss();
     this.render();
+
+    // Restore the ongoing IBM chat session.
+    if (this.static.provider === 'ibm' && this.state.cookies && this.hasIbmSession()) {
+      this.firstClickCallback(false);
+    }
   }
+
+  /**
+   * Check if the IBM chat has an ongoing session.
+   */
+  hasIbmSession = () => {
+    try {
+      return JSON.parse(localStorage.getItem('aiap-wbc-chat-app-button-state'))?.chatOpened === true;
+    } catch (_e) {
+      return false;
+    }
+  };
 
   /**
    * Create the custom chat button.
@@ -202,12 +220,15 @@ class ChatWidget {
    * User clicks chat button for the first time.
    *
    * Handle the cookies and load the third party js-script.
+   *
+   * @param openOnLoad
    */
-  firstClickCallback = () => {
+  firstClickCallback = (openOnLoad = true) => {
     if (!this.cookieCheck()) {
       this.cookieSet();
     }
     this.state.chatInitialized = true;
+    this.state.openOnLoad = openOnLoad;
 
     const chatScript = document.createElement('script');
     chatScript.src = this.static.scriptUrl;
@@ -228,6 +249,16 @@ class ChatWidget {
    * @param openWidget
    */
   openChat = (openWidget) => {
+    if (this.static.provider === 'ibm') {
+      if (openWidget) {
+        document.getElementById('chat-app-button')?.click();
+      }
+      const chatOpened = openWidget || this.isIbmChatOpen();
+      this.state = { ...this.state, chatLoading: false, chatOpened, busy: false };
+      this.render();
+      return;
+    }
+
     const widgetInitialized = setInterval(() => {
       if (
         typeof window.humany !== 'undefined' &&
@@ -302,6 +333,11 @@ class ChatWidget {
    * This is triggered after the third party library has been loaded.
    */
   onload = () => {
+    if (this.static.provider === 'ibm') {
+      this.onloadIbm();
+      return;
+    }
+
     // Interval must be set because onload triggers too soon.
     // This caused the chat not to open when cache was disabled.
     const loaded = setInterval(() => {
@@ -326,9 +362,41 @@ class ChatWidget {
           this.render();
         }).observe(humany_widget, { attributes: true, attributeFilter: ['class'] });
 
-        this.openChat(true);
+        this.openChat(this.state.openOnLoad);
         clearInterval(loaded);
       }
+    }, 100);
+  };
+
+  /**
+   * Check if the IBM chat window is open or minimized.
+   */
+  isIbmChatOpen = () => {
+    const frame = document.getElementById('aca--widget-frame');
+    return frame !== null && getComputedStyle(frame).display !== 'none';
+  };
+
+  /**
+   * Onload-callback for the IBM chat.
+   */
+  onloadIbm = () => {
+    const loaded = setInterval(() => {
+      if (!document.getElementById('chat-app-button') && !this.isIbmChatOpen()) {
+        return;
+      }
+      clearInterval(loaded);
+      this.state.chatLoaded = true;
+
+      // Show the custom button only when the IBM chat window is closed.
+      window.addEventListener('message', (event) => {
+        if (event.origin !== window.location.origin || event.data?.type !== 'aiapChatButtonShow') {
+          return;
+        }
+        this.state.chatOpened = !event.data.data;
+        this.render();
+      });
+
+      this.openChat(this.state.openOnLoad && !this.isIbmChatOpen());
     }, 100);
   };
 }
@@ -353,5 +421,6 @@ class ChatSettings {
     this.chatId = settings.chatId;
     this.scriptUrl = settings.scriptUrl;
     this.chatIcon = settings.chatIcon ?? 'speechbubble-text';
+    this.provider = settings.provider ?? 'telia';
   }
 }
