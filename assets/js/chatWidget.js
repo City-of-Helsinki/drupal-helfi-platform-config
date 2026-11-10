@@ -45,10 +45,10 @@
 class ChatWidget {
   constructor(chatSettings) {
     this.static = {
-      chatId: chatSettings.chat_id,
-      selector: `leijuke_${chatSettings.chat_id}`,
-      chatTitle: chatSettings.chat_title,
-      scriptUrl: chatSettings.script_url,
+      chatId: chatSettings.chatId,
+      selector: `chat-widget-trigger-${chatSettings.chatId}`,
+      chatTitle: chatSettings.chatTitle,
+      scriptUrl: chatSettings.scriptUrl,
     };
     this.state = {
       cookies: this.cookieCheck(),
@@ -339,7 +339,7 @@ class ChatWidget {
  */
 class ChatSettings {
   constructor(settings) {
-    const requiredSettings = ['chat_title', 'chat_id', 'script_url'];
+    const requiredSettings = ['chatTitle', 'chatId', 'scriptUrl'];
 
     // Check that the required settings exist.
     requiredSettings.forEach((value) => {
@@ -348,8 +348,8 @@ class ChatSettings {
       }
     });
 
-    this.chat_title = settings.chat_title;
-    this.chat_id = settings.chat_id;
-    this.script_url = settings.script_url;
+    this.chatTitle = settings.chatTitle;
+    this.chatId = settings.chatId;
+    this.scriptUrl = settings.scriptUrl;
   }
 }

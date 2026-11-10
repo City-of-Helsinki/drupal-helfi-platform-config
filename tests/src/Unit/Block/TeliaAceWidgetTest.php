@@ -117,10 +117,10 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
           'library' => ['helfi_platform_config/chat_widget'],
           'drupalSettings' => [
             'chatWidgetData' => [
-              'script_url' => TeliaAceWidget::SDK_URL,
-              'script_sri' => NULL,
-              'chat_id' => Xss::filter('ninja-chat'),
-              'chat_title' => Xss::filter('Chat via Ninja chat'),
+              'scriptUrl' => TeliaAceWidget::SDK_URL,
+              'scriptSri' => NULL,
+              'chatId' => Xss::filter('ninja-chat'),
+              'chatTitle' => Xss::filter('Chat via Ninja chat'),
             ],
           ],
         ],
@@ -147,11 +147,11 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
     // Ensure XSS is filtered.
     $this->assertSame(
       Xss::filter('<script>alert("XSS")</script>'),
-      $build['chat_widget']['#attached']['drupalSettings']['chatWidgetData']['chat_id']
+      $build['chat_widget']['#attached']['drupalSettings']['chatWidgetData']['chatId']
     );
     $this->assertSame(
       Xss::filter('<img src="x" onerror="alert(\'XSS\')">'),
-      $build['chat_widget']['#attached']['drupalSettings']['chatWidgetData']['chat_title']
+      $build['chat_widget']['#attached']['drupalSettings']['chatWidgetData']['chatTitle']
     );
   }
 

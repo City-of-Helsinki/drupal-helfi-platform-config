@@ -70,10 +70,10 @@ class TeliaAceWidget extends ChatBlockBase {
       'library' => ['helfi_platform_config/chat_widget'],
       'drupalSettings' => [
         'chatWidgetData' => [
-          'script_url' => self::SDK_URL,
-          'script_sri' => NULL,
-          'chat_id' => Xss::filter($config['chat_id']),
-          'chat_title' => $config['chat_title'] ? Xss::filter($config['chat_title']) : 'Chat',
+          'scriptUrl' => self::SDK_URL,
+          'scriptSri' => NULL,
+          'chatId' => Xss::filter($config['chat_id']),
+          'chatTitle' => $config['chat_title'] ? Xss::filter($config['chat_title']) : 'Chat',
         ],
       ],
     ];
