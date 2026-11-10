@@ -79,6 +79,10 @@ msgctxt "Anchor link"
 msgid "Failed to copy link heading @name."
 msgstr "Kunde inte kopiera länk till rubrik @name."
 
+# path
+msgid "Add the final part of the URL, meaning everything that comes after the instance."
+msgstr "Lägg i fältet till allt som kommer efter instansen i URL-adressen."
+
 # scheduler
 msgid "%title is scheduled to be published @publish_time and unpublished @unpublish_time."
 msgstr "%title är schemalagd att publiceras @publish_time och att bli opublicerad @unpublish_time."
