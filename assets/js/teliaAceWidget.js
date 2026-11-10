@@ -82,7 +82,7 @@ class TeliaAceWidget {
     const button = document.createElement('button');
     button.id = this.static.selector;
     button.type = 'button';
-    button.classList.add('chat-widget__open');
+    button.classList.add('chat-widget__trigger');
 
     wrapper.append(button);
     this.wrapper = wrapper;
