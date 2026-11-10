@@ -9,6 +9,7 @@ use Drupal\helfi_etusivu_entities\SurveyLazyBuilder;
 use Drupal\helfi_node_survey\Entity\Survey;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -88,6 +89,7 @@ final class SurveyLazyBuilderTest extends LazyBuilderTestBase {
       'status' => NodeInterface::PUBLISHED,
       'survey_link_text' => 'Answer',
       'survey_link_url' => 'https://example.com/survey',
+      'published_at' => '2024-07-30T11:58:29+00:00',
     ]);
     $this->assertInstanceOf(FieldableEntityInterface::class, $remote);
 
@@ -103,6 +105,44 @@ final class SurveyLazyBuilderTest extends LazyBuilderTestBase {
     $this->assertTrue($node->isPublished());
     $this->assertSame('https://example.com/survey', $node->get('field_survey_link')->uri);
     $this->assertSame('Answer', $node->get('field_survey_link')->title);
+    $this->assertSame(1722340709, (int) $node->get('published_at')->value);
+  }
+
+  /**
+   * Tests that a missing or invalid remote date leaves published_at empty.
+   *
+   * @param string|null $date
+   *   The remote date.
+   */
+  #[DataProvider('invalidDates')]
+  public function testPopulateWithoutValidDate(?string $date): void {
+    $entityTypeManager = $this->container->get('entity_type.manager');
+    $remote = $entityTypeManager->getStorage('helfi_surveys')->create([
+      'langcode' => 'en',
+      'title' => 'Remote',
+      'published_at' => $date,
+    ]);
+    $this->assertInstanceOf(FieldableEntityInterface::class, $remote);
+
+    $node = $entityTypeManager->getStorage('node')->create(['type' => 'survey']);
+    $this->assertInstanceOf(Survey::class, $node);
+    $node->populateFromRemoteEntity($remote);
+
+    $this->assertTrue($node->get('published_at')->isEmpty());
+  }
+
+  /**
+   * Data provider for testPopulateWithoutValidDate().
+   *
+   * @return array<string, array{string|null}>
+   *   Remote dates.
+   */
+  public static function invalidDates(): array {
+    return [
+      'missing' => [NULL],
+      'empty' => [''],
+      'invalid' => ['not a date'],
+    ];
   }
 
   /**

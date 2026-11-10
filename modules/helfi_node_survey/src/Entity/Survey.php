@@ -55,8 +55,31 @@ class Survey extends Node implements NodeInterface, PublishExternallyInterface {
     $this->set('body', Xss::filter($remote->get('body')->value));
     $this->set('status', $remote->get('status')->value);
     $this->set('field_survey_link', ['uri' => $linkUrl, 'title' => $linkText]);
+    $this->set('published_at', $this->toTimestamp($remote->get('published_at')->value));
 
     return $this;
+  }
+
+  /**
+   * Converts a remote date to a timestamp.
+   *
+   * @param mixed $date
+   *   The date in a format DateTimeImmutable understands, such as
+   *   '2024-07-30T11:58:29+00:00'.
+   *
+   * @return int|null
+   *   The timestamp, or NULL if the date is missing or invalid.
+   */
+  private function toTimestamp(mixed $date): ?int {
+    if (!is_string($date) || $date === '') {
+      return NULL;
+    }
+    try {
+      return (new \DateTimeImmutable($date))->getTimestamp();
+    }
+    catch (\Exception) {
+      return NULL;
+    }
   }
 
 }
