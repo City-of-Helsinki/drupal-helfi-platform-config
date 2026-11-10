@@ -149,7 +149,7 @@ function hdbt_admin_tools_get_page_entity(): ?EntityInterface {
 
   foreach ($types as $type) {
     foreach (['revision' => $type . '_revision', 'canonical' => $type] as $route_name => $version) {
-      if (!empty($params[$version]) && $route->getRouteName() === "entity.$type.$route_name") {
+      if (!empty($params[$version]) && $params[$version] instanceof EntityInterface && $route->getRouteName() === "entity.$type.$route_name") {
         return $params[$version];
       }
     }
