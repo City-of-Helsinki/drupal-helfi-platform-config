@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel;
 
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Url;
 use Drupal\helfi_calculator\Form\CalculatorSettings;
@@ -80,7 +81,7 @@ class CalculatorSettingsTest extends KernelTestBase {
           'home_care_client_fee' => ['active' => 1, 'json' => $json],
         ],
       ]);
-      $this->container->get('form_builder')->submitForm(CalculatorSettings::class, $formState);
+      $this->container->get(FormBuilderInterface::class)->submitForm(CalculatorSettings::class, $formState);
       return $formState->getErrors();
     };
 

@@ -1,0 +1,10 @@
+{
+  "payment_percentage_high": 0.85,
+  "payment_percentage_low": 0.425,
+  "minimum_funds": 131.0,
+  "basic_amount": 578.43,
+  "minimum_funds_spouse": 709.43,
+  "maximum_payment_social_welfare_act": 7656.0,
+  "maximum_payment_other": 12045.0,
+  "guardianship_fee": 43.34
+}
