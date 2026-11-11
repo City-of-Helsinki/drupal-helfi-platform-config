@@ -18,6 +18,7 @@ use Drupal\taxonomy\Entity\Term;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
@@ -288,6 +289,88 @@ class RecommendationManagerKernelTest extends AnnifKernelTestBase {
     $this->assertEquals($resultTitle, $recommendations[0]['title']);
     $this->assertEquals($resultUUID, $recommendations[0]['uuid']);
     $this->assertEquals($resultUrl, $recommendations[0]['url']);
+  }
+
+  /**
+   * Tests the recommendation images.
+   *
+   * The images are rendered as external images, since the index has the file
+   * URL, and image styles can't be applied to URLs.
+   *
+   * @param string $instance
+   *   The instance of the recommended item.
+   * @param string $imageUrl
+   *   The indexed image URL.
+   * @param string|null $expectedPath
+   *   The expected image URL path, resolved against the internal base URL of
+   *   the instance, or NULL if the indexed URL is used as is.
+   */
+  #[DataProvider('imageData')]
+  public function testGetRecommendationsImage(string $instance, string $imageUrl, ?string $expectedPath): void {
+    $term = Term::create([
+      'name' => 'foo',
+      'vid' => 'test_vocabulary',
+    ]);
+    $term->save();
+
+    $nodeSource = Node::create([
+      'type' => 'test_node_bundle',
+      'title' => $this->randomString(),
+      'test_keywords' => SuggestedTopics::create([
+        'keywords' => [
+          ['entity' => $term, 'score' => 0.8],
+        ],
+      ]),
+    ]);
+    $nodeSource->save();
+
+    $response = $this->createElasticsearchResponse([
+      'hits' => [
+        'hits' => [
+          [
+            '_source' => [
+              'parent_instance' => [$instance],
+              'uuid' => [$this->randomString()],
+              'parent_url_en' => [$this->randomString()],
+              'parent_title_en' => [$this->randomString()],
+              'parent_image_url' => [$imageUrl],
+              'parent_image_alt_en' => ['Alt text'],
+            ],
+          ],
+        ],
+      ],
+    ]);
+    $recommendations = $this->getSut([$response])->getRecommendations($nodeSource);
+
+    $expected = $imageUrl;
+    if ($expectedPath !== NULL) {
+      $expected = $this->container->get(EnvironmentResolverInterface::class)
+        ->getEnvironment($instance, $this->environment->value)
+        ->getInternalBaseUrl() . $expectedPath;
+    }
+    $image = $recommendations[0]['image'];
+    $this->assertEquals('imagecache_external_responsive', $image['#theme']);
+    $this->assertEquals($expected, $image['#uri']);
+    $this->assertEquals('card_teaser', $image['#responsive_image_style_id']);
+    $this->assertEquals('Alt text', $image['#alt']);
+  }
+
+  /**
+   * Data provider for testGetRecommendationsImage().
+   *
+   * @return array<string, array{string, string, string|null}>
+   *   The test data.
+   */
+  public static function imageData(): array {
+    $path = '/etusivu-assets/sites/default/files/images/image.jpg';
+    $blobUrl = 'https://example.blob.core.windows.net/container/images/image.jpg';
+
+    return [
+      'relative url, current instance' => [Project::ETUSIVU, $path, $path],
+      'relative url, other instance' => [Project::ASUMINEN, $path, $path],
+      'absolute url, current instance' => [Project::ETUSIVU, $blobUrl, NULL],
+      'absolute url, other instance' => [Project::ASUMINEN, $blobUrl, NULL],
+    ];
   }
 
   /**
