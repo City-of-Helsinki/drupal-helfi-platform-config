@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Semantic search API controller.
  *
- * @phpstan-type SearchResult array{promoted: list<mixed>, contacts: list<mixed>, results: list<mixed>, total_hits: int, max_score: float|null, debug?: array<string, mixed>}
+ * @phpstan-type SearchResult array{promoted: list<mixed>, contacts: list<mixed>, contacts_total: int, results: list<mixed>, total_hits: int, max_score: float|null, debug?: array<string, mixed>}
  */
 final class SearchController extends ControllerBase {
 
@@ -38,6 +38,9 @@ final class SearchController extends ControllerBase {
 
   // News bundles excluded when the React form submits the 'others' sentinel.
   const array NEWS_BUNDLES = ['news_item', 'news_article'];
+
+  // Bundle filter value the React form submits for the contacts filter.
+  const string CONTACTS_SENTINEL = 'contacts';
 
   public function __construct(
     private readonly EmbeddingApiInterface $embeddingsModel,
@@ -63,10 +66,14 @@ final class SearchController extends ControllerBase {
 
     $page = max(1, $request->query->getInt('page', 1));
     $size = min(QueryBuilder::KNN_MAX_SIZE, max(1, $request->query->getInt('size', QueryBuilder::KNN_DEFAULT_SIZE)));
+    $offset = ($page - 1) * $size;
+    [$bundleFilter, $withContacts] = $this->parseBundleParameter($request);
 
     // The KNN search returns at most KNN_K results, so the later pages would
-    // be empty.
-    if (($page - 1) * $size > QueryBuilder::KNN_K) {
+    // be empty. Contacts are paged before the content results, so with
+    // contacts the limit is the Elasticsearch result window instead.
+    $maxOffset = $withContacts ? QueryBuilder::MAX_RESULT_WINDOW - $size : QueryBuilder::KNN_K;
+    if ($offset > $maxOffset) {
       return new JsonResponse(
         ['error' => 'Page is out of range.'],
         400,
@@ -89,8 +96,23 @@ final class SearchController extends ControllerBase {
     $query = QueryRewriter::rewrite($query, $this->config('helfi_search.settings')->get('canonical_terms') ?? []);
 
     $model = $this->resolveModel($request);
+    $currentLanguage = $this->languageManager()->getCurrentLanguage()->getId();
 
     try {
+      $contactsPage = $withContacts ? $this->searchContacts($query, $currentLanguage, $offset, $size) : NULL;
+
+      // Only contacts were requested, so the embedding API call is not needed.
+      if ($contactsPage !== NULL && !$bundleFilter) {
+        return $this->createResponse([
+          'promoted' => [],
+          'contacts' => $contactsPage['contacts'],
+          'contacts_total' => $contactsPage['total'],
+          'results' => [],
+          'total_hits' => $contactsPage['total'],
+          'max_score' => NULL,
+        ], $page, $size);
+      }
+
       // Register a flood event before allowing the expensive embedding API
       // call. This trips flood protection even if the embedding API call
       // fails.
@@ -98,16 +120,20 @@ final class SearchController extends ControllerBase {
 
       $embeddings = $this->embeddingsModel->getEmbedding($query, $model);
 
-      $currentLanguage = $this->languageManager()->getCurrentLanguage()->getId();
-      [$bundles, $excludeBundles] = $this->resolveBundleFilters($request);
+      [$bundles, $excludeBundles] = $this->resolveBundleFilters($bundleFilter);
+
+      // Contacts are listed before the content results, so the content
+      // results start where the contacts end.
+      $contentOffset = $contactsPage ? max(0, $offset - $contactsPage['total']) : $offset;
+      $contentSize = $contactsPage ? $size - count($contactsPage['contacts']) : $size;
 
       $knnQuery = $this->queryBuilder->buildKnnQuery(
         $embeddings,
         $currentLanguage,
         $model,
         bundles: $bundles,
-        size: $size,
-        from: ($page - 1) * $size,
+        size: $contentSize,
+        from: $contentOffset,
         excludeBundles: $excludeBundles,
         // Debug-only: ask ES to return every matching chunk so per-chunk
         // scores can be inspected.
@@ -117,7 +143,13 @@ final class SearchController extends ControllerBase {
 
       $result = ($bundles || $excludeBundles)
         ? $this->executeFilteredSearch($knnQuery, $model, $debug)
-        : $this->executeBlendedSearch($knnQuery, $query, $currentLanguage, $model, $debug);
+        : $this->executeBlendedSearch($knnQuery, $query, $currentLanguage, $model, $debug, withContacts: $contactsPage === NULL);
+
+      if ($contactsPage !== NULL) {
+        $result['contacts'] = $contactsPage['contacts'];
+        $result['contacts_total'] = $contactsPage['total'];
+        $result['total_hits'] += $contactsPage['total'];
+      }
 
       return $this->createResponse($result, $page, $size);
     }
@@ -147,7 +179,25 @@ final class SearchController extends ControllerBase {
   }
 
   /**
-   * Resolve the bundle inclusion/exclusion filters from the request.
+   * Split the 'bundle' query parameter into content bundles and contacts.
+   *
+   * The 'contacts' value means the Contacts filter is on. Contacts are not
+   * content, so the value is removed from the content filters.
+   *
+   * @return array{0: list<string>, 1: bool}
+   *   [$bundles, $withContacts].
+   */
+  private function parseBundleParameter(Request $request): array {
+    $bundles = array_values(array_filter(
+      array_map('trim', explode(',', $request->query->getString('bundle'))),
+    ));
+    $withContacts = in_array(self::CONTACTS_SENTINEL, $bundles, TRUE);
+
+    return [array_values(array_diff($bundles, [self::CONTACTS_SENTINEL])), $withContacts];
+  }
+
+  /**
+   * Resolve the bundle inclusion/exclusion filters.
    *
    * The React form uses two sentinels:
    * - 'news' expands to all configured news bundles.
@@ -157,14 +207,13 @@ final class SearchController extends ControllerBase {
    * bundle) the include and exclude cancel out, so all bundle filtering is
    * dropped.
    *
+   * @param list<string> $bundles
+   *   The requested content bundles.
+   *
    * @return array{0: list<string>|null, 1: list<string>|null}
    *   [$bundles, $excludeBundles], each side NULL when not constrained.
    */
-  private function resolveBundleFilters(Request $request): array {
-    $bundles = array_values(array_filter(
-      array_map('trim', explode(',', $request->query->getString('bundle'))),
-    ));
-
+  private function resolveBundleFilters(array $bundles): array {
     // Expand the 'news' sentinel to the configured news bundles.
     if (in_array('news', $bundles, TRUE)) {
       $bundles = array_values(array_unique(array_merge(
@@ -182,6 +231,35 @@ final class SearchController extends ControllerBase {
       return [NULL, NULL];
     }
     return [$bundles ?: NULL, self::NEWS_BUNDLES];
+  }
+
+  /**
+   * Fetch one page of contacts and the total number of matching contacts.
+   *
+   * @return array{contacts: list<mixed>, total: int}
+   *   The contacts on the page and the total hit count.
+   *
+   * @throws \Elastic\Elasticsearch\Exception\ElasticsearchException
+   * @throws \Elastic\Transport\Exception\TransportException
+   */
+  private function searchContacts(string $query, string $language, int $from, int $size): array {
+    if ($this->currentUser()->isAnonymous()) {
+      // @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-13957.
+      return ['contacts' => [], 'total' => 0];
+    }
+
+    $contactQuery = $this->queryBuilder->buildContactQuery($query, $language, $size, $from);
+    $searchResult = $this->elasticClient->search([
+      'index' => $contactQuery['index'],
+      'body' => $contactQuery['body'],
+    ]);
+    assert($searchResult instanceof Elasticsearch);
+    $response = $searchResult->asArray();
+
+    return [
+      'contacts' => $this->queryBuilder->parseContactHits($response),
+      'total' => (int) ($response['hits']['total']['value'] ?? 0),
+    ];
   }
 
   /**
@@ -212,6 +290,7 @@ final class SearchController extends ControllerBase {
     $result = [
       'promoted' => [],
       'contacts' => [],
+      'contacts_total' => 0,
       'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
       'total_hits' => (int) ($knnResponse['hits']['total']['value'] ?? 0),
       'max_score' => isset($knnResponse['hits']['max_score'])
@@ -237,6 +316,9 @@ final class SearchController extends ControllerBase {
    *   The embedding model to use.
    * @param bool $debug
    *   Whether to include per-bundle aggregations in the result.
+   * @param bool $withContacts
+   *   Whether to run the contact sub-query. The caller skips it when it
+   *   has already fetched the contacts.
    *
    * @return SearchResult
    *   The promoted hits, contacts, KNN results, total hit count, and optional
@@ -245,20 +327,24 @@ final class SearchController extends ControllerBase {
    * @throws \Elastic\Elasticsearch\Exception\ElasticsearchException
    * @throws \Elastic\Transport\Exception\TransportException
    */
-  private function executeBlendedSearch(array $knnQuery, string $query, string $language, EmbeddingModel $model, bool $debug): array {
+  private function executeBlendedSearch(array $knnQuery, string $query, string $language, EmbeddingModel $model, bool $debug, bool $withContacts = TRUE): array {
     $promotionQuery = $this->queryBuilder->buildPromotionQuery($query, $language);
-    $contactQuery = $this->queryBuilder->buildContactQuery($query, $language);
 
-    $msearchResult = $this->elasticClient->msearch([
-      'body' => [
-        ['index' => $promotionQuery['index']],
-        $promotionQuery['body'],
-        ['index' => $knnQuery['index']],
-        $knnQuery['body'],
-        ['index' => $contactQuery['index']],
-        $contactQuery['body'],
-      ],
-    ]);
+    $body = [
+      ['index' => $promotionQuery['index']],
+      $promotionQuery['body'],
+      ['index' => $knnQuery['index']],
+      $knnQuery['body'],
+    ];
+    // Contacts are never shown to anonymous users.
+    // @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-13957.
+    if ($withContacts && !$this->currentUser()->isAnonymous()) {
+      $contactQuery = $this->queryBuilder->buildContactQuery($query, $language);
+      $body[] = ['index' => $contactQuery['index']];
+      $body[] = $contactQuery['body'];
+    }
+
+    $msearchResult = $this->elasticClient->msearch(['body' => $body]);
     assert($msearchResult instanceof Elasticsearch);
     $responses = $msearchResult->asArray()['responses'] ?? [];
 
@@ -266,19 +352,13 @@ final class SearchController extends ControllerBase {
       ? []
       : $this->queryBuilder->parsePromotionHits($responses[0] ?? []);
 
-    $contacts = isset($responses[2]['error'])
-      ? []
-      : $this->queryBuilder->parseContactHits($responses[2] ?? []);
-
-    if ($this->currentUser()->isAnonymous()) {
-      // @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-13271.
-      $contacts = [];
-    }
+    $contactResponse = isset($responses[2]['error']) ? [] : ($responses[2] ?? []);
 
     $knnResponse = isset($responses[1]['error']) ? [] : ($responses[1] ?? []);
     $result = [
       'promoted' => $promoted,
-      'contacts' => $contacts,
+      'contacts' => $this->queryBuilder->parseContactHits($contactResponse),
+      'contacts_total' => (int) ($contactResponse['hits']['total']['value'] ?? 0),
       'results' => $this->queryBuilder->parseKnnHits($knnResponse, $model),
       'total_hits' => (int) ($knnResponse['hits']['total']['value'] ?? 0) + count($promoted),
       'max_score' => isset($knnResponse['hits']['max_score'])
@@ -321,6 +401,7 @@ final class SearchController extends ControllerBase {
     $payload = [
       'promoted' => $result['promoted'],
       'contacts' => $result['contacts'],
+      'contacts_total' => $result['contacts_total'],
       'results' => $result['results'],
       'page' => $page,
       'size' => $size,
