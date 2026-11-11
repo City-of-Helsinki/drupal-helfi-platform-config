@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Kernel\Hooks;
 
 use Drupal\block\Entity\Block;
-use Drupal\helfi_platform_config\Hook\ChatBlockHooks;
+use Drupal\helfi_platform_config\Hook\PageHooks;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Tests the chat block selection on a page.
+ * Tests the chat block selection in the page preprocess.
  */
 #[Group('helfi_platform_config')]
 #[RunTestsInSeparateProcesses]
-final class ChatBlockHooksTest extends KernelTestBase {
+final class PageHooksTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -92,9 +92,11 @@ final class ChatBlockHooksTest extends KernelTestBase {
       $variables['page']['attachments'][$block_id] = ['#markup' => $block_id];
     }
 
-    $hooks = new ChatBlockHooks(
+    $hooks = new PageHooks(
       $this->container->get('entity_type.manager'),
       $this->container->get('plugin.manager.condition'),
+      $this->container->get('router.admin_context'),
+      $this->container->get('current_user'),
     );
     $hooks->preprocessPage($variables);
 

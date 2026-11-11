@@ -9,18 +9,24 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Executable\ExecutableManagerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Routing\AdminContext;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_platform_config\Plugin\Block\ChatBlockBase;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
- * Shows only one chat block on a page.
+ * Page hook implementations.
  */
-final readonly class ChatBlockHooks {
+final readonly class PageHooks {
 
   public function __construct(
     private EntityTypeManagerInterface $entityTypeManager,
     #[Autowire(service: 'plugin.manager.condition')]
     private ExecutableManagerInterface $conditionManager,
+    #[Autowire(service: 'router.admin_context')]
+    private AdminContext $adminContext,
+    #[Autowire(service: 'current_user')]
+    private AccountInterface $currentUser,
   ) {}
 
   /**
@@ -33,6 +39,38 @@ final readonly class ChatBlockHooks {
    */
   #[Hook('preprocess_page')]
   public function preprocessPage(array &$variables): void {
+    if ($this->adminContext->isAdminRoute()) {
+      return;
+    }
+
+    $this->attachHeadingAnchorButtons($variables);
+    $this->removeExtraChatBlocks($variables);
+  }
+
+  /**
+   * Attach the heading anchor buttons for editors.
+   *
+   * @param array $variables
+   *   The page variables.
+   *
+   * @phpstan-param array<string, mixed> $variables
+   */
+  private function attachHeadingAnchorButtons(array &$variables): void {
+    // Show the buttons only to editors until accessibility is tested.
+    if ($this->currentUser->isAuthenticated() && $this->currentUser->hasPermission('administer nodes')) {
+      $variables['#attached']['library'][] = 'helfi_platform_config/heading_anchor_buttons';
+    }
+  }
+
+  /**
+   * Keep only the chat block with the longest matching path.
+   *
+   * @param array $variables
+   *   The page variables.
+   *
+   * @phpstan-param array<string, mixed> $variables
+   */
+  private function removeExtraChatBlocks(array &$variables): void {
     if (empty($variables['page']['attachments'])) {
       return;
     }
