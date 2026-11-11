@@ -119,12 +119,6 @@ parameters:
 			path: helfi_platform_config.module
 
 		-
-			message: '#^Function helfi_platform_config_preprocess_page\(\) has parameter \$variables with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: helfi_platform_config.module
-
-		-
 			message: '#^Function helfi_platform_config_preprocess_react_and_share\(\) has parameter \$variables with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
