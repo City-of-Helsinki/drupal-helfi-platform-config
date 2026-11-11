@@ -181,9 +181,8 @@ final class SearchController extends ControllerBase {
   /**
    * Split the 'bundle' query parameter into content bundles and contacts.
    *
-   * The React form submits the 'contacts' sentinel when the contacts filter
-   * is selected. Contacts are not an entity bundle, so the sentinel is
-   * removed from the content bundle filter.
+   * The 'contacts' value means the Contacts filter is on. Contacts are not
+   * content, so the value is removed from the content filters.
    *
    * @return array{0: list<string>, 1: bool}
    *   [$bundles, $withContacts].

@@ -239,10 +239,10 @@ class SearchControllerTest extends KernelTestBase {
   }
 
   /**
-   * Tests the 'others' sentinel and the debug query param.
+   * Tests the 'others' filter and the debug parameter.
    *
-   * 'others' expands to "everything except news bundles" and routes through
-   * single search() (not msearch). The debug param surfaces per-bundle aggs.
+   * 'others' means all content except news, and it runs a single search.
+   * The debug parameter adds result counts per content type.
    */
   public function testOthersBundleAndDebugAggregations(): void {
     $embeddingsModel = $this->prophesize(EmbeddingApiInterface::class);
@@ -311,10 +311,10 @@ class SearchControllerTest extends KernelTestBase {
   }
 
   /**
-   * Tests the 'contacts' sentinel without content bundles.
+   * Tests the 'contacts' filter on its own.
    *
-   * Only the contacts index is queried, paged like the content results, and
-   * the embedding API is not called.
+   * Only contacts are searched, and they are paged like other results.
+   * The AI embedding API is not called.
    */
   public function testContactsOnly(): void {
     $embeddingsModel = $this->prophesize(EmbeddingApiInterface::class);
