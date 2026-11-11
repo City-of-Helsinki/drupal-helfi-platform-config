@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Kernel\Hooks;
 
 use Drupal\block\Entity\Block;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_platform_config\Hook\PageHooks;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
@@ -12,7 +13,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Tests the chat block selection in the page preprocess.
+ * Tests the page preprocess.
  */
 #[Group('helfi_platform_config')]
 #[RunTestsInSeparateProcesses]
@@ -130,6 +131,26 @@ final class PageHooksTest extends KernelTestBase {
     $this->placeChatBlock('page_chat', '/a/b/c');
 
     $this->assertSame(['menu', 'page_chat'], $this->preprocessPage(['menu', 'page_chat']), 'The other block is kept.');
+  }
+
+  /**
+   * The heading anchor buttons are attached for editors.
+   */
+  public function testHeadingAnchorButtonsAreAttachedForEditors(): void {
+    $editor = $this->createMock(AccountInterface::class);
+    $editor->method('isAuthenticated')->willReturn(TRUE);
+    $editor->method('hasPermission')->with('administer nodes')->willReturn(TRUE);
+
+    $hooks = new PageHooks(
+      $this->container->get('entity_type.manager'),
+      $this->container->get('plugin.manager.condition'),
+      $this->container->get('router.admin_context'),
+      $editor,
+    );
+    $variables = ['page' => []];
+    $hooks->preprocessPage($variables);
+
+    $this->assertContains('helfi_platform_config/heading_anchor_buttons', $variables['#attached']['library'], 'The heading anchor buttons are attached.');
   }
 
 }
