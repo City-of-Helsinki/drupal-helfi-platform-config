@@ -1,0 +1,8 @@
+helfi_calculator_test.calculator:
+  path: '/helfi-calculator-test/{calculator}'
+  defaults:
+    _controller: '\Drupal\helfi_calculator_test\Controller\CalculatorTestController::build'
+    _title: 'Calculator test'
+  requirements:
+    _access: 'TRUE'
+    calculator: '[a-z_]+'

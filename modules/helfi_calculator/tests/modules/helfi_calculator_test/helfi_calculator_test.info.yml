@@ -1,0 +1,5 @@
+name: 'HELfi Calculator test'
+type: module
+description: 'Renders helfi_calculator calculators with test settings.'
+package: Testing
+core_version_requirement: ^11
