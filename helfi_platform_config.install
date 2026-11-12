@@ -1126,6 +1126,8 @@ function helfi_platform_config_update_11013(): void {
  * Previous runs only updated the aliases for the default translation. This will
  * also fix kasko highschool news item aliases that are currently wrong from
  * previous update runs.
+ *
+ * @phpstan-param array<mixed, mixed> $sandbox
  */
 function helfi_platform_config_update_11014(array &$sandbox): void {
   helfi_platform_config_update_11009($sandbox);
