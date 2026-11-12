@@ -30,21 +30,9 @@
       const span = document.createElement('span');
       span.classList.add('heading-text');
 
-      // Collect all direct text nodes inside the heading.
-      const textNodes = Array.from(content.childNodes).filter(
-        (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0,
-      );
-
-      // Move those text nodes into a span.
-      // biome-ignore lint/suspicious/useIterableCallbackReturn: @todo UHF-12501
-      textNodes.forEach((node) => span.appendChild(node));
-
-      // Insert the span at the beginning of the heading.
-      if (content.firstChild) {
-        content.insertBefore(span, content.firstChild);
-      } else {
-        content.appendChild(span);
-      }
+      // Move the heading content into the heading-text span.
+      span.append(...content.childNodes);
+      content.appendChild(span);
 
       // Check the color of the heading text so that titles with dark background
       // can have the button also colored white.
