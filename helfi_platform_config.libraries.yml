@@ -21,6 +21,9 @@ chat_widget:
       dist/css/chatWidget.min.css: { minified: true }
   js:
     dist/js/chatWidget.min.js: { minified: true }
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
 
 tom_select:
   version: 2.2.2
