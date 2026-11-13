@@ -1,0 +1,7 @@
+<div{{ attributes.addClass('outdated-browser', 'js-outdated-browser').setAttribute('hidden', true) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+  {% block content %}
+    {{ content }}
+  {% endblock %}
+</div>
