@@ -14,13 +14,16 @@ chat_enhancer:
   dependencies:
     - core/drupal
 
-telia_ace_widget_loadjs:
-  version: 1.1.2
+chat_widget:
+  version: 1.2.0
   css:
     theme:
-      assets/css/telia_ace.css: {}
+      dist/css/chatWidget.min.css: { minified: true }
   js:
-    assets/js/telia_ace.js: {}
+    dist/js/chatWidget.min.js: { minified: true }
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
 
 tom_select:
   version: 2.2.2

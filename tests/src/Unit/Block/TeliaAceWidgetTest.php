@@ -57,14 +57,18 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
     // Verify the form contains the expected fields.
     $this->assertArrayHasKey('chat_id', $form);
     $this->assertArrayHasKey('chat_title', $form);
+    $this->assertArrayHasKey('chat_icon', $form);
 
     // Verify field properties.
     $this->assertTrue($form['chat_id']['#required']);
     $this->assertFalse($form['chat_title']['#required']);
+    $this->assertTrue($form['chat_icon']['#required']);
+    $this->assertEquals(['speechbubble-text', 'customer-bot-positive'], array_keys($form['chat_icon']['#options']));
 
     // Verify default values.
     $this->assertEquals('', $form['chat_id']['#default_value']);
     $this->assertEquals('', $form['chat_title']['#default_value']);
+    $this->assertEquals('speechbubble-text', $form['chat_icon']['#default_value']);
   }
 
   /**
@@ -78,6 +82,7 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
       ->willReturnCallback(fn($key) => match ($key) {
         'chat_id' => 'ninja-chat',
         'chat_title' => 'Chat via Ninja chat',
+        'chat_icon' => 'customer-bot-positive',
         default => NULL,
       });
 
@@ -87,6 +92,7 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
     // Verify that the configuration is saved correctly.
     $this->assertEquals('ninja-chat', $this->teliaAceWidget->getConfiguration()['chat_id']);
     $this->assertEquals('Chat via Ninja chat', $this->teliaAceWidget->getConfiguration()['chat_title']);
+    $this->assertEquals('customer-bot-positive', $this->teliaAceWidget->getConfiguration()['chat_icon']);
   }
 
   /**
@@ -99,10 +105,11 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
     $this->teliaAceWidget->setConfiguration([
       'chat_id' => 'ninja-chat',
       'chat_title' => 'Chat via Ninja chat',
+      'chat_icon' => 'customer-bot-positive',
     ]);
 
     $expected = [
-      'telia_chat_widget' => [
+      'chat_widget' => [
         'button' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
@@ -114,13 +121,14 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
           ],
         ],
         '#attached' => [
-          'library' => ['helfi_platform_config/telia_ace_widget_loadjs'],
+          'library' => ['helfi_platform_config/chat_widget'],
           'drupalSettings' => [
-            'telia_ace_data' => [
-              'script_url' => TeliaAceWidget::SDK_URL,
-              'script_sri' => NULL,
-              'chat_id' => Xss::filter('ninja-chat'),
-              'chat_title' => Xss::filter('Chat via Ninja chat'),
+            'chatWidgetData' => [
+              'scriptUrl' => TeliaAceWidget::SDK_URL,
+              'scriptSri' => NULL,
+              'chatId' => Xss::filter('ninja-chat'),
+              'chatTitle' => Xss::filter('Chat via Ninja chat'),
+              'chatIcon' => 'customer-bot-positive',
             ],
           ],
         ],
@@ -147,11 +155,11 @@ class TeliaAceWidgetTest extends BlockUnitTestBase {
     // Ensure XSS is filtered.
     $this->assertSame(
       Xss::filter('<script>alert("XSS")</script>'),
-      $build['telia_chat_widget']['#attached']['drupalSettings']['telia_ace_data']['chat_id']
+      $build['chat_widget']['#attached']['drupalSettings']['chatWidgetData']['chatId']
     );
     $this->assertSame(
       Xss::filter('<img src="x" onerror="alert(\'XSS\')">'),
-      $build['telia_chat_widget']['#attached']['drupalSettings']['telia_ace_data']['chat_title']
+      $build['chat_widget']['#attached']['drupalSettings']['chatWidgetData']['chatTitle']
     );
   }
 
