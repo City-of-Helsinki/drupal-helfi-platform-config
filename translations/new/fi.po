@@ -538,3 +538,19 @@ msgstr "Pienet kortit"
 msgctxt "Content cards design"
 msgid "Large cards"
 msgstr "Suuret kortit"
+
+msgctxt "Outdated browser"
+msgid "Your browser is out of date"
+msgstr "Selaimesi on vanhentunut"
+
+msgctxt "Outdated browser"
+msgid "Attention"
+msgstr "Huomio"
+
+msgctxt "Outdated browser"
+msgid "Close"
+msgstr "Sulje"
+
+msgctxt "Outdated browser"
+msgid "The browser you are using is outdated and might pose a security risk when you visit other websites. Update your browser to the latest available version."
+msgstr "Käyttämäsi selain on vanhentunut ja se saattaa aiheuttaa tietoturvariskin, kun vierailet muilla verkkosivuilla. Päivitä selain uusimpaan saatavilla olevaan versioon."

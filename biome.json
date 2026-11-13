@@ -2,7 +2,8 @@
   "extends": ["@hdbt/theme-builder/biome"],
   "files": {
     "includes": [
-      "!**/*.min.js"
+      "!**/*.min.js",
+      "!**/assets/js/outdatedBrowser.js"
     ]
   }
 }

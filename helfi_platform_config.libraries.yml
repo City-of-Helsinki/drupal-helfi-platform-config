@@ -6,6 +6,13 @@ react_and_share:
     - core/drupal
     - core/drupalSettings
 
+# Intentionally without dependencies and aggregation (preprocess: false), so
+# that it runs on old browsers.
+outdated_browser:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    dist/js/outdatedBrowser.js: { preprocess: false }
+
 chat_enhancer:
   version: 1.0.0
   header: true
