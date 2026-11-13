@@ -126,6 +126,8 @@ class ChatWidget {
     footerButton.addEventListener('click', () => {
       toast.hidden = true;
       this.openCallback();
+      this.clearDismissed();
+      this.state.chatDismissed = false;
     });
 
     const dismissButton = document.createElement('button');
@@ -165,6 +167,22 @@ class ChatWidget {
       return JSON.parse(sessionStorage.getItem('chat-dismissed')) ?? {};
     } catch (_e) {
       return {};
+    }
+  };
+
+  /**
+   * Remove the closed state of this chat from the session.
+   */
+  clearDismissed = () => {
+    try {
+      const { [this.static.chatId]: _removed, ...dismissed } = this.getDismissedChats();
+      if (Object.keys(dismissed).length) {
+        sessionStorage.setItem('chat-dismissed', JSON.stringify(dismissed));
+      } else {
+        sessionStorage.removeItem('chat-dismissed');
+      }
+    } catch (_e) {
+      // Ignore unavailable session storage.
     }
   };
 
