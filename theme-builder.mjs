@@ -19,10 +19,12 @@ const jsFiles = {
   headingAnchorButtons: 'assets/js/headingAnchorButtons.js',
   reactAndShareSettings: 'assets/js/reactAndShareSettings.js',
   sentryIgnore: 'assets/js/sentryIgnore.js',
+  chatWidget: 'assets/js/chatWidget.js',
 };
 
 // SCSS files.
 const styles = [
+  ['assets/scss/chatWidget.scss', 'css/chatWidget.min.css'],
 ];
 
 // The outdated browser script is ES5 for old browsers, so it is not built with
