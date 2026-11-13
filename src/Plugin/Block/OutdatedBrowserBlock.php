@@ -25,6 +25,8 @@ final class OutdatedBrowserBlock extends BlockBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-return array<string, mixed>
    */
   public function build(): array {
     $options = ['context' => 'Outdated browser'];
