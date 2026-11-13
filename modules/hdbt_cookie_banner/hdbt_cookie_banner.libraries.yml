@@ -19,7 +19,7 @@ bootstrap:
 json_editor:
   version: 2.15.1
   js:
-    assets/js/jsoneditor.js: { minified: true, preprocess: false }
+    dist/js/jsoneditor.js: { minified: true, preprocess: false }
   dependencies:
     - hdbt_cookie_banner/bootstrap_icons
     - hdbt_cookie_banner/bootstrap
@@ -62,8 +62,7 @@ hds_cookie_consent:
 embedded_content_cookie_compliance:
   version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
-    assets/js/embedded-content-cookie-compliance.js: { weight: -14, preprocess: false }
+    dist/js/embeddedContentCookieCompliance.min.js: { weight: -14, minified: true, preprocess: false }
   dependencies:
-    - core/jquery
     - core/drupal
     - core/drupalSettings
