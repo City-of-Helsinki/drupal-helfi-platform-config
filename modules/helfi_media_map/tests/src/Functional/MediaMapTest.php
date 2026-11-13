@@ -88,12 +88,13 @@ class MediaMapTest extends BrowserTestBase {
     ], 'Save');
 
     // Make sure we only allow valid domains.
-    $this->assertSession()->pageTextContainsOnce('Given host (google.com) is not valid, must be one of: palvelukartta.hel.fi, kartta.hel.fi');
+    $this->assertSession()->pageTextContainsOnce('Given host (google.com) is not valid, must be one of: palvelukartta.hel.fi, kartta.hel.fi, ulkoliikunta.fi');
 
     // Make sure we can add valid maps.
     $urls = [
       'https://kartta.hel.fi/link/9UC458',
       'https://palvelukartta.hel.fi/fi/embed/address/helsinki/Keskuskatu/8?city=helsinki,espoo,vantaa,kauniainen',
+      'https://ulkoliikunta.fi/fi/embed?sport=swimming&city=helsinki',
     ];
 
     foreach ($urls as $delta => $url) {
@@ -104,7 +105,7 @@ class MediaMapTest extends BrowserTestBase {
         'name[0][value]' => 'Map value ' . $delta,
         'field_media_hel_map[0][uri]' => $url,
       ], 'Save');
-      $this->assertSession()->pageTextContainsOnce("Map (kartta.hel.fi, palvelukartta.hel.fi) Map value $delta has been created.");
+      $this->assertSession()->pageTextContainsOnce("Map (kartta.hel.fi, palvelukartta.hel.fi, ulkoliikunta.fi) Map value $delta has been created.");
 
       $medias = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
         'name' => 'Map value ' . $delta,
