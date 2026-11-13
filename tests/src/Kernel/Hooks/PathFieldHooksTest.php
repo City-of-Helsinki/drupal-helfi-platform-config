@@ -12,11 +12,11 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Tests the path alias form alterations.
+ * Tests the path field alterations.
  */
 #[Group('helfi_platform_config')]
 #[RunTestsInSeparateProcesses]
-final class PathAliasFormHooksTest extends KernelTestBase {
+final class PathFieldHooksTest extends KernelTestBase {
 
   /**
    * {@inheritdoc}
@@ -27,6 +27,9 @@ final class PathAliasFormHooksTest extends KernelTestBase {
     'language',
     'path',
     'path_alias',
+    'link',
+    'views',
+    'redirect',
   ];
 
   /**
@@ -36,7 +39,8 @@ final class PathAliasFormHooksTest extends KernelTestBase {
     parent::setUp();
 
     $this->installEntitySchema('path_alias');
-    $this->installConfig(['language']);
+    $this->installEntitySchema('redirect');
+    $this->installConfig(['language', 'redirect']);
 
     foreach (['fi', 'sv'] as $langcode) {
       ConfigurableLanguage::createFromLangcode($langcode)->save();
@@ -47,7 +51,7 @@ final class PathAliasFormHooksTest extends KernelTestBase {
   }
 
   /**
-   * Tests the path field description and prefix.
+   * Tests the path alias and redirect source field description and prefix.
    *
    * @param array<string, string> $sitePrefixes
    *   The helfi_proxy site prefixes.
@@ -63,17 +67,25 @@ final class PathAliasFormHooksTest extends KernelTestBase {
     ]);
     $this->container->get('config.factory')->reset('helfi_proxy.settings');
 
-    $form = $this->buildForm($langcode);
+    $description = 'Add the final part of the URL, meaning everything that comes after the instance.';
+
+    $form = $this->buildForm('path_alias', $langcode);
     $baseUrl = $this->container->get('router.request_context')->getCompleteBaseUrl();
 
     $path = $form['path']['widget'][0]['value'];
-    $this->assertEquals('Add the final part of the URL, meaning everything that comes after the instance.', (string) $path['#description']);
+    $this->assertEquals($description, (string) $path['#description']);
     $this->assertEquals(rtrim($baseUrl, '/') . $expectedPrefix, $path['#field_prefix']);
 
     // The alias field is left as the path module sets it.
     $alias = $form['alias']['widget'][0]['value'];
     $this->assertEquals($baseUrl, $alias['#field_prefix']);
     $this->assertStringStartsWith('Specify an alternative path', (string) $alias['#description']);
+
+    // The redirect source keeps the trailing slash set by the redirect module.
+    $form = $this->buildForm('redirect', $langcode);
+    $source = $form['redirect_source']['widget'][0]['path'];
+    $this->assertEquals($description, (string) $source['#description']);
+    $this->assertEquals('http://localhost' . $expectedPrefix . '/', $source['#field_prefix']);
   }
 
   /**
@@ -97,25 +109,27 @@ final class PathAliasFormHooksTest extends KernelTestBase {
   }
 
   /**
-   * Builds the path alias add form in the given language.
+   * Builds an entity add form in the given language.
    *
+   * @param string $entityTypeId
+   *   The entity type.
    * @param string $langcode
    *   The language prefix of the request.
    *
    * @return array<string, mixed>
    *   The form.
    */
-  private function buildForm(string $langcode): array {
-    $request = Request::create("/$langcode/admin/config/search/path/add");
+  private function buildForm(string $entityTypeId, string $langcode): array {
+    $request = Request::create("/$langcode/admin");
     $request->setSession($this->container->get('session'));
     $this->container->get('request_stack')->push($request);
     $this->container->get('language_manager')->reset();
 
-    $alias = $this->container->get('entity_type.manager')
-      ->getStorage('path_alias')
+    $entity = $this->container->get('entity_type.manager')
+      ->getStorage($entityTypeId)
       ->create();
 
-    return $this->container->get('entity.form_builder')->getForm($alias);
+    return $this->container->get('entity.form_builder')->getForm($entity);
   }
 
 }
