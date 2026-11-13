@@ -127,7 +127,6 @@ class ChatWidget {
       toast.hidden = true;
       this.openCallback();
       this.clearDismissed();
-      this.state.chatDismissed = false;
     });
 
     const dismissButton = document.createElement('button');
@@ -183,6 +182,15 @@ class ChatWidget {
       }
     } catch (_e) {
       // Ignore unavailable session storage.
+    }
+  };
+
+  /**
+   * Restore the chat button after the chat closes.
+   */
+  syncDismissed = () => {
+    if (!this.state.chatOpened && this.state.chatDismissed) {
+      this.state.chatDismissed = this.getDismissedChats()[this.static.chatId] === true;
     }
   };
 
@@ -394,6 +402,7 @@ class ChatWidget {
         // whenever its classes change.
         new MutationObserver(() => {
           this.state.chatOpened = humany_widget.classList.contains('humany-active');
+          this.syncDismissed();
           this.render();
         }).observe(humany_widget, { attributes: true, attributeFilter: ['class'] });
 
@@ -425,6 +434,7 @@ class ChatWidget {
             return;
           }
           this.state.chatOpened = !event.data.data;
+          this.syncDismissed();
           this.render();
         });
 
