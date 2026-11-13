@@ -1,6 +1,6 @@
 # Drupal Media map
 
-Allows `kartta.hel.fi` and `palvelukartta.hel.fi` maps to be embedded using Media.
+Allows `kartta.hel.fi`, `palvelukartta.hel.fi` and `ulkoliikunta.fi` maps to be embedded using Media.
 
 ### Drupal Media map on paragraphs
 

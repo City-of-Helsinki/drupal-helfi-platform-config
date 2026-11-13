@@ -56,6 +56,22 @@ class UrlParserTraitTest extends UnitTestCase {
         'https://palvelukartta.hel.fi/fi/embed/unit/56241?p=1&t=accessibilityDetails',
         'https://palvelukartta.hel.fi/fi/unit/56241?p=1&t=accessibilityDetails',
       ],
+      [
+        'https://ulkoliikunta.fi/fi/embed',
+        'https://ulkoliikunta.fi/fi',
+      ],
+      [
+        'https://ulkoliikunta.fi/sv/embed?sport=swimming&city=helsinki,espoo',
+        'https://ulkoliikunta.fi/sv',
+      ],
+      [
+        'https://ulkoliikunta.fi/en/embed?unit=40142',
+        'https://ulkoliikunta.fi/en/unit/40142',
+      ],
+      [
+        'https://ulkoliikunta.fi/embed?unit=40142',
+        'https://ulkoliikunta.fi/fi/unit/40142',
+      ],
     ];
   }
 
@@ -103,6 +119,14 @@ class UrlParserTraitTest extends UnitTestCase {
         'https://palvelukartta.hel.fi/fi/embed/unit/56241?p=1&t=accessibilityDetails',
       ],
       [
+        'https://palvelukartta.hel.fi?city=helsinki',
+        'https://palvelukartta.hel.fi/fi/embed?city=helsinki',
+      ],
+      [
+        'https://palvelukartta.hel.fi/unit/56241',
+        'https://palvelukartta.hel.fi/embed/unit/56241',
+      ],
+      [
         'https://kartta.hel.fi/embed?link=123',
         'https://kartta.hel.fi/embed?link=123',
       ],
@@ -113,6 +137,34 @@ class UrlParserTraitTest extends UnitTestCase {
       [
         'https://kartta.hel.fi/link/678',
         'https://kartta.hel.fi/embed?link=678',
+      ],
+      [
+        'https://ulkoliikunta.fi/fi/embed',
+        'https://ulkoliikunta.fi/fi/embed',
+      ],
+      [
+        'https://ulkoliikunta.fi/sv/embed?sport=swimming',
+        'https://ulkoliikunta.fi/sv/embed?sport=swimming',
+      ],
+      [
+        'https://ulkoliikunta.fi/en/embed?sport=swimming&city=helsinki,espoo',
+        'https://ulkoliikunta.fi/en/embed?sport=swimming&city=helsinki,espoo',
+      ],
+      [
+        'https://ulkoliikunta.fi/fi/embed?unit=40142',
+        'https://ulkoliikunta.fi/fi/embed?unit=40142',
+      ],
+      [
+        'https://ulkoliikunta.fi/fi/embed/',
+        'https://ulkoliikunta.fi/fi/embed',
+      ],
+      [
+        'https://ulkoliikunta.fi/?sport=swimming',
+        'https://ulkoliikunta.fi/fi/embed?sport=swimming',
+      ],
+      [
+        'https://ulkoliikunta.fi/sv',
+        'https://ulkoliikunta.fi/sv/embed',
       ],
     ];
   }

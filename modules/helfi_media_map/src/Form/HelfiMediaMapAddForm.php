@@ -24,7 +24,7 @@ class HelfiMediaMapAddForm extends AddFormBase {
     $container['helfi_media_map_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Map embed URL'),
-      '#description' => $this->t('You can embed maps from Palvelukartta or Karttapalvelu.', []),
+      '#description' => $this->t('You can embed maps from Palvelukartta, Karttapalvelu or Ulkoliikunta.fi.', []),
       '#maxlength' => 2048,
     ];
 

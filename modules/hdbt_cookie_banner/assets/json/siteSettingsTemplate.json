@@ -287,6 +287,43 @@
           }
         },
         {
+          "name": "i18nextLng",
+          "host": "ulkoliikunta.fi",
+          "storageType": 2,
+          "description": {
+            "fi": "Ulkoliikuntakartta tallentaa tietueeseen kielen, jolla palvelua käytetään.",
+            "sv": "Utemotionskartan sparar det språk som används i tjänsten.",
+            "en": "The Exercise Map stores the language in which the service is used."
+          },
+          "expiration": "-"
+        },
+        {
+          "name": "outdoors-sports-map:primary",
+          "host": "ulkoliikunta.fi",
+          "storageType": 2,
+          "description": {
+            "fi": "Ulkoliikuntakartta tallentaa tietueeseen kartan tilan, kuten sijainnin.",
+            "sv": "Utemotionskartan sparar kartans tillstånd, såsom position.",
+            "en": "The Exercise Map stores the state of the map, such as the location."
+          },
+          "expiration": "-"
+        },
+        {
+          "name": "sentryReplaySession",
+          "host": "ulkoliikunta.fi",
+          "storageType": 3,
+          "description": {
+            "fi": "Ulkoliikuntakartan virheseurannan (Sentry) istuntotunniste.",
+            "sv": "Sessions-ID för felövervakningen (Sentry) i Utemotionskartan.",
+            "en": "Session ID of the error monitoring (Sentry) of the Exercise Map."
+          },
+          "expiration": {
+            "fi": "Istunto",
+            "sv": "Session",
+            "en": "Session"
+          }
+        },
+        {
           "name": "VISITOR_INFO1_LIVE",
           "host": "youtube.com",
           "storageType": 1,
