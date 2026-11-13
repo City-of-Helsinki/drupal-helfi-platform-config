@@ -1,12 +1,27 @@
 {
   "name": "hdbt-cookie-banner-admin-ui",
   "description": "Admin UI libraries for the HDBT cookie banner.",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "scripts": {
-    "copy-json-editor": "cp node_modules/@json-editor/json-editor/dist/jsoneditor.js assets/js/",
-    "postinstall": "npm run copy-json-editor"
+    "preinstall": "rm -rf node_modules/@hdbt/theme-builder && npm install ../../../../../themes/contrib/hdbt/theme-builder --loglevel=silent",
+    "dev": "sandbox node theme-builder.mjs --watch --dev",
+    "build": "sandbox sh -c 'npm run format:js --loglevel=silent && npm run lint --loglevel=silent && node theme-builder.mjs'",
+    "lint:js": "sandbox biome lint assets/js/",
+    "format:js": "sandbox biome format --write assets/js/",
+    "lint": "sandbox npm-run-all --parallel lint:js -s"
   },
   "dependencies": {
-    "@json-editor/json-editor": "^2.15.1"
+    "@hdbt/theme-builder": "file:../../../../../themes/contrib/hdbt/theme-builder",
+    "@json-editor/json-editor": "^2.15.1",
+    "npm-run-all2": "^8.0.4"
+  },
+  "engines": {
+    "npm": ">=12.0.0",
+    "node": ">=24.0.0"
+  },
+  "allowScripts": {
+    "@parcel/watcher": false,
+    "esbuild": false,
+    "core-js": false
   }
 }
