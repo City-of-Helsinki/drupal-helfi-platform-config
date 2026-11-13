@@ -292,8 +292,8 @@
           "storageType": 2,
           "description": {
             "fi": "Ulkoliikuntakartta tallentaa tietueeseen kielen, jolla palvelua käytetään.",
-            "sv": "Kartan för utomhusmotion sparar det språk som används i tjänsten.",
-            "en": "The outdoor sports map stores the language in which the service is used."
+            "sv": "Utemotionskartan sparar det språk som används i tjänsten.",
+            "en": "The Exercise Map stores the language in which the service is used."
           },
           "expiration": "-"
         },
@@ -303,8 +303,8 @@
           "storageType": 2,
           "description": {
             "fi": "Ulkoliikuntakartta tallentaa tietueeseen kartan tilan, kuten sijainnin.",
-            "sv": "Kartan för utomhusmotion sparar kartans tillstånd, såsom position.",
-            "en": "The outdoor sports map stores the state of the map, such as the location."
+            "sv": "Utemotionskartan sparar kartans tillstånd, såsom position.",
+            "en": "The Exercise Map stores the state of the map, such as the location."
           },
           "expiration": "-"
         },
@@ -314,8 +314,8 @@
           "storageType": 3,
           "description": {
             "fi": "Ulkoliikuntakartan virheseurannan (Sentry) istuntotunniste.",
-            "sv": "Sessions-ID för felövervakningen (Sentry) i kartan för utomhusmotion.",
-            "en": "Session ID of the error monitoring (Sentry) of the outdoor sports map."
+            "sv": "Sessions-ID för felövervakningen (Sentry) i Utemotionskartan.",
+            "en": "Session ID of the error monitoring (Sentry) of the Exercise Map."
           },
           "expiration": {
             "fi": "Istunto",
