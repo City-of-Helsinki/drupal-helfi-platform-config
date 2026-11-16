@@ -11,11 +11,13 @@ use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\helfi_users\Hook\UserCancelHooks;
 use Drupal\user\UserInterface;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests for reassigning node revisions when canceling users.
  */
 #[Group('helfi_users')]
+#[RunTestsInSeparateProcesses]
 class UserCancelNodeRevisionsTest extends KernelTestBase {
 
   use NodeCreationTrait;

@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_users\Kernel;
 use Drupal\helfi_users\FavoriteStorage;
 use Drupal\user\UserInterface;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  * Tests the favorite toggle route.
  */
 #[Group('helfi_users')]
+#[RunTestsInSeparateProcesses]
 class FavoriteRouteTest extends FavoriteKernelTestBase {
 
   /**
