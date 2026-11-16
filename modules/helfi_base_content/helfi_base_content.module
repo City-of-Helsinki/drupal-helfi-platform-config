@@ -283,6 +283,25 @@ function helfi_base_content_get_block_configurations(string $theme) : array {
         ],
       ],
     ],
+    'outdated_browser' => [
+      'block' => [
+        'id' => 'outdated_browser',
+        'plugin' => 'outdated_browser',
+        'provider' => 'helfi_base_content',
+        'settings' => [
+          'id' => 'outdated_browser',
+          'label' => 'Outdated browser notification',
+          'provider' => 'helfi_platform_config',
+        ],
+        'weight' => -20,
+      ],
+      'variations' => [
+        [
+          'theme' => $theme,
+          'region' => 'before_content',
+        ],
+      ],
+    ],
     'mainnavigation' => [
       'block' => [
         'id' => 'mainnavigation',

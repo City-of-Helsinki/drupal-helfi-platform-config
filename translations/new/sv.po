@@ -92,3 +92,19 @@ msgstr "%title är schemalagd att publiceras @publish_time."
 
 msgid "%title is scheduled to be unpublished @unpublish_time."
 msgstr "%title är schemalagd att bli opublicerad @unpublish_time."
+
+msgctxt "Outdated browser"
+msgid "Your browser is out of date"
+msgstr "Din webbläsare är föråldrad"
+
+msgctxt "Outdated browser"
+msgid "Attention"
+msgstr "Observera"
+
+msgctxt "Outdated browser"
+msgid "Close"
+msgstr "Stäng"
+
+msgctxt "Outdated browser"
+msgid "The browser you are using is outdated and might pose a security risk when you visit other websites. Update your browser to the latest available version."
+msgstr "Webbläsaren du använder är föråldrad och kan utgöra en säkerhetsrisk när du besöker andra webbplatser. Uppdatera webbläsaren till den senaste tillgängliga versionen."
