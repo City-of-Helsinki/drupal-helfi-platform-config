@@ -18,6 +18,25 @@ flowchart TD
     EmbeddingsModelInterface -- "Converts chunks to vectors" --> Vectors
 ```
 
+## Embedding dimensions
+
+Embeddings field can index shorter vectors to save Elasticsearch storage.
+Set **Dimensions** in the index field settings, or in the index config:
+
+```yaml
+field_settings:
+  embeddings_text_embedding_3_large:
+    property_path: embeddings_text_embedding_3_large
+    type: embeddings
+    configuration:
+      dimensions: 1024
+```
+
+- KNN queries against a shortened field must shorten the query vector the same
+  way: `Vector::truncate($embedding, EmbeddingsProperty::getDimensions($field))`.
+- Changing the value changes the `dims` of the `dense_vector` mapping, which
+  Elasticsearch cannot update in place.
+
 ## Configuration
 
 `deboost_bundles`, `deboost_factor`, and `similarity` are added to `config_ignore` by `ConfigIgnoreHook`, so they can be tuned on a running site.

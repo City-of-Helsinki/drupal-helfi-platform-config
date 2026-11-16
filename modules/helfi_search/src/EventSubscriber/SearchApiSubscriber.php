@@ -7,6 +7,7 @@ namespace Drupal\helfi_search\EventSubscriber;
 use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
 use Drupal\elasticsearch_connector\Event\IndexPreCreateEvent;
 use Drupal\elasticsearch_connector\Event\SupportsDataTypeEvent;
+use Drupal\helfi_search\Plugin\search_api\processor\Property\EmbeddingsProperty;
 use Drupal\helfi_search\Plugin\search_api\processor\VectorEmbeddingsProcessor;
 use Drupal\search_api\Event\MappingFieldTypesEvent;
 use Drupal\search_api\Event\SearchApiEvents;
@@ -54,7 +55,7 @@ final class SearchApiSubscriber implements EventSubscriberInterface {
    */
   public function mapElasticFields(FieldMappingEvent $event): void {
     if ($event->getField()->getType() === 'embeddings') {
-      $dimensions = $event->getField()->getDataDefinition()->getSetting('embeddings_model_dimensions');
+      $dimensions = EmbeddingsProperty::getDimensions($event->getField());
       $event->setParam([
         'type' => 'nested',
         'properties' => [

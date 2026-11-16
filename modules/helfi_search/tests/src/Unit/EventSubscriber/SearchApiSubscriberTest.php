@@ -8,6 +8,7 @@ use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
 use Drupal\elasticsearch_connector\Event\IndexPreCreateEvent;
 use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EventSubscriber\SearchApiSubscriber;
+use Drupal\helfi_search\Plugin\search_api\processor\Property\EmbeddingsProperty;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\Field;
 use Drupal\search_api\Processor\ProcessorProperty;
@@ -54,7 +55,7 @@ class SearchApiSubscriberTest extends UnitTestCase {
       ->setDataDefinition(new ProcessorProperty([
         'type' => 'embeddings',
         'settings' => [
-          'embeddings_model_dimensions' => $model->dimensions(),
+          EmbeddingsProperty::MODEL_SETTING => $model,
         ],
       ]));
 

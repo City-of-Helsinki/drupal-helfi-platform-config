@@ -117,12 +117,32 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
   }
 
   /**
+   * Vectors are shortened to the field dimensions.
+   */
+  public function testAddFieldValuesWithReducedDimensions(): void {
+    $item = $this->createItem(['dimensions' => 1]);
+    $entity = $item->getOriginalObject()->getValue();
+    $this->fillChunks($entity, [new Chunk('Body text')], vector: [-0.25, 0.5]);
+    $this->setDocumentState($entity, DocumentState::Ready);
+
+    $this->processor->addFieldValues($item);
+
+    $values = $item->getField(EmbeddingModel::DEFAULT->fieldPrefix())->getValues();
+
+    $this->assertCount(1, $values);
+    $this->assertEqualsWithDelta([-1.0], $values[0]['vector'], 1e-6);
+  }
+
+  /**
    * Creates a search api item for a node, with the embeddings field attached.
+   *
+   * @param array<string, mixed> $configuration
+   *   The embeddings field configuration.
    *
    * @return \Drupal\search_api\Item\ItemInterface<mixed>
    *   The item.
    */
-  private function createItem(): ItemInterface {
+  private function createItem(array $configuration = []): ItemInterface {
     $node = Node::create([
       'title' => 'Test',
       'type' => 'test_node_bundle_1',
@@ -140,6 +160,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     // Attach the embeddings field.
     $field = clone $this->index->getField(EmbeddingModel::DEFAULT->fieldPrefix());
     $field->setType('embeddings');
+    $field->setConfiguration($configuration);
     $item->setField(EmbeddingModel::DEFAULT->fieldPrefix(), $field);
     $item->setField('markdown', clone $this->index->getField('markdown'));
 

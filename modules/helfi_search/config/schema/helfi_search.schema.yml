@@ -39,3 +39,18 @@ helfi_search.settings:
       label: 'Canonical terms applied to the query before embedding'
       sequence:
         type: string
+
+helfi_search.embeddings_property_configuration:
+  type: mapping
+  label: 'Embeddings field configuration'
+  mapping:
+    dimensions:
+      type: integer
+      label: 'Indexed vector dimensions. Empty uses the full model dimensions.'
+      nullable: true
+
+search_api.property_configuration.embeddings_text_embedding_3_small:
+  type: helfi_search.embeddings_property_configuration
+
+search_api.property_configuration.embeddings_text_embedding_3_large:
+  type: helfi_search.embeddings_property_configuration

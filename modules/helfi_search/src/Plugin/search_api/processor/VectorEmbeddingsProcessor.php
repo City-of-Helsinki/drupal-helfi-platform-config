@@ -12,6 +12,7 @@ use Drupal\helfi_search\DocumentState;
 use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\Plugin\search_api\processor\DTO\StoredChunk;
 use Drupal\helfi_search\Plugin\search_api\processor\DTO\StoredDocument;
+use Drupal\helfi_search\Plugin\search_api\processor\Property\EmbeddingsProperty;
 use Drupal\helfi_search\Vector;
 use Drupal\search_api\Attribute\SearchApiProcessor;
 use Drupal\search_api\Datasource\DatasourceInterface;
@@ -73,13 +74,13 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
     if (!$datasource) {
       foreach (EmbeddingModel::cases() as $model) {
-        $properties[$model->fieldPrefix()] = new ProcessorProperty([
+        $properties[$model->fieldPrefix()] = new EmbeddingsProperty([
           'label' => $this->t('Embeddings (@model)', ['@model' => $model->value]),
           'description' => $this->t('Vector embeddings for @model.', ['@model' => $model->value]),
           'type' => 'embeddings',
           'processor_id' => $this->getPluginId(),
           'settings' => [
-            'embeddings_model_dimensions' => $model->dimensions(),
+            EmbeddingsProperty::MODEL_SETTING => $model,
           ],
         ]);
       }
@@ -163,10 +164,14 @@ final class VectorEmbeddingsProcessor extends ProcessorPluginBase {
 
       $chunks = $document->getChunks($model);
 
-      foreach ($chunks as $chunk) {
-        foreach ($fields as $field) {
+      foreach ($fields as $field) {
+        // Stored vectors have the full model dimensions. Each field can
+        // index shorter vectors.
+        $dimensions = EmbeddingsProperty::getDimensions($field);
+
+        foreach ($chunks as $chunk) {
           $field->addValue([
-            'vector' => $chunk->vector,
+            'vector' => $dimensions !== NULL ? Vector::truncate($chunk->vector, $dimensions) : $chunk->vector,
             'content' => $chunk->snippet ?? '',
             'fragment' => $chunk->fragment,
           ]);
