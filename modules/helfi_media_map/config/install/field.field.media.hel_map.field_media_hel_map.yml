@@ -12,7 +12,7 @@ field_name: field_media_hel_map
 entity_type: media
 bundle: hel_map
 label: Url
-description: 'You can embed maps from Palvelukartta or Karttapalvelu.'
+description: 'You can embed maps from Palvelukartta, Karttapalvelu or Ulkoliikunta.fi.'
 required: true
 translatable: true
 default_value: {  }

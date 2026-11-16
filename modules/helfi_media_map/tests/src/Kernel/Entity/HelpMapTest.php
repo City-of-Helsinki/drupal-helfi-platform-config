@@ -49,6 +49,13 @@ class HelpMapTest extends HelfiMediaKernelTestBase {
       'Palvelukartta.hel.fi',
       TRUE,
     );
+
+    // Test the Hel Map bundle class with ulkoliikunta.fi.
+    $this->testMapService(
+      ['uri' => 'https://ulkoliikunta.fi/fi/embed?unit=40142'],
+      'https://ulkoliikunta.fi',
+      'Ulkoliikunta.fi',
+    );
   }
 
   /**

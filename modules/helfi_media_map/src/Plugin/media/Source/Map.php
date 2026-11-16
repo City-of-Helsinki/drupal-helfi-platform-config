@@ -15,7 +15,7 @@ use Drupal\media\MediaTypeInterface;
  */
 #[MediaSource(
   id: 'hel_map',
-  label: new TranslatableMarkup('Map - palvelukartta.hel.fi and kartta.hel.fi'),
+  label: new TranslatableMarkup('Map - palvelukartta.hel.fi, kartta.hel.fi and ulkoliikunta.fi'),
   description: new TranslatableMarkup('Provides business logic and metadata for Helsinki maps.'),
   allowed_field_types: ['link'],
   forms: [
@@ -26,6 +26,7 @@ final class Map extends MediaSourceBase {
 
   public const PALVELUKARTTA_URL = 'palvelukartta.hel.fi';
   public const KARTTA_URL = 'kartta.hel.fi';
+  public const ULKOLIIKUNTA_URL = 'ulkoliikunta.fi';
 
   /**
    * List of valid map base urls.
@@ -33,6 +34,7 @@ final class Map extends MediaSourceBase {
   public const VALID_URLS = [
     'palvelukartta' => self::PALVELUKARTTA_URL,
     'kartta' => self::KARTTA_URL,
+    'ulkoliikunta' => self::ULKOLIIKUNTA_URL,
   ];
 
   /**
