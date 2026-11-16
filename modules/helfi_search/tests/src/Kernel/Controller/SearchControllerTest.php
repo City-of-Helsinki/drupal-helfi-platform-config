@@ -353,13 +353,11 @@ class SearchControllerTest extends KernelTestBase {
     $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $body['from']);
     $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $body['size']);
 
-    // Contacts are never returned to anonymous users.
-    // @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-13957.
     $this->container->get('current_user')->setAccount(new AnonymousUserSession());
     $response = $this->processRequest($request);
     $this->assertEquals(200, $response->getStatusCode());
     $data = json_decode((string) $response->getContent(), TRUE);
-    $this->assertEmpty($data['contacts']);
+    $this->assertNotEmpty($data['contacts']);
     $this->assertEquals(0, $data['total_hits']);
     $this->assertCount(1, $transactions);
   }
