@@ -516,7 +516,7 @@ msgid "@selectedItem @position of @count is highlighted"
 msgstr "Vaihtoehto numero @position: @selectedItem korostettu. Vaihtoehtojen määrä: @count."
 
 msgctxt "Location autocomplete"
-msgid "Use current Location"
+msgid "Use current location"
 msgstr "Käytä nykyistä sijaintia"
 
 msgctxt "Location autocomplete"
