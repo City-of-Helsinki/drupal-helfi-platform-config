@@ -64,7 +64,7 @@ msgid "@selectedItem @position of @count is highlighted"
 msgstr "@selectedItem @position av @count är markerad"
 
 msgctxt "Location autocomplete"
-msgid "Use current Location"
+msgid "Use current location"
 msgstr "Använd aktuell plats"
 
 msgctxt "Location autocomplete"
