@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel\Hooks;
 
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -56,7 +58,7 @@ final class PathFieldHooksTest extends KernelTestBase {
    * @param array<string, string> $sitePrefixes
    *   The helfi_proxy site prefixes.
    * @param string $langcode
-   *   The language of the current request.
+   *   The language selected in the language field of the form.
    * @param string $expectedPrefix
    *   The expected instance path after the base URL.
    */
@@ -69,12 +71,14 @@ final class PathFieldHooksTest extends KernelTestBase {
 
     $description = 'Add the final part of the URL, meaning everything that comes after the instance.';
 
-    $form = $this->buildForm('path_alias', $langcode);
+    $form = $this->buildForm('path_alias', ['langcode' => $langcode]);
     $baseUrl = $this->container->get('router.request_context')->getCompleteBaseUrl();
 
     $path = $form['path']['widget'][0]['value'];
     $this->assertEquals($description, (string) $path['#description']);
-    $this->assertEquals(rtrim($baseUrl, '/') . $expectedPrefix, $path['#field_prefix']);
+    $this->assertEquals(rtrim($baseUrl, '/') . $expectedPrefix, strip_tags((string) $path['#field_prefix']));
+    $this->assertEquals('langcode[0][value]', $path['#attributes']['data-helfi-language-field']);
+    $this->assertContains('helfi_platform_config/instance_prefix', $path['#attached']['library']);
 
     // The alias field is left as the path module sets it.
     $alias = $form['alias']['widget'][0]['value'];
@@ -82,10 +86,22 @@ final class PathFieldHooksTest extends KernelTestBase {
     $this->assertStringStartsWith('Specify an alternative path', (string) $alias['#description']);
 
     // The redirect source keeps the trailing slash set by the redirect module.
-    $form = $this->buildForm('redirect', $langcode);
+    // New redirects get their language from the query string.
+    $form = $this->buildForm('redirect', [], ['language' => $langcode]);
     $source = $form['redirect_source']['widget'][0]['path'];
     $this->assertEquals($description, (string) $source['#description']);
-    $this->assertEquals('http://localhost' . $expectedPrefix . '/', $source['#field_prefix']);
+    $this->assertEquals('http://localhost' . $expectedPrefix . '/', strip_tags((string) $source['#field_prefix']));
+    $this->assertEquals('language[0][value]', $source['#attributes']['data-helfi-language-field']);
+
+    // The script switches between these when the language is changed. The
+    // default language has no URL prefix in the test site, so it has no
+    // instance prefix either.
+    $this->assertEquals([
+      '' => 'http://localhost/',
+      'en' => 'http://localhost/',
+      'fi' => 'http://localhost/fi' . (isset($sitePrefixes['fi']) ? '/' . $sitePrefixes['fi'] : '') . '/',
+      'sv' => 'http://localhost/sv' . (isset($sitePrefixes['sv']) ? '/' . $sitePrefixes['sv'] : '') . '/',
+    ], Json::decode($source['#attributes']['data-helfi-instance-prefixes']));
   }
 
   /**
@@ -102,6 +118,7 @@ final class PathFieldHooksTest extends KernelTestBase {
     ];
 
     return [
+      'not specified' => [$sote, LanguageInterface::LANGCODE_NOT_SPECIFIED, ''],
       'no site prefix' => [['zxx' => 'etusivu'], 'fi', '/fi'],
       'site prefix, finnish' => [$sote, 'fi', '/fi/sosiaali-ja-terveyspalvelut'],
       'site prefix, swedish' => [$sote, 'sv', '/sv/social-och-halsovardstjanster'],
@@ -109,25 +126,30 @@ final class PathFieldHooksTest extends KernelTestBase {
   }
 
   /**
-   * Builds an entity add form in the given language.
+   * Builds an entity add form.
+   *
+   * The request is always in Swedish to make sure the prefix follows the
+   * language field and not the admin UI language.
    *
    * @param string $entityTypeId
    *   The entity type.
-   * @param string $langcode
-   *   The language prefix of the request.
+   * @param array<string, string> $values
+   *   The entity values.
+   * @param array<string, string> $query
+   *   The query parameters of the request.
    *
    * @return array<string, mixed>
    *   The form.
    */
-  private function buildForm(string $entityTypeId, string $langcode): array {
-    $request = Request::create("/$langcode/admin");
+  private function buildForm(string $entityTypeId, array $values, array $query = []): array {
+    $request = Request::create('/sv/admin', 'GET', $query);
     $request->setSession($this->container->get('session'));
     $this->container->get('request_stack')->push($request);
     $this->container->get('language_manager')->reset();
 
     $entity = $this->container->get('entity_type.manager')
       ->getStorage($entityTypeId)
-      ->create();
+      ->create($values);
 
     return $this->container->get('entity.form_builder')->getForm($entity);
   }
