@@ -38,15 +38,7 @@ class TeliaAceWidget extends ChatBlockBase {
       '#default_value' => $config['chat_id'] ?? '',
     ];
 
-    $form['chat_title'] = [
-      '#type' => 'textfield',
-      '#required' => FALSE,
-      '#title' => $this->t('Chat button label'),
-      '#description' => $this->t('Label for placeholder button. Defaults to "Chat".'),
-      '#default_value' => $config['chat_title'] ?? '',
-    ];
-
-    return $form;
+    return $this->chatButtonForm($form);
   }
 
   /**
@@ -55,6 +47,7 @@ class TeliaAceWidget extends ChatBlockBase {
   public function blockSubmit($form, FormStateInterface $form_state): void {
     $this->configuration['chat_id'] = $form_state->getValue('chat_id');
     $this->configuration['chat_title'] = $form_state->getValue('chat_title');
+    $this->configuration['chat_icon'] = $form_state->getValue('chat_icon');
   }
 
   /**
@@ -67,18 +60,18 @@ class TeliaAceWidget extends ChatBlockBase {
     $config = $this->getConfiguration();
     $chat_id = 'humany_' . $config['chat_id'];
     $attached = [
-      'library' => ['helfi_platform_config/telia_ace_widget_loadjs'],
+      'library' => ['helfi_platform_config/chat_widget'],
       'drupalSettings' => [
-        'telia_ace_data' => [
-          'script_url' => self::SDK_URL,
-          'script_sri' => NULL,
-          'chat_id' => Xss::filter($config['chat_id']),
-          'chat_title' => $config['chat_title'] ? Xss::filter($config['chat_title']) : 'Chat',
+        'chatWidgetData' => [
+          'scriptUrl' => self::SDK_URL,
+          'scriptSri' => NULL,
+          'chatId' => Xss::filter($config['chat_id']),
+          ...$this->getChatButtonSettings(),
         ],
       ],
     ];
 
-    $build['telia_chat_widget'] = [
+    $build['chat_widget'] = [
       'button' => [
         '#type' => 'html_tag',
         '#tag' => 'div',

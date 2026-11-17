@@ -44,6 +44,20 @@ class ThemeHooks {
           'url' => NULL,
         ],
       ],
+      'outdated_browser' => [
+        'variables' => [
+          'title' => NULL,
+          'body' => NULL,
+          'type_label' => NULL,
+          'close_label' => NULL,
+        ],
+      ],
+      // The block wrapper is the element that the outdated browser script
+      // shows or removes, so that no empty block is left on the page.
+      'block__outdated_browser' => [
+        'base hook' => 'block',
+        'template' => 'block--outdated-browser',
+      ],
       'react_and_share' => [
         'variables' => [
           'title' => NULL,

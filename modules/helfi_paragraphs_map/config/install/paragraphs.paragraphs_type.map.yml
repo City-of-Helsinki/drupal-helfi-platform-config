@@ -11,5 +11,5 @@ id: map
 label: 'Map embed'
 icon_uuid: null
 icon_default: null
-description: 'With map paragraph content producer can add an embedded map from https://kartta.hel.fi and https://palvelukartta.hel.fi.'
+description: 'With map paragraph content producer can add an embedded map from https://kartta.hel.fi, https://palvelukartta.hel.fi and https://ulkoliikunta.fi.'
 behavior_plugins: {  }

@@ -871,11 +871,15 @@ function helfi_platform_config_update_11009(array &$sandbox): void {
   $generator = \Drupal::service('pathauto.generator');
   $nodes = $storage->loadMultiple($nids);
   foreach ($nodes as $node) {
+    assert($node instanceof ContentEntityInterface);
     $sandbox['current']++;
     $sandbox['last_id'] = $node->id();
 
-    foreach ($node->getTranslationLanguages() as $langcode => $language) {
-      $generator->updateEntityAlias($node, 'update', ['language' => $langcode]);
+    foreach (array_keys($node->getTranslationLanguages()) as $langcode) {
+      // We need to pass the node translation, as pathauto ignores the language
+      // provided via the options parameter, even though updateEntityAlias()
+      // documentation says otherwise.
+      $generator->updateEntityAlias($node->getTranslation($langcode), 'update');
     }
   }
 
@@ -1114,4 +1118,17 @@ function helfi_platform_config_update_11013(): void {
   if (!$moduleHandler->moduleExists('quick_node_clone')) {
     \Drupal::service('module_installer')->install(['quick_node_clone']);
   }
+}
+
+/**
+ * UHF-13720: Updating all path aliases again.
+ *
+ * Previous runs only updated the aliases for the default translation. This will
+ * also fix kasko highschool news item aliases that are currently wrong from
+ * previous update runs.
+ *
+ * @phpstan-param array<mixed, mixed> $sandbox
+ */
+function helfi_platform_config_update_11014(array &$sandbox): void {
+  helfi_platform_config_update_11009($sandbox);
 }
