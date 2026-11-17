@@ -20,13 +20,6 @@ use Drupal\helfi_etusivu_entities\SurveyLazyBuilder;
 final class SurveyBlock extends EtusivuEntityBlockBase {
 
   /**
-   * Entity types supported by survey and the corresponding field names.
-   */
-  public const ENTITY_TYPE_FIELDS = [
-    'node' => 'field_survey_content_pages',
-  ];
-
-  /**
    * {@inheritDoc}
    */
   public function build(): array {

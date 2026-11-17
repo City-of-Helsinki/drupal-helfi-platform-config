@@ -34,3 +34,9 @@ msgstr "Katso kaavio ulkoiselta sivustolta"
 
 msgid "Change cookie settings"
 msgstr "Muokkaa evästeasetuksia"
+
+msgid "Given host (%value) is not valid, must be one of: %domains. The path must be one of: %paths"
+msgstr ""
+"Syötetyn URL-osoitteen verkkotunnus (%value) ei kelpaa, "
+"sen on oltava jokin seuraavista: %domains."
+"Osoitteen polun on oltava jokin seuraavista: %paths"

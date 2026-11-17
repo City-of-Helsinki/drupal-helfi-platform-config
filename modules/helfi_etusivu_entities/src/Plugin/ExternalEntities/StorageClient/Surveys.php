@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
 
+use Drupal\helfi_node_survey\Entity\Survey;
+
 /**
  * External entity storage client for Survey-entities.
  *
@@ -16,11 +18,11 @@ namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
 final class Surveys extends EtusivuJsonApiEntityBase {
 
   /**
-   * Custom cache tag for announcements.
+   * Custom cache tag for surveys.
    *
    * @var string
    */
-  public static string $customCacheTag = 'helfi_external_entity_survey';
+  public static string $customCacheTag = Survey::EXTERNAL_CACHE_TAG;
 
   /**
    * {@inheritdoc}

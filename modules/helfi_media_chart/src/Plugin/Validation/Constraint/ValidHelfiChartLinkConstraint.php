@@ -22,6 +22,6 @@ final class ValidHelfiChartLinkConstraint extends Constraint {
    *
    * @var string
    */
-  public string $errorMessage = 'Given host (%value) is not valid, must be one of: %domains';
+  public string $errorMessage = 'Given host (%value) is not valid, must be one of: %domains. The path must be one of: %paths';
 
 }

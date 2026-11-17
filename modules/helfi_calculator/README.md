@@ -54,6 +54,15 @@ The Helfi Calculator module adds calculators to the site using a custom Calculat
 5. Add update hook to add the new calculator, use helper function `helfi_calculator_add_new_calculator`
 6. Register the calculator in Drupal configuration by adding calculator settings to the configuration via `/admin/tools/calculator-settings` configuration form. An example of the JSON can be found in example-calc.html, helsinki-benefit-test.html or in the calculators own js file.
 
+## Testing
+
+The calculation logic is tested with FunctionalJavascript tests in `tests/src/FunctionalJavascript` against
+fixed settings in `tests/fixtures/<calculator>.json`. The `helfi_calculator_test` test module renders a single
+calculator.
+
+When a calculator's settings format changes, update its fixture and the expected results. After changing calculator
+JavaScript, run `npm run build` before the tests, since they use the built files.
+
 ## Known Issues
 
 ### Icons in example-calc.html

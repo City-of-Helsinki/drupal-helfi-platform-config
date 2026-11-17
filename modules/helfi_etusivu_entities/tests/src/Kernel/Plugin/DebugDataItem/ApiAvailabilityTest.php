@@ -40,6 +40,7 @@ class ApiAvailabilityTest extends KernelTestBase {
     'external_entities',
     'helfi_platform_config',
     'helfi_etusivu_entities',
+    'path_alias',
   ];
 
   /**
@@ -58,6 +59,7 @@ class ApiAvailabilityTest extends KernelTestBase {
   protected function setUp(): void {
     parent::setUp();
 
+    $this->installEntitySchema('path_alias');
     $this->installConfig(['helfi_platform_config', 'helfi_etusivu_entities']);
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
   }

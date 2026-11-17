@@ -26,7 +26,10 @@ class PermissionsHooks {
     ];
     return [
       'admin' => $permissions,
-      'editor' => ['use helfi ai summary'],
+      'editor' => [
+        'use helfi ai title suggestion',
+        'use helfi ai summary',
+      ],
     ];
   }
 

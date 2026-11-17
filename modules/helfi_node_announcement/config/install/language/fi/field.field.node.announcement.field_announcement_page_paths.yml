@@ -1,0 +1,2 @@
+label: 'Näytä näissä sivupoluissa'
+description: "Tätä kenttää käytetään vain poikkeustapauksissa. Merkitse yksi polku / rivi. Polut merkitään muodossa /pysakointi eli instanssin osoite ja kieli jätetään pois. Jos haluat asettaa näkymisen polulle ja kaikille sen alasivuille, lisää polkusääntö molemmille ja käytä wildcard-merkkiä *, esim. <code>/pysakointi</code> ja <code>/pysakointi/*</code> omille riveilleen."

@@ -1,0 +1,55 @@
+{
+  "family_size_income_limits": {
+    "2": {
+      "min": 4369
+    },
+    "3": {
+      "min": 5635
+    },
+    "4": {
+      "min": 6399
+    },
+    "5": {
+      "min": 7163
+    },
+    "6": {
+      "min": 7925
+    }
+  },
+  "family_size_beyond_defined_multiplier_euro": 295,
+  "minimum_payment_euro": 32,
+  "payment_percentage": 10.7,
+  "child_1_max_euro": 335,
+  "child_2_percent": 40,
+  "child_n_percent": 20,
+  "discounts": {
+    "early_education_on_weekdays": {
+      "over_7_hours_percentage": 100,
+      "over_5_and_at_most_7_hours_percentage": 80,
+      "at_most_5_hours_percentage": 60
+    },
+    "for_5_year_old": {
+      "over_7_hours_percentage": 65,
+      "over_5_and_at_most_7_hours_percentage": 40,
+      "over_4_and_at_most_5_hours_percentage": 20,
+      "at_most_4_hours_percentage": 0
+    },
+    "for_6_year_old": {
+      "over_7_hours_percentage": 65,
+      "from_7_to_8_hours_percentage": 60,
+      "over_5_and_at_most_7_hours_percentage": 40,
+      "at_most_5_hours_percentage": 20
+    },
+    "round_the_clock_care": {
+      "from_161_hours_percentage": 100,
+      "from_101_to_160_hours_percentage": 80,
+      "from_61_to_100_hours_percentage": 60
+    },
+    "round_the_clock_care_with_preschool": {
+      "from_161_hours_percentage": 65,
+      "from_101_to_160_hours_percentage": 40,
+      "from_61_to_100_hours_percentage": 20
+    },
+    "free_day_percentage": 4
+  }
+}

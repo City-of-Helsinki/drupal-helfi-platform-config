@@ -27,6 +27,8 @@ final class LocalEntitiesTest extends BrowserTestBase {
    * @var string[]
    */
   protected static $modules = [
+    'big_pipe',
+    'field_group',
     'helfi_etusivu_entities',
   ];
 
@@ -124,10 +126,79 @@ final class LocalEntitiesTest extends BrowserTestBase {
       'langcode' => 'uk',
     ]);
 
+    // Pathauto would replace a manually entered alias.
+    $this->createNode([
+      'status' => NodeInterface::PUBLISHED,
+      'type' => 'page',
+      'title' => 'Feedback page',
+      'langcode' => 'en',
+      'path' => [
+        'alias' => '/feedback',
+        'pathauto' => 0,
+      ],
+    ]);
+    $this->createNode([
+      'status' => NodeInterface::PUBLISHED,
+      'type' => 'announcement',
+      'title' => 'Feedback announcement',
+      'body' => 'Announcement content',
+      'field_announcement_type' => 'notification',
+      'field_announcement_all_pages' => 0,
+      'field_announcement_page_paths' => '/feedback',
+      'langcode' => 'en',
+    ]);
+    $this->createNode([
+      'status' => NodeInterface::PUBLISHED,
+      'type' => 'survey',
+      'title' => 'Feedback survey',
+      'body' => 'Feedback survey content',
+      'langcode' => 'en',
+      'field_survey_link' => 'https://example.com',
+      'field_survey_page_paths' => '/feedback',
+      // Newer than the content-page survey, so it is considered first.
+      'published_at' => 2000000000,
+    ]);
+
+    $this->createNode([
+      'status' => NodeInterface::PUBLISHED,
+      'type' => 'page',
+      'title' => 'News story',
+      'langcode' => 'en',
+      'path' => [
+        'alias' => '/news/story',
+        'pathauto' => 0,
+      ],
+    ]);
+    $this->createNode([
+      'status' => NodeInterface::PUBLISHED,
+      'type' => 'announcement',
+      'title' => 'News announcement',
+      'body' => 'Announcement content',
+      'field_announcement_type' => 'notification',
+      'field_announcement_all_pages' => 0,
+      'field_announcement_page_paths' => '/news/*',
+      'langcode' => 'en',
+    ]);
+    $this->createNode([
+      'status' => NodeInterface::PUBLISHED,
+      'type' => 'survey',
+      'title' => 'News survey',
+      'body' => 'News survey content',
+      'langcode' => 'en',
+      'field_survey_link' => 'https://example.com',
+      'field_survey_page_paths' => '/news/*',
+      // Newer than the feedback survey, so the wildcard is considered first.
+      'published_at' => 2100000000,
+    ]);
+
     $this->drupalGet('/');
     $this->assertSession()->pageTextContains('Old test survey');
     $this->assertSession()->pageTextNotContains('New test survey');
     $this->assertSession()->pageTextContains('Test announcement');
+    $this->assertSession()->pageTextNotContains('Feedback announcement');
+    $this->assertSession()->pageTextNotContains('Feedback survey');
+    $this->assertSession()->pageTextNotContains('News announcement');
+    $this->assertSession()->pageTextNotContains('News survey');
 
     // Local announcements can be translated.pages
     // English announcements are shown on alt language pages.
@@ -140,6 +211,71 @@ final class LocalEntitiesTest extends BrowserTestBase {
     $this->assertSession()->pageTextContains('New test survey');
     $this->assertSession()->pageTextNotContains('Old test survey');
     $this->assertSession()->pageTextContains('Test announcement');
+    $this->assertSession()->pageTextNotContains('Feedback announcement');
+    $this->assertSession()->pageTextNotContains('Feedback survey');
+    $this->assertSession()->pageTextNotContains('News announcement');
+    $this->assertSession()->pageTextNotContains('News survey');
+
+    // The alias is resolved by routing before the path pattern is compared.
+    $this->drupalGet('/feedback');
+    $this->assertSession()->pageTextContains('Feedback announcement');
+    $this->assertSession()->pageTextContains('Feedback survey');
+    $this->assertSession()->pageTextNotContains('Old test survey');
+    $this->assertSession()->pageTextNotContains('New test survey');
+    $this->assertSession()->pageTextNotContains('News announcement');
+    $this->assertSession()->pageTextNotContains('News survey');
+
+    // /news/* matches a child of /news.
+    $this->drupalGet('/news/story');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('News announcement');
+    $this->assertSession()->pageTextContains('News survey');
+    $this->assertSession()->pageTextNotContains('Feedback announcement');
+    $this->assertSession()->pageTextNotContains('Feedback survey');
+    $this->assertSession()->pageTextNotContains('Old test survey');
+
+    // A path rule does not match a real 404. An unrestricted survey still
+    // does, because it has no path rules to evaluate.
+    $this->drupalGet('/no-such-page');
+    $this->assertSession()->statusCodeEquals(404);
+    $this->assertSession()->pageTextContains('Old test survey');
+    $this->assertSession()->pageTextContains('Test announcement');
+    $this->assertSession()->pageTextNotContains('Feedback survey');
+    $this->assertSession()->pageTextNotContains('Feedback announcement');
+    $this->assertSession()->pageTextNotContains('News announcement');
+    $this->assertSession()->pageTextNotContains('News survey');
+
+    // A wildcard match on a 404 page should be considered a miss.
+    $this->assertWildcardMissesNotFoundPage();
+
+    // A session delivers these blocks through BigPipe. The same missing URL
+    // must still miss, which only holds when the placeholder is rendered on
+    // the 404 subrequest rather than the original request.
+    $this->drupalLogin($this->drupalCreateUser(['access content']));
+    $this->drupalGet('/news/story');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->responseHeaderContains('Surrogate-Control', 'BigPipe/1.0');
+    $this->assertSession()->pageTextContains('News announcement');
+    $this->assertSession()->pageTextContains('News survey');
+
+    // A wildcard match on a 404 page should be a miss also for logged-in users.
+    $this->assertWildcardMissesNotFoundPage();
+  }
+
+  /**
+   * Asserts that a wildcard does not match a 404 under that wildcard.
+   */
+  private function assertWildcardMissesNotFoundPage(): void {
+    $this->drupalGet('/news/no-such-page');
+    $this->assertSession()->statusCodeEquals(404);
+    $this->assertSession()->responseHeaderNotContains('Surrogate-Control', 'BigPipe/1.0');
+    $this->assertSession()->responseNotContains('data-big-pipe-placeholder-id');
+    $this->assertSession()->pageTextContains('Old test survey');
+    $this->assertSession()->pageTextContains('Test announcement');
+    $this->assertSession()->pageTextNotContains('News announcement');
+    $this->assertSession()->pageTextNotContains('News survey');
+    $this->assertSession()->pageTextNotContains('Feedback announcement');
+    $this->assertSession()->pageTextNotContains('Feedback survey');
   }
 
 }
