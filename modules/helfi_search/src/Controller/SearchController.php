@@ -243,11 +243,6 @@ final class SearchController extends ControllerBase {
    * @throws \Elastic\Transport\Exception\TransportException
    */
   private function searchContacts(string $query, string $language, int $from, int $size): array {
-    if ($this->currentUser()->isAnonymous()) {
-      // @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-13957.
-      return ['contacts' => [], 'total' => 0];
-    }
-
     $contactQuery = $this->queryBuilder->buildContactQuery($query, $language, $size, $from);
     $searchResult = $this->elasticClient->search([
       'index' => $contactQuery['index'],
@@ -336,9 +331,7 @@ final class SearchController extends ControllerBase {
       ['index' => $knnQuery['index']],
       $knnQuery['body'],
     ];
-    // Contacts are never shown to anonymous users.
-    // @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-13957.
-    if ($withContacts && !$this->currentUser()->isAnonymous()) {
+    if ($withContacts) {
       $contactQuery = $this->queryBuilder->buildContactQuery($query, $language);
       $body[] = ['index' => $contactQuery['index']];
       $body[] = $contactQuery['body'];

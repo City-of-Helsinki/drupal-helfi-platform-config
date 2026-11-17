@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Kernel\Controller;
 
-use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\helfi_search\Controller\SearchController;
 use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EmbeddingApiInterface;
@@ -352,16 +351,6 @@ class SearchControllerTest extends KernelTestBase {
     $body = json_decode((string) $transactions[0]['request']->getBody(), TRUE);
     $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $body['from']);
     $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $body['size']);
-
-    // Contacts are never returned to anonymous users.
-    // @todo https://helsinkisolutionoffice.atlassian.net/browse/UHF-13957.
-    $this->container->get('current_user')->setAccount(new AnonymousUserSession());
-    $response = $this->processRequest($request);
-    $this->assertEquals(200, $response->getStatusCode());
-    $data = json_decode((string) $response->getContent(), TRUE);
-    $this->assertEmpty($data['contacts']);
-    $this->assertEquals(0, $data['total_hits']);
-    $this->assertCount(1, $transactions);
   }
 
   /**
