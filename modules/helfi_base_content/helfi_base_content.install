@@ -140,7 +140,7 @@ function helfi_base_content_update_9019(): void {
  * UHF-13624 Place the outdated browser notification block.
  */
 function helfi_base_content_update_9020(): void {
-  // This is remplaced with the 9021 update.
+  // This is replaced with the 9021 update.
 }
 
 /**
