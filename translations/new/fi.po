@@ -337,6 +337,10 @@ msgstr "Uudelleenkäytettävän lohkon asetukset"
 msgid "Paragraphs types"
 msgstr "Lohkotyypit"
 
+# path
+msgid "Add the final part of the URL, meaning everything that comes after the instance."
+msgstr "Lisää kenttään kaikki, mikä tulee URL-osoitteessa instanssin jälkeen."
+
 # redirect
 msgid "Add URL redirect"
 msgstr "Lisää uudelleenohjaus"
