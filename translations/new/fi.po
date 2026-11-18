@@ -566,3 +566,11 @@ msgstr "Käyttämäsi selain on vanhentunut ja se saattaa aiheuttaa tietoturvari
 msgctxt "Outdated translation"
 msgid "Check the language versions"
 msgstr "Tarkista kieliversiot"
+
+msgctxt "Outdated translation"
+msgid "Check the language version"
+msgstr "Tarkista kieliversio"
+
+msgctxt "Outdated translation"
+msgid "@date (@days days older than Finnish)"
+msgstr "@date (@days päivää suomenkielistä vanhempi)"
