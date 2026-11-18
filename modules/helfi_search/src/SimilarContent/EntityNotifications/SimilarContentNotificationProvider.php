@@ -7,6 +7,7 @@ namespace Drupal\helfi_search\SimilarContent\EntityNotifications;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\Core\Utility\Error;
@@ -35,6 +36,8 @@ final class SimilarContentNotificationProvider implements EntityNotificationProv
     private readonly SimilarContentFinder $finder,
     #[Autowire(service: 'logger.channel.helfi_search')]
     private readonly LoggerInterface $logger,
+    #[Autowire(service: 'current_user')]
+    private readonly AccountInterface $currentUser,
   ) {
   }
 
@@ -42,6 +45,14 @@ final class SimilarContentNotificationProvider implements EntityNotificationProv
    * {@inheritdoc}
    */
   public function getNotifications(ContentEntityInterface $entity, RefinableCacheableDependencyInterface $cacheability): array {
+    // @todo Remove permission check once the feature is opened up to editors.
+    // https://helsinkisolutionoffice.atlassian.net/browse/UHF-13673.
+    $cacheability->addCacheContexts(['user.permissions']);
+
+    if (!$this->currentUser->hasPermission('administer users')) {
+      return [];
+    }
+
     // The chunks are regenerated when the entity changes.
     $cacheability->addCacheableDependency($entity);
 
