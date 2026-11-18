@@ -130,3 +130,5 @@ services:
 
   Drupal\helfi_platform_config\EntityNotifications\EntityNotificationManager: ~
   Drupal\helfi_platform_config\EntityNotifications\EntityNotificationLazyBuilder: ~
+
+  Drupal\helfi_platform_config\Translation\OutdatedTranslationChecker: ~
