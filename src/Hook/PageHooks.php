@@ -12,6 +12,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\AdminContext;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_platform_config\Plugin\Block\ChatBlockBase;
+use Drupal\helfi_platform_config\Translation\OutdatedTranslationNotice;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
@@ -27,6 +28,7 @@ final readonly class PageHooks {
     private AdminContext $adminContext,
     #[Autowire(service: 'current_user')]
     private AccountInterface $currentUser,
+    private OutdatedTranslationNotice $outdatedTranslationNotice,
   ) {}
 
   /**
@@ -40,6 +42,7 @@ final readonly class PageHooks {
   #[Hook('preprocess_page')]
   public function preprocessPage(array &$variables): void {
     if ($this->adminContext->isAdminRoute()) {
+      $this->outdatedTranslationNotice->preprocessPage($variables);
       return;
     }
 

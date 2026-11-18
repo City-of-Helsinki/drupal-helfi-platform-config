@@ -135,4 +135,5 @@ services:
       - { name: helfi_platform_config.entity_notification_provider }
 
   Drupal\helfi_platform_config\Translation\OutdatedTranslationChecker: ~
+  Drupal\helfi_platform_config\Translation\OutdatedTranslationNotice: ~
   Drupal\helfi_platform_config\Routing\TranslationOverviewRouteSubscriber: ~

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_platform_config\Kernel\Hooks;
 
 use Drupal\block\Entity\Block;
+use Drupal\Core\Routing\AdminContext;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_platform_config\Hook\PageHooks;
+use Drupal\helfi_platform_config\Translation\OutdatedTranslationNotice;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -98,6 +100,7 @@ final class PageHooksTest extends KernelTestBase {
       $this->container->get('plugin.manager.condition'),
       $this->container->get('router.admin_context'),
       $this->container->get('current_user'),
+      $this->container->get(OutdatedTranslationNotice::class),
     );
     $hooks->preprocessPage($variables);
 
@@ -146,11 +149,35 @@ final class PageHooksTest extends KernelTestBase {
       $this->container->get('plugin.manager.condition'),
       $this->container->get('router.admin_context'),
       $editor,
+      $this->container->get(OutdatedTranslationNotice::class),
     );
     $variables = ['page' => []];
     $hooks->preprocessPage($variables);
 
     $this->assertContains('helfi_platform_config/heading_anchor_buttons', $variables['#attached']['library'], 'The heading anchor buttons are attached.');
+  }
+
+  /**
+   * The outdated translation notice is added on admin routes only.
+   */
+  public function testOutdatedTranslationNoticeOnAdminRoutes(): void {
+    foreach ([TRUE, FALSE] as $isAdminRoute) {
+      $adminContext = $this->createMock(AdminContext::class);
+      $adminContext->method('isAdminRoute')->willReturn($isAdminRoute);
+
+      $notice = $this->createMock(OutdatedTranslationNotice::class);
+      $notice->expects($isAdminRoute ? $this->once() : $this->never())->method('preprocessPage');
+
+      $hooks = new PageHooks(
+        $this->container->get('entity_type.manager'),
+        $this->container->get('plugin.manager.condition'),
+        $adminContext,
+        $this->container->get('current_user'),
+        $notice,
+      );
+      $variables = ['page' => []];
+      $hooks->preprocessPage($variables);
+    }
   }
 
 }

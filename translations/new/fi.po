@@ -574,3 +574,7 @@ msgstr "Tarkista kieliversio"
 msgctxt "Outdated translation"
 msgid "@date (@days days older than Finnish)"
 msgstr "@date (@days päivää suomenkielistä vanhempi)"
+
+msgctxt "Outdated translation"
+msgid "This language version is @days days older than the Finnish version."
+msgstr "Tämä kieliversio on @days päivää vanhempi kuin suomenkielinen versio."
