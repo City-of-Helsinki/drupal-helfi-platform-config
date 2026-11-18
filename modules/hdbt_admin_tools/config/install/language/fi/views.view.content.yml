@@ -16,35 +16,17 @@ display:
                 label_override: 'Poista suosikeista'
             2:
               preconfiguration:
-                label_override: 'Riko lukko'
+                label_override: 'Poista sisältö'
             3:
               preconfiguration:
-                label_override: 'Poista sisältö'
+                label_override: 'Muokkaa sisältöä'
             4:
               preconfiguration:
-                label_override: 'Muokkaa sisältöä'
+                label_override: 'Julkaise sisältö'
             5:
               preconfiguration:
-                label_override: 'Liimaa sisältö listojen alkuun'
-            6:
-              preconfiguration:
-                label_override: 'Poista sisällön liimaus'
-            7:
-              preconfiguration:
-                label_override: 'Nosta sisältö etusivulla'
-            8:
-              preconfiguration:
-                label_override: 'Julkaise sisältö'
-            9:
-              preconfiguration:
-                label_override: 'Tallenna sisältö'
-            10:
-              preconfiguration:
-                label_override: 'Poista sisältö etusivulta'
-            11:
-              preconfiguration:
                 label_override: 'Muuta sisältö ei-julkaistuksi'
-            12:
+            6:
               preconfiguration:
                 label_override: 'Päivitä osoitealias'
           action_title: Toiminto

@@ -34,17 +34,14 @@ display:
                 label_override: 'Poista suosikeista'
             2:
               preconfiguration:
-                label_override: 'Riko lukko'
+                label_override: 'Muokkaa sisältöä'
             3:
               preconfiguration:
-                label_override: 'Muokkaa sisältöä'
+                label_override: 'Julkaise sisältö'
             4:
               preconfiguration:
-                label_override: 'Julkaise sisältö'
-            5:
-              preconfiguration:
                 label_override: 'Muuta sisältö ei-julkaistuksi'
-            6:
+            5:
               preconfiguration:
                 label_override: 'Päivitä'
           label: Massapäivitys

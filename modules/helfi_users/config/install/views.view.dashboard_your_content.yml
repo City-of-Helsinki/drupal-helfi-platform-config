@@ -98,13 +98,6 @@ display:
                 label_override: 'Remove from favourites'
                 message_override: ''
             -
-              action_id: 'entity:break_lock:node'
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: 'Break lock'
-                message_override: ''
-            -
               action_id: views_bulk_operations_delete_entity
               preconfiguration:
                 add_confirmation: false
@@ -120,46 +113,11 @@ display:
                 message_override: ''
                 get_bundles_from_results: true
             -
-              action_id: node_make_sticky_action
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: 'Make content sticky'
-                message_override: ''
-            -
-              action_id: node_make_unsticky_action
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: 'Make content unsticky'
-                message_override: ''
-            -
-              action_id: node_promote_action
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: 'Promote content to front page'
-                message_override: ''
-            -
               action_id: 'entity:publish_action:node'
               preconfiguration:
                 add_confirmation: false
                 confirm_help_text: ''
                 label_override: 'Publish content'
-                message_override: ''
-            -
-              action_id: 'entity:save_action:node'
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: 'Save content'
-                message_override: ''
-            -
-              action_id: node_unpromote_action
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: 'Remove content from front page'
                 message_override: ''
             -
               action_id: 'entity:unpublish_action:node'

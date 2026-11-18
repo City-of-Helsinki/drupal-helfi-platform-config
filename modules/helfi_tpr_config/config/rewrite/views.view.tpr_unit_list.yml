@@ -97,13 +97,6 @@ display:
                 label_override: 'Remove from favourites'
                 message_override: ''
             -
-              action_id: 'entity:break_lock:tpr_unit'
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: 'Break lock'
-                message_override: ''
-            -
               action_id: views_bulk_edit
               preconfiguration:
                 add_confirmation: false

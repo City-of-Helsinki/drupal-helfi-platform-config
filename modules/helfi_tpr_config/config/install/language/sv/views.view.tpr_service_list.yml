@@ -31,14 +31,11 @@ display:
                 label_override: 'Ta bort från favoriter'
             2:
               preconfiguration:
-                label_override: 'Lås upp'
+                label_override: 'Publicera innehåll'
             3:
               preconfiguration:
-                label_override: 'Publicera innehåll'
-            4:
-              preconfiguration:
                 label_override: 'Avpublicera inlägg'
-            5:
+            4:
               preconfiguration:
                 label_override: Uppdatera
           label: Massuppdatera
