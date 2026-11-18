@@ -123,7 +123,7 @@ display:
               preconfiguration:
                 add_confirmation: false
                 confirm_help_text: ''
-                label_override: Update
+                label_override: 'Update from TPR'
                 message_override: ''
         id:
           id: id

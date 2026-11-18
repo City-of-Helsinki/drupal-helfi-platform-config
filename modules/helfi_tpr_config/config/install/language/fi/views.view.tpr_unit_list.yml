@@ -43,7 +43,7 @@ display:
                 label_override: 'Muuta sisältö ei-julkaistuksi'
             5:
               preconfiguration:
-                label_override: 'Päivitä'
+                label_override: 'Päivitä TPR:stä'
           label: Massapäivitys
           action_title: Toiminto
         name:
