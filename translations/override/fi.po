@@ -123,6 +123,15 @@ msgstr[0] "Media on luotu, mutta sitä ei ole vielä tallennettu. Täytä kaikki
 msgstr[1] "Mediat on luotu, mutta niitä ei ole vielä tallennettu. Täytä kaikki pakolliset kentät ja tallenna lisätäksesi ne mediakirjastoon."
 
 # Bulk operations for views listings
+msgid "No items selected"
+msgstr "Ei valittuja kohteita"
+
+msgid "Update URL alias of an entity"
+msgstr "Päivitä sisällön osoitealias"
+
+msgid "-- Select action --"
+msgstr "-- Valitse --"
+
 msgid "1 item selected"
 msgid_plural "@count items selected"
 msgstr[0] "1 kohde valittu"
@@ -134,7 +143,7 @@ msgstr[0] "@selected / @count kohde valittu"
 msgstr[1] "@selected / @count kohdetta valittu"
 
 msgid "Apply to selected items"
-msgstr "Käytä valittuihin kohteisiin"
+msgstr "Suorita"
 
 # Menu
 msgid "Parent link"
