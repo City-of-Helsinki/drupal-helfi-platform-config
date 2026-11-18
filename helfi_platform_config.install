@@ -1131,5 +1131,5 @@ function helfi_platform_config_update_11013(): void {
  */
 function helfi_platform_config_update_11014(array &$sandbox): void {
   // Takes too long, commented out.
-  // helfi_platform_config_update_11009($sandbox);
+  // Helfi_platform_config_update_11009($sandbox).
 }
