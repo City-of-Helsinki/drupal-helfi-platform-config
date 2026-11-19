@@ -6,11 +6,13 @@ namespace Drupal\Tests\helfi_users\Kernel;
 
 use Drupal\helfi_users\FavoriteStorage;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests favorite cleanup on entity and user deletion.
  */
 #[Group('helfi_users')]
+#[RunTestsInSeparateProcesses]
 class FavoriteCleanupTest extends FavoriteKernelTestBase {
 
   /**

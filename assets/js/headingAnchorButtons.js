@@ -23,6 +23,11 @@
     },
 
     injectHeadingAnchorButtons: (content) => {
+      // Add the anchor button to only content h2 headings.
+      if (content.nodeName !== 'H2' || content.hasAttribute('data-accordion-id')) {
+        return;
+      }
+
       // Attach a button to copy the anchor link to clipboard.
       const copiedAnchor = content.textContent.trim();
 
@@ -86,12 +91,8 @@
           });
       });
 
-      const nodeName = content.nodeName.toLowerCase();
-
-      if (nodeName === 'h2' && !content.hasAttribute('data-accordion-id')) {
-        content.classList.add('js-heading-with-anchor');
-        content.appendChild(anchorLinkButton);
-      }
+      content.classList.add('js-heading-with-anchor');
+      content.appendChild(anchorLinkButton);
     },
   };
 

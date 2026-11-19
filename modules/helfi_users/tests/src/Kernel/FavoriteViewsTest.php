@@ -9,12 +9,14 @@ use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Tests the favorite views field and bulk actions.
  */
 #[Group('helfi_users')]
+#[RunTestsInSeparateProcesses]
 class FavoriteViewsTest extends FavoriteKernelTestBase {
 
   /**

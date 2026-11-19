@@ -22,6 +22,7 @@ final readonly class PermissionHooks {
     return [
       'admin' => [
         'use favorites',
+        'allow views bulk operations',
       ],
       'content_producer' => [
         'use favorites',

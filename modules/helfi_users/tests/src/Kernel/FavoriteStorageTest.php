@@ -8,11 +8,13 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Database\Statement\FetchAs;
 use Drupal\helfi_users\FavoriteStorage;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests FavoriteStorage.
  */
 #[Group('helfi_users')]
+#[RunTestsInSeparateProcesses]
 class FavoriteStorageTest extends FavoriteKernelTestBase {
 
   /**

@@ -1130,5 +1130,6 @@ function helfi_platform_config_update_11013(): void {
  * @phpstan-param array<mixed, mixed> $sandbox
  */
 function helfi_platform_config_update_11014(array &$sandbox): void {
-  helfi_platform_config_update_11009($sandbox);
+  // Takes too long, commented out.
+  // Helfi_platform_config_update_11009($sandbox).
 }

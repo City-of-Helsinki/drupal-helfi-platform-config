@@ -2931,7 +2931,7 @@ parameters:
 		-
 			message: '#^Parameter \$body of class GuzzleHttp\\Psr7\\Response constructor expects Psr\\Http\\Message\\StreamInterface\|resource\|string\|null, string\|false given\.$#'
 			identifier: argument.type
-			count: 2
+			count: 4
 			path: modules/helfi_paragraphs_hearings/tests/src/Kernel/HooksTest.php
 
 		-

@@ -21,7 +21,23 @@ display:
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
       fields:
-        tpr_service_bulk_form:
+        views_bulk_operations_bulk_form:
+          selected_actions:
+            0:
+              preconfiguration:
+                label_override: 'Lägg till som favorit'
+            1:
+              preconfiguration:
+                label_override: 'Ta bort från favoriter'
+            2:
+              preconfiguration:
+                label_override: 'Publicera innehåll'
+            3:
+              preconfiguration:
+                label_override: 'Avpublicera inlägg'
+            4:
+              preconfiguration:
+                label_override: Uppdatera
           label: Massuppdatera
           action_title: Åtgärd
         name:
