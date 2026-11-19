@@ -80,57 +80,58 @@ display:
           buttons: false
           action_title: Action
           clear_on_exposed: true
-          show_multipage_selection_box: default
-          show_select_all: default
+          show_multipage_selection_box: always_hide
+          show_select_all: always_hide
           selected_actions:
-            -
-              action_id: views_bulk_operations_delete_entity
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: ''
-                message_override: ''
-            -
-              action_id: pathauto_update_alias
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: ''
-                message_override: ''
-            -
-              action_id: 'entity:save_action:node'
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: ''
-                message_override: ''
-            -
-              action_id: 'entity:unpublish_action:node'
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: ''
-                message_override: ''
-            -
-              action_id: 'entity:publish_action:node'
-              preconfiguration:
-                add_confirmation: false
-                confirm_help_text: ''
-                label_override: ''
-                message_override: ''
             -
               action_id: 'helfi_favorite_add:node'
               preconfiguration:
                 add_confirmation: false
                 confirm_help_text: ''
-                label_override: ''
+                label_override: 'Add to favourites'
                 message_override: ''
             -
               action_id: 'helfi_favorite_remove:node'
               preconfiguration:
                 add_confirmation: false
                 confirm_help_text: ''
-                label_override: ''
+                label_override: 'Remove from favourites'
+                message_override: ''
+            -
+              action_id: views_bulk_operations_delete_entity
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Delete content'
+                message_override: ''
+            -
+              action_id: views_bulk_edit
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Edit content'
+                message_override: ''
+                get_bundles_from_results: true
+            -
+              action_id: 'entity:publish_action:node'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Publish content'
+                message_override: ''
+            -
+              action_id: 'entity:unpublish_action:node'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Unpublish content'
+                message_override: ''
+            -
+              action_id: pathauto_update_alias
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Update URL alias'
                 message_override: ''
         content_translation_outdated:
           id: content_translation_outdated

@@ -42,6 +42,7 @@ class EntityNotificationsFieldTest extends KernelTestBase {
     'filter',
     'views',
     'views_bulk_operations',
+    'views_bulk_edit',
     'language',
   ];
 

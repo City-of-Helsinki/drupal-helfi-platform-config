@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_users\Functional;
 
 use Drupal\Tests\helfi_api_base\Functional\BrowserTestBase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests user cancel method form.
- *
- * @group helfi_users
  */
+#[Group('helfi_users')]
 class UserCancelFormTest extends BrowserTestBase {
 
   /**

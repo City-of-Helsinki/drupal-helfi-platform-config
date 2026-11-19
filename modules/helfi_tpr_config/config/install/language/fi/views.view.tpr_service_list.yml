@@ -24,7 +24,23 @@ display:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
       fields:
-        tpr_service_bulk_form:
+        views_bulk_operations_bulk_form:
+          selected_actions:
+            0:
+              preconfiguration:
+                label_override: 'Lisää suosikiksi'
+            1:
+              preconfiguration:
+                label_override: 'Poista suosikeista'
+            2:
+              preconfiguration:
+                label_override: 'Julkaise sisältö'
+            3:
+              preconfiguration:
+                label_override: 'Muuta sisältö ei-julkaistuksi'
+            4:
+              preconfiguration:
+                label_override: 'Päivitä TPR:stä'
           label: Massapäivitys
           action_title: Toiminto
         name:
