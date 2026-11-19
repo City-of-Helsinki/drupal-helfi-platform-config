@@ -142,9 +142,19 @@ class TranslationOverviewController extends ContentTranslationController {
         'notice' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
-          // Provides the alert icon and color from hdbt_admin.
           '#attributes' => ['class' => ['translation-state--outdated']],
-          '#value' => $this->t('Check the language version', [], ['context' => 'Outdated translation']),
+          '#attached' => ['library' => ['hdbt/hdbt-icons']],
+          'icon' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#attributes' => [
+              'class' => ['hel-icon', 'hel-icon--alert-circle-fill'],
+              'aria-hidden' => 'true',
+            ],
+          ],
+          'label' => [
+            '#markup' => $this->t('Check the language version', [], ['context' => 'Outdated translation']),
+          ],
         ],
         'changed' => [
           '#type' => 'html_tag',

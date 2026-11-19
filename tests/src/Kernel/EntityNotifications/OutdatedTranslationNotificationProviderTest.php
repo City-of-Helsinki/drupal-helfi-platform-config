@@ -63,7 +63,7 @@ class OutdatedTranslationNotificationProviderTest extends OutdatedTranslationTes
       $this->assertCount(1, $notifications);
       $notification = $notifications[0];
       $this->assertSame('Check the language versions', (string) $notification->label);
-      $this->assertNull($notification->icon);
+      $this->assertSame('alert-circle-fill', $notification->icon);
       $this->assertSame('entity.node.content_translation_overview', $notification->url->getRouteName());
       $this->assertEquals(['node' => $node->id()], $notification->url->getRouteParameters());
       $this->assertSame(['translation-state--outdated'], $notification->url->getOption('attributes')['class']);
@@ -118,8 +118,7 @@ class OutdatedTranslationNotificationProviderTest extends OutdatedTranslationTes
     ];
     $output = (string) $this->container->get('renderer')->renderInIsolation($build);
 
-    $this->assertStringNotContainsString('hel-icon', $output);
-    $this->assertMatchesRegularExpression('/<a [^>]*class="translation-state--outdated entity-notifications__link"[^>]*>Check the language versions<\/a>/', $output);
+    $this->assertMatchesRegularExpression('/<a [^>]*class="translation-state--outdated entity-notifications__link"[^>]*><span class="hel-icon hel-icon--alert-circle-fill" aria-hidden="true"><\/span>Check the language versions<\/a>/', $output);
   }
 
 }

@@ -12,10 +12,13 @@
 <ul class="entity-notifications">
   {% for notification in notifications %}
     <li class="entity-notifications__item">
-      {% if notification.icon %}
-        <span class="hel-icon hel-icon--{{ notification.icon }}" aria-hidden="true"></span>
-      {% endif %}
-      {{ link(notification.label, notification.url, {'class': ['entity-notifications__link']}) }}
+      {% set label %}
+        {%- if notification.icon -%}
+          <span class="hel-icon hel-icon--{{ notification.icon }}" aria-hidden="true"></span>
+        {%- endif -%}
+        {{- notification.label -}}
+      {% endset %}
+      {{ link(label, notification.url, {'class': ['entity-notifications__link']}) }}
     </li>
   {% endfor %}
 </ul>

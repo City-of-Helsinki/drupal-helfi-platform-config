@@ -84,7 +84,8 @@ class TranslationOverviewControllerTest extends OutdatedTranslationTestBase {
     // The outdated translation shows the notice.
     $cell = $table['#rows']['sv'][3]['data'];
     $this->assertSame(['translation-state--outdated'], $cell['notice']['#attributes']['class']);
-    $this->assertSame('Check the language version', (string) $cell['notice']['#value']);
+    $this->assertSame(['hel-icon', 'hel-icon--alert-circle-fill'], $cell['notice']['icon']['#attributes']['class']);
+    $this->assertSame('Check the language version', (string) $cell['notice']['label']['#markup']);
     $this->assertSame(
       $dateFormatter->format(self::ORIGINAL - 21 * self::DAY, 'short') . ' (21 days older than Finnish)',
       (string) $cell['changed']['#value'],
@@ -116,7 +117,7 @@ class TranslationOverviewControllerTest extends OutdatedTranslationTestBase {
     // Language, translation, source, status, updated, operations.
     $this->assertCount(6, $table['#header']);
     $this->assertSame('Updated', (string) $table['#header'][4]);
-    $this->assertSame('Check the language version', (string) $table['#rows']['sv'][4]['data']['notice']['#value']);
+    $this->assertSame('Check the language version', (string) $table['#rows']['sv'][4]['data']['notice']['label']['#markup']);
     $this->assertSame('operations', $table['#rows']['sv'][5]['data']['#type']);
   }
 

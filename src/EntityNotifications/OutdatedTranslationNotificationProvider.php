@@ -69,7 +69,7 @@ class OutdatedTranslationNotificationProvider implements EntityNotificationProvi
       new EntityNotification(
         $this->t('Check the language versions', [], ['context' => 'Outdated translation']),
         $url,
-        icon: NULL,
+        icon: 'alert-circle-fill',
       ),
     ];
   }
