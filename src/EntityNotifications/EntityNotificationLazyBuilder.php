@@ -8,7 +8,6 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Security\TrustedCallbackInterface;
-use Drupal\Core\Session\AccountInterface;
 
 /**
  * Lazy builder for entity notifications.
@@ -18,7 +17,6 @@ final readonly class EntityNotificationLazyBuilder implements TrustedCallbackInt
   public function __construct(
     private EntityTypeManagerInterface $entityTypeManager,
     private EntityNotificationManager $notificationManager,
-    private AccountInterface $currentUser,
   ) {
   }
 
@@ -59,12 +57,6 @@ final readonly class EntityNotificationLazyBuilder implements TrustedCallbackInt
    *   The render array.
    */
   public function build(string $entityTypeId, string $id, string $langcode): array {
-    // @todo Remove permission check once the feature is opened up to editors.
-    // https://helsinkisolutionoffice.atlassian.net/browse/UHF-13673.
-    if (!$this->currentUser->hasPermission('administer users')) {
-      return [];
-    }
-
     $entity = $this->entityTypeManager->getStorage($entityTypeId)->load($id);
 
     if (!$entity instanceof ContentEntityInterface) {

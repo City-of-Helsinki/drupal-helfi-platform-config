@@ -104,7 +104,7 @@ class EntityNotificationsFieldTest extends KernelTestBase {
    * Tests that notifications render in the title column.
    */
   public function testNotificationsRenderUnderTitle(): void {
-    $user = $this->setUpCurrentUser(permissions: ['access content', 'administer users']);
+    $user = $this->setUpCurrentUser(permissions: ['access content']);
 
     foreach (['First', 'Second'] as $title) {
       $nodes[$title] = Node::create(['type' => 'page', 'title' => $title, 'uid' => $user->id()]);

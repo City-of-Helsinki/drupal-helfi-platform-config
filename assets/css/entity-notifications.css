@@ -20,6 +20,6 @@
 }
 
 .entity-notifications__link {
-  font-weight: var(--gin-font-weight-semibold, 600);
+  font-weight: var(--gin-font-weight-semibold, 500);
   text-decoration: underline;
 }
