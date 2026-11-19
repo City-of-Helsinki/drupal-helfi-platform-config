@@ -118,7 +118,7 @@ class OutdatedTranslationNotificationProviderTest extends OutdatedTranslationTes
     ];
     $output = (string) $this->container->get('renderer')->renderInIsolation($build);
 
-    $this->assertMatchesRegularExpression('/<a [^>]*class="translation-state--outdated entity-notifications__link"[^>]*><span class="hel-icon hel-icon--alert-circle-fill" aria-hidden="true"><\/span>Check the language versions<\/a>/', $output);
+    $this->assertMatchesRegularExpression('/<a [^>]*class="translation-state--outdated entity-notifications__link"[^>]*><span class="hel-icon hel-icon--alert-circle-fill" aria-hidden="true"><\/span>Check the language versions\s*<\/a>/', $output);
   }
 
 }
