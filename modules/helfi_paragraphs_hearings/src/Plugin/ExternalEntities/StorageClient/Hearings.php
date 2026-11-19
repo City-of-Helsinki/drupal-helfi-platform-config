@@ -27,10 +27,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 final class Hearings extends RestClient {
 
-
   public const string API_URL = 'https://kerrokantasi.api.hel.fi/v1/hearing?';
 
   public const string HEARING_URL = 'https://kerrokantasi.hel.fi/';
+
+  private const int API_LIMIT = 20;
+
+  private const int UI_LIMIT = 3;
 
   /**
    * The current language service.
@@ -97,11 +100,13 @@ final class Hearings extends RestClient {
       ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
       ->getId();
 
+    // We must fetch a bunch of hearings to make sure we have 3 for each
+    // language (if possible).
     $query = http_build_query([
       'format' => 'json',
       'langcode' => $langcode,
       'open' => 'true',
-      'limit' => 3,
+      'limit' => self::API_LIMIT,
     ]);
 
     $url = sprintf('%s%s', self::API_URL, $query);
@@ -127,7 +132,6 @@ final class Hearings extends RestClient {
       $json['results'];
 
     $data = [];
-
     foreach ($results as $hearing) {
       $existingTranslations = $this->getTranslationLanguages($hearing);
       if (!in_array($langcode, $existingTranslations)) {
@@ -149,6 +153,10 @@ final class Hearings extends RestClient {
       $item['main_image_caption'] = $hearing['main_image']['caption'][$langcode] ?? '';
 
       $data[] = $item;
+
+      if (count($data) === self::UI_LIMIT) {
+        break;
+      }
     }
 
     return $data;

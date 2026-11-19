@@ -10,6 +10,7 @@ use Drupal\helfi_paragraphs_hearings\Hook\HearingsParagraphHooks;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
+use Drupal\Tests\helfi_api_base\Traits\LanguageManagerTrait;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -20,6 +21,7 @@ use GuzzleHttp\Psr7\Response;
 class HooksTest extends KernelTestBase {
 
   use ApiTestTrait;
+  use LanguageManagerTrait;
 
   /**
    * {@inheritdoc}
@@ -42,6 +44,9 @@ class HooksTest extends KernelTestBase {
     'system',
     'link',
     'user',
+    'language',
+    'helfi_api_base',
+    'helfi_language_negotiator_test',
   ];
 
   /**
@@ -52,6 +57,7 @@ class HooksTest extends KernelTestBase {
 
     $this->installEntitySchema('paragraph');
     $this->installConfig(['helfi_paragraphs_hearings']);
+    $this->setupLanguages();
   }
 
   /**
@@ -59,7 +65,9 @@ class HooksTest extends KernelTestBase {
    */
   public function testParagraph() {
     $client = $this->createMockHttpClient([
-      // Success.
+      // Success for each langcode.
+      new Response(body: file_get_contents(dirname(__DIR__, 2) . '/fixtures/hearings.json')),
+      new Response(body: file_get_contents(dirname(__DIR__, 2) . '/fixtures/hearings.json')),
       new Response(body: file_get_contents(dirname(__DIR__, 2) . '/fixtures/hearings.json')),
       // Empty response.
       new Response(body: json_encode([])),
@@ -81,10 +89,21 @@ class HooksTest extends KernelTestBase {
 
     $hearings = ExternalEntityType::load('helfi_hearings');
 
+    $resultCountByLangcode = [
+      'fi' => 3,
+      'sv' => 1,
+      'en' => 3,
+    ];
+
     // Success.
-    $sut->view($build, $paragraph, $display->reveal());
-    $this->assertEquals($hearings->getPersistentCacheMaxAge(), $build['#cache']['max-age']);
-    $this->assertNotEmpty($build['list'] ?? []);
+    foreach ($resultCountByLangcode as $langcode => $count) {
+      $build = [];
+      $this->setOverrideLanguageCode($langcode);
+      $sut->view($build, $paragraph, $display->reveal());
+      $this->assertEquals($hearings->getPersistentCacheMaxAge(), $build['#cache']['max-age']);
+      $this->assertNotEmpty($build['list'] ?? []);
+      $this->assertCount($count, $build['list']);
+    }
 
     // Empty response.
     $sut->view($build, $paragraph, $display->reveal());

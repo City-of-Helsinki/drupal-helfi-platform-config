@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_users\Functional;
 
 use Behat\Mink\Element\NodeElement;
+use Drupal\helfi_users\Hook\BulkOperationsHooks;
 use Drupal\Tests\helfi_api_base\Functional\BrowserTestBase;
 use Drupal\user\UserInterface;
 
@@ -52,6 +53,7 @@ abstract class FavoriteBrowserTestBase extends BrowserTestBase {
       'create page content',
       'edit any page content',
       'use favorites',
+      BulkOperationsHooks::PERMISSION,
     ]);
     $this->drupalLogin($user);
     return $user;

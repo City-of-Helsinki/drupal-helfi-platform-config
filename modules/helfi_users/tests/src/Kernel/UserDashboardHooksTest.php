@@ -15,12 +15,14 @@ use Drupal\KernelTests\KernelTestBase;
 use Drupal\user\UserInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Tests for UserDashboardHooks.
  */
 #[Group('helfi_users')]
+#[RunTestsInSeparateProcesses]
 class UserDashboardHooksTest extends KernelTestBase {
 
   /**

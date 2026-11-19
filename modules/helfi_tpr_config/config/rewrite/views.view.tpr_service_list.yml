@@ -6,6 +6,7 @@ dependencies:
     - helfi_tpr
     - helfi_users
     - user
+    - views_bulk_operations
 id: tpr_service_list
 label: 'TPR service list'
 module: views
@@ -22,15 +23,14 @@ display:
     display_options:
       title: 'TPR Services'
       fields:
-        tpr_service_bulk_form:
-          id: tpr_service_bulk_form
-          table: tpr_service
-          field: tpr_service_bulk_form
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: tpr_service
-          plugin_id: bulk_form
+          plugin_id: views_bulk_operations_bulk_form
           label: 'Bulk update'
           exclude: false
           alter:
@@ -72,9 +72,51 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          batch: true
+          batch_size: 50
+          form_step: true
+          ajax_loader: false
+          buttons: false
           action_title: Action
-          include_exclude: exclude
-          selected_actions: {  }
+          clear_on_exposed: true
+          show_multipage_selection_box: always_hide
+          show_select_all: always_hide
+          selected_actions:
+            -
+              action_id: 'helfi_favorite_add:tpr_service'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Add to favourites'
+                message_override: ''
+            -
+              action_id: 'helfi_favorite_remove:tpr_service'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Remove from favourites'
+                message_override: ''
+            -
+              action_id: 'entity:publish_action:tpr_service'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Publish content'
+                message_override: ''
+            -
+              action_id: 'entity:unpublish_action:tpr_service'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Unpublish content'
+                message_override: ''
+            -
+              action_id: 'remote_entity:migration_update:tpr_service'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Update from TPR'
+                message_override: ''
         id:
           id: id
           table: tpr_service_field_data
@@ -728,7 +770,7 @@ display:
           row_class: ''
           default_row_class: true
           columns:
-            tpr_service_bulk_form: tpr_service_bulk_form
+            views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
             id: id
             name: name
             helfi_favorite: helfi_favorite
@@ -738,7 +780,7 @@ display:
             operations: operations
           default: content_translation_status
           info:
-            tpr_service_bulk_form:
+            views_bulk_operations_bulk_form:
               align: ''
               separator: ''
               empty_column: false
@@ -896,7 +938,7 @@ display:
           row_class: ''
           default_row_class: true
           columns:
-            tpr_service_bulk_form: tpr_service_bulk_form
+            views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
             id: id
             name: name
             helfi_favorite: helfi_favorite
@@ -906,7 +948,7 @@ display:
             operations: operations
           default: content_translation_changed
           info:
-            tpr_service_bulk_form:
+            views_bulk_operations_bulk_form:
               align: ''
               separator: ''
               empty_column: false

@@ -11,13 +11,15 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\helfi_users\Plugin\Block\LocalTasksBlock;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\user\UserInterface;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Tests for LocalTasksBlock.
- *
- * @group helfi_users
  */
+#[Group('helfi_users')]
+#[RunTestsInSeparateProcesses]
 class LocalTasksBlockTest extends KernelTestBase {
 
   /**

@@ -7,11 +7,13 @@ namespace Drupal\Tests\helfi_users\Kernel;
 use Drupal\helfi_users\FavoriteStorage;
 use Drupal\helfi_users\FavoriteToggleBuilder;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests FavoriteToggleBuilder.
  */
 #[Group('helfi_users')]
+#[RunTestsInSeparateProcesses]
 class FavoriteToggleBuilderTest extends FavoriteKernelTestBase {
 
   /**
