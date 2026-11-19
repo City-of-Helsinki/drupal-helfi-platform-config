@@ -45,8 +45,8 @@ final class SimilarContentNotificationProvider implements EntityNotificationProv
    * {@inheritdoc}
    */
   public function getNotifications(ContentEntityInterface $entity, RefinableCacheableDependencyInterface $cacheability): array {
-    // @todo Remove permission check once the feature is opened up to editors.
-    // https://helsinkisolutionoffice.atlassian.net/browse/UHF-13673.
+    // @todo UHF-13990 Remove the permission check once the feature is released.
+    // https://helsinkisolutionoffice.atlassian.net/browse/UHF-13990.
     $cacheability->addCacheContexts(['user.permissions']);
 
     if (!$this->currentUser->hasPermission('administer users')) {
