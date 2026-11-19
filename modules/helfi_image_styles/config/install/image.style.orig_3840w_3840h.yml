@@ -1,0 +1,29 @@
+uuid: b9d2d096-0621-4b2a-b5d6-feaf093df69a
+langcode: en
+status: true
+dependencies:
+  module:
+    - image_style_quality
+name: orig_3840w_3840h
+label: 'orig_3840w_3840h'
+effects:
+  4f8a899e-809c-4c5e-8b2c-9891a63d92ac:
+    uuid: 4f8a899e-809c-4c5e-8b2c-9891a63d92ac
+    id: image_scale
+    weight: 1
+    data:
+      width: 3840
+      height: 3840
+      upscale: false
+  0e37895f-7461-4351-bac9-d98793bdc095:
+    uuid: 0e37895f-7461-4351-bac9-d98793bdc095
+    id: image_style_quality
+    weight: 2
+    data:
+      quality: 80
+  c30092e3-1202-49d5-88a2-479f38e91878:
+    uuid: c30092e3-1202-49d5-88a2-479f38e91878
+    id: image_convert
+    weight: -10
+    data:
+      extension: webp
