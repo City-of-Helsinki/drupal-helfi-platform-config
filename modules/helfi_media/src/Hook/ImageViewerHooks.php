@@ -27,7 +27,7 @@ final class ImageViewerHooks {
   /**
    * Implements hook_preprocess_HOOK() for paragraph.
    *
-   * @param array $variables
+   * @param array<string, mixed> $variables
    *   The template variables.
    */
   #[Hook('preprocess_paragraph')]
@@ -66,14 +66,15 @@ final class ImageViewerHooks {
       return;
     }
 
-    $dimensions = ['width' => $item->width, 'height' => $item->height];
+    $values = $item->getValue();
+    $dimensions = ['width' => $values['width'] ?? NULL, 'height' => $values['height'] ?? NULL];
     $style->transformDimensions($dimensions, $uri);
 
     $variables['image_viewer'] = [
       'src' => $style->buildUrl($uri),
       'width' => $dimensions['width'],
       'height' => $dimensions['height'],
-      'alt' => $item->alt,
+      'alt' => $values['alt'] ?? '',
     ];
     $variables['#attached']['library'][] = 'helfi_platform_config/image_viewer';
     $variables['#cache']['tags'] = Cache::mergeTags(
