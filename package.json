@@ -18,6 +18,7 @@
   "dependencies": {
     "@drupal/autocomplete": "^0.0.2",
     "@hdbt/theme-builder": "file:../../../themes/contrib/hdbt/theme-builder",
+    "@panzoom/panzoom": "4.6.2",
     "baseline-browser-mapping": "^2.11.35",
     "browserslist": "^4.29.5",
     "browserslist-useragent-regexp": "^4.1.4",
