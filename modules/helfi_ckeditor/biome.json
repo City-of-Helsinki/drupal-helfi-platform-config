@@ -9,7 +9,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "suspicious": { "noGlobalIsFinite": "off", "noArrayIndexKey": "warn" },
       "correctness": {
         "noUnusedVariables": "warn",
