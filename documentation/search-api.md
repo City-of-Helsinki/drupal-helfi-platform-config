@@ -31,6 +31,32 @@ The feature utilises Elasticsearch Connector event subscribers to add the prefix
 * The id prefix should have no side effects when elasticsearch queries are executed directly from React applications or custom code.
 * A use case where multisite index is used as source in Views and results are rendered using the matching content entities might have unexpected results (results from other sites might cause a totally unrelated local entity to be rendered if a matching entity type & id combination is found). If such a setup is needed, a new index field with some kind of site identification should be added and then used to filter only results from current site.
 
+## Shared indexes
+
+Some indexes are written to by several instances. They are listed with their main instance in `Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex`.
+
+### Clearing a shared index
+
+`drush search-api:clear` (`sapi-c`) on a shared index is guarded by `Drupal\helfi_platform_config\Drush\Listeners\SearchApiClearListener`:
+
+* On the main instance, the clear has to be confirmed (or run with `--yes`).
+* On every other instance, the clear is blocked.
+
+### Reindexing on other instances
+
+A clear deletes the documents of every instance, but only the clearing instance's tracker knows its items must be reindexed. So after a successful `sapi-c` on a shared index, the clearing instance sends an [Azure PubSub message](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/documentation/pubsub-messaging.md):
+
+```json
+{"search_api_reindex": {"index": "embeddings", "instance": "etusivu"}}
+```
+
+`Drupal\helfi_platform_config\EventSubscriber\SearchApiReindexSubscriber` receives it on the other instances. If the index exists and is enabled there, it marks all items for reindexing (same as `drush search-api:reset-tracker`). The items are then indexed on the next indexing run. The sending instance ignores its own message.
+
+Good to know:
+
+* Receiving requires the `drush helfi:azure:pubsub-listen` worker and the `pubsub` vault item. If sending fails, a warning is logged and the clear still succeeds; the other instances then have to run `drush sapi-r <index>` manually.
+* Only `drush sapi-c` sends the message. Clearing from the Search API admin UI does not.
+
 ## Path alias updates
 
 Quite a few indexes contain fields with url aliases, and usually this data stays up-to-date via regular content updates that trigger reindexing. However additional update hooks are needed to cover path alias operations that happen outside the content entity update context, like:

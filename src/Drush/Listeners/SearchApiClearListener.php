@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Drupal\helfi_platform_config\Drush\Listeners;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_platform_config\EventSubscriber\SearchApiReindexSubscriber;
 use Drupal\helfi_platform_config\SearchAPI\RestrictedClearAction;
 use Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex;
 use Drupal\search_api\IndexInterface;
@@ -13,17 +16,24 @@ use Drush\Commands\AutowireTrait;
 use Drush\Style\DrushStyle;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use WebSocket\Exception\Exception as WebSocketException;
 
 /**
- * Stops drush sapi-c from clearing shared search indexes.
+ * Guards drush sapi-c on shared search indexes.
+ *
+ * Before the command, stops it from clearing shared indexes on instances that
+ * must not do so. After a successful clear, tells the other instances over
+ * PubSub to mark their items for reindexing, see SearchApiReindexSubscriber.
  *
  * Discovered from src/Drush/Listeners after the full Drupal bootstrap, because
  * AutowireTrait::create() postpones listeners that need Drupal services.
  */
 #[AsEventListener(method: 'onSearchApiClear')]
+#[AsEventListener(method: 'onSearchApiClearTerminate')]
 class SearchApiClearListener {
 
   use AutowireTrait;
@@ -31,8 +41,9 @@ class SearchApiClearListener {
   public function __construct(
     private readonly RestrictedSearchIndex $restrictedSearchIndex,
     private readonly EntityTypeManagerInterface $entityTypeManager,
-    private readonly ModuleHandlerInterface $moduleHandler,
     private readonly LoggerInterface $logger,
+    private readonly PubSubManagerInterface $pubSubManager,
+    private readonly EnvironmentResolverInterface $environmentResolver,
   ) {
   }
 
@@ -71,6 +82,62 @@ class SearchApiClearListener {
   }
 
   /**
+   * Asks other instances to reindex shared indexes after a successful clear.
+   *
+   * Runs for every command, so it checks the command name and exit code. A
+   * blocked or declined clear exits with a non-zero code.
+   */
+  public function onSearchApiClearTerminate(ConsoleTerminateEvent $event): void {
+    if ($event->getCommand()?->getName() !== 'search-api:clear' || $event->getExitCode() !== 0) {
+      return;
+    }
+
+    $indexId = $event->getInput()->getArgument('indexId');
+    $sharedIds = array_values(array_filter(
+      $this->candidateIds(is_string($indexId) && $indexId !== '' ? $indexId : NULL),
+      RestrictedSearchIndex::isShared(...),
+    ));
+    if ($sharedIds === []) {
+      return;
+    }
+
+    // Search API only clears enabled indexes, and an unknown id exits with
+    // code 0 without clearing anything.
+    $clearedIds = [];
+    foreach ($this->entityTypeManager->getStorage('search_api_index')->loadMultiple($sharedIds) as $index) {
+      if ($index instanceof IndexInterface && $index->status() && is_string($index->id())) {
+        $clearedIds[] = $index->id();
+      }
+    }
+    if ($clearedIds === []) {
+      return;
+    }
+
+    try {
+      $instance = $this->environmentResolver->getActiveProject()->getName();
+    }
+    catch (EnvironmentResolverException) {
+      $this->logger->warning('Other instances were not asked to reindex, because the active project is unknown.');
+      return;
+    }
+
+    foreach ($clearedIds as $clearedId) {
+      try {
+        $this->pubSubManager->sendMessage([
+          SearchApiReindexSubscriber::MESSAGE_KEY => [
+            'index' => $clearedId,
+            'instance' => $instance,
+          ],
+        ]);
+        $this->logger->notice(sprintf('Asked other instances to reindex the shared index %s.', $clearedId));
+      }
+      catch (WebSocketException | \JsonException | \LogicException $e) {
+        $this->logger->warning(sprintf('Other instances were not asked to reindex the shared index %s: %s', $clearedId, $e->getMessage()));
+      }
+    }
+  }
+
+  /**
    * Asks whether to clear a shared index.
    */
   protected function confirmClear(string $question, InputInterface $input, OutputInterface $output): bool {
@@ -89,9 +156,6 @@ class SearchApiClearListener {
   private function candidateIds(?string $indexId): array {
     if ($indexId !== NULL) {
       return [$indexId];
-    }
-    if (!$this->moduleHandler->moduleExists('search_api')) {
-      return [];
     }
 
     $ids = [];
