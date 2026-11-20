@@ -6,8 +6,9 @@ namespace Drupal\Tests\helfi_platform_config\Unit\Drush\Listeners;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_platform_config\Drush\Listeners\SearchApiClearListener;
 use Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex;
@@ -19,8 +20,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use WebSocket\Exception\ClientException;
 
 /**
  * Unit tests for the sapi-c command listener.
@@ -214,28 +217,144 @@ final class SearchApiClearListenerTest extends UnitTestCase {
   }
 
   /**
+   * A successful clear of a shared index notifies other instances.
+   */
+  public function testTerminateSendsReindexMessage(): void {
+    $listener = $this->listener(Project::ETUSIVU, [$this->index('embeddings', TRUE)]);
+    $listener->pubSubManager->expects($this->once())
+      ->method('sendMessage')
+      ->with(['search_api_reindex' => ['index' => 'embeddings', 'instance' => Project::ETUSIVU]]);
+    $listener->logger->expects($this->once())
+      ->method('notice')
+      ->with('Asked other instances to reindex the shared index embeddings.');
+
+    $listener->onSearchApiClearTerminate($this->terminateEvent('embeddings'));
+  }
+
+  /**
+   * Nothing is sent when the clear did not succeed or was another command.
+   */
+  public function testTerminateIgnoresFailedClearAndOtherCommands(): void {
+    $listener = $this->listener(Project::ETUSIVU, [$this->index('embeddings', TRUE)]);
+    $listener->pubSubManager->expects($this->never())->method('sendMessage');
+
+    $listener->onSearchApiClearTerminate($this->terminateEvent('embeddings', exitCode: ConsoleCommandEvent::RETURN_CODE_DISABLED));
+    $listener->onSearchApiClearTerminate($this->terminateEvent('embeddings', exitCode: 1));
+    $listener->onSearchApiClearTerminate($this->terminateEvent('embeddings', 'search-api:index'));
+  }
+
+  /**
+   * Nothing is sent for indexes that are not shared, unknown or disabled.
+   */
+  public function testTerminateIgnoresIndexesThatWereNotClearedShared(): void {
+    $listener = $this->listener(Project::ETUSIVU, [
+      $this->index('news', TRUE),
+      $this->index('suggestions', FALSE),
+    ]);
+    $listener->pubSubManager->expects($this->never())->method('sendMessage');
+
+    $listener->onSearchApiClearTerminate($this->terminateEvent('news'));
+    $listener->onSearchApiClearTerminate($this->terminateEvent('suggestions'));
+    $listener->onSearchApiClearTerminate($this->terminateEvent('hyte'));
+  }
+
+  /**
+   * A clear of every index sends one message per enabled shared index.
+   */
+  public function testTerminateClearAllSendsPerSharedIndex(): void {
+    $listener = $this->listener(Project::ASUMINEN, [
+      $this->index('news', TRUE),
+      $this->index('embeddings', TRUE),
+      $this->index('suggestions', FALSE),
+      $this->index('hyte', TRUE),
+    ]);
+    $sent = [];
+    $listener->pubSubManager->expects($this->exactly(2))
+      ->method('sendMessage')
+      ->willReturnCallback(function (array $message) use (&$sent, $listener) {
+        $sent[] = $message['search_api_reindex'];
+        return $listener->pubSubManager;
+      });
+
+    $listener->onSearchApiClearTerminate($this->terminateEvent(NULL));
+
+    $this->assertSame([
+      ['index' => 'embeddings', 'instance' => Project::ASUMINEN],
+      ['index' => 'hyte', 'instance' => Project::ASUMINEN],
+    ], $sent);
+  }
+
+  /**
+   * Nothing is sent when the sending instance is unknown.
+   */
+  public function testTerminateWithUnknownInstance(): void {
+    $listener = $this->listener(NULL, [$this->index('embeddings', TRUE)]);
+    $listener->pubSubManager->expects($this->never())->method('sendMessage');
+    $listener->logger->expects($this->once())
+      ->method('warning')
+      ->with('Other instances were not asked to reindex, because the active project is unknown.');
+
+    $listener->onSearchApiClearTerminate($this->terminateEvent('embeddings'));
+  }
+
+  /**
+   * A PubSub failure is logged and does not fail the command.
+   */
+  public function testTerminateLogsPubSubFailure(): void {
+    $listener = $this->listener(Project::ETUSIVU, [$this->index('embeddings', TRUE)]);
+    $listener->pubSubManager->method('sendMessage')
+      ->willThrowException(new ClientException('PubSub access key is undefined.'));
+    $listener->logger->expects($this->once())
+      ->method('warning')
+      ->with('Other instances were not asked to reindex the shared index embeddings: PubSub access key is undefined.');
+
+    $listener->onSearchApiClearTerminate($this->terminateEvent('embeddings'));
+  }
+
+  /**
    * Builds the listener with a stand-in for the confirmation prompt.
    *
-   * @param string $project
-   *   The active project name.
+   * @param string|null $project
+   *   The active project name, or NULL for an unresolved project.
    * @param \Drupal\search_api\IndexInterface[] $indexes
-   *   Indexes returned when sapi-c is run with no id.
+   *   The indexes that exist.
    */
-  private function listener(string $project = Project::LIIKENNE, array $indexes = []): SearchApiClearListenerUnderTest {
+  private function listener(?string $project = Project::LIIKENNE, array $indexes = []): SearchApiClearListenerUnderTest {
     $storage = $this->createMock(EntityStorageInterface::class);
-    $storage->method('loadMultiple')->willReturn($indexes);
+    $storage->method('loadMultiple')->willReturnCallback(
+      static fn (?array $ids = NULL): array => array_values(array_filter(
+        $indexes,
+        static fn (IndexInterface $index): bool => $ids === NULL || in_array($index->id(), $ids, TRUE),
+      )),
+    );
 
     $entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
     $entityTypeManager->method('getStorage')->with('search_api_index')->willReturn($storage);
 
-    $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
-    $moduleHandler->method('moduleExists')->with('search_api')->willReturn(TRUE);
+    $environmentResolver = $project === NULL
+      ? $this->getEnvironmentResolver()
+      : $this->getEnvironmentResolver($project, EnvironmentEnum::Local);
 
     return new SearchApiClearListenerUnderTest(
-      new RestrictedSearchIndex($this->getEnvironmentResolver($project, EnvironmentEnum::Local)),
+      new RestrictedSearchIndex($environmentResolver),
       $entityTypeManager,
-      $moduleHandler,
       $this->createMock(LoggerInterface::class),
+      $this->createMock(PubSubManagerInterface::class),
+      $environmentResolver,
+    );
+  }
+
+  /**
+   * Builds a console terminate event for a finished Drush command.
+   */
+  private function terminateEvent(?string $indexId, string $commandName = 'search-api:clear', int $exitCode = 0): ConsoleTerminateEvent {
+    $input = $this->createMock(InputInterface::class);
+    $input->method('getArgument')->with('indexId')->willReturn($indexId);
+    return new ConsoleTerminateEvent(
+      new Command($commandName),
+      $input,
+      $this->createMock(OutputInterface::class),
+      $exitCode,
     );
   }
 
@@ -298,15 +417,24 @@ final class SearchApiClearListenerUnderTest extends SearchApiClearListener {
    */
   public LoggerInterface $logger;
 
+  /**
+   * The PubSub manager passed to the listener.
+   *
+   * @var \Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface&\PHPUnit\Framework\MockObject\MockObject
+   */
+  public PubSubManagerInterface $pubSubManager;
+
   public function __construct(
     RestrictedSearchIndex $restrictedSearchIndex,
     EntityTypeManagerInterface&MockObject $entityTypeManager,
-    ModuleHandlerInterface $moduleHandler,
     LoggerInterface&MockObject $logger,
+    PubSubManagerInterface&MockObject $pubSubManager,
+    EnvironmentResolverInterface $environmentResolver,
   ) {
-    parent::__construct($restrictedSearchIndex, $entityTypeManager, $moduleHandler, $logger);
+    parent::__construct($restrictedSearchIndex, $entityTypeManager, $logger, $pubSubManager, $environmentResolver);
     $this->entityTypeManager = $entityTypeManager;
     $this->logger = $logger;
+    $this->pubSubManager = $pubSubManager;
   }
 
   /**
