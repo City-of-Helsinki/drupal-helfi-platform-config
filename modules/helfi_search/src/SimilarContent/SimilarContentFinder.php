@@ -38,6 +38,11 @@ final class SimilarContentFinder {
    */
   private const int NUM_CANDIDATES = 50;
 
+  /**
+   * Bundles that are never reported as similar content.
+   */
+  private const array EXCLUDED_BUNDLES = ['news_item', 'news_article'];
+
   public function __construct(
     private readonly Connection $database,
     private readonly MultisiteSearch $multisiteSearch,
@@ -86,7 +91,10 @@ final class SimilarContentFinder {
     $filter = [
       'bool' => [
         'must' => [['term' => ['search_api_language' => $language]]],
-        'must_not' => [['ids' => ['values' => [$ownId]]]],
+        'must_not' => [
+          ['ids' => ['values' => [$ownId]]],
+          ['terms' => ['entity_bundle' => self::EXCLUDED_BUNDLES]],
+        ],
       ],
     ];
 
