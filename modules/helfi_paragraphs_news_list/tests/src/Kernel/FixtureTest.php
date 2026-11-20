@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_news_list\Kernel;
 
-use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\Project;
-use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
+use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -17,39 +15,28 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[RunTestsInSeparateProcesses]
 class FixtureTest extends KernelTestBase {
 
-  use EnvironmentResolverTrait;
-
   /**
-   * Sets the active environment.
-   *
-   * @param \Drupal\helfi_api_base\Environment\EnvironmentEnum $environment
-   *   The environment.
-   */
-  private function setEnvironment(EnvironmentEnum $environment) : void {
-    $this->setActiveProject(Project::ETUSIVU, $environment);
-    // Reset the cached active environment.
-    $this->container->set('helfi_api_base.environment_resolver', NULL);
-  }
-
-  /**
-   * Enables or disables the fixture setting.
+   * Enables or disables the mock responses feature.
    *
    * @param bool $enabled
-   *   Whether fixtures are used.
+   *   Whether mock responses are used.
    */
-  private function setUseFixtures(bool $enabled) : void {
-    $this->config('helfi_paragraphs_news_list.settings')
-      ->set('use_fixtures', $enabled)
-      ->save();
+  private function setUseMockResponses(bool $enabled) : void {
+    $featureManager = $this->container->get(FeatureManagerInterface::class);
+
+    if ($enabled) {
+      $featureManager->enableFeature(FeatureManagerInterface::USE_MOCK_RESPONSES);
+      return;
+    }
+    $featureManager->disableFeature(FeatureManagerInterface::USE_MOCK_RESPONSES);
   }
 
   /**
-   * Tests that news are loaded from fixtures on local environment.
+   * Tests that news are loaded from fixtures when mock responses are enabled.
    */
   public function testNewsFromFixtures() : void {
     $this->mockEtusivuElasticClient([]);
-    $this->setEnvironment(EnvironmentEnum::Local);
-    $this->setUseFixtures(TRUE);
+    $this->setUseMockResponses(TRUE);
 
     $storage = $this->container->get('entity_type.manager')->getStorage('helfi_news');
     $ids = $storage->getQuery()
@@ -79,32 +66,13 @@ class FixtureTest extends KernelTestBase {
   }
 
   /**
-   * Tests that fixtures are not used outside local environment.
-   */
-  public function testFixturesOutsideLocal() : void {
-    $this->mockEtusivuElasticClient([
-      $this->createElasticsearchResponse(['hits' => ['hits' => []]]),
-    ]);
-    $this->setEnvironment(EnvironmentEnum::Test);
-    $this->setUseFixtures(TRUE);
-
-    $ids = $this->container->get('entity_type.manager')
-      ->getStorage('helfi_news')
-      ->getQuery()
-      ->accessCheck(FALSE)
-      ->execute();
-    $this->assertEmpty($ids, 'News are queried from Elasticsearch.');
-  }
-
-  /**
-   * Tests that fixtures are not used when the setting is disabled.
+   * Tests that fixtures are not used when mock responses are disabled.
    */
   public function testFixturesDisabled() : void {
     $this->mockEtusivuElasticClient([
       $this->createElasticsearchResponse(['hits' => ['hits' => []]]),
     ]);
-    $this->setEnvironment(EnvironmentEnum::Local);
-    $this->setUseFixtures(FALSE);
+    $this->setUseMockResponses(FALSE);
 
     $ids = $this->container->get('entity_type.manager')
       ->getStorage('helfi_news')

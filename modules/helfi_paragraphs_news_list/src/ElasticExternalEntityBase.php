@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_news_list;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
 use Drupal\external_entities\Entity\ExternalEntityType;
 use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\RestClient;
-use Drupal\helfi_api_base\Environment\EnvironmentEnum;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
@@ -37,18 +34,11 @@ abstract class ElasticExternalEntityBase extends RestClient {
   protected Client $client;
 
   /**
-   * The config factory.
+   * The feature manager.
    *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   * @var \Drupal\helfi_api_base\Features\FeatureManagerInterface
    */
-  protected ConfigFactoryInterface $configFactory;
-
-  /**
-   * The environment resolver.
-   *
-   * @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface
-   */
-  protected EnvironmentResolverInterface $environmentResolver;
+  protected FeatureManagerInterface $featureManager;
 
   /**
    * {@inheritdoc}
@@ -61,8 +51,7 @@ abstract class ElasticExternalEntityBase extends RestClient {
   ) : static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->client = $container->get('helfi_platform_config.etusivu_elastic_client');
-    $instance->configFactory = $container->get('config.factory');
-    $instance->environmentResolver = $container->get('helfi_api_base.environment_resolver');
+    $instance->featureManager = $container->get(FeatureManagerInterface::class);
 
     return $instance;
   }
@@ -105,7 +94,7 @@ abstract class ElasticExternalEntityBase extends RestClient {
   protected function request(
     array $parameters,
   ) : array {
-    if ($this->useFixtures()) {
+    if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
       return $this->getFixtureData($parameters);
     }
 
@@ -116,25 +105,6 @@ abstract class ElasticExternalEntityBase extends RestClient {
       Error::logException($this->logger, $e);
     }
     return [];
-  }
-
-  /**
-   * Checks whether fixture data should be used.
-   *
-   * @return bool
-   *   TRUE if fixtures are enabled on a local environment.
-   */
-  protected function useFixtures() : bool {
-    if (!$this->configFactory->get('helfi_paragraphs_news_list.settings')->get('use_fixtures')) {
-      return FALSE;
-    }
-
-    try {
-      return $this->environmentResolver->getActiveEnvironmentName() === EnvironmentEnum::Local->value;
-    }
-    catch (EnvironmentResolverException) {
-      return FALSE;
-    }
   }
 
   /**

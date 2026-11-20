@@ -10,16 +10,16 @@ Enable the `helfi_paragraphs_news_list` module.
 
 ## Fixture data
 
-News and news terms are read from the `fixtures` folder instead of Elasticsearch when the `use_fixtures` setting is enabled and the active environment is `local`. The fixtures are used for test content and visual regression tests.
+News and news terms are read from the `fixtures` folder instead of Elasticsearch when the `use_mock_responses` feature of `helfi_api_base` is enabled. The fixtures are used for test content and visual regression tests.
 
-The `helfi_test_content` module enables the setting when it is installed. To enable or disable it manually, run:
+The `helfi_test_content` module enables the feature when it is installed. To enable or disable it manually, run:
 
 ```
-drush cset helfi_paragraphs_news_list.settings use_fixtures 1
-drush cset helfi_paragraphs_news_list.settings use_fixtures 0
+drush cset -y helfi_api_base.features use_mock_responses 1
+drush cset -y helfi_api_base.features use_mock_responses 0
 ```
 
-Clear the caches after changing the setting.
+Clear the caches after changing the feature.
 
 Fixture files:
 - `fixtures/news.json`: news items in fi, en and sv.
