@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@hdbt/theme-builder": "file:../../../../../themes/contrib/hdbt/theme-builder",
-    "glob": "^11.0.0",
+    "glob": "^14.0.0",
     "mustache": "^4.2.0",
     "npm-run-all2": "^8.0.4"
   },
