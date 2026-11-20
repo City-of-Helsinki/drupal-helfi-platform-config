@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormState;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\helfi_react_search\DTO\LinkedEventsItem;
 use Drupal\helfi_react_search\Plugin\Field\FieldWidget\LinkedEventsSelect2Widget;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
@@ -110,7 +111,7 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
       [],
     );
     $build = $widget->formElement($field, 0, $element, $form, new FormState());
-    $this->assertEquals([$field->value => 'Test'], $build['#options']);
+    $this->assertEquals(['test' => 'Test'], $build['#options']);
   }
 
   /**
@@ -163,8 +164,8 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
     $this->assertArrayNotHasKey('#autocomplete', $element);
 
     $expected = [
-      '{"id":"yso:p2433","name":{"fi":"ik\\u00e4\\u00e4ntyneet","en":"older people"}}' => 'older people',
-      '{"id":"yso:p11617","name":{"fi":"nuoret","en":"young people"}}' => 'young people',
+      'yso:p2433' => 'older people',
+      'yso:p11617' => 'young people',
     ];
     $element = $build(EntityTest::create());
     $this->assertSame($expected, $element['#options']);
@@ -176,8 +177,50 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
     $element = $build(EntityTest::create(['field_test' => [$selected]]));
     $this->assertSame([
       array_key_first($expected) => 'older people',
-      $selected => 'youth',
+      'yso:p11617' => 'youth',
     ], $element['#options']);
+  }
+
+  /**
+   * Tests getValidSelectedOptions().
+   */
+  public function testGetValidSelectedOptions(): void {
+    FieldStorageConfig::load('entity_test.field_test')
+      ->setCardinality(-1)
+      ->save();
+
+    $fieldDefinition = FieldConfig::create([
+      'field_name' => 'field_test',
+      'label' => 'A test field',
+      'entity_type' => 'entity_test',
+      'bundle' => 'entity_test',
+    ]);
+    $fieldDefinition->save();
+    $formState = new FormState();
+    $widget = LinkedEventsSelect2Widget::create(
+      $this->container,
+      [
+        'field_definition' => $fieldDefinition,
+        'settings' => [],
+        'third_party_settings' => [],
+      ],
+      'linked_events_select2',
+      [],
+    );
+
+    LinkedEventsSelect2Widget::cacheKeywordJson((string) json_encode(new LinkedEventsItem('yso:p1', ['en' => 'First'])));
+    LinkedEventsSelect2Widget::cacheKeywordJson((string) json_encode(new LinkedEventsItem('yso:p2', ['en' => 'Second'])));
+
+    $this->assertSame(
+      ['yso:p1' => 'First', 'yso:p2' => 'Second'],
+      $widget->getValidSelectedOptions(['#value' => ['yso:p1', 'yso:p2']], $formState),
+    );
+
+    $this->assertSame(
+      ['yso:p2', 'yso:p1'],
+      array_keys($widget->getValidSelectedOptions(['#value' => ['yso:p2', 'yso:p1']], $formState)),
+    );
+
   }
 
 }

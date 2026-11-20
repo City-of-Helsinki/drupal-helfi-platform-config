@@ -93,7 +93,12 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
 
     $options = [];
     foreach ($value as $item) {
-      $options[$item] = $this->getOptionLabel($item);
+      if (!$json = self::getKeywordJson($item)) {
+        continue;
+      }
+      $json = json_decode($json);
+      $langcode = $this->languageManager->getCurrentLanguage()->getId();
+      $options[$item] = $json->name?->{$langcode} ?: $json->name?->en ?: 'Unknown';
     }
 
     return $options;
@@ -148,7 +153,8 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
       // Get all currently selected options.
       foreach ($entity->get($this->fieldDefinition->getName()) as $item) {
         if ($item->{$this->column} !== NULL) {
-          $selected_options[$item->{$this->column}] = $this->getOptionLabel($item->{$this->column});
+          $key = self::cacheKeywordJson($item->{$this->column});
+          $selected_options[$key] = $this->getOptionLabel($item->{$this->column});
         }
       }
 
@@ -160,6 +166,19 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
     }
 
     return $this->options;
+  }
+
+  /**
+   * Get the selected options.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
+   *   The items.
+   *
+   * @return array<mixed>
+   *   The selected items.
+   */
+  protected function getSelectedOptions(FieldItemListInterface $items): array {
+    return !empty($this->options) ? array_keys($this->options) : [];
   }
 
   /**
@@ -175,18 +194,14 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
    *   Key => encoded item, Value => option label.
    */
   private function getKeywordSetOptions(string $keyword_set, array $selected_options): array {
-    $selected_ids = [];
-    foreach (array_keys($selected_options) as $value) {
-      $selected_ids[json_decode($value)?->id] = TRUE;
-    }
-
+    // Selected options are already keyed by keyword ID.
     $options = $selected_options;
+
     foreach ($this->getKeywordSetItems($keyword_set) as $item) {
-      if (isset($selected_ids[$item->id])) {
+      if (isset($options[$item->id])) {
         continue;
       }
-      $value = (string) json_encode($item);
-      $options[$value] = $this->getOptionLabel($value);
+      $options[$item->id] = $this->getOptionLabel((string) json_encode($item));
     }
 
     natcasesort($options);
@@ -265,6 +280,67 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
     $json = json_decode($value);
 
     return $json->name?->{$langcode} ?: $json->name?->en ?: 'Unknown';
+  }
+
+  /**
+   * Turn the yso-code back to json.
+   *
+   * @param array<mixed> $values
+   *   The values.
+   * @param array<mixed> $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return array<mixed>
+   *   The massaged values.
+   */
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    $items = [];
+    foreach ($values as $value) {
+      if (
+        isset($value['value']) &&
+        $value['value'] !== '' &&
+        ($json = self::getKeywordJson($value['value']))
+      ) {
+        $items[] = ['value' => $json];
+      }
+    }
+    return $items;
+  }
+
+  /**
+   * Cache the json and return only the yso code from json.
+   *
+   * @param string $json
+   *   The json to cache.
+   *
+   * @return string|null
+   *   The yso-code.
+   */
+  public static function cacheKeywordJson(string $json): ?string {
+    $data = json_decode($json, TRUE);
+    $yso_code = $data['id'] ?? NULL;
+    if (!is_string($yso_code) || $yso_code === '') {
+      return NULL;
+    }
+    \Drupal::cache()->set("linked_events_keyword:$yso_code", $json, \Drupal::time()->getRequestTime() + 86400);
+
+    return $yso_code;
+  }
+
+  /**
+   * Get the original json by the yso-code.
+   *
+   * @param string $yso_code
+   *   The yso-code.
+   *
+   * @return string|null
+   *   The linked-events string.
+   */
+  public static function getKeywordJson(string $yso_code): ?string {
+    $cached = \Drupal::cache()->get("linked_events_keyword:$yso_code");
+    return $cached ? $cached->data : NULL;
   }
 
 }
