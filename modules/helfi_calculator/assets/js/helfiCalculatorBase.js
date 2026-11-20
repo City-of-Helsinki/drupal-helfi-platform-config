@@ -302,7 +302,7 @@ class HelfiCalculator {
       throw new Error(`Element #${elemID}_${this.id} missing from ${this.name} at validateBasics`);
     }
 
-    const labelText = document.querySelector(`#labelText_${elem.id}`)?.innerText || elem.id;
+    const labelText = document.querySelector(`#labelText_${elem.id}`)?.textContent || elem.id;
     let labelLink = `<a href="#${elem.id}">${labelText}</a>`;
 
     if (elem.tagName === 'FIELDSET') {
@@ -438,9 +438,9 @@ class HelfiCalculator {
    */
   showAriaLiveText(text) {
     const ariaLiveElem = document.getElementById(`aria_live_${this.id}`);
-    ariaLiveElem.innerText = text;
+    ariaLiveElem.textContent = text;
     window.setTimeout(() => {
-      ariaLiveElem.innerText = '';
+      ariaLiveElem.textContent = '';
     }, 1000);
   }
 
