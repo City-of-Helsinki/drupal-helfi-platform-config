@@ -1,0 +1,750 @@
+{
+  "hits": {
+    "hits": [
+      {
+        "_index": "news",
+        "_id": "entity:node/1:en",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000001"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000001:en"
+          ],
+          "search_api_language": [
+            "en"
+          ],
+          "title": [
+            "City library opens a new reading room for children"
+          ],
+          "short_title": [
+            "City library opens a new reading room for children"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/en/news/fixture-news-1"
+          ],
+          "published_at": [
+            1735725600
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/2:en",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000002"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000002:en"
+          ],
+          "search_api_language": [
+            "en"
+          ],
+          "title": [
+            "Snow removal starts on main streets"
+          ],
+          "short_title": [
+            "Snow removal starts on main streets"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/en/news/fixture-news-2"
+          ],
+          "published_at": [
+            1735639200
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/3:en",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000003"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000003:en"
+          ],
+          "search_api_language": [
+            "en"
+          ],
+          "title": [
+            "Helsinki Day celebrates the city with free events across all districts and neighbourhoods"
+          ],
+          "short_title": [
+            "Helsinki Day celebrates the city with free events across all districts and neighbourhoods"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/en/news/fixture-news-3"
+          ],
+          "published_at": [
+            1735552800
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/4:en",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000004"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000004:en"
+          ],
+          "search_api_language": [
+            "en"
+          ],
+          "title": [
+            "New cycling routes open in the city centre"
+          ],
+          "short_title": [
+            "New cycling routes open in the city centre"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/en/news/fixture-news-4"
+          ],
+          "published_at": [
+            1735466400
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/5:en",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000005"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000005:en"
+          ],
+          "search_api_language": [
+            "en"
+          ],
+          "title": [
+            "Swimming halls extend their opening hours"
+          ],
+          "short_title": [
+            "Swimming halls extend their opening hours"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/en/news/fixture-news-5"
+          ],
+          "published_at": [
+            1735380000
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/6:en",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000006"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000006:en"
+          ],
+          "search_api_language": [
+            "en"
+          ],
+          "title": [
+            "Residents can now comment on the new park plan"
+          ],
+          "short_title": [
+            "Residents can now comment on the new park plan"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/en/news/fixture-news-6"
+          ],
+          "published_at": [
+            1735293600
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/7:en",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000007"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000007:en"
+          ],
+          "search_api_language": [
+            "en"
+          ],
+          "title": [
+            "Summer jobs for young people open for applications"
+          ],
+          "short_title": [
+            "Summer jobs for young people open for applications"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/en/news/fixture-news-7"
+          ],
+          "published_at": [
+            1735207200
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/8:en",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000008"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000008:en"
+          ],
+          "search_api_language": [
+            "en"
+          ],
+          "title": [
+            "Museum entry is free on the first Friday of the month"
+          ],
+          "short_title": [
+            "Museum entry is free on the first Friday of the month"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/en/news/fixture-news-8"
+          ],
+          "published_at": [
+            1735120800
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/1:fi",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000001"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000001:fi"
+          ],
+          "search_api_language": [
+            "fi"
+          ],
+          "title": [
+            "Kaupunginkirjasto avaa uuden lukusalin lapsille"
+          ],
+          "short_title": [
+            "Kaupunginkirjasto avaa uuden lukusalin lapsille"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/fi/uutiset/fixture-news-1"
+          ],
+          "published_at": [
+            1735725600
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/2:fi",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000002"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000002:fi"
+          ],
+          "search_api_language": [
+            "fi"
+          ],
+          "title": [
+            "Lumenauraus alkaa pääkaduilla"
+          ],
+          "short_title": [
+            "Lumenauraus alkaa pääkaduilla"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/fi/uutiset/fixture-news-2"
+          ],
+          "published_at": [
+            1735639200
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/3:fi",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000003"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000003:fi"
+          ],
+          "search_api_language": [
+            "fi"
+          ],
+          "title": [
+            "Helsinki-päivä juhlistaa kaupunkia maksuttomilla tapahtumilla kaikissa kaupunginosissa ja asuinalueilla"
+          ],
+          "short_title": [
+            "Helsinki-päivä juhlistaa kaupunkia maksuttomilla tapahtumilla kaikissa kaupunginosissa ja asuinalueilla"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/fi/uutiset/fixture-news-3"
+          ],
+          "published_at": [
+            1735552800
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/4:fi",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000004"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000004:fi"
+          ],
+          "search_api_language": [
+            "fi"
+          ],
+          "title": [
+            "Keskustaan avataan uusia pyöräreittejä"
+          ],
+          "short_title": [
+            "Keskustaan avataan uusia pyöräreittejä"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/fi/uutiset/fixture-news-4"
+          ],
+          "published_at": [
+            1735466400
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/5:fi",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000005"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000005:fi"
+          ],
+          "search_api_language": [
+            "fi"
+          ],
+          "title": [
+            "Uimahallit pidentävät aukioloaikojaan"
+          ],
+          "short_title": [
+            "Uimahallit pidentävät aukioloaikojaan"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/fi/uutiset/fixture-news-5"
+          ],
+          "published_at": [
+            1735380000
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/6:fi",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000006"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000006:fi"
+          ],
+          "search_api_language": [
+            "fi"
+          ],
+          "title": [
+            "Asukkaat voivat nyt kommentoida uutta puistosuunnitelmaa"
+          ],
+          "short_title": [
+            "Asukkaat voivat nyt kommentoida uutta puistosuunnitelmaa"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/fi/uutiset/fixture-news-6"
+          ],
+          "published_at": [
+            1735293600
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/7:fi",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000007"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000007:fi"
+          ],
+          "search_api_language": [
+            "fi"
+          ],
+          "title": [
+            "Nuorten kesätyöhaku on alkanut"
+          ],
+          "short_title": [
+            "Nuorten kesätyöhaku on alkanut"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/fi/uutiset/fixture-news-7"
+          ],
+          "published_at": [
+            1735207200
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/8:fi",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000008"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000008:fi"
+          ],
+          "search_api_language": [
+            "fi"
+          ],
+          "title": [
+            "Museoihin on vapaa pääsy kuukauden ensimmäisenä perjantaina"
+          ],
+          "short_title": [
+            "Museoihin on vapaa pääsy kuukauden ensimmäisenä perjantaina"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/fi/uutiset/fixture-news-8"
+          ],
+          "published_at": [
+            1735120800
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/1:sv",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000001"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000001:sv"
+          ],
+          "search_api_language": [
+            "sv"
+          ],
+          "title": [
+            "Stadsbiblioteket öppnar en ny läsesal för barn"
+          ],
+          "short_title": [
+            "Stadsbiblioteket öppnar en ny läsesal för barn"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/sv/nyheter/fixture-news-1"
+          ],
+          "published_at": [
+            1735725600
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/2:sv",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000002"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000002:sv"
+          ],
+          "search_api_language": [
+            "sv"
+          ],
+          "title": [
+            "Snöröjningen börjar på huvudgatorna"
+          ],
+          "short_title": [
+            "Snöröjningen börjar på huvudgatorna"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/sv/nyheter/fixture-news-2"
+          ],
+          "published_at": [
+            1735639200
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/3:sv",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000003"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000003:sv"
+          ],
+          "search_api_language": [
+            "sv"
+          ],
+          "title": [
+            "Helsingforsdagen firar staden med avgiftsfria evenemang i alla stadsdelar och bostadsområden"
+          ],
+          "short_title": [
+            "Helsingforsdagen firar staden med avgiftsfria evenemang i alla stadsdelar och bostadsområden"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/sv/nyheter/fixture-news-3"
+          ],
+          "published_at": [
+            1735552800
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/4:sv",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000004"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000004:sv"
+          ],
+          "search_api_language": [
+            "sv"
+          ],
+          "title": [
+            "Nya cykelleder öppnas i centrum"
+          ],
+          "short_title": [
+            "Nya cykelleder öppnas i centrum"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/sv/nyheter/fixture-news-4"
+          ],
+          "published_at": [
+            1735466400
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/5:sv",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000005"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000005:sv"
+          ],
+          "search_api_language": [
+            "sv"
+          ],
+          "title": [
+            "Simhallarna förlänger sina öppettider"
+          ],
+          "short_title": [
+            "Simhallarna förlänger sina öppettider"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/sv/nyheter/fixture-news-5"
+          ],
+          "published_at": [
+            1735380000
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/6:sv",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000006"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000006:sv"
+          ],
+          "search_api_language": [
+            "sv"
+          ],
+          "title": [
+            "Invånarna kan nu kommentera den nya parkplanen"
+          ],
+          "short_title": [
+            "Invånarna kan nu kommentera den nya parkplanen"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/sv/nyheter/fixture-news-6"
+          ],
+          "published_at": [
+            1735293600
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/7:sv",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000007"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000007:sv"
+          ],
+          "search_api_language": [
+            "sv"
+          ],
+          "title": [
+            "Ansökan till sommarjobb för unga har börjat"
+          ],
+          "short_title": [
+            "Ansökan till sommarjobb för unga har börjat"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/sv/nyheter/fixture-news-7"
+          ],
+          "published_at": [
+            1735207200
+          ],
+          "news_tags_uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      },
+      {
+        "_index": "news",
+        "_id": "entity:node/8:sv",
+        "_source": {
+          "uuid": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000008"
+          ],
+          "uuid_langcode": [
+            "5e0c7a1d-2b3f-4c8e-9a6d-000000000008:sv"
+          ],
+          "search_api_language": [
+            "sv"
+          ],
+          "title": [
+            "Fritt inträde till museerna den första fredagen i månaden"
+          ],
+          "short_title": [
+            "Fritt inträde till museerna den första fredagen i månaden"
+          ],
+          "url": [
+            "https://helfi-etusivu.docker.so/sv/nyheter/fixture-news-8"
+          ],
+          "published_at": [
+            1735120800
+          ],
+          "news_tags_uuid": [],
+          "news_groups_uuid": [],
+          "neighbourhoods_uuid": []
+        }
+      }
+    ]
+  }
+}
