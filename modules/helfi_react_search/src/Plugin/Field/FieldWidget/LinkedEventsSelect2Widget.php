@@ -169,7 +169,13 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
   }
 
   /**
-   * {@inheritdoc}
+   * Get the selected options.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
+   *   The items.
+   *
+   * @return array<mixed>
+   *   The selected items.
    */
   protected function getSelectedOptions(FieldItemListInterface $items): array {
     return !empty($this->options) ? array_keys($this->options) : [];
@@ -281,7 +287,17 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
   }
 
   /**
-   * {@inheritDoc}
+   * Turn the yso-code back to json.
+   *
+   * @param array<mixed> $values
+   *   The values.
+   * @param array<mixed> $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return array<mixed>
+   *   The massaged values.
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     $items = [];
