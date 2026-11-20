@@ -9,6 +9,8 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Render\HtmlResponse;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_paragraphs_news_list\EventSubscriber\CacheResponseSubscriber;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\DependencyInjection\Loader\Configurator\Traits\PropertyTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -16,9 +18,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Tests the CacheResponseSubscriber.
- *
- * @group helfi_paragraph_news_list
  */
+#[Group('helfi_paragraphs_news_list')]
+#[RunTestsInSeparateProcesses]
 class CacheResponseSubscriberTest extends KernelTestBase {
 
   use PropertyTrait;

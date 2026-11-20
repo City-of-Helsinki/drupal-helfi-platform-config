@@ -11,12 +11,12 @@ use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\helfi_test_content\Hook\ModuleHooks;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the module hooks.
- *
- * @group helfi_test_content
  */
+#[Group('helfi_test_content')]
 final class ModuleHooksTest extends UnitTestCase {
 
   /**
