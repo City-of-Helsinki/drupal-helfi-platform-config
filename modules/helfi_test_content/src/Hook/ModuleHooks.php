@@ -45,6 +45,11 @@ class ModuleHooks {
       $announcement_settings = $announcement_config->get('settings') ?? [];
       $announcement_settings['use_remote_entities'] = FALSE;
       $announcement_config->set('settings', $announcement_settings)->save();
+
+      // Use fixture data for news lists.
+      $this->configFactory->getEditable('helfi_paragraphs_news_list.settings')
+        ->set('use_fixtures', TRUE)
+        ->save();
     }
   }
 

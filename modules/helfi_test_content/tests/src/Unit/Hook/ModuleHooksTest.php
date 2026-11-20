@@ -35,6 +35,7 @@ final class ModuleHooksTest extends UnitTestCase {
     $moduleInstaller = $this->createMock(ModuleInstallerInterface::class);
     $configFactory = $this->createMock(ConfigFactoryInterface::class);
     $config = $this->createMock(Config::class);
+    $newsListConfig = $this->createMock(Config::class);
 
     $moduleExtensionList
       ->method('getList')
@@ -56,10 +57,22 @@ final class ModuleHooksTest extends UnitTestCase {
 
     if ($expectsConfigChange) {
       $configFactory
-        ->expects($this->once())
+        ->expects($this->exactly(2))
         ->method('getEditable')
-        ->with('block.block.announcements')
-        ->willReturn($config);
+        ->willReturnMap([
+          ['block.block.announcements', $config],
+          ['helfi_paragraphs_news_list.settings', $newsListConfig],
+        ]);
+
+      $newsListConfig
+        ->expects($this->once())
+        ->method('set')
+        ->with('use_fixtures', TRUE)
+        ->willReturnSelf();
+
+      $newsListConfig
+        ->expects($this->once())
+        ->method('save');
 
       $config
         ->expects($this->once())
