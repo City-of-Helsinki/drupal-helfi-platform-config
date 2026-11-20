@@ -112,13 +112,7 @@ final class AutocompleteControllerTest extends KernelTestBase {
     $this->assertEquals([
       'results' => [
         [
-          'id' => json_encode([
-            'id' => 'test-id',
-            'name' => [
-              'fi' => 'Testi',
-              'en' => 'Test',
-            ],
-          ]),
+          'id' => 'test-id',
           'text' => 'Test',
         ],
       ],

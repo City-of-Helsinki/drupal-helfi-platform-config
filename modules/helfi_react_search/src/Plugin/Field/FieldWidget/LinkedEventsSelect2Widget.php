@@ -194,18 +194,14 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
    *   Key => encoded item, Value => option label.
    */
   private function getKeywordSetOptions(string $keyword_set, array $selected_options): array {
-    $selected_ids = [];
-    foreach (array_keys($selected_options) as $value) {
-      $selected_ids[json_decode($value)?->id] = TRUE;
-    }
-
+    // Selected options are already keyed by keyword ID.
     $options = $selected_options;
+
     foreach ($this->getKeywordSetItems($keyword_set) as $item) {
-      if (isset($selected_ids[$item->id])) {
+      if (isset($options[$item->id])) {
         continue;
       }
-      $value = (string) json_encode($item);
-      $options[$value] = $this->getOptionLabel($value);
+      $options[$item->id] = $this->getOptionLabel((string) json_encode($item));
     }
 
     natcasesort($options);

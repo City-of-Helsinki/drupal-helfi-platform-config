@@ -110,7 +110,7 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
       [],
     );
     $build = $widget->formElement($field, 0, $element, $form, new FormState());
-    $this->assertEquals([$field->value => 'Test'], $build['#options']);
+    $this->assertEquals(['test' => 'Test'], $build['#options']);
   }
 
   /**
@@ -163,8 +163,8 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
     $this->assertArrayNotHasKey('#autocomplete', $element);
 
     $expected = [
-      '{"id":"yso:p2433","name":{"fi":"ik\\u00e4\\u00e4ntyneet","en":"older people"}}' => 'older people',
-      '{"id":"yso:p11617","name":{"fi":"nuoret","en":"young people"}}' => 'young people',
+      'yso:p2433' => 'older people',
+      'yso:p11617' => 'young people',
     ];
     $element = $build(EntityTest::create());
     $this->assertSame($expected, $element['#options']);
@@ -176,7 +176,7 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
     $element = $build(EntityTest::create(['field_test' => [$selected]]));
     $this->assertSame([
       array_key_first($expected) => 'older people',
-      $selected => 'youth',
+      'yso:p11617' => 'youth',
     ], $element['#options']);
   }
 
