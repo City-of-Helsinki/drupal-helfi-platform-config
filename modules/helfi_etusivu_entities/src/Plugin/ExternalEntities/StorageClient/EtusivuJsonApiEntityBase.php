@@ -215,6 +215,17 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
    * @see \helfi_etusivu_invalidate_external_caches()
    */
   protected function request(array $parameters, string $langcode) : array {
+    if ($this->defaultLanguageResolver->isAltLanguage($langcode)) {
+      $langcode = $this->defaultLanguageResolver->getFallbackLanguage();
+    }
+
+    if (
+      $this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES) &&
+      ($fixture = $this->getFixtureData($langcode)) !== NULL
+    ) {
+      return $fixture;
+    }
+
     if (!$this->environment) {
       return [];
     }
@@ -245,6 +256,32 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
     }
 
     return [];
+  }
+
+  /**
+   * Gets the fixture data for given language.
+   *
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return array<mixed>|null
+   *   An array of entities or NULL if the endpoint has no fixture.
+   */
+  protected function getFixtureData(string $langcode) : ?array {
+    $fixture = sprintf('%s/../../../../fixtures/%s.json', __DIR__, str_replace('/', '-', ltrim($this->getApiEndpoint(), '/')));
+
+    if (!file_exists($fixture)) {
+      return NULL;
+    }
+    $json = json_decode((string) file_get_contents($fixture), TRUE);
+
+    $data = [];
+    foreach ($json['data'] ?? [] as $item) {
+      if (($item['attributes']['langcode'] ?? NULL) === $langcode) {
+        $data[] = $item;
+      }
+    }
+    return $data;
   }
 
   /**
