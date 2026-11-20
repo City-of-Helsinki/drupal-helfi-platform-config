@@ -150,12 +150,22 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
     $this->announcement('Global');
 
     $this->setCurrentPage('/feedback');
+    $builder = $this->container->get(AnnouncementsLazyBuilder::class);
+    $announcements = [];
+    foreach ($builder->lazyBuild(TRUE) as $item) {
+      if (is_array($item) && ($item['#node'] ?? NULL) instanceof NodeInterface) {
+        $announcements[] = [
+          (string) $item['#node']->label(),
+          $item['#node']->get('field_announcement_type')->value,
+        ];
+      }
+    }
     $this->assertSame([
-      'Global alert',
-      'Global attention',
-      'Global notification',
-      'Global',
-    ], $this->announcementTitles(TRUE), 'Remote announcements render before local announcements.');
+      ['Global announcement', 'alert'],
+      ['Global announcement', 'attention'],
+      ['Global announcement', 'notification'],
+      ['Global', 'notification'],
+    ], $announcements, 'Remote announcements render before local announcements.');
   }
 
   /**
@@ -231,18 +241,15 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
   /**
    * Builds the announcements and returns their titles.
    *
-   * @param bool $useRemoteEntities
-   *   Whether to include remote announcements.
-   *
    * @return string[]
    *   Visible announcement titles, in render order.
    */
-  private function announcementTitles(bool $useRemoteEntities = FALSE): array {
+  private function announcementTitles(): array {
     $builder = $this->container->get(AnnouncementsLazyBuilder::class);
     if (!$builder instanceof AnnouncementsLazyBuilder) {
       throw new \RuntimeException('The announcement builder is missing.');
     }
-    return $this->titles($builder->lazyBuild($useRemoteEntities));
+    return $this->titles($builder->lazyBuild(FALSE));
   }
 
 }
