@@ -182,9 +182,9 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
   }
 
   /**
-   * Tests that saved keywords are shown in their stored order.
+   * Tests getValidSelectedOptions().
    */
-  public function testSavedOrder(): void {
+  public function testGetValidSelectedOptions(): void {
     FieldStorageConfig::load('entity_test.field_test')
       ->setCardinality(-1)
       ->save();
@@ -196,15 +196,7 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
       'bundle' => 'entity_test',
     ]);
     $fieldDefinition->save();
-
-    $entity = EntityTest::create([
-      'field_test' => [
-        (string) json_encode(new LinkedEventsItem('yso:p3', ['en' => 'Third'])),
-        (string) json_encode(new LinkedEventsItem('yso:p1', ['en' => 'First'])),
-        (string) json_encode(new LinkedEventsItem('yso:p2', ['en' => 'Second'])),
-      ],
-    ]);
-
+    $formState = new FormState();
     $widget = LinkedEventsSelect2Widget::create(
       $this->container,
       [
@@ -216,15 +208,19 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
       [],
     );
 
-    $form = [];
-    $build = $widget->formElement($entity->get('field_test'), 0, ['#required' => FALSE], $form, new FormState());
+    LinkedEventsSelect2Widget::cacheKeywordJson((string) json_encode(new LinkedEventsItem('yso:p1', ['en' => 'First'])));
+    LinkedEventsSelect2Widget::cacheKeywordJson((string) json_encode(new LinkedEventsItem('yso:p2', ['en' => 'Second'])));
 
-    $this->assertSame([
-      'yso:p3' => 'Third',
-      'yso:p1' => 'First',
-      'yso:p2' => 'Second',
-    ], $build['#options']);
-    $this->assertSame(['yso:p3', 'yso:p1', 'yso:p2'], array_values((array) $build['#default_value']));
+    $this->assertSame(
+      ['yso:p1' => 'First', 'yso:p2' => 'Second'],
+      $widget->getValidSelectedOptions(['#value' => ['yso:p1', 'yso:p2']], $formState),
+    );
+
+    $this->assertSame(
+      ['yso:p2', 'yso:p1'],
+      array_keys($widget->getValidSelectedOptions(['#value' => ['yso:p2', 'yso:p1']], $formState)),
+    );
+
   }
 
 }
