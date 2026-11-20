@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormState;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\helfi_react_search\DTO\LinkedEventsItem;
 use Drupal\helfi_react_search\Plugin\Field\FieldWidget\LinkedEventsSelect2Widget;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
@@ -178,6 +179,52 @@ class LinkedEventsSelect2WidgetTest extends KernelTestBase {
       array_key_first($expected) => 'older people',
       'yso:p11617' => 'youth',
     ], $element['#options']);
+  }
+
+  /**
+   * Tests that saved keywords are shown in their stored order.
+   */
+  public function testSavedOrder(): void {
+    FieldStorageConfig::load('entity_test.field_test')
+      ->setCardinality(-1)
+      ->save();
+
+    $fieldDefinition = FieldConfig::create([
+      'field_name' => 'field_test',
+      'label' => 'A test field',
+      'entity_type' => 'entity_test',
+      'bundle' => 'entity_test',
+    ]);
+    $fieldDefinition->save();
+
+    $entity = EntityTest::create([
+      'field_test' => [
+        (string) json_encode(new LinkedEventsItem('yso:p3', ['en' => 'Third'])),
+        (string) json_encode(new LinkedEventsItem('yso:p1', ['en' => 'First'])),
+        (string) json_encode(new LinkedEventsItem('yso:p2', ['en' => 'Second'])),
+      ],
+    ]);
+
+    $widget = LinkedEventsSelect2Widget::create(
+      $this->container,
+      [
+        'field_definition' => $fieldDefinition,
+        'settings' => [],
+        'third_party_settings' => [],
+      ],
+      'linked_events_select2',
+      [],
+    );
+
+    $form = [];
+    $build = $widget->formElement($entity->get('field_test'), 0, ['#required' => FALSE], $form, new FormState());
+
+    $this->assertSame([
+      'yso:p3' => 'Third',
+      'yso:p1' => 'First',
+      'yso:p2' => 'Second',
+    ], $build['#options']);
+    $this->assertSame(['yso:p3', 'yso:p1', 'yso:p2'], array_values((array) $build['#default_value']));
   }
 
 }
