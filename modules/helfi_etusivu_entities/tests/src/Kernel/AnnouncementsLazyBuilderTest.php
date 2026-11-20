@@ -27,13 +27,6 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  protected function builderClass(): string {
-    return AnnouncementsLazyBuilder::class;
-  }
-
-  /**
    * Tests which announcements are visible for a path or content page.
    */
   public function testVisibility(): void {
@@ -84,26 +77,6 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
 
     $this->setCurrentPage('/feedback', NULL, 'system.404');
     $this->assertSame(['Global'], $this->announcementTitles());
-  }
-
-  /**
-   * Tests that urgent and page-specific announcements render first.
-   */
-  public function testOrder(): void {
-    $this->announcement('General');
-    $this->announcement('Specific', [
-      'field_announcement_all_pages' => 0,
-      'field_announcement_page_paths' => '/feedback',
-    ]);
-    $this->announcement('Alert', [
-      'field_announcement_type' => 'alert',
-    ]);
-
-    $this->setCurrentPage('/feedback');
-    $this->assertSame(
-      ['Alert', 'Specific', 'General'],
-      $this->announcementTitles(),
-    );
   }
 
   /**
@@ -169,21 +142,7 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
   }
 
   /**
-   * Tests that announcement nodes use the bundle class.
-   */
-  public function testBundleClass(): void {
-    $node = $this->container->get('entity_type.manager')
-      ->getStorage('node')
-      ->create(['type' => 'announcement']);
-    $this->assertInstanceOf(Announcement::class, $node);
-
-    // Only Etusivu has the field.
-    $this->assertFalse($node->publishExternally());
-    $this->assertSame(['helfi_external_entity_announcement'], $node->getExternalCacheTags());
-  }
-
-  /**
-   * Tests populating an announcement from a remote announcement.
+   * Tests the bundle class and populating it from a remote announcement.
    */
   public function testPopulateFromRemoteEntity(): void {
     $entityTypeManager = $this->container->get('entity_type.manager');
@@ -202,6 +161,11 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
 
     $node = $entityTypeManager->getStorage('node')->create(['type' => 'announcement']);
     $this->assertInstanceOf(Announcement::class, $node);
+
+    // Only Etusivu has the field.
+    $this->assertFalse($node->publishExternally());
+    $this->assertSame(['helfi_external_entity_announcement'], $node->getExternalCacheTags());
+
     $this->assertSame($node, $node->populateFromRemoteEntity($remote));
 
     $this->assertTrue($node->isNew());

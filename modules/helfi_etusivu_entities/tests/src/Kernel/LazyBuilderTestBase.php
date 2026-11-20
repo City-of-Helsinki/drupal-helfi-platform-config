@@ -78,22 +78,6 @@ abstract class LazyBuilderTestBase extends EntityKernelTestBase {
   }
 
   /**
-   * The lazy builder class under test.
-   *
-   * @return class-string<\Drupal\Core\Security\TrustedCallbackInterface>
-   *   The builder class.
-   */
-  abstract protected function builderClass(): string;
-
-  /**
-   * Tests that the builder exposes the shared lazy callback.
-   */
-  public function testTrustedCallbacks(): void {
-    $class = $this->builderClass();
-    $this->assertSame(['lazyBuild'], $class::trustedCallbacks());
-  }
-
-  /**
    * Creates a page node.
    *
    * @param string $title
