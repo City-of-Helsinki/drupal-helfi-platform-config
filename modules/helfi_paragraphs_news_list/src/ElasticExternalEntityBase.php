@@ -140,10 +140,10 @@ abstract class ElasticExternalEntityBase extends RestClient {
   /**
    * Gets the fixture data matching the given query.
    *
-   * @param array $parameters
+   * @param array<string, mixed> $parameters
    *   The query parameters.
    *
-   * @return array
+   * @return array<string, mixed>
    *   The search response.
    */
   protected function getFixtureData(array $parameters) : array {
