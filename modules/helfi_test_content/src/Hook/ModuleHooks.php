@@ -40,11 +40,19 @@ class ModuleHooks {
         $this->moduleInstaller->install(['helfi_custom_test_content']);
       }
 
-      // Set the announcement remote entities setting to false.
+      // Show remote announcements from fixtures.
       $announcement_config = $this->configFactory->getEditable('block.block.announcements');
       $announcement_settings = $announcement_config->get('settings') ?? [];
-      $announcement_settings['use_remote_entities'] = FALSE;
-      $announcement_config->set('settings', $announcement_settings)->save();
+      $announcement_settings['use_remote_entities'] = TRUE;
+      $announcement_config->set('settings', $announcement_settings);
+
+      // Show announcements only on the announcements test page.
+      $announcement_config->set('visibility.request_path', [
+        'id' => 'request_path',
+        'negate' => FALSE,
+        'pages' => '/dc-components/dc-announcements',
+      ]);
+      $announcement_config->save();
     }
   }
 
