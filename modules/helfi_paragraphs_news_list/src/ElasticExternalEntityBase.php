@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_paragraphs_news_list;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\Entity\ExternalEntityInterface;
 use Drupal\external_entities\Entity\ExternalEntityType;
 use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\RestClient;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Elastic\Transport\Exception\TransportException;
@@ -33,6 +37,20 @@ abstract class ElasticExternalEntityBase extends RestClient {
   protected Client $client;
 
   /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected ConfigFactoryInterface $configFactory;
+
+  /**
+   * The environment resolver.
+   *
+   * @var \Drupal\helfi_api_base\Environment\EnvironmentResolverInterface
+   */
+  protected EnvironmentResolverInterface $environmentResolver;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -43,6 +61,8 @@ abstract class ElasticExternalEntityBase extends RestClient {
   ) : static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->client = $container->get('helfi_platform_config.etusivu_elastic_client');
+    $instance->configFactory = $container->get('config.factory');
+    $instance->environmentResolver = $container->get('helfi_api_base.environment_resolver');
 
     return $instance;
   }
@@ -85,6 +105,10 @@ abstract class ElasticExternalEntityBase extends RestClient {
   protected function request(
     array $parameters,
   ) : array {
+    if ($this->useFixtures()) {
+      return $this->getFixtureData($parameters);
+    }
+
     try {
       return $this->client->search($parameters)?->asArray() ?? [];
     }
@@ -92,6 +116,78 @@ abstract class ElasticExternalEntityBase extends RestClient {
       Error::logException($this->logger, $e);
     }
     return [];
+  }
+
+  /**
+   * Checks whether fixture data should be used.
+   *
+   * @return bool
+   *   TRUE if fixtures are enabled on a local environment.
+   */
+  protected function useFixtures() : bool {
+    if (!$this->configFactory->get('helfi_paragraphs_news_list.settings')->get('use_fixtures')) {
+      return FALSE;
+    }
+
+    try {
+      return $this->environmentResolver->getActiveEnvironmentName() === EnvironmentEnum::Local->value;
+    }
+    catch (EnvironmentResolverException) {
+      return FALSE;
+    }
+  }
+
+  /**
+   * Gets the fixture data matching the given query.
+   *
+   * @param array $parameters
+   *   The query parameters.
+   *
+   * @return array
+   *   The search response.
+   */
+  protected function getFixtureData(array $parameters) : array {
+    $fixture = sprintf('%s/../fixtures/%s.json', __DIR__, $this->index);
+    $data = json_decode((string) file_get_contents($fixture), TRUE);
+    $query = $parameters['body']['query']['bool'] ?? [];
+
+    $hits = [];
+    foreach ($data['hits']['hits'] ?? [] as $hit) {
+      $source = $hit['_source'];
+
+      foreach ($query['filter']['terms'] ?? [] as $field => $values) {
+        if (!array_intersect($source[$field] ?? [], $values)) {
+          continue 2;
+        }
+      }
+
+      foreach ($query['must'] ?? [] as $clause) {
+        $terms = isset($clause['bool']['should'])
+          ? array_column($clause['bool']['should'], 'term')
+          : array_filter([$clause['term'] ?? NULL]);
+
+        // Skip clauses without term conditions.
+        if (!$terms) {
+          continue;
+        }
+
+        $matches = FALSE;
+        foreach ($terms as $term) {
+          $matches = $matches || in_array(reset($term), $source[key($term)] ?? [], TRUE);
+        }
+
+        if (!$matches) {
+          continue 2;
+        }
+      }
+      $hits[] = $hit;
+    }
+
+    return [
+      'hits' => [
+        'hits' => array_slice($hits, $parameters['from'] ?? 0, $parameters['size'] ?? NULL),
+      ],
+    ];
   }
 
   /**
