@@ -43,6 +43,13 @@ final class RestrictedSearchIndex {
   }
 
   /**
+   * Whether the index is shared between instances.
+   */
+  public static function isShared(string $indexId): bool {
+    return isset(self::MAINS[$indexId]);
+  }
+
+  /**
    * Decides the action for each given index id.
    *
    * The main instance is asked to confirm. Every other instance is blocked.

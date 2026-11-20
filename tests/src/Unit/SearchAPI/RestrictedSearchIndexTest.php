@@ -34,6 +34,16 @@ final class RestrictedSearchIndexTest extends UnitTestCase {
   }
 
   /**
+   * Only indexes with a main instance are shared.
+   */
+  public function testIsShared(): void {
+    $this->assertTrue(RestrictedSearchIndex::isShared('embeddings'));
+    $this->assertTrue(RestrictedSearchIndex::isShared('suggestions'));
+    $this->assertTrue(RestrictedSearchIndex::isShared('hyte'));
+    $this->assertFalse(RestrictedSearchIndex::isShared('news'));
+  }
+
+  /**
    * Actions follow the incoming ids and each index's main instance.
    */
   public function testActionFor(): void {
