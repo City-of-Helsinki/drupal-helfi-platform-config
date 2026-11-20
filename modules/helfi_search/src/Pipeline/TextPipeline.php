@@ -39,20 +39,24 @@ class TextPipeline {
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to process.
    *
-   * @return Chunk[]
-   *   Chunks, ready for embedding.
+   * @return \Drupal\helfi_search\Pipeline\Document
+   *   The document's markdown and its chunks.
    *
    * @throws \Drupal\helfi_search\Pipeline\PipelineException
    *   When a pipeline stage fails.
    */
-  public function process(EntityInterface $entity): array {
+  public function process(EntityInterface $entity): Document {
     $doc = $this->htmlExtractor->extract($entity);
     $headingFragments = HeadingFragmentExtractor::extract($doc);
     $cleanHtml = $this->htmlCleaner->clean($doc);
     $markdown = MarkdownConverter::convert($cleanHtml);
     $normalized = TextNormalizer::normalize($markdown);
     $chunks = $this->contentChunker->chunk($normalized);
-    return $this->chunkAnnotator->annotate($chunks, $headingFragments);
+
+    return new Document(
+      $normalized,
+      $this->chunkAnnotator->annotate($chunks, $headingFragments),
+    );
   }
 
 }

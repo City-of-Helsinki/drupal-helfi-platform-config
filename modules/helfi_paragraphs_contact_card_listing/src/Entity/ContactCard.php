@@ -25,6 +25,7 @@ class ContactCard extends Paragraph implements ParagraphInterface {
     /** @var \Drupal\paragraphs\ParagraphInterface $parent */
     $parent = $this->getParentEntity();
     if (
+      $parent &&
       $parent->hasField('field_title') &&
       !$parent->get('field_title')->isEmpty()
     ) {

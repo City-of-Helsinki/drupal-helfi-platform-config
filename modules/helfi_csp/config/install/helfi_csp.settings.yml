@@ -1,2 +1,3 @@
 time_window: 3600
 treshold: 100
+rate_limit: 60

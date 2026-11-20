@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: menu_link_content
+  uuid: c8a507e9-f76e-45ba-8a6c-c5c99fae168c
+  bundle: menu_link_content
+  default_langcode: en
+  depends:
+    3c56ca29-3aae-481d-9649-91e4150c889a: menu_link_content
+    a86695ae-c72c-4089-a6ff-ccccf79db4f8: node
+default:
+  enabled:
+    -
+      value: true
+  title:
+    -
+      value: 'DC: Metro TOC'
+  menu_name:
+    -
+      value: main
+  link:
+    -
+      target_uuid: a86695ae-c72c-4089-a6ff-ccccf79db4f8
+      title: ''
+      options: {  }
+  external:
+    -
+      value: false
+  rediscover:
+    -
+      value: false
+  weight:
+    -
+      value: 1
+  expanded:
+    -
+      value: false
+  parent:
+    -
+      value: 'menu_link_content:3c56ca29-3aae-481d-9649-91e4150c889a'
+  revision_translation_affected:
+    -
+      value: true
+  content_translation_source:
+    -
+      value: und
+  content_translation_outdated:
+    -
+      value: false
+  content_translation_uid:
+    -
+      target_id: 1
+  content_translation_status:
+    -
+      value: true
+  content_translation_created:
+    -
+      value: 1791964800

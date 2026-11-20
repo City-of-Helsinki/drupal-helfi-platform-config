@@ -640,59 +640,33 @@ class RecommendationManager implements RecommendationManagerInterface {
    *   The node data.
    */
   private function fetchNodeData(array $results, string $target_langcode, int $limit) : array {
-    if (empty($results['hits']['hits'])) {
-      return [];
-    }
-
     $node_data = [];
 
-    foreach ($results['hits']['hits'] as $hit) {
-      $instance = !empty($hit['_source']['parent_instance']) ? reset($hit['_source']['parent_instance']) : NULL;
-      $uuid = !empty($hit['_source']['uuid']) ? reset($hit['_source']['uuid']) : NULL;
-      $url = !empty($hit['_source']['parent_url_' . $target_langcode]) ? reset($hit['_source']['parent_url_' . $target_langcode]) : NULL;
-      $title = !empty($hit['_source']['parent_title_' . $target_langcode]) ? reset($hit['_source']['parent_title_' . $target_langcode]) : NULL;
-      $image_url = !empty($hit['_source']['parent_image_url']) ? reset($hit['_source']['parent_image_url']) : NULL;
-      $image_alt = !empty($hit['_source']['parent_image_alt_' . $target_langcode]) ? reset($hit['_source']['parent_image_alt_' . $target_langcode]) : NULL;
-      $published_at = !empty($hit['_source']['parent_published_at']) ? reset($hit['_source']['parent_published_at']) : NULL;
-      $score = $hit['_score'] ?? NULL;
+    foreach ($results['hits']['hits'] ?? [] as $hit) {
+      $source = $hit['_source'] ?? [];
+      $instance = $this->getFirstValue($source, 'parent_instance');
+      $data = [
+        'uuid' => $this->getFirstValue($source, 'uuid'),
+        'url' => $this->getFirstValue($source, 'parent_url_' . $target_langcode),
+        'title' => $this->getFirstValue($source, 'parent_title_' . $target_langcode),
+        'score' => $hit['_score'] ?? NULL,
+      ];
 
-      // Check if all required fields are present.
-      if (!$instance || !$uuid || !$url || !$title) {
+      // Skip the results without the required fields.
+      if (!$instance || !$data['uuid'] || !$data['url'] || !$data['title']) {
         continue;
       }
 
-      $data = [
-        'uuid' => $uuid,
-        'url' => $url,
-        'title' => $title,
-        'score' => $score,
-      ];
-
-      if ($image_url) {
-        $image_url_absolute = str_starts_with($image_url, 'http://') || str_starts_with($image_url, 'https://');
-        $theme = 'responsive_image';
-        $image_uri = $image_url;
-
-        // Use external image when the recommendation item is from a different
-        // instance or the image is an absolute URL.
-        if ($image_url_absolute || $instance !== $this->getParentInstance()) {
-          $theme = 'imagecache_external_responsive';
-          $environment = $this->environmentResolver->getEnvironment($instance, $this->environmentResolver->getActiveEnvironmentName());
-          $image_uri = $image_url_absolute ? $image_url : sprintf('%s%s', $environment->getInternalBaseUrl(), $image_url);
-        }
-
-        $data['image'] = [
-          '#theme' => $theme,
-          '#uri' => $image_uri,
-          '#responsive_image_style_id' => 'card_teaser',
-          '#alt' => $image_alt,
-          '#attributes' => [
-            'alt' => $image_alt,
-          ],
-        ];
+      $image = $this->buildImage(
+        $instance,
+        $this->getFirstValue($source, 'parent_image_url'),
+        $this->getFirstValue($source, 'parent_image_alt_' . $target_langcode),
+      );
+      if ($image) {
+        $data['image'] = $image;
       }
 
-      if ($published_at) {
+      if ($published_at = $this->getFirstValue($source, 'parent_published_at')) {
         $data['published_at'] = $published_at;
       }
 
@@ -704,6 +678,70 @@ class RecommendationManager implements RecommendationManagerInterface {
     }
 
     return $node_data;
+  }
+
+  /**
+   * Gets the first value of a field in a search result.
+   *
+   * @param array<string, mixed> $source
+   *   The indexed fields of the search result.
+   * @param string $field
+   *   The field name.
+   *
+   * @return mixed
+   *   The first value, or NULL if the field is empty.
+   */
+  private function getFirstValue(array $source, string $field) : mixed {
+    $values = $source[$field] ?? NULL;
+    return is_array($values) && $values ? reset($values) : NULL;
+  }
+
+  /**
+   * Builds the render array of a recommendation image.
+   *
+   * The index has the file URL of the image, not the file URI, even for the
+   * items of the current instance. Image styles can't be applied to URLs: a
+   * path like /etusivu-assets/sites/default/files/image.jpg would be read as
+   * a file in the default scheme. So the images are always rendered as
+   * external images, and relative URLs are resolved against the instance of
+   * the item.
+   *
+   * @param string $instance
+   *   The instance of the recommended item.
+   * @param mixed $url
+   *   The indexed image URL.
+   * @param mixed $alt
+   *   The indexed alt text.
+   *
+   * @return array<string, mixed>|null
+   *   The render array, or NULL if the item has no image or the instance is
+   *   unknown.
+   */
+  private function buildImage(string $instance, mixed $url, mixed $alt) : ?array {
+    if (!is_string($url) || $url === '') {
+      return NULL;
+    }
+
+    if (!str_starts_with($url, 'http://') && !str_starts_with($url, 'https://')) {
+      try {
+        $environment = $this->environmentResolver->getEnvironment($instance, $this->environmentResolver->getActiveEnvironmentName());
+      }
+      catch (\InvalidArgumentException $e) {
+        Error::logException($this->logger, $e);
+        return NULL;
+      }
+      $url = $environment->getInternalBaseUrl() . '/' . ltrim($url, '/');
+    }
+
+    return [
+      '#theme' => 'imagecache_external_responsive',
+      '#uri' => $url,
+      '#responsive_image_style_id' => 'card_teaser',
+      '#alt' => $alt,
+      '#attributes' => [
+        'alt' => $alt,
+      ],
+    ];
   }
 
 }

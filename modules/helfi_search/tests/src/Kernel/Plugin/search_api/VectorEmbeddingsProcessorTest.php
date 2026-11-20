@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_search\Kernel\Plugin\search_api;
 use Drupal\helfi_search\DocumentState;
 use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\Pipeline\Chunk;
+use Drupal\helfi_search\Plugin\search_api\processor\VectorEmbeddingsProcessor;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\search_api\Item\Field;
@@ -59,6 +60,12 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     $embeddings->setType('string');
     $embeddings->setLabel('Vector embeddings (default model)');
     $this->index->addField($embeddings);
+
+    $markdown = new Field($this->index, 'markdown');
+    $markdown->setPropertyPath(VectorEmbeddingsProcessor::MARKDOWN_PROPERTY);
+    $markdown->setType('string');
+    $markdown->setLabel('Page markdown');
+    $this->index->addField($markdown);
     $this->index->save();
   }
 
@@ -73,6 +80,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
 
     // No vectors are generated.
     $this->assertEmpty($item->getField(EmbeddingModel::DEFAULT->fieldPrefix())?->getValues() ?? []);
+    $this->assertEmpty($item->getField('markdown')?->getValues() ?? []);
 
     // An unknown document is created so that cron picks it up.
     $this->assertDocumentState($entity, DocumentState::Pending);
@@ -93,8 +101,11 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     $item = $this->createItem();
     $entity = $item->getOriginalObject()->getValue();
     $this->fillChunks($entity, [$first, $second]);
+    $this->setDocumentState($entity, DocumentState::Ready, markdown: "# Test\n\nBody text");
 
     $this->processor->addFieldValues($item);
+
+    $this->assertSame(["# Test\n\nBody text"], $item->getField('markdown')->getValues());
 
     $values = $item->getField(EmbeddingModel::DEFAULT->fieldPrefix())->getValues();
 
@@ -130,6 +141,7 @@ class VectorEmbeddingsProcessorTest extends ProcessorTestBase {
     $field = clone $this->index->getField(EmbeddingModel::DEFAULT->fieldPrefix());
     $field->setType('embeddings');
     $item->setField(EmbeddingModel::DEFAULT->fieldPrefix(), $field);
+    $item->setField('markdown', clone $this->index->getField('markdown'));
 
     return $item;
   }

@@ -34,3 +34,6 @@ msgstr "Se diagrammet på extern sida"
 
 msgid "Change cookie settings"
 msgstr "Ändra inställningarna för cookies"
+
+msgid "Given host (%value) is not valid, must be one of: %domains. The path must be one of: %paths"
+msgstr "Given värd (%value) är inte giltig, måste vara en av: %domains. Väg måste vara en av: %paths"

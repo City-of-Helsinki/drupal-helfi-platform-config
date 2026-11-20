@@ -1,0 +1,12 @@
+diff --git a/src/Form/QuickNodeCloneNodeForm.php b/src/Form/QuickNodeCloneNodeForm.php
+--- a/src/Form/QuickNodeCloneNodeForm.php
++++ b/src/Form/QuickNodeCloneNodeForm.php
+@@ -3,7 +3,7 @@
+ namespace Drupal\quick_node_clone\Form;
+ 
+ use Drupal\Core\Form\FormStateInterface;
+-use Drupal\node\NodeForm;
++use Drupal\node\Form\NodeForm;
+ 
+ /**
+  * Form controller for Quick Node Clone edit forms.

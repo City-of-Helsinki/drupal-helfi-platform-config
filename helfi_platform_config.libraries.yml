@@ -6,6 +6,13 @@ react_and_share:
     - core/drupal
     - core/drupalSettings
 
+# Intentionally without dependencies and aggregation (preprocess: false), so
+# that it runs on old browsers.
+outdated_browser:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    dist/js/outdatedBrowser.js: { preprocess: false }
+
 chat_enhancer:
   version: 1.0.0
   header: true
@@ -14,13 +21,16 @@ chat_enhancer:
   dependencies:
     - core/drupal
 
-telia_ace_widget_loadjs:
-  version: 1.1.2
+chat_widget:
+  version: 1.2.0
   css:
     theme:
-      assets/css/telia_ace.css: {}
+      dist/css/chatWidget.min.css: { minified: true }
   js:
-    assets/js/telia_ace.js: {}
+    dist/js/chatWidget.min.js: { minified: true }
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
 
 tom_select:
   version: 2.2.2
@@ -58,21 +68,19 @@ location_autocomplete:
     - core/drupalSettings
     - core/once
 
-heading_id_injector:
-  version: 1.1.0
+instance_prefix:
+  version: 1.0.0
   js:
-    dist/js/headingIdInjector.min.js: { minified: true }
+    assets/js/instance-prefix.js: {}
   dependencies:
     - core/drupal
-    - core/drupalSettings
     - core/once
 
 heading_anchor_buttons:
-  version: 1.0.1
+  version: 1.1.0
   js:
     dist/js/headingAnchorButtons.min.js: { minified: true }
   dependencies:
-    - helfi_platform_config/heading_id_injector
     - core/drupal
     - core/once
 
@@ -82,3 +90,11 @@ sentry_ignore:
     dist/js/sentryIgnore.min.js: { minified: true }
   dependencies:
     - core/drupalSettings
+
+entity_notifications:
+  css:
+    component:
+      assets/css/entity-notifications.css: {}
+  dependencies:
+    - core/drupal.dialog.ajax
+    - hdbt/hdbt-icons

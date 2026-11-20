@@ -15,36 +15,41 @@ abstract class BlockTestBase extends EntityKernelTestBase {
    * {@inheritdoc}
    */
   protected static $modules = [
-    'diff',
-    'helfi_api_base',
-    'helfi_platform_config',
     'node',
+    'diff',
+    'path_alias',
     'link',
     'language',
-    'allowed_formats',
-    'select2',
-    'content_translation',
-    'text',
     'options',
     'menu_ui',
+    'content_translation',
+    'select2',
+    'field_group',
     'scheduler',
-    'config_rewrite',
+    'publication_date',
+    'hdbt_admin_tools',
     'external_entities',
+    'config_rewrite',
+    'helfi_api_base',
+    'helfi_platform_config',
+    'helfi_node_announcement',
     'helfi_etusivu_entities',
   ];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp(array $modules = []): void {
+  protected function setUp(): void {
     parent::setUp();
 
-    $this->installEntitySchema('node');
-    $this->installConfig(array_merge([
+    // Config installation generates URLs, which reads the alias storage.
+    $this->installEntitySchema('path_alias');
+    $this->installConfig([
       'node',
       'helfi_platform_config',
       'helfi_etusivu_entities',
-    ], $modules));
+      'helfi_node_announcement',
+    ]);
   }
 
 }

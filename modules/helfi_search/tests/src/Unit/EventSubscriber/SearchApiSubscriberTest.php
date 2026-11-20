@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_search\Unit\EventSubscriber;
 
+use Drupal\elasticsearch_connector\Event\FieldMappingEvent;
 use Drupal\elasticsearch_connector\Event\IndexPreCreateEvent;
+use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EventSubscriber\SearchApiSubscriber;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\Field;
+use Drupal\search_api\Processor\ProcessorProperty;
 use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -39,6 +43,45 @@ class SearchApiSubscriberTest extends UnitTestCase {
   }
 
   /**
+   * A dense_vector mapping always includes the dims parameter.
+   */
+  #[DataProvider('embeddingModelProvider')]
+  public function testDenseVectorMappingIncludesDims(EmbeddingModel $model): void {
+    $index = $this->prophesize(IndexInterface::class)->reveal();
+    $field = (new Field($index, $model->fieldPrefix()))
+      ->setType('embeddings')
+      ->setPropertyPath($model->fieldPrefix())
+      ->setDataDefinition(new ProcessorProperty([
+        'type' => 'embeddings',
+        'settings' => [
+          'embeddings_model_dimensions' => $model->dimensions(),
+        ],
+      ]));
+
+    $event = new FieldMappingEvent($field, []);
+    (new SearchApiSubscriber())->mapElasticFields($event);
+
+    $vector = $event->getParam()['properties']['vector'];
+    $this->assertSame('dense_vector', $vector['type']);
+    $this->assertArrayHasKey('dims', $vector);
+    $this->assertSame($model->dimensions(), $vector['dims']);
+  }
+
+  /**
+   * Data provider for testDenseVectorMappingIncludesDims().
+   *
+   * @return array<string, array{EmbeddingModel}>
+   *   Embedding model cases.
+   */
+  public static function embeddingModelProvider(): array {
+    $cases = [];
+    foreach (EmbeddingModel::cases() as $model) {
+      $cases[$model->value] = [$model];
+    }
+    return $cases;
+  }
+
+  /**
    * Builds an IndexPreCreateEvent for an index with the given fields.
    *
    * @param array<string, string> $fields
@@ -47,15 +90,14 @@ class SearchApiSubscriberTest extends UnitTestCase {
    *   Initial index creation params.
    */
   private function preCreateEvent(array $fields, array $params = ['index' => 'embeddings']): IndexPreCreateEvent {
-    $mocks = [];
+    $fieldIndex = $this->prophesize(IndexInterface::class)->reveal();
+    $indexFields = [];
     foreach ($fields as $fieldId => $type) {
-      $field = $this->prophesize(Field::class);
-      $field->getType()->willReturn($type);
-      $mocks[$fieldId] = $field->reveal();
+      $indexFields[$fieldId] = (new Field($fieldIndex, $fieldId))->setType($type);
     }
 
     $index = $this->prophesize(IndexInterface::class);
-    $index->getFields()->willReturn($mocks);
+    $index->getFields()->willReturn($indexFields);
 
     return new IndexPreCreateEvent($params, $index->reveal());
   }

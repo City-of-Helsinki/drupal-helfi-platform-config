@@ -27,13 +27,17 @@ msgstr "Halvdagsgrupp"
 msgid "Start a chat"
 msgstr "Starta chatten"
 
-msgctxt "Floating chat title"
-msgid "Chat"
-msgstr "Chatt"
-
-msgctxt "Telia ACE chat"
+msgctxt "Chat widget"
 msgid "Loading chat..."
 msgstr "Laddar..."
+
+msgctxt "Chat widget"
+msgid "Hide the chat"
+msgstr "Göm chatten"
+
+msgctxt "Chat widget"
+msgid "Open chat"
+msgstr "Öppna chatten"
 
 msgctxt "Location autocomplete"
 msgid "Type @count or more characters for results"
@@ -60,7 +64,7 @@ msgid "@selectedItem @position of @count is highlighted"
 msgstr "@selectedItem @position av @count är markerad"
 
 msgctxt "Location autocomplete"
-msgid "Use current Location"
+msgid "Use current location"
 msgstr "Använd aktuell plats"
 
 msgctxt "Location autocomplete"
@@ -79,6 +83,10 @@ msgctxt "Anchor link"
 msgid "Failed to copy link heading @name."
 msgstr "Kunde inte kopiera länk till rubrik @name."
 
+# path
+msgid "Add the final part of the URL, meaning everything that comes after the instance."
+msgstr "Lägg i fältet till allt som kommer efter instansen i URL-adressen."
+
 # scheduler
 msgid "%title is scheduled to be published @publish_time and unpublished @unpublish_time."
 msgstr "%title är schemalagd att publiceras @publish_time och att bli opublicerad @unpublish_time."
@@ -88,3 +96,19 @@ msgstr "%title är schemalagd att publiceras @publish_time."
 
 msgid "%title is scheduled to be unpublished @unpublish_time."
 msgstr "%title är schemalagd att bli opublicerad @unpublish_time."
+
+msgctxt "Outdated browser"
+msgid "Your browser is out of date"
+msgstr "Din webbläsare är föråldrad"
+
+msgctxt "Outdated browser"
+msgid "Attention"
+msgstr "Observera"
+
+msgctxt "Outdated browser"
+msgid "Close"
+msgstr "Stäng"
+
+msgctxt "Outdated browser"
+msgid "The browser you are using is outdated and might pose a security risk when you visit other websites. Update your browser to the latest available version."
+msgstr "Webbläsaren du använder är föråldrad och kan utgöra en säkerhetsrisk när du besöker andra webbplatser. Uppdatera webbläsaren till den senaste tillgängliga versionen."

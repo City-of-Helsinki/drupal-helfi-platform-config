@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_paragraphs_chart\Kernel\Entity;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_paragraphs_chart\Entity\Chart;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\media\Entity\Media;
 
 /**
@@ -116,6 +117,38 @@ class ChartParagraphTest extends KernelTestBase {
     $referenced = $paragraph->get('field_chart_chart')->referencedEntities();
     $this->assertNotEmpty($referenced);
     $this->assertEquals('Test iframe title', $referenced[0]->iframeTitle ?? NULL);
+  }
+
+  /**
+   * Tests the iframe title translation.
+   */
+  public function testSetMediaEntityIframeTitleTranslation(): void {
+    $this->installConfig(['language']);
+    ConfigurableLanguage::createFromLangcode('fi')->save();
+    ConfigurableLanguage::createFromLangcode('sv')->save();
+
+    $media = Media::create([
+      'bundle' => 'helfi_chart',
+      'name' => 'Chart media',
+      'langcode' => 'fi',
+      'status' => 1,
+    ]);
+    $media->addTranslation('sv', ['name' => 'Chart media sv']);
+    $media->save();
+
+    $paragraph = Chart::create([
+      'type' => 'chart',
+      'langcode' => 'sv',
+      'field_iframe_title' => 'Swedish iframe title',
+      'field_chart_chart' => [['target_id' => $media->id()]],
+    ]);
+    $paragraph->save();
+
+    $media = $paragraph->get('field_chart_chart')->entity;
+    $this->assertInstanceOf(Media::class, $media);
+    $translation = $media->getTranslation('sv');
+    $paragraph->setMediaEntityIframeTitle();
+    $this->assertSame('Swedish iframe title', $translation->iframeTitle ?? NULL);
   }
 
 }

@@ -482,7 +482,7 @@ export default class HelfiLinkEditing extends Plugin {
 
           // Trust classes instead of old data-design attribute.
           if (viewElement.hasClass('hds-button')) {
-            match = convertVariants([...viewElement._classes].join(' '));
+            match = convertVariants([...viewElement.getClassNames()].join(' '));
             if (!match) {
               match = convertVariants(viewElement.getAttribute('data-design'));
             }
@@ -507,7 +507,7 @@ export default class HelfiLinkEditing extends Plugin {
 
           // Trust classes instead of old data-design attribute.
           if (viewElement.hasClass('hds-button')) {
-            match = convertVariants([...viewElement._classes].join(' '));
+            match = convertVariants([...viewElement.getClassNames()].join(' '));
             if (!match) {
               match = convertVariants(viewElement.getAttribute('data-design'));
             }

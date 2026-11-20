@@ -1,0 +1,129 @@
+event: start
+data: {}
+
+event: delta
+data: {"text": "<h"}
+
+event: delta
+data: {"text": "2"}
+
+event: delta
+data: {"text": ">"}
+
+event: delta
+data: {"text": "As"}
+
+event: delta
+data: {"text": "uk"}
+
+event: delta
+data: {"text": "asp"}
+
+event: delta
+data: {"text": "ys"}
+
+event: delta
+data: {"text": "ä"}
+
+event: delta
+data: {"text": "kö"}
+
+event: delta
+data: {"text": "inti"}
+
+event: delta
+data: {"text": "</"}
+
+event: delta
+data: {"text": "h"}
+
+event: delta
+data: {"text": "2"}
+
+event: delta
+data: {"text": "><"}
+
+event: delta
+data: {"text": "p"}
+
+event: delta
+data: {"text": ">"}
+
+event: delta
+data: {"text": "Voit"}
+
+event: delta
+data: {"text": " hakea"}
+
+event: delta
+data: {"text": " asuk"}
+
+event: delta
+data: {"text": "aspys"}
+
+event: delta
+data: {"text": "äkö"}
+
+event: delta
+data: {"text": "intit"}
+
+event: delta
+data: {"text": "unnusta"}
+
+event: delta
+data: {"text": " sähköisesti asio"}
+
+event: delta
+data: {"text": "intipalvel"}
+
+event: delta
+data: {"text": "ussa. Hak"}
+
+event: delta
+data: {"text": "emuksen käs"}
+
+event: delta
+data: {"text": "ittelya"}
+
+event: delta
+data: {"text": "ika on noin"}
+
+event: delta
+data: {"text": " 2 viikko"}
+
+event: delta
+data: {"text": "a. Tunn"}
+
+event: delta
+data: {"text": "us on voimassa"}
+
+event: delta
+data: {"text": " 12 kuukautta"}
+
+event: delta
+data: {"text": ".</p><ul><"}
+
+event: delta
+data: {"text": "li>Hinta "}
+
+event: delta
+data: {"text": "30 €/kk</li><"}
+
+event: delta
+data: {"text": "li>Aj"}
+
+event: delta
+data: {"text": "oneuvon tulee olla hak"}
+
+event: delta
+data: {"text": "ijan hallinnassa</li></"}
+
+event: delta
+data: {"text": "ul"}
+
+event: delta
+data: {"text": ">"}
+
+event: done
+data: {"text": "<h2>Asukaspysäköinti</h2><p>Voit hakea asukaspysäköintitunnusta sähköisesti asiointipalvelussa. Hakemuksen käsittelyaika on noin 2 viikkoa. Tunnus on voimassa 12 kuukautta.</p><ul><li>Hinta 30 €/kk</li><li>Ajoneuvon tulee olla hakijan hallinnassa</li></ul>"}
+

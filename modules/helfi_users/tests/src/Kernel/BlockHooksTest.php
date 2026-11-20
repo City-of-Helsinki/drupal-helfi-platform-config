@@ -8,12 +8,14 @@ use Drupal\Core\Menu\Plugin\Block\LocalTasksBlock as CoreLocalTasksBlock;
 use Drupal\helfi_users\Hook\BlockHooks;
 use Drupal\helfi_users\Plugin\Block\LocalTasksBlock;
 use Drupal\KernelTests\KernelTestBase;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests for BlockHooks.
- *
- * @group helfi_users
  */
+#[Group('helfi_users')]
+#[RunTestsInSeparateProcesses]
 class BlockHooksTest extends KernelTestBase {
 
   /**

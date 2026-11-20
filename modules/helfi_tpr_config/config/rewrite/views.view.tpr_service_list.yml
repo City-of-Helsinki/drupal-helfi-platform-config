@@ -4,7 +4,9 @@ status: true
 dependencies:
   module:
     - helfi_tpr
+    - helfi_users
     - user
+    - views_bulk_operations
 id: tpr_service_list
 label: 'TPR service list'
 module: views
@@ -21,15 +23,14 @@ display:
     display_options:
       title: 'TPR Services'
       fields:
-        tpr_service_bulk_form:
-          id: tpr_service_bulk_form
-          table: tpr_service
-          field: tpr_service_bulk_form
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: tpr_service
-          plugin_id: bulk_form
+          plugin_id: views_bulk_operations_bulk_form
           label: 'Bulk update'
           exclude: false
           alter:
@@ -71,9 +72,51 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          batch: true
+          batch_size: 50
+          form_step: true
+          ajax_loader: false
+          buttons: false
           action_title: Action
-          include_exclude: exclude
-          selected_actions: {  }
+          clear_on_exposed: true
+          show_multipage_selection_box: always_hide
+          show_select_all: always_hide
+          selected_actions:
+            -
+              action_id: 'helfi_favorite_add:tpr_service'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Add to favourites'
+                message_override: ''
+            -
+              action_id: 'helfi_favorite_remove:tpr_service'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Remove from favourites'
+                message_override: ''
+            -
+              action_id: 'entity:publish_action:tpr_service'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Publish content'
+                message_override: ''
+            -
+              action_id: 'entity:unpublish_action:tpr_service'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Unpublish content'
+                message_override: ''
+            -
+              action_id: 'remote_entity:migration_update:tpr_service'
+              preconfiguration:
+                add_confirmation: false
+                confirm_help_text: ''
+                label_override: 'Update from TPR'
+                message_override: ''
         id:
           id: id
           table: tpr_service_field_data
@@ -204,6 +247,56 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        helfi_favorite:
+          id: helfi_favorite
+          table: tpr_service_field_data
+          field: helfi_favorite
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: tpr_service
+          plugin_id: helfi_favorite
+          label: Favorite
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
         langcode:
           id: langcode
           table: tpr_service_field_data
@@ -677,16 +770,17 @@ display:
           row_class: ''
           default_row_class: true
           columns:
-            tpr_service_bulk_form: tpr_service_bulk_form
+            views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
             id: id
             name: name
+            helfi_favorite: helfi_favorite
             langcode: langcode
             content_translation_status: content_translation_status
             content_translation_changed: content_translation_changed
             operations: operations
           default: content_translation_status
           info:
-            tpr_service_bulk_form:
+            views_bulk_operations_bulk_form:
               align: ''
               separator: ''
               empty_column: false
@@ -699,6 +793,13 @@ display:
               empty_column: false
               responsive: ''
             name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            helfi_favorite:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -797,16 +898,15 @@ display:
     position: 2
     display_options:
       arguments:
-        revision_user:
-          id: revision_user
-          table: tpr_service_revision
-          field: revision_user
+        helfi_user_content:
+          id: helfi_user_content
+          table: tpr_service_field_data
+          field: helfi_user_content
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: tpr_service
-          entity_field: revision_user
-          plugin_id: entity_target_id
+          plugin_id: helfi_user_content
           default_action: default
           exception:
             value: all
@@ -831,7 +931,6 @@ display:
             fail: 'not found'
           validate_options: {  }
           break_phrase: false
-          not: false
       style:
         type: table
         options:
@@ -839,16 +938,17 @@ display:
           row_class: ''
           default_row_class: true
           columns:
-            tpr_service_bulk_form: tpr_service_bulk_form
+            views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
             id: id
             name: name
+            helfi_favorite: helfi_favorite
             langcode: langcode
             content_translation_status: content_translation_status
             content_translation_changed: content_translation_changed
             operations: operations
           default: content_translation_changed
           info:
-            tpr_service_bulk_form:
+            views_bulk_operations_bulk_form:
               align: ''
               separator: ''
               empty_column: false
@@ -861,6 +961,13 @@ display:
               empty_column: false
               responsive: ''
             name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            helfi_favorite:
               sortable: true
               default_sort_order: asc
               align: ''

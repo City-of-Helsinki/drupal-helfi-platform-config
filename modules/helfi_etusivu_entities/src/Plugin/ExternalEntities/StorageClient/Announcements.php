@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient;
 
+use Drupal\helfi_node_announcement\Entity\Announcement;
+
 /**
  * External entity storage client for Announcement-entities.
  *
@@ -18,7 +20,7 @@ final class Announcements extends EtusivuJsonApiEntityBase {
   /**
    * {@inheritdoc}
    */
-  public static string $customCacheTag = 'helfi_external_entity_announcement';
+  public static string $customCacheTag = Announcement::EXTERNAL_CACHE_TAG;
 
   /**
    * {@inheritdoc}

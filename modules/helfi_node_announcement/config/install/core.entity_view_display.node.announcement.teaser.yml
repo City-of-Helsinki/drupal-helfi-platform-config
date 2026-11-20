@@ -1,4 +1,4 @@
-uuid: 33a1dd1d-eb4f-4a66-b98e-093c530acc72
+uuid: 38d480b9-6b12-4d53-90d5-fa8ff0fc3bb5
 langcode: en
 status: true
 dependencies:
@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.announcement.field_announcement_all_pages
     - field.field.node.announcement.field_announcement_content_pages
     - field.field.node.announcement.field_announcement_link
+    - field.field.node.announcement.field_announcement_page_paths
     - field.field.node.announcement.field_announcement_title
     - field.field.node.announcement.field_announcement_type
     - node.type.announcement
@@ -36,6 +37,7 @@ hidden:
   field_announcement_all_pages: true
   field_announcement_content_pages: true
   field_announcement_link: true
+  field_announcement_page_paths: true
   field_announcement_service_pages: true
   field_announcement_title: true
   field_announcement_type: true

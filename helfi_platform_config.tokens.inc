@@ -8,7 +8,9 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\helfi_platform_config\Image\LiftupImageManager;
 use Drupal\helfi_paragraphs_hero\Entity\Hero;
 
 /**
@@ -55,7 +57,7 @@ function helfi_platform_config_token_info() : array {
 /**
  * Implements hook_tokens().
  *
- * @see \Drupal\helfi_platform_config\Token\OGImageManager
+ * @see \Drupal\helfi_platform_config\Image\LiftupImageManager
  */
 function helfi_platform_config_tokens(
   $type,
@@ -71,10 +73,25 @@ function helfi_platform_config_tokens(
         $entity = $data[$type] ?? NULL;
 
         if ($entity === NULL || $entity instanceof EntityInterface) {
-          /** @var \Drupal\helfi_platform_config\Token\OGImageManager $image_manager */
-          $image_manager = \Drupal::service('helfi_platform_config.og_image_manager');
+          $image_uri = \Drupal::service(LiftupImageManager::class)->buildUrl($entity);
 
-          $replacements[$original] = $image_manager->buildUrl($entity);
+          if ($image_uri) {
+            // Let modules alter the uri (like apply image styles).
+            \Drupal::moduleHandler()->alter('og_image_uri', $image_uri);
+          }
+          else {
+            // Fall back to the default image.
+            /** @var array<string, string> $default_images */
+            $default_images = \Drupal::getContainer()->getParameter('helfi_platform_config.default_image');
+            $langcode = \Drupal::languageManager()
+              ->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)
+              ->getId();
+
+            $image_uri = $default_images[$langcode] ?? $default_images['default'];
+          }
+
+          $replacements[$original] = \Drupal::service(FileUrlGeneratorInterface::class)
+            ->generateAbsoluteString($image_uri);
         }
         break;
 

@@ -34,16 +34,16 @@ class EntityHooks {
    */
   #[Hook('entity_form_display_presave')]
   public function entityFormDisplayPresave(EntityFormDisplayInterface $display): void {
-    if ($display->id() !== 'tpr_service.tpr_service.default') {
-      return;
-    }
-
-    // Add ai_summary field to TPR service form display.
-    $this->addAiSummaryComponent($display, [
+    $options = [
       'type' => 'ai_summary',
-      'weight' => 7,
       'region' => 'content',
-    ]);
+    ];
+
+    match ($display->id()) {
+      'node.page.default' => $this->addAiSummaryComponent($display, $options, 'field_lead_in'),
+      'tpr_service.tpr_service.default' => $this->addAiSummaryComponent($display, $options + ['weight' => 7]),
+      default => NULL,
+    };
   }
 
   /**
@@ -51,17 +51,17 @@ class EntityHooks {
    */
   #[Hook('entity_view_display_presave')]
   public function entityViewDisplayPresave(EntityViewDisplayInterface $display): void {
-    if ($display->id() !== 'tpr_service.tpr_service.default') {
-      return;
-    }
-
-    // Add ai_summary field to TPR service entity display.
-    $this->addAiSummaryComponent($display, [
+    $options = [
       'type' => 'text_default',
       'label' => 'hidden',
-      'weight' => 4,
       'region' => 'content',
-    ]);
+    ];
+
+    match ($display->id()) {
+      'node.page.default' => $this->addAiSummaryComponent($display, $options, 'field_lead_in'),
+      'tpr_service.tpr_service.default' => $this->addAiSummaryComponent($display, $options + ['weight' => 4]),
+      default => NULL,
+    };
   }
 
   /**
@@ -71,12 +71,27 @@ class EntityHooks {
    *   The form or view display.
    * @param array $options
    *   The display options.
+   * @param string|null $after
+   *   The field to place the ai_summary field after.
    *
    * @phpstan-param array<string, mixed> $options
    */
-  private function addAiSummaryComponent(EntityDisplayInterface $display, array $options): void {
+  private function addAiSummaryComponent(EntityDisplayInterface $display, array $options, ?string $after = NULL): void {
     if ($display->isSyncing() || $display->getComponent('ai_summary')) {
       return;
+    }
+
+    $anchor = $after ? $display->getComponent($after) : NULL;
+    if ($anchor) {
+      $options['weight'] = $anchor['weight'] + 1;
+
+      // Move the following components down.
+      foreach ($display->getComponents() as $name => $component) {
+        if ($component['weight'] >= $options['weight']) {
+          $component['weight']++;
+          $display->setComponent($name, $component);
+        }
+      }
     }
 
     $display->setComponent('ai_summary', $options);

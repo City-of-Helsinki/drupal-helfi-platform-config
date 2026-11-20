@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_paragraphs_org_chart\Unit;
 
+use Drupal\helfi_api_base\Ahjo\OrganizationType;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Features\FeatureManagerInterface;
+use Drupal\helfi_paragraphs_org_chart\DTO\OrgChartItem;
 use Drupal\helfi_paragraphs_org_chart\OrgChartImporter;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
@@ -36,11 +38,12 @@ class OrgChartImporterTest extends UnitTestCase {
 
     // The api returns an error.
     $response = $importer->fetch('fi', '00400', 3);
-    $this->assertEmpty($response);
+    $this->assertNull($response);
 
     // Empty response is not cached.
     $response = $importer->fetch('fi', '00400', 3);
-    $this->assertNotEmpty($response);
+    $this->assertInstanceOf(OrgChartItem::class, $response);
+    $this->assertEquals('00400', $response->id);
   }
 
   /**
@@ -55,8 +58,11 @@ class OrgChartImporterTest extends UnitTestCase {
     $importer = $this->getSut([], $featureManager->reveal());
 
     $response = $importer->fetch('fi', '00000', 2);
-    $this->assertNotEmpty($response);
-    $this->assertCount(5, (array) $response['children']);
+    $this->assertInstanceOf(OrgChartItem::class, $response);
+    $this->assertCount(5, $response->children);
+    $this->assertContainsOnlyInstancesOf(OrgChartItem::class, $response->children);
+    $this->assertEquals(OrganizationType::BOARD, $response->type);
+    $this->assertEquals(OrganizationType::SECTOR, $response->children[0]->type);
   }
 
   /**

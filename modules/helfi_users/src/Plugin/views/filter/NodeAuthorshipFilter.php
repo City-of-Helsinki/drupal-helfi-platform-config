@@ -112,7 +112,7 @@ class NodeAuthorshipFilter extends FilterPluginBase {
    */
   protected function valueOptions(): array {
     return [
-      'either' => $this->t('Authored or last edited', [], ['context' => 'Node authorship filter']),
+      'either' => $this->t('Authored, last edited or favorite', [], ['context' => 'Node authorship filter']),
       'authored' => $this->t('Authored', [], ['context' => 'Node authorship filter']),
       'edited' => $this->t('Last edited', [], ['context' => 'Node authorship filter']),
     ];
@@ -164,10 +164,18 @@ class NodeAuthorshipFilter extends FilterPluginBase {
       return;
     }
 
-    // 'either': add both conditions in an OR group.
+    // 'either': add authorship and favorite conditions in an OR group.
     $or_group = (string) $this->query->setWhereGroup('OR');
     $this->query->addWhere($or_group, 'node_field_data.uid', $uid);
     $this->query->addWhere($or_group, 'node_revision.revision_uid', $uid);
+
+    $placeholder = $this->placeholder();
+    $this->query->addWhereExpression($or_group, "EXISTS (SELECT 1 FROM {helfi_users_favorite} f WHERE f.uid = $placeholder AND f.entity_type = 'node' AND f.entity_id = node_field_data.nid AND f.langcode = node_field_data.langcode)", [
+      $placeholder => $uid,
+    ]);
+
+    // Disable results caching for favorite changes.
+    $this->displayHandler->setOption('cache', ['type' => 'none', 'options' => []]);
   }
 
 }

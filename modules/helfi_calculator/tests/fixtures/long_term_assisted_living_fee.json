@@ -1,0 +1,10 @@
+{
+  "payment_percentage_high": 0.85,
+  "payment_percentage_low": 0.425,
+  "minimum_funds": 195.0,
+  "basic_amount": 578.43,
+  "minimum_funds_spouse": 773.43,
+  "maximum_payment": 3044.0,
+  "reimbursed_medication_costs": 53.01,
+  "guardianship_fee": 43.34
+}

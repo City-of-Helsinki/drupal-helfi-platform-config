@@ -19,19 +19,6 @@ use Drupal\helfi_etusivu_entities\Plugin\ExternalEntities\StorageClient\Announce
 )]
 final class AnnouncementsBlock extends EtusivuEntityBlockBase {
 
-  public const VISIBILITY_ALL_WEIGHT = 0;
-  public const VISIBILITY_REGION_WEIGHT = 1;
-  public const VISIBILITY_PAGE_WEIGHT = 2;
-
-  /**
-   * Entity types supported by announcements and the corresponding field names.
-   */
-  public const ENTITY_TYPE_FIELDS = [
-    'node' => 'field_announcement_content_pages',
-    'tpr_unit' => 'field_announcement_unit_pages',
-    'tpr_service' => 'field_announcement_service_pages',
-  ];
-
   /**
    * {@inheritDoc}
    */

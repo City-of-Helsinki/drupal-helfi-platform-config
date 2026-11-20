@@ -8,6 +8,7 @@ use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_users\Plugin\views\filter\NodeAuthorshipFilter;
 use Drupal\Tests\UnitTestCase;
+use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\Plugin\views\join\JoinPluginBase;
 use Drupal\views\Plugin\views\query\Sql;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -60,6 +61,9 @@ class NodeAuthorshipFilterTest extends UnitTestCase {
       $this->joinPluginManager,
     );
     $this->filter->options['group'] = '0';
+    $this->filter->options['table'] = 'node_field_data';
+    $this->filter->options['field'] = 'helfi_node_authorship';
+    $this->filter->displayHandler = $this->createMock(DisplayPluginBase::class);
     $this->filter->setStringTranslation($this->getStringTranslationStub());
   }
 
@@ -92,7 +96,7 @@ class NodeAuthorshipFilterTest extends UnitTestCase {
    */
   public static function adminSummaryProvider(): array {
     return [
-      'either' => ['either', 'Authored or last edited'],
+      'either' => ['either', 'Authored, last edited or favorite'],
       'authored' => ['authored', 'Authored'],
       'edited' => ['edited', 'Last edited'],
       'unknown returns empty string' => ['unknown', ''],
@@ -141,7 +145,7 @@ class NodeAuthorshipFilterTest extends UnitTestCase {
   }
 
   /**
-   * Tests query() creates an OR group with both conditions for either mode.
+   * Tests query() adds authorship and favorite conditions for either mode.
    */
   public function testQueryEither(): void {
     $this->currentUser->method('id')->willReturn('42');
@@ -158,6 +162,9 @@ class NodeAuthorshipFilterTest extends UnitTestCase {
       ->willReturn('1');
     $query->expects($this->exactly(2))
       ->method('addWhere');
+    $query->expects($this->once())
+      ->method('addWhereExpression')
+      ->with('1', $this->stringContains('{helfi_users_favorite}'));
 
     $this->filter->query = $query;
     $this->filter->value = 'either';

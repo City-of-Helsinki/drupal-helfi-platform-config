@@ -14,19 +14,21 @@
     {
       "diff": "^8.0.3, dependency of ckeditor5-dev",
       "minimatch": ">=10.2.1, dependency of ckeditor5-dev-utils",
-      "serialize-javascript": "^7.0.3, dependency of ckeditor5-dev-translations"
+      "serialize-javascript": "^7.0.3, dependency of ckeditor5-dev-translations",
+      "simple-git": "^4.0.2, dependency of ckeditor5-dev-utils"
     }
   ],
   "overrides": {
     "diff": "^8.0.3",
     "minimatch": "^10.2.1",
-    "serialize-javascript": "^7.0.3"
+    "serialize-javascript": "^7.0.3",
+    "simple-git": "^4.0.2"
   },
   "dependencies": {
     "@biomejs/biome": "^2.5.6",
     "@ckeditor/ckeditor5-core": "^47.6.3",
-    "@ckeditor/ckeditor5-dev-translations": "^53.2.0",
-    "@ckeditor/ckeditor5-dev-utils": "^53.2.0",
+    "@ckeditor/ckeditor5-dev-translations": "^53.4.0",
+    "@ckeditor/ckeditor5-dev-utils": "^62.5.0",
     "@ckeditor/ckeditor5-icons": "^47.6.3",
     "@nuxt/friendly-errors-webpack-plugin": "^2.5.1",
     "ckeditor5": "^47.6.3",

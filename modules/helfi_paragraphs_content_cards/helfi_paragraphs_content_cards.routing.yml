@@ -1,0 +1,11 @@
+helfi_paragraphs_content_cards.content_cards_htmx:
+  path: '/content-cards/{paragraph}/htmx'
+  defaults:
+    _controller: '\Drupal\helfi_paragraphs_content_cards\Controller\ContentCardsHtmxController::content'
+  requirements:
+    _entity_access: 'paragraph.view'
+  options:
+    _htmx_route: 'TRUE'
+    parameters:
+      paragraph:
+        type: 'entity:paragraph'

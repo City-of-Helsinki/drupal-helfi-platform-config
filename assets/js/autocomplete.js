@@ -1,4 +1,4 @@
-const LOCATION_OPTION = Drupal.t('Use current Location', {}, { context: 'Location autocomplete' });
+const LOCATION_OPTION = Drupal.t('Use current location', {}, { context: 'Location autocomplete' });
 const API_URL = 'https://api.hel.fi/servicemap/v2/address/';
 const LOCATION_LOADING = 'location-loading';
 

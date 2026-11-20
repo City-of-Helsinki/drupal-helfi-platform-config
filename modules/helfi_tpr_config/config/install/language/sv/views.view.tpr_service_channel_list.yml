@@ -21,7 +21,17 @@ display:
             items_per_page_options_all_label: '- Alla -'
             offset_label: Kompensera
       fields:
-        tpr_service_channel_bulk_form:
+        views_bulk_operations_bulk_form:
+          selected_actions:
+            0:
+              preconfiguration:
+                label_override: 'Publicera innehåll'
+            1:
+              preconfiguration:
+                label_override: 'Avpublicera inlägg'
+            2:
+              preconfiguration:
+                label_override: Uppdatera
           label: Massuppdatera
           action_title: Åtgärd
         name:

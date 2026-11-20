@@ -1,0 +1,19 @@
+uuid: 420a88d9-aeb9-40c3-952c-170d74897895
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_survey_page_paths
+field_name: field_survey_page_paths
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

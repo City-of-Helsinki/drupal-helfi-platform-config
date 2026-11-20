@@ -4,203 +4,122 @@ declare(strict_types=1);
 
 namespace Drupal\helfi_etusivu_entities;
 
-use Drupal\Component\Utility\Xss;
-use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Utility\Error;
-use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
-use Drupal\helfi_etusivu_entities\Plugin\Block\SurveyBlock;
-use Drupal\node\Entity\Node;
+use Drupal\external_entities\ExternalEntityStorageInterface;
+use Drupal\helfi_node_survey\Entity\Survey;
 use Drupal\node\NodeInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
- * Lazy builder for survey.
+ * Lazy builder for the survey block.
+ *
+ * Renders the newest survey that is visible on the current page.
  */
-final class SurveyLazyBuilder extends LazyBuilderBase {
+final class SurveyLazyBuilder implements TrustedCallbackInterface {
+
+  public function __construct(
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly LocalNodeLoader $localNodeLoader,
+    private readonly PageVisibility $pageVisibility,
+    #[Autowire(service: 'logger.channel.helfi_etusivu_entities')]
+    private readonly LoggerInterface $logger,
+  ) {}
 
   /**
-   * The constructor.
-   *
-   * @param \Psr\Log\LoggerInterface $logger
-   *   The logger.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
-   *   The current route match.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
-   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager
-   *   The entity field manager.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
-   *   The language manager.
-   * @param \Drupal\helfi_api_base\Language\DefaultLanguageResolver $defaultLanguageResolver
-   *   Default language resolver.
+   * {@inheritdoc}
    */
-  public function __construct(
-    #[Autowire(service: 'logger.channel.helfi_etusivu_entities')]
-    protected LoggerInterface $logger,
-    protected RouteMatchInterface $routeMatch,
-    protected EntityTypeManagerInterface $entityTypeManager,
-    protected EntityFieldManagerInterface $entityFieldManager,
-    protected LanguageManagerInterface $languageManager,
-    protected DefaultLanguageResolver $defaultLanguageResolver,
-  ) {
-    parent::__construct(
-      $this->entityTypeManager,
-      $this->routeMatch,
-      $this->languageManager,
-      $this->defaultLanguageResolver,
-    );
+  public static function trustedCallbacks(): array {
+    return ['lazyBuild'];
   }
 
   /**
-   * Lazy builder callback function.
+   * Lazy builder callback.
    *
    * @param bool $useRemoteEntities
-   *   Render entities from remote source.
+   *   Whether to include surveys from the remote source. Some instances only
+   *   show their own surveys.
    *
-   * @return array
+   * @return array<mixed>
    *   The render array.
    */
   public function lazyBuild(bool $useRemoteEntities): array {
     try {
-      $local = $this->getLocalEntities();
-
-      $remote = [];
-      // Some non-core instances might want to show only local entities.
-      // Block configuration allows disabling the remote entities.
-      if ($useRemoteEntities) {
-        $remote = $this->getExternalEntityStorage('helfi_surveys')
-          ->loadMultiple();
-
-        $remote = $this->handleRemoteEntities($remote);
-      }
+      $surveys = [
+        ...($useRemoteEntities ? $this->loadRemote() : []),
+        ...$this->localNodeLoader->load('survey', 'published_at'),
+      ];
     }
     catch (\Exception $e) {
       Error::logException($this->logger, $e);
       return [];
     }
 
-    $sorted = $this->sortEntities($local, $remote);
+    $survey = $this->selectSurvey($surveys);
 
-    return $this
-      ->entityTypeManager
+    return $this->entityTypeManager
       ->getViewBuilder('node')
-      ->viewMultiple($sorted, 'default');
+      ->viewMultiple($survey ? [$survey] : [], 'default');
   }
 
   /**
-   * Gets a list of local entities the block should render.
+   * Selects the newest survey that is visible on the current page.
    *
-   * @return \Drupal\Core\Entity\EntityInterface[]
-   *   Items the block should render.
+   * @param \Drupal\node\NodeInterface[] $surveys
+   *   The local and remote surveys.
    *
-   * @throws \Exception
+   * @return \Drupal\node\NodeInterface|null
+   *   The survey, if any.
    */
-  protected function getLocalEntities() : array {
-    $langcodes = $this->getContentLangcodes();
+  private function selectSurvey(array $surveys): ?NodeInterface {
+    usort($surveys, static fn (NodeInterface $a, NodeInterface $b): int => $b->get('published_at')->value <=> $a->get('published_at')->value);
 
+    $fields = VisibilityFields::survey();
+    foreach ($surveys as $survey) {
+      if ($this->pageVisibility->isVisible($survey, $fields)) {
+        return $survey;
+      }
+    }
+    return NULL;
+  }
+
+  /**
+   * Loads the remote surveys.
+   *
+   * @return \Drupal\node\NodeInterface[]
+   *   Unsaved survey nodes.
+   */
+  private function loadRemote(): array {
+    $storage = $this->entityTypeManager->getStorage('helfi_surveys');
+    if (!$storage instanceof ExternalEntityStorageInterface) {
+      throw new \InvalidArgumentException('helfi_surveys is not an external entity type');
+    }
+    return $this->handleRemoteEntities($storage->loadMultiple());
+  }
+
+  /**
+   * Converts remote surveys to unsaved survey nodes.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface[] $remoteEntities
+   *   The remote surveys.
+   *
+   * @return \Drupal\node\NodeInterface[]
+   *   Unsaved survey nodes.
+   */
+  private function handleRemoteEntities(array $remoteEntities): array {
     $storage = $this->entityTypeManager->getStorage('node');
 
-    // Get all published survey nodes.
-    $query = $storage->getQuery()
-      ->accessCheck(TRUE)
-      ->condition('type', 'survey')
-      ->condition('status', NodeInterface::PUBLISHED)
-      ->condition('langcode', $langcodes, 'IN')
-      ->sort('published_at', 'DESC');
-
-    $fields = $this->entityFieldManager->getFieldDefinitions('node', 'survey');
-
-    // Query only local nodes.
-    if (isset($fields['field_publish_externally'])) {
-      $query->condition('field_publish_externally', FALSE);
-    }
-
-    return array_values($storage->loadMultiple($query->execute()));
-  }
-
-  /**
-   * Handle the external entities.
-   *
-   * @return array
-   *   Remote entities.
-   */
-  protected function handleRemoteEntities(array $remoteEntities): array {
     $nodes = [];
-
-    /** @var \Drupal\external_entities\Entity\ExternalEntityInterface $entity */
-    foreach ($remoteEntities as $entity) {
-      $linkUrl = NULL;
-      $linkText = NULL;
-      if ($entity->hasField('survey_link_text')) {
-        $linkText = $entity->get('survey_link_text')->value;
-        $linkUrl = $entity->get('survey_link_url')->value;
-      }
-
-      // Create nodes for the block based on external entity data.
-      $nodes[] = Node::create([
-        'uuid' => $entity->get('uuid')->value,
-        'type' => 'survey',
-        'field_survey_link' => ['uri' => $linkUrl, 'title' => $linkText],
-        'langcode' => $entity->get('langcode')->value,
-        'body' => Xss::filter($entity->get('body')->value),
-        'title' => Xss::filter($entity->get('title')->value),
-        'status' => $entity->get('status')->value,
-      ]);
+    foreach ($remoteEntities as $remote) {
+      assert($remote instanceof FieldableEntityInterface);
+      $survey = $storage->create(['type' => 'survey']);
+      assert($survey instanceof Survey);
+      $nodes[] = $survey->populateFromRemoteEntity($remote);
     }
-
     return $nodes;
-  }
-
-  /**
-   * Sort the entities.
-   *
-   * @param array $local
-   *   Local entities.
-   * @param array $remote
-   *   Remote entities.
-   *
-   * @return array
-   *   An array of sorted entities.
-   *
-   * @codeCoverageIgnore
-   */
-  protected function sortEntities(array $local, array $remote) : array {
-    $currentEntity = $this->getCurrentPageEntity(array_keys(SurveyBlock::ENTITY_TYPE_FIELDS));
-
-    $surveys = array_merge($remote, $local);
-
-    // Sort by publised_at time.
-    usort($surveys, static function (NodeInterface $a, NodeInterface $b) {
-      $weightA = $a->get('published_at')->value;
-      $weightB = $b->get('published_at')->value;
-      if ($weightA === $weightB) {
-        return 0;
-      }
-      return $weightA < $weightB ? 1 : -1;
-    });
-
-    $entityTypeId = $currentEntity?->getEntityTypeId();
-    $referenceField = $entityTypeId ? SurveyBlock::ENTITY_TYPE_FIELDS[$entityTypeId] : NULL;
-
-    // Pick which survey to show.
-    foreach ($surveys as $node) {
-      // Check if the node should be shown at all pages.
-      if ($node->get('field_survey_content_pages')->isEmpty()) {
-        return [$node];
-      }
-
-      // Show survey if current page's entity is found
-      // from the list of referenced entities.
-      if (!empty($referenceField) && $this->hasReference($referenceField, $node, $currentEntity)) {
-        return [$node];
-      }
-    }
-
-    return [];
   }
 
 }

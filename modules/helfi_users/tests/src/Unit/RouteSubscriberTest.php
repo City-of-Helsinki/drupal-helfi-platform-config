@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_users\Unit;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteBuildEvent;
+use Drupal\helfi_users\Hook\BulkOperationsHooks;
 use Drupal\helfi_users\Routing\RouteSubscriber;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -20,6 +22,22 @@ use Symfony\Component\Routing\RouteCollection;
 class RouteSubscriberTest extends UnitTestCase {
 
   /**
+   * Creates the route subscriber with the given installed entity types.
+   *
+   * @param string[] $installed
+   *   The installed entity type IDs.
+   *
+   * @return \Drupal\helfi_users\Routing\RouteSubscriber
+   *   The route subscriber.
+   */
+  private function createSubscriber(array $installed = ['node']): RouteSubscriber {
+    $entityTypeManager = $this->createMock(EntityTypeManagerInterface::class);
+    $entityTypeManager->method('hasDefinition')
+      ->willReturnCallback(fn (string $id): bool => in_array($id, $installed, TRUE));
+    return new RouteSubscriber($entityTypeManager);
+  }
+
+  /**
    * Tests that _admin_route is set on the user canonical route when present.
    */
   public function testAdminThemeAppliedToUserCanonical(): void {
@@ -27,7 +45,7 @@ class RouteSubscriberTest extends UnitTestCase {
     $collection = new RouteCollection();
     $collection->add('entity.user.canonical', $route);
 
-    (new RouteSubscriber())->onAlterRoutes(new RouteBuildEvent($collection));
+    $this->createSubscriber()->onAlterRoutes(new RouteBuildEvent($collection));
 
     $this->assertTrue($route->getOption('_admin_route'));
   }
@@ -38,9 +56,54 @@ class RouteSubscriberTest extends UnitTestCase {
   public function testNoErrorWhenUserCanonicalRouteAbsent(): void {
     $collection = new RouteCollection();
 
-    (new RouteSubscriber())->onAlterRoutes(new RouteBuildEvent($collection));
+    $this->createSubscriber()->onAlterRoutes(new RouteBuildEvent($collection));
 
     $this->assertNull($collection->get('entity.user.canonical'));
+  }
+
+  /**
+   * Tests that the favorite route allows only installed entity types.
+   */
+  public function testFavoriteRouteAllowsOnlyInstalledEntityTypes(): void {
+    $route = new Route('/admin/favorite/{entity_type}/{entity}/{display}');
+    $collection = new RouteCollection();
+    $collection->add('helfi_users.favorite_toggle', $route);
+
+    $this->createSubscriber(['node', 'tpr_unit'])->onAlterRoutes(new RouteBuildEvent($collection));
+
+    $this->assertEquals('node|tpr_unit', $route->getRequirement('entity_type'), 'The route allows the installed entity types.');
+
+    $collection = new RouteCollection();
+    $collection->add('helfi_users.favorite_toggle', new Route('/admin/favorite/{entity_type}/{entity}/{display}'));
+
+    $this->createSubscriber([])->onAlterRoutes(new RouteBuildEvent($collection));
+
+    $this->assertNull($collection->get('helfi_users.favorite_toggle'), 'The route is removed without installed entity types.');
+  }
+
+  /**
+   * Tests that views bulk operations routes require the permission.
+   */
+  public function testBulkOperationsRoutesRequirePermission(): void {
+    $routeNames = [
+      'views_bulk_operations.execute_batch',
+      'views_bulk_operations.update_selection',
+      'views_bulk_operations.execute_configurable',
+      'views_bulk_operations.confirm',
+    ];
+    $collection = new RouteCollection();
+    foreach ($routeNames as $routeName) {
+      $collection->add($routeName, new Route('/views-bulk-operations/{view_id}/{display_id}', [], ['_views_bulk_operation_access' => 'TRUE']));
+    }
+
+    $this->createSubscriber()->onAlterRoutes(new RouteBuildEvent($collection));
+
+    foreach ($routeNames as $routeName) {
+      $route = $collection->get($routeName);
+      $this->assertNotNull($route);
+      $this->assertEquals(BulkOperationsHooks::PERMISSION, $route->getRequirement('_permission'), "$routeName requires the permission.");
+      $this->assertEquals('TRUE', $route->getRequirement('_views_bulk_operation_access'), "$routeName keeps the original access check.");
+    }
   }
 
 }

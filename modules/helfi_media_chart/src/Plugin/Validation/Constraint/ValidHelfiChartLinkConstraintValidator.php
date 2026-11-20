@@ -31,6 +31,7 @@ final class ValidHelfiChartLinkConstraintValidator extends ConstraintValidator {
         $this->context->addViolation($constraint->errorMessage, [
           '%value' => $uri,
           '%domains' => implode(', ', Chart::CHART_POWERBI_URL),
+          '%paths' => implode(', ', self::ALLOWED_PATHS),
         ]);
       }
     }

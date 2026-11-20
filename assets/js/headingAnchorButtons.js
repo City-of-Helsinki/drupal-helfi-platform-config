@@ -2,12 +2,19 @@
  * Heading anchor buttons
  *
  * Anchor buttons are small buttons next to selected headings that you can click
- * and get an anchor link copied to your clipboard. The functionality depends on the
- * headingIdInjector.js.
+ * and get an anchor link copied to your clipboard.
+ *
+ * The anchor ids are written server-side by HeadingIdInjector.php.
  */
 
 ((Drupal, once) => {
   Drupal.HeadingAnchorButtons = {
+    // Content headings that have an anchor id to link to. Headings inside a
+    // .hide-from-table-of-contents element are not part of the content.
+    headingSelector: ['h2', 'h3', 'h4', 'h5', 'h6']
+      .map((tag) => `${tag}[id]:not(.hide-from-table-of-contents *)`)
+      .join(','),
+
     rgbToHex: (rgbColor) => {
       const result = rgbColor.match(/\d+/g);
       return result
@@ -16,6 +23,11 @@
     },
 
     injectHeadingAnchorButtons: (content) => {
+      // Add the anchor button to only content h2 headings.
+      if (content.nodeName !== 'H2' || content.hasAttribute('data-accordion-id')) {
+        return;
+      }
+
       // Attach a button to copy the anchor link to clipboard.
       const copiedAnchor = content.textContent.trim();
 
@@ -23,21 +35,9 @@
       const span = document.createElement('span');
       span.classList.add('heading-text');
 
-      // Collect all direct text nodes inside the heading.
-      const textNodes = Array.from(content.childNodes).filter(
-        (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0,
-      );
-
-      // Move those text nodes into a span.
-      // biome-ignore lint/suspicious/useIterableCallbackReturn: @todo UHF-12501
-      textNodes.forEach((node) => span.appendChild(node));
-
-      // Insert the span at the beginning of the heading.
-      if (content.firstChild) {
-        content.insertBefore(span, content.firstChild);
-      } else {
-        content.appendChild(span);
-      }
+      // Move the heading content into the heading-text span.
+      span.append(...content.childNodes);
+      content.appendChild(span);
 
       // Check the color of the heading text so that titles with dark background
       // can have the button also colored white.
@@ -91,22 +91,22 @@
           });
       });
 
-      const nodeName = content.nodeName.toLowerCase();
-
-      if (nodeName === 'h2' && !content.hasAttribute('data-accordion-id')) {
-        content.classList.add('js-heading-with-anchor');
-        content.appendChild(anchorLinkButton);
-      }
+      content.classList.add('js-heading-with-anchor');
+      content.appendChild(anchorLinkButton);
     },
   };
 
-  // Attach table of contents.
+  // Attach the anchor buttons.
   Drupal.behaviors.headingAnchorButtons = {
     attach: function attach() {
-      Drupal.HeadingIdInjector.injectedHeadings.forEach(({ content }) => {
-        once('heading-anchor-button', content).forEach(() => {
-          Drupal.HeadingAnchorButtons.injectHeadingAnchorButtons(content);
-        });
+      const mainContent = document.querySelector('main.layout-main-wrapper');
+
+      if (!mainContent) {
+        return;
+      }
+
+      once('heading-anchor-button', Drupal.HeadingAnchorButtons.headingSelector, mainContent).forEach((content) => {
+        Drupal.HeadingAnchorButtons.injectHeadingAnchorButtons(content);
       });
     },
   };

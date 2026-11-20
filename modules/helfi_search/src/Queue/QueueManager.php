@@ -267,19 +267,28 @@ class QueueManager {
    */
   private function run(ContentEntityInterface $entity): void {
     if ($entity instanceof EntityPublishedInterface && !$entity->isPublished()) {
-      $this->setState($entity, DocumentState::Skipped);
+      $this->setState($entity, DocumentState::Skipped, ['markdown' => NULL]);
       return;
     }
 
-    $chunks = $this->textPipeline->process($entity);
+    $document = $this->textPipeline->process($entity);
+    $chunks = $document->chunks;
 
     if (!$chunks) {
       $this->deleteChunks($entity);
-      $this->setState($entity, DocumentState::Skipped);
+      $this->setState($entity, DocumentState::Skipped, ['markdown' => NULL]);
       return;
     }
 
-    $changed = FALSE;
+    $query = $this->database->select(self::DOCUMENT_TABLE, 'd')
+      ->fields('d', ['markdown']);
+
+    $markdown = self::keyCondition($query, $entity)
+      ->execute()
+      ->fetchField();
+
+    // We need to re-index if markdown field has changed.
+    $changed = $markdown !== $document->markdown;
 
     foreach (EmbeddingModel::ENABLED as $model) {
       // Compare generated chunks with chunks already in the database.
@@ -299,7 +308,7 @@ class QueueManager {
     }
 
     // Mark the document as ready.
-    $this->setState($entity, DocumentState::Ready);
+    $this->setState($entity, DocumentState::Ready, ['markdown' => $document->markdown]);
 
     // Mark entity for search_api indexing when the vectors were updated.
     if ($changed) {
@@ -479,13 +488,15 @@ class QueueManager {
    *   The entity, in the translation to write.
    * @param \Drupal\helfi_search\DocumentState $state
    *   The state to write.
+   * @param array<string, mixed> $fields
+   *   Other document columns to write.
    */
-  private function setState(ContentEntityInterface $entity, DocumentState $state): void {
+  private function setState(ContentEntityInterface $entity, DocumentState $state, array $fields = []): void {
     $query = $this->database->update(self::DOCUMENT_TABLE)
       ->fields([
         'state' => $state->value,
         'changed' => $this->time->getRequestTime(),
-      ]);
+      ] + $fields);
 
     self::keyCondition($query, $entity)
       ->execute();

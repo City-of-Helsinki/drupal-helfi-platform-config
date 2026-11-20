@@ -9,6 +9,7 @@ use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\helfi_calculator\SettingsJson;
 use Drupal\language\Config\LanguageConfigOverride;
 use Drupal\language\ConfigurableLanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -137,6 +138,24 @@ class CalculatorSettings extends ConfigFormBase {
    */
   protected function getCalculatorSettings(): ImmutableConfig|Config|LanguageConfigOverride {
     return $this->config($this->configName);
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param array<mixed> $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) : void {
+    parent::validateForm($form, $form_state);
+
+    foreach ($form_state->getValue('calculators') ?? [] as $machine_name => $values) {
+      if (!SettingsJson::isValid((string) ($values['json'] ?? ''))) {
+        $form_state->setErrorByName("calculators][$machine_name][json", $this->t('The calculator data must be valid JSON, and the keys can only be numbers or contain letters, numbers and underscores.'));
+      }
+    }
   }
 
   /**

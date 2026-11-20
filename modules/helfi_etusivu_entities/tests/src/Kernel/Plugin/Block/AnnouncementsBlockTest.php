@@ -18,21 +18,6 @@ use Drupal\node\NodeInterface;
 class AnnouncementsBlockTest extends BlockTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'helfi_node_announcement',
-    'hdbt_admin_tools',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp(array $modules = []): void {
-    parent::setUp(['helfi_node_announcement']);
-  }
-
-  /**
    * Make sure build() works.
    */
   public function testBuild(): void {

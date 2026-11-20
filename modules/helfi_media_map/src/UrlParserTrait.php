@@ -14,6 +14,11 @@ use Psr\Http\Message\UriInterface;
 trait UrlParserTrait {
 
   /**
+   * The languages supported by the map services.
+   */
+  private const array LANGUAGES = ['fi', 'sv', 'en'];
+
+  /**
    * Validates media link.
    *
    * @param \Psr\Http\Message\UriInterface $uri
@@ -41,52 +46,55 @@ trait UrlParserTrait {
 
     $this->assertMediaLink($uri);
 
-    if ($uri->getHost() === Map::KARTTA_URL) {
-      // Link is already a valid embed link.
-      if (str_contains($uri->getPath(), 'embed')) {
-        return (string) $uri;
-      }
-      // Parse the url prefix (/link) and the ID /link/{id}, fallback to NULL.
-      [$prefix, $id] = array_values(array_filter(explode('/', $uri->getPath()))) + [
-        NULL,
-        NULL,
-      ];
-      // We can just replace path with /embed since everything
-      // important is in query arguments.
-      $uri = $uri->withPath('/embed');
+    return (string) match ($uri->getHost()) {
+      Map::KARTTA_URL => $this->getKarttaHelfiEmbedUrl($uri),
+      Map::PALVELUKARTTA_URL => $this->getPalvelukarttaEmbedUrl($uri),
+      // The embed path is always /{language}/embed. Everything else, like
+      // the sport, city and unit filters, is in query parameters.
+      Map::ULKOLIIKUNTA_URL => $uri->withPath('/' . $this->getUlkoliikuntaLanguage($uri) . '/embed'),
+      default => throw new \LogicException('Invalid url.'),
+    };
+  }
 
-      if ($prefix === 'link' && $id) {
-        $uri = $uri->withQuery("link=$id");
-      }
-      return (string) $uri;
+  /**
+   * Gets the kartta.hel.fi embed URL.
+   *
+   * @param \Psr\Http\Message\UriInterface $uri
+   *   The uri.
+   *
+   * @return \Psr\Http\Message\UriInterface
+   *   The embed uri, like /embed?link={id}.
+   */
+  private function getKarttaHelfiEmbedUrl(UriInterface $uri) : UriInterface {
+    if (str_contains($uri->getPath(), 'embed')) {
+      return $uri;
     }
+    // Everything else than the short link ID (/link/{id}) is in query
+    // parameters already.
+    [$prefix, $id] = $this->getPathParts($uri) + [NULL, NULL];
+    $uri = $uri->withPath('/embed');
 
-    if ($uri->getHost() === Map::PALVELUKARTTA_URL) {
-      // Link is already a valid embed link.
-      if (str_contains($uri->getPath(), '/embed')) {
-        return (string) $uri;
-      }
+    return $prefix === 'link' && $id ? $uri->withQuery("link=$id") : $uri;
+  }
 
-      // Always fallback to finnish if path has no language.
-      if ($uri->getPath() === '/') {
-        $uri = $uri->withPath('/fi');
-      }
-      // Filter out empty array items and re-key the array so language
-      // is always at index 0.
-      [$language] = $path_parts = array_values(array_filter(explode('/', $uri->getPath())));
-
-      $parts = [];
-      if (in_array($language, ['fi', 'sv', 'en'])) {
-        $parts[] = $language;
-        array_shift($path_parts);
-      }
-      $parts[] = 'embed';
-
-      // Re-construct the path so we always have a path like:
-      // /{language}/embed/{rest_of_the_path}.
-      return (string) $uri->withPath('/' . implode('/', array_merge($parts, $path_parts)));
+  /**
+   * Gets the palvelukartta.hel.fi embed URL.
+   *
+   * @param \Psr\Http\Message\UriInterface $uri
+   *   The uri.
+   *
+   * @return \Psr\Http\Message\UriInterface
+   *   The embed uri, like /{language}/embed/{rest_of_the_path}.
+   */
+  private function getPalvelukarttaEmbedUrl(UriInterface $uri) : UriInterface {
+    if (str_contains($uri->getPath(), '/embed')) {
+      return $uri;
     }
-    throw new \LogicException('Invalid url.');
+    // Fall back to Finnish if the path is empty.
+    $parts = $this->getPathParts($uri) ?: ['fi'];
+    $language = in_array($parts[0], self::LANGUAGES, TRUE) ? [array_shift($parts)] : [];
+
+    return $uri->withPath('/' . implode('/', [...$language, 'embed', ...$parts]));
   }
 
   /**
@@ -95,28 +103,69 @@ trait UrlParserTrait {
    * @param string $uri
    *   The uri from embed URL.
    *
-   * @return string|null
+   * @return string
    *   The url.
    */
-  protected function getMapUrl(string $uri) : ? string {
+  protected function getMapUrl(string $uri) : string {
     $uri = Http::new($uri);
 
     $this->assertMediaLink($uri);
 
-    if ($uri->getHost() === Map::KARTTA_URL) {
-      // Link is already a direct map link.
-      if (!str_contains($uri->getPath(), 'embed')) {
-        return (string) $uri;
-      }
-      $path = ltrim(str_replace('/embed', '', $uri->getPath()), '/');
-      return (string) $uri->withPath('/' . $path);
-    }
+    return (string) match ($uri->getHost()) {
+      // The map links are the embed links without /embed.
+      Map::KARTTA_URL, Map::PALVELUKARTTA_URL => $uri->withPath('/' . ltrim(str_replace('/embed', '', $uri->getPath()), '/')),
+      Map::ULKOLIIKUNTA_URL => $this->getUlkoliikuntaMapUrl($uri),
+      default => throw new \LogicException('Invalid url.'),
+    };
+  }
 
-    if ($uri->getHost() === Map::PALVELUKARTTA_URL) {
-      $path = ltrim(str_replace('/embed', '', $uri->getPath()), '/');
-      return (string) $uri->withPath('/' . $path);
+  /**
+   * Gets the ulkoliikunta.fi map URL.
+   *
+   * The embed filters don't work outside the embed, so this links to the unit
+   * page if the embed has a unit, and to the front page otherwise.
+   *
+   * @param \Psr\Http\Message\UriInterface $uri
+   *   The uri.
+   *
+   * @return \Psr\Http\Message\UriInterface
+   *   The map uri, like /{language}/unit/{unit} or /{language}.
+   */
+  private function getUlkoliikuntaMapUrl(UriInterface $uri) : UriInterface {
+    parse_str($uri->getQuery(), $query);
+    $path = '/' . $this->getUlkoliikuntaLanguage($uri);
+
+    if (is_string($query['unit'] ?? NULL) && ctype_digit($query['unit'])) {
+      $path .= '/unit/' . $query['unit'];
     }
-    return NULL;
+    return $uri->withPath($path)->withQuery('');
+  }
+
+  /**
+   * Gets the language of an ulkoliikunta.fi URL.
+   *
+   * @param \Psr\Http\Message\UriInterface $uri
+   *   The uri.
+   *
+   * @return string
+   *   The language from the URL path, or 'fi' if the path has no language.
+   */
+  private function getUlkoliikuntaLanguage(UriInterface $uri) : string {
+    $language = $this->getPathParts($uri)[0] ?? NULL;
+    return in_array($language, self::LANGUAGES, TRUE) ? $language : 'fi';
+  }
+
+  /**
+   * Gets the non-empty path segments of the uri.
+   *
+   * @param \Psr\Http\Message\UriInterface $uri
+   *   The uri.
+   *
+   * @return string[]
+   *   The path segments.
+   */
+  private function getPathParts(UriInterface $uri) : array {
+    return array_values(array_filter(explode('/', $uri->getPath())));
   }
 
 }

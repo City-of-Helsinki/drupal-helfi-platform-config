@@ -98,6 +98,21 @@ final class SharedIndexTest extends UnitTestCase {
       'type' => 'best_fields',
       'fields' => ['label', 'metatag_title', 'url'],
     ], $body['query']['bool']['must'][0]['multi_match']);
+    $this->assertArrayNotHasKey('must_not', $body['query']['bool']);
+    $this->assertContains('etusivu', $body['query']['bool']['filter'][0]['terms']['instance']);
+  }
+
+  /**
+   * Tests that a matcher exclude flag hides current-instance content.
+   */
+  public function testQuerySourceExcludesCurrentInstance(): void {
+    $history = [];
+    $this->createSut($history)->querySource([
+      ['field' => 'search', 'value' => 'library'],
+      ['field' => SharedIndex::EXCLUDE_CURRENT_INSTANCE, 'value' => TRUE],
+    ]);
+
+    $body = $this->getRequestBody($history);
     $this->assertSame([
       'bool' => [
         'must' => [
@@ -106,7 +121,30 @@ final class SharedIndexTest extends UnitTestCase {
         ],
       ],
     ], $body['query']['bool']['must_not'][0]);
-    $this->assertContains('etusivu', $body['query']['bool']['filter'][0]['terms']['instance']);
+  }
+
+  /**
+   * Tests that the exclude flag is forwarded to the source query.
+   */
+  public function testTransliterateExcludeCurrentInstance(): void {
+    $history = [];
+    $result = $this->createSut($history)->transliterateDrupalFilters([
+      ['field' => 'title', 'operator' => 'CONTAINS', 'value' => 'library'],
+      ['field' => SharedIndex::EXCLUDE_CURRENT_INSTANCE, 'operator' => '=', 'value' => 1],
+    ]);
+
+    $this->assertSame([
+      [
+        'field' => 'search',
+        'operator' => 'CONTAINS',
+        'value' => 'library',
+      ],
+      [
+        'field' => SharedIndex::EXCLUDE_CURRENT_INSTANCE,
+        'operator' => '=',
+        'value' => TRUE,
+      ],
+    ], $result['source']);
   }
 
   /**

@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_paragraphs_remote_video\Kernel\Entity;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\helfi_paragraphs_remote_video\Entity\ParagraphRemoteVideo;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\media\Entity\Media;
 
 /**
@@ -113,6 +114,42 @@ class RemoteVideoParagraphTest extends KernelTestBase {
     $this->assertSame('Test title', $paragraph->get('field_remote_video_title')->value);
     $this->assertSame('Test description', $paragraph->get('field_remote_video_description')->value);
     $this->assertSame('Test iframe title', $paragraph->getReferencedMediaEntity()?->iframeTitle ?? NULL);
+  }
+
+  /**
+   * Tests the iframe title translation.
+   */
+  public function testSetMediaEntityIframeTitleTranslation(): void {
+    $this->installConfig(['language']);
+    ConfigurableLanguage::createFromLangcode('fi')->save();
+    ConfigurableLanguage::createFromLangcode('sv')->save();
+
+    $media = Media::create([
+      'bundle' => 'remote_video',
+      'name' => 'Remote video media',
+      'langcode' => 'fi',
+      'status' => 1,
+    ]);
+    $media->addTranslation('sv', ['name' => 'Remote video media sv']);
+    $media->save();
+
+    /** @var \Drupal\helfi_paragraphs_remote_video\Entity\ParagraphRemoteVideo $paragraph */
+    $paragraph = ParagraphRemoteVideo::create([
+      'type' => 'remote_video',
+      'langcode' => 'sv',
+      'field_iframe_title' => 'Swedish iframe title',
+      'field_remote_video' => [['target_id' => $media->id()]],
+    ]);
+    $paragraph->save();
+
+    $media = $paragraph->get('field_remote_video')->entity;
+    $this->assertInstanceOf(Media::class, $media);
+    $translation = $media->getTranslation('sv');
+
+    $paragraph->setMediaEntityIframeTitle();
+
+    $this->assertSame('sv', $paragraph->getReferencedMediaEntity()?->language()->getId());
+    $this->assertSame('Swedish iframe title', $translation->iframeTitle ?? NULL);
   }
 
   /**

@@ -3,6 +3,8 @@ services:
     autoconfigure: true
     autowire: true
 
+  Drupal\helfi_platform_config\Form\PagePathValidator: ~
+
   # The metatag dependency is optional, so it is injected with "@?" and the
   # service falls back to a no-op when metatag is not installed.
   Drupal\helfi_platform_config\Helper\MetatagHelper:
@@ -27,6 +29,8 @@ services:
     arguments: ['@current_route_match']
 
   Drupal\helfi_platform_config\EventSubscriber\SearchApiSubscriber: ~
+
+  Drupal\helfi_platform_config\PathAliasEntityResolver: ~
 
   Drupal\helfi_platform_config\EventSubscriber\ElasticsearchParamsSubscriber: ~
 
@@ -72,23 +76,9 @@ services:
     arguments:
       - 'helfi_platform_config'
 
-  Drupal\helfi_platform_config\Token\OGImageManager: '@helfi_platform_config.og_image_manager'
-  helfi_platform_config.og_image_manager:
-    class: Drupal\helfi_platform_config\Token\OGImageManager
-    arguments:
-      - '@module_handler'
-      - '@file_url_generator'
+  Drupal\helfi_platform_config\Image\LiftupImageManager:
     tags:
-      - { name: service_collector, call: add, tag: helfi_platform_config.og_image_builder }
-
-  helfi_platform_config.og_image.default:
-    class: Drupal\helfi_platform_config\Token\DefaultImageBuilder
-    arguments:
-      - '@module_handler'
-      - '@language_manager'
-      - '@file_url_generator'
-    tags:
-      - { name: helfi_platform_config.og_image_builder, priority: -100 }
+      - { name: service_collector, call: add, tag: helfi_platform_config.liftup_image_builder }
 
   Drupal\helfi_platform_config\SchemaOrg\SchemaManager:
     tags:
@@ -107,6 +97,8 @@ services:
       - { name: helfi_platform_config.schema_builder, priority: 10 }
 
   Drupal\helfi_platform_config\MultisiteSearch: ~
+
+  Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex: ~
 
   Drupal\helfi_platform_config\RedirectCleaner: ~
 
@@ -130,8 +122,18 @@ services:
   Drupal\helfi_platform_config\ClearSiteData: ~
 
   Drupal\helfi_platform_config\EventSubscriber\ClearSiteDataSubscriber: ~
+  Drupal\helfi_platform_config\EventSubscriber\ModuleLoaderSubscriber: ~
 
   Drupal\helfi_platform_config\HeadingSlugger: ~
   Drupal\helfi_platform_config\HeadingIdInjector: ~
   Drupal\helfi_platform_config\EventSubscriber\HeadingIdResponseSubscriber: ~
 
+  Drupal\helfi_platform_config\EntityNotifications\EntityNotificationManager: ~
+  Drupal\helfi_platform_config\EntityNotifications\EntityNotificationLazyBuilder: ~
+  Drupal\helfi_platform_config\EntityNotifications\OutdatedTranslationNotificationProvider:
+    tags:
+      - { name: helfi_platform_config.entity_notification_provider }
+
+  Drupal\helfi_platform_config\Translation\OutdatedTranslationChecker: ~
+  Drupal\helfi_platform_config\Translation\OutdatedTranslationNotice: ~
+  Drupal\helfi_platform_config\Routing\TranslationOverviewRouteSubscriber: ~

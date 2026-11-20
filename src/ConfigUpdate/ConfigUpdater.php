@@ -62,14 +62,16 @@ final class ConfigUpdater implements ConfigUpdaterInterface {
   /**
    * {@inheritdoc}
    */
-  public function update(string $module) : void {
+  public function update(string ...$modules) : void {
     // These hooks should only be run on CI/local machine since the
     // exported configuration should be up-to-date already.
     if ($this->skipUpdate) {
       return;
     }
-    $this->configInstaller->installDefaultConfig('module', $module);
-    $this->configRewriter->rewriteModuleConfig($module);
+    foreach ($modules as $module) {
+      $this->configInstaller->installDefaultConfig('module', $module);
+      $this->configRewriter->rewriteModuleConfig($module);
+    }
 
     // Collect module permissions and update them.
     $permissions = $this->moduleHandler->invokeAll('platform_config_grant_permissions');

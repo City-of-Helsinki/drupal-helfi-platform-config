@@ -71,10 +71,8 @@ class ConfigUpdaterCommandsTest extends UnitTestCase {
       ->willReturn($module->reveal());
 
     $configUpdater = $this->prophesize(ConfigUpdaterInterface::class);
-    $configUpdater->update('helfi_platform_config')
-      ->shouldBeCalled();
-    $configUpdater->update(Argument::any())
-      ->shouldBeCalled();
+    $configUpdater->update('helfi_platform_config', Argument::cetera())
+      ->shouldBeCalledOnce();
 
     $sut = $this->getSut(
       configUpdater: $configUpdater->reveal(),

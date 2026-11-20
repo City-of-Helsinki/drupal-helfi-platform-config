@@ -24,6 +24,7 @@ class ParagraphTypeUpdater {
    */
   public function updateParagraphTargetTypes(): void {
     $paragraphTypes = $this->moduleHandler->invokeAll('helfi_paragraph_types');
+    $saved = [];
 
     foreach ($paragraphTypes as $type) {
       if (!$type instanceof ParagraphTypeCollection) {
@@ -31,6 +32,13 @@ class ParagraphTypeUpdater {
           sprintf('$type must be an instance of %s, %s given.', ParagraphTypeCollection::class, gettype($type))
         );
       }
+      // Save each field only once.
+      $key = "$type->entityType.$type->bundle.$type->field";
+      if (isset($saved[$key])) {
+        continue;
+      }
+      $saved[$key] = TRUE;
+
       if (!$definitions = $this->entityFieldManager->getFieldDefinitions($type->entityType, $type->bundle)) {
         continue;
       }

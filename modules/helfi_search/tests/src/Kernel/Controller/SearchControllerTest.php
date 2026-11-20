@@ -7,6 +7,7 @@ namespace Drupal\Tests\helfi_search\Kernel\Controller;
 use Drupal\helfi_search\Controller\SearchController;
 use Drupal\helfi_search\EmbeddingModel;
 use Drupal\helfi_search\EmbeddingApiInterface;
+use Drupal\helfi_search\QueryBuilder;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
 use Drupal\Tests\helfi_platform_config\Traits\ElasticKernelTrait;
@@ -64,6 +65,33 @@ class SearchControllerTest extends KernelTestBase {
     $response = $this->processRequest($request);
 
     $this->assertEquals(429, $response->getStatusCode());
+  }
+
+  /**
+   * Tests that the page is validated before the embedding API is called.
+   */
+  public function testPageOutOfRange(): void {
+    $embeddingsModel = $this->prophesize(EmbeddingApiInterface::class);
+    $embeddingsModel->getEmbedding(Argument::cetera())->shouldNotBeCalled();
+    $this->container->set(EmbeddingApiInterface::class, $embeddingsModel->reveal());
+
+    $request = $this->getMockedRequest('/api/v1/search', parameters: [
+      'q' => 'test query',
+      'page' => '99999999999999999999',
+    ]);
+    $response = $this->processRequest($request);
+    $this->assertEquals(400, $response->getStatusCode());
+
+    // The page is out of range when it starts after the last KNN result.
+    $request = $this->getMockedRequest('/api/v1/search', parameters: [
+      'q' => 'test query',
+      'page' => (string) (QueryBuilder::KNN_K / QueryBuilder::KNN_DEFAULT_SIZE + 2),
+    ]);
+    $response = $this->processRequest($request);
+    $this->assertEquals(400, $response->getStatusCode());
+
+    // The flood event is not registered for invalid requests.
+    $this->assertTrue($this->container->get('flood')->isAllowed(SearchController::FLOOD_EVENT, 1, SearchController::FLOOD_WINDOW));
   }
 
   /**
@@ -210,10 +238,10 @@ class SearchControllerTest extends KernelTestBase {
   }
 
   /**
-   * Tests the 'others' sentinel and the debug query param.
+   * Tests the 'others' filter and the debug parameter.
    *
-   * 'others' expands to "everything except news bundles" and routes through
-   * single search() (not msearch). The debug param surfaces per-bundle aggs.
+   * 'others' means all content except news, and it runs a single search.
+   * The debug parameter adds result counts per content type.
    */
   public function testOthersBundleAndDebugAggregations(): void {
     $embeddingsModel = $this->prophesize(EmbeddingApiInterface::class);
@@ -252,7 +280,21 @@ class SearchControllerTest extends KernelTestBase {
       $this->createElasticsearchResponse($hits),
     ]);
 
-    // 1) ?bundle=others&debug=1 in a non-prod env → debug payload returned.
+    // Users without the permission to tune the search get no debug payload.
+    $request = $this->getMockedRequest('/api/v1/search', parameters: [
+      'q' => 'test query',
+      'bundle' => 'others',
+      'debug' => '1',
+    ]);
+    $response = $this->processRequest($request);
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = json_decode((string) $response->getContent(), TRUE);
+    $this->assertCount(1, $data['results']);
+    $this->assertArrayNotHasKey('debug', $data);
+
+    $this->setUpCurrentUser(permissions: ['access content', 'administer helfi_search']);
+
+    // 1) ?bundle=others&debug=1 → debug payload returned.
     $request = $this->getMockedRequest('/api/v1/search', parameters: [
       'q' => 'test query',
       'bundle' => 'others',
@@ -265,6 +307,100 @@ class SearchControllerTest extends KernelTestBase {
     // 'others' takes the single-search branch, so no promotions are queried.
     $this->assertEmpty($data['promoted']);
     $this->assertSame(['page' => 4, 'landing_page' => 2], $data['debug']['bundles']);
+  }
+
+  /**
+   * Tests the 'contacts' filter on its own.
+   *
+   * Only contacts are searched, and they are paged like other results.
+   * The AI embedding API is not called.
+   */
+  public function testContactsOnly(): void {
+    $embeddingsModel = $this->prophesize(EmbeddingApiInterface::class);
+    $embeddingsModel->getEmbedding(Argument::cetera())->shouldNotBeCalled();
+    $this->container->set(EmbeddingApiInterface::class, $embeddingsModel->reveal());
+
+    $transactions = [];
+    $this->mockEtusivuElasticClient([
+      $this->createElasticsearchResponse([
+        'hits' => [
+          'total' => ['value' => 23],
+          'hits' => [
+            ['_score' => 2.0, '_source' => ['name_parts' => ['Matti', 'Meikäläinen']]],
+          ],
+        ],
+      ]),
+    ], $transactions);
+
+    $request = $this->getMockedRequest('/api/v1/search', parameters: [
+      'q' => 'meikäläinen',
+      'bundle' => 'contacts',
+      'page' => '2',
+    ]);
+    $response = $this->processRequest($request);
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = json_decode((string) $response->getContent(), TRUE);
+    $this->assertCount(1, $data['contacts']);
+    $this->assertEquals('Matti Meikäläinen', $data['contacts'][0]['name']);
+    $this->assertEquals(23, $data['contacts_total']);
+    $this->assertEquals(23, $data['total_hits']);
+    $this->assertEmpty($data['results']);
+
+    /** @var array<int, array{request: \Psr\Http\Message\RequestInterface}> $transactions */
+    $this->assertCount(1, $transactions);
+    $body = json_decode((string) $transactions[0]['request']->getBody(), TRUE);
+    $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $body['from']);
+    $this->assertEquals(QueryBuilder::KNN_DEFAULT_SIZE, $body['size']);
+  }
+
+  /**
+   * Tests that content results are paged after the contacts.
+   */
+  public function testContactsWithContent(): void {
+    $embeddingsModel = $this->prophesize(EmbeddingApiInterface::class);
+    $embeddingsModel->getEmbedding(Argument::type('string'), Argument::type(EmbeddingModel::class))
+      ->willReturn([0.1, 0.2, 0.3]);
+    $this->container->set(EmbeddingApiInterface::class, $embeddingsModel->reveal());
+
+    $transactions = [];
+    $this->mockEtusivuElasticClient([
+      // Contacts: 13 in total, the last 3 are on page 2.
+      $this->createElasticsearchResponse([
+        'hits' => [
+          'total' => ['value' => 13],
+          'hits' => array_fill(0, 3, ['_score' => 2.0, '_source' => ['name_parts' => ['Matti']]]),
+        ],
+      ]),
+      // News results.
+      $this->createElasticsearchResponse([
+        'hits' => [
+          'total' => ['value' => 40],
+          'hits' => [
+            ['_score' => 0.9, '_source' => ['url' => ['/fi/news'], 'label' => ['News']]],
+          ],
+        ],
+      ]),
+    ], $transactions);
+
+    $request = $this->getMockedRequest('/api/v1/search', parameters: [
+      'q' => 'test query',
+      'bundle' => 'contacts,news',
+      'page' => '2',
+    ]);
+    $response = $this->processRequest($request);
+    $this->assertEquals(200, $response->getStatusCode());
+    $data = json_decode((string) $response->getContent(), TRUE);
+    $this->assertCount(3, $data['contacts']);
+    $this->assertEquals(13, $data['contacts_total']);
+    $this->assertCount(1, $data['results']);
+    $this->assertEquals(53, $data['total_hits']);
+
+    /** @var array<int, array{request: \Psr\Http\Message\RequestInterface}> $transactions */
+    $this->assertCount(2, $transactions);
+    // Page 2 starts at the 11th item: contacts 11-13 and content items 1-7.
+    $knnBody = json_decode((string) $transactions[1]['request']->getBody(), TRUE);
+    $this->assertEquals(0, $knnBody['from']);
+    $this->assertEquals(7, $knnBody['size']);
   }
 
   /**

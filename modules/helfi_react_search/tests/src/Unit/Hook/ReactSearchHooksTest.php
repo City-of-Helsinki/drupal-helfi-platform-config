@@ -224,6 +224,9 @@ final class ReactSearchHooksTest extends UnitTestCase {
       $this->assertSame($lifts, $element['subform'][$field]['#states']['disabled']);
     }
 
+    // The all events link is only shown with the lifts layout.
+    $this->assertSame($lifts, $element['subform']['field_event_list_all_events_link']['#states']['visible']);
+
     // Fields with a condition of their own keep it, with the lifts layout as an
     // alternative. Both rules have to live in the same `#states` array so that
     // they cannot override each other.

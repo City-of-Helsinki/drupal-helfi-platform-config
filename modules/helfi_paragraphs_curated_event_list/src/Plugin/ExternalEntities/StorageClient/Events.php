@@ -169,14 +169,17 @@ class Events extends StorageClientBase {
         continue;
       }
       $originalId = $event['id'];
-      $start = new \DateTime($event['start_time']);
 
       $event['external_link'] = $this->buildExternalLink($event, $langcode);
 
       // Make sure event id is unique per language.
       $event['id'] = sprintf('%s,%s', $originalId, $langcode);
-      $event['title'] = $event['name'][$langcode] . ' (' . $start->format('d.m.Y H:i') . ')';
       $event['name'] = $event['name'][$langcode];
+      $event['title'] = $event['name'];
+      if (isset($event['start_time'])) {
+        $start = new \DateTime($event['start_time'])->format('d.m.Y H:i');
+        $event['title'] .= " ($start)";
+      }
 
       $prepared[$event['id']] = $event;
     }

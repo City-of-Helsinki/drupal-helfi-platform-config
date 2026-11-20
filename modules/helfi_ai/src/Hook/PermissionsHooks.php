@@ -23,10 +23,13 @@ class PermissionsHooks {
       'use helfi ai title suggestion',
       'use helfi ai tone check',
       'use helfi ai summary',
-      'manage ai prompts',
     ];
     return [
       'admin' => $permissions,
+      'editor' => [
+        'use helfi ai title suggestion',
+        'use helfi ai summary',
+      ],
     ];
   }
 

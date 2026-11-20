@@ -1,0 +1,30 @@
+{
+  "increase_percentage": 20,
+  "voucher_limits": {
+    "min": 8.4,
+    "old_max": 34,
+    "max": 40.8
+  },
+  "household_size": {
+    "1": {
+      "percent": 35
+    },
+    "2": {
+      "percent": 22
+    },
+    "3": {
+      "percent": 18
+    },
+    "4": {
+      "percent": 15
+    },
+    "5": {
+      "percent": 13
+    },
+    "6": {
+      "percent": 11
+    }
+  },
+  "household_size_beyond_defined_multiplier_percent": -1,
+  "voucher_divisor": 60
+}

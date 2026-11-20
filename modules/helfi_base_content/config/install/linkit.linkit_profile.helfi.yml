@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
-    - external_entities
+    - helfi_platform_config
     - node
 label: Helfi
 id: helfi
@@ -20,13 +20,14 @@ matchers:
       limit: 20
       include_unpublished: false
     weight: -10
-  234d0bc6-8e68-46a5-8044-2a4c76d43552:
-    id: 'entity:helfi_multisite_content'
-    uuid: 234d0bc6-8e68-46a5-8044-2a4c76d43552
+  2cff312b-c6a7-44df-8595-7e8afa98c2fb:
+    id: helfi_multisite_content
+    uuid: 2cff312b-c6a7-44df-8595-7e8afa98c2fb
     settings:
+      exclude_current_instance: true
       metadata: '[helfi_multisite_content:external-url]'
       bundles: null
       group_by_bundle: null
       substitution_type: multisite
-      limit: 20
-    weight: -9
+      limit: '20'
+    weight: 0

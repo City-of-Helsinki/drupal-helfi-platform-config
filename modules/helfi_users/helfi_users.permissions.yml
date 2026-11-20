@@ -1,2 +1,8 @@
 allow all user cancel methods:
   title: All access to all user cancel methods
+use favorites:
+  title: Use favourites
+  description: 'Mark editable content as a favourite.'
+allow views bulk operations:
+  title: Allow views bulk operations
+  description: 'Use the bulk operations tool on content listings.'

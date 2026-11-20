@@ -18,6 +18,8 @@ use Drupal\helfi_platform_config\EventSubscriber\CspSiteimproveSubscriber;
 use Drupal\helfi_platform_config\EventSubscriber\CspSentrySubscriber;
 use Drupal\helfi_platform_config\EventSubscriber\CspSocialMediaSubscriber;
 use Drupal\helfi_platform_config\SearchAPI\Query\QueryResultParser;
+use Drupal\helfi_platform_config\SearchAPI\RestrictedBackendClientFactory;
+use Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -43,12 +45,28 @@ final class HelfiPlatformConfigServiceProvider extends ServiceProviderBase {
       $definition->setClass(QueryResultParser::class);
       $definition->addArgument(new Reference(MultisiteSearch::class));
     }
+
+    if ($container->hasDefinition('elasticsearch_connector.backend_client_factory')) {
+      $definition = $container->getDefinition('elasticsearch_connector.backend_client_factory');
+      $definition->setClass(RestrictedBackendClientFactory::class);
+      $definition->addArgument(new Reference(RestrictedSearchIndex::class));
+    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function register(ContainerBuilder $container) : void {
+    /** @var array<string, array{pathname: string}> $modules */
+    $modules = $container->getParameter('container.modules');
+    $module_path = dirname($modules['helfi_platform_config']['pathname']);
+
+    // Default images keyed by langcode.
+    $container->setParameter('helfi_platform_config.default_image', [
+      'default' => "$module_path/fixtures/og-global.png",
+      'sv' => "$module_path/fixtures/og-global-sv.png",
+    ]);
+
     self::registerCspEventSubscribers($container, [
       CspCleanSubscriber::class,
       CspIbmChatAppSubscriber::class,
