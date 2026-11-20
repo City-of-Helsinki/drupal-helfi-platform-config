@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_etusivu_entities\Kernel;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder;
 use Drupal\helfi_node_announcement\Entity\Announcement;
 use Drupal\node\Entity\Node;
@@ -141,6 +142,23 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
   }
 
   /**
+   * Tests that remote announcements are loaded from fixtures.
+   */
+  public function testRemoteFixtures(): void {
+    $this->container->get(FeatureManagerInterface::class)
+      ->enableFeature(FeatureManagerInterface::USE_MOCK_RESPONSES);
+    $this->announcement('Global');
+
+    $this->setCurrentPage('/feedback');
+    $this->assertSame([
+      'Global alert',
+      'Global attention',
+      'Global notification',
+      'Global',
+    ], $this->announcementTitles(TRUE), 'Remote announcements render before local announcements.');
+  }
+
+  /**
    * Tests that announcement nodes use the bundle class.
    */
   public function testBundleClass(): void {
@@ -211,17 +229,20 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
   }
 
   /**
-   * Builds the local announcements and returns their titles.
+   * Builds the announcements and returns their titles.
+   *
+   * @param bool $useRemoteEntities
+   *   Whether to include remote announcements.
    *
    * @return string[]
    *   Visible announcement titles, in render order.
    */
-  private function announcementTitles(): array {
+  private function announcementTitles(bool $useRemoteEntities = FALSE): array {
     $builder = $this->container->get(AnnouncementsLazyBuilder::class);
     if (!$builder instanceof AnnouncementsLazyBuilder) {
       throw new \RuntimeException('The announcement builder is missing.');
     }
-    return $this->titles($builder->lazyBuild(FALSE));
+    return $this->titles($builder->lazyBuild($useRemoteEntities));
   }
 
 }
