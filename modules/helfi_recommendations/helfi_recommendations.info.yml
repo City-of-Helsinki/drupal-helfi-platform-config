@@ -13,5 +13,6 @@ dependencies:
   - drupal:field
   - search_api:search_api
   - elasticsearch_connector:elasticsearch_connector
+  - helfi_user_roles:helfi_user_roles
 'interface translation project': helfi_recommendations
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/helfi_recommendations/translations/%language.po

@@ -16,5 +16,6 @@ dependencies:
   - linkit:linkit
   - views_bulk_edit:views_bulk_edit
   - views_bulk_operations:views_bulk_operations
+  - helfi_user_roles:helfi_user_roles
 'interface translation project': hdbt_admin_tools
 'interface translation server pattern': modules/contrib/helfi_platform_config/modules/hdbt_admin_tools/translations/%language.po
