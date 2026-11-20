@@ -8,12 +8,24 @@
     "lint:js": "biome lint assets/js/ckeditor5_plugins/",
     "format:js": "biome format --write assets/js/ckeditor5_plugins/"
   },
+  "@comment dependencies": [
+    "The following packages were updated manually.",
+    "Remove this section once the dependencies have been updated in their respective upstream packages.",
+    {
+      "glob": "^14.0.2, dependency of ckeditor5-dev-utils",
+      "minimatch": "^11.0.9, dependency of ckeditor5-dev-utils"
+    }
+  ],
+  "overrides": {
+    "glob": "^14.0.2",
+    "minimatch": "^11.0.9"
+  },
   "dependencies": {
     "@biomejs/biome": "^2.5.6",
-    "@ckeditor/ckeditor5-core": "^47.6.2",
+    "@ckeditor/ckeditor5-core": "^47.7.4",
     "@ckeditor/ckeditor5-dev-utils": "^62.5.0",
     "@nuxt/friendly-errors-webpack-plugin": "^2.5.1",
-    "ckeditor5": "^47.6.2",
+    "ckeditor5": "^47.7.4",
     "diff": "^8.0.2",
     "raw-loader": "^4.0.2",
     "terser-webpack-plugin": "^5.3.3",
