@@ -13,6 +13,7 @@ use Drupal\external_entities\Entity\ExternalEntityInterface;
 use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\JsonApi;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -70,6 +71,11 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
   protected DefaultLanguageResolver $defaultLanguageResolver;
 
   /**
+   * The feature manager.
+   */
+  protected FeatureManagerInterface $featureManager;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -83,6 +89,7 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
     $instance->languageManager = $container->get('language_manager');
     $instance->cache = $container->get('cache.default');
     $instance->defaultLanguageResolver = $container->get(DefaultLanguageResolver::class);
+    $instance->featureManager = $container->get(FeatureManagerInterface::class);
 
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
     $environmentResolver = $container->get('helfi_api_base.environment_resolver');
@@ -210,10 +217,6 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
   protected function request(array $parameters, string $langcode) : array {
     if (!$this->environment) {
       return [];
-    }
-
-    if ($this->defaultLanguageResolver->isAltLanguage($langcode)) {
-      $langcode = $this->defaultLanguageResolver->getFallbackLanguage();
     }
 
     $uri = $this->getUri($parameters, $langcode);
