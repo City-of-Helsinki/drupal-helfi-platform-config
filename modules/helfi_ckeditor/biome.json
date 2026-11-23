@@ -1,5 +1,4 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -10,7 +9,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "suspicious": { "noGlobalIsFinite": "off", "noArrayIndexKey": "warn" },
       "correctness": {
         "noUnusedVariables": "warn",
