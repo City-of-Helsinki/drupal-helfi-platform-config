@@ -35,6 +35,8 @@ The feature utilises Elasticsearch Connector event subscribers to add the prefix
 
 Some indexes are written to by several instances. They are listed with their main instance in `Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex`.
 
+Outside the main instance, `Drupal\helfi_platform_config\SearchAPI\RestrictedElasticSearchBackend` leaves a shared Elasticsearch index unchanged: creating, deleting, updating and clearing it are skipped. Documents are still indexed and deleted as usual. The class replaces the `elasticsearch` backend plugin through `hook_search_api_backend_info_alter()`.
+
 ### Clearing a shared index
 
 `drush search-api:clear` (`sapi-c`) on a shared index is guarded by `Drupal\helfi_platform_config\Drush\Listeners\SearchApiClearListener`:

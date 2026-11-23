@@ -6,6 +6,8 @@ namespace Drupal\Tests\helfi_platform_config\Traits;
 
 use Elastic\Elasticsearch\Client;
 use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use GuzzleHttp\Promise\Create;
 use GuzzleHttp\Psr7\Response;
 
@@ -47,19 +49,22 @@ trait ElasticKernelTrait {
    * @param array<mixed> $response
    *   The JSON object returned for every request. An empty array is encoded
    *   as an empty object, which is what the client accepts for a no-op call.
+   * @param array<int, array<string, mixed>> $history
+   *   Outgoing requests are appended here. Omit it to discard them.
    */
-  protected function mockElasticsearchConnectorHttpClient(array $response = []): void {
-    $this->container->set('http_client', new HttpClient([
-      'handler' => function () use ($response) {
-        // A fresh response each time: the client consumes the body stream.
-        $body = $response === [] ? '{}' : (string) json_encode($response);
-        return Create::promiseFor(new Response(
-          200,
-          $this->elasticsearchResponseHeaders(),
-          $body,
-        ));
-      },
-    ]));
+  protected function mockElasticsearchConnectorHttpClient(array $response = [], array &$history = []): void {
+    $stack = new HandlerStack(function () use ($response) {
+      // A fresh response each time: the client consumes the body stream.
+      $body = $response === [] ? '{}' : (string) json_encode($response);
+      return Create::promiseFor(new Response(
+        200,
+        $this->elasticsearchResponseHeaders(),
+        $body,
+      ));
+    });
+    $recorded = &$history;
+    $stack->push(Middleware::history($recorded));
+    $this->container->set('http_client', new HttpClient(['handler' => $stack]));
   }
 
 }

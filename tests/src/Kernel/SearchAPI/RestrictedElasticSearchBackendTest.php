@@ -4,33 +4,28 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_platform_config\Kernel\SearchAPI;
 
-use Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_platform_config\SearchAPI\RestrictedBackendClient;
+use Drupal\helfi_platform_config\SearchAPI\RestrictedElasticSearchBackend;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Entity\Server;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\ServerInterface;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
-use Drupal\Tests\helfi_platform_config\Traits\ElasticTrait;
-use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
+use Drupal\Tests\helfi_platform_config\Traits\ElasticKernelTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
- * Tests the shared-index backend client against recorded HTTP requests.
+ * Tests the shared-index backend against recorded HTTP requests.
  */
 #[Group('helfi_platform_config')]
 #[RunTestsInSeparateProcesses]
-final class RestrictedBackendClientTest extends KernelTestBase {
+final class RestrictedElasticSearchBackendTest extends KernelTestBase {
 
-  use ElasticTrait;
+  use ElasticKernelTrait;
   use EnvironmentResolverTrait;
 
   /**
@@ -49,12 +44,7 @@ final class RestrictedBackendClientTest extends KernelTestBase {
   private array $history = [];
 
   /**
-   * Responses returned for the next Elasticsearch calls.
-   */
-  private MockHandler $mockHandler;
-
-  /**
-   * The server whose backend client is under test.
+   * The server whose backend is under test.
    */
   private ServerInterface $server;
 
@@ -65,15 +55,12 @@ final class RestrictedBackendClientTest extends KernelTestBase {
     parent::setUp();
     $this->installEntitySchema('search_api_task');
 
-    $this->mockHandler = new MockHandler();
-    $stack = HandlerStack::create($this->mockHandler);
-    $history = &$this->history;
-    $stack->push(Middleware::history($history));
-    $this->container->set('http_client', new HttpClient(['handler' => $stack]));
+    // Every Elasticsearch request succeeds and is recorded.
+    $this->mockElasticsearchConnectorHttpClient(['acknowledged' => TRUE], $this->history);
 
     $this->server = Server::create([
-      'id' => 'restricted_client',
-      'name' => 'Restricted client',
+      'id' => 'restricted_backend',
+      'name' => 'Restricted backend',
       'status' => TRUE,
       'backend' => 'elasticsearch',
       'backend_config' => [
@@ -110,15 +97,14 @@ final class RestrictedBackendClientTest extends KernelTestBase {
    * Operations that delete, create, or remap an Elasticsearch index.
    *
    * @return array<string, array{string}>
-   *   The backend client method name.
+   *   The backend method name.
    */
   public static function schemaOperations(): array {
     return [
       'remove' => ['removeIndex'],
       'add' => ['addIndex'],
-      'clear' => ['clearIndex'],
-      'settings' => ['updateSettings'],
-      'mapping' => ['updateFieldMapping'],
+      'update' => ['updateIndex'],
+      'clear' => ['deleteAllIndexItems'],
     ];
   }
 
@@ -140,7 +126,6 @@ final class RestrictedBackendClientTest extends KernelTestBase {
   #[DataProvider('schemaOperations')]
   public function testRunsSharedIndexOnMainInstance(string $method): void {
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
-    $this->queueResponses();
 
     $this->call($method, $this->index('suggestions'));
 
@@ -153,7 +138,6 @@ final class RestrictedBackendClientTest extends KernelTestBase {
   #[DataProvider('schemaOperations')]
   public function testRunsOtherIndexesOffMainInstance(string $method): void {
     $this->setActiveProject(Project::LIIKENNE, EnvironmentEnum::Local);
-    $this->queueResponses();
 
     $this->call($method, $this->index('news'));
 
@@ -166,20 +150,68 @@ final class RestrictedBackendClientTest extends KernelTestBase {
   public function testSkipsRemovedSharedIndexId(): void {
     $this->setActiveProject(Project::LIIKENNE, EnvironmentEnum::Local);
 
-    $this->client()->removeIndex('embeddings');
+    $this->backend()->removeIndex('embeddings');
 
     $this->assertSame([], $this->history);
   }
 
   /**
-   * The backend client built from the server.
+   * Document deletion and reads still reach a shared index off its main.
    */
-  private function client(): RestrictedBackendClient {
+  public function testPassesOtherOperationsThroughOffMainInstance(): void {
+    $this->setActiveProject(Project::LIIKENNE, EnvironmentEnum::Local);
+    $backend = $this->backend();
+    $index = $this->index('embeddings');
+
+    $operations = [
+      'deleteItems' => static fn () => $backend->deleteItems($index, ['entity:node/1:fi']),
+      'getRawIndexMappings' => static fn () => $backend->getRawIndexMappings($index),
+      'getRawIndexSettings' => static fn () => $backend->getRawIndexSettings($index),
+    ];
+    foreach ($operations as $operation => $call) {
+      $this->history = [];
+      $call();
+      $this->assertCount(1, $this->history, $operation);
+    }
+  }
+
+  /**
+   * A breaking field change off the main instance only marks items.
+   *
+   * The main instance rebuilds the shared Elasticsearch index, which drops
+   * this instance's documents, so they must be indexed again.
+   */
+  public function testBreakingUpdateOffMainInstanceMarksItemsForReindexing(): void {
+    $this->setActiveProject(Project::LIIKENNE, EnvironmentEnum::Local);
+    $index = $this->index('embeddings');
+    $index->setStatus(TRUE);
+    // New indexes count as reindexing until items get indexed.
+    $this->container->get('state')->set('search_api.index.embeddings.has_reindexed', FALSE);
+
+    // A change Elasticsearch can apply in place leaves the items as they are.
+    $index->setOriginal(clone $index);
+    $this->backend()->updateIndex($index);
+    $this->assertFalse($index->isReindexing());
+
+    // The previous version had a field that the new one drops.
+    $original = clone $index;
+    $original->addField($this->container->get('search_api.fields_helper')->createField($original, 'title', [
+      'type' => 'string',
+    ]));
+    $index->setOriginal($original);
+    $this->backend()->updateIndex($index);
+
+    $this->assertTrue($index->isReindexing());
+    $this->assertSame([], $this->history);
+  }
+
+  /**
+   * The backend plugin built for the server.
+   */
+  private function backend(): RestrictedElasticSearchBackend {
     $backend = $this->server->getBackend();
-    $this->assertInstanceOf(ElasticSearchBackend::class, $backend);
-    $client = $backend->getBackendClient();
-    $this->assertInstanceOf(RestrictedBackendClient::class, $client);
-    return $client;
+    $this->assertInstanceOf(RestrictedElasticSearchBackend::class, $backend);
+    return $backend;
   }
 
   /**
@@ -195,27 +227,14 @@ final class RestrictedBackendClientTest extends KernelTestBase {
    * Calls one schema operation.
    */
   private function call(string $method, IndexInterface $index): void {
-    $client = $this->client();
+    $backend = $this->backend();
     match ($method) {
-      'removeIndex' => $client->removeIndex($index),
-      'addIndex' => $client->addIndex($index),
-      'clearIndex' => $client->clearIndex($index),
-      'updateSettings' => $client->updateSettings($index),
-      'updateFieldMapping' => $client->updateFieldMapping($index),
+      'removeIndex' => $backend->removeIndex($index),
+      'addIndex' => $backend->addIndex($index),
+      'updateIndex' => $backend->updateIndex($index),
+      'deleteAllIndexItems' => $backend->deleteAllIndexItems($index),
       default => throw new \InvalidArgumentException($method),
     };
-  }
-
-  /**
-   * Queues enough successful responses for one connector call to finish.
-   */
-  private function queueResponses(): void {
-    array_splice($this->history, 0);
-    for ($i = 0; $i < 8; $i++) {
-      $this->mockHandler->append($this->createElasticsearchResponse([
-        'acknowledged' => TRUE,
-      ]));
-    }
   }
 
 }
