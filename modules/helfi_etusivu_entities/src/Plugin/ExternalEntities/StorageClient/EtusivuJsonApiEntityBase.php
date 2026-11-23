@@ -13,6 +13,7 @@ use Drupal\external_entities\Entity\ExternalEntityInterface;
 use Drupal\external_entities\Plugin\ExternalEntities\StorageClient\JsonApi;
 use Drupal\helfi_api_base\Environment\Environment;
 use Drupal\helfi_api_base\Environment\Project;
+use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use Drupal\helfi_api_base\Language\DefaultLanguageResolver;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -70,6 +71,11 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
   protected DefaultLanguageResolver $defaultLanguageResolver;
 
   /**
+   * The feature manager.
+   */
+  protected FeatureManagerInterface $featureManager;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(
@@ -83,6 +89,7 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
     $instance->languageManager = $container->get('language_manager');
     $instance->cache = $container->get('cache.default');
     $instance->defaultLanguageResolver = $container->get(DefaultLanguageResolver::class);
+    $instance->featureManager = $container->get(FeatureManagerInterface::class);
 
     /** @var \Drupal\helfi_api_base\Environment\EnvironmentResolver $environmentResolver */
     $environmentResolver = $container->get('helfi_api_base.environment_resolver');
@@ -208,12 +215,19 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
    * @see \helfi_etusivu_invalidate_external_caches()
    */
   protected function request(array $parameters, string $langcode) : array {
-    if (!$this->environment) {
-      return [];
-    }
-
     if ($this->defaultLanguageResolver->isAltLanguage($langcode)) {
       $langcode = $this->defaultLanguageResolver->getFallbackLanguage();
+    }
+
+    if (
+      $this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES) &&
+      ($fixture = $this->getFixtureData($langcode)) !== NULL
+    ) {
+      return $fixture;
+    }
+
+    if (!$this->environment) {
+      return [];
     }
 
     $uri = $this->getUri($parameters, $langcode);
@@ -242,6 +256,32 @@ abstract class EtusivuJsonApiEntityBase extends JsonApi {
     }
 
     return [];
+  }
+
+  /**
+   * Gets the fixture data for given language.
+   *
+   * @param string $langcode
+   *   The langcode.
+   *
+   * @return array<mixed>|null
+   *   An array of entities or NULL if the endpoint has no fixture.
+   */
+  protected function getFixtureData(string $langcode) : ?array {
+    $fixture = sprintf('%s/../../../../fixtures/%s.json', __DIR__, str_replace('/', '-', ltrim($this->getApiEndpoint(), '/')));
+
+    if (!file_exists($fixture)) {
+      return NULL;
+    }
+    $json = json_decode((string) file_get_contents($fixture), TRUE);
+
+    $data = [];
+    foreach ($json['data'] ?? [] as $item) {
+      if (($item['attributes']['langcode'] ?? NULL) === $langcode) {
+        $data[] = $item;
+      }
+    }
+    return $data;
   }
 
   /**

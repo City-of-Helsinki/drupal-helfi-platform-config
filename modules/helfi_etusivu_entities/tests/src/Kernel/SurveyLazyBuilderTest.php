@@ -19,13 +19,6 @@ use PHPUnit\Framework\Attributes\Group;
 final class SurveyLazyBuilderTest extends LazyBuilderTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected function builderClass(): string {
-    return SurveyLazyBuilder::class;
-  }
-
-  /**
    * Tests which survey is selected for a path or content page.
    */
   public function testVisibility(): void {

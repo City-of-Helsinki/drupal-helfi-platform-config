@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\helfi_etusivu_entities\Kernel;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use Drupal\helfi_etusivu_entities\AnnouncementsLazyBuilder;
 use Drupal\helfi_node_announcement\Entity\Announcement;
 use Drupal\node\Entity\Node;
@@ -23,13 +24,6 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
   protected function setUp(): void {
     parent::setUp();
     $this->config('system.site')->set('page.front', '/frontpage')->save();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function builderClass(): string {
-    return AnnouncementsLazyBuilder::class;
   }
 
   /**
@@ -86,26 +80,6 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
   }
 
   /**
-   * Tests that urgent and page-specific announcements render first.
-   */
-  public function testOrder(): void {
-    $this->announcement('General');
-    $this->announcement('Specific', [
-      'field_announcement_all_pages' => 0,
-      'field_announcement_page_paths' => '/feedback',
-    ]);
-    $this->announcement('Alert', [
-      'field_announcement_type' => 'alert',
-    ]);
-
-    $this->setCurrentPage('/feedback');
-    $this->assertSame(
-      ['Alert', 'Specific', 'General'],
-      $this->announcementTitles(),
-    );
-  }
-
-  /**
    * Tests that severity orders first and specificity within the same type.
    */
   public function testOrderWithinType(): void {
@@ -141,21 +115,34 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
   }
 
   /**
-   * Tests that announcement nodes use the bundle class.
+   * Tests that remote announcements are loaded from fixtures.
    */
-  public function testBundleClass(): void {
-    $node = $this->container->get('entity_type.manager')
-      ->getStorage('node')
-      ->create(['type' => 'announcement']);
-    $this->assertInstanceOf(Announcement::class, $node);
+  public function testRemoteFixtures(): void {
+    $this->container->get(FeatureManagerInterface::class)
+      ->enableFeature(FeatureManagerInterface::USE_MOCK_RESPONSES);
+    $this->announcement('Global');
 
-    // Only Etusivu has the field.
-    $this->assertFalse($node->publishExternally());
-    $this->assertSame(['helfi_external_entity_announcement'], $node->getExternalCacheTags());
+    $this->setCurrentPage('/feedback');
+    $builder = $this->container->get(AnnouncementsLazyBuilder::class);
+    $announcements = [];
+    foreach ($builder->lazyBuild(TRUE) as $item) {
+      if (is_array($item) && ($item['#node'] ?? NULL) instanceof NodeInterface) {
+        $announcements[] = [
+          (string) $item['#node']->label(),
+          $item['#node']->get('field_announcement_type')->value,
+        ];
+      }
+    }
+    $this->assertSame([
+      ['Global announcement', 'alert'],
+      ['Global announcement', 'attention'],
+      ['Global announcement', 'notification'],
+      ['Global', 'notification'],
+    ], $announcements, 'Remote announcements render before local announcements.');
   }
 
   /**
-   * Tests populating an announcement from a remote announcement.
+   * Tests the bundle class and populating it from a remote announcement.
    */
   public function testPopulateFromRemoteEntity(): void {
     $entityTypeManager = $this->container->get('entity_type.manager');
@@ -174,6 +161,11 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
 
     $node = $entityTypeManager->getStorage('node')->create(['type' => 'announcement']);
     $this->assertInstanceOf(Announcement::class, $node);
+
+    // Only Etusivu has the field.
+    $this->assertFalse($node->publishExternally());
+    $this->assertSame(['helfi_external_entity_announcement'], $node->getExternalCacheTags());
+
     $this->assertSame($node, $node->populateFromRemoteEntity($remote));
 
     $this->assertTrue($node->isNew());
@@ -211,7 +203,7 @@ final class AnnouncementsLazyBuilderTest extends LazyBuilderTestBase {
   }
 
   /**
-   * Builds the local announcements and returns their titles.
+   * Builds the announcements and returns their titles.
    *
    * @return string[]
    *   Visible announcement titles, in render order.

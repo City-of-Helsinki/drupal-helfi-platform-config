@@ -9,7 +9,6 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Utility\Error;
 use Drupal\external_entities\ExternalEntityStorageInterface;
-use Drupal\helfi_api_base\Features\FeatureManagerInterface;
 use Drupal\helfi_node_announcement\Entity\Announcement;
 use Drupal\node\NodeInterface;
 use Psr\Log\LoggerInterface;
@@ -36,7 +35,6 @@ final class AnnouncementsLazyBuilder implements TrustedCallbackInterface {
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly LocalNodeLoader $localNodeLoader,
     private readonly PageVisibility $pageVisibility,
-    private readonly FeatureManagerInterface $featureManager,
     #[Autowire(service: 'logger.channel.helfi_etusivu_entities')]
     private readonly LoggerInterface $logger,
   ) {}
@@ -122,10 +120,6 @@ final class AnnouncementsLazyBuilder implements TrustedCallbackInterface {
    *   Unsaved announcement nodes.
    */
   private function loadRemote(): array {
-    if ($this->featureManager->isEnabled(FeatureManagerInterface::USE_MOCK_RESPONSES)) {
-      return $this->handleRemoteEntities($this->mockRemoteEntities());
-    }
-
     $storage = $this->entityTypeManager->getStorage('helfi_announcements');
     if (!$storage instanceof ExternalEntityStorageInterface) {
       throw new \InvalidArgumentException('helfi_announcements is not an external entity type');
@@ -155,28 +149,6 @@ final class AnnouncementsLazyBuilder implements TrustedCallbackInterface {
       $nodes[] = $announcement->populateFromRemoteEntity($remote);
     }
     return $nodes;
-  }
-
-  /**
-   * Creates a remote announcement for instances that use mock responses.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface[]
-   *   The remote announcements.
-   */
-  private function mockRemoteEntities(): array {
-    $entity = $this->entityTypeManager
-      ->getStorage('helfi_announcements')->create([
-        'uuid' => 'c9ee55c3-9ca5-4c53-900e-82b6d6928a99',
-        'langcode' => 'en',
-        'body' => 'body',
-        'title' => 'title3',
-        'status' => NodeInterface::PUBLISHED,
-        'field_announcement_title' => 'The title3',
-        'field_announcement_type' => 'alert',
-        'field_announcement_all_pages' => 0,
-        'field_announcement_assistive_technology_close_button_title' => 'assistance',
-      ]);
-    return [$entity];
   }
 
 }
