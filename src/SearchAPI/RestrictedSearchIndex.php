@@ -9,22 +9,23 @@ use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 
 /**
- * Shared search indexes and the main instance for them.
+ * Shared search indexes, their main instance and their site field.
  */
 final class RestrictedSearchIndex {
 
   /**
-   * Search API index ids mapped to the instance that may change them.
+   * Shared Search API index ids mapped to their main instance and site field.
    *
-   * All instances are allowed to do regular index updates on document level,
-   * but only the main instance is allowed to do full index clear etc.
+   * Every instance indexes and clears its own documents. Only the main
+   * instance may create, delete or rebuild the Elasticsearch index. The site
+   * field holds the name of the instance that indexed the document.
    *
-   * @var array<string, string>
+   * @var array<string, array{main: string, site_field: string}>
    */
-  private const array MAINS = [
-    'embeddings' => Project::ETUSIVU,
-    'suggestions' => Project::ETUSIVU,
-    'hyte' => Project::ASUMINEN,
+  private const array SHARED = [
+    'embeddings' => ['main' => Project::ETUSIVU, 'site_field' => 'instance'],
+    'suggestions' => ['main' => Project::ETUSIVU, 'site_field' => 'parent_instance'],
+    'hyte' => ['main' => Project::ASUMINEN, 'site_field' => 'instance'],
   ];
 
   public function __construct(
@@ -33,56 +34,60 @@ final class RestrictedSearchIndex {
   }
 
   /**
-   * The instance that may change this index.
+   * Whether the index is shared between instances.
+   */
+  public function isShared(string $indexId): bool {
+    return isset(self::SHARED[$indexId]);
+  }
+
+  /**
+   * The instance that may create, delete or rebuild this index.
    *
    * @return string|null
    *   The project name, or NULL when the index is not shared.
    */
   public function mainInstance(string $indexId): ?string {
-    return self::MAINS[$indexId] ?? NULL;
+    return self::SHARED[$indexId]['main'] ?? NULL;
   }
 
   /**
-   * Whether the index is shared between instances.
+   * The index field that holds the name of the indexing instance.
+   *
+   * @return string|null
+   *   The field id, or NULL when the index is not shared.
    */
-  public static function isShared(string $indexId): bool {
-    return isset(self::MAINS[$indexId]);
+  public function siteField(string $indexId): ?string {
+    return self::SHARED[$indexId]['site_field'] ?? NULL;
   }
 
   /**
-   * Decides the action for each given index id.
+   * Whether the index is shared and this is not its main instance.
    *
-   * The main instance is asked to confirm. Every other instance is blocked.
-   * Indexes that are not shared are allowed.
-   *
-   * @param string[] $indexIds
-   *   Index ids to decide for. The result uses this order.
-   *
-   * @return array<string, \Drupal\helfi_platform_config\SearchAPI\RestrictedClearAction>
-   *   Actions keyed by the given index ids.
+   * An unknown active project is never the main instance.
    */
-  public function actionFor(array $indexIds): array {
+  public function isSharedFromOtherInstance(string $indexId): bool {
+    $main = $this->mainInstance($indexId);
+    return $main !== NULL && $main !== $this->activeProject();
+  }
+
+  /**
+   * Shared index ids whose main instance is another instance.
+   *
+   * @return string[]
+   *   The index ids, or an empty array when the active project is unknown.
+   */
+  public function sharedFromOtherInstances(): array {
     $project = $this->activeProject();
-    $actions = [];
-    foreach ($indexIds as $indexId) {
-      $main = $this->mainInstance($indexId);
-      if ($main === NULL) {
-        $actions[$indexId] = RestrictedClearAction::Allow;
-      }
-      elseif ($project === $main) {
-        $actions[$indexId] = RestrictedClearAction::Confirm;
-      }
-      else {
-        $actions[$indexId] = RestrictedClearAction::Block;
-      }
+    if ($project === NULL) {
+      return [];
     }
-    return $actions;
+    return array_keys(array_filter(self::SHARED, static fn (array $shared): bool => $shared['main'] !== $project));
   }
 
   /**
    * The active project name, or NULL when it cannot be resolved.
    */
-  private function activeProject(): ?string {
+  public function activeProject(): ?string {
     try {
       return $this->environmentResolver->getActiveProject()->getName();
     }

@@ -10,6 +10,7 @@ use Drupal\helfi_platform_config\SearchAPI\RestrictedElasticSearchBackend;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Entity\Server;
 use Drupal\search_api\IndexInterface;
+use Drupal\search_api\SearchApiException;
 use Drupal\search_api\ServerInterface;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\helfi_platform_config\Kernel\KernelTestBase;
@@ -109,15 +110,104 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
   }
 
   /**
-   * Shared indexes skip schema changes outside their main instance.
+   * Other instances do not create or delete a shared index.
    */
-  #[DataProvider('schemaOperations')]
-  public function testSkipsSharedIndexOffMainInstance(string $method): void {
+  public function testSkipsAddAndRemoveOffMainInstance(): void {
     $this->setActiveProject(Project::LIIKENNE, EnvironmentEnum::Local);
 
-    $this->call($method, $this->index('embeddings'));
+    $this->backend()->addIndex($this->index('embeddings'));
+    $this->backend()->removeIndex($this->index('embeddings'));
 
     $this->assertSame([], $this->history);
+  }
+
+  /**
+   * Other instances only add field mappings to a shared index.
+   */
+  public function testUpdateOffMainInstanceOnlyPutsMappings(): void {
+    $this->setActiveProject(Project::LIIKENNE, EnvironmentEnum::Local);
+
+    $this->backend()->updateIndex($this->index('embeddings'));
+
+    $this->assertSame([
+      'HEAD /embeddings',
+      'PUT /embeddings/_mapping',
+    ], $this->requests());
+  }
+
+  /**
+   * Clearing a shared index deletes only this instance's documents.
+   */
+  public function testClearDeletesOnlyOwnDocuments(): void {
+    $this->setActiveProject(Project::LIIKENNE, EnvironmentEnum::Local);
+
+    $this->backend()->deleteAllIndexItems($this->index('embeddings'));
+
+    $this->assertSame([
+      'HEAD /embeddings',
+      'POST /embeddings/_delete_by_query',
+    ], $this->requests());
+    $this->assertSame([
+      ['term' => ['instance' => Project::LIIKENNE]],
+    ], $this->body(1)['query']['bool']['filter']);
+    $this->assertStringContainsString('conflicts=proceed', $this->history[1]['request']->getUri()->getQuery());
+  }
+
+  /**
+   * The main instance clears only its own documents, too.
+   */
+  public function testClearOnMainInstanceDeletesOnlyOwnDocuments(): void {
+    $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
+
+    $this->backend()->deleteAllIndexItems($this->index('suggestions'), 'entity:suggested_topics');
+
+    $this->assertSame([
+      'HEAD /suggestions',
+      'POST /suggestions/_delete_by_query',
+    ], $this->requests());
+    $this->assertSame([
+      ['term' => ['parent_instance' => Project::ETUSIVU]],
+      ['term' => ['search_api_datasource' => 'entity:suggested_topics']],
+    ], $this->body(1)['query']['bool']['filter']);
+  }
+
+  /**
+   * A shared index cannot be cleared when the active project is unknown.
+   */
+  public function testClearWithUnknownProjectFails(): void {
+    $this->expectException(SearchApiException::class);
+    $this->expectExceptionMessage('Cannot clear the shared index embeddings, because the active project is unknown.');
+
+    $this->backend()->deleteAllIndexItems($this->index('embeddings'));
+  }
+
+  /**
+   * A breaking field change on the main instance drops and creates the index.
+   */
+  public function testBreakingUpdateOnMainInstanceRecreatesIndex(): void {
+    $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
+    $index = $this->index('embeddings');
+    $index->setStatus(TRUE);
+    // New indexes count as reindexing until items get indexed.
+    $this->container->get('state')->set('search_api.index.embeddings.has_reindexed', FALSE);
+
+    // The previous version had a field that the new one drops.
+    $original = clone $index;
+    $original->addField($this->container->get('search_api.fields_helper')->createField($original, 'title', [
+      'type' => 'string',
+    ]));
+    $index->setOriginal($original);
+    $this->backend()->updateIndex($index);
+
+    $this->assertTrue($index->isReindexing());
+    // The mock reports every index as existing, so addIndex() stops after
+    // its existence check instead of sending PUT /embeddings.
+    $this->assertSame([
+      'HEAD /embeddings',
+      'HEAD /embeddings',
+      'DELETE /embeddings',
+      'HEAD /embeddings',
+    ], $this->requests());
   }
 
   /**
@@ -176,33 +266,47 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
   }
 
   /**
-   * A breaking field change off the main instance only marks items.
-   *
-   * The main instance rebuilds the shared Elasticsearch index, which drops
-   * this instance's documents, so they must be indexed again.
+   * The Elasticsearch uuid of an index is read from its settings.
    */
-  public function testBreakingUpdateOffMainInstanceMarksItemsForReindexing(): void {
-    $this->setActiveProject(Project::LIIKENNE, EnvironmentEnum::Local);
-    $index = $this->index('embeddings');
-    $index->setStatus(TRUE);
-    // New indexes count as reindexing until items get indexed.
-    $this->container->get('state')->set('search_api.index.embeddings.has_reindexed', FALSE);
+  public function testGetElasticIndexUuid(): void {
+    $this->history = [];
+    $this->mockElasticsearchConnectorHttpClient([
+      'embeddings' => ['settings' => ['index' => ['uuid' => 'abc123']]],
+    ], $this->history);
 
-    // A change Elasticsearch can apply in place leaves the items as they are.
-    $index->setOriginal(clone $index);
-    $this->backend()->updateIndex($index);
-    $this->assertFalse($index->isReindexing());
+    $this->assertSame('abc123', $this->backend()->getElasticIndexUuid($this->index('embeddings')));
+    $this->assertCount(1, $this->history);
+    $this->assertSame('/embeddings/_settings/index.uuid', $this->history[0]['request']->getUri()->getPath());
+  }
 
-    // The previous version had a field that the new one drops.
-    $original = clone $index;
-    $original->addField($this->container->get('search_api.fields_helper')->createField($original, 'title', [
-      'type' => 'string',
-    ]));
-    $index->setOriginal($original);
-    $this->backend()->updateIndex($index);
+  /**
+   * A response without a uuid gives NULL.
+   */
+  public function testGetElasticIndexUuidWithoutUuid(): void {
+    $this->assertNull($this->backend()->getElasticIndexUuid($this->index('embeddings')));
+  }
 
-    $this->assertTrue($index->isReindexing());
-    $this->assertSame([], $this->history);
+  /**
+   * The recorded requests as "METHOD /path".
+   *
+   * @return string[]
+   *   The requests, in order.
+   */
+  private function requests(): array {
+    return array_map(
+      static fn (array $transaction): string => $transaction['request']->getMethod() . ' ' . $transaction['request']->getUri()->getPath(),
+      $this->history,
+    );
+  }
+
+  /**
+   * The decoded JSON body of a recorded request.
+   *
+   * @return array<mixed>
+   *   The body.
+   */
+  private function body(int $delta): array {
+    return json_decode((string) $this->history[$delta]['request']->getBody(), TRUE, flags: JSON_THROW_ON_ERROR);
   }
 
   /**
