@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\helfi_test_content\Kernel;
 
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\helfi_test_content\Controller\HelfiTestContentFormController;
+use Drupal\Tests\helfi_api_base\Kernel\KernelTestBase;
 
 /**
  * Kernel test for HelfiTestContentFormController.

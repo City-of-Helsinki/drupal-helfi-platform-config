@@ -9,6 +9,8 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 
 /**
  * Module hook implementations for modules.
@@ -21,7 +23,18 @@ class ModuleHooks {
     private readonly ModuleExtensionList $moduleExtensionList,
     private readonly ModuleInstallerInterface $moduleInstaller,
     private readonly ConfigFactoryInterface $configFactory,
+    private readonly EnvironmentResolverInterface $environmentResolver,
   ) {
+  }
+
+  /**
+   * Checks whether the active environment is production.
+   *
+   * @return bool
+   *   TRUE if the active environment is production.
+   */
+  private function isProduction(): bool {
+    return $this->environmentResolver->getActiveEnvironmentName() === EnvironmentEnum::Prod->value;
   }
 
   /**
@@ -34,6 +47,11 @@ class ModuleHooks {
     }
 
     if (in_array('helfi_test_content', $modules)) {
+      // Never alter production configuration or install more test content.
+      if ($this->isProduction()) {
+        return;
+      }
+
       // Install instance specific test content if the helfi_test_content has
       // been installed.
       if (array_key_exists('helfi_custom_test_content', $this->moduleExtensionList->getList())) {
