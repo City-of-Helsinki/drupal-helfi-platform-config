@@ -14,7 +14,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_ai\Hook\FormHooks;
 use Drupal\helfi_ai\Service\TextServicesGenerator;
 use Drupal\helfi_api_base\Environment\ActiveProjectRoles;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
 use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_api_base\Environment\ProjectMetadata;
@@ -22,7 +21,6 @@ use Drupal\helfi_api_base\Environment\ProjectRoleEnum;
 use Drupal\node\NodeInterface;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -41,8 +39,6 @@ class FormHooksTest extends UnitTestCase {
    *   The configured seo_title_bundles value.
    * @param bool $toneCheckEnabled
    *   Whether the AI tone check feature is enabled.
-   * @param string|null $environment
-   *   The active environment name.
    * @param bool $core
    *   Whether the project has the core role.
    *
@@ -53,7 +49,6 @@ class FormHooksTest extends UnitTestCase {
     bool $hasPermission,
     array $bundles,
     bool $toneCheckEnabled = TRUE,
-    ?string $environment = 'test',
     bool $core = TRUE,
   ): FormHooks {
     $account = $this->prophesize(AccountInterface::class);
@@ -66,12 +61,6 @@ class FormHooksTest extends UnitTestCase {
     $configFactory->get('helfi_ai.settings')->willReturn($config->reveal());
 
     $environmentResolver = $this->prophesize(EnvironmentResolverInterface::class);
-    if ($environment === NULL) {
-      $environmentResolver->getActiveEnvironmentName()->willThrow(new EnvironmentResolverException());
-    }
-    else {
-      $environmentResolver->getActiveEnvironmentName()->willReturn($environment);
-    }
     $environmentResolver->getActiveProject()->willReturn(new Project(
       'test',
       new ProjectMetadata('https://github.com/City-of-Helsinki/test'),
@@ -83,7 +72,6 @@ class FormHooksTest extends UnitTestCase {
       $configFactory->reveal(),
       $this->createMock(TextServicesGenerator::class),
       new ActiveProjectRoles($environmentResolver->reveal()),
-      $environmentResolver->reveal(),
     );
   }
 
@@ -135,37 +123,13 @@ class FormHooksTest extends UnitTestCase {
   }
 
   /**
-   * Test button visibility per environment.
-   *
-   * @todo UHF-13643 Remove when AI title suggestion is enabled in production.
+   * No button is added when the project lacks the core role.
    */
-  #[DataProvider('environmentProvider')]
-  public function testButtonVisibilityPerEnvironment(?string $environment, bool $core, bool $expected): void {
+  public function testNoButtonForNonCoreProject(): void {
     $form = $this->formWithTitle();
-    $this->createHooks(TRUE, ['page'], environment: $environment, core: $core)
-      ->nodeFormAlter($form, $this->nodeFormState('page'), 'node_page_form');
+    $this->createHooks(TRUE, ['page'], core: FALSE)->nodeFormAlter($form, $this->nodeFormState('page'), 'node_page_form');
 
-    $this->assertSame($expected, isset($form['title']['helfi_ai_suggest']), 'Button visibility matches the environment.');
-  }
-
-  /**
-   * Data provider for environment visibility.
-   *
-   * @return array<string, array{0: ?string, 1: bool, 2: bool}>
-   *   The environment, core role and expected visibility.
-   *
-   * @todo UHF-13643 Remove when AI title suggestion is enabled in production.
-   */
-  public static function environmentProvider(): array {
-    return [
-      'core local' => ['local', TRUE, TRUE],
-      'core dev' => ['dev', TRUE, FALSE],
-      'core test' => ['test', TRUE, TRUE],
-      'core stage' => ['stage', TRUE, FALSE],
-      'core prod' => ['prod', TRUE, FALSE],
-      'non-core test' => ['test', FALSE, FALSE],
-      'unknown environment' => [NULL, TRUE, FALSE],
-    ];
+    $this->assertArrayNotHasKey('helfi_ai_suggest', $form['title']);
   }
 
   /**
