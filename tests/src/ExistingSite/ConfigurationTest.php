@@ -95,6 +95,10 @@ class ConfigurationTest extends ExistingSiteBase {
       }
       $modules[] = $item->getBasename();
     }
+    sort($modules);
+
+    // Install roles before modules that grant permissions for the roles.
+    $modules = array_values(array_unique(['helfi_user_roles', ...$modules]));
 
     return array_map(static fn ($module) => [$module], $modules);
   }
