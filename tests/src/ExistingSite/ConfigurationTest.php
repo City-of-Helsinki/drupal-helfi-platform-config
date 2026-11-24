@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_platform_config\ExistingSite;
 
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Config\TypedConfigManagerInterface;
+use Drupal\Core\Extension\Dependency;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drush\TestTraits\DrushTestTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -71,8 +72,26 @@ class ConfigurationTest extends ExistingSiteBase {
     // this test.
     ini_set('memory_limit', '1G');
 
+    // Install the dependencies before the module itself, the same way a site
+    // has them enabled already. Drupal validates the dependencies of the
+    // module's configuration before installing any of the modules, so
+    // configuration that depends on another module's optional configuration
+    // must find it already in place. For example, helfi_recommendations
+    // needs search_api.server.etusivu, which is created from
+    // helfi_platform_config's optional configuration once
+    // elasticsearch_connector is installed.
+    $dependencies = array_map(
+      static fn (string $dependency): string => Dependency::createFromString($dependency)->getName(),
+      $this->extensionList->getAllAvailableInfo()[$module]['dependencies'] ?? [],
+    );
+
+    // The installer refreshes its own services after each container rebuild,
+    // so the same instance can install more than once.
     /** @var \Drupal\Core\Extension\ModuleInstallerInterface $moduleInstaller */
     $moduleInstaller = $this->container->get('module_installer');
+    if ($dependencies) {
+      $moduleInstaller->install($dependencies);
+    }
     $moduleInstaller->install([$module]);
   }
 
@@ -95,6 +114,9 @@ class ConfigurationTest extends ExistingSiteBase {
       }
       $modules[] = $item->getBasename();
     }
+
+    // Install roles before modules that grant permissions for the roles.
+    $modules = array_values(array_unique(['helfi_user_roles', ...$modules]));
 
     return array_map(static fn ($module) => [$module], $modules);
   }
