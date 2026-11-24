@@ -33,31 +33,33 @@ The feature utilises Elasticsearch Connector event subscribers to add the prefix
 
 ## Shared indexes
 
-Some indexes are written to by several instances. They are listed with their main instance in `Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex`.
+Some indexes are written to by several instances. They are listed in `Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex` with their main instance and their site field, which holds the name of the instance that indexed the document:
 
-Outside the main instance, `Drupal\helfi_platform_config\SearchAPI\RestrictedElasticSearchBackend` leaves a shared Elasticsearch index unchanged: creating, deleting, updating and clearing it are skipped. Documents are still indexed and deleted as usual. The class replaces the `elasticsearch` backend plugin through `hook_search_api_backend_info_alter()`.
+| Index | Main instance | Site field |
+|-------|---------------|------------|
+| `embeddings` | etusivu | `instance` |
+| `suggestions` | etusivu | `parent_instance` |
+| `hyte` | asuminen | `instance` |
 
-### Clearing a shared index
+`Drupal\helfi_platform_config\SearchAPI\RestrictedElasticSearchBackend` replaces the `elasticsearch` backend plugin through `hook_search_api_backend_info_alter()`. For a shared index:
 
-`drush search-api:clear` (`sapi-c`) on a shared index is guarded by `Drupal\helfi_platform_config\Drush\Listeners\SearchApiClearListener`:
+* Clearing (`drush sapi-c`, the Search API admin UI, or code) deletes only the active instance's documents, with a delete-by-query on the site field. It works the same on every instance and never touches the documents of another instance.
+* Only the main instance creates, deletes or rebuilds the Elasticsearch index, or changes its settings.
+* Other instances may add field mappings. This keeps their documents from being mapped dynamically when they deploy a new field before the main instance.
+* Documents are indexed and deleted as usual.
 
-* On the main instance, the clear has to be confirmed (or run with `--yes`).
-* On every other instance, the clear is blocked.
+To add a shared index, add it to `RestrictedSearchIndex` and make sure it has a `string` site field, for example a `custom_value` field with the value `[site:helfi-current-instance]`.
 
-### Reindexing on other instances
+### Rebuilds
 
-A clear deletes the documents of every instance, but only the clearing instance's tracker knows its items must be reindexed. So after a successful `sapi-c` on a shared index, the clearing instance sends an [Azure PubSub message](https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/blob/main/documentation/pubsub-messaging.md):
+A breaking field change (a removed field or a changed type) on the main instance drops the Elasticsearch index and creates it again. This deletes the documents of every instance and gives the index a new `index.uuid`.
 
-```json
-{"search_api_reindex": {"index": "embeddings", "instance": "etusivu"}}
-```
-
-`Drupal\helfi_platform_config\EventSubscriber\SearchApiReindexSubscriber` receives it on the other instances. If the index exists and is enabled there, it marks all items for reindexing (same as `drush search-api:reset-tracker`). The items are then indexed on the next indexing run. The sending instance ignores its own message.
+On every other instance, `Drupal\helfi_platform_config\SearchAPI\SharedIndexRebuildDetector` runs on cron and compares the uuid of each enabled shared index with the one it saw last time (stored in the `helfi_platform_config.shared_index_uuids` state). When the uuid changed, it marks all items for reindexing (same as `drush search-api:reset-tracker`). The items are then indexed on the next indexing run.
 
 Good to know:
 
-* Receiving requires the `drush helfi:azure:pubsub-listen` worker and the `pubsub` vault item. If sending fails, a warning is logged and the clear still succeeds; the other instances then have to run `drush sapi-r <index>` manually.
-* Only `drush sapi-c` sends the message. Clearing from the Search API admin UI does not.
+* The first uuid an instance sees is only stored. If the index does not exist or cannot be read, the check is skipped and retried on the next cron run.
+* Items are reindexed on other instances only after their next cron run.
 
 ## Path alias updates
 

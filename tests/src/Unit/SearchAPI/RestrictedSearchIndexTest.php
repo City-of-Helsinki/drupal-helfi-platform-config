@@ -7,7 +7,6 @@ namespace Drupal\Tests\helfi_platform_config\Unit\SearchAPI;
 use Drupal\helfi_api_base\Environment\EnvironmentEnum;
 use Drupal\helfi_api_base\Environment\EnvironmentResolver;
 use Drupal\helfi_api_base\Environment\Project;
-use Drupal\helfi_platform_config\SearchAPI\RestrictedClearAction;
 use Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex;
 use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use Drupal\Tests\UnitTestCase;
@@ -34,50 +33,49 @@ final class RestrictedSearchIndexTest extends UnitTestCase {
   }
 
   /**
-   * Only indexes with a main instance are shared.
+   * Lists the shared indexes whose main instance is elsewhere.
    */
-  public function testIsShared(): void {
-    $this->assertTrue(RestrictedSearchIndex::isShared('embeddings'));
-    $this->assertTrue(RestrictedSearchIndex::isShared('suggestions'));
-    $this->assertTrue(RestrictedSearchIndex::isShared('hyte'));
-    $this->assertFalse(RestrictedSearchIndex::isShared('news'));
+  public function testSharedFromOtherInstances(): void {
+    $this->assertSame(['hyte'], (new RestrictedSearchIndex($this->resolver(Project::ETUSIVU)))->sharedFromOtherInstances());
+    $this->assertSame(['embeddings', 'suggestions'], (new RestrictedSearchIndex($this->resolver(Project::ASUMINEN)))->sharedFromOtherInstances());
+    $this->assertSame(['embeddings', 'suggestions', 'hyte'], (new RestrictedSearchIndex($this->resolver(Project::LIIKENNE)))->sharedFromOtherInstances());
+    $this->assertSame([], (new RestrictedSearchIndex($this->getEnvironmentResolver()))->sharedFromOtherInstances());
   }
 
   /**
-   * Actions follow the incoming ids and each index's main instance.
+   * Each shared index names the field that holds the indexing instance.
    */
-  public function testActionFor(): void {
+  public function testSiteField(): void {
+    $sut = new RestrictedSearchIndex($this->resolver(Project::LIIKENNE));
+
+    $this->assertSame('instance', $sut->siteField('embeddings'));
+    $this->assertSame('parent_instance', $sut->siteField('suggestions'));
+    $this->assertSame('instance', $sut->siteField('hyte'));
+    $this->assertNull($sut->siteField('news'));
+    $this->assertTrue($sut->isShared('hyte'));
+    $this->assertFalse($sut->isShared('news'));
+  }
+
+  /**
+   * Only shared indexes of another main instance count.
+   */
+  public function testIsSharedFromOtherInstance(): void {
     $etusivu = new RestrictedSearchIndex($this->resolver(Project::ETUSIVU));
-    $asuminen = new RestrictedSearchIndex($this->resolver(Project::ASUMINEN));
-    $other = new RestrictedSearchIndex($this->resolver(Project::LIIKENNE));
-
-    $this->assertSame([
-      'news' => RestrictedClearAction::Allow,
-      'embeddings' => RestrictedClearAction::Block,
-      'hyte' => RestrictedClearAction::Block,
-    ], $other->actionFor(['news', 'embeddings', 'hyte']));
-    $this->assertSame([
-      'suggestions' => RestrictedClearAction::Confirm,
-      'hyte' => RestrictedClearAction::Block,
-      'news' => RestrictedClearAction::Allow,
-    ], $etusivu->actionFor(['suggestions', 'hyte', 'news']));
-    $this->assertSame([
-      'hyte' => RestrictedClearAction::Confirm,
-      'embeddings' => RestrictedClearAction::Block,
-    ], $asuminen->actionFor(['hyte', 'embeddings']));
+    $this->assertFalse($etusivu->isSharedFromOtherInstance('embeddings'));
+    $this->assertTrue($etusivu->isSharedFromOtherInstance('hyte'));
+    $this->assertFalse($etusivu->isSharedFromOtherInstance('news'));
   }
 
   /**
-   * An unresolved project blocks every shared index.
+   * An unresolved project is never the main instance.
    */
-  public function testUnresolvedProjectBlocksSharedIndexes(): void {
+  public function testUnresolvedProject(): void {
     $sut = new RestrictedSearchIndex($this->getEnvironmentResolver());
 
-    $this->assertSame([
-      'embeddings' => RestrictedClearAction::Block,
-      'hyte' => RestrictedClearAction::Block,
-      'news' => RestrictedClearAction::Allow,
-    ], $sut->actionFor(['embeddings', 'hyte', 'news']));
+    $this->assertNull($sut->activeProject());
+    $this->assertTrue($sut->isSharedFromOtherInstance('embeddings'));
+    $this->assertTrue($sut->isSharedFromOtherInstance('hyte'));
+    $this->assertFalse($sut->isSharedFromOtherInstance('news'));
   }
 
   /**
