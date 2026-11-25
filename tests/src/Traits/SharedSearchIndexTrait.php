@@ -12,9 +12,6 @@ use Drupal\search_api\IndexInterface;
 /**
  * Search API indexes for shared index kernel tests.
  *
- * Indexes track entity_test entities, on Search API's test backend unless
- * another server is given.
- *
  * Requires the search_api, search_api_test, entity_test, language and user
  * modules.
  */
@@ -63,9 +60,6 @@ trait SharedSearchIndexTrait {
 
   /**
    * Creates entities and marks them indexed on every enabled index.
-   *
-   * Only the trackers are updated, so no backend is called. Afterwards no
-   * enabled index has items left to index.
    */
   protected function createIndexedItems(int $count): void {
     for ($i = 1; $i <= $count; $i++) {

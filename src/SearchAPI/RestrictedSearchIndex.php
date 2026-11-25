@@ -14,11 +14,9 @@ use Drupal\helfi_api_base\Environment\Project;
 final class RestrictedSearchIndex {
 
   /**
-   * Shared Search API index ids mapped to their main instance and site field.
+   * Shared index ids mapped to their main instance and site field.
    *
-   * Every instance indexes and clears its own documents. Only the main
-   * instance may create, delete or rebuild the Elasticsearch index. The site
-   * field holds the name of the instance that indexed the document.
+   * The site field holds the name of the instance that indexed the document.
    *
    * @var array<string, array{main: string, site_field: string}>
    */
@@ -62,8 +60,6 @@ final class RestrictedSearchIndex {
 
   /**
    * Whether the index is shared and this is not its main instance.
-   *
-   * An unknown active project is never the main instance.
    */
   public function isSharedFromOtherInstance(string $indexId): bool {
     $main = $this->mainInstance($indexId);

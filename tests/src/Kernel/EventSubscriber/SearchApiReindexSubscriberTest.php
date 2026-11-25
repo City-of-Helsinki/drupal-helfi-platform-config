@@ -43,9 +43,6 @@ final class SearchApiReindexSubscriberTest extends KernelTestBase {
 
   /**
    * Records what the subscriber logs.
-   *
-   * Drupal logger channels pass RFC log levels, so records are checked with
-   * RfcLogLevel constants.
    */
   private TestLogger $logger;
 
@@ -88,9 +85,6 @@ final class SearchApiReindexSubscriberTest extends KernelTestBase {
 
   /**
    * The message is handled whichever instance sent it.
-   *
-   * Today only the main instance creates a shared index, but the receiver does
-   * not depend on that.
    */
   public function testReindexesMessageFromAnyInstance(): void {
     $this->setActiveProject(Project::LIIKENNE, EnvironmentEnum::Local);
@@ -102,8 +96,6 @@ final class SearchApiReindexSubscriberTest extends KernelTestBase {
 
   /**
    * A message is handled when the own instance cannot be resolved.
-   *
-   * A redundant reindex is harmless, a missed one is not.
    */
   public function testReindexesWhenOwnInstanceIsUnknown(): void {
     $this->dispatch($this->payload('embeddings', Project::ETUSIVU));
@@ -138,8 +130,6 @@ final class SearchApiReindexSubscriberTest extends KernelTestBase {
 
   /**
    * The sending instance ignores its own message.
-   *
-   * It marked its items for reindexing when it created the index.
    */
   public function testIgnoresOwnMessage(): void {
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);

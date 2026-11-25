@@ -14,8 +14,6 @@ use WebSocket\Message\Text;
 /**
  * A real PubSub manager whose websocket client records the frames.
  *
- * Tests see the frames that would be sent to and received from Azure.
- *
  * @phpstan-require-extends \Drupal\KernelTests\KernelTestBase
  */
 trait PubSubRecorderTrait {

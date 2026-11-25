@@ -19,15 +19,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Reindexes a shared index after another instance created it anew.
  *
- * Creating the Elasticsearch index again drops the documents of every
- * instance. The instance that created it sends the message, see
- * \Drupal\helfi_platform_config\SearchAPI\RestrictedElasticSearchBackend.
- * Messages are received by the helfi:azure:pubsub-listen Drush command.
+ * @see \Drupal\helfi_platform_config\SearchAPI\RestrictedElasticSearchBackend
  */
 final class SearchApiReindexSubscriber implements EventSubscriberInterface {
 
   /**
-   * The PubSub message key for a shared index reindex request.
+   * The PubSub message key.
    */
   public const string MESSAGE_KEY = 'search_api_reindex';
 
@@ -40,10 +37,10 @@ final class SearchApiReindexSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Builds the message data that asks other instances to reindex.
+   * Builds the reindex message.
    *
    * @return array<string, array<string, string>>
-   *   The message data for PubSubManagerInterface::sendMessage().
+   *   The message data.
    */
   public static function message(string $indexId, string $instance): array {
     return [self::MESSAGE_KEY => ['index' => $indexId, 'instance' => $instance]];
@@ -59,7 +56,7 @@ final class SearchApiReindexSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * Marks every item of the shared index for reindexing.
+   * Marks the shared index for reindexing.
    */
   public function onReceive(PubSubMessage $message): void {
     $payload = $message->data['data'][self::MESSAGE_KEY] ?? NULL;
@@ -76,8 +73,7 @@ final class SearchApiReindexSubscriber implements EventSubscriberInterface {
     if (!$this->restrictedSearchIndex->isShared($indexId) || $sender === $this->activeProject()) {
       return;
     }
-    // helfi_platform_config does not depend on search_api, but every
-    // instance receives the message.
+    // This module does not depend on search_api.
     if (!$this->entityTypeManager->hasDefinition('search_api_index')) {
       return;
     }

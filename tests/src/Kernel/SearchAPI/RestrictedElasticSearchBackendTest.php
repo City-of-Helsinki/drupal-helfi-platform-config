@@ -153,9 +153,6 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
 
   /**
    * A breaking field change off the main instance marks the items.
-   *
-   * The main instance rebuilds the index and sends a message, but this
-   * instance may be deploying without a PubSub listener at that moment.
    */
   public function testBreakingUpdateOffMainInstanceMarksItemsForReindexing(): void {
     $this->setActiveProject(Project::LIIKENNE, EnvironmentEnum::Local);
@@ -221,11 +218,9 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
       ['term' => ['parent_instance' => Project::ETUSIVU]],
       ['term' => ['search_api_datasource' => 'entity:suggested_topics']],
     ], $this->body(1)['query']['bool']['filter']);
-    // Other instances keep their documents, so they are not asked anything.
+    // Other instances keep their documents.
     $this->assertSame([], $this->sentFrames);
-    // A delete limited to one datasource comes from removing the datasource
-    // from the index configuration, not from a user clearing the index, so
-    // nothing is explained.
+    // Removing a datasource is not a user clear.
     $this->assertFalse($logger->hasWarningRecords());
   }
 
@@ -245,9 +240,6 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
 
   /**
    * A clear on the command line explains what was deleted, and what was not.
-   *
-   * The advice to disable and enable the index names the main instance when
-   * the clear ran elsewhere, because only the main instance creates the index.
    */
   #[DataProvider('clearingInstances')]
   public function testClearExplainsWhatWasDeleted(string $project, ?string $namedMain): void {
@@ -278,9 +270,6 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
 
   /**
    * A breaking field change on the main instance drops and creates the index.
-   *
-   * Every instance's documents are gone, so the main instance marks its items
-   * for reindexing and asks the other instances to do the same.
    */
   public function testBreakingUpdateOnMainInstanceRecreatesIndex(): void {
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
@@ -298,8 +287,7 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
     $this->backend()->updateIndex($index);
 
     $this->assertTrue($index->isReindexing());
-    // The mock reports every index as existing, so addIndex() stops after
-    // its existence check instead of sending PUT /embeddings.
+    // The mock reports every index as existing, so no PUT /embeddings.
     $this->assertSame([
       'HEAD /embeddings',
       'HEAD /embeddings',
@@ -326,10 +314,6 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
 
   /**
    * Creating a missing shared index asks every instance to reindex.
-   *
-   * This happens when the main instance enables the index again after
-   * disabling it, moves it to another server, or saves it while it is
-   * missing from Elasticsearch.
    */
   #[DataProvider('creatingOperations')]
   public function testCreatingMissingIndexOnMainInstanceAnnouncesIt(string $method): void {
@@ -454,9 +438,6 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
 
   /**
    * Records what Drupal logs.
-   *
-   * Drupal logger channels pass RFC log levels, so records are checked with
-   * RfcLogLevel constants.
    */
   private function addTestLogger(): TestLogger {
     $logger = new TestLogger();
@@ -466,9 +447,6 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
 
   /**
    * Answers like Elasticsearch without any indexes.
-   *
-   * Existence checks get a 404, every other request succeeds. Requests are
-   * recorded in $this->history.
    */
   private function mockElasticsearchWithoutIndexes(): void {
     $this->history = [];
