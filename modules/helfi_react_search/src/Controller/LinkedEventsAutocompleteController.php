@@ -8,7 +8,6 @@ use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Site\Settings;
-use Drupal\helfi_react_search\DTO\LinkedEventsItem;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -74,8 +73,7 @@ final class LinkedEventsAutocompleteController extends ControllerBase {
       );
 
       $results = array_map(fn (object $item) => [
-        // Ids are JSON serialized LinkedEventsItems.
-        'id' => json_encode(new LinkedEventsItem($item->id, (array) $item->name)),
+        'id' => $item->id,
         'text' => $item->name?->{$langcode} ?: $item->name?->en ?: 'Unknown',
       ], $response->data ?? []);
     }

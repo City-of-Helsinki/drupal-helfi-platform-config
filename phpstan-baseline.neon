@@ -3609,7 +3609,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property object\:\:\$name\.$#'
 			identifier: property.notFound
-			count: 3
+			count: 2
 			path: modules/helfi_react_search/src/Controller/LinkedEventsAutocompleteController.php
 
 		-
