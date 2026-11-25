@@ -15,7 +15,7 @@ final class SearchApiHooks {
   /**
    * Implements hook_search_api_backend_info_alter().
    *
-   * Guards shared indexes on the Elasticsearch backend.
+   * Uses a backend that lets instances share Elasticsearch indexes.
    *
    * @param array<string, array<string, mixed>> $backendInfo
    *   The backend plugin definitions, keyed by plugin id.

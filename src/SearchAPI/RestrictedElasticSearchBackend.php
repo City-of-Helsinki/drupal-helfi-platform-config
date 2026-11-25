@@ -28,11 +28,13 @@ use WebSocket\Exception\Exception as WebSocketException;
  *   index's site field. This applies to every instance, so a clear never
  *   touches the documents of another instance.
  * - Only the main instance creates, deletes or rebuilds the Elasticsearch
- *   index. Creating it again drops every instance's documents, so the main
- *   instance then asks the other instances over PubSub to reindex, see
- *   SearchApiReindexSubscriber.
+ *   index. A newly created index has no documents, so the main instance then
+ *   marks its items for reindexing and asks the other instances over PubSub
+ *   to do the same, see SearchApiReindexSubscriber.
  * - Other instances may only add field mappings, so their documents are not
  *   mapped dynamically when they deploy a new field before the main instance.
+ *   On a change that makes the main instance rebuild the index, they also
+ *   mark their items for reindexing.
  *
  * Document indexing and deletion work as usual.
  */
@@ -116,9 +118,9 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
     }
     if ($this->isSharedFromOtherInstance($index)) {
       // The main instance rebuilds the index for this change, which drops
-      // this instance's documents too. Its PubSub message is missed while this
-      // instance deploys and has no listener running, so mark the items here
-      // as well.
+      // this instance's documents too. Its PubSub message is missed if this
+      // instance has no listener running at that moment, for example while
+      // it deploys, so mark the items here as well.
       if ($client->indexChangeRequiresRebuild($index)) {
         $index->reindex();
       }
@@ -158,7 +160,9 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
   }
 
   /**
-   * Deletes the documents of this instance from a shared index.
+   * Deletes only this instance's documents from a shared index.
+   *
+   * Other indexes are cleared as usual.
    *
    * {@inheritdoc}
    */
@@ -200,8 +204,9 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
       throw new SearchApiException(sprintf('An error occurred deleting the documents of %s from the shared index %s.', $project, $indexId), 0, $e);
     }
 
-    // Removing a datasource from the index also ends up here. That is not a
-    // clear, so there is nothing to explain.
+    // A datasource id means the datasource was removed from the index
+    // configuration, and only its documents were deleted. Explain only
+    // clears of the whole index, which users start.
     if ($datasource_id === NULL) {
       $this->explainSharedClear($indexId, $project);
     }
@@ -235,12 +240,13 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
   }
 
   /**
-   * Reindexes a shared index after the main instance created it anew.
+   * Marks a shared index for reindexing after creating it anew.
    *
    * The new Elasticsearch index has no documents, so this instance marks its
    * items for reindexing and asks the other instances to do the same. A
-   * failed request is logged; the other instances then have to run
-   * drush search-api:reset-tracker themselves.
+   * failed request is logged. Other instances that imported a breaking change
+   * after the rebuild marked their items themselves; the rest have to run
+   * drush search-api:reset-tracker.
    */
   private function announceCreated(IndexInterface $index): void {
     $indexId = (string) $index->id();
