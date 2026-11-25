@@ -6,17 +6,11 @@ namespace Drupal\helfi_platform_config\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\helfi_platform_config\SearchAPI\RestrictedElasticSearchBackend;
-use Drupal\helfi_platform_config\SearchAPI\SharedIndexRebuildDetector;
 
 /**
  * Search API hooks.
  */
 final class SearchApiHooks {
-
-  public function __construct(
-    private readonly SharedIndexRebuildDetector $sharedIndexRebuildDetector,
-  ) {
-  }
 
   /**
    * Implements hook_search_api_backend_info_alter().
@@ -31,16 +25,6 @@ final class SearchApiHooks {
     if (isset($backendInfo['elasticsearch'])) {
       $backendInfo['elasticsearch']['class'] = RestrictedElasticSearchBackend::class;
     }
-  }
-
-  /**
-   * Implements hook_cron().
-   *
-   * Reindexes shared indexes that their main instance cleared or rebuilt.
-   */
-  #[Hook('cron')]
-  public function cron(): void {
-    $this->sharedIndexRebuildDetector->reindexRecreatedIndexes();
   }
 
 }

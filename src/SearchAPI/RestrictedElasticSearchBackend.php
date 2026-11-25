@@ -6,12 +6,17 @@ namespace Drupal\helfi_platform_config\SearchAPI;
 
 use Drupal\elasticsearch_connector\Plugin\search_api\backend\ElasticSearchBackend;
 use Drupal\elasticsearch_connector\SearchAPI\BackendClient;
+use Drupal\helfi_api_base\Azure\PubSub\PubSubManagerInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverException;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_platform_config\EventSubscriber\SearchApiReindexSubscriber;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\SearchApiException;
+use Drupal\search_api\Utility\Utility;
 use Elastic\Elasticsearch\Exception\ElasticsearchException;
-use Elastic\Elasticsearch\Response\Elasticsearch;
 use Elastic\Transport\Exception\TransportException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use WebSocket\Exception\Exception as WebSocketException;
 
 /**
  * Lets several instances share one Elasticsearch index.
@@ -23,9 +28,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   index's site field. This applies to every instance, so a clear never
  *   touches the documents of another instance.
  * - Only the main instance creates, deletes or rebuilds the Elasticsearch
- *   index. A rebuild after a breaking field change drops every instance's
- *   documents; the other instances reindex on their next cron run, see
- *   SharedIndexRebuildDetector.
+ *   index. Creating it again drops every instance's documents, so the main
+ *   instance then asks the other instances over PubSub to reindex, see
+ *   SearchApiReindexSubscriber.
  * - Other instances may only add field mappings, so their documents are not
  *   mapped dynamically when they deploy a new field before the main instance.
  *
@@ -39,6 +44,16 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
   protected RestrictedSearchIndex $restrictedSearchIndex;
 
   /**
+   * Sends the reindex request to the other instances.
+   */
+  protected PubSubManagerInterface $pubSubManager;
+
+  /**
+   * Resolves the active project.
+   */
+  protected EnvironmentResolverInterface $environmentResolver;
+
+  /**
    * {@inheritdoc}
    *
    * @phpstan-param array<string, mixed> $configuration
@@ -46,6 +61,8 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): static {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
     $instance->restrictedSearchIndex = $container->get(RestrictedSearchIndex::class);
+    $instance->pubSubManager = $container->get(PubSubManagerInterface::class);
+    $instance->environmentResolver = $container->get(EnvironmentResolverInterface::class);
     return $instance;
   }
 
@@ -56,7 +73,18 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
     if ($this->isSharedFromOtherInstance($index)) {
       return;
     }
+    if (!$this->restrictedSearchIndex->isShared((string) $index->id())) {
+      parent::addIndex($index);
+      return;
+    }
+
+    // The parent returns without changes when the index exists.
+    $client = $this->getBackendClient();
+    $existed = $client->indexExists($index);
     parent::addIndex($index);
+    if (!$existed) {
+      $this->announceCreated($index);
+    }
   }
 
   /**
@@ -80,15 +108,24 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
     }
 
     $client = $this->getBackendClient();
-    if (!$client instanceof BackendClient || !$client->indexExists($index)) {
-      // Only the main instance creates the index.
+    if (!$client instanceof BackendClient) {
       if (!$this->isSharedFromOtherInstance($index)) {
         parent::updateIndex($index);
       }
       return;
     }
-
     if ($this->isSharedFromOtherInstance($index)) {
+      // The main instance rebuilds the index for this change, which drops
+      // this instance's documents too. Its PubSub message is missed while this
+      // instance deploys and has no listener running, so mark the items here
+      // as well.
+      if ($client->indexChangeRequiresRebuild($index)) {
+        $index->reindex();
+      }
+      if (!$client->indexExists($index)) {
+        // Only the main instance creates the index.
+        return;
+      }
       // Adding mappings is safe; Elasticsearch rejects changes to existing
       // ones. Settings and rebuilds stay with the main instance.
       try {
@@ -103,11 +140,18 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
       return;
     }
 
+    if (!$client->indexExists($index)) {
+      // The parent creates the index here.
+      parent::updateIndex($index);
+      $this->announceCreated($index);
+      return;
+    }
+
     // The parent would rebuild through Index::clear(), which only deletes
     // this instance's documents here. Drop and create the index instead.
     if ($client->indexChangeRequiresRebuild($index)) {
-      $index->reindex();
       $client->clearIndex($index);
+      $this->announceCreated($index);
       return;
     }
     parent::updateIndex($index);
@@ -126,7 +170,7 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
       return;
     }
 
-    $project = $this->restrictedSearchIndex->activeProject();
+    $project = $this->activeProject();
     if ($project === NULL) {
       throw new SearchApiException(sprintf('Cannot clear the shared index %s, because the active project is unknown.', $indexId));
     }
@@ -155,38 +199,70 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
     catch (ElasticsearchException | TransportException $e) {
       throw new SearchApiException(sprintf('An error occurred deleting the documents of %s from the shared index %s.', $project, $indexId), 0, $e);
     }
+
+    // Removing a datasource from the index also ends up here. That is not a
+    // clear, so there is nothing to explain.
+    if ($datasource_id === NULL) {
+      $this->explainSharedClear($indexId, $project);
+    }
   }
 
   /**
-   * The uuid Elasticsearch gave the index when it was created.
+   * Tells the user that a clear left the other instances' documents in place.
    *
-   * Rebuilding an index deletes and creates it again, so the uuid changes, see
-   * SharedIndexRebuildDetector.
-   *
-   * @return string|null
-   *   The uuid, or NULL when the index does not exist or cannot be read.
+   * Drush prints logged warnings, so command line runs get a log entry. Web
+   * requests, such as the Search API admin UI, get a message instead.
    */
-  public function getElasticIndexUuid(IndexInterface $index): ?string {
-    $client = $this->getBackendClient();
-    if (!$client instanceof BackendClient) {
-      return NULL;
+  private function explainSharedClear(string $indexId, string $project): void {
+    $main = (string) $this->restrictedSearchIndex->mainInstance($indexId);
+    $args = [
+      '@index' => $indexId,
+      '@project' => $project,
+      '@main' => $main,
+    ];
+
+    if (Utility::isRunningInCli()) {
+      $message = $main === $project
+        ? 'Only the documents of @project were deleted from the shared index @index. To delete the documents of every instance and create the index again, run drush search-api:disable @index && drush search-api:enable @index. The other instances are then asked to reindex.'
+        : 'Only the documents of @project were deleted from the shared index @index. To delete the documents of every instance and create the index again, run drush search-api:disable @index && drush search-api:enable @index on @main, its main instance. The other instances are then asked to reindex.';
+      $this->getLogger()->warning($message, $args);
+      return;
     }
-    $indexId = $client->getIndexId($index);
+    $message = $main === $project
+      ? $this->t('Only the documents of @project were deleted from the shared index @index. To delete the documents of every instance and create the index again, disable and enable the index. The other instances are then asked to reindex.', $args)
+      : $this->t('Only the documents of @project were deleted from the shared index @index. To delete the documents of every instance and create the index again, disable and enable the index on @main, its main instance. The other instances are then asked to reindex.', $args);
+    $this->messenger()->addWarning($message);
+  }
+
+  /**
+   * Reindexes a shared index after the main instance created it anew.
+   *
+   * The new Elasticsearch index has no documents, so this instance marks its
+   * items for reindexing and asks the other instances to do the same. A
+   * failed request is logged; the other instances then have to run
+   * drush search-api:reset-tracker themselves.
+   */
+  private function announceCreated(IndexInterface $index): void {
+    $indexId = (string) $index->id();
+    $index->reindex();
+
+    $project = $this->activeProject();
+    if ($project === NULL) {
+      // Only the main instance creates the index, so this is not reached.
+      return;
+    }
     try {
-      $response = $this->getClient()->indices()->getSettings([
-        'index' => $indexId,
-        'name' => 'index.uuid',
+      $this->pubSubManager->sendMessage(SearchApiReindexSubscriber::message($indexId, $project));
+      $this->getLogger()->notice('Asked other instances to reindex the shared index @index.', [
+        '@index' => $indexId,
       ]);
     }
-    catch (ElasticsearchException | TransportException) {
-      return NULL;
+    catch (WebSocketException | \JsonException | \LogicException $e) {
+      $this->getLogger()->warning('Other instances were not asked to reindex the shared index @index: @message', [
+        '@index' => $indexId,
+        '@message' => $e->getMessage(),
+      ]);
     }
-    // The client returns a promise only in async mode.
-    if (!$response instanceof Elasticsearch) {
-      return NULL;
-    }
-    $uuid = $response->asArray()[$indexId]['settings']['index']['uuid'] ?? NULL;
-    return is_string($uuid) && $uuid !== '' ? $uuid : NULL;
   }
 
   /**
@@ -198,6 +274,18 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
   private function isSharedFromOtherInstance(IndexInterface|string $index): bool {
     $indexId = $index instanceof IndexInterface ? $index->id() : $index;
     return is_string($indexId) && $this->restrictedSearchIndex->isSharedFromOtherInstance($indexId);
+  }
+
+  /**
+   * The active project name, or NULL when it cannot be resolved.
+   */
+  private function activeProject(): ?string {
+    try {
+      return $this->environmentResolver->getActiveProject()->getName();
+    }
+    catch (EnvironmentResolverException) {
+      return NULL;
+    }
   }
 
 }
