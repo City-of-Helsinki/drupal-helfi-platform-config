@@ -109,7 +109,7 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
   }
 
   /**
-   * Operations that delete, create, or remap an Elasticsearch index.
+   * Operations that create, update, delete or clear an Elasticsearch index.
    *
    * @return array<string, array{string}>
    *   The backend method name.
@@ -223,7 +223,9 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
     ], $this->body(1)['query']['bool']['filter']);
     // Other instances keep their documents, so they are not asked anything.
     $this->assertSame([], $this->sentFrames);
-    // Removing a datasource is not a clear, so nothing is explained.
+    // A delete limited to one datasource comes from removing the datasource
+    // from the index configuration, not from a user clearing the index, so
+    // nothing is explained.
     $this->assertFalse($logger->hasWarningRecords());
   }
 
@@ -277,7 +279,8 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
   /**
    * A breaking field change on the main instance drops and creates the index.
    *
-   * Every instance's documents are gone, so all of them reindex.
+   * Every instance's documents are gone, so the main instance marks its items
+   * for reindexing and asks the other instances to do the same.
    */
   public function testBreakingUpdateOnMainInstanceRecreatesIndex(): void {
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
@@ -325,7 +328,8 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
    * Creating a missing shared index asks every instance to reindex.
    *
    * This happens when the main instance enables the index again after
-   * disabling it, or moves it to another server.
+   * disabling it, moves it to another server, or saves it while it is
+   * missing from Elasticsearch.
    */
   #[DataProvider('creatingOperations')]
   public function testCreatingMissingIndexOnMainInstanceAnnouncesIt(string $method): void {
@@ -369,7 +373,7 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
   }
 
   /**
-   * A failed announcement is logged and does not stop the rebuild.
+   * A failed announcement is logged and the index is still created.
    */
   public function testUnconfiguredPubSubIsLogged(): void {
     $this->setActiveProject(Project::ETUSIVU, EnvironmentEnum::Local);
@@ -523,7 +527,7 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
   }
 
   /**
-   * Calls one schema operation.
+   * Calls one index operation.
    */
   private function call(string $method, IndexInterface $index): void {
     $backend = $this->backend();
