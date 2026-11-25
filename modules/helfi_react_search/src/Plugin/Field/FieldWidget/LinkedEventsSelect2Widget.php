@@ -90,6 +90,7 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
    */
   public function getValidSelectedOptions(array $element, FormStateInterface $form_state): array {
     $value = is_array($element['#value']) ? $element['#value'] : [$element['#value']];
+    $langcode = $this->languageManager->getCurrentLanguage()->getId();
 
     $options = [];
     foreach ($value as $item) {
@@ -97,7 +98,6 @@ final class LinkedEventsSelect2Widget extends Select2Widget {
         continue;
       }
       $json = json_decode($json);
-      $langcode = $this->languageManager->getCurrentLanguage()->getId();
       $options[$item] = $json->name?->{$langcode} ?: $json->name?->en ?: 'Unknown';
     }
 
