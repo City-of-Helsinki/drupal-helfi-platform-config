@@ -71,23 +71,9 @@ final class RestrictedSearchIndex {
   }
 
   /**
-   * Shared index ids whose main instance is another instance.
-   *
-   * @return string[]
-   *   The index ids, or an empty array when the active project is unknown.
-   */
-  public function sharedFromOtherInstances(): array {
-    $project = $this->activeProject();
-    if ($project === NULL) {
-      return [];
-    }
-    return array_keys(array_filter(self::SHARED, static fn (array $shared): bool => $shared['main'] !== $project));
-  }
-
-  /**
    * The active project name, or NULL when it cannot be resolved.
    */
-  public function activeProject(): ?string {
+  private function activeProject(): ?string {
     try {
       return $this->environmentResolver->getActiveProject()->getName();
     }

@@ -33,16 +33,6 @@ final class RestrictedSearchIndexTest extends UnitTestCase {
   }
 
   /**
-   * Lists the shared indexes whose main instance is elsewhere.
-   */
-  public function testSharedFromOtherInstances(): void {
-    $this->assertSame(['hyte'], (new RestrictedSearchIndex($this->resolver(Project::ETUSIVU)))->sharedFromOtherInstances());
-    $this->assertSame(['embeddings', 'suggestions'], (new RestrictedSearchIndex($this->resolver(Project::ASUMINEN)))->sharedFromOtherInstances());
-    $this->assertSame(['embeddings', 'suggestions', 'hyte'], (new RestrictedSearchIndex($this->resolver(Project::LIIKENNE)))->sharedFromOtherInstances());
-    $this->assertSame([], (new RestrictedSearchIndex($this->getEnvironmentResolver()))->sharedFromOtherInstances());
-  }
-
-  /**
    * Each shared index names the field that holds the indexing instance.
    */
   public function testSiteField(): void {
@@ -72,7 +62,6 @@ final class RestrictedSearchIndexTest extends UnitTestCase {
   public function testUnresolvedProject(): void {
     $sut = new RestrictedSearchIndex($this->getEnvironmentResolver());
 
-    $this->assertNull($sut->activeProject());
     $this->assertTrue($sut->isSharedFromOtherInstance('embeddings'));
     $this->assertTrue($sut->isSharedFromOtherInstance('hyte'));
     $this->assertFalse($sut->isSharedFromOtherInstance('news'));
