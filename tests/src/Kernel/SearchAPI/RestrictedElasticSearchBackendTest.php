@@ -225,16 +225,15 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
   }
 
   /**
-   * Who clears and the main instance of the cleared index.
+   * Instances that clear a shared index.
    *
-   * @return array<string, array{string, string|null}>
-   *   The active project and the main instance named in the advice, or NULL
-   *   when the active project is the main instance.
+   * @return array<string, array{string}>
+   *   The active project.
    */
   public static function clearingInstances(): array {
     return [
-      'main instance' => [Project::ETUSIVU, NULL],
-      'other instance' => [Project::LIIKENNE, Project::ETUSIVU],
+      'main instance' => [Project::ETUSIVU],
+      'other instance' => [Project::LIIKENNE],
     ];
   }
 
@@ -242,7 +241,7 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
    * A clear on the command line explains what was deleted, and what was not.
    */
   #[DataProvider('clearingInstances')]
-  public function testClearExplainsWhatWasDeleted(string $project, ?string $namedMain): void {
+  public function testClearExplainsWhatWasDeleted(string $project): void {
     $this->setActiveProject($project, EnvironmentEnum::Local);
     $logger = $this->addTestLogger();
 
@@ -251,9 +250,8 @@ final class RestrictedElasticSearchBackendTest extends KernelTestBase {
     $this->assertTrue($logger->hasRecordThatPasses(
       static fn (array $record): bool => $record['context']['@index'] === 'embeddings'
         && $record['context']['@project'] === $project
-        && str_contains($record['message'], 'drush search-api:disable @index && drush search-api:enable @index')
-        && str_contains($record['message'], 'its main instance') === ($namedMain !== NULL)
-        && ($namedMain === NULL || $record['context']['@main'] === $namedMain),
+        && $record['context']['@main'] === Project::ETUSIVU
+        && str_contains($record['message'], 'drush search-api:disable @index && drush search-api:enable @index on @main'),
       RfcLogLevel::WARNING,
     ));
   }

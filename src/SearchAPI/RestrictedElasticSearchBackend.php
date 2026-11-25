@@ -199,23 +199,16 @@ class RestrictedElasticSearchBackend extends ElasticSearchBackend {
    * Drush prints logged warnings.
    */
   private function explainSharedClear(string $indexId, string $project): void {
-    $main = (string) $this->restrictedSearchIndex->mainInstance($indexId);
-    $args = [
+    $message = $this->t('Only the documents of @project were deleted from the shared index @index. To delete the documents of every instance, run drush search-api:disable @index && drush search-api:enable @index on @main.', [
       '@index' => $indexId,
       '@project' => $project,
-      '@main' => $main,
-    ];
+      '@main' => $this->restrictedSearchIndex->mainInstance($indexId),
+    ]);
 
     if (Utility::isRunningInCli()) {
-      $message = $main === $project
-        ? 'Only the documents of @project were deleted from the shared index @index. To delete the documents of every instance and create the index again, run drush search-api:disable @index && drush search-api:enable @index. The other instances are then asked to reindex.'
-        : 'Only the documents of @project were deleted from the shared index @index. To delete the documents of every instance and create the index again, run drush search-api:disable @index && drush search-api:enable @index on @main, its main instance. The other instances are then asked to reindex.';
-      $this->getLogger()->warning($message, $args);
+      $this->getLogger()->warning($message->getUntranslatedString(), $message->getArguments());
       return;
     }
-    $message = $main === $project
-      ? $this->t('Only the documents of @project were deleted from the shared index @index. To delete the documents of every instance and create the index again, disable and enable the index. The other instances are then asked to reindex.', $args)
-      : $this->t('Only the documents of @project were deleted from the shared index @index. To delete the documents of every instance and create the index again, disable and enable the index on @main, its main instance. The other instances are then asked to reindex.', $args);
     $this->messenger()->addWarning($message);
   }
 
