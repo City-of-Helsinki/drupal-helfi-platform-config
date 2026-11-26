@@ -5,6 +5,7 @@ package: HELfi
 container_rebuild_required: true
 dependencies:
   - default_content:default_content
+  - helfi_api_base:helfi_api_base
   - helfi_platform_config:hdbt_cookie_banner
   - helfi_platform_config:helfi_calculator
   - helfi_platform_config:helfi_etusivu_entities

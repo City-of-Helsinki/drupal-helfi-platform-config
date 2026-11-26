@@ -8,8 +8,11 @@ use Drupal\Core\Config\Config;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleInstallerInterface;
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\Project;
 use Drupal\helfi_test_content\Hook\ModuleHooks;
 use Drupal\Tests\UnitTestCase;
+use Drupal\Tests\helfi_api_base\Traits\EnvironmentResolverTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -18,6 +21,8 @@ use PHPUnit\Framework\Attributes\Group;
  */
 #[Group('helfi_test_content')]
 final class ModuleHooksTest extends UnitTestCase {
+
+  use EnvironmentResolverTrait;
 
   /**
    * Tests modulesInstalled() behavior with different inputs.
@@ -30,6 +35,7 @@ final class ModuleHooksTest extends UnitTestCase {
     bool $customModuleAvailable,
     bool $expectsInstall,
     bool $expectsConfigChange,
+    string $environment = 'local',
   ): void {
     $moduleExtensionList = $this->createMock(ModuleExtensionList::class);
     $moduleInstaller = $this->createMock(ModuleInstallerInterface::class);
@@ -88,7 +94,7 @@ final class ModuleHooksTest extends UnitTestCase {
         ->method('getEditable');
     }
 
-    $sut = new ModuleHooks($moduleExtensionList, $moduleInstaller, $configFactory);
+    $sut = new ModuleHooks($moduleExtensionList, $moduleInstaller, $configFactory, $this->getEnvironmentResolver(Project::ETUSIVU, EnvironmentEnum::from($environment)));
     $sut->modulesInstalled($modules, $is_syncing);
 
     if ($expectsConfigChange) {
@@ -140,6 +146,15 @@ final class ModuleHooksTest extends UnitTestCase {
         'customModuleAvailable' => FALSE,
         'expectsInstall' => FALSE,
         'expectsConfigChange' => TRUE,
+      ],
+      'does nothing in production' => [
+        'modules' => ['helfi_test_content'],
+        'is_syncing' => FALSE,
+        'existingSettings' => ['foo' => 'bar'],
+        'customModuleAvailable' => TRUE,
+        'expectsInstall' => FALSE,
+        'expectsConfigChange' => FALSE,
+        'environment' => 'prod',
       ],
     ];
   }
