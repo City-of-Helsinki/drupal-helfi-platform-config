@@ -32,6 +32,14 @@ chat_widget:
     - core/drupal
     - core/drupalSettings
 
+image_viewer:
+  version: HELFI_DEPLOYMENT_IDENTIFIER
+  js:
+    dist/js/imageViewer.min.js: { minified: true }
+  dependencies:
+    - core/drupal
+    - core/once
+
 tom_select:
   version: 2.2.2
   remote: https://github.com/orchidjs/tom-select

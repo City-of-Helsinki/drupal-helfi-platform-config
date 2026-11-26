@@ -20,6 +20,7 @@ const jsFiles = {
   reactAndShareSettings: 'assets/js/reactAndShareSettings.js',
   sentryIgnore: 'assets/js/sentryIgnore.js',
   chatWidget: 'assets/js/chatWidget.js',
+  imageViewer: 'assets/js/imageViewer.js',
 };
 
 // SCSS files.

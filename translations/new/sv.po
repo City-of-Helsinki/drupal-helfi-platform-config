@@ -39,6 +39,26 @@ msgctxt "Chat widget"
 msgid "Open chat"
 msgstr "Öppna chatten"
 
+msgctxt "Image viewer"
+msgid "Zoom out"
+msgstr "Zooma ut"
+
+msgctxt "Image viewer"
+msgid "Zoom in"
+msgstr "Zooma in"
+
+msgctxt "Image viewer"
+msgid "Close"
+msgstr "Stäng"
+
+msgctxt "Image viewer"
+msgid "Loading image"
+msgstr "Laddar bilden"
+
+msgctxt "Image viewer"
+msgid "The image could not be loaded."
+msgstr "Bilden kunde inte laddas."
+
 msgctxt "Location autocomplete"
 msgid "Type @count or more characters for results"
 msgstr "Skriv @count eller fler tecken för att se resultat"
