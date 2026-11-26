@@ -72,14 +72,10 @@ class ConfigurationTest extends ExistingSiteBase {
     // this test.
     ini_set('memory_limit', '1G');
 
-    // Install the dependencies before the module itself, the same way a site
-    // has them enabled already. Drupal validates the dependencies of the
-    // module's configuration before installing any of the modules, so
-    // configuration that depends on another module's optional configuration
-    // must find it already in place. For example, helfi_recommendations
-    // needs search_api.server.etusivu, which is created from
-    // helfi_platform_config's optional configuration once
-    // elasticsearch_connector is installed.
+    // Install the dependencies first. A single install call validates the
+    // configuration of every module before installing any, so configuration
+    // that depends on another module's optional configuration would fail.
+    // For example, helfi_recommendations needs search_api.server.etusivu.
     $dependencies = array_map(
       static fn (string $dependency): string => Dependency::createFromString($dependency)->getName(),
       $this->extensionList->getAllAvailableInfo()[$module]['dependencies'] ?? [],

@@ -7,6 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\search_api\Entity\Index;
+use Drupal\search_api\Item\Field;
+
 /**
  * Implements hook_install().
  */
@@ -25,4 +28,28 @@ function helfi_hyte_search_install($is_syncing) : void {
       ->set('status', TRUE)
       ->save();
   }
+}
+
+/**
+ * UHF-13754: Add the instance field to the hyte index.
+ *
+ * Shared index clears delete only the documents of the clearing instance,
+ * found by this field.
+ */
+function helfi_hyte_search_update_11001(): void {
+  $index = Index::load('hyte');
+  if (!$index || $index->getField('instance')) {
+    return;
+  }
+
+  $field = (new Field($index, 'instance'))
+    ->setType('string')
+    ->setPropertyPath('custom_value')
+    ->setLabel('Instance')
+    ->setConfiguration(['value' => '[site:helfi-current-instance]']);
+  $index->addField($field);
+  $index->save();
+
+  // Existing documents get the field only when they are indexed again.
+  $index->reindex();
 }

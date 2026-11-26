@@ -30,6 +30,12 @@ field_settings:
     dependencies:
       module:
         - helfi_tpr
+  instance:
+    label: Instance
+    property_path: custom_value
+    type: string
+    configuration:
+      value: '[site:helfi-current-instance]'
   name:
     label: Name
     datasource_id: 'entity:tpr_service'

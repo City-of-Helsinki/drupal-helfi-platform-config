@@ -3,4 +3,5 @@ description: 'Serves /llms.txt file describing the site for LLMs.'
 type: module
 core_version_requirement: ^11
 package: HELfi
-dependencies: []
+dependencies:
+  - helfi_user_roles:helfi_user_roles
