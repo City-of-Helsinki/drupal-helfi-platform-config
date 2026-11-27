@@ -12,7 +12,14 @@ space is styled to be visible in the editing view.
 
 CKEditor writes a `&nbsp;` when user creates a new paragraph. If these
 paragraphs exist at the start or at the end of the content, they are removed.
-An empty paragraph between text content is kept.
+The paragraphs are cleaned up on load, on paste and when the editor loses focus:
+
+- Two or more consecutive <br> tags split the paragraph in two.
+- <br> tags and spaces at the start and the end of a paragraph are removed.
+- Empty paragraphs are removed.
+
+Pressing Shift + Enter twice in a row splits the paragraph in two, like Enter. The <br> tag and the spaces next to the split are removed, so no `<br>` or
+`&nbsp;` is left at the edges of the paragraphs.
 
 ## Inserting a non-breaking space
 
