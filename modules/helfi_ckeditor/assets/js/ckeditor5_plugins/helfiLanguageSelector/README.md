@@ -12,9 +12,14 @@ maintainability benefits.
 
 The language spans are cleaned up on load and on paste:
 
-- Spans in the current content language are removed.
- On a Finnish page `<span lang="FI">text</span>` and
-  `<span lang="fi-FI" dir="ltr">text</span>` become `text`.
-- Spans in other languages are kept and their language code is lowercased.
-  `<span lang="EN">` becomes `<span lang="en" dir="ltr">`.
+- The language code is converted to a code in the Drupal language list. The
+  full code is matched first and then the code without the region. `fi-FI`
+  becomes `fi`, `SV-fi` becomes `sv` and `zh-Hant` becomes `zh-hant`.
+- The text direction is taken from the language list.
+  `<span lang="ar-SA">` becomes `<span lang="ar" dir="rtl">`.
+- Spans in the current content language are removed. On a Finnish page
+  `<span lang="FI">sauna</span>` and `<span lang="fi-FI">sauna</span>` become
+  `sauna`.
+- Spans in an unknown language are removed. `<span lang="X-NONE">text</span>`
+  becomes `text`.
 - Spans without attributes are unwrapped. `<span>text</span>` becomes `text`.
