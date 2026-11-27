@@ -1,0 +1,78 @@
+{
+  "hits": {
+    "hits": [
+      {
+        "_index": "news_terms",
+        "_id": "entity:taxonomy_term/1:en",
+        "_source": {
+          "uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "uuid_langcode": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d:en"
+          ],
+          "tid": [
+            1
+          ],
+          "name": [
+            "Culture"
+          ],
+          "vid": [
+            "news_tags"
+          ],
+          "search_api_language": [
+            "en"
+          ]
+        }
+      },
+      {
+        "_index": "news_terms",
+        "_id": "entity:taxonomy_term/1:fi",
+        "_source": {
+          "uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "uuid_langcode": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d:fi"
+          ],
+          "tid": [
+            1
+          ],
+          "name": [
+            "Kulttuuri"
+          ],
+          "vid": [
+            "news_tags"
+          ],
+          "search_api_language": [
+            "fi"
+          ]
+        }
+      },
+      {
+        "_index": "news_terms",
+        "_id": "entity:taxonomy_term/1:sv",
+        "_source": {
+          "uuid": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d"
+          ],
+          "uuid_langcode": [
+            "8b2f1e0a-5c3d-4f6a-9b7e-1d2c3a4b5c6d:sv"
+          ],
+          "tid": [
+            1
+          ],
+          "name": [
+            "Kultur"
+          ],
+          "vid": [
+            "news_tags"
+          ],
+          "search_api_language": [
+            "sv"
+          ]
+        }
+      }
+    ]
+  }
+}

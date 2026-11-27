@@ -562,3 +562,19 @@ msgstr "Sulje"
 msgctxt "Outdated browser"
 msgid "The browser you are using is outdated and might pose a security risk when you visit other websites. Update your browser to the latest available version."
 msgstr "Käyttämäsi selain on vanhentunut ja se saattaa aiheuttaa tietoturvariskin, kun vierailet muilla verkkosivuilla. Päivitä selain uusimpaan saatavilla olevaan versioon."
+
+msgctxt "Outdated translation"
+msgid "Check the language versions"
+msgstr "Tarkista kieliversiot"
+
+msgctxt "Outdated translation"
+msgid "Check the language version"
+msgstr "Tarkista kieliversio"
+
+msgctxt "Outdated translation"
+msgid "@date (@days days older than Finnish)"
+msgstr "@date (@days päivää suomenkielistä vanhempi)"
+
+msgctxt "Outdated translation"
+msgid "This language version is @days days older than the Finnish version."
+msgstr "Tämä kieliversio on @days päivää vanhempi kuin suomenkielinen versio."

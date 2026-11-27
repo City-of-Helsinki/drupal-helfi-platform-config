@@ -1,0 +1,256 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "data": [
+    {
+      "type": "node--announcement",
+      "id": "a1f3c5e7-2b4d-4f6a-8c0e-1a3b5c7d9e01",
+      "links": {
+        "self": {
+          "href": "https://helfi-etusivu.docker.so/en/jsonapi/node/announcement/a1f3c5e7-2b4d-4f6a-8c0e-1a3b5c7d9e01"
+        }
+      },
+      "attributes": {
+        "langcode": "en",
+        "status": true,
+        "title": "Global announcement",
+        "published_at": "2025-01-01T10:00:00+00:00",
+        "unpublish_on": null,
+        "notification": false,
+        "body": {
+          "value": "<p>This is a test announcement. There is no actual danger.</p>",
+          "format": "minimal",
+          "processed": "<p>This is a test announcement. There is no actual danger.</p>"
+        },
+        "field_announcement_title": "Global announcement",
+        "field_announcement_type": "alert",
+        "field_announcement_link": null
+      }
+    },
+    {
+      "type": "node--announcement",
+      "id": "a1f3c5e7-2b4d-4f6a-8c0e-1a3b5c7d9e01",
+      "links": {
+        "self": {
+          "href": "https://helfi-etusivu.docker.so/fi/jsonapi/node/announcement/a1f3c5e7-2b4d-4f6a-8c0e-1a3b5c7d9e01"
+        }
+      },
+      "attributes": {
+        "langcode": "fi",
+        "status": true,
+        "title": "Globaali poikkeusilmoitus",
+        "published_at": "2025-01-01T10:00:00+00:00",
+        "unpublish_on": null,
+        "notification": false,
+        "body": {
+          "value": "<p>Tämä on testitiedote. Todellista vaaratilannetta ei ole.</p>",
+          "format": "minimal",
+          "processed": "<p>Tämä on testitiedote. Todellista vaaratilannetta ei ole.</p>"
+        },
+        "field_announcement_title": "Globaali poikkeusilmoitus",
+        "field_announcement_type": "alert",
+        "field_announcement_link": null
+      }
+    },
+    {
+      "type": "node--announcement",
+      "id": "a1f3c5e7-2b4d-4f6a-8c0e-1a3b5c7d9e01",
+      "links": {
+        "self": {
+          "href": "https://helfi-etusivu.docker.so/sv/jsonapi/node/announcement/a1f3c5e7-2b4d-4f6a-8c0e-1a3b5c7d9e01"
+        }
+      },
+      "attributes": {
+        "langcode": "sv",
+        "status": true,
+        "title": "Globalt undantagsmeddelande",
+        "published_at": "2025-01-01T10:00:00+00:00",
+        "unpublish_on": null,
+        "notification": false,
+        "body": {
+          "value": "<p>Detta är ett testmeddelande. Det föreligger ingen verklig fara.</p>",
+          "format": "minimal",
+          "processed": "<p>Detta är ett testmeddelande. Det föreligger ingen verklig fara.</p>"
+        },
+        "field_announcement_title": "Globalt undantagsmeddelande",
+        "field_announcement_type": "alert",
+        "field_announcement_link": null
+      }
+    },
+    {
+      "type": "node--announcement",
+      "id": "b2e4d6f8-3c5e-4a7b-9d1f-2b4c6d8e0f02",
+      "links": {
+        "self": {
+          "href": "https://helfi-etusivu.docker.so/en/jsonapi/node/announcement/b2e4d6f8-3c5e-4a7b-9d1f-2b4c6d8e0f02"
+        }
+      },
+      "attributes": {
+        "langcode": "en",
+        "status": true,
+        "title": "Global announcement",
+        "published_at": "2025-01-01T10:00:00+00:00",
+        "unpublish_on": null,
+        "notification": false,
+        "body": {
+          "value": "<p>The service number is closed on Saturday due to maintenance.</p>",
+          "format": "minimal",
+          "processed": "<p>The service number is closed on Saturday due to maintenance.</p>"
+        },
+        "field_announcement_title": "Global announcement",
+        "field_announcement_type": "attention",
+        "field_announcement_link": null
+      }
+    },
+    {
+      "type": "node--announcement",
+      "id": "b2e4d6f8-3c5e-4a7b-9d1f-2b4c6d8e0f02",
+      "links": {
+        "self": {
+          "href": "https://helfi-etusivu.docker.so/fi/jsonapi/node/announcement/b2e4d6f8-3c5e-4a7b-9d1f-2b4c6d8e0f02"
+        }
+      },
+      "attributes": {
+        "langcode": "fi",
+        "status": true,
+        "title": "Globaali poikkeusilmoitus",
+        "published_at": "2025-01-01T10:00:00+00:00",
+        "unpublish_on": null,
+        "notification": false,
+        "body": {
+          "value": "<p>Palvelunumero on suljettu lauantaina huoltotöiden vuoksi.</p>",
+          "format": "minimal",
+          "processed": "<p>Palvelunumero on suljettu lauantaina huoltotöiden vuoksi.</p>"
+        },
+        "field_announcement_title": "Globaali poikkeusilmoitus",
+        "field_announcement_type": "attention",
+        "field_announcement_link": null
+      }
+    },
+    {
+      "type": "node--announcement",
+      "id": "b2e4d6f8-3c5e-4a7b-9d1f-2b4c6d8e0f02",
+      "links": {
+        "self": {
+          "href": "https://helfi-etusivu.docker.so/sv/jsonapi/node/announcement/b2e4d6f8-3c5e-4a7b-9d1f-2b4c6d8e0f02"
+        }
+      },
+      "attributes": {
+        "langcode": "sv",
+        "status": true,
+        "title": "Globalt undantagsmeddelande",
+        "published_at": "2025-01-01T10:00:00+00:00",
+        "unpublish_on": null,
+        "notification": false,
+        "body": {
+          "value": "<p>Servicenumret är stängt på lördag på grund av underhåll.</p>",
+          "format": "minimal",
+          "processed": "<p>Servicenumret är stängt på lördag på grund av underhåll.</p>"
+        },
+        "field_announcement_title": "Globalt undantagsmeddelande",
+        "field_announcement_type": "attention",
+        "field_announcement_link": null
+      }
+    },
+    {
+      "type": "node--announcement",
+      "id": "c3d5e7f9-4d6f-4b8c-8e2a-3c5d7e9f1a03",
+      "links": {
+        "self": {
+          "href": "https://helfi-etusivu.docker.so/en/jsonapi/node/announcement/c3d5e7f9-4d6f-4b8c-8e2a-3c5d7e9f1a03"
+        }
+      },
+      "attributes": {
+        "langcode": "en",
+        "status": true,
+        "title": "Global announcement",
+        "published_at": "2025-01-01T10:00:00+00:00",
+        "unpublish_on": null,
+        "notification": false,
+        "body": {
+          "value": "<p>The city opens new e-services for residents.</p>",
+          "format": "minimal",
+          "processed": "<p>The city opens new e-services for residents.</p>"
+        },
+        "field_announcement_title": "Global announcement",
+        "field_announcement_type": "notification",
+        "field_announcement_link": {
+          "uri": "https://helfi-etusivu.docker.so/en/news",
+          "title": "Read more",
+          "options": []
+        }
+      }
+    },
+    {
+      "type": "node--announcement",
+      "id": "c3d5e7f9-4d6f-4b8c-8e2a-3c5d7e9f1a03",
+      "links": {
+        "self": {
+          "href": "https://helfi-etusivu.docker.so/fi/jsonapi/node/announcement/c3d5e7f9-4d6f-4b8c-8e2a-3c5d7e9f1a03"
+        }
+      },
+      "attributes": {
+        "langcode": "fi",
+        "status": true,
+        "title": "Globaali poikkeusilmoitus",
+        "published_at": "2025-01-01T10:00:00+00:00",
+        "unpublish_on": null,
+        "notification": false,
+        "body": {
+          "value": "<p>Kaupunki avaa uusia sähköisiä palveluita asukkaille.</p>",
+          "format": "minimal",
+          "processed": "<p>Kaupunki avaa uusia sähköisiä palveluita asukkaille.</p>"
+        },
+        "field_announcement_title": "Globaali poikkeusilmoitus",
+        "field_announcement_type": "notification",
+        "field_announcement_link": {
+          "uri": "https://helfi-etusivu.docker.so/fi/uutiset",
+          "title": "Lue lisää",
+          "options": []
+        }
+      }
+    },
+    {
+      "type": "node--announcement",
+      "id": "c3d5e7f9-4d6f-4b8c-8e2a-3c5d7e9f1a03",
+      "links": {
+        "self": {
+          "href": "https://helfi-etusivu.docker.so/sv/jsonapi/node/announcement/c3d5e7f9-4d6f-4b8c-8e2a-3c5d7e9f1a03"
+        }
+      },
+      "attributes": {
+        "langcode": "sv",
+        "status": true,
+        "title": "Globalt undantagsmeddelande",
+        "published_at": "2025-01-01T10:00:00+00:00",
+        "unpublish_on": null,
+        "notification": false,
+        "body": {
+          "value": "<p>Staden öppnar nya e-tjänster för invånarna.</p>",
+          "format": "minimal",
+          "processed": "<p>Staden öppnar nya e-tjänster för invånarna.</p>"
+        },
+        "field_announcement_title": "Globalt undantagsmeddelande",
+        "field_announcement_type": "notification",
+        "field_announcement_link": {
+          "uri": "https://helfi-etusivu.docker.so/sv/nyheter",
+          "title": "Läs mer",
+          "options": []
+        }
+      }
+    }
+  ],
+  "links": {
+    "self": {
+      "href": "https://helfi-etusivu.docker.so/fi/jsonapi/node/announcement"
+    }
+  }
+}

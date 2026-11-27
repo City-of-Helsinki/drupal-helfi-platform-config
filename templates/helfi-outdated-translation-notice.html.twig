@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the outdated translation notice.
+ *
+ * Reuses the hdbt_admin warning classes for the alert icon and colors.
+ *
+ * Available variables:
+ * - title: The notice title.
+ * - message: The notice message.
+ */
+#}
+<div class="paragraphs-counter__warning">
+  <div class="paragraphs-counter__icon">
+    {% include '@hdbt/misc/icon.twig' ignore missing with {icon: 'alert-circle-fill'} %}
+  </div>
+  <div class="paragraphs-counter__warning-text">
+    <strong>{{ title }}</strong><br>
+    {{ message }}
+  </div>
+</div>

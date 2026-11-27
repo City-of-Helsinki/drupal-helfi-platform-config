@@ -12,11 +12,13 @@ use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Tests the user content views argument.
  */
 #[Group('helfi_users')]
+#[RunTestsInSeparateProcesses]
 class UserContentArgumentTest extends FavoriteKernelTestBase {
 
   /**

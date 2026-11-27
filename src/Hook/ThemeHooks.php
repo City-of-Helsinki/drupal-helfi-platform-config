@@ -69,6 +69,12 @@ class ThemeHooks {
           'notifications' => [],
         ],
       ],
+      'helfi_outdated_translation_notice' => [
+        'variables' => [
+          'title' => NULL,
+          'message' => NULL,
+        ],
+      ],
       'helfi_location_autocomplete' => [
         'variables' => [
           'attributes' => [],

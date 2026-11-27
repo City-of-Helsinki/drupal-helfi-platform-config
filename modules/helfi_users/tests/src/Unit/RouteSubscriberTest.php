@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_users\Unit;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteBuildEvent;
+use Drupal\helfi_users\Hook\BulkOperationsHooks;
 use Drupal\helfi_users\Routing\RouteSubscriber;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -78,6 +79,31 @@ class RouteSubscriberTest extends UnitTestCase {
     $this->createSubscriber([])->onAlterRoutes(new RouteBuildEvent($collection));
 
     $this->assertNull($collection->get('helfi_users.favorite_toggle'), 'The route is removed without installed entity types.');
+  }
+
+  /**
+   * Tests that views bulk operations routes require the permission.
+   */
+  public function testBulkOperationsRoutesRequirePermission(): void {
+    $routeNames = [
+      'views_bulk_operations.execute_batch',
+      'views_bulk_operations.update_selection',
+      'views_bulk_operations.execute_configurable',
+      'views_bulk_operations.confirm',
+    ];
+    $collection = new RouteCollection();
+    foreach ($routeNames as $routeName) {
+      $collection->add($routeName, new Route('/views-bulk-operations/{view_id}/{display_id}', [], ['_views_bulk_operation_access' => 'TRUE']));
+    }
+
+    $this->createSubscriber()->onAlterRoutes(new RouteBuildEvent($collection));
+
+    foreach ($routeNames as $routeName) {
+      $route = $collection->get($routeName);
+      $this->assertNotNull($route);
+      $this->assertEquals(BulkOperationsHooks::PERMISSION, $route->getRequirement('_permission'), "$routeName requires the permission.");
+      $this->assertEquals('TRUE', $route->getRequirement('_views_bulk_operation_access'), "$routeName keeps the original access check.");
+    }
   }
 
 }

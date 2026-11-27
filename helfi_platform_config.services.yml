@@ -99,6 +99,7 @@ services:
   Drupal\helfi_platform_config\MultisiteSearch: ~
 
   Drupal\helfi_platform_config\SearchAPI\RestrictedSearchIndex: ~
+  Drupal\helfi_platform_config\EventSubscriber\SearchApiReindexSubscriber: ~
 
   Drupal\helfi_platform_config\RedirectCleaner: ~
 
@@ -130,3 +131,10 @@ services:
 
   Drupal\helfi_platform_config\EntityNotifications\EntityNotificationManager: ~
   Drupal\helfi_platform_config\EntityNotifications\EntityNotificationLazyBuilder: ~
+  Drupal\helfi_platform_config\EntityNotifications\OutdatedTranslationNotificationProvider:
+    tags:
+      - { name: helfi_platform_config.entity_notification_provider }
+
+  Drupal\helfi_platform_config\Translation\OutdatedTranslationChecker: ~
+  Drupal\helfi_platform_config\Translation\OutdatedTranslationNotice: ~
+  Drupal\helfi_platform_config\Routing\TranslationOverviewRouteSubscriber: ~

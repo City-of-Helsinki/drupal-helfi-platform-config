@@ -6,6 +6,7 @@ namespace Drupal\Tests\helfi_search\Kernel\SimilarContent;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\entity_test\Entity\EntityTestMulRevPub;
 use Drupal\helfi_platform_config\MultisiteSearch;
 use Drupal\helfi_search\SimilarContent\EntityNotifications\SimilarContentNotificationProvider;
@@ -84,6 +85,7 @@ class SimilarContentNotificationProviderTest extends KernelTestBase {
     $attributes = $url->getOption('attributes');
     $this->assertContains('use-ajax', $attributes['class']);
     $this->assertSame('modal', $attributes['data-dialog-type']);
+    $this->assertContains('user.permissions', $cacheability->getCacheContexts());
   }
 
   /**
@@ -104,14 +106,41 @@ class SimilarContentNotificationProviderTest extends KernelTestBase {
   }
 
   /**
+   * Tests that users without the permission get no notification.
+   */
+  public function testNoPermission(): void {
+    $entity = EntityTestMulRevPub::create();
+    $entity->save();
+    $this->fillChunks($entity, [new Chunk(text: 'First')]);
+
+    $history = [];
+    $provider = $this->createProvider([
+      $this->createElasticsearchResponse([
+        'hits' => ['hits' => [['_id' => 'entity:node/1:en']]],
+      ]),
+    ], $history, FALSE);
+
+    $cacheability = new CacheableMetadata();
+    $this->assertSame([], $provider->getNotifications($entity, $cacheability));
+    $this->assertContains('user.permissions', $cacheability->getCacheContexts());
+    // Similar content is not searched.
+    $this->assertEmpty($history);
+  }
+
+  /**
    * Builds the provider with a mocked Elasticsearch client.
    *
    * @param array<int, \Psr\Http\Message\ResponseInterface|\Throwable> $responses
    *   Elasticsearch responses.
    * @param array<int, array<string, mixed>> $history
    *   Outgoing requests are appended here.
+   * @param bool $hasPermission
+   *   Whether the current user has the permission to see the notifications.
    */
-  private function createProvider(array $responses, array &$history = []): SimilarContentNotificationProvider {
+  private function createProvider(array $responses, array &$history = [], bool $hasPermission = TRUE): SimilarContentNotificationProvider {
+    $account = $this->createMock(AccountInterface::class);
+    $account->method('hasPermission')->with('administer users')->willReturn($hasPermission);
+
     return new SimilarContentNotificationProvider(
       new SimilarContentFinder(
         $this->container->get(Connection::class),
@@ -119,6 +148,7 @@ class SimilarContentNotificationProviderTest extends KernelTestBase {
         $this->createMockElasticsearchClient($responses, $history),
       ),
       new NullLogger(),
+      $account,
     );
   }
 

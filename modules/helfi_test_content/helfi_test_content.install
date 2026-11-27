@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\helfi_api_base\Environment\EnvironmentEnum;
+use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
 use Drupal\helfi_api_base\Features\FeatureManager;
 
 /**
@@ -16,6 +18,13 @@ function helfi_test_content_install($is_syncing) : void {
   // Do not perform following steps if the module is being installed as part
   // of a configuration import.
   if ($is_syncing) {
+    return;
+  }
+
+  // Do not alter production configuration.
+  $environment = \Drupal::service(EnvironmentResolverInterface::class)
+    ->getActiveEnvironmentName();
+  if ($environment === EnvironmentEnum::Prod->value) {
     return;
   }
 
