@@ -144,7 +144,7 @@ class EmptyPTagCommandTest extends KernelTestBase {
   }
 
   /**
-   * Tests that empty p tags are removed from the current long text values.
+   * Tests that empty p tags are removed from all long text revisions.
    */
   public function testRemovesEmptyTags(): void {
     // Skip the empty tables.
@@ -169,11 +169,11 @@ class EmptyPTagCommandTest extends KernelTestBase {
 
     $output = $this->output->fetch();
     $this->assertStringContainsString('node__field_text: updated 3 rows.', $output, 'Only the dirty data rows are updated.');
-    $this->assertStringContainsString('node_revision__field_text: updated 3 rows.', $output, 'Only the current dirty revisions are updated.');
+    $this->assertStringContainsString('node_revision__field_text: updated 4 rows.', $output, 'Only the dirty revisions are updated.');
 
     $this->assertSame(self::CLEAN . self::CLEAN, $this->getStoredValue('node__field_text', 'field_text_value', 'entity_id', $revisioned->id()), 'Empty p tags are removed from the data table.');
     $this->assertSame(self::CLEAN . self::CLEAN, $this->getStoredValue('node_revision__field_text', 'field_text_value', 'revision_id', $revisioned->getRevisionId()), 'Empty p tags are removed from the current revision.');
-    $this->assertSame(self::DIRTY, $this->getStoredValue('node_revision__field_text', 'field_text_value', 'revision_id', $oldRevisionId), 'The old revision is left unchanged.');
+    $this->assertSame(self::CLEAN, $this->getStoredValue('node_revision__field_text', 'field_text_value', 'revision_id', $oldRevisionId), 'Empty p tags are removed from the old revision.');
     $this->assertSame(self::DIRTY, $this->getStoredValue('node__field_plain', 'field_plain_value', 'entity_id', $revisioned->id()), 'The plain text field is left unchanged.');
     $this->assertSame(self::CLEAN, $this->getStoredValue('node__field_text', 'field_text_value', 'entity_id', $clean->id()), 'Clean content is left unchanged.');
 

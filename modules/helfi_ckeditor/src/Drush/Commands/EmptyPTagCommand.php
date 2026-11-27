@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 #[AsCommand(
   name: self::NAME,
-  description: 'Remove the empty p tags from the current revisions of long text fields.',
+  description: 'Remove the empty p tags from all revisions of long text fields.',
 )]
 final class EmptyPTagCommand extends Command {
 
@@ -61,7 +61,7 @@ final class EmptyPTagCommand extends Command {
     $io = new DrushStyle($input, $output);
 
     foreach ($this->getTables() as $table) {
-      $count = $this->cleanUpTable($io, $table['name'], $table['column'], $table['current']);
+      $count = $this->cleanUpTable($io, $table['name'], $table['column']);
       $io->writeln(sprintf('%s: updated %d rows.', $table['name'], $count));
     }
 
@@ -71,8 +71,8 @@ final class EmptyPTagCommand extends Command {
   /**
    * Gets the long text field tables.
    *
-   * @return array<int, array{name: string, column: string, current: string|null}>
-   *   Returns the table name, the value column and the current revision table.
+   * @return array<int, array{name: string, column: string}>
+   *   Returns the table name and the value column.
    */
   private function getTables(): array {
     $tables = [];
@@ -95,19 +95,16 @@ final class EmptyPTagCommand extends Command {
       $tables[$dataTable] = [
         'name' => $dataTable,
         'column' => $column,
-        'current' => NULL,
       ];
 
       if (!$storage->getEntityType()->isRevisionable()) {
         continue;
       }
 
-      // Limit the revision table to the current revisions.
       $revisionTable = $tableMapping->getDedicatedRevisionTableName($definition);
       $tables[$revisionTable] = [
         'name' => $revisionTable,
         'column' => $column,
-        'current' => $dataTable,
       ];
     }
 
@@ -123,13 +120,11 @@ final class EmptyPTagCommand extends Command {
    *   The table name.
    * @param string $column
    *   The value column name.
-   * @param string|null $currentTable
-   *   The data table with the current revision IDs.
    *
    * @return int
    *   Returns the number of updated rows.
    */
-  private function cleanUpTable(DrushStyle $io, string $table, string $column, ?string $currentTable): int {
+  private function cleanUpTable(DrushStyle $io, string $table, string $column): int {
     $query = $this->connection->select($table, 't');
     $query->addExpression('MIN(entity_id)', 'min_id');
     $query->addExpression('MAX(entity_id)', 'max_id');
@@ -152,13 +147,6 @@ final class EmptyPTagCommand extends Command {
         ->expression($column, "REGEXP_REPLACE($column, :pattern, '')", [':pattern' => self::EMPTY_P_TAG_PATTERN])
         ->condition('entity_id', $ids, 'BETWEEN')
         ->condition($column, self::EMPTY_P_TAG_PATTERN, 'REGEXP');
-
-      if ($currentTable) {
-        $currentRevisions = $this->connection->select($currentTable, 'c')
-          ->fields('c', ['revision_id'])
-          ->condition('entity_id', $ids, 'BETWEEN');
-        $update->condition('revision_id', $currentRevisions, 'IN');
-      }
 
       $count += $update->execute();
 

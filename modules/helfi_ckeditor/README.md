@@ -57,7 +57,7 @@ The editor cleans up empty p tags only when the content is edited. Existing cont
     drush helfi:ckeditor:remove-empty-p-tags
     drush cr
 
-The command removes every `<p>` that contains only whitespace, `&nbsp;` or non-breaking space characters, f.e. `<p></p>`, `<p> </p>` and `<p>   &nbsp; </p>`, from every long text field. It updates the field data tables and the current revisions in the revision tables. Old revisions are not changed. The database is updated directly, so the cache needs to be cleared afterwards.
+The command removes every `<p>` that contains only whitespace, `&nbsp;` or non-breaking space characters, f.e. `<p></p>`, `<p> </p>` and `<p>   &nbsp; </p>`, from every long text field. It updates the field data tables and all revisions in the revision tables. The database is updated directly, so the cache needs to be cleared afterwards.
 
 ## Known issues
 
