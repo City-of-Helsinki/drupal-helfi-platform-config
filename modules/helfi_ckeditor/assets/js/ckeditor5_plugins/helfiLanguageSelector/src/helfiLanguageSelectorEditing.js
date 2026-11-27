@@ -44,6 +44,37 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
     editor.model.schema.extend('$text', { allowAttributes: 'helfiLanguageSelector' });
     editor.model.schema.setAttributeProperties('helfiLanguageSelector', { copyOnEnter: true });
 
+    // Remove the current language from the spans and unwrap the bare spans.
+    conversion.for('upcast').add((dispatcher) => {
+      dispatcher.on(
+        'element:span',
+        (_event, data, conversionApi) => {
+          const { viewItem } = data;
+          const { consumable } = conversionApi;
+          const langAttr = viewItem.getAttribute('lang');
+
+          if (langAttr && simplifyLangCode(langAttr) === this.currentLanguage?.toLowerCase()) {
+            consumable.consume(viewItem, { attributes: ['lang'] });
+
+            if (viewItem.hasAttribute('dir')) {
+              consumable.consume(viewItem, { attributes: ['dir'] });
+            }
+          }
+
+          const hasAttributes = Array.from(viewItem.getAttributeKeys()).some((key) =>
+            consumable.test(viewItem, { attributes: [key] }),
+          );
+
+          if (hasAttributes || !consumable.consume(viewItem, { name: true })) {
+            return;
+          }
+
+          Object.assign(data, conversionApi.convertChildren(viewItem, data.modelCursor));
+        },
+        { priority: 'high' },
+      );
+    });
+
     // Define 'upcast' converter for helfiLanguageSelector lang attribute.
     conversion.for('upcast').elementToAttribute({
       model: {

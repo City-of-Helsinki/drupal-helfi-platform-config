@@ -7,3 +7,14 @@ become a CKEditor 5 plugin in `/build`. Technically, everything in these files
 could be in a single `index.js` - the only file the MUST be present is 
 `/src/index.js`. However, splitting the plugin into concern-specific files has
 maintainability benefits.
+
+## Content cleanup
+
+The language spans are cleaned up on load and on paste:
+
+- Spans in the current content language are removed.
+ On a Finnish page `<span lang="FI">text</span>` and
+  `<span lang="fi-FI" dir="ltr">text</span>` become `text`.
+- Spans in other languages are kept and their language code is lowercased.
+  `<span lang="EN">` becomes `<span lang="en" dir="ltr">`.
+- Spans without attributes are unwrapped. `<span>text</span>` becomes `text`.
