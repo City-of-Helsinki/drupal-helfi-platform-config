@@ -36,6 +36,29 @@ The Hel.fi CKEditor supports a data attribute for opening a chat from a button o
 ### Non-breaking spaces
 The `&nbsp;` html entities are converted to regular spaces when the content is loaded to the editor or pasted into it. If content editor deliberately wants to use a non-breaking space, they can add it via keyboard shortcuts or from CKEditor "special characters" dialog. Then the `&nbsp;` is wrapped in `<span data-nbsp>` and is kept. See `assets/js/ckeditor5_plugins/helfiNbsp/README.md`.
 
+### Content cleanup
+The editor cleans up the content to avoid accessibility issues. The cleanup runs when content is loaded, pasted or when the editor loses focus.
+
+- Two or more consecutive line breaks split the paragraph in two. `<p>Text<br><br>Another text</p>` becomes `<p>Text</p><p>Another text</p>`.
+- Line breaks and spaces at the start and the end of a paragraph are removed.
+- Empty paragraphs `<p></p>`, `<p> </p>` and `<p>&nbsp;</p>` are removed.
+- Spaces at the start and the end of a link text are moved outside the link. `<a href="#">Link. </a>Text` becomes `<a href="#">Link.</a> Text`.
+- Language codes are converted to the Drupal language codes on load and on paste. For example `fi-FI` becomes `fi` and `en-GB` becomes `en` and `sv-FI` becomes `sv`.
+- Language spans in the current content language or in an unknown language, such as `X-NONE` from Word, are removed on load and on paste.
+- Spans without attributes are unwrapped on load and on paste.
+
+Pressing Shift + Enter twice in a row splits the paragraph in two, like Enter.
+
+See `assets/js/ckeditor5_plugins/helfiNbsp/README.md` and `assets/js/ckeditor5_plugins/helfiLink/README.md`.
+
+### Remove empty p tags from existing content
+The editor cleans up empty p tags only when the content is edited. Existing content can be cleaned up with a drush command:
+
+    drush helfi:ckeditor:remove-empty-p-tags
+    drush cr
+
+The command removes `<p></p>`, `<p> </p>`, `<p>&nbsp;</p>` and `<p>` with a non-breaking space character from every long text field. It updates the field data tables and the current revisions in the revision tables. Old revisions are not changed. The database is updated directly, so the cache needs to be cleared afterwards.
+
 ## Known issues
 
 ### My CKEditor plugin custom elements/attributes do not appear on the "Allowed HTML tags" list
