@@ -10,9 +10,11 @@ use Drupal\Core\Access\CsrfTokenGenerator;
 use Drupal\Core\GeneratedUrl;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\editor\EditorInterface;
 use Drupal\helfi_ai\Plugin\CKEditor5Plugin\AiToneCheck;
+use Drupal\node\NodeInterface;
 use Drupal\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -42,11 +44,15 @@ class AiToneCheckTest extends UnitTestCase {
    *   The URL the mocked generator should return for the tone-check route.
    * @param string $langcode
    *   The current language id the plugin should read.
+   * @param string|null $routeName
+   *   The current route name.
+   * @param \Drupal\node\NodeInterface|null $node
+   *   The node route parameter.
    *
    * @return \Drupal\helfi_ai\Plugin\CKEditor5Plugin\AiToneCheck
    *   The plugin under test.
    */
-  private function createPlugin(string $endpoint, string $langcode): AiToneCheck {
+  private function createPlugin(string $endpoint, string $langcode, ?string $routeName = NULL, ?NodeInterface $node = NULL): AiToneCheck {
     // The plugin resolves the route through the url_generator service.
     $urlGenerator = $this->prophesize(UrlGeneratorInterface::class);
     $urlGenerator->generateFromRoute('helfi_ai.tone_check', Argument::cetera())
@@ -68,12 +74,17 @@ class AiToneCheckTest extends UnitTestCase {
     $languageManager = $this->prophesize(LanguageManagerInterface::class);
     $languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->willReturn($language->reveal());
 
+    $routeMatch = $this->prophesize(RouteMatchInterface::class);
+    $routeMatch->getRouteName()->willReturn($routeName);
+    $routeMatch->getParameter('node')->willReturn($node);
+
     return new AiToneCheck(
       [],
       'ai_tone_check',
       new CKEditor5PluginDefinition([]),
       $csrf->reveal(),
       $languageManager->reveal(),
+      $routeMatch->reveal(),
     );
   }
 
@@ -89,13 +100,17 @@ class AiToneCheckTest extends UnitTestCase {
     $this->assertSame('/en/helfi-ai/tone-check', $config['aiToneCheck']['endpoint']);
     $this->assertSame('test-token', $config['aiToneCheck']['csrfToken']);
     $this->assertSame('en', $config['aiToneCheck']['langcode']);
+    $this->assertArrayNotHasKey('entityId', $config['aiToneCheck']);
   }
 
   /**
-   * Existing static plugin config is preserved alongside the injected values.
+   * Static config is preserved and the edited node is added on its edit form.
    */
   public function testPreservesExistingStaticConfig(): void {
-    $plugin = $this->createPlugin('/sv/helfi-ai/tone-check', 'sv');
+    $node = $this->prophesize(NodeInterface::class);
+    $node->hasTranslation('sv')->willReturn(TRUE);
+    $node->id()->willReturn(5);
+    $plugin = $this->createPlugin('/sv/helfi-ai/tone-check', 'sv', 'entity.node.edit_form', $node->reveal());
 
     $config = $plugin->getDynamicPluginConfig(
       ['existing' => ['keep' => TRUE]],
@@ -104,6 +119,8 @@ class AiToneCheckTest extends UnitTestCase {
 
     $this->assertSame(['keep' => TRUE], $config['existing']);
     $this->assertSame('sv', $config['aiToneCheck']['langcode']);
+    $this->assertSame('node', $config['aiToneCheck']['entityType']);
+    $this->assertSame('5', $config['aiToneCheck']['entityId']);
   }
 
 }

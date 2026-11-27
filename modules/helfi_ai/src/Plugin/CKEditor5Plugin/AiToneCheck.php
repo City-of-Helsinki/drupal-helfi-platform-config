@@ -11,8 +11,10 @@ use Drupal\Core\Access\CsrfTokenGenerator;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\editor\EditorInterface;
+use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -38,6 +40,8 @@ final class AiToneCheck extends CKEditor5PluginDefault implements ContainerFacto
    *   The CSRF token generator.
    * @param \Drupal\Core\Language\LanguageManagerInterface $languageManager
    *   The language manager.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
+   *   The current route match.
    */
   public function __construct(
     array $configuration,
@@ -45,6 +49,7 @@ final class AiToneCheck extends CKEditor5PluginDefault implements ContainerFacto
     CKEditor5PluginDefinition $plugin_definition,
     protected readonly CsrfTokenGenerator $csrfToken,
     protected readonly LanguageManagerInterface $languageManager,
+    protected readonly RouteMatchInterface $routeMatch,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
@@ -61,6 +66,7 @@ final class AiToneCheck extends CKEditor5PluginDefault implements ContainerFacto
       $plugin_definition,
       $container->get('csrf_token'),
       $container->get('language_manager'),
+      $container->get('current_route_match'),
     );
   }
 
@@ -80,12 +86,20 @@ final class AiToneCheck extends CKEditor5PluginDefault implements ContainerFacto
     // editor's JS settings are not cacheable (like forms) — the same reason
     // core injects CSRF tokens in dynamic config.
     // @see \Drupal\ckeditor5\Plugin\CKEditor5Plugin\DynamicPluginConfigWithCsrfTokenUrlTrait
+    $langcode = $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId();
     $static_plugin_config['aiToneCheck'] = [
       'endpoint' => Url::fromRoute('helfi_ai.tone_check')->toString(TRUE)->getGeneratedUrl(),
       'csrfToken' => $this->csrfToken->get(CsrfRequestHeaderAccessCheck::TOKEN_KEY),
       // Use the content language, not the UI language.
-      'langcode' => $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_CONTENT)->getId(),
+      'langcode' => $langcode,
     ];
+
+    $node = $this->routeMatch->getParameter('node');
+
+    if ($this->routeMatch->getRouteName() === 'entity.node.edit_form' && $node instanceof NodeInterface && $node->hasTranslation($langcode)) {
+      $static_plugin_config['aiToneCheck']['entityType'] = 'node';
+      $static_plugin_config['aiToneCheck']['entityId'] = (string) $node->id();
+    }
     return $static_plugin_config;
   }
 

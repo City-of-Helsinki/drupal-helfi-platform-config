@@ -6,7 +6,10 @@ namespace Drupal\Tests\helfi_ai\Kernel;
 
 use Drupal\helfi_ai\Controller\TextStreamController;
 use Drupal\helfi_ai\Service\TextServicesGenerator;
+use Drupal\helfi_entity_task\EntityTaskStorage;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
 use Drupal\Tests\helfi_ai\Traits\TextServicesTestTrait;
 use Drupal\Tests\helfi_api_base\Traits\ApiTestTrait;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
@@ -40,6 +43,7 @@ class TextStreamControllerTest extends EntityKernelTestBase {
     'node',
     'language',
     'helfi_ai',
+    'helfi_entity_task',
     'system',
   ];
 
@@ -69,10 +73,7 @@ class TextStreamControllerTest extends EntityKernelTestBase {
       ->set('enable_tone_check', TRUE)
       ->save();
 
-    $this->controller = new TextStreamController(
-      $this->container->get(TextServicesGenerator::class),
-      $this->container->get('config.factory'),
-    );
+    $this->controller = TextStreamController::create($this->container);
   }
 
   /**
@@ -156,6 +157,37 @@ class TextStreamControllerTest extends EntityKernelTestBase {
     $this->assertTrue($done['done']);
     $this->assertStringStartsWith('<h2>Asukaspysäköinti</h2>', $done['result']);
     $this->assertSame('{"text":"<p>Asukaspysäköinti</p>","content_language":"fi","stream":true}', (string) $this->textServicesResponses->getLastRequest()?->getBody());
+  }
+
+  /**
+   * A completed tone check marks the posted page done if the user can edit it.
+   */
+  public function testToneCheckCompletesPostedPage(): void {
+    $this->installEntitySchema('node');
+    $this->installSchema('helfi_entity_task', ['helfi_entity_task']);
+    NodeType::create(['type' => 'page', 'name' => 'Page'])->save();
+    $node = Node::create(['type' => 'page', 'title' => 'Page']);
+    $node->save();
+    $storage = $this->container->get(EntityTaskStorage::class);
+    $storage->mark($node, 'tone_check');
+    $this->drupalSetUpCurrentUser(permissions: ['bypass node access']);
+
+    foreach (['user' => TRUE, 'node' => FALSE] as $entityType => $pending) {
+      $this->textServicesResponses->append(new GuzzleResponse(
+        200,
+        ['Content-Type' => 'text/event-stream'],
+        $this->getFixture('helfi_ai', 'tone-stream.txt'),
+      ));
+      $response = $this->controller->stream($this->request('tone', [
+        'text' => '<p>Teksti</p>',
+        'langcode' => 'en',
+        'entityType' => $entityType,
+        'entityId' => (string) $node->id(),
+      ]), 'tone');
+      $this->assertInstanceOf(EventStreamResponse::class, $response);
+      $this->streamedData($response);
+      $this->assertSame($pending, $storage->isPending($node, 'tone_check'));
+    }
   }
 
   /**

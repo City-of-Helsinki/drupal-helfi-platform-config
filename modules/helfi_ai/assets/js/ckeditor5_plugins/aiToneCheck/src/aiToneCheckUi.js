@@ -71,7 +71,12 @@ export default class aiToneCheckUi extends Plugin {
 					'Content-Type': 'application/json',
 					'X-CSRF-Token': config.csrfToken,
 				},
-				body: JSON.stringify({ text: original, langcode: config.langcode }),
+				body: JSON.stringify({
+					text: original,
+					langcode: config.langcode,
+					entityType: config.entityType,
+					entityId: config.entityId,
+				}),
 				signal: controller.signal,
 			});
 			if (!response.ok) {

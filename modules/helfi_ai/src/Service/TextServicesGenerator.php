@@ -69,11 +69,13 @@ class TextServicesGenerator {
    *   The editor content (HTML).
    * @param string $langcode
    *   The language of the content.
+   * @param \Closure|null $onComplete
+   *   Called once the rewrite is complete, before the done event.
    *
    * @return \Generator<int, \Symfony\Component\HttpFoundation\ServerEvent>
    *   The events.
    */
-  public function streamTone(string $content, string $langcode): \Generator {
+  public function streamTone(string $content, string $langcode, ?\Closure $onComplete = NULL): \Generator {
     $result = '';
 
     try {
@@ -91,11 +93,27 @@ class TextServicesGenerator {
       if (trim($result) === '') {
         throw new TextServicesException('Empty rewrite from Helfi Text Services');
       }
+      $this->runCompletion($onComplete);
       yield $this->serverEvent(['done' => TRUE, 'result' => $result]);
     }
     catch (TextServicesException $e) {
       Error::logException($this->logger, $e);
       yield $this->serverEvent(['error' => TRUE]);
+    }
+  }
+
+  /**
+   * Calls the completion callback, logging any failure.
+   *
+   * @param \Closure|null $onComplete
+   *   The callback.
+   */
+  private function runCompletion(?\Closure $onComplete): void {
+    try {
+      $onComplete?->__invoke();
+    }
+    catch (\Throwable $e) {
+      Error::logException($this->logger, $e);
     }
   }
 
