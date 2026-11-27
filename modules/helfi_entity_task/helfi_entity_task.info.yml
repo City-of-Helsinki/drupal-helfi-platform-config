@@ -1,0 +1,5 @@
+name: 'HELfi entity tasks'
+description: 'Stores tasks to do on entity translations, e.g. a pending tone check.'
+package: HELfi
+type: module
+core_version_requirement: ^11

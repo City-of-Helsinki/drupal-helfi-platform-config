@@ -1,0 +1,62 @@
+<?php
+
+/**
+ * @file
+ * Contains installation tasks for helfi_entity_task module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_schema().
+ *
+ * @phpstan-return array<string, mixed>
+ */
+function helfi_entity_task_schema(): array {
+  $schema = [];
+
+  $schema['helfi_entity_task'] = [
+    'description' => 'Tasks to do on entity translations.',
+    'fields' => [
+      'entity_type' => [
+        'type' => 'varchar_ascii',
+        'length' => 32,
+        'not null' => TRUE,
+        'description' => 'The entity type ID.',
+      ],
+      'entity_id' => [
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'description' => 'The entity ID.',
+      ],
+      'langcode' => [
+        'type' => 'varchar_ascii',
+        'length' => 12,
+        'not null' => TRUE,
+        'description' => 'The translation language code.',
+      ],
+      'task' => [
+        'type' => 'varchar_ascii',
+        'length' => 64,
+        'not null' => TRUE,
+        'description' => 'The task ID, e.g. tone_check.',
+      ],
+      'status' => [
+        'type' => 'varchar_ascii',
+        'length' => 16,
+        'not null' => TRUE,
+        'description' => 'The task status: pending or done.',
+      ],
+      'updated' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Timestamp of the last status change.',
+      ],
+    ],
+    'primary key' => ['entity_type', 'entity_id', 'langcode', 'task'],
+  ];
+
+  return $schema;
+}
