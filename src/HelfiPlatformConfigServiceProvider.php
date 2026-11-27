@@ -34,6 +34,7 @@ final class HelfiPlatformConfigServiceProvider extends ServiceProviderBase {
     if ($container->hasDefinition('config_rewrite.config_rewriter')) {
       $definition = $container->getDefinition('config_rewrite.config_rewriter');
       $definition->setClass(ConfigRewriter::class);
+      $definition->addArgument(new Reference('config.manager'));
     }
 
     // Replace the default Elasticsearch Connector query result parser with
