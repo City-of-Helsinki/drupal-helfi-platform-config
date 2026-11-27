@@ -14,6 +14,19 @@ use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Item\Field;
 
 /**
+ * Implements hook_update_dependencies().
+ *
+ * @phpstan-return array<string, array<int, array<string, int>>>
+ */
+function helfi_search_update_dependencies(): array {
+  // Add the parallel tracker columns before the index starts using it.
+  $dependencies['helfi_search'][11028] = [
+    'search_api' => 8111,
+  ];
+  return $dependencies;
+}
+
+/**
  * Implements hook_schema().
  *
  * @phpstan-return array<string, mixed>
@@ -578,4 +591,22 @@ function helfi_search_update_11027(): void {
     $index->save();
     $index->reindex();
   }
+}
+
+/**
+ * UHF-13506: Use the parallel tracker on the embeddings index.
+ */
+function helfi_search_update_11028(): void {
+  // Both trackers use the same tracking table. Change the configuration
+  // directly, because saving the index with a new tracker would re-track and
+  // re-index all items.
+  $config = \Drupal::configFactory()->getEditable('search_api.index.embeddings');
+  $settings = $config->get('tracker_settings') ?? [];
+
+  if (!isset($settings['default'])) {
+    return;
+  }
+  $config->set('tracker_settings', [
+    'parallel' => $settings['default'] + ['claim_timeout' => 60],
+  ])->save();
 }
