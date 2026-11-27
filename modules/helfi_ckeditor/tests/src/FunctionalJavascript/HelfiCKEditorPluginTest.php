@@ -68,9 +68,11 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
     $this->assertLegacyButtonLinks();
     $this->assertLanguageSelection();
     $this->assertLanguageUnSelection();
+    $this->assertLanguageCodeCleanup();
     $this->assertAddingQuote();
     $this->assertAddingTable();
     $this->assertNonBreakingSpaces();
+    $this->assertLinkSpaces();
   }
 
   /**
@@ -346,6 +348,49 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
   }
 
   /**
+   * Test the language codes are cleaned up and the bare spans are removed.
+   */
+  protected function assertLanguageCodeCleanup(): void {
+    foreach (['en', 'EN', 'en-GB', 'EN-gb', 'en-US'] as $langcode) {
+      $this->initializeEditor('<p>Text <span lang="' . $langcode . '" dir="ltr">in English</span></p>');
+      $this->assertSame('<p>Text in English</p>', $this->getEditorDataAsHtmlString(), "The current language $langcode is removed.");
+    }
+
+    foreach (['X-NONE', 'qq', 'qq-QQ', 'not a code'] as $langcode) {
+      $this->initializeEditor('<p>Text <span lang="' . $langcode . '" dir="ltr">unknown</span></p>');
+      $this->assertSame('<p>Text unknown</p>', $this->getEditorDataAsHtmlString(), "The unknown language $langcode is removed.");
+    }
+
+    $languages = [
+      'FI' => '<span lang="fi" dir="ltr">',
+      'fi-FI' => '<span lang="fi" dir="ltr">',
+      'SV-fi' => '<span lang="sv" dir="ltr">',
+      'ar-SA' => '<span lang="ar" dir="rtl">',
+      'zh-Hant' => '<span lang="zh-hant" dir="ltr">',
+      'zh-CN' => '<span lang="zh" dir="ltr">',
+      'fil' => '<span lang="fil" dir="ltr">',
+    ];
+
+    foreach ($languages as $langcode => $expected) {
+      $this->initializeEditor('<p>Text <span lang="' . $langcode . '">other</span></p>');
+      $this->assertSame("<p>Text {$expected}other</span></p>", $this->getEditorDataAsHtmlString(), "The language $langcode is converted to the Drupal language code.");
+    }
+
+    // The text direction comes from the language.
+    $this->initializeEditor('<p>Text <span lang="fi" dir="rtl">sauna</span></p>');
+    $this->assertSame('<p>Text <span lang="fi" dir="ltr">sauna</span></p>', $this->getEditorDataAsHtmlString());
+
+    // Spans without attributes are unwrapped.
+    $this->initializeEditor('<p><span>Text before the link </span><a href="https://www.hel.fi"><span>Link text</span></a><span>.</span></p>');
+    $this->assertMatchesRegularExpression('#<p>Text before the link <a [^>]+>Link text</a>\.</p>#', $this->getEditorDataAsHtmlString());
+
+    // Marked non-breaking spaces are kept.
+    $nbsp_content = '<p>Test<span data-nbsp="">&nbsp;</span>content</p>';
+    $this->initializeEditor($nbsp_content);
+    $this->assertSame($nbsp_content, $this->getEditorDataAsHtmlString());
+  }
+
+  /**
    * Test adding a quote via the Helfi quote plugin.
    */
   protected function assertAddingQuote(): void {
@@ -413,6 +458,46 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
   }
 
   /**
+   * Test the link text space cleanup.
+   */
+  protected function assertLinkSpaces(): void {
+    // Spaces at the end of a link text are moved after the link.
+    $this->initializeEditor('<p><a href="https://www.hel.fi">Link text. </a>Text after the link</p>');
+    $this->assertStringContainsString('>Link text.</a> Text after the link</p>', $this->getEditorDataAsHtmlString());
+
+    // Remove spaces at the end of a link text when a space follows.
+    $this->initializeEditor('<p><a href="https://www.hel.fi">Link text. </a> Text after the link</p>');
+    $this->assertStringContainsString('>Link text.</a> Text after the link</p>', $this->getEditorDataAsHtmlString());
+
+    // Spaces at the start of a link text are moved before the link.
+    $this->initializeEditor('<p>Text before the link<a href="https://www.hel.fi"> Link text.</a></p>');
+    $this->assertMatchesRegularExpression('#<p>Text before the link <a [^>]+>Link text\.</a></p>#', $this->getEditorDataAsHtmlString());
+
+    // Remove spaces at the start of a link text when a space precedes.
+    $this->initializeEditor('<p>Text before the link <a href="https://www.hel.fi"> Link text.</a></p>');
+    $this->assertMatchesRegularExpression('#<p>Text before the link <a [^>]+>Link text\.</a></p>#', $this->getEditorDataAsHtmlString());
+
+    // Spaces at both edges of a link text are moved outside the link.
+    $this->initializeEditor('<p>Read<a href="https://www.hel.fi"> Link text. </a>Text after the link</p>');
+    $this->assertMatchesRegularExpression('#<p>Read <a [^>]+>Link text\.</a> Text after the link</p>#', $this->getEditorDataAsHtmlString());
+
+    // Spaces at the edges of a pasted link text are moved outside the link.
+    $this->initializeEditor('');
+    $this->pasteContent('<p>Read<a href="https://www.hel.fi"> Link text. </a>Text after the link</p>');
+    $this->assertMatchesRegularExpression('#<p>Read <a [^>]+>Link text\.</a> Text after the link</p>#', $this->getEditorDataAsHtmlString());
+
+    // Move spaces of a pasted inline link text outside the link.
+    $this->initializeEditor('');
+    $this->pasteContent('Read<a href="https://www.hel.fi"> Link text. </a>Text after the link');
+    $this->assertMatchesRegularExpression('#<p>Read <a [^>]+>Link text\.</a> Text after the link</p>#', $this->getEditorDataAsHtmlString());
+
+    // Remove spaces of a pasted link text next to existing spaces.
+    $this->initializeEditor('');
+    $this->pasteContent('<p>Read <a href="https://www.hel.fi"> Link text. </a> Text after the link</p>');
+    $this->assertMatchesRegularExpression('#<p>Read <a [^>]+>Link text\.</a> Text after the link</p>#', $this->getEditorDataAsHtmlString());
+  }
+
+  /**
    * Test the Helfi nbsp plugin.
    */
   protected function assertNonBreakingSpaces(): void {
@@ -450,15 +535,154 @@ class HelfiCKEditorPluginTest extends WebDriverTestBase {
     $this->initializeEditor('<p>&nbsp;</p><p>Test</p><p>&nbsp;</p>');
     $this->assertSame('<p>Test</p>', $this->getEditorDataAsHtmlString());
 
-    // Empty paragraphs between text content are kept.
-    $between_content = '<p>Test</p><p>&nbsp;</p><p>Content</p>';
-    $this->initializeEditor($between_content);
-    $this->assertSame($between_content, $this->getEditorDataAsHtmlString());
+    // Empty paragraphs are removed on load.
+    $empty_paragraphs = [
+      '<p>Test</p><p></p><p>Content</p>',
+      '<p>Test</p><p> </p><p>Content</p>',
+      '<p>Test</p><p>&nbsp;</p><p>Content</p>',
+      '<p>Test</p><p><br></p><p>Content</p>',
+      '<p>Test</p><p></p><p> </p><p>&nbsp;</p><p>Content</p>',
+    ];
+
+    foreach ($empty_paragraphs as $content) {
+      $this->initializeEditor($content);
+      $this->assertSame('<p>Test</p><p>Content</p>', $this->getEditorDataAsHtmlString(), "Empty paragraphs are removed from $content.");
+    }
+
+    // Double line breaks split the paragraph on load.
+    $double_breaks = [
+      '<p>Test text<br><br>Another text</p>',
+      '<p>Test text<br> <br>Another text</p>',
+      '<p>Test text<br /><br />Another text</p>',
+      '<p>Test text<br /> <br />Another text</p>',
+      '<p>Test text<br>&nbsp;<br>Another text</p>',
+      '<p>Test text <br /> <br /> Another text</p>',
+      '<p>Test text<br><br><br>Another text</p>',
+    ];
+
+    foreach ($double_breaks as $content) {
+      $this->initializeEditor($content);
+      $this->assertSame('<p>Test text</p><p>Another text</p>', $this->getEditorDataAsHtmlString(), "Double line breaks split the paragraph in $content.");
+    }
+
+    // Every double line break in a paragraph splits it.
+    $this->initializeEditor('<p>First<br /> <br />Second<br><br>Third</p>');
+    $this->assertSame('<p>First</p><p>Second</p><p>Third</p>', $this->getEditorDataAsHtmlString());
+
+    // Line breaks are removed from the start and the end of a paragraph.
+    $this->initializeEditor('<p><br><br>Test text<br /> <br /></p>');
+    $this->assertSame('<p>Test text</p>', $this->getEditorDataAsHtmlString());
+
+    // A single line break between text is kept.
+    $single_break_content = '<p>Test text<br>Another text</p>';
+    $this->initializeEditor($single_break_content);
+    $this->assertSame($single_break_content, $this->getEditorDataAsHtmlString());
+
+    // A second line break splits the paragraph.
+    foreach (['', "editor.execute('insertText', { text: ' ' });"] as $between) {
+      $this->initializeEditor('<p>Test text</p>');
+      $javascript = <<<JS
+(function(){
+  const editor = Drupal.CKEditor5Instances.get(Drupal.CKEditor5Instances.keys().next().value);
+  const paragraph = editor.model.document.getRoot().getChild(0);
+  editor.model.change((writer) => writer.setSelection(writer.createPositionAt(paragraph, 'end')));
+  editor.execute('shiftEnter');
+  $between
+  editor.execute('shiftEnter');
+  editor.execute('insertText', { text: 'Another text' });
+})();
+JS;
+      $this->getSession()->executeScript($javascript);
+      $this->assertSame('<p>Test text</p><p>Another text</p>', $this->getEditorDataAsHtmlString(), 'A second line break splits the paragraph.');
+    }
+
+    // Spaces next to the split are removed.
+    foreach ([strlen('Text before'), strlen('Text before ')] as $offset) {
+      $this->initializeEditor('<p>Text before text after</p>');
+      $javascript = <<<JS
+(function(){
+  const editor = Drupal.CKEditor5Instances.get(Drupal.CKEditor5Instances.keys().next().value);
+  const paragraph = editor.model.document.getRoot().getChild(0);
+  editor.model.change((writer) => writer.setSelection(writer.createPositionAt(paragraph, $offset)));
+  editor.execute('shiftEnter');
+  editor.execute('shiftEnter');
+})();
+JS;
+      $this->getSession()->executeScript($javascript);
+      $this->assertSame('<p>Text before</p><p>text after</p>', $this->getEditorDataAsHtmlString(), "Spaces next to the split at offset $offset are removed.");
+    }
+
+    // Add double line breaks and empty paragraphs.
+    $this->initializeEditor('<p>Test text</p>');
+    $javascript = <<<JS
+(function(){
+  const editor = Drupal.CKEditor5Instances.get(Drupal.CKEditor5Instances.keys().next().value);
+  const paragraph = editor.model.document.getRoot().getChild(0);
+  editor.model.change((writer) => {
+    writer.insertElement('softBreak', paragraph, 'end');
+    writer.insertElement('softBreak', paragraph, 'end');
+    writer.insertText('Another text', paragraph, 'end');
+    writer.setSelection(writer.createPositionAt(paragraph, 'end'));
+  });
+  editor.execute('enter');
+  editor.execute('enter');
+})();
+JS;
+    $this->getSession()->executeScript($javascript);
+    $this->assertSame('<p>Test text<br><br>Another text</p><p>&nbsp;</p><p>&nbsp;</p>', $this->getEditorDataAsHtmlString());
+
+    // Double line breaks and empty paragraphs are cleaned up on blur.
+    $this->blurEditor();
+    $this->assertSame('<p>Test text</p><p>Another text</p>', $this->getEditorDataAsHtmlString());
+
+    // Empty paragraphs and double line breaks are cleaned up on paste.
+    $this->initializeEditor('');
+    $this->pasteContent('<p>Test</p><p></p><p> </p><p>&nbsp;</p><p>Test text<br /> <br />Another text</p><p><br><br></p><p>Content</p>');
+    $this->assertSame('<p>Test</p><p>Test text</p><p>Another text</p><p>Content</p>', $this->getEditorDataAsHtmlString());
+
+    // Pasted inline double line breaks split the paragraph.
+    $this->initializeEditor('');
+    $this->pasteContent('Test text<br>&nbsp;<br>Another text');
+    $this->assertSame('<p>Test text</p><p>Another text</p>', $this->getEditorDataAsHtmlString());
 
     // An inserted non-breaking space is wrapped in <span data-nbsp>.
     $this->initializeEditor('<p>Testcontent</p>');
     $this->insertNonBreakingSpace(strlen('Test'));
     $this->assertSame('<p>Test<span data-nbsp="">&nbsp;</span>content</p>', $this->getEditorDataAsHtmlString());
+  }
+
+  /**
+   * Paste the content to the editor.
+   *
+   * @param string $html
+   *   The pasted html.
+   */
+  protected function pasteContent(string $html): void {
+    $html = json_encode($html);
+    $javascript = <<<JS
+(function(){
+  const dataTransfer = new DataTransfer();
+  dataTransfer.setData('text/html', $html);
+  const event = new ClipboardEvent('paste', { clipboardData: dataTransfer, bubbles: true, cancelable: true });
+  document.querySelector('.ck-editor__editable').dispatchEvent(event);
+})();
+JS;
+    $this->getSession()->executeScript($javascript);
+  }
+
+  /**
+   * Move the focus out of the editor.
+   */
+  protected function blurEditor(): void {
+    $this->getSession()->getPage()->findField('title[0][value]')->focus();
+
+    $javascript = <<<JS
+(function(){
+  const editor = Drupal.CKEditor5Instances.get(Drupal.CKEditor5Instances.keys().next().value);
+  return !editor.ui.focusTracker.isFocused;
+})();
+JS;
+    $this->assertTrue($this->getSession()->wait(5000, $javascript), 'The editor loses focus.');
   }
 
   /**
