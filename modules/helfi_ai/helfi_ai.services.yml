@@ -21,3 +21,7 @@ services:
       - '@config.storage'
     tags:
       - { name: config.factory.override }
+
+  Drupal\helfi_ai\ToneCheck\ToneCheckNotificationProvider:
+    tags:
+      - { name: helfi_platform_config.entity_notification_provider }
