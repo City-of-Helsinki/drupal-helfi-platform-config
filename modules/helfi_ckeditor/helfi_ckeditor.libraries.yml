@@ -1,6 +1,6 @@
 # Helfi Link CKEditor5 plugin JavaScript and CSS.
 helfi_link:
-  version: 1.0.1
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     assets/js/build/helfiLink.js: { preprocess: false, minified: true }
   css:
@@ -12,7 +12,7 @@ helfi_link:
 
 # Helfi Language selector CKEditor5 plugin JavaScript and CSS.
 helfi_language_selector:
-  version: 1.0.1
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     assets/js/build/helfiLanguageSelector.js: { preprocess: false, minified: true }
   css:
@@ -26,14 +26,14 @@ helfi_language_selector:
 
 # Helfi Language selector CKEditor5 plugin toolbar styles.
 helfi_language_selector.admin:
-  version: 1.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   css:
     theme:
       assets/css/helfi_language_selector_plugin.admin.css: { }
 
 # Helfi Quote CKEditor5 plugin JavaScript and CSS.
 helfi_quote:
-  version: 1.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     assets/js/build/helfiQuote.js: { preprocess: false, minified: true }
   css:
@@ -44,14 +44,14 @@ helfi_quote:
 
 # Helfi Quote CKEditor5 plugin toolbar styles.
 helfi_quote.admin:
-  version: 1.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   css:
     theme:
       assets/css/helfi_quote_plugin.admin.css: { }
 
 # Helfi Table CKEditor5 plugin JavaScript and CSS.
 helfi_table:
-  version: 1.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     assets/js/build/helfiTable.js: { preprocess: false, minified: true }
   dependencies:
@@ -59,7 +59,7 @@ helfi_table:
 
 # Helfi Nbsp CKEditor5 plugin JavaScript and CSS.
 helfi_nbsp:
-  version: 1.0.0
+  version: HELFI_DEPLOYMENT_IDENTIFIER
   js:
     assets/js/build/helfiNbsp.js: { preprocess: false, minified: true }
   css:
@@ -67,4 +67,3 @@ helfi_nbsp:
       assets/css/helfi_nbsp_plugin.css: { }
   dependencies:
     - core/ckeditor5
-
