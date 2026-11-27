@@ -3,7 +3,7 @@
  */
 import { Plugin } from 'ckeditor5/src/core';
 import { Widget } from 'ckeditor5/src/widget';
-import { stringifyLanguageAttribute, parseLanguageAttribute, simplifyLangCode } from './utils/utils';
+import { stringifyLanguageAttribute, parseLanguageAttribute } from './utils/utils';
 import HelfiLanguageSelectorCommand from './ui/helfiLanguageSelectorCommand';
 
 /**
@@ -31,6 +31,7 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
     this.editor = editor;
     this.helfiLanguageSelectorConfig = this.editor.config.get('helfiLanguageSelector');
     this.currentLanguage = this.helfiLanguageSelectorConfig?.current_language;
+    this.languageList = this.helfiLanguageSelectorConfig?.language_list ?? [];
   }
 
   /**
@@ -44,44 +45,54 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
     editor.model.schema.extend('$text', { allowAttributes: 'helfiLanguageSelector' });
     editor.model.schema.setAttributeProperties('helfiLanguageSelector', { copyOnEnter: true });
 
+    // Remove the unknown and the current languages from the spans.
+    conversion.for('upcast').add((dispatcher) => {
+      dispatcher.on(
+        'element:span',
+        (_event, data, conversionApi) => {
+          const { viewItem } = data;
+          const { consumable } = conversionApi;
+
+          if (viewItem.hasAttribute('lang')) {
+            // Take the text direction from the language list.
+            if (viewItem.hasAttribute('dir')) {
+              consumable.consume(viewItem, { attributes: ['dir'] });
+            }
+
+            if (!this._getLanguage(viewItem.getAttribute('lang'))) {
+              consumable.consume(viewItem, { attributes: ['lang'] });
+            }
+          }
+
+          // Unwrap the span when it has no attributes left.
+          const hasAttributes = Array.from(viewItem.getAttributeKeys()).some((key) =>
+            consumable.test(viewItem, { attributes: [key] }),
+          );
+
+          if (hasAttributes || !consumable.consume(viewItem, { name: true })) {
+            return;
+          }
+
+          Object.assign(data, conversionApi.convertChildren(viewItem, data.modelCursor));
+        },
+        { priority: 'high' },
+      );
+    });
+
     // Define 'upcast' converter for helfiLanguageSelector lang attribute.
     conversion.for('upcast').elementToAttribute({
       model: {
         key: 'helfiLanguageSelector',
         value: (viewElement) => {
-          const langAttr = viewElement.getAttribute('lang') ?? '';
-          const languageCode = this._verifyLanguageCode(langAttr);
+          const language = this._getLanguage(viewElement.getAttribute('lang'));
 
-          // If the "lang" attribute does not exist, do not convert
-          // the "lang" attribute nor the "dir" attribute.
-          if (!languageCode) {
+          if (!language) {
             return;
           }
-
-          const textDirection = viewElement.getAttribute('dir') ?? '';
-          return stringifyLanguageAttribute(languageCode.toLowerCase(), textDirection.toLowerCase());
+          return stringifyLanguageAttribute(language.languageCode, language.textDirection);
         },
       },
       view: { name: 'span', attributes: { lang: /[\s\S]+/ } },
-    });
-
-    // Define 'upcast' converter for helfiLanguageSelector dir attribute.
-    conversion.for('upcast').elementToAttribute({
-      model: {
-        key: 'helfiLanguageSelector',
-        value: (viewElement) => {
-          const langAttr = viewElement.getAttribute('lang');
-          const languageCode = this._verifyLanguageCode(langAttr);
-
-          // If the "lang" attribute does not exist, do not convert
-          // the "dir" attribute.
-          if (!languageCode) {
-            return;
-          }
-          return viewElement.getAttribute('dir') ?? '';
-        },
-      },
-      view: { name: 'span', attributes: { dir: /[\s\S]+/ } },
     });
 
     // Define 'downcast' converter for helfiLanguageSelector.
@@ -107,32 +118,27 @@ export default class HelfiLanguageSelectorEditing extends Plugin {
   }
 
   /**
-   * Verify the language code and return it if valid.
+   * Find the language of the lang attribute from the language list.
    *
    * @param {string} langAttribute The lang attribute.
-   * @return {string|boolean} The language code or false.
+   * @return {object|null} The language or null if unknown or current.
    */
-  _verifyLanguageCode(langAttribute) {
-    // Return false if the lang attribute does not exist.
-    if (!langAttribute) {
-      return false;
+  _getLanguage(langAttribute) {
+    const code = langAttribute?.trim().toLowerCase();
+
+    if (!code) {
+      return null;
     }
 
-    // Remove possible country code from the language code.
-    const languageCode = simplifyLangCode(langAttribute);
+    // Match the full code first and then the code without the region.
+    const [primary] = code.split('-');
+    const language =
+      this.languageList.find(({ languageCode }) => languageCode === code) ??
+      this.languageList.find(({ languageCode }) => languageCode === primary);
 
-    // Remove lang and dir attributes if the lang attribute
-    // does not exist.
-    if (!languageCode) {
-      return false;
+    if (!language || language.languageCode === this.currentLanguage?.toLowerCase()) {
+      return null;
     }
-
-    // Remove lang and dir attributes if the lang attribute is the
-    // same as the current language.
-    if (languageCode.toLowerCase() === this.currentLanguage.toLowerCase()) {
-      return false;
-    }
-
-    return languageCode;
+    return language;
   }
 }

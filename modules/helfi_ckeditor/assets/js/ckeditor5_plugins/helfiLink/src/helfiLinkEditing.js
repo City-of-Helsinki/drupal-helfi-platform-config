@@ -8,6 +8,129 @@ import formElements from './formElements';
 import { isUrlExternal, parseProtocol, sanitizeSafeLinks, shouldApplyModelAttribute } from './utils/utils';
 
 /**
+ * Check if the text nodes belong to the same link.
+ *
+ * @param {module:engine/model/node~ModelNode} node
+ *   The model node to compare.
+ * @param {module:engine/model/text~ModelText} text
+ *   The linked text node.
+ *
+ * @return {boolean}
+ *   Returns true if the nodes belong to the same link.
+ */
+const isSameLink = (node, text) => node?.is('$text') && node.getAttribute('linkHref') === text.getAttribute('linkHref');
+
+/**
+ * Remove the link attributes from the range.
+ *
+ * @param {module:engine/model/writer~ModelWriter} writer
+ *   The model writer.
+ * @param {module:engine/model/range~ModelRange} range
+ *   The model range to unlink.
+ * @param {module:engine/model/text~ModelText} text
+ *   The linked text node.
+ */
+const unlinkRange = (writer, range, text) => {
+  // Remove the href and the other link attributes.
+  for (const [key] of Array.from(text.getAttributes())) {
+    if (key.startsWith('link')) {
+      writer.removeAttribute(key, range);
+    }
+  }
+};
+
+/**
+ * Move the leading and the trailing spaces out of the links.
+ *
+ * @param {module:engine/model/writer~ModelWriter} writer
+ *   The model writer.
+ * @param {module:engine/model/element~ModelElement} element
+ *   The model element to process.
+ */
+const moveLinkEdgeSpaces = (writer, element) => {
+  // Process the trailing spaces from the end of the element.
+  for (const child of Array.from(element.getChildren()).reverse()) {
+    // Only process the last text of each link.
+    if (!child.is('$text') || !child.hasAttribute('linkHref') || isSameLink(child.nextSibling, child)) {
+      continue;
+    }
+
+    // Count the trailing spaces.
+    const length = child.data.length - child.data.trimEnd().length;
+
+    if (length === 0) {
+      continue;
+    }
+
+    const next = child.nextSibling;
+    const range = writer.createRange(
+      writer.createPositionAt(element, child.endOffset - length),
+      writer.createPositionAt(element, child.endOffset),
+    );
+
+    // Move the spaces after the link or remove them if a space already follows.
+    if (next?.is('$text') && next.data.trimStart() === next.data) {
+      unlinkRange(writer, range, child);
+    } else {
+      writer.remove(range);
+    }
+  }
+
+  for (const child of Array.from(element.getChildren())) {
+    // Only process the first text of each link.
+    if (!child.is('$text') || !child.hasAttribute('linkHref') || isSameLink(child.previousSibling, child)) {
+      continue;
+    }
+
+    // Count the leading spaces.
+    const length = child.data.length - child.data.trimStart().length;
+
+    if (length === 0) {
+      continue;
+    }
+
+    const previous = child.previousSibling;
+    const range = writer.createRange(
+      writer.createPositionAt(element, child.startOffset),
+      writer.createPositionAt(element, child.startOffset + length),
+    );
+
+    // Move the spaces before the link or remove them if a space already precedes.
+    if (previous?.is('$text') && previous.data.trimEnd() === previous.data) {
+      unlinkRange(writer, range, child);
+    } else {
+      writer.remove(range);
+    }
+  }
+};
+
+/**
+ * Move the link edge spaces in the text blocks of a range.
+ *
+ * @param {module:engine/model/writer~ModelWriter} writer
+ *   The model writer.
+ * @param {module:engine/model/range~ModelRange} range
+ *   The model range to process.
+ */
+const cleanUpLinkSpaces = (writer, range) => {
+  const { schema } = writer.model;
+
+  // Collect the elements that can contain text.
+  const blocks = Array.from(range.getItems()).filter((item) => item.is('element') && schema.checkChild(item, '$text'));
+
+  // Add the blocks at the range edges.
+  for (const position of [range.start, range.end]) {
+    if (schema.checkChild(position.parent, '$text') && !blocks.includes(position.parent)) {
+      blocks.push(position.parent);
+    }
+  }
+
+  for (const block of blocks) {
+    moveLinkEdgeSpaces(writer, block);
+  }
+};
+
+/**
  * CKEditor 5 plugins do not work directly with the DOM. They are defined as
  * plugin-specific data models that are then converted to markup that
  * is inserted in the DOM.
@@ -51,6 +174,58 @@ export default class HelfiLinkEditing extends Plugin {
 
     // Add attributes to linkCommand during its execution.
     this._addAttributeOnLinkCommandExecute(Object.keys(formElements));
+  }
+
+  afterInit() {
+    // Move the spaces at the link text edges outside the link.
+    this._cleanUpLinkSpaces();
+  }
+
+  /**
+   * Clean up the link spaces on load, on paste and when the editor loses focus.
+   */
+  _cleanUpLinkSpaces() {
+    const { editor } = this;
+    const { model } = editor;
+
+    // Clean up the whole content without adding an undo step.
+    const cleanUpOnLoad = () => {
+      model.enqueueChange({ isUndoable: false }, (writer) => {
+        cleanUpLinkSpaces(writer, writer.createRangeIn(model.document.getRoot()));
+      });
+    };
+
+    this.listenTo(editor.data, 'init', cleanUpOnLoad, { priority: 'low' });
+    this.listenTo(editor.data, 'set', cleanUpOnLoad, { priority: 'low' });
+
+    // Clean up the pasted content.
+    if (editor.plugins.has('ClipboardPipeline')) {
+      this.listenTo(
+        editor.plugins.get('ClipboardPipeline'),
+        'contentInsertion',
+        (_event, data) => {
+          if (!data.resultRange) {
+            return;
+          }
+
+          model.change((writer) => {
+            cleanUpLinkSpaces(writer, data.resultRange);
+          });
+        },
+        { priority: 'low' },
+      );
+    }
+
+    // Clean up the whole content when the editor loses focus.
+    this.listenTo(editor.ui.focusTracker, 'change:isFocused', (_event, _name, isFocused) => {
+      if (isFocused || editor.isReadOnly) {
+        return;
+      }
+
+      model.change((writer) => {
+        cleanUpLinkSpaces(writer, writer.createRangeIn(model.document.getRoot()));
+      });
+    });
   }
 
   /**

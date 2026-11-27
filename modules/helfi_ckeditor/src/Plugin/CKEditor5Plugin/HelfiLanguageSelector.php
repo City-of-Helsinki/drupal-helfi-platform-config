@@ -91,10 +91,12 @@ final class HelfiLanguageSelector extends CKEditor5PluginDefault implements Cont
 
     // Skip the following languages.
     $skip = [
+      'en-gb',
       'en-x-simple',
       'gsw-berne',
       'pt-br',
       'pt-pt',
+      'rm-rumgr',
       'sco',
       'ta-lk',
       'xx-lolspeak',
