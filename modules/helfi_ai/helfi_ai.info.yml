@@ -10,6 +10,7 @@ dependencies:
   - drupal:text
   - drupal:language
   - helfi_platform_config:helfi_ckeditor
+  - helfi_platform_config:helfi_entity_task
   - helfi_platform_config:helfi_platform_config
 "interface translation project": helfi_ai
 "interface translation server pattern": modules/contrib/helfi_platform_config/modules/helfi_ai/translations/%language.po

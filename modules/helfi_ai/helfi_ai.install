@@ -131,3 +131,12 @@ function helfi_ai_update_11007(): void {
     ->clear('enable_seo_title')
     ->save();
 }
+
+/**
+ * UHF-13926: Enable the helfi_entity_task module.
+ */
+function helfi_ai_update_11008(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('helfi_entity_task')) {
+    \Drupal::service('module_installer')->install(['helfi_entity_task']);
+  }
+}
