@@ -6265,24 +6265,6 @@ parameters:
 			path: tests/src/Unit/ClearSiteDataTest.php
 
 		-
-			message: '#^Method Drupal\\Tests\\helfi_platform_config\\Unit\\ConfigUpdate\\StorageComparerSortTest\:\:getSourceData\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/src/Unit/ConfigUpdate/StorageComparerSortTest.php
-
-		-
-			message: '#^Method Drupal\\Tests\\helfi_platform_config\\Unit\\ConfigUpdate\\StorageComparerSortTest\:\:getTargetData\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/src/Unit/ConfigUpdate/StorageComparerSortTest.php
-
-		-
-			message: '#^Property Drupal\\Tests\\helfi_platform_config\\Unit\\ConfigUpdate\\StorageComparerSortTest\:\:\$configData type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/src/Unit/ConfigUpdate/StorageComparerSortTest.php
-
-		-
 			message: '#^Method Drupal\\Tests\\helfi_platform_config\\Unit\\EntityVersionMatcherTest\:\:setupEntityTypeDefinitions\(\) has parameter \$definitions with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
